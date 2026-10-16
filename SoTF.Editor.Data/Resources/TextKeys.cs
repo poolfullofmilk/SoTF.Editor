@@ -3,7 +3,6 @@ using SoTF.Editor.Data.Enums;
 using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Models.Map;
-using SoTF.Editor.Data.Models.SaveData.Actor;
 
 namespace SoTF.Editor.Data.Resources;
 

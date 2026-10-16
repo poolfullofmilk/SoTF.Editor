@@ -73,9 +73,8 @@ public class ItemPoi : InformationalPoi
         )
         {
             MissingRequiredItems = rawItemPoi.GetMissingRequiredItems(inventoryItems),
+            Enabled = enabled,
         };
-
-        poi.SetEnabledNoRefresh(enabled);
 
         return poi;
     }

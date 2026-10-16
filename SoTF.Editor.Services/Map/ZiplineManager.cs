@@ -182,7 +182,8 @@ public static class ZiplineManager
         {
             var pos = screwStructureInstance["Pos"];
             if (
-                pos?["x"]?.Value<float>() is not { } avgX
+                screwStructureInstance["Id"]?.Value<int>() != ZiplineTypeId
+                || pos?["x"]?.Value<float>() is not { } avgX
                 || pos["y"]?.Value<float>() is not { } avgY
                 || pos["z"]?.Value<float>() is not { } avgZ
             )
@@ -199,21 +200,18 @@ public static class ZiplineManager
                 continue;
             }
 
-            var newAvgX = (posANew.X + posBNew.X) / 2;
-            var newAvgY = (posANew.Y + posBNew.Y) / 2;
-            var newAvgZ = (posANew.Z + posBNew.Z) / 2;
-            pos["x"] = newAvgX;
-            pos["y"] = newAvgY;
-            pos["z"] = newAvgZ;
+            pos["x"] = (posANew.X + posBNew.X) / 2;
+            pos["y"] = (posANew.Y + posBNew.Y) / 2;
+            pos["z"] = (posANew.Z + posBNew.Z) / 2;
 
             screwStructureInstancesSaveDataWrapper.MarkAsModified(
                 Constants.JsonKeys.ScrewStructureInstances
             );
-
-            return newToken;
+            break;
         }
 
-        return null;
+        // The Line Already Moved, So The Map Follows It
+        return newToken;
     }
 
     public static bool Remove(ZiplinePoi parent, Savegame savegame)

@@ -69,6 +69,18 @@ public partial class Structures : EditorPageBase
         return structure is null ? string.Empty : $"{structure.CategoryName} · {structure.Name}";
     }
 
+    private static Color ProgressColor(ScrewStructureWrapper wrapper)
+    {
+        // Unknown, Barely Started, Under Way, Done
+        return wrapper.PctDone switch
+        {
+            -1 => Color.Default,
+            < 50 => Color.Error,
+            < 100 => Color.Warning,
+            _ => Color.Success,
+        };
+    }
+
     private static string? IconOf(ScrewStructureWrapper wrapper)
     {
         return wrapper.ScrewStructure?.Icon is { } icon ? $"images/structures/{icon}" : null;

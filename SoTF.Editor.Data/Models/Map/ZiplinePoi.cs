@@ -42,11 +42,6 @@ public class ZiplinePoi : IPoi
             mapFilter.RequirementsFilter == MapFilter.RequirementsFilterType.InaccessibleOnly;
     }
 
-    public void SetEnabledNoRefresh(bool value)
-    {
-        Enabled = value;
-    }
-
     public string PrintableCoordinates => "";
     public bool IsUnderground => false;
 }

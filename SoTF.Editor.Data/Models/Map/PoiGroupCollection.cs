@@ -33,11 +33,6 @@ public class PoiGroupCollection(
         }
     } = enabled;
 
-    public void SetEnabledNoRefresh(bool value)
-    {
-        Enabled = value;
-    }
-
     public static PoiGroupCollection ForActors(
         IEnumerable<PoiGroup> actorPoiGroups,
         bool enabled = false

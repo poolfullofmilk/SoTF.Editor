@@ -3,7 +3,6 @@ using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Models.Actors;
 using SoTF.Editor.Data.Models.Map;
-using SoTF.Editor.Data.Resources;
 using SoTF.Editor.Services.Pages;
 using SoTF.Editor.Services.Savegames;
 using SoTF.Editor.Services.Settings;
@@ -18,10 +17,18 @@ public class MapViewModel(
 )
 {
     private List<IPoiGrouper> _poiGroups = [];
+    private int _builtRevision = -1;
 
     public MapFilter MapFilter { get; } = new(gameData.AreaManager);
 
-    public IReadOnlyList<IPoiGrouper> PoiGroups => _poiGroups;
+    public IReadOnlyList<IPoiGrouper> PoiGroups
+    {
+        get
+        {
+            RebuildIfStale();
+            return _poiGroups;
+        }
+    }
 
     public IPoi? SelectedPoi { get; private set; }
 
@@ -41,6 +48,7 @@ public class MapViewModel(
 
     public void Build()
     {
+        _builtRevision = mainViewModel.Revision;
         var poiGrouperList = mainViewModel.BuildPoiGroups();
         LoadSavedSelectedPois(poiGrouperList);
         _poiGroups = poiGrouperList;
@@ -48,8 +56,18 @@ public class MapViewModel(
         ApplyFilterToAllPois();
     }
 
+    private void RebuildIfStale()
+    {
+        // Points From An Older Load Hold Stale JSON
+        if (_builtRevision != mainViewModel.Revision)
+        {
+            Build();
+        }
+    }
+
     public IEnumerable<IPoi> AllPois()
     {
+        RebuildIfStale();
         return _poiGroups.SelectMany(grouper =>
             grouper switch
             {
@@ -141,7 +159,7 @@ public class MapViewModel(
 
         foreach (var newPoi in new IPoi[] { zipline.PointA, zipline.PointB, zipline })
         {
-            newPoi.SetEnabledNoRefresh(ziplineGroup.Enabled);
+            newPoi.Enabled = ziplineGroup.Enabled;
             newPoi.ApplyFilter(MapFilter);
             ziplineGroup.Pois.Add(newPoi);
         }
@@ -194,7 +212,7 @@ public class MapViewModel(
     {
         foreach (var poiGrouper in _poiGroups)
         {
-            poiGrouper.SetEnabledNoRefresh(false);
+            poiGrouper.Enabled = false;
         }
 
         SaveSettings();
@@ -251,12 +269,12 @@ public class MapViewModel(
             switch (poiGrouper)
             {
                 case PoiGroup poiGroup:
-                    poiGroup.SetEnabledNoRefresh(selectedGroups.Contains(poiGroup.GroupKey));
+                    poiGroup.Enabled = selectedGroups.Contains(poiGroup.GroupKey);
                     break;
                 case PoiGroupCollection poiGroupCollection:
                     foreach (var group in poiGroupCollection.PoiGroups)
                     {
-                        group.SetEnabledNoRefresh(selectedGroups.Contains(group.GroupKey));
+                        group.Enabled = selectedGroups.Contains(group.GroupKey);
                     }
 
                     break;

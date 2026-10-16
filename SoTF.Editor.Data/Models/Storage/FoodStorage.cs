@@ -70,7 +70,7 @@ public class FoodStorage(StorageDefinition definition, ItemList itemList, int in
                     selectedItem == null ? 0 : 1,
                     supportedItems,
                     Definition.MaxPerSlot,
-                    uniqueItem.Modules
+                    [uniqueItem]
                 );
                 Slots[currentSlot++].StoredItems.Add(storedItem);
             }

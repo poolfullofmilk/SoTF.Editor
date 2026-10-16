@@ -45,9 +45,9 @@ public class UnlocksViewModel
             return;
         }
 
-        foreach (var jToken in settings)
+        foreach (var setting in settings)
         {
-            if (jToken[NameKey]?.Value<string>() is not { } propertyName)
+            if (setting[NameKey]?.Value<string>() is not { } propertyName)
             {
                 continue;
             }
@@ -55,24 +55,24 @@ public class UnlocksViewModel
             switch (propertyName)
             {
                 case CreativeModeItemUnlockedKey:
-                    CreativeModeItem = GetBoolSetting(jToken);
+                    CreativeModeItem = GetBoolSetting(setting);
                     break;
                 case CreativeModeUnlockedKey:
-                    CreativeMode = GetBoolSetting(jToken);
+                    CreativeMode = GetBoolSetting(setting);
                     break;
                 case CoreGameCompletedKey:
-                    CoreGameCompleted = GetBoolSetting(jToken);
+                    CoreGameCompleted = GetBoolSetting(setting);
                     break;
                 case EscapedIslandKey:
-                    EscapedIsland = GetBoolSetting(jToken);
+                    EscapedIsland = GetBoolSetting(setting);
                     break;
             }
         }
     }
 
-    private static bool GetBoolSetting(JToken jToken)
+    private static bool GetBoolSetting(JToken setting)
     {
-        return jToken[BoolValueKey]?.Value<bool>() ?? false;
+        return setting[BoolValueKey]?.Value<bool>() ?? false;
     }
 
     public void Save()
@@ -111,9 +111,9 @@ public class UnlocksViewModel
 
         foreach (var (settingKey, settingValue) in settingsToSave)
         {
-            var settingTpl = new JObject { [NameKey] = settingKey, [BoolValueKey] = settingValue };
+            var newSetting = new JObject { [NameKey] = settingKey, [BoolValueKey] = settingValue };
 
-            settings.Add(settingTpl);
+            settings.Add(newSetting);
         }
 
         // A Verified Copy First, Then A Write That Cannot Tear

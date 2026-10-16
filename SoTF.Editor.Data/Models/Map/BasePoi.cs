@@ -98,11 +98,6 @@ public abstract class BasePoi : IPoi
         Filtered = ShouldFilter(mapFilter);
     }
 
-    public void SetEnabledNoRefresh(bool value)
-    {
-        Enabled = value;
-    }
-
     public virtual string Title => "";
 
     public string? Description { get; init; }
@@ -189,5 +184,4 @@ public interface IPoi
     public float IconRotation { get; }
     public bool IsSelected { get; set; }
     public void ApplyFilter(MapFilter mapFilter);
-    void SetEnabledNoRefresh(bool value);
 }

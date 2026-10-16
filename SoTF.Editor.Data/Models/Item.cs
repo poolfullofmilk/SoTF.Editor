@@ -20,12 +20,8 @@ public class Item : ICloneable
     public StorageMax? StorageMax { get; set; }
     public HashSet<int>? ModHashes { get; init; }
     public string? Image { get; init; }
-    public string? Wiki { get; init; }
-
     public string? ThumbnailUrl =>
         Image == null ? null : "images/items/" + Image.ExtendFilenameWith("_tn");
-
-    public string? ImageUrl => Image == null ? null : "images/items/" + Image;
 
     public string NormalizedLowercaseName
     {

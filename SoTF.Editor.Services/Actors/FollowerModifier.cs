@@ -66,7 +66,7 @@ public class FollowerModifier(SaveDataWrapper saveDataWrapper)
                     JsonModifier.CompareAndModify(
                         stats,
                         "Affection",
-                        f => f > FullAffection,
+                        f => f < FullAffection,
                         FullAffection
                     ) || hasChangesInVailWorldSim;
                 hasChangesInVailWorldSim =
@@ -83,10 +83,10 @@ public class FollowerModifier(SaveDataWrapper saveDataWrapper)
 
         if (uniqueIdToActorTokenForType.Count == 0)
         {
-            if (ActorCreator.CreateFollower(typeId, vailWorldSim, pos) is { } kvp)
+            if (ActorCreator.CreateFollower(typeId, vailWorldSim, pos) is { } created)
             {
-                uniqueIdToActorTokenForType.Add(kvp.Key, kvp.Value);
-                AddInfluencesForNewFollower(vailWorldSim, kvp.Key);
+                uniqueIdToActorTokenForType.Add(created.Key, created.Value);
+                AddInfluencesForNewFollower(vailWorldSim, created.Key);
                 hasChangesInVailWorldSim = true;
             }
         }
@@ -95,11 +95,8 @@ public class FollowerModifier(SaveDataWrapper saveDataWrapper)
         {
             hasChangesInVailWorldSim =
                 EquipItemsInActor(actor, itemIds) || hasChangesInVailWorldSim;
-            if (uniqueId is { })
-            {
-                hasChangesInNpcItemInstances =
-                    EquipItemsInNpcItemInstances(uniqueId, itemIds) || hasChangesInNpcItemInstances;
-            }
+            hasChangesInNpcItemInstances =
+                EquipItemsInNpcItemInstances(uniqueId, itemIds) || hasChangesInNpcItemInstances;
 
             hasChangesInVailWorldSim = EquipOutfit(actor, outfit) || hasChangesInVailWorldSim;
         }
@@ -390,15 +387,24 @@ public class FollowerModifier(SaveDataWrapper saveDataWrapper)
                 continue;
             }
 
-            if (actor["Position"] is { } position)
+            if (
+                actor["Position"] is { } position
+                && position.ToObject<Position>() is { } oldPosition
+                && !oldPosition.HasSameCoordinates(followerModel.Pos)
+            )
             {
-                var oldPosition = position.ToObject<Position>();
+                position.Replace(JToken.FromObject(followerModel.Pos));
+                hasChangesInVailWorldSim = true;
+            }
 
-                if (oldPosition != null && !oldPosition.Equals(followerModel.Pos))
-                {
-                    position.Replace(JToken.FromObject(followerModel.Pos));
-                    hasChangesInVailWorldSim = true;
-                }
+            // Entering Or Leaving A Cave Changes The Graph Mask
+            if (
+                actor["GraphMask"]?.Value<int>() is { } graphMask
+                && graphMask != followerModel.Pos.Area.GraphMask
+            )
+            {
+                actor["GraphMask"] = followerModel.Pos.Area.GraphMask;
+                hasChangesInVailWorldSim = true;
             }
 
             // The Item Instances Follow Only A Real Change
@@ -578,21 +584,20 @@ public class FollowerModifier(SaveDataWrapper saveDataWrapper)
         foreach (var (newX, newZ) in coordinates)
         {
             var usedPos = new Position(newX, basePos.Y, newZ);
-            if (ActorCreator.CreateFollower(typeId, vailWorldSim, usedPos) is not { } kvp)
+            if (ActorCreator.CreateFollower(typeId, vailWorldSim, usedPos) is not { } created)
             {
                 continue;
             }
 
             hasChangesInVailWorldSim = true;
-            AddInfluencesForNewFollower(vailWorldSim, kvp.Key);
+            AddInfluencesForNewFollower(vailWorldSim, created.Key);
 
             hasChangesInVailWorldSim =
-                EquipItemsInActor(kvp.Value, itemIds) || hasChangesInVailWorldSim;
+                EquipItemsInActor(created.Value, itemIds) || hasChangesInVailWorldSim;
             hasChangesInNpcItemInstances =
-                EquipItemsInNpcItemInstances(kvp.Key, itemIds) || hasChangesInNpcItemInstances;
-            hasChangesInVailWorldSim = EquipOutfit(kvp.Value, outfit) || hasChangesInVailWorldSim;
-
-            hasChangesInVailWorldSim = EquipOutfit(kvp.Value, outfit) || hasChangesInVailWorldSim;
+                EquipItemsInNpcItemInstances(created.Key, itemIds) || hasChangesInNpcItemInstances;
+            hasChangesInVailWorldSim =
+                EquipOutfit(created.Value, outfit) || hasChangesInVailWorldSim;
         }
 
         if (hasChangesInVailWorldSim)

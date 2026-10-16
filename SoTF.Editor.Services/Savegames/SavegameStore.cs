@@ -35,7 +35,6 @@ public class SavegameStore
     private readonly string _path;
 
     private readonly Dictionary<FileType, SaveDataWrapper?> _rawData = [];
-    private readonly ReaderWriterLockSlim _readerWriterLockSlim = new();
 
     public SavegameStore(string path)
     {
@@ -52,35 +51,15 @@ public class SavegameStore
 
     public SaveDataWrapper? LoadJsonRaw(FileType fileType)
     {
-        _readerWriterLockSlim.EnterUpgradeableReadLock();
-        try
+        if (!_rawData.TryGetValue(fileType, out var saveDataWrapper))
         {
-            if (_rawData.TryGetValue(fileType, out var saveDataWrapper))
-            {
-                return saveDataWrapper;
-            }
-
-            _readerWriterLockSlim.EnterWriteLock();
-            try
-            {
-                if (_rawData.TryGetValue(fileType, out var wrapper))
-                {
-                    return wrapper;
-                }
-
-                var data = LoadJson<JToken>(fileType);
-                _rawData[fileType] = data == null ? null : new SaveDataWrapper(data);
-                return _rawData[fileType];
-            }
-            finally
-            {
-                _readerWriterLockSlim.ExitWriteLock();
-            }
+            saveDataWrapper = LoadJson<JToken>(fileType) is { } data
+                ? new SaveDataWrapper(data)
+                : null;
+            _rawData[fileType] = saveDataWrapper;
         }
-        finally
-        {
-            _readerWriterLockSlim.ExitUpgradeableReadLock();
-        }
+
+        return saveDataWrapper;
     }
 
     private T? LoadJson<T>(FileType fileType)
@@ -147,8 +126,8 @@ public class SavegameStore
     public bool SaveAllModified()
     {
         var changedWrappers = _rawData
-            .Where(kvp => kvp.Value != null && kvp.Value.HasModified())
-            .ToDictionary(kvp => kvp.Key, kvp => kvp.Value!);
+            .Where(pair => pair.Value != null && pair.Value.HasModified())
+            .ToDictionary(pair => pair.Key, pair => pair.Value!);
 
         if (changedWrappers.Count == 0)
         {
@@ -188,33 +167,47 @@ public class SavegameStore
             }
         }
 
-        if (archiveEntries.Count == 0)
+        if (archiveEntries.Count > 0)
         {
-            return;
+            WriteReplacing(
+                archivePath,
+                temporary =>
+                {
+                    File.Copy(archivePath, temporary, true);
+                    using var archive = ZipFile.Open(temporary, ZipArchiveMode.Update);
+                    foreach (var (fileName, json) in archiveEntries)
+                    {
+                        archive.GetEntry(fileName)?.Delete();
+                        using var streamWriter = new StreamWriter(
+                            archive.CreateEntry(fileName).Open()
+                        );
+                        streamWriter.Write(json);
+                    }
+                }
+            );
         }
 
-        WriteReplacing(
-            archivePath,
-            temporary =>
-            {
-                File.Copy(archivePath, temporary, true);
-                using var archive = ZipFile.Open(temporary, ZipArchiveMode.Update);
-                foreach (var (fileName, json) in archiveEntries)
-                {
-                    archive.GetEntry(fileName)?.Delete();
-                    using var streamWriter = new StreamWriter(archive.CreateEntry(fileName).Open());
-                    streamWriter.Write(json);
-                }
-            }
-        );
+        // A Failed Write Keeps Edits Marked, Saving Again Retries
+        foreach (var saveDataWrapper in changedWrappers.Values)
+        {
+            saveDataWrapper.ClearModified();
+        }
     }
 
     private static void WriteReplacing(string path, Action<string> write)
     {
         // A Crash Mid Write Leaves The Old File Whole
         var temporary = path + ".tmp";
-        write(temporary);
-        File.Move(temporary, path, true);
+        try
+        {
+            write(temporary);
+            File.Move(temporary, path, true);
+        }
+        catch
+        {
+            File.Delete(temporary);
+            throw;
+        }
     }
 }
 

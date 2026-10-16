@@ -101,7 +101,7 @@
                             <MudTd>@($"{context.Added} / {context.BuildCost}")</MudTd>
                             <MudTd>
                                 <MudText Typo="Typo.body2"
-                                         Style="@($"color:{context.PctDoneColor}")">
+                                         Color="@ProgressColor(context)">
                                     @context.PctDonePrintable
                                 </MudText>
                             </MudTd>

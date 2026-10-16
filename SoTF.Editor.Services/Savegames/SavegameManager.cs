@@ -22,10 +22,7 @@ public static class SavegameManager
         return savesPath;
     }
 
-    private static Dictionary<string, Savegame> FindSaveGames(
-        string? savesPath,
-        string? idFilter = null
-    )
+    private static Dictionary<string, Savegame> FindSaveGames(string savesPath)
     {
         s_logger.Info($"Started Reading Savegames From {savesPath}");
         if (!Directory.Exists(savesPath))
@@ -43,7 +40,6 @@ public static class SavegameManager
                 .Select(file => CreateSaveInfo(file.Directory))
                 .Where(savegame => savegame != null)
                 .Select(savegame => savegame!)
-                .Where(savegame => idFilter == null || idFilter == savegame.FullPath)
                 .OrderByDescending(savegame => savegame.LastSaveTime)
                 .DistinctBy(savegame => savegame.FullPath)
                 .ToDictionary(savegame => savegame.FullPath, savegame => savegame);
@@ -67,18 +63,17 @@ public static class SavegameManager
             : null;
     }
 
-    public static string GetSavegamePathFromAppData()
+    private static string GetSavegamePathFromAppData()
     {
-        var localLowPath = Environment
-            .GetFolderPath(Environment.SpecialFolder.ApplicationData)
-            .Replace("Roaming", "LocalLow");
-        return Path.Combine(localLowPath, "Endnight", "SonsOfTheForest", "Saves");
+        // LocalLow Sits Beside Local, Windows Names No Folder For It
+        var appDataPath = Path.GetDirectoryName(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)
+        );
+        return Path.Combine(appDataPath ?? "", "LocalLow", "Endnight", "SonsOfTheForest", "Saves");
     }
 
     public static Savegame? ReloadSavegame(Savegame selectedSavegame)
     {
-        var directoryInfo = new DirectoryInfo(selectedSavegame.FullPath);
-
-        return !directoryInfo.Exists ? null : CreateSaveInfo(directoryInfo);
+        return CreateSaveInfo(new DirectoryInfo(selectedSavegame.FullPath));
     }
 }

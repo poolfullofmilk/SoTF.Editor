@@ -16,6 +16,22 @@ public partial class GameStatePageViewModel
 
     private readonly Regex _resetCrateNameIdPattern = ResetCrateNameIdPattern();
 
+    // The Order The Page Shows Them In
+    private static readonly string[] s_settingNames =
+    [
+        "GameName",
+        "GameType",
+        "SaveTime",
+        "GameDays",
+        "GameHours",
+        "GameMinutes",
+        "GameSeconds",
+        "GameMilliseconds",
+        "CrashSite",
+        "IsRobbyDead",
+        "IsVirginiaDead",
+    ];
+
     public GameStatePageViewModel(GameData gameData)
     {
         _gameData = gameData;
@@ -117,111 +133,77 @@ public partial class GameStatePageViewModel
 
     private void LoadSettings(JToken gameState)
     {
-        var children = gameState.Children();
-        foreach (var child in children.OfType<JProperty>())
+        // A Field The Game Left Out Shows At Its Default
+        foreach (var name in s_settingNames)
         {
-            GenericSetting? setting = null;
-            switch (child.Name)
-            {
-                case "CrashSite":
-                    var selectedItem = child.Value.ToString();
-                    setting = new GenericSetting(
-                        child.Name,
-                        GenericSetting.DataType.Enum,
-                        child.Path
-                    )
-                    {
-                        StringValue = selectedItem,
-                        SelectedItem = selectedItem,
-                        PossibleValues =
-                        {
-                            { "tree", AppText.Get("CrashSiteTree") },
-                            { "ocean", AppText.Get("CrashSiteOcean") },
-                            { "snow", AppText.Get("CrashSiteSnow") },
-                        },
-                    };
-                    break;
-                case "SaveTime":
-                case "GameType":
-                case "IsVirginiaDead":
-                case "IsRobbyDead":
-                    setting = new GenericSetting(
-                        child.Name,
-                        GenericSetting.DataType.ReadOnly,
-                        child.Path
-                    )
-                    {
-                        StringValue = ReadOnlyText(child.Value),
-                    };
-                    break;
-                case "GameName":
-                    setting = new GenericSetting(
-                        child.Name,
-                        GenericSetting.DataType.String,
-                        child.Path
-                    )
-                    {
-                        StringValue = child.Value.ToString(),
-                    };
-                    break;
-                case "GameDays":
-                    setting = new GenericSetting(
-                        child.Name,
-                        GenericSetting.DataType.Integer,
-                        child.Path
-                    )
-                    {
-                        IntValue = child.Value.Value<int>(),
-                        MinInt = 0,
-                        MaxInt = 999999,
-                    };
-                    break;
-                case "GameHours":
-                    setting = new GenericSetting(
-                        child.Name,
-                        GenericSetting.DataType.Integer,
-                        child.Path
-                    )
-                    {
-                        IntValue = child.Value.Value<int>(),
-                        MinInt = 0,
-                        MaxInt = 23,
-                    };
-                    break;
-                case "GameMinutes":
-                case "GameSeconds":
-                    setting = new GenericSetting(
-                        child.Name,
-                        GenericSetting.DataType.Integer,
-                        child.Path
-                    )
-                    {
-                        IntValue = child.Value.Value<int>(),
-                        MinInt = 0,
-                        MaxInt = 59,
-                    };
-                    break;
-                case "GameMilliseconds":
-                    setting = new GenericSetting(
-                        child.Name,
-                        GenericSetting.DataType.Integer,
-                        child.Path
-                    )
-                    {
-                        IntValue = child.Value.Value<int>(),
-                        MinInt = 0,
-                        MaxInt = 999,
-                    };
-                    break;
-            }
-
-            if (setting != null)
+            if (CreateSetting(name, gameState[name]) is { } setting)
             {
                 Settings.Add(setting);
             }
         }
 
         LoadNamedIntDatas(gameState);
+    }
+
+    private static GenericSetting? CreateSetting(string name, JToken? value)
+    {
+        return name switch
+        {
+            "GameName" when value != null => new GenericSetting(
+                name,
+                GenericSetting.DataType.String,
+                name
+            )
+            {
+                StringValue = value.ToString(),
+            },
+            "GameType" or "SaveTime" when value != null => new GenericSetting(
+                name,
+                GenericSetting.DataType.ReadOnly,
+                name
+            )
+            {
+                StringValue = ReadOnlyText(value),
+            },
+            "IsRobbyDead" or "IsVirginiaDead" => new GenericSetting(
+                name,
+                GenericSetting.DataType.ReadOnly,
+                name
+            )
+            {
+                StringValue = AppText.Get(value?.Value<bool>() == true ? "Yes" : "No"),
+            },
+            "GameDays" => IntegerSetting(name, value, 999999),
+            "GameHours" => IntegerSetting(name, value, 23),
+            "GameMinutes" or "GameSeconds" => IntegerSetting(name, value, 59),
+            "GameMilliseconds" => IntegerSetting(name, value, 999),
+            "CrashSite" when value != null => new GenericSetting(
+                name,
+                GenericSetting.DataType.Enum,
+                name
+            )
+            {
+                StringValue = value.ToString(),
+                SelectedItem = value.ToString(),
+                PossibleValues =
+                {
+                    { "tree", AppText.Get("CrashSiteTree") },
+                    { "ocean", AppText.Get("CrashSiteOcean") },
+                    { "snow", AppText.Get("CrashSiteSnow") },
+                },
+            },
+            _ => null,
+        };
+    }
+
+    private static GenericSetting IntegerSetting(string name, JToken? value, int max)
+    {
+        return new GenericSetting(name, GenericSetting.DataType.Integer, name)
+        {
+            IntValue = value?.Value<int>() ?? 0,
+            MinInt = 0,
+            MaxInt = max,
+        };
     }
 
     private static string ReadOnlyText(JToken value)

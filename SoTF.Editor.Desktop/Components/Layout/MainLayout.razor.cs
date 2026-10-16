@@ -85,9 +85,14 @@ public partial class MainLayout : IDisposable
         _ = InvokeAsync(StateHasChanged);
     }
 
-    private static string SavegameLabel(Savegame savegame)
+    private string SavegameLabel(Savegame savegame)
     {
-        return $"{savegame.Title} · {savegame.PrintableType} · {Formatter.FormatDateTime(savegame.LastSaveTime)}";
+        // The Same Names The Savegames Page Groups By
+        var mode =
+            savegame.IsMultiPlayer() ? "Multiplayer"
+            : savegame.IsMultiPlayerClient() ? "MultiplayerClient"
+            : "Singleplayer";
+        return $"{savegame.Title} · {Localizer[mode]} · {Formatter.FormatDateTime(savegame.LastSaveTime)}";
     }
 
     private void RecoverFromError()

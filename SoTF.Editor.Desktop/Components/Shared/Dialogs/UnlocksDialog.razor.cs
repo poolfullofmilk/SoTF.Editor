@@ -50,8 +50,16 @@ public partial class UnlocksDialog
 
     private void Save()
     {
-        _viewModel?.Save();
-        Snackbar.Add(Localizer["Saved"], Severity.Success);
-        MudDialog.Close(DialogResult.Ok(true));
+        try
+        {
+            _viewModel?.Save();
+            Snackbar.Add(Localizer["Saved"], Severity.Success);
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+        {
+            // The Game Can Hold The Profile Open
+            Snackbar.Add(Localizer["UnableToSave", exception.Message], Severity.Error);
+        }
     }
 }

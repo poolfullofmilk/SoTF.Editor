@@ -16,8 +16,8 @@ public static class JsonModifier
             return false;
         }
 
-        var oldValue = token[key]?.Value<float>();
-        if (oldValue is { } theOldValue && !comparator.Invoke(theOldValue))
+        // The Game Leaves Out Zero, Missing Reads As Zero
+        if (!comparator(token[key]?.Value<float>() ?? 0f))
         {
             return false;
         }

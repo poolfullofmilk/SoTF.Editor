@@ -11,25 +11,6 @@ public record ActorType(
     string? Icon = null
 )
 {
-    public string ActorColor
-    {
-        get
-        {
-            return Classification switch
-            {
-                "animal" => "lightgreen",
-                "creep" => "darkorange",
-                "cannibal" => Gender switch
-                {
-                    "male" => "red",
-                    "female" => "hotpink",
-                    _ => "dodgerblue",
-                },
-                _ => "white",
-            };
-        }
-    }
-
     public string IconPath =>
         Icon != null ? $"images/actors/icons/{Icon}" : "images/icons/question-mark.svg";
 

@@ -30,6 +30,6 @@ public static class SettingWriter
 
     public static bool RemoveFloat(JToken? target)
     {
-        return target is JObject obj && obj.Remove(FloatValue);
+        return target is JObject targetObject && targetObject.Remove(FloatValue);
     }
 }

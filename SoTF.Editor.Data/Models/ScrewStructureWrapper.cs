@@ -81,21 +81,6 @@ public class ScrewStructureWrapper
 
     public int? ChangedTypeId { get; private set; }
 
-    public string PctDoneColor
-    {
-        get
-        {
-            return PctDone switch
-            {
-                -1 => "aqua",
-                <= 40 => "red",
-                <= 60 => "orange",
-                <= 80 => "yellow",
-                _ => "lawngreen",
-            };
-        }
-    }
-
     private static ImmutableSortedSet<ScrewStructureModificationMode> GetModificationModes(
         ScrewStructureOrigin origin,
         bool canFinish,

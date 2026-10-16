@@ -36,7 +36,7 @@
         @* Remove Plating *@
         <MudButton Color="Color.Error"
                    Disabled="@(!_viewModel.CanModifyPlating())"
-                   OnClick="() => Apply(_viewModel.RemovePlating)">
+                   OnClick="() => ApplyAsync(_viewModel.RemovePlating)">
             @Localizer["RemovePlating"]
         </MudButton>
         <MudSpacer />
@@ -47,7 +47,7 @@
                    Color="Color.Info"
                    StartIcon="@Icons.Material.Rounded.AutoAwesome"
                    Disabled="@(!_viewModel.CanModifyPlating())"
-                   OnClick="() => Apply(_viewModel.AddPlating)">
+                   OnClick="() => ApplyAsync(_viewModel.AddPlating)">
             @Localizer["AddPlating"]
         </MudButton>
     </DialogActions>

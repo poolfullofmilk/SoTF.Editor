@@ -1,5 +1,7 @@
+using System.ComponentModel;
 using System.Windows;
 using Microsoft.Web.WebView2.Core;
+using NLog;
 using SoTF.Editor.Desktop.Interop;
 using SoTF.Editor.Services.Savegames;
 
@@ -9,7 +11,11 @@ public partial class MainWindow : Window
 {
     private const string DropMessage = "SavegameDropped";
 
+    private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
+
     private readonly MainViewModel _mainViewModel;
+
+    public bool IsSessionEnding { get; set; }
 
     public MainWindow(IServiceProvider services, MainViewModel mainViewModel)
     {
@@ -19,6 +25,38 @@ public partial class MainWindow : Window
         WebView.BlazorWebViewInitialized += (_, eventArgs) =>
             SetUpBrowser(eventArgs.WebView.CoreWebView2);
         SourceInitialized += (_, _) => WindowCaptionTheme.Apply(this);
+        Closing += ConfirmClose;
+    }
+
+    private void ConfirmClose(object? sender, CancelEventArgs eventArgs)
+    {
+        // Windows Shutting Down Is Never Held Up
+        if (IsSessionEnding)
+        {
+            return;
+        }
+
+        bool hasUnsavedChanges;
+        try
+        {
+            hasUnsavedChanges = _mainViewModel.HasUnsavedChanges();
+        }
+        catch (Exception exception)
+        {
+            // A Failed Check Asks Anyway, Edits Are Never Dropped Unasked
+            s_logger.Error(exception, "Failed To Check For Unsaved Changes");
+            hasUnsavedChanges = true;
+        }
+
+        eventArgs.Cancel =
+            hasUnsavedChanges
+            && MessageBox.Show(
+                this,
+                AppText.Get("DiscardChangesText"),
+                AppText.Get("DiscardChangesTitle"),
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning
+            ) != MessageBoxResult.Yes;
     }
 
     public void BringToFront()

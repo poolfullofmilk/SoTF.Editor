@@ -77,9 +77,9 @@ public class StructuresPageViewModel
 
         var screwStructuresById = _structureTypes.ToDictionary(screwStructure => screwStructure.Id);
 
-        for (var i = 0; i < structures.Count; i++)
+        for (var index = 0; index < structures.Count; index++)
         {
-            var structure = structures[i];
+            var structure = structures[index];
             if (structure.Type == JTokenType.Null)
             {
                 continue;
@@ -106,7 +106,7 @@ public class StructuresPageViewModel
                     screwStructure?.BuildCost ?? 0,
                     position,
                     ScrewStructureOrigin.Finished,
-                    i
+                    index
                 )
             );
         }
@@ -132,9 +132,9 @@ public class StructuresPageViewModel
 
         var screwStructuresById = _structureTypes.ToDictionary(screwStructure => screwStructure.Id);
 
-        for (var i = 0; i < structures.Count; i++)
+        for (var index = 0; index < structures.Count; index++)
         {
-            var structure = structures[i];
+            var structure = structures[index];
             if (structure.Type == JTokenType.Null)
             {
                 continue;
@@ -164,7 +164,7 @@ public class StructuresPageViewModel
                     added,
                     position,
                     ScrewStructureOrigin.Unfinished,
-                    i
+                    index
                 )
             );
         }

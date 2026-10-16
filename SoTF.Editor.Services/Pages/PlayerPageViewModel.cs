@@ -9,6 +9,8 @@ namespace SoTF.Editor.Services.Pages;
 
 public class PlayerPageViewModel
 {
+    private const string PlayerAreaMaskEntry = "player.areaMask";
+
     private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
     private readonly List<Item> _availableClothes = [];
 
@@ -41,7 +43,7 @@ public class PlayerPageViewModel
         _availableClothes.Clear();
         PlayerState.SelectedCloth = null;
         var newAvailableClothes = GetDefaultAvailableClothes()
-            .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            .ToDictionary(pair => pair.Key, pair => pair.Value);
 
         // A Save Without Clothing Data Still Lists The Default Clothes
         var playerClothingSystem = savegame
@@ -74,10 +76,7 @@ public class PlayerPageViewModel
             }
         }
 
-        foreach (var kvp in newAvailableClothes)
-        {
-            _availableClothes.Add(kvp.Value);
-        }
+        _availableClothes.AddRange(newAvailableClothes.Values);
 
         PlayerState.SelectedCloth ??= _availableClothes.FirstOrDefault(cloth =>
             cloth.Id == Constants.Items.DefaultPlayerClothItemId
@@ -117,6 +116,9 @@ public class PlayerPageViewModel
 
     private void LoadPlayerData(Savegame savegame)
     {
+        // A Missing Field Must Not Keep The Last Save's Value
+        PlayerState.Reset();
+
         if (
             savegame
                 .SavegameStore.LoadJsonRaw(SavegameStore.FileType.PlayerStateSaveData)
@@ -150,7 +152,7 @@ public class PlayerPageViewModel
                     }
 
                     break;
-                case "Area":
+                case PlayerAreaMaskEntry:
                     areaMask = SettingReader.ReadInt(entry) ?? 0;
                     break;
                 case "StrengthLevel":
@@ -306,7 +308,7 @@ public class PlayerPageViewModel
                     }
 
                     break;
-                case "Area":
+                case PlayerAreaMaskEntry:
                     hasChanges =
                         SettingWriter.WriteInt(entry, PlayerState.Pos.Area.AreaMask) || hasChanges;
                     break;

@@ -29,72 +29,61 @@ public class WeatherPageViewModel
 
     private void LoadSettings(JToken weatherSystem)
     {
-        var children = weatherSystem.Children();
-        foreach (var child in children.OfType<JProperty>())
-        {
-            var setting = child.Name switch
-            {
-                "_isRaining" or "_rainBlocked" => new GenericSetting(
-                    child.Name,
-                    GenericSetting.DataType.Boolean,
-                    child.Path
-                )
-                {
-                    BoolValue = child.Value.Value<bool>(),
-                },
-                "_cloudState" => new GenericSetting(
-                    child.Name,
-                    GenericSetting.DataType.Enum,
-                    child.Path
-                )
-                {
-                    SelectedItem = child.Value.Value<int>(),
-                    PossibleValues =
-                    {
-                        { 0, AppText.Get("CloudsClear") },
-                        { 1, AppText.Get("CloudsGrowing") },
-                        { 2, AppText.Get("CloudsClearing") },
-                        { 3, AppText.Get("CloudsRaining") },
-                    },
-                },
-                "_currentRainType" => new GenericSetting(
-                    child.Name,
-                    GenericSetting.DataType.Enum,
-                    child.Path
-                )
-                {
-                    SelectedItem = child.Value.Value<int>(),
-                    PossibleValues =
-                    {
-                        { 0, AppText.Get("None") },
-                        { 1, AppText.Get("RainLight") },
-                        { 2, AppText.Get("RainMedium") },
-                        { 3, AppText.Get("RainHeavy") },
-                    },
-                },
-                "_currentSeason" => new GenericSetting(
-                    child.Name,
-                    GenericSetting.DataType.Enum,
-                    child.Path
-                )
-                {
-                    SelectedItem = child.Value.Value<int>(),
-                    PossibleValues =
-                    {
-                        { 0, AppText.Get("Spring") },
-                        { 1, AppText.Get("Summer") },
-                        { 2, AppText.Get("Autumn") },
-                        { 3, AppText.Get("Winter") },
-                    },
-                },
-                _ => null,
-            };
+        // Missing Fields Show Their Default, Spring Has No Season
+        Settings.Add(
+            EnumSetting(
+                "_currentSeason",
+                weatherSystem,
+                [(0, "Spring"), (1, "Summer"), (2, "Autumn"), (3, "Winter")]
+            )
+        );
+        Settings.Add(BoolSetting("_isRaining", weatherSystem));
+        Settings.Add(BoolSetting("_rainBlocked", weatherSystem));
+        Settings.Add(
+            EnumSetting(
+                "_cloudState",
+                weatherSystem,
+                [
+                    (0, "CloudsClear"),
+                    (1, "CloudsGrowing"),
+                    (2, "CloudsClearing"),
+                    (3, "CloudsRaining"),
+                ]
+            )
+        );
+        Settings.Add(
+            EnumSetting(
+                "_currentRainType",
+                weatherSystem,
+                [(0, "None"), (1, "RainLight"), (2, "RainMedium"), (3, "RainHeavy")]
+            )
+        );
+    }
 
-            if (setting != null)
-            {
-                Settings.Add(setting);
-            }
+    private static GenericSetting BoolSetting(string name, JToken weatherSystem)
+    {
+        return new GenericSetting(name, GenericSetting.DataType.Boolean, name)
+        {
+            BoolValue = weatherSystem[name]?.Value<bool>() ?? false,
+        };
+    }
+
+    private static GenericSetting EnumSetting(
+        string name,
+        JToken weatherSystem,
+        (int Value, string LabelKey)[] options
+    )
+    {
+        var setting = new GenericSetting(name, GenericSetting.DataType.Enum, name)
+        {
+            SelectedItem = weatherSystem[name]?.Value<int>() ?? 0,
+        };
+        foreach (var (value, labelKey) in options)
+        {
+            setting.PossibleValues[value] = AppText.Get(labelKey);
         }
+
+        return setting;
     }
 
     public bool Update(Savegame savegame)

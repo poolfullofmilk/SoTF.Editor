@@ -32,9 +32,9 @@ public class SlotOrder
 
     public SlotOrder(IReadOnlyList<int> slotOrder)
     {
-        for (var i = 0; i < slotOrder.Count; i++)
+        for (var orderIndex = 0; orderIndex < slotOrder.Count; orderIndex++)
         {
-            _itemIdToIndex[slotOrder[i]] = i;
+            _itemIdToIndex[slotOrder[orderIndex]] = orderIndex;
         }
     }
 

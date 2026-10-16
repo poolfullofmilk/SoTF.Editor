@@ -90,7 +90,7 @@ public partial class Map : EditorPageBase
 
     private void SetEnabled(IPoiGrouper grouper, bool enabled)
     {
-        grouper.SetEnabledNoRefresh(enabled);
+        grouper.Enabled = enabled;
         MapViewModel.ApplyFilterToAllPois();
         MapViewModel.SaveSettings();
     }

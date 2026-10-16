@@ -18,7 +18,7 @@ public class AdvancedItemsStorage : IStorage
         _items = items;
         _index = index;
 
-        for (var i = 0; i < definition.Slots.Count; i++)
+        for (var slotNumber = 0; slotNumber < definition.Slots.Count; slotNumber++)
         {
             var storageSlot = new StorageSlot();
             Slots.Add(storageSlot);
@@ -65,7 +65,13 @@ public class AdvancedItemsStorage : IStorage
                 continue;
             }
 
-            var storedItem = new StoredItem(candidate, itemBlock.TotalCount, supportedItems, null);
+            var storedItem = new StoredItem(
+                candidate,
+                itemBlock.TotalCount,
+                supportedItems,
+                null,
+                itemBlock.UniqueItems
+            );
             if (!storedItems.TryAdd(slotIndex, storedItem))
             {
                 s_logger.Warn($"Found More Than One Item For Slot {slotIndex}");
@@ -75,17 +81,17 @@ public class AdvancedItemsStorage : IStorage
             currentSlot++;
         }
 
-        for (var i = 0; i < Slots.Count; i++)
+        for (var slotNumber = 0; slotNumber < Slots.Count; slotNumber++)
         {
-            var slot = Slots[i];
+            var slot = Slots[slotNumber];
             slot.StoredItems.Clear();
-            if (storedItems.GetValueOrDefault(i) is { } storedItem)
+            if (storedItems.GetValueOrDefault(slotNumber) is { } storedItem)
             {
                 slot.StoredItems.Add(storedItem);
             }
             else
             {
-                var supportedItems = GetSupportedItems(i);
+                var supportedItems = GetSupportedItems(slotNumber);
                 var emptyStoredItem = new StoredItem(null, 0, supportedItems, null);
                 slot.StoredItems.Add(emptyStoredItem);
             }
@@ -101,10 +107,10 @@ public class AdvancedItemsStorage : IStorage
             Pos = Pos,
         };
 
-        for (var i = 0; i < Slots.Count; i++)
+        for (var slotNumber = 0; slotNumber < Slots.Count; slotNumber++)
         {
-            var slot = Slots[i];
-            var slotDefinition = _definition.Slots[i];
+            var slot = Slots[slotNumber];
+            var slotDefinition = _definition.Slots[slotNumber];
             if (
                 slot.StoredItems.FirstOrDefault()
                     is not { SelectedItem: { } selectedItem } storedItem
@@ -113,7 +119,11 @@ public class AdvancedItemsStorage : IStorage
                     is not { } slotOrder
             )
             {
-                for (var j = 0; j <= slotDefinition.SlotOrder.GetMaxIndex(); j++)
+                for (
+                    var orderIndex = 0;
+                    orderIndex <= slotDefinition.SlotOrder.GetMaxIndex();
+                    orderIndex++
+                )
                 {
                     storageSaveData.Storages.Add(new StorageBlock());
                 }
@@ -121,16 +131,21 @@ public class AdvancedItemsStorage : IStorage
                 continue;
             }
 
-            for (var j = 0; j <= slotDefinition.SlotOrder.GetMaxIndex(); j++)
+            for (
+                var orderIndex = 0;
+                orderIndex <= slotDefinition.SlotOrder.GetMaxIndex();
+                orderIndex++
+            )
             {
                 var storageBlock = new StorageBlock();
 
-                if (slotOrder == j)
+                if (slotOrder == orderIndex)
                 {
                     var storageItemBlock = new StorageItemBlock
                     {
                         ItemId = selectedItem.Item.Id,
                         TotalCount = storedItem.Count,
+                        UniqueItems = storedItem.UniqueItemsToSave(),
                     };
                     storageBlock.ItemBlocks.Add(storageItemBlock);
                 }

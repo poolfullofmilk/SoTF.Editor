@@ -237,7 +237,7 @@ public class StoragePageViewModel
             .GroupBy(saveData => saveData.Id)
             .ToDictionary(group => group.Key, group => group.ToList());
 
-        var numProcessedById = new Dictionary<int, int>();
+        var processedCountById = new Dictionary<int, int>();
 
         var hasChanges = false;
 
@@ -257,14 +257,14 @@ public class StoragePageViewModel
                 return false;
             }
 
-            var numProcessed = numProcessedById.GetValueOrDefault(structureId, 0);
+            var processedCount = processedCountById.GetValueOrDefault(structureId, 0);
             if (
-                newStorageSaveData.Count <= numProcessed
-                || newStorageSaveData[numProcessed] is not { } newSaveData
+                newStorageSaveData.Count <= processedCount
+                || newStorageSaveData[processedCount] is not { } newSaveData
             )
             {
                 s_logger.Warn(
-                    $"Skipped Saving Storages, Found No New Data For {structureId} At {numProcessed}"
+                    $"Skipped Saving Storages, Found No New Data For {structureId} At {processedCount}"
                 );
                 return false;
             }
@@ -272,20 +272,20 @@ public class StoragePageViewModel
             if (structureToken.ToObject<StorageSaveData>() is not { } oldStorageSaveData)
             {
                 s_logger.Warn(
-                    $"Skipped Saving Storages, Failed To Read {structureId} At {numProcessed}"
+                    $"Skipped Saving Storages, Failed To Read {structureId} At {processedCount}"
                 );
                 return false;
             }
 
             if (oldStorageSaveData.Equals(newSaveData))
             {
-                s_logger.Info($"Kept Unchanged Storage {structureId} At {numProcessed}");
-                numProcessedById[structureId] = numProcessed + 1;
+                s_logger.Info($"Kept Unchanged Storage {structureId} At {processedCount}");
+                processedCountById[structureId] = processedCount + 1;
                 continue;
             }
 
             hasChanges = MergeIntoStorageBlock(structureToken, newSaveData) || hasChanges;
-            numProcessedById[structureId] = numProcessed + 1;
+            processedCountById[structureId] = processedCount + 1;
         }
 
         if (hasChanges)

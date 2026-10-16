@@ -30,6 +30,9 @@ public class MainViewModel(
 
     public Savegame? SelectedSavegame { get; private set; }
 
+    // Bumped Whenever Actors Or The Savegame Itself Change
+    public int Revision { get; private set; }
+
     public event Action? Changed;
 
     public event Action<Savegame>? OpenRequested;
@@ -43,6 +46,7 @@ public class MainViewModel(
     public void SelectSavegame(Savegame? savegame)
     {
         SelectedSavegame = savegame;
+        Revision++;
 
         playerPage.Load(savegame);
         armorPage.Load(savegame);
@@ -113,6 +117,7 @@ public class MainViewModel(
         modify(savegame);
         followerPage.Load(savegame);
         npcsPage.Load(savegame);
+        Revision++;
         NotifyChanged();
     }
 
@@ -213,15 +218,22 @@ public class MainViewModel(
 
         foreach (var trapData in structureData)
         {
+            var wasReset = false;
             if (trapData["IsTriggered"] is { } isTriggeredToken && isTriggeredToken.Value<bool>())
             {
                 trapData["IsTriggered"] = false;
-                countReset++;
+                wasReset = true;
             }
 
-            if (trapData["Data1"] is { } data1Token && data1Token.Value<int>() < 5)
+            if (trapData["Data1"] is { } dataToken && dataToken.Value<int>() < 5)
             {
                 trapData["Data1"] = 5;
+                wasReset = true;
+            }
+
+            // A Trap Counts Once, However Much Of It Was Reset
+            if (wasReset)
+            {
                 countReset++;
             }
         }
@@ -291,6 +303,11 @@ public class MainViewModel(
             fire["Fuel"] = fuel;
             fire["FuelDrainRate"] = fuelDrainRate;
             countChanged++;
+        }
+
+        if (countChanged == 0)
+        {
+            return AppText.Get("NoFiresFound");
         }
 
         saveDataWrapper.MarkAsModified(Constants.JsonKeys.Fires);

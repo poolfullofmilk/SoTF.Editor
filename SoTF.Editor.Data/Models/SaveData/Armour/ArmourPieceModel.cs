@@ -8,40 +8,11 @@ public class ArmourPieceModel
     public int Slot { get; set; }
 
     public static IEqualityComparer<ArmourPieceModel> ArmourPieceModelComparer { get; } =
-        new ArmourPieceModelEqualityComparer();
-
-    private sealed class ArmourPieceModelEqualityComparer : IEqualityComparer<ArmourPieceModel>
-    {
-        public bool Equals(ArmourPieceModel? x, ArmourPieceModel? y)
-        {
-            if (ReferenceEquals(x, y))
-            {
-                return true;
-            }
-
-            if (x is null)
-            {
-                return false;
-            }
-
-            if (y is null)
-            {
-                return false;
-            }
-
-            if (x.GetType() != y.GetType())
-            {
-                return false;
-            }
-
-            return x.RemainingArmourpoints.Equals(y.RemainingArmourpoints)
-                && x.ItemId == y.ItemId
-                && x.Slot == y.Slot;
-        }
-
-        public int GetHashCode(ArmourPieceModel obj)
-        {
-            return HashCode.Combine(obj.RemainingArmourpoints, obj.ItemId, obj.Slot);
-        }
-    }
+        EqualityComparer<ArmourPieceModel>.Create(
+            (left, right) =>
+                left?.ItemId == right?.ItemId
+                && left?.Slot == right?.Slot
+                && left?.RemainingArmourpoints == right?.RemainingArmourpoints,
+            piece => HashCode.Combine(piece.RemainingArmourpoints, piece.ItemId, piece.Slot)
+        );
 }

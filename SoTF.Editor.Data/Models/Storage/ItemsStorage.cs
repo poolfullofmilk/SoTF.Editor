@@ -71,32 +71,14 @@ public class ItemsStorage : BaseStorage
                     continue;
                 }
 
-                var storageItemBlock = new StorageItemBlock
-                {
-                    TotalCount = storedItem.Count,
-                    ItemId = item.Item.Id,
-                };
-
-                if (item.FoodSpoilStorageModuleWrapper is { } moduleWrapper)
-                {
-                    for (var i = 0; i < storedItem.Count; i++)
+                storageBlock.ItemBlocks.Add(
+                    new StorageItemBlock
                     {
-                        storageItemBlock.UniqueItems.Add(
-                            new UniqueItem { Modules = [moduleWrapper.FoodSpoilStorageModule] }
-                        );
+                        TotalCount = storedItem.Count,
+                        ItemId = item.Item.Id,
+                        UniqueItems = storedItem.UniqueItemsToSave(),
                     }
-                }
-                else if (storedItem.Modules?.Count > 0)
-                {
-                    for (var i = 0; i < storedItem.Count; i++)
-                    {
-                        storageItemBlock.UniqueItems.Add(
-                            new UniqueItem { Modules = storedItem.Modules }
-                        );
-                    }
-                }
-
-                storageBlock.ItemBlocks.Add(storageItemBlock);
+                );
             }
 
             storageSaveData.Storages.Add(storageBlock);

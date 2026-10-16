@@ -20,21 +20,21 @@ internal static class ActorCreator
             return null;
         }
 
-        GetAllUniqueAndSpawnerIds(vailWorldSim, out var allUniqueIds);
-        var uniqueId = GetNextFreeUniqueId(allUniqueIds);
+        var uniqueId = GetNextFreeUniqueId(UniqueIdsOf(vailWorldSim));
 
         var templateText = ResourceFile
             .Read("ActorTemplate.txt")
             .Replace("{uniqueId}", uniqueId.ToString())
             .Replace("{typeId}", typeId.ToString())
-            .Replace("{actorSeed}", new Random().Next().ToString());
+            .Replace("{actorSeed}", Random.Shared.Next().ToString());
         var actorTemplate = JToken.Parse(templateText);
 
-        actorTemplate["Position"]?.Replace(JToken.FromObject(pos));
+        actorTemplate["Position"] = JToken.FromObject(pos);
+        actorTemplate["GraphMask"] = pos.Area.GraphMask;
 
         if (typeId == VirginiaTypeId)
         {
-            actorTemplate["NextGiftTime"]?.Replace("1000.0");
+            actorTemplate["NextGiftTime"] = 1000f;
         }
 
         actorArray.Add(actorTemplate);
@@ -52,20 +52,14 @@ internal static class ActorCreator
         return uniqueId;
     }
 
-    private static void GetAllUniqueAndSpawnerIds(
-        JToken vailWorldSim,
-        out HashSet<int> allUniqueIds
-    )
+    private static HashSet<int> UniqueIdsOf(JToken vailWorldSim)
     {
-        allUniqueIds = [];
-
-        foreach (var actor in vailWorldSim["Actors"] ?? Enumerable.Empty<JToken>())
-        {
-            if (actor["UniqueId"]?.Value<int>() is { } uniqueId)
-            {
-                allUniqueIds.Add(uniqueId);
-            }
-        }
+        return
+        [
+            .. (vailWorldSim["Actors"] ?? Enumerable.Empty<JToken>()).Select(actor =>
+                actor["UniqueId"]?.Value<int>() ?? 0
+            ),
+        ];
     }
 
     public static HashSet<int> CreateActors(
@@ -85,7 +79,7 @@ internal static class ActorCreator
             return newUniqueIds;
         }
 
-        GetAllUniqueAndSpawnerIds(vailWorldSim, out var allUniqueIds);
+        var allUniqueIds = UniqueIdsOf(vailWorldSim);
 
         var templateText = ResourceFile
             .Read("ActorTemplate.txt")
@@ -115,9 +109,7 @@ internal static class ActorCreator
             );
         }
 
-        var random = new Random();
-
-        for (var i = 0; i < spawnCount; i++)
+        for (var spawned = 0; spawned < spawnCount; spawned++)
         {
             var cloned = actorTemplate.DeepClone();
 
@@ -125,13 +117,13 @@ internal static class ActorCreator
             allUniqueIds.Add(nextUniqueId);
             newUniqueIds.Add(nextUniqueId);
             cloned["UniqueId"] = nextUniqueId;
-            cloned["ActorSeed"] = random.Next();
+            cloned["ActorSeed"] = Random.Shared.Next();
 
             if (distributedCoordinates != null)
             {
-                if (i < distributedCoordinates.Count)
+                if (spawned < distributedCoordinates.Count)
                 {
-                    var (newX, newZ) = distributedCoordinates[i];
+                    var (newX, newZ) = distributedCoordinates[spawned];
                     cloned["Position"] = JToken.FromObject(new Position(newX, position.Y, newZ));
                 }
             }

@@ -137,6 +137,7 @@ public partial class App : Application
             serviceProvider.GetRequiredService<MainViewModel>()
         );
         MainWindow = window;
+        SessionEnding += (_, _) => window.IsSessionEnding = true;
         ThreadPool.RegisterWaitForSingleObject(
             _showSignal!,
             (_, _) => Dispatcher.InvokeAsync(window.BringToFront),

@@ -27,9 +27,6 @@ public class Actor
     public int? GraphMask { get; set; }
 
     [JsonIgnore]
-    public string ActorColor => ActorType?.ActorColor ?? "saddlebrown";
-
-    [JsonIgnore]
     public string ImageUrl => $"images/actors/{ActorType?.Image}";
 
     public string PrintableTitle =>

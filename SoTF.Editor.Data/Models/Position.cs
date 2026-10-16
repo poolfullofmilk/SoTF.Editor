@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Newtonsoft.Json;
 using SoTF.Editor.Data.Enums;
 
@@ -6,6 +7,11 @@ namespace SoTF.Editor.Data.Models;
 public class Position(float x, float y, float z)
 {
     private readonly float _y = y;
+
+    static Position()
+    {
+        Debug.Assert(SelfTestPasses());
+    }
 
     [JsonIgnore]
     public Area Area { get; init; } = AreaMaskManager.Surface;
@@ -46,7 +52,8 @@ public class Position(float x, float y, float z)
 
     public bool HasSameCoordinates(Position other)
     {
-        return _y.Equals(other._y) && X.Equals(other.X) && Z.Equals(other.Z);
+        // The Coordinates The Save Holds, Offset Included
+        return X.Equals(other.X) && Y.Equals(other.Y) && Z.Equals(other.Z);
     }
 
     private bool Equals(Position other)
@@ -71,7 +78,7 @@ public class Position(float x, float y, float z)
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(_y, X, Z, Area);
+        return HashCode.Combine(X, Y, Z, Area);
     }
 
     public List<Tuple<float, float>> DistributeCoordinates(
@@ -80,6 +87,12 @@ public class Position(float x, float y, float z)
         SpawnPattern spawnPattern
     )
     {
+        // No Space Means Everyone On The Spot
+        if (space <= 0)
+        {
+            return [.. Enumerable.Repeat(Tuple.Create(X, Z), Math.Max(count, 1))];
+        }
+
         return spawnPattern switch
         {
             SpawnPattern.Cross => DistributeCoordinatesInCross(count, space),
@@ -141,12 +154,11 @@ public class Position(float x, float y, float z)
     private List<Tuple<float, float>> DistributeCoordinatesRandomly(int count, int space)
     {
         var newCoordinates = new List<Tuple<float, float>> { Tuple.Create(X, Z) };
-        var random = new Random();
 
         for (var index = 1; index < count; index++)
         {
-            var angle = (float)(random.NextDouble() * 2 * Math.PI);
-            var radius = (float)(random.NextDouble() * space);
+            var angle = (float)(Random.Shared.NextDouble() * 2 * Math.PI);
+            var radius = (float)(Random.Shared.NextDouble() * space);
 
             var newX = X + radius * (float)Math.Cos(angle);
             var newY = Z + radius * (float)Math.Sin(angle);
@@ -274,57 +286,51 @@ public class Position(float x, float y, float z)
 
     private List<Tuple<float, float>> DistributeCoordinatesInRectangle(int count, int space)
     {
+        // Points Walk The Edge Of A Square, Evenly Spaced
+        var side = count * space / 4f;
+        var left = X - side / 2;
+        var top = Z - side / 2;
         var newCoordinates = new List<Tuple<float, float>>();
 
-        var side = (int)Math.Ceiling(Math.Sqrt(count / 4.0)) * 2;
-        var totalPoints = side * 4 - 4;
-
-        while (totalPoints < count)
+        for (var index = 0; index < count; index++)
         {
-            side += 2;
-            totalPoints = side * 4 - 4;
-        }
-
-        var excessPoints = totalPoints - count;
-        var horizontalPoints = side - excessPoints / 2;
-        var verticalPoints = side - 2 - (excessPoints - excessPoints / 2);
-
-        var adjustedSpace = (count - 4) * space / (float)(4 * (side - 1) - 4);
-
-        var startX = X - (horizontalPoints - 1) * adjustedSpace / 2f;
-        var startZ = Z - (verticalPoints - 1) * adjustedSpace / 2f;
-
-        // Top Row
-        for (var index = 0; index < horizontalPoints; index++)
-        {
-            var newX = startX + index * adjustedSpace;
-            newCoordinates.Add(Tuple.Create(newX, startZ));
-        }
-
-        // Right Column
-        for (var index = 1; index < verticalPoints; index++)
-        {
-            var newX = startX + (horizontalPoints - 1) * adjustedSpace;
-            var newY = startZ + index * adjustedSpace;
-            newCoordinates.Add(Tuple.Create(newX, newY));
-        }
-
-        // Bottom Row
-        for (var index = 0; index < horizontalPoints; index++)
-        {
-            var newX = startX + (horizontalPoints - 1 - index) * adjustedSpace;
-            var newY = startZ + (verticalPoints - 1) * adjustedSpace;
-            newCoordinates.Add(Tuple.Create(newX, newY));
-        }
-
-        // Left Column
-        for (var index = 1; index < verticalPoints - 1; index++)
-        {
-            var newY = startZ + (verticalPoints - 1 - index) * adjustedSpace;
-            newCoordinates.Add(Tuple.Create(startX, newY));
+            var distance = index * (float)space;
+            var edge = (int)(distance / side);
+            var along = distance - edge * side;
+            newCoordinates.Add(
+                edge switch
+                {
+                    0 => Tuple.Create(left + along, top),
+                    1 => Tuple.Create(left + side, top + along),
+                    2 => Tuple.Create(left + side - along, top + side),
+                    _ => Tuple.Create(left, top + side - along),
+                }
+            );
         }
 
         return newCoordinates;
+    }
+
+    private static bool SelfTestPasses()
+    {
+        // Every Pattern Places Enough Finite Points
+        var center = new Position(10, 0, 20);
+        foreach (var pattern in Enum.GetValues<SpawnPattern>())
+        foreach (var count in new[] { 1, 2, 3, 4, 5, 9, 17 })
+        {
+            var coordinates = center.DistributeCoordinates(count, 2, pattern);
+            if (
+                coordinates.Count < count
+                || coordinates.Any(coordinate =>
+                    !float.IsFinite(coordinate.Item1) || !float.IsFinite(coordinate.Item2)
+                )
+            )
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private enum LineOrientation

@@ -57,18 +57,18 @@ public class PoiLoader(
     {
         List<JToken> modules;
 
-        if (item.ItemBlock.Modules is { Count: > 0 } m)
+        if (item.ItemBlock.Modules is { Count: > 0 } equippedModules)
         {
-            modules = m;
+            modules = equippedModules;
         }
         else if (item.ItemBlock.UniqueItems is { Count: > 0 } uniqueItems)
         {
             modules = [];
             foreach (var uniqueItem in uniqueItems)
             {
-                if (uniqueItem["Modules"] is JArray mUnique)
+                if (uniqueItem["Modules"] is JArray uniqueModules)
                 {
-                    modules.AddRange(mUnique);
+                    modules.AddRange(uniqueModules);
                 }
             }
         }
@@ -108,11 +108,11 @@ public class PoiLoader(
             ?? throw new InvalidDataException("Found No Item Points");
 
         var poisByType = rawPoiCollection
-            .Items.SelectMany(kvp =>
-                kvp.Value.Pois.Select(poi =>
+            .Items.SelectMany(pair =>
+                pair.Value.Pois.Select(poi =>
                     ItemPoi.Of(
-                        kvp.Key,
-                        kvp.Value,
+                        pair.Key,
+                        pair.Value,
                         poi,
                         _items,
                         inventoryItems,
@@ -138,7 +138,7 @@ public class PoiLoader(
             var isEnabled = rawPoiCollection.DefaultEnabledGroups.Contains(type);
             if (isEnabled)
             {
-                pois.ForEach(poi => poi.SetEnabledNoRefresh(isEnabled));
+                pois.ForEach(poi => poi.Enabled = isEnabled);
             }
 
             groups.Add(

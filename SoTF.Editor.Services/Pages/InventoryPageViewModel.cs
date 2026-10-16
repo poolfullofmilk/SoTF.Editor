@@ -278,9 +278,9 @@ public class InventoryPageViewModel
 
         var blueprintTokensExisting = new HashSet<int>();
 
-        foreach (var jToken in entries)
+        foreach (var pageEntry in entries)
         {
-            var name = jToken["Name"]?.Value<string>();
+            var name = pageEntry["Name"]?.Value<string>();
 
             foreach (
                 var itemId in _blueprintItemIds.Where(itemId =>
@@ -290,11 +290,11 @@ public class InventoryPageViewModel
             {
                 blueprintTokensExisting.Add(itemId);
 
-                var isEnabled = jToken["BoolValue"]?.Value<bool>() ?? false;
+                var isEnabled = pageEntry["BoolValue"]?.Value<bool>() ?? false;
                 var isAdded = addedBlueprintItems.Contains(itemId);
                 if (isEnabled != isAdded)
                 {
-                    jToken["BoolValue"] = isAdded;
+                    pageEntry["BoolValue"] = isAdded;
                     hasChanges = true;
                 }
 

@@ -23,6 +23,9 @@ public partial class ItemPlaterDialog
     [Inject]
     public required ISnackbar Snackbar { get; set; }
 
+    [Inject]
+    public required IDialogService DialogService { get; set; }
+
     private ItemPlaterViewModel _viewModel = null!;
 
     private IEnumerable<OptionGroup> OptionGroups =>
@@ -116,13 +119,24 @@ public partial class ItemPlaterDialog
 
     protected override void OnInitialized()
     {
-        _viewModel = new ItemPlaterViewModel(MainViewModel.SelectedSavegame!, GameData);
+        _viewModel = new ItemPlaterViewModel(GameData);
     }
 
-    private void Apply(Func<PlatingResult> plate)
+    private async Task ApplyAsync(Func<Savegame, PlatingResult> plate)
     {
-        // The Plater Saves Right Away, Behind The Same Backup
-        var result = plate();
+        // The Plater Saves At Once, Unsaved Edits Would Vanish
+        if (!await DialogService.ConfirmDiscardAsync(Localizer, MainViewModel))
+        {
+            return;
+        }
+
+        MainViewModel.ReloadSavegame();
+        if (MainViewModel.SelectedSavegame is not { } savegame)
+        {
+            return;
+        }
+
+        var result = plate(savegame);
         MainViewModel.SaveWrappers(result.WrappersToSave);
         Snackbar.Add(result.Message, Severity.Success);
         MudDialog.Close(DialogResult.Ok(true));

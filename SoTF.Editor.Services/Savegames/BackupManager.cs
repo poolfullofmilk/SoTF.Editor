@@ -79,6 +79,16 @@ public static class BackupManager
 
         // The Current State Is Kept, So Restores Can Be Undone
         Create(savegamePath);
+
+        // Files The Backup Lacks Stay In That Safety Copy
+        foreach (var current in Directory.GetFiles(savegamePath))
+        {
+            if (!File.Exists(Path.Combine(backup, Path.GetFileName(current))))
+            {
+                File.Delete(current);
+            }
+        }
+
         foreach (var file in Directory.GetFiles(backup, "*", SearchOption.AllDirectories))
         {
             var target = Path.Combine(savegamePath, Path.GetRelativePath(backup, file));

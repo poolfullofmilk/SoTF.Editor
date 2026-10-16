@@ -4,7 +4,6 @@ using NLog;
 using SoTF.Editor.Data.Enums;
 using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
-using SoTF.Editor.Data.Resources;
 using SoTF.Editor.Services.Actors;
 using static SoTF.Editor.Data.Helpers.Constants.Actors;
 
@@ -34,24 +33,6 @@ public partial class Savegame
     public DateTime LastSaveTime { get; private set; }
     public string? ThumbnailPath => SavegameStore.GetThumbPath();
 
-    public string PrintableType
-    {
-        get
-        {
-            if (IsSinglePlayer())
-            {
-                return "SP";
-            }
-
-            if (IsMultiPlayer())
-            {
-                return "MP";
-            }
-
-            return IsMultiPlayerClient() ? "MP_Client" : AppText.Get("Unknown");
-        }
-    }
-
     public long RegrowTrees(VegetationState vegetationStateSelected, int pctRegrow)
     {
         if (
@@ -70,34 +51,16 @@ public partial class Savegame
             return 0;
         }
 
-        var serializedStates =
-            worldObjectLocatorManager["SerializedStates"]?.ToList() ?? Enumerable.Empty<JToken>();
-
         var countRegrown = 0;
 
-        var candidates = new List<JToken>();
-
-        foreach (var serializedState in serializedStates)
-        {
-            var valueToken = serializedState["Value"];
-            var value = valueToken?.Value<short>();
-            if (value == null)
-            {
-                continue;
-            }
-
-            var shiftedValue = (short)(1 << (value - 1));
-
-            if (
-                !Enum.IsDefined(typeof(VegetationState), shiftedValue)
-                || !vegetationStateSelected.HasFlag((VegetationState)shiftedValue)
+        var candidates = (
+            worldObjectLocatorManager["SerializedStates"] ?? Enumerable.Empty<JToken>()
+        )
+            .Where(serializedState =>
+                VegetationStateOf(serializedState) is var state and not VegetationState.None
+                && vegetationStateSelected.HasFlag(state)
             )
-            {
-                continue;
-            }
-
-            candidates.Add(serializedState);
-        }
+            .ToList();
 
         if (candidates.Count > 0)
         {
@@ -116,6 +79,14 @@ public partial class Savegame
         saveDataWrapper.MarkAsModified(Constants.JsonKeys.WorldObjectLocatorManager);
 
         return countRegrown;
+    }
+
+    public static VegetationState VegetationStateOf(JToken serializedState)
+    {
+        // Saved Values Run From 1 To 3, One Flag Each
+        return serializedState["Value"]?.Value<short>() is short value and >= 1 and <= 3
+            ? (VegetationState)(1 << (value - 1))
+            : VegetationState.None;
     }
 
     public bool ReviveFollower(int typeId, HashSet<int> itemIds, Outfit? outfit, Position pos)
@@ -154,7 +125,11 @@ public partial class Savegame
 
     private string? FindGameName()
     {
-        var nameFile = Directory.GetFiles(FullPath, "*.name").FirstOrDefault();
+        // The Game Renames It Each Save, The Newest One Counts
+        var nameFile = Directory
+            .GetFiles(FullPath, "*.name")
+            .OrderByDescending(File.GetLastWriteTimeUtc)
+            .FirstOrDefault();
         if (nameFile == null)
         {
             s_logger.Info($"Found No Name File In {FullPath}");
@@ -230,7 +205,11 @@ public partial class Savegame
 
     private bool ParentDirIs(string value)
     {
-        return SavegameStore.GetParentDirectory()?.Name.ToLower().Equals(value) ?? false;
+        return string.Equals(
+            SavegameStore.GetParentDirectory()?.Name,
+            value,
+            StringComparison.OrdinalIgnoreCase
+        );
     }
 
     [GeneratedRegex(@"(.*)_\d{2}_\d{2}_\d{2}.name")]

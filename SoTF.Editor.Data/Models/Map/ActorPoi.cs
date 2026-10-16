@@ -15,7 +15,7 @@ public class ActorPoi : BasePoi
         }
 
         IsFollower = true;
-        SetEnabledNoRefresh(true);
+        Enabled = true;
     }
 
     public Actor Actor { get; }

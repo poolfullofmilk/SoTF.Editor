@@ -18,7 +18,7 @@ public abstract class BaseStorage : IStorage
         Definition = definition;
         _index = index;
 
-        for (var i = 0; i < definition.Slots; i++)
+        for (var slotNumber = 0; slotNumber < definition.Slots; slotNumber++)
         {
             var storageSlot = new StorageSlot();
             Slots.Add(storageSlot);
@@ -41,6 +41,7 @@ public abstract class BaseStorage : IStorage
 
         foreach (var storageBlock in saveData.Storages)
         {
+            // A Save Can Hold More Slots Than Defined, All Stay
             if (currentSlot >= Slots.Count)
             {
                 var storageSlot = new StorageSlot();
@@ -92,14 +93,12 @@ public abstract class BaseStorage : IStorage
 
                 if (foundCandidate != null)
                 {
-                    var modules = itemBlock.UniqueItems.FirstOrDefault()?.Modules;
-
                     var storedItem = new StoredItem(
                         foundCandidate,
                         itemBlock.TotalCount,
                         supportedItems,
                         Definition.MaxPerSlot,
-                        modules
+                        itemBlock.UniqueItems
                     );
 
                     if (currentSlot >= Slots.Count)
@@ -121,8 +120,6 @@ public abstract class BaseStorage : IStorage
                 }
             }
         }
-
-        RemoveOverflowingSlots();
 
         foreach (var storageSlot in Slots)
         {
@@ -163,41 +160,6 @@ public abstract class BaseStorage : IStorage
     {
         Slots.Clear();
         SetSaveData(storage.ToStorageSaveData());
-    }
-
-    private void RemoveOverflowingSlots()
-    {
-        if (Slots.Count > Definition.Slots)
-        {
-            for (var i = Slots.Count - 1; i >= 0; i--)
-            {
-                var slot = Slots[i];
-                if (slot.StoredItems.Count == 0)
-                {
-                    Slots.RemoveAt(i);
-                }
-
-                if (Slots.Count == Definition.Slots)
-                {
-                    break;
-                }
-            }
-        }
-
-        if (Slots.Count <= Definition.Slots)
-        {
-            return;
-        }
-
-        for (var i = Slots.Count - 1; i >= 0; i--)
-        {
-            Slots.RemoveAt(i);
-
-            if (Slots.Count == Definition.Slots)
-            {
-                break;
-            }
-        }
     }
 
     private int GetTotalStored()

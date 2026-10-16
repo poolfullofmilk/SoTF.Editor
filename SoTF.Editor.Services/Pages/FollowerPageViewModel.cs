@@ -4,7 +4,6 @@ using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Models.Actors;
 using SoTF.Editor.Data.Models.SaveData.Actor;
-using SoTF.Editor.Data.Resources;
 using SoTF.Editor.Services.Actors;
 using SoTF.Editor.Services.Savegames;
 using static SoTF.Editor.Data.Helpers.Constants.Actors;
@@ -15,8 +14,11 @@ public class FollowerPageViewModel
 {
     private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
 
+    private readonly AreaMaskManager _areaManager;
+
     public FollowerPageViewModel(GameData gameData)
     {
+        _areaManager = gameData.AreaManager;
         KelvinState = BuildFollowerState(gameData, KelvinTypeId);
         VirginiaState = BuildFollowerState(gameData, VirginiaTypeId);
     }
@@ -128,9 +130,14 @@ public class FollowerPageViewModel
 
             followerModel.State = actor["State"]?.Value<int>() ?? -1;
 
-            if (actor["Position"] is { } position)
+            if (actor["Position"]?.ToObject<Position>() is { } position)
             {
-                followerModel.Pos = position.ToObject<Position>() ?? new Position(0, 0, 0);
+                // The Graph Mask Says Which Cave The Follower Is In
+                followerModel.Pos = position.WithoutOffset(
+                    actor["GraphMask"]?.Value<int>() is { } graphMask
+                        ? _areaManager.GetAreaForGraphMask(graphMask)
+                        : AreaMaskManager.Surface
+                );
             }
 
             if (actor["Stats"] is { } stats)

@@ -23,8 +23,7 @@ public class MapManager(
         var followerNonFollowerActors = npcsPageViewModel
             .AllActors.Select(actor =>
             {
-                var poi = new ActorPoi(actor);
-                poi.SetEnabledNoRefresh(actor.ActorType?.IsFollower() ?? false);
+                var poi = new ActorPoi(actor) { Enabled = actor.ActorType?.IsFollower() ?? false };
                 return poi;
             })
             .GroupBy(actorPoi => actorPoi.Actor.ActorType?.IsFollower() ?? false)
@@ -58,15 +57,14 @@ public class MapManager(
         {
             var actorPoiGroups = actorPois
                 .GroupBy(poi => poi.Actor.ActorType ?? new ActorType(-1, "???"))
-                .OrderBy(kvp => kvp.Key.Name)
-                .ToDictionary(group => group.Key, group => group.ToList())
-                .Select(kvp => new PoiGroup(
+                .OrderBy(group => group.Key.Name)
+                .Select(group => new PoiGroup(
                     false,
-                    new HashSet<IPoi>(kvp.Value),
-                    kvp.Key.Name,
-                    PoiGroupKeys.Actors + kvp.Key.Id,
+                    [.. group],
+                    group.Key.Name,
+                    PoiGroupKeys.Actors + group.Key.Id,
                     PoiGroupType.Actors,
-                    kvp.Key.IconPath
+                    group.Key.IconPath
                 ))
                 .ToList();
             result.AddRange(actorPoiGroups);

@@ -26,11 +26,6 @@ public class GameSetupPageViewModel
     private const string NameKey = "Name";
     private const string SettingTypeKey = "SettingType";
 
-    private readonly Dictionary<string, bool> _boolSettingDefaults = new()
-    {
-        { GameSetupKeys.InventoryPause, true },
-    };
-
     private readonly Dictionary<string, bool?> _boolSettings = [];
 
     private readonly HashSet<string> _settingsForNonCustom =
@@ -424,9 +419,8 @@ public class GameSetupPageViewModel
 
                     break;
                 case SettingTypeBool:
-                    var boolValue = SettingReader.ReadBool(setting);
-                    _boolSettings[name] =
-                        boolValue ?? _boolSettingDefaults.GetValueOrDefault(name, false);
+                    // The Game Leaves Out A False Value
+                    _boolSettings[name] = SettingReader.ReadBool(setting) ?? false;
 
                     break;
             }
@@ -574,7 +568,7 @@ public class GameSetupPageViewModel
             }
             else if (_boolSettings.TryGetValue(name, out var newBoolSetting))
             {
-                var oldBoolSetting = SettingReader.ReadBool(setting);
+                var oldBoolSetting = SettingReader.ReadBool(setting) ?? false;
                 if (oldBoolSetting != newBoolSetting)
                 {
                     hasChanges = true;

@@ -12,8 +12,6 @@ public class ItemPlaterViewModel
         ElementProfileCategory,
         List<ElementProfile>
     > _elementProfileCategories;
-    private readonly Savegame _savegame;
-
     private readonly Dictionary<int, Item> _platableItems;
 
     private readonly Dictionary<string, HashSet<int>> _screwStructureCategoryToIds;
@@ -48,9 +46,8 @@ public class ItemPlaterViewModel
 
     public bool UtilityStructures { get; set; }
 
-    public ItemPlaterViewModel(Savegame savegame, GameData gameData)
+    public ItemPlaterViewModel(GameData gameData)
     {
-        _savegame = savegame;
         _platableItems = gameData
             .Items.Where(item => item.Value.IsPlatable)
             .ToDictionary(pair => pair.Key, pair => pair.Value);
@@ -86,7 +83,7 @@ public class ItemPlaterViewModel
             || ItemConstruction;
     }
 
-    public PlatingResult AddPlating()
+    public PlatingResult AddPlating(Savegame savegame)
     {
         var modifiedCount = 0;
 
@@ -94,7 +91,7 @@ public class ItemPlaterViewModel
 
         if (
             ItemsInInventory
-            && GetPlayerInventorySaveDataWrapper() is { } playerInventorySaveDataWrapper
+            && GetPlayerInventorySaveDataWrapper(savegame) is { } playerInventorySaveDataWrapper
         )
         {
             var inventoryPlatings = AddPlatingForInventory(playerInventorySaveDataWrapper);
@@ -111,7 +108,7 @@ public class ItemPlaterViewModel
 
         if (
             ItemsInWeaponRacks
-            && GetScrewStructuresSaveDataWrapper() is { } screwStructuresSaveDataWrapper
+            && GetScrewStructuresSaveDataWrapper(savegame) is { } screwStructuresSaveDataWrapper
         )
         {
             var weaponRackPlatings = AddPlatingInWeaponRacks(screwStructuresSaveDataWrapper);
@@ -126,7 +123,7 @@ public class ItemPlaterViewModel
             modifiedCount += weaponRackPlatings;
         }
 
-        if (FollowerItems && GetVailSaveDataWrapper() is { } vailSaveDataWrapper)
+        if (FollowerItems && GetVailSaveDataWrapper(savegame) is { } vailSaveDataWrapper)
         {
             var followerItemPlatings = AddPlatingToFollowers(vailSaveDataWrapper);
             if (followerItemPlatings > 0)
@@ -145,7 +142,7 @@ public class ItemPlaterViewModel
                 || UtilityStructures
                 || MiscStructures
                 || GardeningStructures
-            ) && GetScrewStructuresSaveDataWrapper() is { } screwStructuresSaveDataWrapper2
+            ) && GetScrewStructuresSaveDataWrapper(savegame) is { } screwStructuresSaveDataWrapper2
         )
         {
             var structurePlatings = AddPlatingToStructures(screwStructuresSaveDataWrapper2);
@@ -167,7 +164,7 @@ public class ItemPlaterViewModel
                 || StickConstruction
                 || StoneConstruction
                 || ItemConstruction
-            ) && GetConstructionsSaveDataWrapper() is { } constructionsSaveDataWrapper
+            ) && GetConstructionsSaveDataWrapper(savegame) is { } constructionsSaveDataWrapper
         )
         {
             var constructionPlatings = AddPlatingToConstructions(constructionsSaveDataWrapper);
@@ -202,14 +199,14 @@ public class ItemPlaterViewModel
 
         foreach (var structure in structures)
         {
-            if (structure is not JArray strucArray)
+            if (structure is not JArray structureBlocks)
             {
                 continue;
             }
 
-            foreach (var strucBlock in strucArray)
+            foreach (var structureBlock in structureBlocks)
             {
-                if (strucBlock["Elements"] is not JArray elements)
+                if (structureBlock["Elements"] is not JArray elements)
                 {
                     continue;
                 }
@@ -490,26 +487,26 @@ public class ItemPlaterViewModel
         return modifiedCount;
     }
 
-    private SaveDataWrapper? GetPlayerInventorySaveDataWrapper()
+    private static SaveDataWrapper? GetPlayerInventorySaveDataWrapper(Savegame savegame)
     {
-        return _savegame.SavegameStore.LoadJsonRaw(SavegameStore.FileType.PlayerInventorySaveData);
+        return savegame.SavegameStore.LoadJsonRaw(SavegameStore.FileType.PlayerInventorySaveData);
     }
 
-    private SaveDataWrapper? GetScrewStructuresSaveDataWrapper()
+    private static SaveDataWrapper? GetScrewStructuresSaveDataWrapper(Savegame savegame)
     {
-        return _savegame.SavegameStore.LoadJsonRaw(
+        return savegame.SavegameStore.LoadJsonRaw(
             SavegameStore.FileType.ScrewStructureInstancesSaveData
         );
     }
 
-    private SaveDataWrapper? GetConstructionsSaveDataWrapper()
+    private static SaveDataWrapper? GetConstructionsSaveDataWrapper(Savegame savegame)
     {
-        return _savegame.SavegameStore.LoadJsonRaw(SavegameStore.FileType.ConstructionsSaveData);
+        return savegame.SavegameStore.LoadJsonRaw(SavegameStore.FileType.ConstructionsSaveData);
     }
 
-    private SaveDataWrapper? GetVailSaveDataWrapper()
+    private static SaveDataWrapper? GetVailSaveDataWrapper(Savegame savegame)
     {
-        return _savegame.SavegameStore.LoadJsonRaw(SavegameStore.FileType.SaveData);
+        return savegame.SavegameStore.LoadJsonRaw(SavegameStore.FileType.SaveData);
     }
 
     private int AddPlatings(JArray items, bool isEquippedItems)
@@ -559,7 +556,11 @@ public class ItemPlaterViewModel
 
     private static void AddPlatingModuleToEquippedItem(JToken token)
     {
-        if (token["Modules"] is not JArray)
+        if (token["Modules"] is JArray modules)
+        {
+            modules.Add(CreatePlatingModule());
+        }
+        else
         {
             token["Modules"] = new JArray { CreatePlatingModule() };
         }
@@ -567,13 +568,30 @@ public class ItemPlaterViewModel
 
     private static void AddPlatingModuleToInventoryItem(JToken token)
     {
-        if (token["UniqueItems"] is not JArray uniqueItems)
+        // Each Unique Item Carries Its Own Modules, None Is Added
+        if (token["UniqueItems"] is JArray { Count: > 0 } uniqueItems)
         {
-            uniqueItems = [];
-            token["UniqueItems"] = uniqueItems;
+            foreach (var uniqueItem in uniqueItems.OfType<JObject>())
+            {
+                if (uniqueItem["Modules"] is JArray modules)
+                {
+                    modules.Add(CreatePlatingModule());
+                }
+                else
+                {
+                    uniqueItem["Modules"] = new JArray { CreatePlatingModule() };
+                }
+            }
+
+            return;
         }
 
-        uniqueItems.Add(new JObject { ["Modules"] = new JArray { CreatePlatingModule() } });
+        var count = Math.Max(1, token["TotalCount"]?.Value<int>() ?? 1);
+        token["UniqueItems"] = new JArray(
+            Enumerable
+                .Range(0, count)
+                .Select(_ => new JObject { ["Modules"] = new JArray { CreatePlatingModule() } })
+        );
     }
 
     private static JObject CreatePlatingModule()
@@ -623,7 +641,7 @@ public class ItemPlaterViewModel
         ];
     }
 
-    public PlatingResult RemovePlating()
+    public PlatingResult RemovePlating(Savegame savegame)
     {
         var modifiedCount = 0;
 
@@ -631,7 +649,7 @@ public class ItemPlaterViewModel
 
         if (
             ItemsInInventory
-            && GetPlayerInventorySaveDataWrapper() is { } playerInventorySaveDataWrapper
+            && GetPlayerInventorySaveDataWrapper(savegame) is { } playerInventorySaveDataWrapper
         )
         {
             var inventoryPlatingsRemoved = RemovePlatingFromInventoryItems(
@@ -650,7 +668,7 @@ public class ItemPlaterViewModel
 
         if (
             ItemsInWeaponRacks
-            && GetScrewStructuresSaveDataWrapper() is { } screwStructuresSaveDataWrapper
+            && GetScrewStructuresSaveDataWrapper(savegame) is { } screwStructuresSaveDataWrapper
         )
         {
             var weaponRackPlatingsRemoved = RemovePlatingFromWeaponRacks(
@@ -667,7 +685,7 @@ public class ItemPlaterViewModel
             modifiedCount += weaponRackPlatingsRemoved;
         }
 
-        if (FollowerItems && GetVailSaveDataWrapper() is { } vailSaveDataWrapper)
+        if (FollowerItems && GetVailSaveDataWrapper(savegame) is { } vailSaveDataWrapper)
         {
             var followerPlatingsRemoved = RemovePlatingsFromFollowers(vailSaveDataWrapper);
             if (followerPlatingsRemoved > 0)
@@ -686,7 +704,7 @@ public class ItemPlaterViewModel
                 || UtilityStructures
                 || MiscStructures
                 || GardeningStructures
-            ) && GetScrewStructuresSaveDataWrapper() is { } screwStructuresSaveDataWrapper2
+            ) && GetScrewStructuresSaveDataWrapper(savegame) is { } screwStructuresSaveDataWrapper2
         )
         {
             var structurePlatingsRemoved = RemovePlatingFromStructures(
@@ -710,7 +728,7 @@ public class ItemPlaterViewModel
                 || StickConstruction
                 || StoneConstruction
                 || ItemConstruction
-            ) && GetConstructionsSaveDataWrapper() is { } constructionsSaveDataWrapper
+            ) && GetConstructionsSaveDataWrapper(savegame) is { } constructionsSaveDataWrapper
         )
         {
             var constructionPlatingsRemoved = RemovePlatingFromConstructions(
@@ -747,14 +765,14 @@ public class ItemPlaterViewModel
 
         foreach (var structure in structures)
         {
-            if (structure is not JArray strucArray)
+            if (structure is not JArray structureBlocks)
             {
                 continue;
             }
 
-            foreach (var strucBlock in strucArray)
+            foreach (var structureBlock in structureBlocks)
             {
-                if (strucBlock["Elements"] is not JArray elements)
+                if (structureBlock["Elements"] is not JArray elements)
                 {
                     continue;
                 }

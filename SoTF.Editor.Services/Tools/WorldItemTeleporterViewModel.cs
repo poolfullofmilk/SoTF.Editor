@@ -77,7 +77,7 @@ public class WorldItemTeleporterViewModel(Savegame savegame)
     private static bool IsRuntimeCreated(JToken worldItemState)
     {
         return (worldItemState["RuntimeCreated"]?.Value<bool>() ?? false)
-            || (worldItemState["Unnamed"]?.Value<bool>() ?? false); //only for legacy reasons, has been replaced by RuntimeCreated
+            || (worldItemState["Unnamed"]?.Value<bool>() ?? false);
     }
 
     private static WorldItemType GetWorldItemType(int? itemId, string? objectNameId)
@@ -97,11 +97,11 @@ public class WorldItemTeleporterViewModel(Savegame savegame)
             objectNameParts.Length >= 2
             && s_objectNameIdToItemTypes.TryGetValue(
                 objectNameParts[1],
-                out var itemTybeByObjectNameId
+                out var itemTypeByObjectNameId
             )
         )
         {
-            return itemTybeByObjectNameId;
+            return itemTypeByObjectNameId;
         }
 
         return WorldItemType.Unknown;
@@ -191,8 +191,8 @@ public class WorldItemTeleporterViewModel(Savegame savegame)
         }
 
         var itemId = s_itemIdsToWorldItemTypes
-            .Where(kvp => kvp.Value == worldItemType)
-            .Select(kvp => kvp.Key)
+            .Where(pair => pair.Value == worldItemType)
+            .Select(pair => pair.Key)
             .FirstOrDefault(-1);
 
         if (itemId == -1)

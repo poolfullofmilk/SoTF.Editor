@@ -63,33 +63,22 @@ public class RegrowTreesViewModel
             return;
         }
 
-        var serializedStates =
-            worldObjectLocatorManager["SerializedStates"]?.ToList() ?? Enumerable.Empty<JToken>();
-
-        foreach (var serializedState in serializedStates)
+        foreach (
+            var serializedState in worldObjectLocatorManager["SerializedStates"]
+                ?? Enumerable.Empty<JToken>()
+        )
         {
-            var valueToken = serializedState["Value"];
-            var value = valueToken?.Value<short>();
-            if (value == null)
+            switch (Savegame.VegetationStateOf(serializedState))
             {
-                continue;
-            }
-
-            var shiftedValue = (short)(1 << (value - 1));
-
-            if ((shiftedValue & (int)VegetationState.Gone) != 0)
-            {
-                _countGone++;
-            }
-
-            if ((shiftedValue & (int)VegetationState.HalfChopped) != 0)
-            {
-                _countHalfChopped++;
-            }
-
-            if ((shiftedValue & (int)VegetationState.Stumps) != 0)
-            {
-                _countStumps++;
+                case VegetationState.Gone:
+                    _countGone++;
+                    break;
+                case VegetationState.HalfChopped:
+                    _countHalfChopped++;
+                    break;
+                case VegetationState.Stumps:
+                    _countStumps++;
+                    break;
             }
         }
     }

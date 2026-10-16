@@ -41,9 +41,4 @@ public class PoiGroup(
             }
         }
     } = enabled;
-
-    public void SetEnabledNoRefresh(bool value)
-    {
-        Enabled = value;
-    }
 }

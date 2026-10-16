@@ -59,17 +59,17 @@ public record PlayerInventoryModel
         HashSet<int> processedItemIds
     )
     {
-        var selectedItemsDict = selectedItems
+        var selectedItemsById = selectedItems
             .Where(item => !item.IsEquipped)
             .ToDictionary(item => item.Id);
         var hasChanges = ProcessItemBlocks(
             inventoryItems,
-            selectedItemsDict,
+            selectedItemsById,
             out var finalTokens,
             processedItemIds
         );
 
-        var newItemsFromDict = selectedItems
+        var newItemBlocks = selectedItems
             .Where(item => !processedItemIds.Contains(item.Id))
             .Select(inventoryItem =>
             {
@@ -84,9 +84,9 @@ public record PlayerInventoryModel
             })
             .ToList();
 
-        finalTokens.AddRange(newItemsFromDict);
+        finalTokens.AddRange(newItemBlocks);
 
-        hasChanges = hasChanges || newItemsFromDict.Count != 0;
+        hasChanges = hasChanges || newItemBlocks.Count != 0;
 
         if (hasChanges)
         {
@@ -102,12 +102,12 @@ public record PlayerInventoryModel
         ISet<int> processedItemIds
     )
     {
-        var selectedItemsDict = selectedItems
+        var selectedItemsById = selectedItems
             .Where(item => item.IsEquipped)
             .ToDictionary(item => item.Id);
         var hasChanges = ProcessItemBlocks(
             equippedItems,
-            selectedItemsDict,
+            selectedItemsById,
             out var finalTokens,
             processedItemIds
         );
@@ -122,7 +122,7 @@ public record PlayerInventoryModel
 
     private static bool ProcessItemBlocks(
         JArray itemBlocks,
-        Dictionary<int, InventoryItem> selectedItemsDict,
+        Dictionary<int, InventoryItem> selectedItemsById,
         out List<JToken> finalTokens,
         ISet<int> processedItemIds
     )
@@ -133,7 +133,7 @@ public record PlayerInventoryModel
         {
             if (itemBlock["ItemId"]?.Value<int>() is { } itemId)
             {
-                if (selectedItemsDict.TryGetValue(itemId, out var selectedItem))
+                if (selectedItemsById.TryGetValue(itemId, out var selectedItem))
                 {
                     var totalCountToken = itemBlock["TotalCount"];
                     var selectedItemTotalCount = JToken.FromObject(selectedItem.TotalCount);
@@ -210,7 +210,7 @@ public record PlayerInventoryModel
                 modules.Add(sourceActorModuleDefinition.BuildNewModuleWithDefaults());
             }
 
-            for (var i = 0; i < selectedItem.TotalCount - uniqueItemsCount; i++)
+            for (var added = 0; added < selectedItem.TotalCount - uniqueItemsCount; added++)
             {
                 uniqueItems.Add(
                     new JObject

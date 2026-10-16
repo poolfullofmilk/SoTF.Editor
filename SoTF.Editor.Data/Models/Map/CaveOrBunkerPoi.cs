@@ -91,9 +91,8 @@ public class CaveOrBunkerPoi : DefaultGenericInformationalPoi, IPoiWithItems
         )
         {
             MissingRequiredItems = rawPoi.GetMissingRequiredItems(inventoryItems),
+            Enabled = enabled,
         };
-
-        poi.SetEnabledNoRefresh(enabled);
         return poi;
     }
 }
