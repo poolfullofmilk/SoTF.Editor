@@ -1,0 +1,48 @@
+<MudDialog>
+
+    <TitleContent>
+        <MudText Typo="Typo.h6">@Localizer["WorldItemCloner"]</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudStack Spacing="4">
+            @* World Item *@
+            <MudSelect T="WorldItemType?"
+                       @bind-Value="_viewModel.SelectedWorldItemType"
+                       Label="@Localizer["WorldItem"]">
+                @foreach (var worldItemType in s_cloneableTypes)
+                {
+                    <MudSelectItem T="WorldItemType?"
+                                   Value="@worldItemType">
+                        @ItemName(worldItemType)
+                    </MudSelectItem>
+                }
+            </MudSelect>
+            <MudText Typo="Typo.body2"
+                     Class="mud-text-secondary">
+                @Localizer["CloneAtPlayerTooltip"]
+            </MudText>
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        @* Remove Copies *@
+        <Tooltip Text="@Localizer["RemoveAllCopiesTooltip"]">
+            <MudButton Color="Color.Error"
+                       Disabled="@(!_viewModel.HasModifiableWorldItemTypeSelected())"
+                       OnClick="RemoveAll">
+                @Localizer["RemoveAllCopies"]
+            </MudButton>
+        </Tooltip>
+        <MudSpacer />
+        @* Cancel Button *@
+        <MudButton OnClick="@MudDialog.Cancel">@Localizer["Cancel"]</MudButton>
+        @* Clone Button *@
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Info"
+                   StartIcon="@Icons.Material.Rounded.ContentCopy"
+                   Disabled="@(!_viewModel.HasModifiableWorldItemTypeSelected())"
+                   OnClick="Clone">
+            @Localizer["CloneAtPlayer"]
+        </MudButton>
+    </DialogActions>
+
+</MudDialog>

@@ -1,0 +1,10 @@
+using Microsoft.AspNetCore.Components;
+using SoTF.Editor.Data.Models;
+
+namespace SoTF.Editor.Desktop.Components.Shared.Common;
+
+public partial class GenericSettingEditor
+{
+    [Parameter]
+    public required GenericSetting Setting { get; set; }
+}

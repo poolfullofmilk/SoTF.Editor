@@ -1,0 +1,59 @@
+<MudDialog>
+
+    <TitleContent>
+        <MudText Typo="Typo.h6">@Localizer["ConsumedItems"]</MudText>
+    </TitleContent>
+    <DialogContent>
+        @if (_viewModel.ConsumedItems.Count == 0)
+        {
+            <EmptyState Icon="@Icons.Material.Rounded.Restaurant"
+                        Text="@Localizer["NothingFound"]" />
+        }
+        else
+        {
+            <MudTable T="ModifyConsumedItemsViewModel.ConsumedItemWrapper"
+                      Items="_viewModel.ConsumedItems"
+                      Dense
+                      Hover
+                      FixedHeader
+                      Height="50vh"
+                      Elevation="0">
+
+                <HeaderContent>
+                    <MudTh>@Localizer["Name"]</MudTh>
+                    <MudTh>@Localizer["Key"]</MudTh>
+                    <MudTh>@Localizer["Remove"]</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd>@context.Name</MudTd>
+                    <MudTd Class="mud-text-secondary">@context.Key</MudTd>
+                    <MudTd>
+                        @* Remove Checkbox *@
+                        <MudCheckBox T="bool"
+                                     @bind-Value="context.Remove"
+                                     Color="Color.Error" />
+                    </MudTd>
+                </RowTemplate>
+
+            </MudTable>
+        }
+    </DialogContent>
+    <DialogActions>
+        @* Remove All *@
+        <MudButton Color="Color.Error"
+                   Disabled="@(_viewModel.ConsumedItems.Count == 0)"
+                   OnClick="RemoveAll">
+            @Localizer["RemoveAll"]
+        </MudButton>
+        <MudSpacer />
+        @* Cancel Button *@
+        <MudButton OnClick="@MudDialog.Cancel">@Localizer["Cancel"]</MudButton>
+        @* Apply Button *@
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Info"
+                   OnClick="Apply">
+            @Localizer["Ok"]
+        </MudButton>
+    </DialogActions>
+
+</MudDialog>

@@ -1,0 +1,2828 @@
+{
+  "overridingTypeIcons": {
+    "weapon": "/images/items/FireAxe_tn.png"
+  },
+  "defaultEnabledGroups": [
+    "weapon",
+    "armor",
+    "clothes",
+    "attachments",
+    "equipment",
+    "key",
+    "tool",
+    "weaponMod"
+  ],
+  "items": {
+    "340": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Guitar",
+      "pois": [
+        {
+          "x": -1157.58,
+          "y": 17.78,
+          "teleport": {
+            "x": -1157.58,
+            "y": 66.96,
+            "z": 17.78,
+            "areaMask": 1048576
+          },
+          "description": "On bar stand top",
+          "requirements": [
+            566
+          ]
+        }
+      ]
+    },
+    "341": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Binoculars",
+      "pois": [
+        {
+          "x": -1112.67,
+          "y": 1720.7,
+          "teleport": {
+            "x": -1112.67,
+            "y": 15.69,
+            "z": 1720.7,
+            "areaMask": 0
+          },
+          "description": "On top of the kayak"
+        }
+      ]
+    },
+    "346": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Shotgun_Rail",
+      "pois": [
+        {
+          "x": -1181.75,
+          "y": 28.37,
+          "teleport": {
+            "x": -1181.75,
+            "y": 66.64,
+            "z": 28.37,
+            "areaMask": 1048576
+          },
+          "description": "In the right corner of the room",
+          "requirements": [
+            566
+          ]
+        },
+        {
+          "x": -972.41,
+          "y": 1041.23,
+          "teleport": {
+            "x": -972.41,
+            "y": 61.4,
+            "z": 1041.23,
+            "areaMask": 2097152
+          },
+          "description": "On the shelf"
+        },
+        {
+          "x": 1613.29,
+          "y": 480.42,
+          "teleport": {
+            "x": 1613.29,
+            "y": 23,
+            "z": 480.42,
+            "areaMask": 32
+          },
+          "description": "On the desk close to the billiard table"
+        },
+        {
+          "x": -1362.06,
+          "y": 1662.91,
+          "teleport": {
+            "x": -1362.06,
+            "y": 91.59,
+            "z": 1662.91,
+            "areaMask": 0
+          },
+          "description": "In the red-lined suitcase, near one of the tents"
+        }
+      ]
+    },
+    "353": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Stun_Gun",
+      "pois": [
+        {
+          "x": -647.32,
+          "y": 1514.37,
+          "teleport": {
+            "x": -647.32,
+            "y": 18.79,
+            "z": 1514.37,
+            "areaMask": 2
+          },
+          "description": "Inside the right tunnel"
+        }
+      ]
+    },
+    "354": {
+      "wiki": "https://sonsoftheforest.fandom.com/wiki/Night_Vision_Goggles",
+      "pois": [
+        {
+          "x": -1133.87,
+          "y": -1604.05,
+          "teleport": {
+            "x": -1133.87,
+            "y": 227.41,
+            "z": -1604.05,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "355": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Pistol",
+      "pois": [
+        {
+          "x": -1797.3,
+          "y": 578.74,
+          "teleport": {
+            "x": -1797.3,
+            "y": 14.01,
+            "z": 578.74,
+            "areaMask": 8388608
+          },
+          "description": "On Emergency Raft"
+        }
+      ]
+    },
+    "356": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Modern_Axe",
+      "pois": [
+        {
+          "x": -703.72,
+          "y": 446.04,
+          "teleport": {
+            "x": -703.72,
+            "y": 103.31,
+            "z": 446.04,
+            "areaMask": 0
+          },
+          "description": "In the chest of a dead soldier"
+        }
+      ]
+    },
+    "358": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Shotgun",
+      "pois": [
+        {
+          "x": -1340.69,
+          "y": 1412.2,
+          "teleport": {
+            "x": -1340.69,
+            "y": 95.51,
+            "z": 1412.2,
+            "areaMask": 0
+          },
+          "description": "Inside grave",
+          "requirements": [
+            485
+          ]
+        }
+      ]
+    },
+    "359": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Machete",
+      "pois": [
+        {
+          "x": -46.78,
+          "y": 1457.58,
+          "teleport": {
+            "x": -46.78,
+            "y": 17.05,
+            "z": 1457.58,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "360": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Compound_Bow",
+      "pois": [
+        {
+          "x": -1120.68,
+          "y": -1039.18,
+          "teleport": {
+            "x": -1120.68,
+            "y": 269.8,
+            "z": -1039.18,
+            "areaMask": 262144
+          },
+          "description": "Inside the bathroom"
+        }
+      ]
+    },
+    "361": {
+      "pois": [
+        {
+          "x": 677.56,
+          "y": -281.81,
+          "teleport": {
+            "x": 677.56,
+            "y": 239.73,
+            "z": -281.81,
+            "areaMask": 16
+          },
+          "requirements": [
+            444
+          ]
+        }
+      ]
+    },
+    "365": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Crossbow",
+      "pois": [
+        {
+          "x": -1021.76,
+          "y": 986.86,
+          "teleport": {
+            "x": -1021.76,
+            "y": 62.76,
+            "z": 986.86,
+            "areaMask": 2097152
+          },
+          "description": "Inside second hydroponic room",
+          "requirements": [
+            566
+          ]
+        }
+      ]
+    },
+    "367": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Katana",
+      "pois": [
+        {
+          "x": 1160.54,
+          "y": -651.98,
+          "teleport": {
+            "x": 1160.54,
+            "y": 210.43,
+            "z": -651.98,
+            "areaMask": 4194304
+          },
+          "requirements": [
+            566
+          ]
+        }
+      ]
+    },
+    "374": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Silencer",
+      "pois": [
+        {
+          "x": -1125.58,
+          "y": -1050.17,
+          "teleport": {
+            "x": -1125.58,
+            "y": 270.58,
+            "z": -1050.17,
+            "areaMask": 262144
+          },
+          "description": "Next to 3D Printer"
+        },
+        {
+          "x": -1396.97,
+          "y": -1128.06,
+          "teleport": {
+            "x": -1396.97,
+            "y": 233.7,
+            "z": -1128.06,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "375": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Laser_Sight",
+      "pois": [
+        {
+          "x": -424.63,
+          "y": 702.07,
+          "teleport": {
+            "x": -424.63,
+            "y": 77.75,
+            "z": 702.07,
+            "areaMask": 131072
+          },
+          "description": "Next to the computer on the left"
+        }
+      ]
+    },
+    "376": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Pistol_Rail",
+      "pois": [
+        {
+          "x": -424.72,
+          "y": 702.88,
+          "teleport": {
+            "x": -424.72,
+            "y": 77.76,
+            "z": 702.88,
+            "areaMask": 131072
+          }
+        },
+        {
+          "x": 1056.95,
+          "y": 1022.79,
+          "teleport": {
+            "x": 1056.95,
+            "y": 143.11,
+            "z": 1022.79,
+            "areaMask": 0
+          }
+        },
+        {
+          "x": 1085.09,
+          "y": 1571.92,
+          "teleport": {
+            "x": 1085.09,
+            "y": 89.98,
+            "z": 1571.92,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "378": {
+      "pois": [
+        {
+          "x": 1154.35,
+          "y": -604.58,
+          "teleport": {
+            "x": 1154.35,
+            "y": 217.59,
+            "z": -604.58,
+            "areaMask": 4194304
+          },
+          "requirements": [
+            566
+          ]
+        },
+        {
+          "x": -580.72,
+          "y": -69.44,
+          "teleport": {
+            "x": -580.72,
+            "y": 137.11,
+            "z": -69.44,
+            "areaMask": 8
+          },
+          "description": "In the hand of dead soldier",
+          "requirements": [
+            444
+          ]
+        }
+      ]
+    },
+    "386": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Revolver",
+      "pois": [
+        {
+          "x": 1140.69,
+          "y": 1048.71,
+          "teleport": {
+            "x": 1140.69,
+            "y": 118.88,
+            "z": 1048.71,
+            "areaMask": 524288
+          }
+        }
+      ]
+    },
+    "390": {
+      "wiki": "https://sonsoftheforest.fandom.com/wiki/Printer_Resin",
+      "pois": [
+        {
+          "x": 378.3,
+          "y": -663.98,
+          "teleport": {
+            "x": 378.3,
+            "y": 444.71,
+            "z": -663.98,
+            "areaMask": 0
+          }
+        },
+        {
+          "x": 378.37,
+          "y": -664.08,
+          "teleport": {
+            "x": 378.37,
+            "y": 444.71,
+            "z": -664.08,
+            "areaMask": 0
+          }
+        },
+        {
+          "x": 395.15,
+          "y": -650.08,
+          "teleport": {
+            "x": 395.15,
+            "y": 443.7,
+            "z": -650.08,
+            "areaMask": 0
+          }
+        },
+        {
+          "x": 395.38,
+          "y": -650.3,
+          "teleport": {
+            "x": 395.38,
+            "y": 443.7,
+            "z": -650.3,
+            "areaMask": 0
+          }
+        },
+        {
+          "x": -487.5,
+          "y": 721.68,
+          "teleport": {
+            "x": -487.5,
+            "y": 87.11,
+            "z": 721.68,
+            "areaMask": 0
+          }
+        },
+        {
+          "x": -1184.87,
+          "y": 25.94,
+          "teleport": {
+            "x": -1184.87,
+            "y": 66.75,
+            "z": 25.94,
+            "areaMask": 1048576
+          }
+        },
+        {
+          "x": -1193.58,
+          "y": 80.89,
+          "teleport": {
+            "x": -1193.58,
+            "y": 60.91,
+            "z": 80.89,
+            "areaMask": 1048576
+          }
+        },
+        {
+          "x": -1184.71,
+          "y": 26.66,
+          "teleport": {
+            "x": -1184.71,
+            "y": 66.75,
+            "z": 26.66,
+            "areaMask": 1048576
+          }
+        },
+        {
+          "x": -1184.87,
+          "y": 25.86,
+          "teleport": {
+            "x": -1184.87,
+            "y": 66.75,
+            "z": 25.86,
+            "areaMask": 1048576
+          }
+        },
+        {
+          "x": -1199.75,
+          "y": 82.3,
+          "teleport": {
+            "x": -1199.75,
+            "y": 60.92,
+            "z": 82.3,
+            "areaMask": 1048576
+          }
+        },
+        {
+          "x": -1007.23,
+          "y": 953.91,
+          "teleport": {
+            "x": -1007.23,
+            "y": 63.73,
+            "z": 953.91,
+            "areaMask": 2097152
+          }
+        },
+        {
+          "x": -1007.23,
+          "y": 953.99,
+          "teleport": {
+            "x": -1007.23,
+            "y": 63.73,
+            "z": 953.99,
+            "areaMask": 2097152
+          }
+        },
+        {
+          "x": -415.35,
+          "y": 714.68,
+          "teleport": {
+            "x": -415.35,
+            "y": 77.71,
+            "z": 714.68,
+            "areaMask": 0
+          }
+        },
+        {
+          "x": -1141.37,
+          "y": -1038.67,
+          "teleport": {
+            "x": -1141.37,
+            "y": 270.54,
+            "z": -1038.67,
+            "areaMask": 262144
+          }
+        },
+        {
+          "x": 1136.88,
+          "y": 1063.96,
+          "teleport": {
+            "x": 1136.88,
+            "y": 119.92,
+            "z": 1063.96,
+            "areaMask": 524288
+          }
+        }
+      ]
+    },
+    "394": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Chainsaw",
+      "pois": [
+        {
+          "x": -1151.17,
+          "y": 116.06,
+          "teleport": {
+            "x": -1151.17,
+            "y": 65.77,
+            "z": 116.06,
+            "areaMask": 1048576
+          },
+          "description": "In the Theater room",
+          "requirements": [
+            566
+          ]
+        }
+      ]
+    },
+    "396": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Stun_Baton",
+      "pois": [
+        {
+          "x": -1143.84,
+          "y": -162.33,
+          "teleport": {
+            "x": -1143.84,
+            "y": 130.27,
+            "z": -162.33,
+            "areaMask": 0
+          },
+          "description": "In the pile of skulls"
+        }
+      ]
+    },
+    "423": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Books#Pennant_Line_Book",
+      "pois": [
+        {
+          "x": -416.8,
+          "y": 694.57,
+          "teleport": {
+            "x": -416.8,
+            "y": 76.69,
+            "z": 694.57,
+            "areaMask": 131072
+          },
+          "description": "On the floor, next to bathtub"
+        }
+      ]
+    },
+    "424": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Books#Deep_Sleep_Book",
+      "pois": [
+        {
+          "x": 1161,
+          "y": -602.75,
+          "teleport": {
+            "x": 1161,
+            "y": 217.84,
+            "z": -602.75,
+            "areaMask": 4194304
+          },
+          "description": "On top of the autopsy table on 5th level"
+        }
+      ]
+    },
+    "431": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Firefighter_Axe",
+      "pois": [
+        {
+          "x": -415.01,
+          "y": 712.26,
+          "teleport": {
+            "x": -415.01,
+            "y": 78.34,
+            "z": 712.26,
+            "areaMask": 131072
+          },
+          "description": "Inside the bunker room at the end of a hallway"
+        }
+      ]
+    },
+    "432": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Can_Opener",
+      "pois": [
+        {
+          "x": -1269.18,
+          "y": -12.39,
+          "teleport": {
+            "x": -1269.18,
+            "y": 103.67,
+            "z": -12.39,
+            "areaMask": 0
+          },
+          "description": "Next to campfire"
+        },
+        {
+          "x": -315.72,
+          "y": 1611.97,
+          "teleport": {
+            "x": -315.72,
+            "y": 14.31,
+            "z": 1611.97,
+            "areaMask": 0
+          },
+          "description": "On rocks"
+        },
+        {
+          "x": 1283.1,
+          "y": -728.57,
+          "teleport": {
+            "x": 1283.1,
+            "y": 228.09,
+            "z": -728.57,
+            "areaMask": 0
+          }
+        },
+        {
+          "x": -154.82,
+          "y": -110.79,
+          "teleport": {
+            "x": -154.82,
+            "y": 406.55,
+            "z": -110.79,
+            "areaMask": 0
+          },
+          "description": "Near the tent at the frozen lake"
+        }
+      ]
+    },
+    "435": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Gold_Mask",
+      "pois": [
+        {
+          "x": 1139.1,
+          "y": -615.59,
+          "teleport": {
+            "x": 1139.1,
+            "y": 192.14,
+            "z": -615.59,
+            "areaMask": 4194304
+          },
+          "requirements": [
+            566
+          ]
+        }
+      ]
+    },
+    "444": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Rebreather",
+      "pois": [
+        {
+          "x": -422.94,
+          "y": 1477.03,
+          "teleport": {
+            "x": -422.94,
+            "y": 10.12,
+            "z": 1477.03,
+            "areaMask": 2
+          },
+          "description": "Inside the left tunnel"
+        }
+      ]
+    },
+    "459": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Slingshot",
+      "pois": [
+        {
+          "x": -532.05,
+          "y": 121.64,
+          "teleport": {
+            "x": -532.05,
+            "y": 195.9,
+            "z": 121.64,
+            "areaMask": 0
+          },
+          "description": "On one of soldiers bodies"
+        }
+      ]
+    },
+    "467": {
+      "pois": [
+        {
+          "x": -1157.62,
+          "y": 29.9,
+          "teleport": {
+            "x": -1157.62,
+            "y": 65.38,
+            "z": 29.9,
+            "areaMask": 1048576
+          },
+          "description": "Next to corpse with stuck guitar inside it",
+          "requirements": [
+            566
+          ]
+        }
+      ]
+    },
+    "468": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Cross",
+      "pois": [
+        {
+          "x": -1174.6,
+          "y": -217.69,
+          "teleport": {
+            "x": -1174.6,
+            "y": 111.33,
+            "z": -217.69,
+            "areaMask": 4
+          },
+          "description": "Next to the projector"
+        }
+      ]
+    },
+    "471": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Flashlight",
+      "pois": [
+        {
+          "x": -626.05,
+          "y": 386.43,
+          "teleport": {
+            "x": -626.05,
+            "y": 145.24,
+            "z": 386.43,
+            "areaMask": 0
+          },
+          "description": "On hanging soldier"
+        }
+      ]
+    },
+    "485": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Shovel",
+      "pois": [
+        {
+          "x": -429.4,
+          "y": -103.3,
+          "teleport": {
+            "x": -429.4,
+            "y": 134.51,
+            "z": -103.3,
+            "areaMask": 8
+          },
+          "description": "In hands of dead worker inside cave",
+          "requirements": [
+            522,
+            444
+          ]
+        }
+      ]
+    },
+    "487": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Pajamas",
+      "pois": [
+        {
+          "x": 422.11,
+          "y": 1168.67,
+          "teleport": {
+            "x": 422.11,
+            "y": 15.86,
+            "z": 1168.67,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "490": {
+      "pois": [
+        {
+          "x": -1394.84,
+          "y": -1116.68,
+          "teleport": {
+            "x": -1394.84,
+            "y": 233.89,
+            "z": -1116.68,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "491": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Blazer",
+      "pois": [
+        {
+          "x": 419.21,
+          "y": -1803.1,
+          "teleport": {
+            "x": 419.21,
+            "y": 16.41,
+            "z": -1803.1,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "492": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Tuxedo",
+      "pois": [
+        {
+          "x": -416.78,
+          "y": 696.21,
+          "teleport": {
+            "x": -416.78,
+            "y": 77.55,
+            "z": 696.21,
+            "areaMask": 131072
+          },
+          "description": "On cabinet in the bathroom"
+        }
+      ]
+    },
+    "493": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Leather_Jacket",
+      "pois": [
+        {
+          "x": -971.44,
+          "y": -1061.75,
+          "teleport": {
+            "x": -971.44,
+            "y": 251.34,
+            "z": -1061.75,
+            "areaMask": 0
+          },
+          "description": "Inside plane"
+        }
+      ]
+    },
+    "499": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Wetsuit",
+      "pois": [
+        {
+          "x": -509.27,
+          "y": 128.13,
+          "teleport": {
+            "x": -509.27,
+            "y": 187,
+            "z": 128.13,
+            "areaMask": 8
+          },
+          "requirements": [
+            444
+          ]
+        }
+      ]
+    },
+    "500": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Winter_Jacket",
+      "pois": [
+        {
+          "x": 1082.35,
+          "y": 1572.68,
+          "teleport": {
+            "x": 1082.35,
+            "y": 89.95,
+            "z": 1572.68,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "509": {
+      "pois": [
+        {
+          "x": -972.22,
+          "y": -1059.99,
+          "teleport": {
+            "x": -972.22,
+            "y": 251.25,
+            "z": -1059.99,
+            "areaMask": 0
+          },
+          "description": "On the right wing of the plane"
+        }
+      ]
+    },
+    "517": {
+      "pois": [
+        {
+          "x": 1137.6256,
+          "y": -640.0391,
+          "teleport": {
+            "x": 1137.6256,
+            "y": 209.24957,
+            "z": -640.0391,
+            "areaMask": 4194304
+          }
+        },
+        {
+          "x": 1614.6,
+          "y": 480.4,
+          "teleport": {
+            "x": 1614.6,
+            "y": 22.99,
+            "z": 480.4,
+            "areaMask": 32
+          }
+        },
+        {
+          "x": -703.05,
+          "y": 449.08,
+          "teleport": {
+            "x": -703.05,
+            "y": 102.94,
+            "z": 449.08,
+            "areaMask": 0
+          },
+          "description": "At the campfire at the center of the camp"
+        },
+        {
+          "x": 414.44,
+          "y": 1177.21,
+          "teleport": {
+            "x": 414.44,
+            "y": 15.83,
+            "z": 1177.21,
+            "areaMask": 0
+          },
+          "description": "At the back of the boat"
+        }
+      ]
+    },
+    "521": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/More_Lighting_Email",
+      "pois": [
+        {
+          "x": -1017.05,
+          "y": -264.34,
+          "teleport": {
+            "x": -1017.05,
+            "y": 111.41,
+            "z": -264.34,
+            "areaMask": 4
+          }
+        }
+      ]
+    },
+    "522": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Rope_Gun",
+      "pois": [
+        {
+          "x": -1204.71,
+          "y": -277.52,
+          "teleport": {
+            "x": -1204.71,
+            "y": 127.44,
+            "z": -277.52,
+            "areaMask": 4
+          },
+          "description": "Near the cave exit in the left tunnel"
+        }
+      ]
+    },
+    "525": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Putter",
+      "pois": [
+        {
+          "x": 1124.75,
+          "y": -605.84,
+          "teleport": {
+            "x": 1124.75,
+            "y": 217.95,
+            "z": -605.84,
+            "areaMask": 4194304
+          },
+          "requirements": [
+            566
+          ]
+        },
+        {
+          "x": 1025.87,
+          "y": 1642.21,
+          "teleport": {
+            "x": 1025.87,
+            "y": 84.74,
+            "z": 1642.21,
+            "areaMask": 0
+          },
+          "description": "Leaning to the back of the golf cart"
+        },
+        {
+          "x": 1024.65,
+          "y": 1216.19,
+          "teleport": {
+            "x": 1024.65,
+            "y": 139.72,
+            "z": 1216.19,
+            "areaMask": 0
+          }
+        },
+        {
+          "x": 1616.02,
+          "y": 1567.35,
+          "teleport": {
+            "x": 1616.02,
+            "y": 99.02,
+            "z": 1567.35,
+            "areaMask": 0
+          }
+        },
+        {
+          "x": 1589.04,
+          "y": 1336.81,
+          "teleport": {
+            "x": 1589.04,
+            "y": 98.97,
+            "z": 1336.81,
+            "areaMask": 0
+          }
+        },
+        {
+          "x": 727.03,
+          "y": 1681.42,
+          "teleport": {
+            "x": 727.03,
+            "y": 88.85,
+            "z": 1681.42,
+            "areaMask": 0
+          },
+          "description": "Leaning to the back of the golf cart"
+        },
+        {
+          "x": 1082.75,
+          "y": 1567.65,
+          "teleport": {
+            "x": 1082.75,
+            "y": 89.74,
+            "z": 1567.65,
+            "areaMask": 0
+          },
+          "description": "Leaning to the golf cart"
+        },
+        {
+          "x": 1099.98,
+          "y": 989.59,
+          "teleport": {
+            "x": 1099.98,
+            "y": 127.77,
+            "z": 989.59,
+            "areaMask": 0
+          }
+        },
+        {
+          "x": 1036.29,
+          "y": 1518.52,
+          "teleport": {
+            "x": 1036.29,
+            "y": 83.49,
+            "z": 1518.52,
+            "areaMask": 0
+          },
+          "description": "Leaning to the golf cart"
+        },
+        {
+          "x": 727.2,
+          "y": 1683,
+          "teleport": {
+            "x": 727.2,
+            "y": 88.62,
+            "z": 1683,
+            "areaMask": 0
+          },
+          "description": "Leaning to the back of the golf cart"
+        }
+      ]
+    },
+    "526": {
+      "pois": [
+        {
+          "x": 1628.66,
+          "y": 569.3,
+          "teleport": {
+            "x": 1628.66,
+            "y": 22.14,
+            "z": 569.3,
+            "areaMask": 32
+          }
+        }
+      ]
+    },
+    "529": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/GPS_Locator",
+      "pois": [
+        {
+          "x": -626.31,
+          "y": 386.16,
+          "teleport": {
+            "x": -626.31,
+            "y": 145.34,
+            "z": 386.16,
+            "areaMask": 0
+          },
+          "description": "On hanging soldier"
+        },
+        {
+          "x": -1797.65,
+          "y": 577.03,
+          "teleport": {
+            "x": -1797.65,
+            "y": 14.49,
+            "z": 577.03,
+            "areaMask": 8388608
+          },
+          "description": "On Emergency Raft"
+        },
+        {
+          "x": -1340.96,
+          "y": 1411.98,
+          "teleport": {
+            "x": -1340.96,
+            "y": 95.42,
+            "z": 1411.98,
+            "areaMask": 0
+          },
+          "description": "Inside grave",
+          "requirements": [
+            485
+          ]
+        },
+        {
+          "x": 869,
+          "y": -1412.84,
+          "teleport": {
+            "x": 869,
+            "y": 54.78,
+            "z": -1412.84,
+            "areaMask": 0
+          }
+        },
+        {
+          "x": 1466.83,
+          "y": -656.91,
+          "teleport": {
+            "x": 1466.83,
+            "y": 178.51,
+            "z": -656.91,
+            "areaMask": 0
+          }
+        },
+        {
+          "x": -1127.2,
+          "y": -1621.57,
+          "teleport": {
+            "x": -1127.2,
+            "y": 227.84,
+            "z": -1621.57,
+            "areaMask": 0
+          }
+        },
+        {
+          "x": -1392.8,
+          "y": -1124.61,
+          "teleport": {
+            "x": -1392.8,
+            "y": 234.24,
+            "z": -1124.61,
+            "areaMask": 0
+          }
+        },
+        {
+          "x": 1053.87,
+          "y": 1048.82,
+          "teleport": {
+            "x": 1053.87,
+            "y": 143.64,
+            "z": 1048.82,
+            "areaMask": 0
+          }
+        },
+        {
+          "x": 1487.51,
+          "y": 68.4,
+          "teleport": {
+            "x": 1487.51,
+            "y": 83.3,
+            "z": 68.4,
+            "areaMask": 0
+          }
+        },
+        {
+          "x": 1357.87,
+          "y": 1729.13,
+          "teleport": {
+            "x": 1357.87,
+            "y": 96.27,
+            "z": 1729.13,
+            "areaMask": 0
+          }
+        },
+        {
+          "x": 1521.42,
+          "y": 1485.94,
+          "teleport": {
+            "x": 1521.42,
+            "y": 98.58,
+            "z": 1485.94,
+            "areaMask": 0
+          }
+        },
+        {
+          "x": -709.1,
+          "y": -1433.11,
+          "teleport": {
+            "x": -709.1,
+            "y": 103.3,
+            "z": -1433.11,
+            "areaMask": 0
+          }
+        },
+        {
+          "x": 389.09,
+          "y": -656.01,
+          "teleport": {
+            "x": 389.09,
+            "y": 443.84,
+            "z": -656.01,
+            "areaMask": 0
+          }
+        },
+        {
+          "x": 1533.11,
+          "y": -471.77,
+          "teleport": {
+            "x": 1533.11,
+            "y": 188.33,
+            "z": -471.77,
+            "areaMask": 0
+          }
+        },
+        {
+          "x": -950.01,
+          "y": 217.68,
+          "teleport": {
+            "x": -950.01,
+            "y": 79.14,
+            "z": 217.68,
+            "areaMask": 0
+          }
+        },
+        {
+          "x": 1713.79,
+          "y": 73.67,
+          "teleport": {
+            "x": 1713.79,
+            "y": 25.39,
+            "z": 73.67,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "534": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Golf_Balls_Emails",
+      "pois": [
+        {
+          "x": 726.52,
+          "y": 1681.39,
+          "teleport": {
+            "x": 726.52,
+            "y": 88.7,
+            "z": 1681.39,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "535": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Golf_Balls_Emails",
+      "pois": [
+        {
+          "x": 726.34,
+          "y": 1681.74,
+          "teleport": {
+            "x": 726.34,
+            "y": 88.69,
+            "z": 1681.74,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "536": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Golf_Balls_Emails",
+      "pois": [
+        {
+          "x": 726.64,
+          "y": 1682.46,
+          "teleport": {
+            "x": 726.64,
+            "y": 88.65,
+            "z": 1682.46,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "537": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Golf_Balls_Emails",
+      "pois": [
+        {
+          "x": 1126.28,
+          "y": -604.84,
+          "teleport": {
+            "x": 1126.28,
+            "y": 217.58,
+            "z": -604.84,
+            "areaMask": 4194304
+          },
+          "description": "On the wooden table, beside the Putter"
+        }
+      ]
+    },
+    "538": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Painting_Email",
+      "pois": [
+        {
+          "x": -424.49,
+          "y": 702.21,
+          "teleport": {
+            "x": -424.49,
+            "y": 77.75,
+            "z": 702.21,
+            "areaMask": 131072
+          },
+          "description": "Next to PC on the left"
+        }
+      ]
+    },
+    "540": {
+      "pois": [
+        {
+          "x": -940.72,
+          "y": -292.88,
+          "teleport": {
+            "x": -940.72,
+            "y": 111.58,
+            "z": -292.88,
+            "areaMask": 4
+          }
+        }
+      ]
+    },
+    "542": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Artifact_Emails",
+      "pois": [
+        {
+          "x": 1058.7,
+          "y": 1022.59,
+          "teleport": {
+            "x": 1058.7,
+            "y": 143.57,
+            "z": 1022.59,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "543": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Artifact_Emails",
+      "pois": [
+        {
+          "x": -1178.66,
+          "y": 27.68,
+          "teleport": {
+            "x": -1178.66,
+            "y": 66.65,
+            "z": 27.68,
+            "areaMask": 1048576
+          }
+        }
+      ]
+    },
+    "544": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Artifact_Emails",
+      "pois": [
+        {
+          "x": -1393.43,
+          "y": -1117.19,
+          "teleport": {
+            "x": -1393.43,
+            "y": 233.7,
+            "z": -1117.19,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "545": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Photo_Reference_Email",
+      "pois": [
+        {
+          "x": -1139.6,
+          "y": -234.44,
+          "teleport": {
+            "x": -1139.6,
+            "y": 110.48,
+            "z": -234.44,
+            "areaMask": 4
+          },
+          "description": "Next to a dead worker, near the lake"
+        }
+      ]
+    },
+    "546": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Barbara_Email",
+      "pois": [
+        {
+          "x": -1156.81,
+          "y": 30.45,
+          "teleport": {
+            "x": -1156.81,
+            "y": 65.39,
+            "z": 30.45,
+            "areaMask": 1048576
+          },
+          "description": "Near the pool and the flamingo"
+        }
+      ]
+    },
+    "547": {
+      "pois": [
+        {
+          "x": -976.49,
+          "y": 1036.19,
+          "teleport": {
+            "x": -976.49,
+            "y": 59.91,
+            "z": 1036.19,
+            "areaMask": 2097152
+          }
+        }
+      ]
+    },
+    "548": {
+      "pois": [
+        {
+          "x": 1066.28,
+          "y": 1033.52,
+          "teleport": {
+            "x": 1066.28,
+            "y": 143.51,
+            "z": 1033.52,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "555": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Track_Suit",
+      "pois": [
+        {
+          "x": -1194.12,
+          "y": 38.23,
+          "teleport": {
+            "x": -1194.12,
+            "y": 58.63,
+            "z": 38.23,
+            "areaMask": 1048576
+          }
+        }
+      ]
+    },
+    "556": {
+      "pois": [
+        {
+          "x": 1623.12,
+          "y": 568.18,
+          "teleport": {
+            "x": 1623.12,
+            "y": 22.19,
+            "z": 568.18,
+            "areaMask": 32
+          }
+        }
+      ]
+    },
+    "557": {
+      "pois": [
+        {
+          "x": 1144.33,
+          "y": -640.11,
+          "teleport": {
+            "x": 1144.33,
+            "y": 209.99,
+            "z": -640.11,
+            "areaMask": 4194304
+          },
+          "requirements": [
+            566
+          ]
+        }
+      ]
+    },
+    "558": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Camouflage_Suit",
+      "pois": [
+        {
+          "x": 1246.24,
+          "y": -666.75,
+          "teleport": {
+            "x": 1246.24,
+            "y": 238.83,
+            "z": -666.75,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "566": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Maintenance_Keycard",
+      "pois": [
+        {
+          "x": -427.82,
+          "y": 699.42,
+          "teleport": {
+            "x": -427.82,
+            "y": 77.76,
+            "z": 699.42,
+            "areaMask": 131072
+          },
+          "description": "Next to 3D Printer in the bunker"
+        }
+      ]
+    },
+    "567": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Guest_Keycard",
+      "pois": [
+        {
+          "x": -1184.09,
+          "y": 41.71,
+          "teleport": {
+            "x": -1184.09,
+            "y": 66.36,
+            "z": 41.71,
+            "areaMask": 1048576
+          },
+          "requirements": [
+            566
+          ]
+        },
+        {
+          "x": 1140.92,
+          "y": -612.99,
+          "teleport": {
+            "x": 1140.92,
+            "y": 192.03,
+            "z": -612.99,
+            "areaMask": 4194304
+          },
+          "description": "On the operating table at the foot of the corpse"
+        }
+      ]
+    },
+    "568": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/VIP_Keycard",
+      "pois": [
+        {
+          "x": -978.11,
+          "y": 1038.64,
+          "teleport": {
+            "x": -978.11,
+            "y": 60.86,
+            "z": 1038.64,
+            "areaMask": 2097152
+          },
+          "description": "On desk in Security room",
+          "requirements": [
+            566
+          ]
+        }
+      ]
+    },
+    "572": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Golden_Armor",
+      "pois": [
+        {
+          "x": 186.1,
+          "y": -668.96,
+          "teleport": {
+            "x": 186.1,
+            "y": 137.77,
+            "z": -668.96,
+            "areaMask": 16
+          },
+          "requirements": [
+            444
+          ]
+        }
+      ]
+    },
+    "574": {
+      "pois": [
+        {
+          "x": 1623.27,
+          "y": 504.57,
+          "teleport": {
+            "x": 1623.27,
+            "y": 22.41,
+            "z": 504.57,
+            "areaMask": 32
+          }
+        }
+      ]
+    },
+    "575": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Books#Parallel_Universes_Book",
+      "pois": [
+        {
+          "x": -1196.89,
+          "y": 78.21,
+          "teleport": {
+            "x": -1196.89,
+            "y": 60.85,
+            "z": 78.21,
+            "areaMask": 1048576
+          },
+          "description": "Next to 3D Printer inside the bunker"
+        }
+      ]
+    },
+    "590": {
+      "pois": [
+        {
+          "x": -1154.9,
+          "y": 28.33,
+          "teleport": {
+            "x": -1154.9,
+            "y": 66.96,
+            "z": 28.33,
+            "areaMask": 1048576
+          }
+        },
+        {
+          "x": -1158.05,
+          "y": 28.33,
+          "teleport": {
+            "x": -1158.05,
+            "y": 60.13,
+            "z": 28.33,
+            "areaMask": 1048576
+          }
+        },
+        {
+          "x": -1117.68,
+          "y": 7.83,
+          "teleport": {
+            "x": -1117.68,
+            "y": 59.73,
+            "z": 7.83,
+            "areaMask": 1048576
+          }
+        },
+        {
+          "x": -1110.14,
+          "y": 9.36,
+          "teleport": {
+            "x": -1110.14,
+            "y": 60.13,
+            "z": 9.36,
+            "areaMask": 1048576
+          }
+        },
+        {
+          "x": -912.98,
+          "y": 1047.97,
+          "teleport": {
+            "x": -912.98,
+            "y": 58.88,
+            "z": 1047.97,
+            "areaMask": 2097152
+          }
+        },
+        {
+          "x": -598.86,
+          "y": 1448.47,
+          "teleport": {
+            "x": -598.86,
+            "y": 24.56,
+            "z": 1448.47,
+            "areaMask": 2
+          }
+        },
+        {
+          "x": -1016.27,
+          "y": -256.25,
+          "teleport": {
+            "x": -1016.27,
+            "y": 111.96,
+            "z": -256.25,
+            "areaMask": 4
+          }
+        },
+        {
+          "x": -708.31,
+          "y": -1435.41,
+          "teleport": {
+            "x": -708.31,
+            "y": 102.4,
+            "z": -1435.41,
+            "areaMask": 0
+          }
+        },
+        {
+          "x": 1187.87,
+          "y": 806.26,
+          "teleport": {
+            "x": 1187.87,
+            "y": 128.8,
+            "z": 806.26,
+            "areaMask": 0
+          }
+        },
+        {
+          "x": 1519.72,
+          "y": 1485.77,
+          "teleport": {
+            "x": 1519.72,
+            "y": 98.02,
+            "z": 1485.77,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "611": {
+      "pois": [
+        {
+          "x": -1127.72,
+          "y": 103.39,
+          "teleport": {
+            "x": -1127.72,
+            "y": 66,
+            "z": 103.39,
+            "areaMask": 1048576
+          }
+        }
+      ]
+    },
+    "612": {
+      "pois": [
+        {
+          "x": 416.68,
+          "y": 1170.6,
+          "teleport": {
+            "x": 416.68,
+            "y": 15.21,
+            "z": 1170.6,
+            "areaMask": 0
+          },
+          "description": "Inside the boat"
+        }
+      ]
+    },
+    "613": {
+      "pois": [
+        {
+          "x": -428.74,
+          "y": 1497.67,
+          "teleport": {
+            "x": -428.74,
+            "y": 14.26,
+            "z": 1497.67,
+            "areaMask": 2
+          },
+          "description": "Next to second dead soldier near entrance"
+        }
+      ]
+    },
+    "614": {
+      "pois": [
+        {
+          "x": 1165.11,
+          "y": -654.44,
+          "teleport": {
+            "x": 1165.11,
+            "y": 210.42,
+            "z": -654.44,
+            "areaMask": 4194304
+          },
+          "description": "Near the dead worker on the floor"
+        }
+      ]
+    },
+    "615": {
+      "pois": [
+        {
+          "x": -704.09,
+          "y": 445.93,
+          "teleport": {
+            "x": -704.09,
+            "y": 102.98,
+            "z": 445.93,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "616": {
+      "pois": [
+        {
+          "x": -1117.96,
+          "y": -1603.16,
+          "teleport": {
+            "x": -1117.96,
+            "y": 227.51,
+            "z": -1603.16,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "627": {
+      "pois": [
+        {
+          "x": -914.43,
+          "y": 1038.06,
+          "teleport": {
+            "x": -914.43,
+            "y": 59.39,
+            "z": 1038.06,
+            "areaMask": 2097152
+          },
+          "description": "On the table with mutant",
+          "requirements": [
+            568
+          ]
+        }
+      ]
+    },
+    "628": {
+      "pois": [
+        {
+          "x": -914.69,
+          "y": 1037.13,
+          "teleport": {
+            "x": -914.69,
+            "y": 59.38,
+            "z": 1037.13,
+            "areaMask": 2097152
+          },
+          "description": "On the table with mutant",
+          "requirements": [
+            568
+          ]
+        }
+      ]
+    },
+    "631": {
+      "wiki": "https://sonsoftheforest.wiki.gg/wiki/Books#The_Realm_Beyond",
+      "pois": [
+        {
+          "x": 418.97,
+          "y": 1169.51,
+          "teleport": {
+            "x": 418.97,
+            "y": 15.38,
+            "z": 1169.51,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "633": {
+      "pois": [
+        {
+          "x": -390.45,
+          "y": 1141.54,
+          "teleport": {
+            "x": -390.45,
+            "y": 44.24,
+            "z": 1141.54,
+            "areaMask": 0
+          },
+          "description": "Between corpses"
+        },
+        {
+          "x": -633.11,
+          "y": 1279.41,
+          "teleport": {
+            "x": -633.11,
+            "y": 40.04,
+            "z": 1279.41,
+            "areaMask": 0
+          },
+          "description": "Between corpses"
+        },
+        {
+          "x": 789.74,
+          "y": 1525.49,
+          "teleport": {
+            "x": 789.74,
+            "y": 91.94,
+            "z": 1525.49,
+            "areaMask": 0
+          },
+          "description": "Near the corpse of the old man"
+        },
+        {
+          "x": -1305.06,
+          "y": -827.96,
+          "teleport": {
+            "x": -1305.06,
+            "y": 253.29,
+            "z": -827.96,
+            "areaMask": 0
+          },
+          "description": "Near the corpse in the bushes"
+        },
+        {
+          "x": -258.43,
+          "y": 1141.06,
+          "teleport": {
+            "x": -258.43,
+            "y": 49.33,
+            "z": 1141.06,
+            "areaMask": 0
+          },
+          "description": "Near one of the corpses"
+        },
+        {
+          "x": 421.06,
+          "y": 1166.98,
+          "teleport": {
+            "x": 421.06,
+            "y": 16.22,
+            "z": 1166.98,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "637": {
+      "pois": [
+        {
+          "x": 1066.21,
+          "y": 1034.05,
+          "teleport": {
+            "x": 1066.21,
+            "y": 143.52,
+            "z": 1034.05,
+            "areaMask": 0
+          }
+        },
+        {
+          "x": 1137.46,
+          "y": -621.14,
+          "teleport": {
+            "x": 1137.46,
+            "y": 191.95,
+            "z": -621.14,
+            "areaMask": 4194304
+          },
+          "requirements": [
+            567
+          ]
+        },
+        {
+          "x": 1620.61,
+          "y": 498.8,
+          "teleport": {
+            "x": 1620.61,
+            "y": 22.03,
+            "z": 498.8,
+            "areaMask": 32
+          }
+        },
+        {
+          "x": 468.03,
+          "y": 1215.92,
+          "teleport": {
+            "x": 468.03,
+            "y": 15.93,
+            "z": 1215.92,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "639": {
+      "pois": [
+        {
+          "x": 1175.79,
+          "y": -646.15,
+          "teleport": {
+            "x": 1175.79,
+            "y": 210.49,
+            "z": -646.15,
+            "areaMask": 4194304
+          },
+          "requirements": [
+            567
+          ]
+        }
+      ]
+    },
+    "653": {
+      "pois": [
+        {
+          "x": -1193.68,
+          "y": 37.1,
+          "teleport": {
+            "x": -1193.68,
+            "y": 58.65,
+            "z": 37.1,
+            "areaMask": 1048576
+          }
+        }
+      ]
+    },
+    "654": {
+      "pois": [
+        {
+          "x": 1618.69,
+          "y": 511.42,
+          "teleport": {
+            "x": 1618.69,
+            "y": 22.18,
+            "z": 511.42,
+            "areaMask": 32
+          }
+        }
+      ]
+    },
+    "655": {
+      "pois": [
+        {
+          "x": -1133.86,
+          "y": 62.82,
+          "teleport": {
+            "x": -1133.86,
+            "y": 67.11,
+            "z": 62.82,
+            "areaMask": 1048576
+          }
+        }
+      ]
+    },
+    "662": {
+      "pois": [
+        {
+          "x": -628.95,
+          "y": 1399.59,
+          "teleport": {
+            "x": -628.95,
+            "y": -24,
+            "z": 1399.59,
+            "areaMask": 2
+          }
+        }
+      ]
+    },
+    "663": {
+      "pois": [
+        {
+          "x": 1413.59,
+          "y": 735.17,
+          "teleport": {
+            "x": 1413.59,
+            "y": 80.44,
+            "z": 735.17,
+            "areaMask": 64
+          },
+          "requirements": [
+            444
+          ]
+        }
+      ]
+    },
+    "665": {
+      "pois": [
+        {
+          "x": 1333.13,
+          "y": 699.42,
+          "teleport": {
+            "x": 1333.13,
+            "y": 116.52,
+            "z": 699.42,
+            "areaMask": 64
+          },
+          "requirements": [
+            444
+          ]
+        }
+      ]
+    },
+    "666": {
+      "pois": [
+        {
+          "x": -648.79,
+          "y": 1388.92,
+          "teleport": {
+            "x": -648.79,
+            "y": -17.16,
+            "z": 1388.92,
+            "areaMask": 2
+          }
+        }
+      ]
+    },
+    "667": {
+      "pois": [
+        {
+          "x": 1289.04,
+          "y": 640.1,
+          "teleport": {
+            "x": 1289.04,
+            "y": 47.91,
+            "z": 640.1,
+            "areaMask": 64
+          },
+          "requirements": [
+            444
+          ]
+        }
+      ]
+    },
+    "668": {
+      "pois": [
+        {
+          "x": -1089.28,
+          "y": -129.56,
+          "teleport": {
+            "x": -1089.28,
+            "y": 85.25,
+            "z": -129.56,
+            "areaMask": 4
+          }
+        }
+      ]
+    },
+    "669": {
+      "pois": [
+        {
+          "x": -405.64,
+          "y": -878.48,
+          "teleport": {
+            "x": -405.64,
+            "y": 205.24,
+            "z": -878.48,
+            "areaMask": 16
+          },
+          "requirements": [
+            444
+          ]
+        }
+      ]
+    },
+    "670": {
+      "pois": [
+        {
+          "x": 1823.01,
+          "y": -495.64,
+          "teleport": {
+            "x": 1823.01,
+            "y": 49.17,
+            "z": -495.64,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "671": {
+      "pois": [
+        {
+          "x": 188.67,
+          "y": -332.15,
+          "teleport": {
+            "x": 188.67,
+            "y": 524.07,
+            "z": -332.15,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "672": {
+      "pois": [
+        {
+          "x": -963.8,
+          "y": -1486.19,
+          "teleport": {
+            "x": -963.8,
+            "y": 150.58,
+            "z": -1486.19,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "674": {
+      "pois": [
+        {
+          "x": 1702.83,
+          "y": 1014.24,
+          "teleport": {
+            "x": 1702.83,
+            "y": 28.65,
+            "z": 1014.24,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "675": {
+      "pois": [
+        {
+          "x": 1832.24,
+          "y": -475.64,
+          "teleport": {
+            "x": 1832.24,
+            "y": 50,
+            "z": -475.64,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "676": {
+      "pois": [
+        {
+          "x": 189.95,
+          "y": -329.71,
+          "teleport": {
+            "x": 189.95,
+            "y": 525.45,
+            "z": -329.71,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "677": {
+      "pois": [
+        {
+          "x": -971.47,
+          "y": 1036.35,
+          "teleport": {
+            "x": -971.47,
+            "y": 60.87,
+            "z": 1036.35,
+            "areaMask": 2097152
+          }
+        }
+      ]
+    },
+    "678": {
+      "pois": [
+        {
+          "x": 1165.78,
+          "y": -645.86,
+          "teleport": {
+            "x": 1165.78,
+            "y": 210.43,
+            "z": -645.86,
+            "areaMask": 4194304
+          }
+        }
+      ]
+    },
+    "679": {
+      "pois": [
+        {
+          "x": 1719.69,
+          "y": 1065.29,
+          "teleport": {
+            "x": 1719.69,
+            "y": -30.94,
+            "z": 1065.29,
+            "areaMask": 128
+          }
+        }
+      ]
+    },
+    "680": {
+      "pois": [
+        {
+          "x": 1457.36,
+          "y": -614.63,
+          "teleport": {
+            "x": 1457.36,
+            "y": 141.83,
+            "z": -614.63,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "681": {
+      "pois": [
+        {
+          "x": 461.09,
+          "y": -227.89,
+          "teleport": {
+            "x": 461.09,
+            "y": 498.66,
+            "z": -227.89,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "682": {
+      "pois": [
+        {
+          "x": 1453.54,
+          "y": 752.82,
+          "teleport": {
+            "x": 1453.54,
+            "y": 88.29,
+            "z": 752.82,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "684": {
+      "pois": [
+        {
+          "x": 1693.67,
+          "y": 1032.73,
+          "teleport": {
+            "x": 1693.67,
+            "y": 21.37,
+            "z": 1032.73,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "685": {
+      "pois": [
+        {
+          "x": 1821.12,
+          "y": -497.26,
+          "teleport": {
+            "x": 1821.12,
+            "y": 49.88,
+            "z": -497.26,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "686": {
+      "pois": [
+        {
+          "x": 465.82,
+          "y": 1211.98,
+          "teleport": {
+            "x": 465.82,
+            "y": 17.04,
+            "z": 1211.98,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "687": {
+      "pois": [
+        {
+          "x": 1133.77,
+          "y": -646.11,
+          "teleport": {
+            "x": 1133.77,
+            "y": 210.42,
+            "z": -646.11,
+            "areaMask": 4194304
+          }
+        }
+      ]
+    },
+    "688": {
+      "pois": [
+        {
+          "x": -115.44,
+          "y": -1038.4,
+          "teleport": {
+            "x": -115.44,
+            "y": 386.59,
+            "z": -1038.4,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "689": {
+      "pois": [
+        {
+          "x": 1729.93,
+          "y": 1049.61,
+          "teleport": {
+            "x": 1729.93,
+            "y": -30.08,
+            "z": 1049.61,
+            "areaMask": 128
+          }
+        }
+      ]
+    },
+    "691": {
+      "pois": [
+        {
+          "x": 458.72,
+          "y": -226.45,
+          "teleport": {
+            "x": 458.72,
+            "y": 515.57,
+            "z": -226.45,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "692": {
+      "pois": [
+        {
+          "x": 1140.15,
+          "y": 1048.67,
+          "teleport": {
+            "x": 1140.15,
+            "y": 118.86,
+            "z": 1048.67,
+            "areaMask": 524288
+          }
+        }
+      ]
+    },
+    "693": {
+      "pois": [
+        {
+          "x": -1172.67,
+          "y": 31.39,
+          "teleport": {
+            "x": -1172.67,
+            "y": 66.36,
+            "z": 31.39,
+            "areaMask": 1048576
+          }
+        }
+      ]
+    },
+    "694": {
+      "pois": [
+        {
+          "x": -950.08,
+          "y": 218.23,
+          "teleport": {
+            "x": -950.08,
+            "y": 79.09,
+            "z": 218.23,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "695": {
+      "pois": [
+        {
+          "x": 465.67,
+          "y": 1210.07,
+          "teleport": {
+            "x": 465.67,
+            "y": 16.85,
+            "z": 1210.07,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "696": {
+      "pois": [
+        {
+          "x": 419.91,
+          "y": -1809.75,
+          "teleport": {
+            "x": 419.91,
+            "y": 15.82,
+            "z": -1809.75,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "697": {
+      "pois": [
+        {
+          "x": 420.54,
+          "y": 1171.75,
+          "teleport": {
+            "x": 420.54,
+            "y": 15.75,
+            "z": 1171.75,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "698": {
+      "pois": [
+        {
+          "x": 1624.29,
+          "y": 569.48,
+          "teleport": {
+            "x": 1624.29,
+            "y": 21.44,
+            "z": 569.48,
+            "areaMask": 32
+          }
+        }
+      ]
+    },
+    "699": {
+      "pois": [
+        {
+          "x": 1644.86,
+          "y": 523.61,
+          "teleport": {
+            "x": 1644.86,
+            "y": 22.01,
+            "z": 523.61,
+            "areaMask": 32
+          }
+        }
+      ]
+    },
+    "701": {
+      "pois": [
+        {
+          "x": 1474.47,
+          "y": 71.51,
+          "teleport": {
+            "x": 1474.47,
+            "y": 77.14,
+            "z": 71.51,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "703": {
+      "pois": [
+        {
+          "x": 185.79,
+          "y": -331.96,
+          "teleport": {
+            "x": 185.79,
+            "y": 524.08,
+            "z": -331.96,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "705": {
+      "pois": [
+        {
+          "x": -1078.22,
+          "y": 13.13,
+          "teleport": {
+            "x": -1078.22,
+            "y": 59.31,
+            "z": 13.13,
+            "areaMask": 1048576
+          },
+          "requirements": [
+            566
+          ]
+        }
+      ]
+    },
+    "706": {
+      "pois": [
+        {
+          "x": 1942.71,
+          "y": 453.7,
+          "teleport": {
+            "x": 1942.71,
+            "y": 14.84,
+            "z": 453.7,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "708": {
+      "pois": [
+        {
+          "x": 1247.45,
+          "y": 304.51,
+          "teleport": {
+            "x": 1247.45,
+            "y": 123.92,
+            "z": 304.51,
+            "areaMask": 256
+          }
+        }
+      ]
+    },
+    "709": {
+      "pois": [
+        {
+          "x": -1151.12,
+          "y": -1608.09,
+          "teleport": {
+            "x": -1151.12,
+            "y": 214.38,
+            "z": -1608.09,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "710": {
+      "pois": [
+        {
+          "x": 1505.11,
+          "y": -448.46,
+          "teleport": {
+            "x": 1505.11,
+            "y": 179.04,
+            "z": -448.46,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "711": {
+      "pois": [
+        {
+          "x": -1648.54,
+          "y": -951.13,
+          "teleport": {
+            "x": -1648.54,
+            "y": 18.26,
+            "z": -951.13,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "712": {
+      "pois": [
+        {
+          "x": 186.19,
+          "y": -668.46,
+          "teleport": {
+            "x": 186.19,
+            "y": 138.38,
+            "z": -668.46,
+            "areaMask": 16
+          }
+        }
+      ]
+    },
+    "714": {
+      "pois": [
+        {
+          "x": 1598.33,
+          "y": 486.42,
+          "teleport": {
+            "x": 1598.33,
+            "y": 22.06,
+            "z": 486.42,
+            "areaMask": 32
+          }
+        }
+      ]
+    },
+    "716": {
+      "pois": [
+        {
+          "x": 1477.69,
+          "y": 74.49,
+          "teleport": {
+            "x": 1477.69,
+            "y": 77.36,
+            "z": 74.49,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "717": {
+      "pois": [
+        {
+          "x": -111.2,
+          "y": -91.84,
+          "teleport": {
+            "x": -111.2,
+            "y": 393.57,
+            "z": -91.84,
+            "areaMask": 0
+          }
+        }
+      ]
+    },
+    "718": {
+      "pois": [
+        {
+          "x": 1139.16,
+          "y": -643.81,
+          "teleport": {
+            "x": 1139.16,
+            "y": 210.19,
+            "z": -643.81,
+            "areaMask": 4194304
+          }
+        }
+      ]
+    },
+    "720": {
+      "pois": [
+        {
+          "x": 1614.98,
+          "y": 483.69,
+          "teleport": {
+            "x": 1614.98,
+            "y": 22.99,
+            "z": 483.69,
+            "areaMask": 32
+          }
+        }
+      ]
+    },
+    "721": {
+      "pois": [
+        {
+          "x": 1154.4877,
+          "y": 524.21295,
+          "teleport": {
+            "x": 1154.4877,
+            "y": -130.36641,
+            "z": 524.21295,
+            "areaMask": 32
+          }
+        }
+      ]
+    },
+    "722": {
+      "pois": [
+        {
+          "x": 1191.33,
+          "y": -626.89,
+          "teleport": {
+            "x": 1191.33,
+            "y": 210.69,
+            "z": -626.89,
+            "areaMask": 4194304
+          }
+        }
+      ]
+    },
+    "723": {
+      "pois": [
+        {
+          "x": 1160.88,
+          "y": -603.04,
+          "teleport": {
+            "x": 1160.88,
+            "y": 217.82,
+            "z": -603.04,
+            "areaMask": 4194304
+          }
+        }
+      ]
+    },
+    "726": {
+      "pois": [
+        {
+          "x": -954.87,
+          "y": 161.72,
+          "teleport": {
+            "x": -954.87,
+            "y": 76.56,
+            "z": 161.72,
+            "areaMask": 0
+          }
+        }
+      ]
+    }
+  }
+}

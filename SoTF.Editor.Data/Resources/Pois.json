@@ -1,0 +1,5459 @@
+{
+  "bunkers": {
+    "icon": "bunker.svg",
+    "alwaysEnabled": true,
+    "type": "Bunkers",
+    "pois": [
+      {
+        "id": 29,
+        "title": "Luxury Bunker",
+        "description": "Final Bunker, access through Food and Dining Bunker. Needs to be unlocked in Residential Bunker",
+        "x": 1766,
+        "y": 553,
+        "teleport": {
+          "x": 1758.006,
+          "y": 39.5367,
+          "z": 553.5449,
+          "areaMask": 0
+        },
+        "objects": [
+          "3D Printer",
+          "Bed"
+        ],
+        "items": [
+          346,
+          526,
+          539,
+          540,
+          541,
+          548,
+          556,
+          574,
+          637,
+          692,
+          698,
+          699,
+          714,
+          720,
+          721
+        ],
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Bunkers#Luxury_Bunker_Check_on_map"
+      },
+      {
+        "id": 30,
+        "title": "Maintenance A",
+        "description": "Dig out the hatch",
+        "x": -478,
+        "y": 710,
+        "teleport": {
+          "x": -472.473,
+          "y": 85.8667,
+          "z": 708.6599,
+          "areaMask": 0
+        },
+        "requirements": [
+          485
+        ],
+        "objects": [
+          "3D Printer"
+        ],
+        "items": [
+          375,
+          423,
+          431,
+          492,
+          538,
+          566
+        ],
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Bunkers#Maintenance_A_Check_on_map"
+      },
+      {
+        "id": 31,
+        "title": "Maintenance B",
+        "description": "Dig out the hatch",
+        "x": -1133,
+        "y": -1100,
+        "teleport": {
+          "x": -1136.061,
+          "y": 278.7797,
+          "z": -1096.09,
+          "areaMask": 0
+        },
+        "requirements": [
+          485
+        ],
+        "objects": [
+          "3D Printer"
+        ],
+        "items": [
+          360,
+          374
+        ],
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Bunkers#Maintenance_B_Check_on_map"
+      },
+      {
+        "id": 32,
+        "title": "Maintenance C",
+        "description": "Dig out the hatch",
+        "x": 1110,
+        "y": 1007,
+        "teleport": {
+          "x": 1103.492,
+          "y": 127.8232,
+          "z": 1011.861,
+          "areaMask": 0
+        },
+        "requirements": [
+          485
+        ],
+        "items": [
+          386
+        ],
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Bunkers#Maintenance_C_Check_on_map"
+      },
+      {
+        "id": 307,
+        "title": "Food and Dining Bunker",
+        "x": -1027,
+        "y": 1036,
+        "teleport": {
+          "x": -1027.731,
+          "y": 68.4088,
+          "z": 1040.271,
+          "areaMask": 2097152
+        },
+        "isUnderground": true,
+        "requirements": [
+          566
+        ],
+        "items": [
+          365,
+          547,
+          568,
+          590,
+          627,
+          628,
+          677
+        ],
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Bunkers#Food_and_Dining_Bunker_Check_on_map"
+      },
+      {
+        "id": 33,
+        "title": "Residential Bunker",
+        "x": 1214,
+        "y": -638,
+        "teleport": {
+          "x": 1219.237,
+          "y": 228.104,
+          "z": -638.4961,
+          "areaMask": 4194304
+        },
+        "isUnderground": true,
+        "objects": [
+          "3D Printer"
+        ],
+        "items": [
+          346,
+          355,
+          367,
+          378,
+          424,
+          435,
+          517,
+          525,
+          537,
+          557,
+          567,
+          614,
+          617,
+          637,
+          678,
+          687,
+          718,
+          722,
+          723
+        ],
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Bunkers#Residential_Bunker_Check_on_map"
+      },
+      {
+        "id": 47,
+        "title": "Cave leading to Entertainment Bunker",
+        "x": -1190,
+        "y": 126,
+        "teleport": {
+          "x": -1189.197,
+          "y": 66.087,
+          "z": 132.917,
+          "areaMask": 0
+        },
+        "requirements": [
+          566
+        ],
+        "objects": [
+          "3D Printer"
+        ],
+        "items": [
+          340,
+          346,
+          394,
+          467,
+          543,
+          546,
+          555,
+          567,
+          575,
+          590,
+          611,
+          655,
+          693,
+          705
+        ],
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Bunkers#Entertainment_Bunker_Check_on_map"
+      }
+    ]
+  },
+  "printers": {
+    "icon": "3d-printer.svg",
+    "type": "Printers",
+    "pois": [
+      {
+        "id": 34,
+        "title": "3D Printer",
+        "x": -418,
+        "y": 700,
+        "isUnderground": true,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/3D_Printer",
+        "teleport": {
+          "x": -427.0324,
+          "y": 76.6869,
+          "z": 700.9958,
+          "areaMask": 131072
+        }
+      },
+      {
+        "id": 35,
+        "title": "3D Printer",
+        "x": -1195,
+        "y": 78,
+        "isUnderground": true,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/3D_Printer",
+        "teleport": {
+          "x": -1196.287,
+          "y": 59.8733,
+          "z": 79.9879,
+          "areaMask": 1048576
+        }
+      },
+      {
+        "id": 36,
+        "title": "3D Printer",
+        "x": -1126,
+        "y": -1048,
+        "isUnderground": true,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/3D_Printer",
+        "teleport": {
+          "x": -1127.252,
+          "y": 269.51,
+          "z": -1049.848,
+          "areaMask": 262144
+        }
+      },
+      {
+        "id": 37,
+        "title": "3D Printer",
+        "x": 1121,
+        "y": -602,
+        "isUnderground": true,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/3D_Printer",
+        "teleport": {
+          "x": 1122.662,
+          "y": 216.9346,
+          "z": -604.1529,
+          "areaMask": 4194304
+        }
+      }
+    ]
+  },
+  "laptops": {
+    "icon": "laptop.svg",
+    "type": "Laptops",
+    "pois": [
+      {
+        "id": 587,
+        "title": "Laptop no.1",
+        "description": "Cave A (Rebreather) Location",
+        "x": -422,
+        "y": 1494,
+        "teleport": {
+          "x": -422.6723,
+          "y": 14.1793,
+          "z": 1496.807,
+          "areaMask": 2
+        },
+        "isUnderground": true
+      },
+      {
+        "id": 588,
+        "title": "Laptop no.2",
+        "description": "Cave C (Shovel) Location",
+        "x": -581,
+        "y": -69,
+        "isUnderground": true,
+        "requirements": [
+          522,
+          444
+        ],
+        "teleport": {
+          "x": -582.1122,
+          "y": 137.0578,
+          "z": -71.1875,
+          "areaMask": 8
+        }
+      },
+      {
+        "id": 592,
+        "title": "Laptop no.3",
+        "description": "Bunker A (Maintenance) Location",
+        "x": -424,
+        "y": 703,
+        "isUnderground": true,
+        "requirements": [
+          485
+        ],
+        "teleport": {
+          "x": -425.7823,
+          "y": 76.6869,
+          "z": 702.8818,
+          "areaMask": 131072
+        }
+      },
+      {
+        "id": 589,
+        "title": "Laptop no.4",
+        "description": "Food and Dining Bunker Location",
+        "x": -971,
+        "y": 1036,
+        "isUnderground": true,
+        "requirements": [
+          566
+        ],
+        "teleport": {
+          "x": -973.5143,
+          "y": 59.8983,
+          "z": 1037.542,
+          "areaMask": 2097152
+        }
+      },
+      {
+        "id": 590,
+        "title": "Laptop no.5",
+        "description": "Bunker D (Entertainment) Location",
+        "x": -1179,
+        "y": 27,
+        "isUnderground": true,
+        "requirements": [
+          566
+        ],
+        "teleport": {
+          "x": -1181.383,
+          "y": 65.69,
+          "z": 26.2152,
+          "areaMask": 1048576
+        }
+      },
+      {
+        "id": 591,
+        "title": "Laptop no.6",
+        "description": "Bunker B Location",
+        "x": -1127,
+        "y": -1046,
+        "isUnderground": true,
+        "requirements": [
+          485
+        ],
+        "teleport": {
+          "x": -1127.298,
+          "y": 269.51,
+          "z": -1048.533,
+          "areaMask": 262144
+        }
+      },
+      {
+        "id": 585,
+        "title": "Laptop no.7",
+        "description": "Luxury Bunker Location",
+        "x": 1176,
+        "y": -645,
+        "isUnderground": true,
+        "requirements": [
+          567
+        ],
+        "teleport": {
+          "x": 1176.274,
+          "y": 209.5366,
+          "z": -644.652,
+          "areaMask": 4194304
+        }
+      }
+    ]
+  },
+  "caves": {
+    "icon": "cave.svg",
+    "alwaysEnabled": "true",
+    "type": "Caves",
+    "pois": [
+      {
+        "id": 38,
+        "title": "Cave leading to Residential Bunker",
+        "x": 1230,
+        "y": -652,
+        "teleport": {
+          "x": 1241.626,
+          "y": 238.4114,
+          "z": -659.7881,
+          "areaMask": 0
+        },
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Bunkers#Residential_Bunker_Check_on_map"
+      },
+      {
+        "id": 39,
+        "title": "Large Lake Grotto",
+        "x": 966,
+        "y": -406,
+        "teleport": {
+          "x": 974.605,
+          "y": 244.7414,
+          "z": -408.2101,
+          "areaMask": 0
+        },
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Caves#Large_Lake_Grotto_Check_on_map"
+      },
+      {
+        "id": 40,
+        "title": "Mountaintop Lake Grotto",
+        "x": 430,
+        "y": -206,
+        "teleport": {
+          "x": 420.3486,
+          "y": 513.1536,
+          "z": -202.1862,
+          "areaMask": 0
+        },
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Caves#Mountaintop_Lake_Grotto_Check_on_map"
+      },
+      {
+        "id": 41,
+        "title": "Frozen Lake Grotto",
+        "x": -136,
+        "y": -90,
+        "teleport": {
+          "x": -156.0622,
+          "y": 406.3641,
+          "z": -89.5833,
+          "areaMask": 0
+        },
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Caves#Frozen_Lake_Grotto_Check_on_map"
+      },
+      {
+        "id": 42,
+        "title": "Ancient Armor Cave",
+        "x": -530,
+        "y": -627,
+        "teleport": {
+          "x": -540.1115,
+          "y": 282.7721,
+          "z": -635.7455,
+          "areaMask": 0
+        },
+        "items": [
+          572,
+          361,
+          669
+        ],
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Caves#Lake/Golden_Armor_Cave_Check_on_map"
+      },
+      {
+        "id": 43,
+        "title": "Pond Grotto",
+        "x": -638,
+        "y": -1046,
+        "teleport": {
+          "x": -655.9606,
+          "y": 197.6201,
+          "z": -1060.542,
+          "areaMask": 0
+        },
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Caves#Pond_Grotto_Check_on_map"
+      },
+      {
+        "id": 44,
+        "title": "Mountainside Grotto",
+        "x": -106,
+        "y": -1060,
+        "teleport": {
+          "x": -103.1071,
+          "y": 394.1236,
+          "z": -1066.188,
+          "areaMask": 0
+        },
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Caves#Mountainside_Grotto_Check_on_map"
+      },
+      {
+        "id": 45,
+        "title": "Rope Gun Cave (B)",
+        "x": -1104,
+        "y": -179,
+        "teleport": {
+          "x": -1112.446,
+          "y": 127.7137,
+          "z": -173.4225,
+          "areaMask": 0
+        },
+        "items": [
+          468,
+          521,
+          522,
+          540,
+          545,
+          590,
+          668
+        ],
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Caves#Lakeside/Rope_Gun_Cave_Check_on_map"
+      },
+      {
+        "id": 46,
+        "title": "Rope Gun Cave Second Entrance",
+        "x": -1234,
+        "y": -302,
+        "teleport": {
+          "x": -1248.77,
+          "y": 147.9817,
+          "z": -308.2372,
+          "areaMask": 0
+        },
+        "requirements": [
+          522
+        ],
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Caves#Lakeside/Rope_Gun_Cave_Check_on_map"
+      },
+      {
+        "id": 48,
+        "title": "Shovel Cave",
+        "x": -530,
+        "y": 132,
+        "teleport": {
+          "x": -538.5109,
+          "y": 196.6818,
+          "z": 117.8255,
+          "areaMask": 0
+        },
+        "items": [
+          378,
+          485,
+          499
+        ],
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Caves#Flooded/Shovel_Cave_Check_on_map"
+      },
+      {
+        "id": 49,
+        "title": "Cave leading to the Food and Dining Bunker",
+        "x": -1014,
+        "y": 1028,
+        "teleport": {
+          "x": -1015.208,
+          "y": 97.748,
+          "z": 1024.566,
+          "areaMask": 0
+        },
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Bunkers#Food_and_Dining_Bunker_Check_on_map"
+      },
+      {
+        "id": 50,
+        "title": "Rebreather Cave (A)",
+        "x": -423,
+        "y": 1512,
+        "teleport": {
+          "x": -421.359,
+          "y": 14.1331,
+          "z": 1518.751,
+          "areaMask": 0
+        },
+        "items": [
+          353,
+          444,
+          517,
+          590,
+          613,
+          662,
+          666
+        ],
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Caves#Beach/Rebreather_Cave_Check_on_map"
+      },
+      {
+        "id": 51,
+        "title": "Cave F",
+        "x": 1296.531,
+        "y": 587.34,
+        "teleport": {
+          "x": 1296.531,
+          "y": 177.51663,
+          "z": 587.34033,
+          "areaMask": 0
+        },
+        "items": [
+          663,
+          665
+        ],
+        "requirements": [
+          444
+        ]
+      },
+      {
+        "id": 52,
+        "title": "Cave G",
+        "x": 1692.04,
+        "y": 1042,
+        "teleport": {
+          "x": 1692.04,
+          "y": 28.64,
+          "z": 1042,
+          "areaMask": 0
+        },
+        "items": [
+          689,
+          679
+        ]
+      }
+    ]
+  },
+  "camps": {
+    "icon": "camping.svg",
+    "type": "Camps",
+    "pois": [
+      {
+        "id": 51,
+        "title": "Abandoned Camp",
+        "x": 1283,
+        "y": -727,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Camps"
+      },
+      {
+        "id": 52,
+        "title": "Abandoned Camp",
+        "x": 1698,
+        "y": 33,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Camps"
+      },
+      {
+        "id": 53,
+        "title": "Abandoned Camp",
+        "x": 1263,
+        "y": 494,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Camps"
+      },
+      {
+        "id": 54,
+        "title": "Abandoned Camp",
+        "x": 725,
+        "y": 738,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Camps"
+      },
+      {
+        "id": 55,
+        "title": "Abandoned Camp",
+        "x": 799,
+        "y": 975,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Camps"
+      },
+      {
+        "id": 56,
+        "title": "Abandoned Camp",
+        "x": -29,
+        "y": 667,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Camps"
+      },
+      {
+        "id": 57,
+        "title": "Abandoned Camp",
+        "x": -237,
+        "y": 944,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Camps"
+      },
+      {
+        "id": 58,
+        "title": "Abandoned Camp",
+        "x": -258,
+        "y": 1073,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Camps"
+      },
+      {
+        "id": 59,
+        "title": "Abandoned Camp",
+        "x": 61,
+        "y": 1247,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Camps"
+      },
+      {
+        "id": 60,
+        "title": "Abandoned Camp",
+        "x": -47,
+        "y": 1456,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Camps"
+      },
+      {
+        "id": 61,
+        "title": "Abandoned Camp",
+        "description": "2x Tents without save points",
+        "x": -749,
+        "y": 1277,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Camps"
+      },
+      {
+        "id": 62,
+        "title": "Abandoned Camp",
+        "description": "Tent with save point",
+        "x": -1121,
+        "y": 1628,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Camps"
+      },
+      {
+        "id": 63,
+        "title": "Abandoned Camp",
+        "description": "2x Tents without save points",
+        "x": -1362,
+        "y": 1665,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Camps"
+      },
+      {
+        "id": 64,
+        "title": "Abandoned Camp",
+        "description": "2x Tents with save points",
+        "x": -1255,
+        "y": 1397,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Camps"
+      },
+      {
+        "id": 65,
+        "title": "Abandoned Camp",
+        "description": "2x Tents without save points",
+        "x": -1436,
+        "y": 1214,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Camps"
+      },
+      {
+        "id": 66,
+        "title": "Abandoned Camp",
+        "description": "4x Tents without save points",
+        "x": -1650,
+        "y": 1188,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Camps"
+      },
+      {
+        "id": 145,
+        "title": "Abandoned Camp",
+        "description": "Tent with save point",
+        "x": -1388,
+        "y": -217,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Camps"
+      },
+      {
+        "id": 146,
+        "title": "Abandoned Camp",
+        "description": "2x Tents with save points",
+        "x": -1722,
+        "y": 59,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Camps"
+      },
+      {
+        "id": 180,
+        "title": "Abandoned Camp",
+        "description": "3x Tents with save points",
+        "x": -703,
+        "y": 450,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Camps"
+      },
+      {
+        "id": 181,
+        "title": "Abandoned Camp",
+        "description": "3x Tents without save points",
+        "x": -1095,
+        "y": 87,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Camps"
+      },
+      {
+        "id": 182,
+        "title": "Abandoned Camp",
+        "description": "2x Tents with save points",
+        "x": -1268,
+        "y": -11,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Camps"
+      },
+      {
+        "id": 183,
+        "title": "Abandoned Camp",
+        "description": "Tent with save point",
+        "x": -1388,
+        "y": -218,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Camps"
+      },
+      {
+        "id": 184,
+        "title": "Abandoned Camp",
+        "description": "2x Tents with save points",
+        "x": -1257,
+        "y": -597,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Camps"
+      },
+      {
+        "id": 185,
+        "title": "Abandoned Camp",
+        "description": "2x Tents with save points",
+        "x": -1028,
+        "y": -623,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Camps"
+      },
+      {
+        "id": 186,
+        "title": "Abandoned Camp",
+        "description": "3x Tents without save points",
+        "x": -703,
+        "y": -663,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Camps"
+      },
+      {
+        "id": 187,
+        "title": "Abandoned Camp",
+        "description": "2x Tents with save points",
+        "x": -474,
+        "y": -335,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Camps"
+      },
+      {
+        "id": 188,
+        "title": "Abandoned Camp",
+        "description": "2x Tents with save points",
+        "x": -156,
+        "y": -110,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Camps"
+      },
+      {
+        "id": 189,
+        "title": "Abandoned Camp",
+        "description": "2x Tents with save points",
+        "x": 363,
+        "y": -170,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Camps"
+      },
+      {
+        "id": 190,
+        "title": "Abandoned Camp",
+        "description": "Tent with save point",
+        "x": 402,
+        "y": -182,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Camps"
+      },
+      {
+        "id": 191,
+        "title": "Abandoned Camp",
+        "description": "3x Tents without save points",
+        "x": -129,
+        "y": -1038,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Camps"
+      }
+    ]
+  },
+  "villages": {
+    "icon": "village.svg",
+    "type": "Villages",
+    "pois": [
+      {
+        "id": 67,
+        "title": "Abandoned Cabins",
+        "x": 1827,
+        "y": -487,
+        "teleport": {
+          "x": 1826.351,
+          "y": 49.1108,
+          "z": -511.0179,
+          "areaMask": 0
+        },
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Camps"
+      },
+      {
+        "id": 68,
+        "title": "Abandoned Cabins",
+        "x": 1694,
+        "y": 1025,
+        "teleport": {
+          "x": 1678.729,
+          "y": 28.7008,
+          "z": 1021.659,
+          "areaMask": 0
+        },
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Camps"
+      },
+      {
+        "id": 69,
+        "title": "Abandoned Cabins",
+        "x": 1459,
+        "y": 747,
+        "teleport": {
+          "x": 1452.832,
+          "y": 87.5943,
+          "z": 768.1615,
+          "areaMask": 0
+        },
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Camps"
+      }
+    ]
+  },
+  "helicopters": {
+    "icon": "helicopter.svg",
+    "type": "Helicopters",
+    "pois": [
+      {
+        "id": 114,
+        "title": "Helicopter Crash Site",
+        "x": -886,
+        "y": 770,
+        "teleport": {
+          "x": -886.6176,
+          "y": 95.5233,
+          "z": 763.3517,
+          "areaMask": 0
+        },
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Helicopter_Crash_Sites"
+      },
+      {
+        "id": 272,
+        "title": "Helicopter Crash Site",
+        "x": -804,
+        "y": -218,
+        "teleport": {
+          "x": -812.4498,
+          "y": 163.397,
+          "z": -219.1705,
+          "areaMask": 0
+        },
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Helicopter_Crash_Sites"
+      }
+    ]
+  },
+  "info": {
+    "icon": "sign.svg",
+    "type": "Info",
+    "pois": [
+      {
+        "id": 192,
+        "title": "Big Old Cross",
+        "x": 1728,
+        "y": -1198
+      },
+      {
+        "id": 204,
+        "title": "Wall Painting",
+        "x": 870,
+        "y": -379,
+        "isUnderground": true
+      },
+      {
+        "id": 582,
+        "title": "Wall Painting",
+        "x": -989,
+        "y": -248,
+        "isUnderground": true
+      },
+      {
+        "id": 583,
+        "title": "Wall Painting",
+        "x": -461,
+        "y": -556,
+        "isUnderground": true
+      },
+      {
+        "id": 216,
+        "title": "Hanging Skeletons",
+        "x": 1489,
+        "y": 716
+      },
+      {
+        "id": 245,
+        "title": "Plane Crash Site",
+        "x": -933,
+        "y": -1007,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Plane_Runway"
+      },
+      {
+        "id": 270,
+        "title": "Occultists corpses",
+        "x": -425,
+        "y": 830
+      },
+      {
+        "id": 474,
+        "title": "Occultists corpses",
+        "x": -630,
+        "y": 1270
+      },
+      {
+        "id": 271,
+        "title": "Sitting Skeleton",
+        "x": -1140,
+        "y": 1128
+      },
+      {
+        "id": 301,
+        "title": "Skeletons Pile",
+        "x": 1571,
+        "y": 800
+      },
+      {
+        "id": 302,
+        "title": "Helipad A",
+        "x": 1928,
+        "y": 454,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Wharf"
+      },
+      {
+        "id": 303,
+        "title": "Helipad B",
+        "x": 1921,
+        "y": 399,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Wharf"
+      },
+      {
+        "id": 304,
+        "title": "Leg and Torso Effigies",
+        "x": -495,
+        "y": 1433
+      },
+      {
+        "id": 351,
+        "title": "5x Effigies",
+        "x": -1630,
+        "y": 832
+      },
+      {
+        "id": 352,
+        "title": "3x Effigies",
+        "x": -639,
+        "y": 1494
+      },
+      {
+        "id": 353,
+        "title": "Dead Soldier Effigy",
+        "x": -420,
+        "y": 1643
+      },
+      {
+        "id": 354,
+        "title": "Dead Soldier Effigy",
+        "x": -400,
+        "y": 1645
+      },
+      {
+        "id": 355,
+        "title": "3x Effigies",
+        "x": 1571,
+        "y": 790
+      },
+      {
+        "id": 356,
+        "title": "3x Effigies",
+        "x": 1871,
+        "y": 143
+      },
+      {
+        "id": 435,
+        "title": "2x Effigies",
+        "x": 924,
+        "y": 1559
+      },
+      {
+        "id": 463,
+        "title": "2x Effigies",
+        "x": -727,
+        "y": 31
+      },
+      {
+        "id": 481,
+        "title": "2x Effigies",
+        "x": -499,
+        "y": 476
+      },
+      {
+        "id": 482,
+        "title": "2x Effigies",
+        "x": -1069,
+        "y": 1296
+      },
+      {
+        "id": 357,
+        "title": "Kayak",
+        "x": -1118,
+        "y": 1692,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Shipwrecks"
+      },
+      {
+        "id": 358,
+        "title": "2x Kayaks",
+        "x": 1882,
+        "y": 1438,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Shipwrecks"
+      },
+      {
+        "id": 359,
+        "title": "Kayak",
+        "x": -1111,
+        "y": 1722,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Shipwrecks"
+      },
+      {
+        "id": 360,
+        "title": "2x Kayaks",
+        "x": 11,
+        "y": -1853,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Shipwrecks"
+      },
+      {
+        "id": 361,
+        "title": "Boat",
+        "x": 1861,
+        "y": 750,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Shipwrecks"
+      },
+      {
+        "id": 362,
+        "title": "Boat",
+        "x": 631,
+        "y": -1827,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Shipwrecks"
+      },
+      {
+        "id": 363,
+        "title": "3x Boats",
+        "x": 1848,
+        "y": 774,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Shipwrecks"
+      },
+      {
+        "id": 364,
+        "title": "Boat",
+        "x": -512,
+        "y": -1851,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Shipwrecks"
+      },
+      {
+        "id": 365,
+        "title": "2x Boats",
+        "x": -529,
+        "y": -1899,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Shipwrecks"
+      },
+      {
+        "id": 366,
+        "title": "2x Boats",
+        "x": -1059,
+        "y": -1872,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Shipwrecks"
+      },
+      {
+        "id": 367,
+        "title": "2x Boats",
+        "x": -1789,
+        "y": -1591,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Shipwrecks"
+      },
+      {
+        "id": 368,
+        "title": "3x Boats",
+        "x": -1761,
+        "y": -1093,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Shipwrecks"
+      },
+      {
+        "id": 369,
+        "title": "Boat",
+        "x": -1784,
+        "y": -754,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Shipwrecks"
+      },
+      {
+        "id": 370,
+        "title": "2x Boats",
+        "x": -1397,
+        "y": 604,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Abandoned_Shipwrecks"
+      },
+      {
+        "id": 371,
+        "title": "3x Golf Carts Underwater",
+        "x": 1618,
+        "y": 772,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Golf_Course"
+      },
+      {
+        "id": 372,
+        "title": "Golf Cart",
+        "x": 1943,
+        "y": 399,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Golf_Course"
+      },
+      {
+        "id": 373,
+        "title": "2x Golf Carts",
+        "x": 1905,
+        "y": 460,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Golf_Course"
+      },
+      {
+        "id": 374,
+        "title": "2x Golf Carts",
+        "x": 1906,
+        "y": 404,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Golf_Course"
+      },
+      {
+        "id": 375,
+        "title": "Golf Cart",
+        "x": 1023,
+        "y": 1641,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Golf_Course"
+      },
+      {
+        "id": 436,
+        "title": "Golf Cart",
+        "x": 987,
+        "y": 1532,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Golf_Course"
+      },
+      {
+        "id": 437,
+        "title": "Golf Cart",
+        "x": 848,
+        "y": 1534,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Golf_Course"
+      },
+      {
+        "id": 473,
+        "title": "2x Golf Carts",
+        "x": -978,
+        "y": 134,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Golf_Course"
+      },
+      {
+        "id": 480,
+        "title": "2x Golf Carts",
+        "x": -1016,
+        "y": 1019,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Golf_Course"
+      },
+      {
+        "id": 376,
+        "title": "Mutant",
+        "x": 209,
+        "y": 1457
+      },
+      {
+        "id": 377,
+        "title": "Mutant",
+        "x": 1812,
+        "y": 142
+      },
+      {
+        "id": 378,
+        "title": "Mutant",
+        "x": 1799,
+        "y": -54
+      },
+      {
+        "id": 379,
+        "title": "Mutant",
+        "x": -1762,
+        "y": -1596
+      },
+      {
+        "id": 380,
+        "title": "Mutant",
+        "x": -1494,
+        "y": 820
+      },
+      {
+        "id": 483,
+        "title": "Mutant",
+        "x": -1065,
+        "y": 1295
+      },
+      {
+        "id": 381,
+        "title": "2x Dead Killer Whales",
+        "x": 1868,
+        "y": 82,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Killer_Whale"
+      },
+      {
+        "id": 382,
+        "title": "2x Dead Killer Whales",
+        "x": 1854,
+        "y": 96,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Killer_Whale"
+      },
+      {
+        "id": 383,
+        "title": "2x Dead Killer Whales",
+        "x": -237,
+        "y": 1425,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Killer_Whale"
+      },
+      {
+        "id": 384,
+        "title": "2x Dead Killer Whales",
+        "x": -1764,
+        "y": -977,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Killer_Whale"
+      },
+      {
+        "id": 390,
+        "title": "4x Graves",
+        "x": 1711,
+        "y": -1217,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Gravesites"
+      },
+      {
+        "id": 391,
+        "title": "2x Graves",
+        "x": 287,
+        "y": -1643,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Gravesites"
+      },
+      {
+        "id": 392,
+        "title": "4x Graves",
+        "x": -842,
+        "y": 1716,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Gravesites"
+      },
+      {
+        "id": 393,
+        "title": "4x Graves",
+        "x": -1314,
+        "y": 1474,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Gravesites"
+      },
+      {
+        "id": 394,
+        "title": "Grave",
+        "x": -1340,
+        "y": 1412,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Gravesites"
+      },
+      {
+        "id": 395,
+        "title": "Grave",
+        "x": -1455,
+        "y": 1415,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Gravesites"
+      },
+      {
+        "id": 396,
+        "title": "Grave",
+        "x": -1595,
+        "y": 763,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Gravesites"
+      },
+      {
+        "id": 397,
+        "title": "3x Graves",
+        "x": -1789,
+        "y": 22,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Gravesites"
+      },
+      {
+        "id": 398,
+        "title": "3x Graves",
+        "x": -1455,
+        "y": -124,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Gravesites"
+      },
+      {
+        "id": 399,
+        "title": "2x Graves",
+        "x": -1596,
+        "y": -1131,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Gravesites"
+      },
+      {
+        "id": 400,
+        "title": "2x Graves",
+        "x": -1611,
+        "y": -1151,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Gravesites"
+      },
+      {
+        "id": 401,
+        "title": "2x Graves",
+        "x": -1628,
+        "y": 1503,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Gravesites"
+      },
+      {
+        "id": 402,
+        "title": "3x Graves",
+        "x": -1634,
+        "y": -1508,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Gravesites"
+      },
+      {
+        "id": 403,
+        "title": "2x Graves",
+        "x": 1818,
+        "y": -488,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Gravesites"
+      },
+      {
+        "id": 404,
+        "title": "3x Graves",
+        "x": 1616,
+        "y": 194,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Gravesites"
+      },
+      {
+        "id": 405,
+        "title": "2x Graves",
+        "x": 1249,
+        "y": 763,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Gravesites"
+      },
+      {
+        "id": 406,
+        "title": "3x Graves",
+        "x": 1430,
+        "y": 861,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Gravesites"
+      },
+      {
+        "id": 407,
+        "title": "3x Graves",
+        "x": 1666,
+        "y": 964,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Gravesites"
+      },
+      {
+        "id": 408,
+        "title": "3x Graves",
+        "x": 1667,
+        "y": 958,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Gravesites"
+      },
+      {
+        "id": 409,
+        "title": "Grave",
+        "x": 1296,
+        "y": 1073,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Gravesites"
+      },
+      {
+        "id": 410,
+        "title": "2x Graves",
+        "x": 1271,
+        "y": 1161,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Gravesites"
+      },
+      {
+        "id": 411,
+        "title": "2x Graves",
+        "x": 891,
+        "y": 1361,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Gravesites"
+      },
+      {
+        "id": 412,
+        "title": "3x Graves",
+        "x": 1255,
+        "y": 1690,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Gravesites"
+      },
+      {
+        "id": 413,
+        "title": "3x Graves",
+        "x": 527,
+        "y": 1046,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Gravesites"
+      },
+      {
+        "id": 414,
+        "title": "2x Graves",
+        "x": 122,
+        "y": 1152,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Gravesites"
+      },
+      {
+        "id": 415,
+        "title": "4x Graves",
+        "x": 64,
+        "y": 1322,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Gravesites"
+      },
+      {
+        "id": 464,
+        "title": "3x Graves",
+        "x": -1000,
+        "y": 210,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Locations#Gravesites"
+      },
+      {
+        "id": 422,
+        "title": "Astronaut Corpse",
+        "x": 148,
+        "y": -643,
+        "isUnderground": true
+      },
+      {
+        "id": 423,
+        "title": "Astronaut Corpse",
+        "x": 174,
+        "y": -658,
+        "isUnderground": true
+      },
+      {
+        "id": 424,
+        "title": "3x Astronaut Corpses",
+        "x": 182,
+        "y": -671,
+        "isUnderground": true
+      },
+      {
+        "id": 425,
+        "title": "3x Astronaut Corpses",
+        "x": 175,
+        "y": -666,
+        "isUnderground": true
+      }
+    ]
+  },
+  "doors": {
+    "icon": "door.svg",
+    "type": "Doors",
+    "pois": [
+      {
+        "id": 309,
+        "title": "Locked Door",
+        "description": "On the right side in first room",
+        "x": -1018,
+        "y": 1030,
+        "teleport": {
+          "x": -1016.901,
+          "y": 62.7125,
+          "z": 1032.767,
+          "areaMask": 2097152
+        },
+        "isUnderground": true,
+        "requirements": [
+          566
+        ]
+      },
+      {
+        "id": 313,
+        "title": "Locked Door",
+        "description": "At the end of the flooded corridor",
+        "x": -930,
+        "y": 1024,
+        "teleport": {
+          "x": -932.0342,
+          "y": 58.3625,
+          "z": 1025.062,
+          "areaMask": 2097152
+        },
+        "isUnderground": true,
+        "requirements": [
+          568
+        ]
+      },
+      {
+        "id": 332,
+        "title": "Locked Door",
+        "description": "At the end of the main corridor",
+        "x": -1149,
+        "y": 51,
+        "teleport": {
+          "x": -1147.807,
+          "y": 58.6413,
+          "z": 53.4577,
+          "areaMask": 1048576
+        },
+        "isUnderground": true,
+        "requirements": [
+          566
+        ]
+      },
+      {
+        "id": 338,
+        "title": "Locked Door",
+        "description": "At the end of a bar section in Night Club room",
+        "x": -1170,
+        "y": 26,
+        "teleport": {
+          "x": -1168.545,
+          "y": 65.6977,
+          "z": 24.8021,
+          "areaMask": 1048576
+        },
+        "isUnderground": true,
+        "requirements": [
+          566
+        ]
+      },
+      {
+        "id": 339,
+        "title": "Locked Door",
+        "description": "In the right corner of the pool",
+        "x": -1139,
+        "y": 26,
+        "teleport": {
+          "x": -1140.58,
+          "y": 66.5555,
+          "z": 24.9604,
+          "areaMask": 1048576
+        },
+        "isUnderground": true,
+        "requirements": [
+          566
+        ]
+      },
+      {
+        "id": 433,
+        "title": "Locked Door",
+        "x": 1142,
+        "y": -608,
+        "teleport": {
+          "x": 1144.279,
+          "y": 191.033,
+          "z": -608.2709,
+          "areaMask": 4194304
+        },
+        "isUnderground": true,
+        "requirements": [
+          567
+        ]
+      },
+      {
+        "id": 434,
+        "title": "Locked Door",
+        "x": 1218,
+        "y": -625,
+        "teleport": {
+          "x": 1217.435,
+          "y": 224.3,
+          "z": -625.6331,
+          "areaMask": 4194304
+        },
+        "isUnderground": true,
+        "requirements": [
+          567
+        ]
+      }
+    ]
+  },
+  "crates": {
+    "icon": "wooden-box.svg",
+    "type": "Crates",
+    "pois": [
+      {
+        "id": 130,
+        "title": "3x Crates",
+        "x": -1775,
+        "y": 1365
+      },
+      {
+        "id": 135,
+        "title": "2x Crates",
+        "x": -1467,
+        "y": 1111
+      },
+      {
+        "id": 136,
+        "title": "2x Crates",
+        "x": -1369,
+        "y": 803
+      },
+      {
+        "id": 147,
+        "title": "3x Crates",
+        "x": -1639,
+        "y": -170
+      },
+      {
+        "id": 160,
+        "title": "2x Crates",
+        "x": -1215,
+        "y": 651
+      },
+      {
+        "id": 165,
+        "title": "2x Crates",
+        "x": -843,
+        "y": 1016
+      },
+      {
+        "id": 167,
+        "title": "3x Crates",
+        "x": -1079,
+        "y": 1269
+      },
+      {
+        "id": 168,
+        "title": "4x Crates",
+        "x": -914,
+        "y": 1450
+      },
+      {
+        "id": 171,
+        "title": "3x Crates",
+        "x": -1353,
+        "y": -835
+      },
+      {
+        "id": 172,
+        "title": "2x Crates",
+        "x": -1130,
+        "y": -1106
+      },
+      {
+        "id": 173,
+        "title": "2x Crates",
+        "x": -1138,
+        "y": -1092
+      },
+      {
+        "id": 193,
+        "title": "3x Crates",
+        "x": 1747,
+        "y": -1209
+      },
+      {
+        "id": 194,
+        "title": "2x Crates",
+        "x": 1734,
+        "y": -1219
+      },
+      {
+        "id": 195,
+        "title": "4x Crates",
+        "x": 931,
+        "y": -389
+      },
+      {
+        "id": 196,
+        "title": "2x Crates",
+        "x": 1361,
+        "y": -163
+      },
+      {
+        "id": 197,
+        "title": "2x Crates",
+        "x": 1352,
+        "y": -156
+      },
+      {
+        "id": 198,
+        "title": "2x Crates",
+        "x": 1397,
+        "y": -121
+      },
+      {
+        "id": 199,
+        "title": "2x Crates",
+        "x": 1853,
+        "y": 126
+      },
+      {
+        "id": 200,
+        "title": "2x Crates",
+        "x": 1782,
+        "y": -37
+      },
+      {
+        "id": 201,
+        "title": "Crate",
+        "x": 1808,
+        "y": -60
+      },
+      {
+        "id": 202,
+        "title": "2x Crates",
+        "x": 1804,
+        "y": -78
+      },
+      {
+        "id": 203,
+        "title": "Crate",
+        "x": 1465,
+        "y": 679
+      },
+      {
+        "id": 205,
+        "title": "2x Crates",
+        "x": 1506,
+        "y": 670
+      },
+      {
+        "id": 206,
+        "title": "2x Crates",
+        "x": 1503,
+        "y": 684
+      },
+      {
+        "id": 207,
+        "title": "2x Crates",
+        "x": 1570,
+        "y": 894
+      },
+      {
+        "id": 208,
+        "title": "2x Crates",
+        "x": 33,
+        "y": 1374
+      },
+      {
+        "id": 209,
+        "title": "2x Crates",
+        "x": 50,
+        "y": 1371
+      },
+      {
+        "id": 210,
+        "title": "2x Crates",
+        "x": 260,
+        "y": 1467
+      },
+      {
+        "id": 211,
+        "title": "2x Crates",
+        "x": 251,
+        "y": 1490
+      },
+      {
+        "id": 212,
+        "title": "2x Crates",
+        "x": -771,
+        "y": 762
+      },
+      {
+        "id": 213,
+        "title": "2x Crates",
+        "x": -758,
+        "y": 755
+      },
+      {
+        "id": 214,
+        "title": "2x Crates",
+        "x": -478,
+        "y": 482
+      },
+      {
+        "id": 215,
+        "title": "2x Crates",
+        "x": -1141,
+        "y": 444
+      },
+      {
+        "id": 217,
+        "title": "2x Crates",
+        "x": -1325,
+        "y": -488
+      },
+      {
+        "id": 218,
+        "title": "2x Crates",
+        "x": -967,
+        "y": -792
+      },
+      {
+        "id": 219,
+        "title": "4x Crates",
+        "x": -610,
+        "y": -1042
+      },
+      {
+        "id": 220,
+        "title": "2x Crates",
+        "x": -1155,
+        "y": -1202
+      },
+      {
+        "id": 221,
+        "title": "2x Crates",
+        "x": -1775,
+        "y": -1603
+      },
+      {
+        "id": 222,
+        "title": "2x Crates",
+        "x": -1566,
+        "y": -1655
+      },
+      {
+        "id": 240,
+        "title": "2x Crates",
+        "x": -1571,
+        "y": -821
+      },
+      {
+        "id": 241,
+        "title": "2x Crates",
+        "x": -1138,
+        "y": -1082
+      },
+      {
+        "id": 242,
+        "title": "3x Crates",
+        "x": -1153,
+        "y": -1203
+      },
+      {
+        "id": 243,
+        "title": "3x Crates",
+        "x": -1351,
+        "y": -830
+      },
+      {
+        "id": 289,
+        "title": "2x Crates",
+        "x": 1375,
+        "y": -690
+      },
+      {
+        "id": 290,
+        "title": "3x Crates",
+        "x": 1390,
+        "y": -699
+      },
+      {
+        "id": 291,
+        "title": "Crate",
+        "x": 1061,
+        "y": -928
+      },
+      {
+        "id": 292,
+        "title": "Crate",
+        "x": 1478,
+        "y": 707
+      },
+      {
+        "id": 293,
+        "title": "Crate",
+        "x": 1424,
+        "y": 851
+      },
+      {
+        "id": 294,
+        "title": "2x Crates",
+        "x": 1430,
+        "y": 834
+      },
+      {
+        "id": 349,
+        "title": "Coffin",
+        "x": -1679,
+        "y": -1760
+      },
+      {
+        "id": 350,
+        "title": "2x Coffins",
+        "x": -1681,
+        "y": -1740
+      },
+      {
+        "id": 484,
+        "title": "2x Coffins",
+        "x": -970,
+        "y": 819
+      },
+      {
+        "id": 459,
+        "title": "Crate",
+        "x": -1152,
+        "y": 455
+      },
+      {
+        "id": 460,
+        "title": "Crate",
+        "x": -747,
+        "y": 28
+      },
+      {
+        "id": 461,
+        "title": "3x Crates",
+        "x": -112,
+        "y": -103
+      },
+      {
+        "id": 577,
+        "title": "2x Crates",
+        "x": -1006,
+        "y": -391
+      },
+      {
+        "id": 578,
+        "title": "Crate",
+        "x": -518,
+        "y": -598,
+        "isUnderground": true
+      },
+      {
+        "id": 579,
+        "title": "5x Crates",
+        "x": -507,
+        "y": -618,
+        "isUnderground": true
+      }
+    ]
+  },
+  "supply": {
+    "icon": "packaging.svg",
+    "type": "Supply",
+    "pois": [
+      {
+        "id": 116,
+        "title": "4x Supply Suitcases",
+        "x": -428,
+        "y": 1594
+      },
+      {
+        "id": 117,
+        "title": "Supply Suitcase",
+        "x": -423,
+        "y": 1613
+      },
+      {
+        "id": 121,
+        "title": "2x Supply Suitcases",
+        "x": -651,
+        "y": 1487
+      },
+      {
+        "id": 122,
+        "title": "2x Supply Suitcases",
+        "x": -1114,
+        "y": 1690
+      },
+      {
+        "id": 123,
+        "title": "2x Supply Suitcases",
+        "x": -1121,
+        "y": 1626
+      },
+      {
+        "id": 126,
+        "title": "2x Supply Suitcases",
+        "x": -1364,
+        "y": 1665
+      },
+      {
+        "id": 127,
+        "title": "2x Supply Suitcases",
+        "x": -1430,
+        "y": 1710
+      },
+      {
+        "id": 128,
+        "title": "2x Supply Suitcases",
+        "x": -1258,
+        "y": 1400
+      },
+      {
+        "id": 132,
+        "title": "2x Supply Suitcases",
+        "x": -1652,
+        "y": 1185
+      },
+      {
+        "id": 133,
+        "title": "Supply Suitcase",
+        "x": -1437,
+        "y": 1213
+      },
+      {
+        "id": 137,
+        "title": "Supply Suitcase",
+        "x": -1137,
+        "y": -221
+      },
+      {
+        "id": 139,
+        "title": "3x Supply Suitcases",
+        "x": -1150,
+        "y": -234
+      },
+      {
+        "id": 140,
+        "title": "Supply Suitcase",
+        "x": -1137,
+        "y": -236
+      },
+      {
+        "id": 142,
+        "title": "2x Supply Suitcases",
+        "x": -1134,
+        "y": -130
+      },
+      {
+        "id": 143,
+        "title": "Supply Suitcase",
+        "x": -1260,
+        "y": -205
+      },
+      {
+        "id": 144,
+        "title": "Supply Suitcase",
+        "x": -1388,
+        "y": -216
+      },
+      {
+        "id": 150,
+        "title": "Supply Suitcase",
+        "x": -1719,
+        "y": 57
+      },
+      {
+        "id": 151,
+        "title": "2x Supply Suitcases",
+        "x": -1592,
+        "y": 224
+      },
+      {
+        "id": 152,
+        "title": "2x Supply Suitcases",
+        "x": -1606,
+        "y": 488
+      },
+      {
+        "id": 153,
+        "title": "2x Supply Suitcases",
+        "x": -1342,
+        "y": 237
+      },
+      {
+        "id": 157,
+        "title": "2x Supply Suitcases",
+        "x": -1217,
+        "y": 665
+      },
+      {
+        "id": 158,
+        "title": "2x Supply Suitcases",
+        "x": -1217,
+        "y": 655
+      },
+      {
+        "id": 159,
+        "title": "Supply Suitcase",
+        "x": -1188,
+        "y": 572
+      },
+      {
+        "id": 161,
+        "title": "2x Supply Suitcases",
+        "x": -883,
+        "y": 773
+      },
+      {
+        "id": 162,
+        "title": "Supply Suitcase",
+        "x": -843,
+        "y": 1011
+      },
+      {
+        "id": 169,
+        "title": "2x Supply Suitcases",
+        "x": -1096,
+        "y": 1278
+      },
+      {
+        "id": 170,
+        "title": "Supply Suitcase",
+        "x": -751,
+        "y": 1276
+      },
+      {
+        "id": 237,
+        "title": "Supply Suitcase",
+        "x": -1169,
+        "y": -1694
+      },
+      {
+        "id": 238,
+        "title": "2x Supply Suitcases",
+        "x": -848,
+        "y": 146
+      },
+      {
+        "id": 239,
+        "title": "2x Supply Suitcases",
+        "x": -735,
+        "y": 30
+      },
+      {
+        "id": 264,
+        "title": "3x Supply Suitcases",
+        "x": -606,
+        "y": 873
+      },
+      {
+        "id": 265,
+        "title": "Supply Suitcase",
+        "x": -655,
+        "y": 1497
+      },
+      {
+        "id": 266,
+        "title": "2x Supply Suitcases",
+        "x": -1098,
+        "y": 1280
+      },
+      {
+        "id": 267,
+        "title": "2x Supply Suitcases",
+        "x": -806,
+        "y": -221
+      },
+      {
+        "id": 268,
+        "title": "Supply Suitcase",
+        "x": -206,
+        "y": 878
+      },
+      {
+        "id": 269,
+        "title": "Supply Suitcase",
+        "x": 39,
+        "y": 1371
+      },
+      {
+        "id": 295,
+        "title": "3x Supply Suitcases",
+        "x": 1057,
+        "y": -915
+      },
+      {
+        "id": 296,
+        "title": "Supply Suitcase",
+        "x": 1907,
+        "y": 398
+      },
+      {
+        "id": 345,
+        "title": "Supply Suitcase",
+        "x": 1901,
+        "y": 410
+      },
+      {
+        "id": 297,
+        "title": "2x Supply Suitcases",
+        "x": 1800,
+        "y": -71
+      },
+      {
+        "id": 298,
+        "title": "4x Supply Suitcases",
+        "x": 1948,
+        "y": 398
+      },
+      {
+        "id": 299,
+        "title": "4x Supply Suitcases",
+        "x": 1951,
+        "y": 452
+      },
+      {
+        "id": 300,
+        "title": "Supply Suitcase",
+        "x": 1905,
+        "y": 454
+      },
+      {
+        "id": 346,
+        "title": "Supply Suitcase",
+        "x": 1902,
+        "y": 466
+      },
+      {
+        "id": 305,
+        "title": "2x Supply Suitcases",
+        "x": -479,
+        "y": 712,
+        "isUnderground": true
+      },
+      {
+        "id": 310,
+        "title": "3x Supply Suitcases",
+        "x": -1009,
+        "y": 954,
+        "isUnderground": true,
+        "requirements": [
+          566
+        ]
+      },
+      {
+        "id": 319,
+        "title": "2x Supply Suitcases",
+        "x": -488,
+        "y": 8,
+        "isUnderground": true,
+        "requirements": [
+          444
+        ]
+      },
+      {
+        "id": 326,
+        "title": "Supply Suitcase",
+        "x": -524,
+        "y": -17,
+        "isUnderground": true,
+        "requirements": [
+          444
+        ]
+      },
+      {
+        "id": 328,
+        "title": "Supply Suitcase",
+        "x": -580,
+        "y": -95,
+        "isUnderground": true,
+        "requirements": [
+          444
+        ]
+      },
+      {
+        "id": 329,
+        "title": "2x Supply Suitcases",
+        "x": -1094,
+        "y": 90
+      },
+      {
+        "id": 330,
+        "title": "2x Supply Suitcases",
+        "x": -1195,
+        "y": 81,
+        "isUnderground": true
+      },
+      {
+        "id": 336,
+        "title": "Supply Suitcase",
+        "x": -1183,
+        "y": 28,
+        "isUnderground": true,
+        "requirements": [
+          566
+        ]
+      },
+      {
+        "id": 141,
+        "title": "2x Supply Suitcases",
+        "x": -1267,
+        "y": -14
+      },
+      {
+        "id": 593,
+        "title": "Supply Suitcase",
+        "x": -1267,
+        "y": -6
+      },
+      {
+        "id": 594,
+        "title": "Supply Suitcase",
+        "x": -1275,
+        "y": -13
+      },
+      {
+        "id": 343,
+        "title": "Supply Suitcase",
+        "x": -1783,
+        "y": -749
+      },
+      {
+        "id": 344,
+        "title": "Supply Suitcase",
+        "x": -1772,
+        "y": -761
+      },
+      {
+        "id": 416,
+        "title": "2x Supply Suitcases",
+        "x": 1258,
+        "y": 196
+      },
+      {
+        "id": 417,
+        "title": "Supply Suitcase",
+        "x": -168,
+        "y": -418,
+        "isUnderground": true
+      },
+      {
+        "id": 418,
+        "title": "Supply Suitcase",
+        "x": -179,
+        "y": -418,
+        "isUnderground": true
+      },
+      {
+        "id": 419,
+        "title": "2x Supply Suitcases",
+        "x": -464,
+        "y": -601,
+        "isUnderground": true
+      },
+      {
+        "id": 445,
+        "title": "2x Supply Suitcases",
+        "x": 1137,
+        "y": 1061,
+        "isUnderground": true
+      },
+      {
+        "id": 446,
+        "title": "2x Supply Suitcases",
+        "x": 1219,
+        "y": -626
+      },
+      {
+        "id": 447,
+        "title": "2x Supply Suitcases",
+        "x": 1157,
+        "y": -623,
+        "isUnderground": true
+      },
+      {
+        "id": 448,
+        "title": "Supply Suitcase",
+        "x": 1149,
+        "y": -608,
+        "isUnderground": true
+      },
+      {
+        "id": 450,
+        "title": "Supply Suitcase",
+        "x": -258,
+        "y": -1
+      },
+      {
+        "id": 451,
+        "title": "Supply Suitcase",
+        "x": -254,
+        "y": -16
+      },
+      {
+        "id": 452,
+        "title": "Supply Suitcase",
+        "x": -254,
+        "y": -5
+      },
+      {
+        "id": 453,
+        "title": "Supply Suitcase",
+        "x": -252,
+        "y": -11
+      },
+      {
+        "id": 454,
+        "title": "Supply Suitcase",
+        "x": -236,
+        "y": -23
+      },
+      {
+        "id": 465,
+        "title": "Supply Suitcase",
+        "x": -591,
+        "y": -814
+      },
+      {
+        "id": 466,
+        "title": "Supply Suitcase",
+        "x": -49,
+        "y": 1451
+      },
+      {
+        "id": 467,
+        "title": "2x Supply Suitcases",
+        "x": -45,
+        "y": 1454
+      },
+      {
+        "id": 468,
+        "title": "Supply Suitcase",
+        "x": -50,
+        "y": 1453
+      },
+      {
+        "id": 469,
+        "title": "Supply Suitcase",
+        "x": -253,
+        "y": -11
+      },
+      {
+        "id": 476,
+        "title": "2x Supply Suitcases",
+        "x": -700,
+        "y": 446
+      },
+      {
+        "id": 477,
+        "title": "2x Supply Suitcases",
+        "x": -707,
+        "y": 445
+      }
+    ]
+  },
+  "ammo": {
+    "icon": "bullet.svg",
+    "type": "Ammo",
+    "pois": [
+      {
+        "id": 118,
+        "title": "3x Ammo Suitcases",
+        "x": -435,
+        "y": 1589
+      },
+      {
+        "id": 124,
+        "title": "Ammo Suitcase",
+        "x": -1119,
+        "y": 1630
+      },
+      {
+        "id": 129,
+        "title": "Ammo Suitcase",
+        "x": -1254,
+        "y": 1395
+      },
+      {
+        "id": 595,
+        "title": "Ammo Suitcase",
+        "x": -1146,
+        "y": -234
+      },
+      {
+        "id": 148,
+        "title": "2x Ammo Suitcases",
+        "x": -1726,
+        "y": 62
+      },
+      {
+        "id": 154,
+        "title": "Ammo Suitcase",
+        "x": -1612,
+        "y": 490
+      },
+      {
+        "id": 155,
+        "title": "2x Ammo Suitcases",
+        "x": -1249,
+        "y": 217
+      },
+      {
+        "id": 156,
+        "title": "Ammo Suitcase",
+        "x": -1218,
+        "y": 662
+      },
+      {
+        "id": 163,
+        "title": "Ammo Suitcase",
+        "x": -887,
+        "y": 767
+      },
+      {
+        "id": 164,
+        "title": "Ammo Suitcase",
+        "x": -844,
+        "y": 1011
+      },
+      {
+        "id": 166,
+        "title": "Ammo Suitcase",
+        "x": -1141,
+        "y": 1127
+      },
+      {
+        "id": 244,
+        "title": "2x Ammo Suitcases",
+        "x": -1322,
+        "y": -490
+      },
+      {
+        "id": 262,
+        "title": "Ammo Suitcase",
+        "x": -205,
+        "y": 878
+      },
+      {
+        "id": 263,
+        "title": "Ammo Suitcase",
+        "x": 42,
+        "y": 1371
+      },
+      {
+        "id": 286,
+        "title": "Ammo Suitcase",
+        "x": 1805,
+        "y": -67
+      },
+      {
+        "id": 287,
+        "title": "2x Ammo Suitcases",
+        "x": 1780,
+        "y": -34
+      },
+      {
+        "id": 320,
+        "title": "Ammo Suitcase",
+        "x": -486,
+        "y": 9,
+        "isUnderground": true,
+        "requirements": [
+          444
+        ]
+      },
+      {
+        "id": 322,
+        "title": "2x Ammo Suitcases",
+        "x": -518,
+        "y": 11,
+        "isUnderground": true,
+        "requirements": [
+          444
+        ]
+      },
+      {
+        "id": 323,
+        "title": "Ammo Suitcase",
+        "x": -563,
+        "y": -65,
+        "isUnderground": true,
+        "requirements": [
+          444
+        ]
+      },
+      {
+        "id": 324,
+        "title": "Ammo Suitcase",
+        "x": -564,
+        "y": -98,
+        "isUnderground": true,
+        "requirements": [
+          444
+        ]
+      },
+      {
+        "id": 337,
+        "title": "Ammo Suitcase",
+        "x": -1182,
+        "y": 25,
+        "isUnderground": true,
+        "requirements": [
+          566
+        ]
+      },
+      {
+        "id": 455,
+        "title": "Ammo Suitcase",
+        "x": -256,
+        "y": -16
+      },
+      {
+        "id": 456,
+        "title": "Ammo Suitcase",
+        "x": -258,
+        "y": -6
+      },
+      {
+        "id": 457,
+        "title": "Ammo Suitcase",
+        "x": -250,
+        "y": 1
+      },
+      {
+        "id": 458,
+        "title": "Ammo Suitcase",
+        "x": -238,
+        "y": -10
+      },
+      {
+        "id": 470,
+        "title": "Ammo Suitcase",
+        "x": -238,
+        "y": -9
+      },
+      {
+        "id": 471,
+        "title": "Ammo Suitcase",
+        "x": -45,
+        "y": 1453
+      },
+      {
+        "id": 472,
+        "title": "Ammo Suitcase",
+        "x": -64,
+        "y": 1459
+      },
+      {
+        "id": 478,
+        "title": "Ammo Suitcase",
+        "x": -706,
+        "y": 451
+      },
+      {
+        "id": 479,
+        "title": "Ammo Suitcase",
+        "x": -707,
+        "y": 457
+      },
+      {
+        "id": 580,
+        "title": "Ammo Suitcase",
+        "x": -1133,
+        "y": -282,
+        "isUnderground": true
+      },
+      {
+        "id": 581,
+        "title": "Ammo Suitcase",
+        "x": -1205,
+        "y": -277,
+        "isUnderground": true
+      }
+    ]
+  },
+  "cannibalVillages": {
+    "icon": "tipi.svg",
+    "type": "CannibalVillages",
+    "pois": [
+      {
+        "id": 236,
+        "title": "Village1",
+        "description": "Medium Village",
+        "x": -738,
+        "y": 27,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 234,
+        "title": "Village2",
+        "description": "Abandoned Village",
+        "x": -1056,
+        "y": -257,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 230,
+        "title": "Village3",
+        "description": "Big Village",
+        "x": -969,
+        "y": -777,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 248,
+        "title": "Village4",
+        "description": "Small Village",
+        "x": -1207,
+        "y": 657,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 251,
+        "title": "Village5",
+        "description": "Large Village",
+        "x": -1090,
+        "y": 1281,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 252,
+        "title": "Village6",
+        "description": "Small Village",
+        "x": -652,
+        "y": 1495,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 255,
+        "title": "Village7",
+        "description": "Small Village",
+        "x": -602,
+        "y": 880,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 229,
+        "title": "Village8",
+        "description": "Big Village",
+        "x": -1131,
+        "y": -1083,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 225,
+        "title": "Village9",
+        "description": "Small Village",
+        "x": -1173,
+        "y": -1697,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 223,
+        "title": "Village10",
+        "description": "Small Village",
+        "x": -1572,
+        "y": -1660,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 231,
+        "title": "Village11",
+        "description": "Small Village",
+        "x": -1322,
+        "y": -484,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 246,
+        "title": "Village12",
+        "description": "Medium Village",
+        "x": -482,
+        "y": 489,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 250,
+        "title": "Village13",
+        "description": "Small Village",
+        "x": -1470,
+        "y": 1121,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 226,
+        "title": "Village14",
+        "description": "Small Village",
+        "x": -1575,
+        "y": -818,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 254,
+        "title": "Village15",
+        "description": "Small Village",
+        "x": -763,
+        "y": 765,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 249,
+        "title": "Village16",
+        "description": "Medium Village",
+        "x": -1513,
+        "y": 824,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 253,
+        "title": "Village17",
+        "description": "Medium Village",
+        "x": -844,
+        "y": 1019,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 258,
+        "title": "Village18",
+        "description": "Medium Village",
+        "x": 219,
+        "y": 1136,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 259,
+        "title": "Village19",
+        "description": "Medium Village",
+        "x": 43,
+        "y": 1378,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 256,
+        "title": "Village20",
+        "description": "Medium Village",
+        "x": -203,
+        "y": 878,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 247,
+        "title": "Village21",
+        "description": "Medium Village",
+        "x": -1147,
+        "y": 452,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 233,
+        "title": "Village22",
+        "description": "Medium Village",
+        "x": -1640,
+        "y": -177,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 232,
+        "title": "Village23",
+        "description": "Medium Village",
+        "x": -1395,
+        "y": -459,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 227,
+        "title": "Village24",
+        "description": "Small Village",
+        "x": -1350,
+        "y": -835,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 228,
+        "title": "Village25",
+        "description": "Small Village",
+        "x": -1155,
+        "y": -1208,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 279,
+        "title": "Village26",
+        "description": "Abandoned Village",
+        "x": 1779,
+        "y": -28,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 280,
+        "title": "Village27",
+        "description": "Abandoned Village",
+        "x": 1802,
+        "y": -67,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 278,
+        "title": "Village28",
+        "description": "Medium Village",
+        "x": 1851,
+        "y": 136,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 260,
+        "title": "Village30",
+        "description": "Medium Village",
+        "x": 257,
+        "y": 1478,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 282,
+        "title": "Village31",
+        "description": "Medium Village",
+        "x": 1356,
+        "y": -153,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 281,
+        "title": "Village32",
+        "description": "Small Village",
+        "x": 1401,
+        "y": -122,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 284,
+        "title": "Village33",
+        "description": "Medium Village",
+        "x": 1056,
+        "y": -922,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 224,
+        "title": "Village34",
+        "description": "Medium Village",
+        "x": -1777,
+        "y": -1601,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 235,
+        "title": "Village35",
+        "description": "Small Village",
+        "x": -845,
+        "y": 150,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 257,
+        "title": "Village36",
+        "description": "Medium Village",
+        "x": -162,
+        "y": 1052,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 277,
+        "title": "AbandonedVillage-1",
+        "x": 1430,
+        "y": 844,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 275,
+        "title": "AbandonedVillage-2",
+        "x": 1468,
+        "y": 672,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 274,
+        "title": "Abandoned Cannibal Village",
+        "x": 1511,
+        "y": 672,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 276,
+        "title": "Abandoned Cannibal Village",
+        "x": 1478,
+        "y": 703,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 273,
+        "title": "AbandonedVillage-3",
+        "x": 1568,
+        "y": 890,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 347,
+        "title": "AbandonedVillage-4",
+        "x": 1733,
+        "y": -1218,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 283,
+        "title": "AbandonedVillage-5",
+        "x": 1386,
+        "y": -689,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      },
+      {
+        "id": 348,
+        "title": "Cannibal building",
+        "x": -1684,
+        "y": 906,
+        "wiki": "https://sonsoftheforest.wiki.gg/wiki/Villages"
+      }
+    ]
+  },
+  "ponds": {
+    "icon": "pond.svg",
+    "type": "Ponds",
+    "pois": [
+      {
+        "title": "LakeP",
+        "x": -1317.15,
+        "y": 1297.25,
+        "teleport": {
+          "x": -1317.15,
+          "y": 90.72,
+          "z": 1297.25,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePAA",
+        "x": -1587.69,
+        "y": 248.1,
+        "teleport": {
+          "x": -1587.69,
+          "y": 55.16,
+          "z": 248.1,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePAB",
+        "x": -1718.8,
+        "y": 67.67,
+        "teleport": {
+          "x": -1718.8,
+          "y": 88.76,
+          "z": 67.67,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePAC",
+        "x": -1473.42,
+        "y": 856.22,
+        "teleport": {
+          "x": -1473.42,
+          "y": 45.59,
+          "z": 856.22,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePAD",
+        "x": -1728.95,
+        "y": -271.79,
+        "teleport": {
+          "x": -1728.95,
+          "y": 100.59,
+          "z": -271.79,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePAE",
+        "x": -1382.02,
+        "y": 1496.44,
+        "teleport": {
+          "x": -1382.02,
+          "y": 90.97,
+          "z": 1496.44,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePAF",
+        "x": -1471.94,
+        "y": 1117.37,
+        "teleport": {
+          "x": -1471.94,
+          "y": 80.59,
+          "z": 1117.37,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePAG",
+        "x": -238.32,
+        "y": -1662.32,
+        "teleport": {
+          "x": -238.32,
+          "y": 86.28,
+          "z": -1662.32,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePAH",
+        "x": -285,
+        "y": -1469.2,
+        "teleport": {
+          "x": -285,
+          "y": 169.55,
+          "z": -1469.2,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePAI",
+        "x": 147.65,
+        "y": -1589.94,
+        "teleport": {
+          "x": 147.65,
+          "y": 149.53,
+          "z": -1589.94,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePAJ",
+        "x": -1113.34,
+        "y": -1088.08,
+        "teleport": {
+          "x": -1113.34,
+          "y": 278.15,
+          "z": -1088.08,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePAK",
+        "x": -1182.17,
+        "y": -1589.47,
+        "teleport": {
+          "x": -1182.17,
+          "y": 227.51,
+          "z": -1589.47,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePAL",
+        "x": 274.8,
+        "y": -1748.2,
+        "teleport": {
+          "x": 274.8,
+          "y": 28.09,
+          "z": -1748.2,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePAM",
+        "x": 261.9,
+        "y": -1777.5,
+        "teleport": {
+          "x": 261.9,
+          "y": 28.04,
+          "z": -1777.5,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePAN",
+        "x": 292,
+        "y": -1786.4,
+        "teleport": {
+          "x": 292,
+          "y": 28.17,
+          "z": -1786.4,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePAO",
+        "x": 720.8,
+        "y": 829.9,
+        "teleport": {
+          "x": 720.8,
+          "y": 283.3,
+          "z": 829.9,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePAP",
+        "x": 191.3,
+        "y": 1262.4,
+        "teleport": {
+          "x": 191.3,
+          "y": 76.92,
+          "z": 1262.4,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePAQ",
+        "x": -299.64,
+        "y": 962.66,
+        "teleport": {
+          "x": -299.64,
+          "y": 89.05,
+          "z": 962.66,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePAR",
+        "x": -157.78,
+        "y": 1195.66,
+        "teleport": {
+          "x": -157.78,
+          "y": 42.83,
+          "z": 1195.66,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePAS",
+        "x": -175.3,
+        "y": 935.77,
+        "teleport": {
+          "x": -175.3,
+          "y": 101.97,
+          "z": 935.77,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePAT",
+        "x": -37.96,
+        "y": 672.56,
+        "teleport": {
+          "x": -37.96,
+          "y": 250.77,
+          "z": 672.56,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePAU",
+        "x": -385.68,
+        "y": 522.41,
+        "teleport": {
+          "x": -385.68,
+          "y": 162.55,
+          "z": 522.41,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePAV",
+        "x": -330.5,
+        "y": 897.7,
+        "teleport": {
+          "x": -330.5,
+          "y": 89.05,
+          "z": 897.7,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePAW",
+        "x": -329.45,
+        "y": 1136.49,
+        "teleport": {
+          "x": -329.45,
+          "y": 47.41,
+          "z": 1136.49,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePAX",
+        "x": -204.12,
+        "y": 1094.43,
+        "teleport": {
+          "x": -204.12,
+          "y": 66.69,
+          "z": 1094.43,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePAY",
+        "x": 1296.21,
+        "y": -801.79,
+        "teleport": {
+          "x": 1296.21,
+          "y": 213.18,
+          "z": -801.79,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePAZ",
+        "x": 1451.41,
+        "y": -423.99,
+        "teleport": {
+          "x": 1451.41,
+          "y": 191.83,
+          "z": -423.99,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePBA",
+        "x": -886.78,
+        "y": -1648.89,
+        "teleport": {
+          "x": -886.78,
+          "y": 207.23,
+          "z": -1648.89,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePBB",
+        "x": -840.46,
+        "y": -1171.62,
+        "teleport": {
+          "x": -840.46,
+          "y": 175.59,
+          "z": -1171.62,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePBC",
+        "x": -775.6,
+        "y": -918.3,
+        "teleport": {
+          "x": -775.6,
+          "y": 216.77,
+          "z": -918.3,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePBD",
+        "x": -878.13,
+        "y": -1018.59,
+        "teleport": {
+          "x": -878.13,
+          "y": 229.55,
+          "z": -1018.59,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePBE",
+        "x": -1058.75,
+        "y": -1483.12,
+        "teleport": {
+          "x": -1058.75,
+          "y": 190.11,
+          "z": -1483.12,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePBF",
+        "x": -1413.58,
+        "y": -1352.36,
+        "teleport": {
+          "x": -1413.58,
+          "y": 208.65,
+          "z": -1352.36,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePBG",
+        "x": -885.04,
+        "y": -1470.41,
+        "teleport": {
+          "x": -885.04,
+          "y": 146.78,
+          "z": -1470.41,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePBH",
+        "x": -1094.88,
+        "y": -1657.38,
+        "teleport": {
+          "x": -1094.88,
+          "y": 224.34,
+          "z": -1657.38,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePBI",
+        "x": -1626.58,
+        "y": -1620.02,
+        "teleport": {
+          "x": -1626.58,
+          "y": 40.26,
+          "z": -1620.02,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePBJ",
+        "x": -1620.41,
+        "y": -1265.03,
+        "teleport": {
+          "x": -1620.41,
+          "y": 63.06,
+          "z": -1265.03,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePBK",
+        "x": -1619.37,
+        "y": -963.14,
+        "teleport": {
+          "x": -1619.37,
+          "y": 50.07,
+          "z": -963.14,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePBL",
+        "x": -1681.02,
+        "y": -557.94,
+        "teleport": {
+          "x": -1681.02,
+          "y": 62.92,
+          "z": -557.94,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePBM",
+        "x": -1318.15,
+        "y": -1848.16,
+        "teleport": {
+          "x": -1318.15,
+          "y": 17.87,
+          "z": -1848.16,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePBN",
+        "x": -899.94,
+        "y": -1858.41,
+        "teleport": {
+          "x": -899.94,
+          "y": 17.86,
+          "z": -1858.41,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePBO",
+        "x": -802.94,
+        "y": -829.4,
+        "teleport": {
+          "x": -802.94,
+          "y": 250.58,
+          "z": -829.4,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePBP",
+        "x": -991.65,
+        "y": -926.74,
+        "teleport": {
+          "x": -991.65,
+          "y": 271.84,
+          "z": -926.74,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePBQ",
+        "x": -524.72,
+        "y": -1586.94,
+        "teleport": {
+          "x": -524.72,
+          "y": 72.4,
+          "z": -1586.94,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePBR",
+        "x": -528.4,
+        "y": -1444.87,
+        "teleport": {
+          "x": -528.4,
+          "y": 109.01,
+          "z": -1444.87,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePBS",
+        "x": -857.5,
+        "y": 1569,
+        "teleport": {
+          "x": -857.5,
+          "y": 62.79,
+          "z": 1569,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePBT",
+        "x": -847.09,
+        "y": 1440.49,
+        "teleport": {
+          "x": -847.09,
+          "y": 95.32,
+          "z": 1440.49,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePBU",
+        "x": -719.94,
+        "y": 882.1,
+        "teleport": {
+          "x": -719.94,
+          "y": 94.44,
+          "z": 882.1,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePBV",
+        "x": -788.19,
+        "y": 615.93,
+        "teleport": {
+          "x": -788.19,
+          "y": 102.23,
+          "z": 615.93,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePBW",
+        "x": -616.84,
+        "y": 1205.04,
+        "teleport": {
+          "x": -616.84,
+          "y": 44.17,
+          "z": 1205.04,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePBX",
+        "x": -1307.47,
+        "y": 1101.91,
+        "teleport": {
+          "x": -1307.47,
+          "y": 66.79,
+          "z": 1101.91,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePBY",
+        "x": -878.3,
+        "y": 949,
+        "teleport": {
+          "x": -878.3,
+          "y": 89.6,
+          "z": 949,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePBZ",
+        "x": -1198.04,
+        "y": 439.72,
+        "teleport": {
+          "x": -1198.04,
+          "y": 56.45,
+          "z": 439.72,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePCA",
+        "x": 1561.9,
+        "y": -514.8,
+        "teleport": {
+          "x": 1561.9,
+          "y": 167.57,
+          "z": -514.8,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePCB",
+        "x": 1552.38,
+        "y": -398.3,
+        "teleport": {
+          "x": 1552.38,
+          "y": 189.49,
+          "z": -398.3,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePCC",
+        "x": 1630.12,
+        "y": 26.41,
+        "teleport": {
+          "x": 1630.12,
+          "y": 32.31,
+          "z": 26.41,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePCD",
+        "x": 1831.09,
+        "y": -447.59,
+        "teleport": {
+          "x": 1831.09,
+          "y": 48.99,
+          "z": -447.59,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePCE",
+        "x": 1660.48,
+        "y": 377.71,
+        "teleport": {
+          "x": 1660.48,
+          "y": 53.46,
+          "z": 377.71,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePCF",
+        "x": 1193.6,
+        "y": 804.2,
+        "teleport": {
+          "x": 1193.6,
+          "y": 128.18,
+          "z": 804.2,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePCG",
+        "x": 1173.91,
+        "y": 653.56,
+        "teleport": {
+          "x": 1173.91,
+          "y": 154.97,
+          "z": 653.56,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePCH",
+        "x": 1552.9,
+        "y": 516.5,
+        "teleport": {
+          "x": 1552.9,
+          "y": 134.7,
+          "z": 516.5,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePCI",
+        "x": 1725.49,
+        "y": -287.78,
+        "teleport": {
+          "x": 1725.49,
+          "y": 63.94,
+          "z": -287.78,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePCJ",
+        "x": 1562.09,
+        "y": -272.39,
+        "teleport": {
+          "x": 1562.09,
+          "y": 137.65,
+          "z": -272.39,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePCK",
+        "x": 1468.9,
+        "y": -597,
+        "teleport": {
+          "x": 1468.9,
+          "y": 190.74,
+          "z": -597,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePCL",
+        "x": 1064.3,
+        "y": -107.6,
+        "teleport": {
+          "x": 1064.3,
+          "y": 275.66,
+          "z": -107.6,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePCM",
+        "x": 607.7,
+        "y": -1010.4,
+        "teleport": {
+          "x": 607.7,
+          "y": 296.65,
+          "z": -1010.4,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePCN",
+        "x": 933.37,
+        "y": -1249.18,
+        "teleport": {
+          "x": 933.37,
+          "y": 137.85,
+          "z": -1249.18,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePCO",
+        "x": 1671.64,
+        "y": 947.39,
+        "teleport": {
+          "x": 1671.64,
+          "y": 37.16,
+          "z": 947.39,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePCP",
+        "x": 1703.33,
+        "y": 553.4,
+        "teleport": {
+          "x": 1703.33,
+          "y": 45.2,
+          "z": 553.4,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePCQ",
+        "x": 1528,
+        "y": 362.8,
+        "teleport": {
+          "x": 1528,
+          "y": 113.66,
+          "z": 362.8,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePCR",
+        "x": 881.97,
+        "y": -956.38,
+        "teleport": {
+          "x": 881.97,
+          "y": 246.57,
+          "z": -956.38,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePCS",
+        "x": 1379.63,
+        "y": 70.57,
+        "teleport": {
+          "x": 1379.63,
+          "y": 127.61,
+          "z": 70.57,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePCT",
+        "x": 1239,
+        "y": 269.9,
+        "teleport": {
+          "x": 1239,
+          "y": 197.5,
+          "z": 269.9,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePCU",
+        "x": -1243.57,
+        "y": -1078.56,
+        "teleport": {
+          "x": -1243.57,
+          "y": 267.43,
+          "z": -1078.56,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePCV",
+        "x": -1282.82,
+        "y": -887.19,
+        "teleport": {
+          "x": -1282.82,
+          "y": 252.05,
+          "z": -887.19,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePCW",
+        "x": -1135.77,
+        "y": 1626.41,
+        "teleport": {
+          "x": -1135.77,
+          "y": 36.92,
+          "z": 1626.41,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePCX",
+        "x": -1252.28,
+        "y": 1400.62,
+        "teleport": {
+          "x": -1252.28,
+          "y": 99.98,
+          "z": 1400.62,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePCY",
+        "x": -1037.91,
+        "y": 1297.16,
+        "teleport": {
+          "x": -1037.91,
+          "y": 98.5,
+          "z": 1297.16,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePCZ",
+        "x": -1666.54,
+        "y": 1097.19,
+        "teleport": {
+          "x": -1666.54,
+          "y": 89.52,
+          "z": 1097.19,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePDA",
+        "x": -766.72,
+        "y": -1482.14,
+        "teleport": {
+          "x": -766.72,
+          "y": 112.42,
+          "z": -1482.14,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePDA",
+        "x": -1067.78,
+        "y": 1117.6,
+        "teleport": {
+          "x": -1067.78,
+          "y": 98.41,
+          "z": 1117.6,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePDB",
+        "x": -703.91,
+        "y": 458.34,
+        "teleport": {
+          "x": -703.91,
+          "y": 102.37,
+          "z": 458.34,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePDB",
+        "x": 1216.1,
+        "y": -880.74,
+        "teleport": {
+          "x": 1216.1,
+          "y": 219.49,
+          "z": -880.74,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePDC",
+        "x": 797.56,
+        "y": -570.14,
+        "teleport": {
+          "x": 797.56,
+          "y": 309.57,
+          "z": -570.14,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePDD",
+        "x": 709.27,
+        "y": -919.77,
+        "teleport": {
+          "x": 709.27,
+          "y": 289.05,
+          "z": -919.77,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePDE",
+        "x": 1682.17,
+        "y": 20.7,
+        "teleport": {
+          "x": 1682.17,
+          "y": 21.55,
+          "z": 20.7,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePDF",
+        "x": 1747.68,
+        "y": 35.44,
+        "teleport": {
+          "x": 1747.68,
+          "y": 23.42,
+          "z": 35.44,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePDG",
+        "x": 1516.29,
+        "y": 30.66,
+        "teleport": {
+          "x": 1516.29,
+          "y": 63.84,
+          "z": 30.66,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePDH",
+        "x": 1615.64,
+        "y": -75.36,
+        "teleport": {
+          "x": 1615.64,
+          "y": 48.13,
+          "z": -75.36,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePDI",
+        "x": 1415.84,
+        "y": 13.8,
+        "teleport": {
+          "x": 1415.84,
+          "y": 94.65,
+          "z": 13.8,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePDJ",
+        "x": 809.43,
+        "y": -997,
+        "teleport": {
+          "x": 809.43,
+          "y": 263.4,
+          "z": -997,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePDK",
+        "x": 296.42,
+        "y": -1221.52,
+        "teleport": {
+          "x": 296.42,
+          "y": 306.58,
+          "z": -1221.52,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePDL",
+        "x": 1672.19,
+        "y": -1252.93,
+        "teleport": {
+          "x": 1672.19,
+          "y": 47.47,
+          "z": -1252.93,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePDM",
+        "x": 1456.18,
+        "y": -1317.81,
+        "teleport": {
+          "x": 1456.18,
+          "y": 53.04,
+          "z": -1317.81,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePDN",
+        "x": 1502.7,
+        "y": -1061.43,
+        "teleport": {
+          "x": 1502.7,
+          "y": 93.59,
+          "z": -1061.43,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePDO",
+        "x": 1721.4,
+        "y": -1057.37,
+        "teleport": {
+          "x": 1721.4,
+          "y": 26.73,
+          "z": -1057.37,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePDP",
+        "x": 1518.36,
+        "y": -879.24,
+        "teleport": {
+          "x": 1518.36,
+          "y": 17.76,
+          "z": -879.24,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePDQ",
+        "x": 1477.66,
+        "y": 958.05,
+        "teleport": {
+          "x": 1477.66,
+          "y": 48,
+          "z": 958.05,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePDR",
+        "x": 1296.7,
+        "y": -552.65,
+        "teleport": {
+          "x": 1296.7,
+          "y": 236.87,
+          "z": -552.65,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePDS",
+        "x": 1383.56,
+        "y": -474.15,
+        "teleport": {
+          "x": 1383.56,
+          "y": 204.84,
+          "z": -474.15,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePDT",
+        "x": 1157.15,
+        "y": -996.25,
+        "teleport": {
+          "x": 1157.15,
+          "y": 193.33,
+          "z": -996.25,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePDU",
+        "x": 1577.22,
+        "y": -1667.12,
+        "teleport": {
+          "x": 1577.22,
+          "y": 23.4,
+          "z": -1667.12,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePDV",
+        "x": 1068.94,
+        "y": -1616.22,
+        "teleport": {
+          "x": 1068.94,
+          "y": 30.2,
+          "z": -1616.22,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePDW",
+        "x": 1563.65,
+        "y": 235.22,
+        "teleport": {
+          "x": 1563.65,
+          "y": 78.21,
+          "z": 235.22,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePDX",
+        "x": 1351.35,
+        "y": 814.56,
+        "teleport": {
+          "x": 1351.35,
+          "y": 122.87,
+          "z": 814.56,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePDY",
+        "x": -2.09,
+        "y": -1501.51,
+        "teleport": {
+          "x": -2.09,
+          "y": 228,
+          "z": -1501.51,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePDZ",
+        "x": -99.47,
+        "y": -1344.41,
+        "teleport": {
+          "x": -99.47,
+          "y": 245.25,
+          "z": -1344.41,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePEA",
+        "x": 583.03,
+        "y": 1108.94,
+        "teleport": {
+          "x": 583.03,
+          "y": 143.1,
+          "z": 1108.94,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePEB",
+        "x": 787.59,
+        "y": 959.93,
+        "teleport": {
+          "x": 787.59,
+          "y": 227.27,
+          "z": 959.93,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePEC",
+        "x": 596.6,
+        "y": 1336.53,
+        "teleport": {
+          "x": 596.6,
+          "y": 67.41,
+          "z": 1336.53,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePED",
+        "x": 751.73,
+        "y": 1653.83,
+        "teleport": {
+          "x": 751.73,
+          "y": 87.6,
+          "z": 1653.83,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePEE",
+        "x": 451.42,
+        "y": 965.38,
+        "teleport": {
+          "x": 451.42,
+          "y": 167.06,
+          "z": 965.38,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePEF",
+        "x": 302.59,
+        "y": 831.6,
+        "teleport": {
+          "x": 302.59,
+          "y": 205.72,
+          "z": 831.6,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePEG",
+        "x": -968.54,
+        "y": -829.88,
+        "teleport": {
+          "x": -968.54,
+          "y": 268.47,
+          "z": -829.88,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePEH",
+        "x": -768.19,
+        "y": -675.16,
+        "teleport": {
+          "x": -768.19,
+          "y": 286.58,
+          "z": -675.16,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePEI",
+        "x": -879.96,
+        "y": -769.27,
+        "teleport": {
+          "x": -879.96,
+          "y": 262.84,
+          "z": -769.27,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePEJ",
+        "x": -1035.1,
+        "y": -1237.3,
+        "teleport": {
+          "x": -1035.1,
+          "y": 223.89,
+          "z": -1237.3,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePEK",
+        "x": -1175.4,
+        "y": -1490.7,
+        "teleport": {
+          "x": -1175.4,
+          "y": 215.5,
+          "z": -1490.7,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePEL",
+        "x": -1286.5,
+        "y": -781.8,
+        "teleport": {
+          "x": -1286.5,
+          "y": 243.97,
+          "z": -781.8,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePEM",
+        "x": -1387.58,
+        "y": -807.29,
+        "teleport": {
+          "x": -1387.58,
+          "y": 252.95,
+          "z": -807.29,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePEN",
+        "x": -1354.44,
+        "y": -950.78,
+        "teleport": {
+          "x": -1354.44,
+          "y": 269.27,
+          "z": -950.78,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePEO",
+        "x": -1155.25,
+        "y": -784.36,
+        "teleport": {
+          "x": -1155.25,
+          "y": 266.62,
+          "z": -784.36,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePEP",
+        "x": -1121.05,
+        "y": -1146.26,
+        "teleport": {
+          "x": -1121.05,
+          "y": 272.99,
+          "z": -1146.26,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePEQ",
+        "x": -1291.93,
+        "y": -1287.45,
+        "teleport": {
+          "x": -1291.93,
+          "y": 213.03,
+          "z": -1287.45,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePER",
+        "x": -1389.92,
+        "y": -1041.46,
+        "teleport": {
+          "x": -1389.92,
+          "y": 220.8,
+          "z": -1041.46,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePES",
+        "x": -1296.78,
+        "y": -1538.66,
+        "teleport": {
+          "x": -1296.78,
+          "y": 205.14,
+          "z": -1538.66,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePET",
+        "x": -922.42,
+        "y": -1150.45,
+        "teleport": {
+          "x": -922.42,
+          "y": 202.65,
+          "z": -1150.45,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePEU",
+        "x": -603.8,
+        "y": -1195.2,
+        "teleport": {
+          "x": -603.8,
+          "y": 195.77,
+          "z": -1195.2,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePEV",
+        "x": -495.72,
+        "y": -767.06,
+        "teleport": {
+          "x": -495.72,
+          "y": 288.81,
+          "z": -767.06,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePEW",
+        "x": 1576.29,
+        "y": 344.42,
+        "teleport": {
+          "x": 1576.29,
+          "y": 81.39,
+          "z": 344.42,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePEX",
+        "x": 1687.32,
+        "y": 286.03,
+        "teleport": {
+          "x": 1687.32,
+          "y": 46.34,
+          "z": 286.03,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePEY",
+        "x": 1741,
+        "y": 917.77,
+        "teleport": {
+          "x": 1741,
+          "y": 28.5,
+          "z": 917.77,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePFA",
+        "x": 1664.22,
+        "y": 641.3,
+        "teleport": {
+          "x": 1664.22,
+          "y": 88.09,
+          "z": 641.3,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePFB",
+        "x": 1372.5,
+        "y": 289.6,
+        "teleport": {
+          "x": 1372.5,
+          "y": 145.2,
+          "z": 289.6,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePFC",
+        "x": 1380.37,
+        "y": 960.43,
+        "teleport": {
+          "x": 1380.37,
+          "y": 69.84,
+          "z": 960.43,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakePFD",
+        "x": 1549.26,
+        "y": 1064.08,
+        "teleport": {
+          "x": 1549.26,
+          "y": 43.94,
+          "z": 1064.08,
+          "areaMask": 0
+        }
+      }
+    ]
+  },
+  "lakes": {
+    "icon": "lake.svg",
+    "type": "Lakes",
+    "pois": [
+      {
+        "title": "FrozenLake",
+        "x": -162.53,
+        "y": -87.16,
+        "teleport": {
+          "x": -162.53,
+          "y": 406.2,
+          "z": -87.16,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "GolfPondA",
+        "x": 813.12,
+        "y": 1345.84,
+        "teleport": {
+          "x": 813.12,
+          "y": 63.96,
+          "z": 1345.84,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "GolfPondB",
+        "x": 799.19,
+        "y": 1516.01,
+        "teleport": {
+          "x": 799.19,
+          "y": 91.24,
+          "z": 1516.01,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "GolfPondC",
+        "x": 1027.02,
+        "y": 1609.61,
+        "teleport": {
+          "x": 1027.02,
+          "y": 85.86,
+          "z": 1609.61,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "GolfPondD",
+        "x": 1427.23,
+        "y": 1741.26,
+        "teleport": {
+          "x": 1427.23,
+          "y": 91.63,
+          "z": 1741.26,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "GolfPondE",
+        "x": 1242.23,
+        "y": 1200.8,
+        "teleport": {
+          "x": 1242.23,
+          "y": 120.81,
+          "z": 1200.8,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "GolfPondF",
+        "x": 1364.2,
+        "y": 1559.41,
+        "teleport": {
+          "x": 1364.2,
+          "y": 86.05,
+          "z": 1559.41,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeAA",
+        "x": 654.97,
+        "y": -758.16,
+        "teleport": {
+          "x": 654.97,
+          "y": 294,
+          "z": -758.16,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeAB",
+        "x": 753.95,
+        "y": -870.09,
+        "teleport": {
+          "x": 753.95,
+          "y": 255.93,
+          "z": -870.09,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeAC",
+        "x": 1399.55,
+        "y": -1533.64,
+        "teleport": {
+          "x": 1399.55,
+          "y": 30.51,
+          "z": -1533.64,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeAD",
+        "x": 1260.26,
+        "y": -1468.7,
+        "teleport": {
+          "x": 1260.26,
+          "y": 26.34,
+          "z": -1468.7,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeAE",
+        "x": 1551.52,
+        "y": 989.79,
+        "teleport": {
+          "x": 1551.52,
+          "y": 51.1,
+          "z": 989.79,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeAF",
+        "x": 197.3,
+        "y": 1336.33,
+        "teleport": {
+          "x": 197.3,
+          "y": 65.74,
+          "z": 1336.33,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeAG",
+        "x": 693.66,
+        "y": 1098.77,
+        "teleport": {
+          "x": 693.66,
+          "y": 121.09,
+          "z": 1098.77,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeAGroup",
+        "x": -954.22,
+        "y": -27.52,
+        "teleport": {
+          "x": -954.22,
+          "y": 114.99,
+          "z": -27.52,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeBA",
+        "x": 1609.14,
+        "y": 769.88,
+        "teleport": {
+          "x": 1609.14,
+          "y": 47.47,
+          "z": 769.88,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeBB",
+        "x": 1310.96,
+        "y": 515.91,
+        "teleport": {
+          "x": 1310.96,
+          "y": 177.24,
+          "z": 515.91,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeBC",
+        "x": -7.5,
+        "y": 1303.31,
+        "teleport": {
+          "x": -7.5,
+          "y": 81.57,
+          "z": 1303.31,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeBD",
+        "x": 66.1,
+        "y": 897.08,
+        "teleport": {
+          "x": 66.1,
+          "y": 145.62,
+          "z": 897.08,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeBE",
+        "x": -234.56,
+        "y": 726.6,
+        "teleport": {
+          "x": -234.56,
+          "y": 154.86,
+          "z": 726.6,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeC",
+        "x": 9.82,
+        "y": 1096.42,
+        "teleport": {
+          "x": 9.82,
+          "y": 76.58,
+          "z": 1096.42,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeDA",
+        "x": -1390.05,
+        "y": -1207.09,
+        "teleport": {
+          "x": -1390.05,
+          "y": 224.9,
+          "z": -1207.09,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeDB",
+        "x": -1311.06,
+        "y": -1039.48,
+        "teleport": {
+          "x": -1311.06,
+          "y": 265.68,
+          "z": -1039.48,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeDC",
+        "x": -799.01,
+        "y": -1598.41,
+        "teleport": {
+          "x": -799.01,
+          "y": 151.43,
+          "z": -1598.41,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeDD",
+        "x": -1013.07,
+        "y": -1309.91,
+        "teleport": {
+          "x": -1013.07,
+          "y": 163.65,
+          "z": -1309.91,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeDE",
+        "x": -933.6,
+        "y": -1328.28,
+        "teleport": {
+          "x": -933.6,
+          "y": 147.92,
+          "z": -1328.28,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeDF",
+        "x": -854.49,
+        "y": -1363.6,
+        "teleport": {
+          "x": -854.49,
+          "y": 138.01,
+          "z": -1363.6,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeDG",
+        "x": -1808.12,
+        "y": -288.01,
+        "teleport": {
+          "x": -1808.12,
+          "y": 88.64,
+          "z": -288.01,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeDH",
+        "x": -1644.46,
+        "y": -801.71,
+        "teleport": {
+          "x": -1644.46,
+          "y": 47.07,
+          "z": -801.71,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeDI",
+        "x": -1632.31,
+        "y": -318.23,
+        "teleport": {
+          "x": -1632.31,
+          "y": 149.78,
+          "z": -318.23,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeDJ",
+        "x": -1648.49,
+        "y": -19.18,
+        "teleport": {
+          "x": -1648.49,
+          "y": 82.28,
+          "z": -19.18,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeDK",
+        "x": -1250.37,
+        "y": -1201.05,
+        "teleport": {
+          "x": -1250.37,
+          "y": 234.48,
+          "z": -1201.05,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeDL",
+        "x": -1340.91,
+        "y": -1625.27,
+        "teleport": {
+          "x": -1340.91,
+          "y": 194.9,
+          "z": -1625.27,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeDM",
+        "x": -1128.36,
+        "y": -932.28,
+        "teleport": {
+          "x": -1128.36,
+          "y": 279.16,
+          "z": -932.28,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeDN",
+        "x": -931.29,
+        "y": 1724.73,
+        "teleport": {
+          "x": -931.29,
+          "y": 38.1,
+          "z": 1724.73,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeDO",
+        "x": -1054.41,
+        "y": -1573.08,
+        "teleport": {
+          "x": -1054.41,
+          "y": 208.43,
+          "z": -1573.08,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeDP",
+        "x": -446.6,
+        "y": -885.85,
+        "teleport": {
+          "x": -446.6,
+          "y": 270.54,
+          "z": -885.85,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeDQ",
+        "x": -730.05,
+        "y": -730.17,
+        "teleport": {
+          "x": -730.05,
+          "y": 281.56,
+          "z": -730.17,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeDR",
+        "x": -1062.17,
+        "y": 1428.28,
+        "teleport": {
+          "x": -1062.17,
+          "y": 78.14,
+          "z": 1428.28,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeDS",
+        "x": -840.85,
+        "y": 1294.58,
+        "teleport": {
+          "x": -840.85,
+          "y": 68.06,
+          "z": 1294.58,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeDT",
+        "x": -1422.38,
+        "y": 1644.3,
+        "teleport": {
+          "x": -1422.38,
+          "y": 84.46,
+          "z": 1644.3,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeDU",
+        "x": -1550.93,
+        "y": 1199.56,
+        "teleport": {
+          "x": -1550.93,
+          "y": 78.57,
+          "z": 1199.56,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeDV",
+        "x": -994.94,
+        "y": 387.67,
+        "teleport": {
+          "x": -994.94,
+          "y": 79.69,
+          "z": 387.67,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeDW",
+        "x": -1240.23,
+        "y": 890.52,
+        "teleport": {
+          "x": -1240.23,
+          "y": 45.56,
+          "z": 890.52,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeDX",
+        "x": 1722.39,
+        "y": -97.81,
+        "teleport": {
+          "x": 1722.39,
+          "y": 24.96,
+          "z": -97.81,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeDY",
+        "x": 1194.86,
+        "y": -20.77,
+        "teleport": {
+          "x": 1194.86,
+          "y": 209.07,
+          "z": -20.77,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeDZ",
+        "x": 973.8,
+        "y": -1007.91,
+        "teleport": {
+          "x": 973.8,
+          "y": 241.88,
+          "z": -1007.91,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeE",
+        "x": 275.55,
+        "y": -308.87,
+        "teleport": {
+          "x": 275.55,
+          "y": 522.75,
+          "z": -308.87,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeEA",
+        "x": 1128.95,
+        "y": 797.07,
+        "teleport": {
+          "x": 1128.95,
+          "y": 129.44,
+          "z": 797.07,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeEB",
+        "x": 1232.61,
+        "y": 871.03,
+        "teleport": {
+          "x": 1232.61,
+          "y": 102.81,
+          "z": 871.03,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeEC",
+        "x": 1624.75,
+        "y": 250.35,
+        "teleport": {
+          "x": 1624.75,
+          "y": 57.61,
+          "z": 250.35,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeED",
+        "x": 897.88,
+        "y": 377.32,
+        "teleport": {
+          "x": 897.88,
+          "y": 363.88,
+          "z": 377.32,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeEE",
+        "x": 458.63,
+        "y": 518.22,
+        "teleport": {
+          "x": 458.63,
+          "y": 398.78,
+          "z": 518.22,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeEF",
+        "x": 1716.22,
+        "y": 420.13,
+        "teleport": {
+          "x": 1716.22,
+          "y": 41.36,
+          "z": 420.13,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeEG",
+        "x": 209.13,
+        "y": -913.8,
+        "teleport": {
+          "x": 209.13,
+          "y": 405.54,
+          "z": -913.8,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeF",
+        "x": -979.93,
+        "y": -733.51,
+        "teleport": {
+          "x": -979.93,
+          "y": 264.86,
+          "z": -733.51,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeG",
+        "x": -1274.55,
+        "y": -643.26,
+        "teleport": {
+          "x": -1274.55,
+          "y": 211.24,
+          "z": -643.26,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeH",
+        "x": -984.47,
+        "y": 762.61,
+        "teleport": {
+          "x": -984.47,
+          "y": 86.48,
+          "z": 762.61,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeI",
+        "x": 565.67,
+        "y": -1485.55,
+        "teleport": {
+          "x": 565.67,
+          "y": 63.67,
+          "z": -1485.55,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeJ",
+        "x": 569.81,
+        "y": -1225.34,
+        "teleport": {
+          "x": 569.81,
+          "y": 209.23,
+          "z": -1225.34,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeK",
+        "x": 1585.71,
+        "y": -1135.85,
+        "teleport": {
+          "x": 1585.71,
+          "y": 42.14,
+          "z": -1135.85,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeL",
+        "x": -667.54,
+        "y": -632.04,
+        "teleport": {
+          "x": -667.54,
+          "y": 282.19,
+          "z": -632.04,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeM",
+        "x": -1178.61,
+        "y": -1353.56,
+        "teleport": {
+          "x": -1178.61,
+          "y": 211.92,
+          "z": -1353.56,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeMAA",
+        "x": 713.93,
+        "y": -1657.23,
+        "teleport": {
+          "x": 713.93,
+          "y": 35.7,
+          "z": -1657.23,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeMAB",
+        "x": 1212.75,
+        "y": -1609.02,
+        "teleport": {
+          "x": 1212.75,
+          "y": 45.89,
+          "z": -1609.02,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeMAC",
+        "x": -941.41,
+        "y": 152.04,
+        "teleport": {
+          "x": -941.41,
+          "y": 82.27,
+          "z": 152.04,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeN",
+        "x": 1005.66,
+        "y": -573.35,
+        "teleport": {
+          "x": 1005.66,
+          "y": 244.32,
+          "z": -573.35,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeO",
+        "x": 1332.07,
+        "y": -101.38,
+        "teleport": {
+          "x": 1332.07,
+          "y": 115.16,
+          "z": -101.38,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeQ",
+        "x": -1252.29,
+        "y": -37.01,
+        "teleport": {
+          "x": -1252.29,
+          "y": 111.85,
+          "z": -37.01,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeR",
+        "x": -1293.17,
+        "y": 10.74,
+        "teleport": {
+          "x": -1293.17,
+          "y": 94.88,
+          "z": 10.74,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeS",
+        "x": -1119.33,
+        "y": -140.27,
+        "teleport": {
+          "x": -1119.33,
+          "y": 129.57,
+          "z": -140.27,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeT",
+        "x": -1155.62,
+        "y": -190.23,
+        "teleport": {
+          "x": -1155.62,
+          "y": 133.29,
+          "z": -190.23,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeU",
+        "x": -1173.56,
+        "y": -245.42,
+        "teleport": {
+          "x": -1173.56,
+          "y": 138.42,
+          "z": -245.42,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeV",
+        "x": -645.3,
+        "y": -1063.03,
+        "teleport": {
+          "x": -645.3,
+          "y": 194.79,
+          "z": -1063.03,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeW",
+        "x": -536.01,
+        "y": 121.32,
+        "teleport": {
+          "x": -536.01,
+          "y": 195.66,
+          "z": 121.32,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeX",
+        "x": -719.42,
+        "y": 8,
+        "teleport": {
+          "x": -719.42,
+          "y": 133.32,
+          "z": 8,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeY",
+        "x": -590.61,
+        "y": -119.61,
+        "teleport": {
+          "x": -590.61,
+          "y": 185.38,
+          "z": -119.61,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeZ",
+        "x": -783.55,
+        "y": -252.51,
+        "teleport": {
+          "x": -783.55,
+          "y": 160.9,
+          "z": -252.51,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "LakeZAA",
+        "x": 484.2,
+        "y": -1670.7,
+        "teleport": {
+          "x": 484.2,
+          "y": 27.8,
+          "z": -1670.7,
+          "areaMask": 0
+        }
+      },
+      {
+        "title": "Lake Virginia",
+        "x": -577.852,
+        "y": 562.8575,
+        "teleport": {
+          "x": -609.7222,
+          "y": 93.5471,
+          "z": 568.0879,
+          "areaMask": 0
+        }
+      }
+    ]
+  }
+}

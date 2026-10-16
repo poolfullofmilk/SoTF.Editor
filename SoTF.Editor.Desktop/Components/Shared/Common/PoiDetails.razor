@@ -1,0 +1,162 @@
+@* Point Details *@
+<MudStack Spacing="3">
+    <MudStack Row
+              AlignItems="AlignItems.Center"
+              Spacing="3">
+        <MudImage Src="@Poi.Icon"
+                  Alt="@Poi.Title"
+                  Class="thumb" />
+        <MudText Typo="Typo.h6"
+                 Class="text-tight">
+            @Poi.Title
+        </MudText>
+        <MudSpacer />
+        @* Close Details *@
+        <MudIconButton Icon="@Icons.Material.Rounded.Close"
+                       aria-label="@Localizer["Close"]"
+                       Size="Size.Small"
+                       OnClick="() => MapViewModel.SelectPoi(null)" />
+    </MudStack>
+
+    @if (!string.IsNullOrEmpty(Poi.Description))
+    {
+        <MudText Typo="Typo.body2"
+                 Class="text-relaxed">
+            @Poi.Description
+        </MudText>
+    }
+
+    <MudSimpleTable Dense
+                    Elevation="0"
+                    Style="background:transparent">
+        <tbody>
+            @foreach (var detail in Details)
+            {
+                <tr>
+                    <td class="mud-text-secondary">@detail.Label</td>
+                    <td class="selectable-text">@detail.Value</td>
+                </tr>
+            }
+        </tbody>
+    </MudSimpleTable>
+
+    @foreach (var itemList in ItemLists)
+    {
+        <MudText Typo="Typo.subtitle2">@itemList.Title</MudText>
+        <MudStack Spacing="1">
+            @foreach (var wrapper in itemList.Items)
+            {
+                <MudStack Row
+                          AlignItems="AlignItems.Center"
+                          Spacing="2">
+                    <MudIcon Icon="@(wrapper.HasItem ? Icons.Material.Rounded.CheckCircle : Icons.Material.Rounded.Cancel)"
+                             Color="@(wrapper.HasItem ? Color.Success : Color.Error)"
+                             Size="Size.Small" />
+                    <ItemLabel Name="@wrapper.Item.Name"
+                               ImageUrl="@wrapper.Item.ThumbnailUrl" />
+                </MudStack>
+            }
+        </MudStack>
+    }
+
+    @if (Poi is InformationalPoi { WikiLink: { } wikiLink })
+    {
+        @* Wiki Link *@
+        <MudButton Variant="Variant.Text"
+                   Size="Size.Small"
+                   StartIcon="@Icons.Material.Rounded.MenuBook"
+                   Href="@wikiLink">
+            @Localizer["Wiki"]
+        </MudButton>
+    }
+
+    <MudStack Spacing="1">
+        @if (Poi is ActorPoi actorPoi)
+        {
+            @* Edit Actor *@
+            <MudButton Variant="Variant.Filled"
+                       Size="Size.Small"
+                       StartIcon="@Icons.Material.Rounded.Edit"
+                       OnClick="() => EditActorAsync(actorPoi)">
+                @Localizer["Edit"]
+            </MudButton>
+        }
+        @if (Poi is ZipPointPoi zipPointPoi)
+        {
+            @if (zipPointPoi.IsMoveRequested)
+            {
+                <MudAlert Severity="Severity.Info"
+                          Dense
+                          Class="rounded-inner">
+                    @Localizer["ClickNewLocation"]
+                </MudAlert>
+            }
+            @* Move Anchor *@
+            <Tooltip Text="@Localizer["MoveToClickedTooltip"]">
+                <MudButton Variant="Variant.Filled"
+                           Size="Size.Small"
+                           FullWidth
+                           StartIcon="@Icons.Material.Rounded.OpenWith"
+                           OnClick="() => RequestZipMove(zipPointPoi, false)">
+                    @Localizer["MoveToClickedPosition"]
+                </MudButton>
+            </Tooltip>
+            @* New Zipline *@
+            <Tooltip Text="@Localizer["NewZiplineTooltip"]">
+                <MudButton Variant="Variant.Filled"
+                           Size="Size.Small"
+                           FullWidth
+                           StartIcon="@Icons.Material.Rounded.Timeline"
+                           OnClick="() => RequestZipMove(zipPointPoi, true)">
+                    @Localizer["NewZiplineFromHere"]
+                </MudButton>
+            </Tooltip>
+            @* Delete Zipline *@
+            <MudButton Variant="Variant.Text"
+                       Color="Color.Error"
+                       Size="Size.Small"
+                       StartIcon="@Icons.Material.Rounded.Delete"
+                       OnClick="() => MapViewModel.RemoveZipline(zipPointPoi.Parent)">
+                @Localizer["DeleteBothAnchors"]
+            </MudButton>
+        }
+    </MudStack>
+
+    <MudDivider />
+    <MudText Typo="Typo.subtitle2">@Localizer["Teleportation"]</MudText>
+    <MudStack Spacing="1">
+        @* Teleport Player *@
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Info"
+                   Size="Size.Small"
+                   StartIcon="@Icons.Material.Rounded.Person"
+                   Disabled="@(!Poi.CanTeleportPlayer())"
+                   OnClick="() => TeleportAsync(TeleportTarget.Player)">
+            @Localizer["TeleportPlayerHere"]
+        </MudButton>
+        @* Teleport Kelvin *@
+        <MudButton Variant="Variant.Text"
+                   Size="Size.Small"
+                   StartIcon="@Icons.Material.Rounded.NearMe"
+                   Disabled="@(!Poi.CanTeleportKelvin())"
+                   OnClick="() => TeleportAsync(TeleportTarget.Kelvin)">
+            @Localizer["TeleportKelvinHere"]
+        </MudButton>
+        @* Teleport Virginia *@
+        <MudButton Variant="Variant.Text"
+                   Size="Size.Small"
+                   StartIcon="@Icons.Material.Rounded.NearMe"
+                   Disabled="@(!Poi.CanTeleportVirginia())"
+                   OnClick="() => TeleportAsync(TeleportTarget.Virginia)">
+            @Localizer["TeleportVirginiaHere"]
+        </MudButton>
+        @* Spawn Actors *@
+        <MudButton Variant="Variant.Text"
+                   Size="Size.Small"
+                   StartIcon="@Icons.Material.Rounded.GroupAdd"
+                   Disabled="@(Poi.Position is null)"
+                   OnClick="SpawnActorsAsync">
+            @Localizer["SpawnActors"]
+        </MudButton>
+    </MudStack>
+</MudStack>

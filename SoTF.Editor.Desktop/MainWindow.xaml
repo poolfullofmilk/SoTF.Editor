@@ -1,0 +1,22 @@
+<Window
+    x:Class="SoTF.Editor.Desktop.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:blazor="clr-namespace:Microsoft.AspNetCore.Components.WebView.Wpf;assembly=Microsoft.AspNetCore.Components.WebView.Wpf"
+    xmlns:components="clr-namespace:SoTF.Editor.Desktop.Components"
+    xmlns:helpers="clr-namespace:SoTF.Editor.Data.Helpers;assembly=SoTF.Editor.Data"
+    Title="{x:Static helpers:AppInfo.DisplayName}"
+    Width="1440"
+    Height="900"
+    MinWidth="900"
+    MinHeight="600"
+    Background="#202020"
+    WindowStartupLocation="CenterScreen"
+>
+    <!-- BlazorWebView -->
+    <blazor:BlazorWebView x:Name="WebView" HostPage="wwwroot\index.html">
+        <blazor:BlazorWebView.RootComponents>
+            <blazor:RootComponent Selector="#app" ComponentType="{x:Type components:Routes}" />
+        </blazor:BlazorWebView.RootComponents>
+    </blazor:BlazorWebView>
+</Window>

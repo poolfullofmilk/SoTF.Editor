@@ -1,0 +1,34 @@
+<MudDialog>
+
+    <DialogContent>
+        <MudStack Spacing="4">
+            <MudText Typo="Typo.body2"
+                     Class="text-relaxed">
+                @Localizer["ChangeTypeWarning"]
+            </MudText>
+            @* Structure Type *@
+            <MudSelect T="ScrewStructure"
+                       @bind-Value="_selected"
+                       Label="@Localizer["StructureType"]"
+                       ToStringFunc="StructureName"
+                       Dense>
+                @foreach (var structure in EditableTypes)
+                {
+                    <MudSelectItem Value="structure">@StructureName(structure)</MudSelectItem>
+                }
+            </MudSelect>
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        @* Cancel Button *@
+        <MudButton OnClick="@MudDialog.Cancel">@Localizer["Cancel"]</MudButton>
+        @* Ok Button *@
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Info"
+                   Disabled="@(_selected is null)"
+                   OnClick="Ok">
+            @Localizer["Ok"]
+        </MudButton>
+    </DialogActions>
+
+</MudDialog>

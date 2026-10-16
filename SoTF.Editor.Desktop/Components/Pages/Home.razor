@@ -1,0 +1,111 @@
+@page "/"
+@inherits EditorPageBase
+
+<MudStack Spacing="6">
+    <Header Title="@Localizer["Savegames"]">
+        <MudPaper Elevation="4"
+                  Class="rounded-panel pa-4">
+            <MudStack Row
+                      AlignItems="AlignItems.Center"
+                      Wrap="Wrap.Wrap"
+                      Spacing="4">
+                <MudTextField T="string"
+                              Value="@SavegamePath"
+                              Label="@Localizer["Location"]"
+                              ReadOnly
+                              Variant="Variant.Text"
+                              Class="flex-grow-1"
+                              Style="min-width:320px" />
+
+                @* Change Folder *@
+                <MudButton Variant="Variant.Filled"
+                           Size="Size.Small"
+                           StartIcon="@Icons.Material.Rounded.FolderOpen"
+                           OnClick="ChangeFolder">
+                    @Localizer["ChangeFolder"]
+                </MudButton>
+
+                @* Default Folder *@
+                <MudButton Variant="Variant.Text"
+                           Size="Size.Small"
+                           StartIcon="@Icons.Material.Rounded.SettingsBackupRestore"
+                           OnClick="SetDefaultFolder">
+                    @Localizer["UseDefaultFolder"]
+                </MudButton>
+
+                @if (MainViewModel.CanOpenLastSavegame() && !HasSavegame)
+                {
+                    @* Open Last *@
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Info"
+                               Size="Size.Small"
+                               StartIcon="@Icons.Material.Rounded.History"
+                               OnClick="MainViewModel.OpenLastSavegame">
+                        @Localizer["OpenLastSavegame"]
+                    </MudButton>
+                }
+            </MudStack>
+            <MudText Typo="Typo.body2"
+                     Class="mud-text-secondary mt-2">
+                @Localizer["DropHint"]
+            </MudText>
+        </MudPaper>
+    </Header>
+
+    @if (_savegames.Count == 0)
+    {
+        <EmptyState Icon="@Icons.Material.Rounded.FolderOff"
+                    Text="@Localizer["NoSavegames"]" />
+    }
+    else
+    {
+        @foreach (var group in SavegameGroups)
+        {
+            <Header Title="@group.Title">
+                <MudGrid>
+
+                    @foreach (var savegame in group.Savegames)
+                    {
+                        <MudItem xs="12"
+                                 sm="6"
+                                 md="4"
+                                 lg="3">
+                            @* Savegame Card *@
+                            <MudPaper Elevation="4"
+                                      Class="@CardClass(savegame)"
+                                      @onclick="() => Open(savegame)">
+                                @if (savegame.ThumbnailPath is { } thumbnailPath)
+                                {
+                                    <MudImage Src="@LocalFiles.Url(thumbnailPath)"
+                                              Alt="@savegame.Title"
+                                              Class="savegame-thumb" />
+                                }
+                                else
+                                {
+                                    <MudElement HtmlTag="span"
+                                                Class="savegame-thumb d-flex align-center justify-center">
+                                        <MudIcon Icon="@Icons.Material.Rounded.Image"
+                                                 Color="Color.Default"
+                                                 Size="Size.Large" />
+                                    </MudElement>
+                                }
+                                <MudStack Spacing="0"
+                                          Class="pa-3">
+                                    <MudText Typo="Typo.subtitle1"
+                                             Class="text-truncate text-tight">
+                                        @savegame.Title
+                                    </MudText>
+                                    <MudText Typo="Typo.body2"
+                                             Class="mud-text-secondary">
+                                        @Formatter.FormatDateTime(savegame.LastSaveTime)
+                                    </MudText>
+                                </MudStack>
+                            </MudPaper>
+                        </MudItem>
+                    }
+
+                </MudGrid>
+            </Header>
+        }
+    }
+</MudStack>

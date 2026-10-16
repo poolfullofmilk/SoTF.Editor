@@ -1,0 +1,1833 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ActorType1" xml:space="preserve">
+    <value>Rabbit</value>
+  </data>
+  <data name="ActorType2" xml:space="preserve">
+    <value>Squirrel</value>
+  </data>
+  <data name="ActorType3" xml:space="preserve">
+    <value>Turtle</value>
+  </data>
+  <data name="ActorType4" xml:space="preserve">
+    <value>Shark</value>
+  </data>
+  <data name="ActorType5" xml:space="preserve">
+    <value>Seagull</value>
+  </data>
+  <data name="ActorType6" xml:space="preserve">
+    <value>Eagle</value>
+  </data>
+  <data name="ActorType7" xml:space="preserve">
+    <value>Duck</value>
+  </data>
+  <data name="ActorType8" xml:space="preserve">
+    <value>Timmy</value>
+  </data>
+  <data name="ActorType9" xml:space="preserve">
+    <value>Kelvin</value>
+  </data>
+  <data name="ActorType10" xml:space="preserve">
+    <value>Virginia</value>
+  </data>
+  <data name="ActorType11" xml:space="preserve">
+    <value>Fingers</value>
+  </data>
+  <data name="ActorType12" xml:space="preserve">
+    <value>Carl</value>
+  </data>
+  <data name="ActorType13" xml:space="preserve">
+    <value>Andy</value>
+  </data>
+  <data name="ActorType14" xml:space="preserve">
+    <value>Danny</value>
+  </data>
+  <data name="ActorType15" xml:space="preserve">
+    <value>Billy</value>
+  </data>
+  <data name="ActorType16" xml:space="preserve">
+    <value>GoldMask</value>
+  </data>
+  <data name="ActorType17" xml:space="preserve">
+    <value>Moose</value>
+  </data>
+  <data name="ActorType18" xml:space="preserve">
+    <value>Baby</value>
+  </data>
+  <data name="ActorType19" xml:space="preserve">
+    <value>Twins</value>
+  </data>
+  <data name="ActorType20" xml:space="preserve">
+    <value>Mr. Puffy</value>
+  </data>
+  <data name="ActorType21" xml:space="preserve">
+    <value>Mrs. Puffy</value>
+  </data>
+  <data name="ActorType22" xml:space="preserve">
+    <value>Slug</value>
+  </data>
+  <data name="ActorType23" xml:space="preserve">
+    <value>Angel</value>
+  </data>
+  <data name="ActorType24" xml:space="preserve">
+    <value>Salmon</value>
+  </data>
+  <data name="ActorType25" xml:space="preserve">
+    <value>Brandy</value>
+  </data>
+  <data name="ActorType26" xml:space="preserve">
+    <value>Crystal</value>
+  </data>
+  <data name="ActorType27" xml:space="preserve">
+    <value>Destiny</value>
+  </data>
+  <data name="ActorType28" xml:space="preserve">
+    <value>Muddy Female</value>
+  </data>
+  <data name="ActorType29" xml:space="preserve">
+    <value>Muddy Male</value>
+  </data>
+  <data name="ActorType30" xml:space="preserve">
+    <value>Heavy Male</value>
+  </data>
+  <data name="ActorType31" xml:space="preserve">
+    <value>Sponge Test</value>
+  </data>
+  <data name="ActorType32" xml:space="preserve">
+    <value>Bat</value>
+  </data>
+  <data name="ActorType33" xml:space="preserve">
+    <value>Deer</value>
+  </data>
+  <data name="ActorType34" xml:space="preserve">
+    <value>Bluebird</value>
+  </data>
+  <data name="ActorType35" xml:space="preserve">
+    <value>Hummingbird</value>
+  </data>
+  <data name="ActorType36" xml:space="preserve">
+    <value>Killer Whale</value>
+  </data>
+  <data name="ActorType37" xml:space="preserve">
+    <value>Land Turtle</value>
+  </data>
+  <data name="ActorType38" xml:space="preserve">
+    <value>Fat Male</value>
+  </data>
+  <data name="ActorType39" xml:space="preserve">
+    <value>Fat Female</value>
+  </data>
+  <data name="ActorType40" xml:space="preserve">
+    <value>John2</value>
+  </data>
+  <data name="ActorType41" xml:space="preserve">
+    <value>Faceless Male</value>
+  </data>
+  <data name="ActorType42" xml:space="preserve">
+    <value>Demon</value>
+  </data>
+  <data name="ActorType43" xml:space="preserve">
+    <value>Painted Male</value>
+  </data>
+  <data name="ActorType44" xml:space="preserve">
+    <value>Painted Female</value>
+  </data>
+  <data name="ActorType45" xml:space="preserve">
+    <value>Demon Boss</value>
+  </data>
+  <data name="ActorType46" xml:space="preserve">
+    <value>Mr. Puffton</value>
+  </data>
+  <data name="ActorType47" xml:space="preserve">
+    <value>Mrs. Puffton</value>
+  </data>
+  <data name="ActorType48" xml:space="preserve">
+    <value>Boss Mutant</value>
+  </data>
+  <data name="ActorType49" xml:space="preserve">
+    <value>Mutant Virginia</value>
+  </data>
+  <data name="ActorType50" xml:space="preserve">
+    <value>Armsy</value>
+  </data>
+  <data name="ActorType51" xml:space="preserve">
+    <value>Frank</value>
+  </data>
+  <data name="ActorType52" xml:space="preserve">
+    <value>Eddy</value>
+  </data>
+  <data name="ActorType53" xml:space="preserve">
+    <value>Greg</value>
+  </data>
+  <data name="ActorType54" xml:space="preserve">
+    <value>Henry</value>
+  </data>
+  <data name="ActorType55" xml:space="preserve">
+    <value>Igor</value>
+  </data>
+  <data name="ActorType56" xml:space="preserve">
+    <value>Elise</value>
+  </data>
+  <data name="ActorType57" xml:space="preserve">
+    <value>Raccoon</value>
+  </data>
+  <data name="ActorType58" xml:space="preserve">
+    <value>Legsy</value>
+  </data>
+  <data name="ActorType59" xml:space="preserve">
+    <value>Holey</value>
+  </data>
+  <data name="ActorType60" xml:space="preserve">
+    <value>Skunk</value>
+  </data>
+  <data name="ActorType90" xml:space="preserve">
+    <value>Helicopter</value>
+  </data>
+  <data name="ActorType100" xml:space="preserve">
+    <value>PlayerRobby</value>
+  </data>
+  <data name="Item78" xml:space="preserve">
+    <value>Log</value>
+  </data>
+  <data name="Item340" xml:space="preserve">
+    <value>Guitar</value>
+  </data>
+  <data name="Item341" xml:space="preserve">
+    <value>Binoculars</value>
+  </data>
+  <data name="Item346" xml:space="preserve">
+    <value>Shotgun Rail</value>
+  </data>
+  <data name="Item351" xml:space="preserve">
+    <value>Grab &amp; Go Bag</value>
+  </data>
+  <data name="Item353" xml:space="preserve">
+    <value>Stun Gun</value>
+  </data>
+  <data name="Item354" xml:space="preserve">
+    <value>Night Vision Goggles</value>
+  </data>
+  <data name="Item355" xml:space="preserve">
+    <value>Compact Pistol</value>
+  </data>
+  <data name="Item356" xml:space="preserve">
+    <value>Modern Axe</value>
+  </data>
+  <data name="Item357" xml:space="preserve">
+    <value>Airgun</value>
+  </data>
+  <data name="Item358" xml:space="preserve">
+    <value>Shotgun</value>
+  </data>
+  <data name="Item359" xml:space="preserve">
+    <value>Machete</value>
+  </data>
+  <data name="Item360" xml:space="preserve">
+    <value>Compound/Tactical Bow</value>
+  </data>
+  <data name="Item361" xml:space="preserve">
+    <value>Rifle</value>
+  </data>
+  <data name="Item362" xml:space="preserve">
+    <value>Pistol Ammo</value>
+  </data>
+  <data name="Item363" xml:space="preserve">
+    <value>Shotgun Slug</value>
+  </data>
+  <data name="Item364" xml:space="preserve">
+    <value>Shotgun Buckshot</value>
+  </data>
+  <data name="Item365" xml:space="preserve">
+    <value>Crossbow</value>
+  </data>
+  <data name="Item366" xml:space="preserve">
+    <value>Tracker Dart</value>
+  </data>
+  <data name="Item367" xml:space="preserve">
+    <value>Katana</value>
+  </data>
+  <data name="Item368" xml:space="preserve">
+    <value>Crossbow Bolt</value>
+  </data>
+  <data name="Item369" xml:space="preserve">
+    <value>Stun Gun Ammo</value>
+  </data>
+  <data name="Item370" xml:space="preserve">
+    <value>Pistol Ammo</value>
+  </data>
+  <data name="Item371" xml:space="preserve">
+    <value>Shotgun Buckshot</value>
+  </data>
+  <data name="Item372" xml:space="preserve">
+    <value>Shotgun Slug</value>
+  </data>
+  <data name="Item373" xml:space="preserve">
+    <value>Carbon Fiber Arrow</value>
+  </data>
+  <data name="Item374" xml:space="preserve">
+    <value>Pistol Suppressor/Silencer</value>
+  </data>
+  <data name="Item375" xml:space="preserve">
+    <value>Laser Sight</value>
+  </data>
+  <data name="Item376" xml:space="preserve">
+    <value>Pistol Rail</value>
+  </data>
+  <data name="Item377" xml:space="preserve">
+    <value>Scope</value>
+  </data>
+  <data name="Item378" xml:space="preserve">
+    <value>Flashlight Attachment</value>
+  </data>
+  <data name="Item379" xml:space="preserve">
+    <value>Tactical Axe</value>
+  </data>
+  <data name="Item380" xml:space="preserve">
+    <value>Utility Knife</value>
+  </data>
+  <data name="Item381" xml:space="preserve">
+    <value>Grenade</value>
+  </data>
+  <data name="Item382" xml:space="preserve">
+    <value>GrenadeAmmo</value>
+  </data>
+  <data name="Item383" xml:space="preserve">
+    <value>Rifle Rail Mod</value>
+  </data>
+  <data name="Item384" xml:space="preserve">
+    <value>Crossbow Quiver</value>
+  </data>
+  <data name="Item386" xml:space="preserve">
+    <value>Revolver</value>
+  </data>
+  <data name="Item387" xml:space="preserve">
+    <value>Rifle Ammo</value>
+  </data>
+  <data name="Item388" xml:space="preserve">
+    <value>Molotov</value>
+  </data>
+  <data name="Item389" xml:space="preserve">
+    <value>MolotovAmmo</value>
+  </data>
+  <data name="Item390" xml:space="preserve">
+    <value>Printer Resin</value>
+  </data>
+  <data name="Item391" xml:space="preserve">
+    <value>Red Mask</value>
+  </data>
+  <data name="Item392" xml:space="preserve">
+    <value>Stick</value>
+  </data>
+  <data name="Item393" xml:space="preserve">
+    <value>Rock</value>
+  </data>
+  <data name="Item394" xml:space="preserve">
+    <value>Chainsaw</value>
+  </data>
+  <data name="Item395" xml:space="preserve">
+    <value>Log Plank</value>
+  </data>
+  <data name="Item396" xml:space="preserve">
+    <value>Stun Baton</value>
+  </data>
+  <data name="Item397" xml:space="preserve">
+    <value>Shiitake</value>
+  </data>
+  <data name="Item398" xml:space="preserve">
+    <value>King Oyster</value>
+  </data>
+  <data name="Item399" xml:space="preserve">
+    <value>Hydnum Repandum</value>
+  </data>
+  <data name="Item400" xml:space="preserve">
+    <value>Fly Amanita</value>
+  </data>
+  <data name="Item401" xml:space="preserve">
+    <value>Turtle Egg</value>
+  </data>
+  <data name="Item402" xml:space="preserve">
+    <value>Backpack</value>
+  </data>
+  <data name="Item403" xml:space="preserve">
+    <value>Rope</value>
+  </data>
+  <data name="Item405" xml:space="preserve">
+    <value>Bone</value>
+  </data>
+  <data name="Item406" xml:space="preserve">
+    <value>Quarter Log</value>
+  </data>
+  <data name="Item408" xml:space="preserve">
+    <value>Half Log</value>
+  </data>
+  <data name="Item409" xml:space="preserve">
+    <value>Three Quarter Log</value>
+  </data>
+  <data name="Item410" xml:space="preserve">
+    <value>Watch</value>
+  </data>
+  <data name="Item412" xml:space="preserve">
+    <value>GPS Tracker</value>
+  </data>
+  <data name="Item413" xml:space="preserve">
+    <value>Plasma Lighter</value>
+  </data>
+  <data name="Item414" xml:space="preserve">
+    <value>Vodka Bottle</value>
+  </data>
+  <data name="Item415" xml:space="preserve">
+    <value>Cloth</value>
+  </data>
+  <data name="Item416" xml:space="preserve">
+    <value>Circuit Board</value>
+  </data>
+  <data name="Item417" xml:space="preserve">
+    <value>Time Bomb</value>
+  </data>
+  <data name="Item418" xml:space="preserve">
+    <value>Wire</value>
+  </data>
+  <data name="Item419" xml:space="preserve">
+    <value>Duct Tape</value>
+  </data>
+  <data name="Item420" xml:space="preserve">
+    <value>C4 Brick</value>
+  </data>
+  <data name="Item421" xml:space="preserve">
+    <value>Ramen Noodles</value>
+  </data>
+  <data name="Item422" xml:space="preserve">
+    <value>Repair Tool</value>
+  </data>
+  <data name="Item423" xml:space="preserve">
+    <value>Novel [Pennant Line]</value>
+  </data>
+  <data name="Item424" xml:space="preserve">
+    <value>Novel [Deep Sleep]</value>
+  </data>
+  <data name="Item425" xml:space="preserve">
+    <value>Crunchie Wunchies</value>
+  </data>
+  <data name="Item426" xml:space="preserve">
+    <value>Printed Flask</value>
+  </data>
+  <data name="Item427" xml:space="preserve">
+    <value>Printed Knife</value>
+  </data>
+  <data name="Item428" xml:space="preserve">
+    <value>Printed Sled</value>
+  </data>
+  <data name="Item429" xml:space="preserve">
+    <value>Printed Scuba Mask</value>
+  </data>
+  <data name="Item430" xml:space="preserve">
+    <value>Skull</value>
+  </data>
+  <data name="Item431" xml:space="preserve">
+    <value>Firefighter Axe</value>
+  </data>
+  <data name="Item432" xml:space="preserve">
+    <value>Can Opener</value>
+  </data>
+  <data name="Item433" xml:space="preserve">
+    <value>Meat</value>
+  </data>
+  <data name="Item433Variant1" xml:space="preserve">
+    <value>Raw Meat</value>
+  </data>
+  <data name="Item433Variant2" xml:space="preserve">
+    <value>Unknown Meat</value>
+  </data>
+  <data name="Item433Variant3" xml:space="preserve">
+    <value>Spoiled Meat</value>
+  </data>
+  <data name="Item433Variant4" xml:space="preserve">
+    <value>Dried Meat</value>
+  </data>
+  <data name="Item433Variant5" xml:space="preserve">
+    <value>Cooked Meat</value>
+  </data>
+  <data name="Item433Variant6" xml:space="preserve">
+    <value>Burned Meat</value>
+  </data>
+  <data name="Item434" xml:space="preserve">
+    <value>Canned Food</value>
+  </data>
+  <data name="Item435" xml:space="preserve">
+    <value>Golden Mask</value>
+  </data>
+  <data name="Item436" xml:space="preserve">
+    <value>Fish</value>
+  </data>
+  <data name="Item436Variant1" xml:space="preserve">
+    <value>Raw Fish</value>
+  </data>
+  <data name="Item436Variant2" xml:space="preserve">
+    <value>Unknown Fish</value>
+  </data>
+  <data name="Item436Variant3" xml:space="preserve">
+    <value>Spoiled Fish</value>
+  </data>
+  <data name="Item436Variant4" xml:space="preserve">
+    <value>Dried Fish</value>
+  </data>
+  <data name="Item436Variant5" xml:space="preserve">
+    <value>Cooked Fish</value>
+  </data>
+  <data name="Item436Variant6" xml:space="preserve">
+    <value>Burned Fish</value>
+  </data>
+  <data name="Item437" xml:space="preserve">
+    <value>Meds</value>
+  </data>
+  <data name="Item438" xml:space="preserve">
+    <value>MRE Pack</value>
+  </data>
+  <data name="Item439" xml:space="preserve">
+    <value>Energy Drink</value>
+  </data>
+  <data name="Item440" xml:space="preserve">
+    <value>Flare</value>
+  </data>
+  <data name="Item441" xml:space="preserve">
+    <value>Energy Bar</value>
+  </data>
+  <data name="Item443" xml:space="preserve">
+    <value>Crafted Bow</value>
+  </data>
+  <data name="Item444" xml:space="preserve">
+    <value>Rebreather</value>
+  </data>
+  <data name="Item445" xml:space="preserve">
+    <value>Blueberries</value>
+  </data>
+  <data name="Item446" xml:space="preserve">
+    <value>Twinberries</value>
+  </data>
+  <data name="Item447" xml:space="preserve">
+    <value>Salmonberries</value>
+  </data>
+  <data name="Item448" xml:space="preserve">
+    <value>Snowberries</value>
+  </data>
+  <data name="Item449" xml:space="preserve">
+    <value>Devil's Club</value>
+  </data>
+  <data name="Item450" xml:space="preserve">
+    <value>Horsetail</value>
+  </data>
+  <data name="Item451" xml:space="preserve">
+    <value>Aloe Vera</value>
+  </data>
+  <data name="Item452" xml:space="preserve">
+    <value>Yarrow</value>
+  </data>
+  <data name="Item453" xml:space="preserve">
+    <value>Fireweed</value>
+  </data>
+  <data name="Item454" xml:space="preserve">
+    <value>Arrowleaf</value>
+  </data>
+  <data name="Item455" xml:space="preserve">
+    <value>Health Mix</value>
+  </data>
+  <data name="Item456" xml:space="preserve">
+    <value>Health Mix+</value>
+  </data>
+  <data name="Item457" xml:space="preserve">
+    <value>Stun Gun Ammo</value>
+  </data>
+  <data name="Item458" xml:space="preserve">
+    <value>Battery Charger</value>
+  </data>
+  <data name="Item459" xml:space="preserve">
+    <value>Slingshot</value>
+  </data>
+  <data name="Item460" xml:space="preserve">
+    <value>Battery Pack</value>
+  </data>
+  <data name="Item461" xml:space="preserve">
+    <value>Energy Mix</value>
+  </data>
+  <data name="Item462" xml:space="preserve">
+    <value>Energy Mix+</value>
+  </data>
+  <data name="Item463" xml:space="preserve">
+    <value>Flippers</value>
+  </data>
+  <data name="Item464" xml:space="preserve">
+    <value>Cat Food</value>
+  </data>
+  <data name="Item465" xml:space="preserve">
+    <value>Chicory</value>
+  </data>
+  <data name="Item466" xml:space="preserve">
+    <value>Oyster</value>
+  </data>
+  <data name="Item467" xml:space="preserve">
+    <value>Album Cover</value>
+  </data>
+  <data name="Item468" xml:space="preserve">
+    <value>Cross</value>
+  </data>
+  <data name="Item469" xml:space="preserve">
+    <value>Air Canister</value>
+  </data>
+  <data name="Item470" xml:space="preserve">
+    <value>Airgun Scope</value>
+  </data>
+  <data name="Item471" xml:space="preserve">
+    <value>Flashlight</value>
+  </data>
+  <data name="Item472" xml:space="preserve">
+    <value>Deer Hide</value>
+  </data>
+  <data name="Item473" xml:space="preserve">
+    <value>Leaf Armour</value>
+  </data>
+  <data name="Item474" xml:space="preserve">
+    <value>Crafted Spear</value>
+  </data>
+  <data name="Item475" xml:space="preserve">
+    <value>Flask</value>
+  </data>
+  <data name="Item476" xml:space="preserve">
+    <value>Small Rock</value>
+  </data>
+  <data name="Item477" xml:space="preserve">
+    <value>Crafted Club</value>
+  </data>
+  <data name="Item478" xml:space="preserve">
+    <value>Climbing Axe</value>
+  </data>
+  <data name="Item479" xml:space="preserve">
+    <value>Feather</value>
+  </data>
+  <data name="Item480" xml:space="preserve">
+    <value>Severed Arm</value>
+  </data>
+  <data name="Item480Variant1" xml:space="preserve">
+    <value>Raw Arm</value>
+  </data>
+  <data name="Item480Variant2" xml:space="preserve">
+    <value>Unknown Arm</value>
+  </data>
+  <data name="Item480Variant3" xml:space="preserve">
+    <value>Spoiled Arm</value>
+  </data>
+  <data name="Item480Variant4" xml:space="preserve">
+    <value>Dried Arm</value>
+  </data>
+  <data name="Item480Variant5" xml:space="preserve">
+    <value>Cooked Arm</value>
+  </data>
+  <data name="Item480Variant6" xml:space="preserve">
+    <value>Burned Arm</value>
+  </data>
+  <data name="Item481" xml:space="preserve">
+    <value>Severed Leg</value>
+  </data>
+  <data name="Item481Variant1" xml:space="preserve">
+    <value>Raw Leg</value>
+  </data>
+  <data name="Item481Variant2" xml:space="preserve">
+    <value>Unknown Leg</value>
+  </data>
+  <data name="Item481Variant3" xml:space="preserve">
+    <value>Spoiled Leg</value>
+  </data>
+  <data name="Item481Variant4" xml:space="preserve">
+    <value>Dried Leg</value>
+  </data>
+  <data name="Item481Variant5" xml:space="preserve">
+    <value>Cooked Leg</value>
+  </data>
+  <data name="Item481Variant6" xml:space="preserve">
+    <value>Burned Leg</value>
+  </data>
+  <data name="Item482" xml:space="preserve">
+    <value>Severed Head</value>
+  </data>
+  <data name="Item483" xml:space="preserve">
+    <value>Emergency Pack</value>
+  </data>
+  <data name="Item484" xml:space="preserve">
+    <value>Leaf</value>
+  </data>
+  <data name="Item485" xml:space="preserve">
+    <value>Shovel</value>
+  </data>
+  <data name="Item486" xml:space="preserve">
+    <value>Walkie Talkie</value>
+  </data>
+  <data name="Item487" xml:space="preserve">
+    <value>Silk Pajamas</value>
+  </data>
+  <data name="Item488" xml:space="preserve">
+    <value>Blue TShirt</value>
+  </data>
+  <data name="Item489" xml:space="preserve">
+    <value>Tactical Pants</value>
+  </data>
+  <data name="Item490" xml:space="preserve">
+    <value>Hoodie</value>
+  </data>
+  <data name="Item491" xml:space="preserve">
+    <value>Blazer</value>
+  </data>
+  <data name="Item492" xml:space="preserve">
+    <value>Tuxedo</value>
+  </data>
+  <data name="Item493" xml:space="preserve">
+    <value>Leather Jacket</value>
+  </data>
+  <data name="Item494" xml:space="preserve">
+    <value>Bone Armour</value>
+  </data>
+  <data name="Item495" xml:space="preserve">
+    <value>Tactical Jacket</value>
+  </data>
+  <data name="Item496" xml:space="preserve">
+    <value>Money</value>
+  </data>
+  <data name="Item497" xml:space="preserve">
+    <value>Food Tray</value>
+  </data>
+  <data name="Item498" xml:space="preserve">
+    <value>GRABS Laser Pointer</value>
+  </data>
+  <data name="Item499" xml:space="preserve">
+    <value>Wetsuit</value>
+  </data>
+  <data name="Item500" xml:space="preserve">
+    <value>Winter Jacket</value>
+  </data>
+  <data name="Item501" xml:space="preserve">
+    <value>Tactical Boots</value>
+  </data>
+  <data name="Item502" xml:space="preserve">
+    <value>Coins</value>
+  </data>
+  <data name="Item503" xml:space="preserve">
+    <value>Torch</value>
+  </data>
+  <data name="Item504" xml:space="preserve">
+    <value>Tarp</value>
+  </data>
+  <data name="Item505" xml:space="preserve">
+    <value>Laser Measure Tool</value>
+  </data>
+  <data name="Item506" xml:space="preserve">
+    <value>Turtle Shell</value>
+  </data>
+  <data name="Item507" xml:space="preserve">
+    <value>Stone Arrow</value>
+  </data>
+  <data name="Item508" xml:space="preserve">
+    <value>Skin Pouch</value>
+  </data>
+  <data name="Item509" xml:space="preserve">
+    <value>Holosprings Pamphlet</value>
+  </data>
+  <data name="Item511" xml:space="preserve">
+    <value>Contact Trigger</value>
+  </data>
+  <data name="Item512" xml:space="preserve">
+    <value>Filled Food Tray</value>
+  </data>
+  <data name="Item513" xml:space="preserve">
+    <value>Spring</value>
+  </data>
+  <data name="Item514" xml:space="preserve">
+    <value>Contact Spring Trigger</value>
+  </data>
+  <data name="Item515" xml:space="preserve">
+    <value>Basic Building Tutorial Page</value>
+  </data>
+  <data name="Item516" xml:space="preserve">
+    <value>Tarp Tent Tutorial Page</value>
+  </data>
+  <data name="Item517" xml:space="preserve">
+    <value>Cooking Pot</value>
+  </data>
+  <data name="Item518" xml:space="preserve">
+    <value>Paper Target</value>
+  </data>
+  <data name="Item519" xml:space="preserve">
+    <value>Deer Hide Armour</value>
+  </data>
+  <data name="Item520" xml:space="preserve">
+    <value>Structure Element</value>
+  </data>
+  <data name="Item521" xml:space="preserve">
+    <value>Email [More Lighting]</value>
+  </data>
+  <data name="Item522" xml:space="preserve">
+    <value>Rope Gun</value>
+  </data>
+  <data name="Item523" xml:space="preserve">
+    <value>Zipline Rope</value>
+  </data>
+  <data name="Item524" xml:space="preserve">
+    <value>Golf Ball</value>
+  </data>
+  <data name="Item525" xml:space="preserve">
+    <value>Putter</value>
+  </data>
+  <data name="Item526" xml:space="preserve">
+    <value>Mr Puffy Will</value>
+  </data>
+  <data name="Item527" xml:space="preserve">
+    <value>Batteries</value>
+  </data>
+  <data name="Item528" xml:space="preserve">
+    <value>MrPuffy Financials</value>
+  </data>
+  <data name="Item529" xml:space="preserve">
+    <value>GPS Locator</value>
+  </data>
+  <data name="Item530" xml:space="preserve">
+    <value>Drying Rack Blueprint</value>
+  </data>
+  <data name="Item531" xml:space="preserve">
+    <value>Stick Chair Blueprint</value>
+  </data>
+  <data name="Item532" xml:space="preserve">
+    <value>Stick Bed Blueprint</value>
+  </data>
+  <data name="Item533" xml:space="preserve">
+    <value>Weapon Rack Blueprint</value>
+  </data>
+  <data name="Item534" xml:space="preserve">
+    <value>Golf Email Pt 1</value>
+  </data>
+  <data name="Item535" xml:space="preserve">
+    <value>Golf Email Pt 2</value>
+  </data>
+  <data name="Item536" xml:space="preserve">
+    <value>Golf Email Pt 3</value>
+  </data>
+  <data name="Item537" xml:space="preserve">
+    <value>Golf Email Pt 4</value>
+  </data>
+  <data name="Item538" xml:space="preserve">
+    <value>Painting Email</value>
+  </data>
+  <data name="Item539" xml:space="preserve">
+    <value>Document [Out Demonia]</value>
+  </data>
+  <data name="Item540" xml:space="preserve">
+    <value>Document [Crosses burn Demons]</value>
+  </data>
+  <data name="Item541" xml:space="preserve">
+    <value>Document [Cube Activation Cycles]</value>
+  </data>
+  <data name="Item542" xml:space="preserve">
+    <value>Email [Thought you might find this interesting]</value>
+  </data>
+  <data name="Item543" xml:space="preserve">
+    <value>Email [Another one]</value>
+  </data>
+  <data name="Item544" xml:space="preserve">
+    <value>Email [One more]</value>
+  </data>
+  <data name="Item545" xml:space="preserve">
+    <value>Email [Photo Reference]</value>
+  </data>
+  <data name="Item546" xml:space="preserve">
+    <value>Email [Note to all employees]</value>
+  </data>
+  <data name="Item547" xml:space="preserve">
+    <value>Email [Safe in Cube]</value>
+  </data>
+  <data name="Item548" xml:space="preserve">
+    <value>Document [Stay in the Cube]</value>
+  </data>
+  <data name="Item549" xml:space="preserve">
+    <value>Bone Maker Blueprint</value>
+  </data>
+  <data name="Item550" xml:space="preserve">
+    <value>Fly Swatter Blueprint</value>
+  </data>
+  <data name="Item551" xml:space="preserve">
+    <value>Small Animal Catcher Blueprint</value>
+  </data>
+  <data name="Item552" xml:space="preserve">
+    <value>S.C.R.E.W.</value>
+  </data>
+  <data name="Item553" xml:space="preserve">
+    <value>Tech Mesh</value>
+  </data>
+  <data name="Item554" xml:space="preserve">
+    <value>Tech Armour</value>
+  </data>
+  <data name="Item555" xml:space="preserve">
+    <value>Track Suit</value>
+  </data>
+  <data name="Item556" xml:space="preserve">
+    <value>Dress</value>
+  </data>
+  <data name="Item557" xml:space="preserve">
+    <value>Leather Suit</value>
+  </data>
+  <data name="Item558" xml:space="preserve">
+    <value>Camouflage Suit</value>
+  </data>
+  <data name="Item559" xml:space="preserve">
+    <value>Printed Arrow Heads</value>
+  </data>
+  <data name="Item560" xml:space="preserve">
+    <value>Printed Grappling Hook</value>
+  </data>
+  <data name="Item561" xml:space="preserve">
+    <value>Printed Flower Pot</value>
+  </data>
+  <data name="Item562" xml:space="preserve">
+    <value>HolovilleNoticeA</value>
+  </data>
+  <data name="Item563" xml:space="preserve">
+    <value>HolovilleNoticeB</value>
+  </data>
+  <data name="Item564" xml:space="preserve">
+    <value>HolovilleNoticeC</value>
+  </data>
+  <data name="Item565" xml:space="preserve">
+    <value>HolovilleNoticeD</value>
+  </data>
+  <data name="Item566" xml:space="preserve">
+    <value>Maintenance Key Card</value>
+  </data>
+  <data name="Item567" xml:space="preserve">
+    <value>Guest Key Card</value>
+  </data>
+  <data name="Item568" xml:space="preserve">
+    <value>VIP Key Card</value>
+  </data>
+  <data name="Item569" xml:space="preserve">
+    <value>Brain Bite</value>
+  </data>
+  <data name="Item570" xml:space="preserve">
+    <value>Steak Bite</value>
+  </data>
+  <data name="Item571" xml:space="preserve">
+    <value>Steak and Bacon Bite</value>
+  </data>
+  <data name="Item572" xml:space="preserve">
+    <value>Ancient Armor</value>
+  </data>
+  <data name="Item573" xml:space="preserve">
+    <value>Sleeping Bag</value>
+  </data>
+  <data name="Item574" xml:space="preserve">
+    <value>Novel [Rescued]</value>
+  </data>
+  <data name="Item575" xml:space="preserve">
+    <value>Novel [Parallel Universes]</value>
+  </data>
+  <data name="Item576" xml:space="preserve">
+    <value>Quarter Log Plank</value>
+  </data>
+  <data name="Item577" xml:space="preserve">
+    <value>Half Log Plank</value>
+  </data>
+  <data name="Item578" xml:space="preserve">
+    <value>Three Quarter Log Plank</value>
+  </data>
+  <data name="Item579" xml:space="preserve">
+    <value>Bone Chair Blueprint</value>
+  </data>
+  <data name="Item580" xml:space="preserve">
+    <value>Stick Ladder Blueprint</value>
+  </data>
+  <data name="Item581" xml:space="preserve">
+    <value>Bird House Blueprint</value>
+  </data>
+  <data name="Item582" xml:space="preserve">
+    <value>Fish Trap Blueprint</value>
+  </data>
+  <data name="Item583" xml:space="preserve">
+    <value>Storage Box Blueprint</value>
+  </data>
+  <data name="Item584" xml:space="preserve">
+    <value>Mannequin Blueprint</value>
+  </data>
+  <data name="Item585" xml:space="preserve">
+    <value>Scarecrow Blueprint</value>
+  </data>
+  <data name="Item586" xml:space="preserve">
+    <value>Planter Wall Blueprint</value>
+  </data>
+  <data name="Item587" xml:space="preserve">
+    <value>Planter Floor Blueprint</value>
+  </data>
+  <data name="Item588" xml:space="preserve">
+    <value>Bone Chandelier Blueprint</value>
+  </data>
+  <data name="Item589" xml:space="preserve">
+    <value>S.C.R.E.W. / Tutorials</value>
+  </data>
+  <data name="Item590" xml:space="preserve">
+    <value>Radio</value>
+  </data>
+  <data name="Item591" xml:space="preserve">
+    <value>Small Log Cabin Blueprint</value>
+  </data>
+  <data name="Item592" xml:space="preserve">
+    <value>Creepy Skin</value>
+  </data>
+  <data name="Item593" xml:space="preserve">
+    <value>Creepy Armour</value>
+  </data>
+  <data name="Item594" xml:space="preserve">
+    <value>Guarana Berries</value>
+  </data>
+  <data name="Item595" xml:space="preserve">
+    <value>Blackberries</value>
+  </data>
+  <data name="Item596" xml:space="preserve">
+    <value>AloeVera Seed</value>
+  </data>
+  <data name="Item597" xml:space="preserve">
+    <value>Arrowleaf Seed</value>
+  </data>
+  <data name="Item598" xml:space="preserve">
+    <value>Blackberry Seed</value>
+  </data>
+  <data name="Item599" xml:space="preserve">
+    <value>Blueberry Seed</value>
+  </data>
+  <data name="Item600" xml:space="preserve">
+    <value>DevilsClub Seed</value>
+  </data>
+  <data name="Item601" xml:space="preserve">
+    <value>Fireweed Seed</value>
+  </data>
+  <data name="Item602" xml:space="preserve">
+    <value>Guarana Seed</value>
+  </data>
+  <data name="Item603" xml:space="preserve">
+    <value>Horsetail Seed</value>
+  </data>
+  <data name="Item604" xml:space="preserve">
+    <value>Salmonberry Seed</value>
+  </data>
+  <data name="Item605" xml:space="preserve">
+    <value>Chicory Seed</value>
+  </data>
+  <data name="Item606" xml:space="preserve">
+    <value>Yarro Seed</value>
+  </data>
+  <data name="Item607" xml:space="preserve">
+    <value>Rock Storage Blueprint</value>
+  </data>
+  <data name="Item608" xml:space="preserve">
+    <value>Stone Storage Blueprint</value>
+  </data>
+  <data name="Item609" xml:space="preserve">
+    <value>Log Storage Blueprint</value>
+  </data>
+  <data name="Item610" xml:space="preserve">
+    <value>Sticks Storage Blueprint</value>
+  </data>
+  <data name="Item611" xml:space="preserve">
+    <value>Numbers Printout</value>
+  </data>
+  <data name="Item612" xml:space="preserve">
+    <value>Newspaper Cutout [Missing CEO]</value>
+  </data>
+  <data name="Item613" xml:space="preserve">
+    <value>Newspaper Cutout [Puffcorp]</value>
+  </data>
+  <data name="Item614" xml:space="preserve">
+    <value>E-Mail [Artifact - Preliminary Findings]</value>
+  </data>
+  <data name="Item615" xml:space="preserve">
+    <value>E-Mail [Scientific Data - Cube]</value>
+  </data>
+  <data name="Item616" xml:space="preserve">
+    <value>Classified Document</value>
+  </data>
+  <data name="Item617" xml:space="preserve">
+    <value>Stock Price</value>
+  </data>
+  <data name="Item618" xml:space="preserve">
+    <value>Printed Arrow</value>
+  </data>
+  <data name="Item619" xml:space="preserve">
+    <value>Swim Suit</value>
+  </data>
+  <data name="Item620" xml:space="preserve">
+    <value>Table Blueprint</value>
+  </data>
+  <data name="Item621" xml:space="preserve">
+    <value>Shelf Blueprint</value>
+  </data>
+  <data name="Item622" xml:space="preserve">
+    <value>Rock Path Blueprint</value>
+  </data>
+  <data name="Item623" xml:space="preserve">
+    <value>Wall Shelf Blueprint</value>
+  </data>
+  <data name="Item624" xml:space="preserve">
+    <value>Wall Torch Blueprint</value>
+  </data>
+  <data name="Item625" xml:space="preserve">
+    <value>Hanging Skull Light Blueprint</value>
+  </data>
+  <data name="Item626" xml:space="preserve">
+    <value>Foldable Glider</value>
+  </data>
+  <data name="Item627" xml:space="preserve">
+    <value>Mr. Puffton's Reservation Card</value>
+  </data>
+  <data name="Item628" xml:space="preserve">
+    <value>Mrs. Puffton's Reservation Card</value>
+  </data>
+  <data name="Item629" xml:space="preserve">
+    <value>Rain Catcher Blueprint</value>
+  </data>
+  <data name="Item630" xml:space="preserve">
+    <value>KnightV</value>
+  </data>
+  <data name="Item631" xml:space="preserve">
+    <value>The Realm Beyond</value>
+  </data>
+  <data name="Item632" xml:space="preserve">
+    <value>Spring Trap Blueprint</value>
+  </data>
+  <data name="Item633" xml:space="preserve">
+    <value>Cult Pamphlet</value>
+  </data>
+  <data name="Item634" xml:space="preserve">
+    <value>Solar Panel</value>
+  </data>
+  <data name="Item635" xml:space="preserve">
+    <value>Light Bulb</value>
+  </data>
+  <data name="Item636" xml:space="preserve">
+    <value>TemplateD</value>
+  </data>
+  <data name="Item637" xml:space="preserve">
+    <value>Action Camera</value>
+  </data>
+  <data name="Item638" xml:space="preserve">
+    <value>Basic Log Sled Blueprint</value>
+  </data>
+  <data name="Item639" xml:space="preserve">
+    <value>Space Suit</value>
+  </data>
+  <data name="Item640" xml:space="preserve">
+    <value>Stone</value>
+  </data>
+  <data name="Item641" xml:space="preserve">
+    <value>Stone Fireplace Blueprint</value>
+  </data>
+  <data name="Item642" xml:space="preserve">
+    <value>Duck Head</value>
+  </data>
+  <data name="Item643" xml:space="preserve">
+    <value>Eagle Head</value>
+  </data>
+  <data name="Item644" xml:space="preserve">
+    <value>Small Turtle Head</value>
+  </data>
+  <data name="Item645" xml:space="preserve">
+    <value>Head Trophy Mount Blueprint</value>
+  </data>
+  <data name="Item646" xml:space="preserve">
+    <value>Rabbit Head</value>
+  </data>
+  <data name="Item647" xml:space="preserve">
+    <value>Squirrel Head</value>
+  </data>
+  <data name="Item648" xml:space="preserve">
+    <value>Seagull Head</value>
+  </data>
+  <data name="Item649" xml:space="preserve">
+    <value>Stones Storage Blueprint</value>
+  </data>
+  <data name="Item650" xml:space="preserve">
+    <value>Turtle Head</value>
+  </data>
+  <data name="Item651" xml:space="preserve">
+    <value>Deer Head</value>
+  </data>
+  <data name="Item652" xml:space="preserve">
+    <value>Moose Head</value>
+  </data>
+  <data name="Item653" xml:space="preserve">
+    <value>Personal Note A</value>
+  </data>
+  <data name="Item654" xml:space="preserve">
+    <value>Personal Note B</value>
+  </data>
+  <data name="Item655" xml:space="preserve">
+    <value>Personal Note C</value>
+  </data>
+  <data name="Item656" xml:space="preserve">
+    <value>Blueprint Hokey Pokey Trap</value>
+  </data>
+  <data name="Item657" xml:space="preserve">
+    <value>Printed GPS Case</value>
+  </data>
+  <data name="Item658" xml:space="preserve">
+    <value>Radio Trap Blueprint</value>
+  </data>
+  <data name="Item659" xml:space="preserve">
+    <value>Radio Blueprint</value>
+  </data>
+  <data name="Item661" xml:space="preserve">
+    <value>Golf Cart Battery</value>
+  </data>
+  <data name="Item662" xml:space="preserve">
+    <value>Artifact Piece A</value>
+  </data>
+  <data name="Item663" xml:space="preserve">
+    <value>Pickaxe</value>
+  </data>
+  <data name="Item664" xml:space="preserve">
+    <value>Solafite Ore</value>
+  </data>
+  <data name="Item665" xml:space="preserve">
+    <value>Item Plating Blueprint</value>
+  </data>
+  <data name="Item666" xml:space="preserve">
+    <value>Powered Cross Blueprint</value>
+  </data>
+  <data name="Item667" xml:space="preserve">
+    <value>Artifact Piece B</value>
+  </data>
+  <data name="Item668" xml:space="preserve">
+    <value>Artifact Piece C</value>
+  </data>
+  <data name="Item669" xml:space="preserve">
+    <value>Artifact Piece D</value>
+  </data>
+  <data name="Item670" xml:space="preserve">
+    <value>Gore Chair Blueprint</value>
+  </data>
+  <data name="Item671" xml:space="preserve">
+    <value>Gore Couch Blueprint</value>
+  </data>
+  <data name="Item672" xml:space="preserve">
+    <value>Uber Trap Blueprint</value>
+  </data>
+  <data name="Item673" xml:space="preserve">
+    <value>Round Table Blueprint</value>
+  </data>
+  <data name="Item674" xml:space="preserve">
+    <value>Old Note A</value>
+  </data>
+  <data name="Item675" xml:space="preserve">
+    <value>Old Note B</value>
+  </data>
+  <data name="Item676" xml:space="preserve">
+    <value>Old Note C</value>
+  </data>
+  <data name="Item677" xml:space="preserve">
+    <value>Fishing Email A</value>
+  </data>
+  <data name="Item678" xml:space="preserve">
+    <value>Fishing Email B</value>
+  </data>
+  <data name="Item679" xml:space="preserve">
+    <value>Grind Trap Blueprint</value>
+  </data>
+  <data name="Item680" xml:space="preserve">
+    <value>Spotlight Blueprint</value>
+  </data>
+  <data name="Item681" xml:space="preserve">
+    <value>Clock Blueprint</value>
+  </data>
+  <data name="Item682" xml:space="preserve">
+    <value>Spin Trap Blueprint</value>
+  </data>
+  <data name="Item683" xml:space="preserve">
+    <value>Double Bed Blueprint</value>
+  </data>
+  <data name="Item684" xml:space="preserve">
+    <value>Old Note E</value>
+  </data>
+  <data name="Item685" xml:space="preserve">
+    <value>Old Note D</value>
+  </data>
+  <data name="Item686" xml:space="preserve">
+    <value>Cult Sign F</value>
+  </data>
+  <data name="Item687" xml:space="preserve">
+    <value>Puffton Email A</value>
+  </data>
+  <data name="Item688" xml:space="preserve">
+    <value>Spear Thrower Trap Blueprint</value>
+  </data>
+  <data name="Item689" xml:space="preserve">
+    <value>Artifact Piece E</value>
+  </data>
+  <data name="Item690" xml:space="preserve">
+    <value>Story Pages</value>
+  </data>
+  <data name="Item691" xml:space="preserve">
+    <value>Old Note F</value>
+  </data>
+  <data name="Item692" xml:space="preserve">
+    <value>Fishing Email C</value>
+  </data>
+  <data name="Item693" xml:space="preserve">
+    <value>Bunker Map A</value>
+  </data>
+  <data name="Item694" xml:space="preserve">
+    <value>Jianyu Email Printout A</value>
+  </data>
+  <data name="Item695" xml:space="preserve">
+    <value>Cult Sign G</value>
+  </data>
+  <data name="Item696" xml:space="preserve">
+    <value>Cult Sign H</value>
+  </data>
+  <data name="Item697" xml:space="preserve">
+    <value>Cult Sign I</value>
+  </data>
+  <data name="Item698" xml:space="preserve">
+    <value>Cult Sign J</value>
+  </data>
+  <data name="Item699" xml:space="preserve">
+    <value>Cult Sign K</value>
+  </data>
+  <data name="Item700" xml:space="preserve">
+    <value>Spear Storage Blueprint</value>
+  </data>
+  <data name="Item701" xml:space="preserve">
+    <value>Leg Lamp Blueprint</value>
+  </data>
+  <data name="Item702" xml:space="preserve">
+    <value>Firewood Storage Blueprint</value>
+  </data>
+  <data name="Item703" xml:space="preserve">
+    <value>Priest Outfit</value>
+  </data>
+  <data name="Item704" xml:space="preserve">
+    <value>Wall Weapon Rack Blueprint</value>
+  </data>
+  <data name="Item705" xml:space="preserve">
+    <value>Circus Pamphlet</value>
+  </data>
+  <data name="Item706" xml:space="preserve">
+    <value>Newspaper Cutout [Husbands]</value>
+  </data>
+  <data name="Item707" xml:space="preserve">
+    <value>Artifact</value>
+  </data>
+  <data name="Item708" xml:space="preserve">
+    <value>Artifact Piece F</value>
+  </data>
+  <data name="Item709" xml:space="preserve">
+    <value>Teleporter Blueprint</value>
+  </data>
+  <data name="Item710" xml:space="preserve">
+    <value>Repel Shrine Blueprint</value>
+  </data>
+  <data name="Item711" xml:space="preserve">
+    <value>Attract Shrine Blueprint</value>
+  </data>
+  <data name="Item712" xml:space="preserve">
+    <value>Artifact Piece G</value>
+  </data>
+  <data name="Item713" xml:space="preserve">
+    <value>Plater Counter Blueprint</value>
+  </data>
+  <data name="Item714" xml:space="preserve">
+    <value>Gold Armor Plater Blueprint</value>
+  </data>
+  <data name="Item715" xml:space="preserve">
+    <value>Raccoon Head</value>
+  </data>
+  <data name="Item716" xml:space="preserve">
+    <value>Bible Paper D</value>
+  </data>
+  <data name="Item717" xml:space="preserve">
+    <value>Old Note G</value>
+  </data>
+  <data name="Item718" xml:space="preserve">
+    <value>Personal Note E</value>
+  </data>
+  <data name="Item719" xml:space="preserve">
+    <value>Personal Note F</value>
+  </data>
+  <data name="Item720" xml:space="preserve">
+    <value>Personal Note G</value>
+  </data>
+  <data name="Item721" xml:space="preserve">
+    <value>Bible Paper Scrap A</value>
+  </data>
+  <data name="Item722" xml:space="preserve">
+    <value>Puffton Email B</value>
+  </data>
+  <data name="Item723" xml:space="preserve">
+    <value>Puffton Email C</value>
+  </data>
+  <data name="Item724" xml:space="preserve">
+    <value>Twinberry Seed</value>
+  </data>
+  <data name="Item725" xml:space="preserve">
+    <value>Snowberry Seed</value>
+  </data>
+  <data name="Item726" xml:space="preserve">
+    <value>Hang Glider Launcher Blueprint</value>
+  </data>
+  <data name="Item727" xml:space="preserve">
+    <value>Solafite Armor</value>
+  </data>
+  <data name="Item728" xml:space="preserve">
+    <value>Living Rabbit</value>
+  </data>
+  <data name="Item729" xml:space="preserve">
+    <value>Skunk Head</value>
+  </data>
+  <data name="Item730" xml:space="preserve">
+    <value>Small Rabbit Hutch Blueprint</value>
+  </data>
+  <data name="Item749" xml:space="preserve">
+    <value>Stewardess Outfit</value>
+  </data>
+  <data name="Outfit9Id0" xml:space="preserve">
+    <value>Tactical Jacket</value>
+  </data>
+  <data name="Outfit9Id1" xml:space="preserve">
+    <value>Tuxedo</value>
+  </data>
+  <data name="Outfit9Id2" xml:space="preserve">
+    <value>Pajamas</value>
+  </data>
+  <data name="Outfit9Id3" xml:space="preserve">
+    <value>Brown Leather Jacket</value>
+  </data>
+  <data name="Outfit9Id4" xml:space="preserve">
+    <value>Hoodie</value>
+  </data>
+  <data name="Outfit9Id5" xml:space="preserve">
+    <value>Blue TShirt</value>
+  </data>
+  <data name="Outfit9Id6" xml:space="preserve">
+    <value>Blazer</value>
+  </data>
+  <data name="Outfit9Id7" xml:space="preserve">
+    <value>Black Leather Jacket</value>
+  </data>
+  <data name="Outfit9Id8" xml:space="preserve">
+    <value>Space Suit</value>
+  </data>
+  <data name="Outfit9Id9" xml:space="preserve">
+    <value>Priest Outfit</value>
+  </data>
+  <data name="Outfit9Id10" xml:space="preserve">
+    <value>Stewardess Outfit</value>
+  </data>
+  <data name="Outfit10Id0" xml:space="preserve">
+    <value>Swim Suit</value>
+  </data>
+  <data name="Outfit10Id1" xml:space="preserve">
+    <value>Track Suit</value>
+  </data>
+  <data name="Outfit10Id2" xml:space="preserve">
+    <value>Leather Suit</value>
+  </data>
+  <data name="Outfit10Id3" xml:space="preserve">
+    <value>Camouflage Suit</value>
+  </data>
+  <data name="Outfit10Id4" xml:space="preserve">
+    <value>Dress</value>
+  </data>
+  <data name="Outfit10Id5" xml:space="preserve">
+    <value>Teal Dress</value>
+  </data>
+  <data name="Outfit10Id6" xml:space="preserve">
+    <value>Red Dress</value>
+  </data>
+  <data name="Structure19" xml:space="preserve">
+    <value>Weapon Rack</value>
+  </data>
+  <data name="Structure20" xml:space="preserve">
+    <value>Stick Chair</value>
+  </data>
+  <data name="Structure21" xml:space="preserve">
+    <value>Bone Maker Trap</value>
+  </data>
+  <data name="Structure22" xml:space="preserve">
+    <value>Stick Bed</value>
+  </data>
+  <data name="Structure23" xml:space="preserve">
+    <value>Wall Planter</value>
+  </data>
+  <data name="Structure24" xml:space="preserve">
+    <value>Bone Chandelier</value>
+  </data>
+  <data name="Structure25" xml:space="preserve">
+    <value>Bone Chair</value>
+  </data>
+  <data name="Structure26" xml:space="preserve">
+    <value>Lean-to</value>
+  </data>
+  <data name="Structure27" xml:space="preserve">
+    <value>Drying Rack</value>
+  </data>
+  <data name="Structure28" xml:space="preserve">
+    <value>Tree Shelter 2</value>
+  </data>
+  <data name="Structure29" xml:space="preserve">
+    <value>Stick Storage</value>
+  </data>
+  <data name="Structure31" xml:space="preserve">
+    <value>Rock Storage</value>
+  </data>
+  <data name="Structure32" xml:space="preserve">
+    <value>Bone Storage</value>
+  </data>
+  <data name="Structure34" xml:space="preserve">
+    <value>Small Log Cabin</value>
+  </data>
+  <data name="Structure35" xml:space="preserve">
+    <value>Fish Trap</value>
+  </data>
+  <data name="Structure36" xml:space="preserve">
+    <value>Armor Rack</value>
+  </data>
+  <data name="Structure37" xml:space="preserve">
+    <value>Log Storage (Old)</value>
+  </data>
+  <data name="Structure38" xml:space="preserve">
+    <value>Look Out Tower</value>
+  </data>
+  <data name="Structure39" xml:space="preserve">
+    <value>Scarecrow</value>
+  </data>
+  <data name="Structure40" xml:space="preserve">
+    <value>Standing Planter</value>
+  </data>
+  <data name="Structure41" xml:space="preserve">
+    <value>Tree Platform 2</value>
+  </data>
+  <data name="Structure42" xml:space="preserve">
+    <value>Small Animal Trap</value>
+  </data>
+  <data name="Structure43" xml:space="preserve">
+    <value>Tree Platform 1</value>
+  </data>
+  <data name="Structure44" xml:space="preserve">
+    <value>Tree Shelter 1</value>
+  </data>
+  <data name="Structure45" xml:space="preserve">
+    <value>Fly Swatter Trap</value>
+  </data>
+  <data name="Structure46" xml:space="preserve">
+    <value>Stick Path</value>
+  </data>
+  <data name="Structure47" xml:space="preserve">
+    <value>Hunting Shelter</value>
+  </data>
+  <data name="Structure48" xml:space="preserve">
+    <value>Table</value>
+  </data>
+  <data name="Structure49" xml:space="preserve">
+    <value>Shelf</value>
+  </data>
+  <data name="Structure50" xml:space="preserve">
+    <value>Rock Path</value>
+  </data>
+  <data name="Structure51" xml:space="preserve">
+    <value>Wall Shelf</value>
+  </data>
+  <data name="Structure52" xml:space="preserve">
+    <value>Bench</value>
+  </data>
+  <data name="Structure53" xml:space="preserve">
+    <value>Wall Torch</value>
+  </data>
+  <data name="Structure54" xml:space="preserve">
+    <value>Ceiling Skull Lamp</value>
+  </data>
+  <data name="Structure55" xml:space="preserve">
+    <value>Zipline</value>
+  </data>
+  <data name="Structure56" xml:space="preserve">
+    <value>Rain Catcher</value>
+  </data>
+  <data name="Structure57" xml:space="preserve">
+    <value>Spring Trap</value>
+  </data>
+  <data name="Structure58" xml:space="preserve">
+    <value>Advanced Log Sled</value>
+  </data>
+  <data name="Structure59" xml:space="preserve">
+    <value>Basic Log Sled</value>
+  </data>
+  <data name="Structure60" xml:space="preserve">
+    <value>Stone Fireplace</value>
+  </data>
+  <data name="Structure61" xml:space="preserve">
+    <value>Head Trophy</value>
+  </data>
+  <data name="Structure62" xml:space="preserve">
+    <value>Stone Storage</value>
+  </data>
+  <data name="Structure63" xml:space="preserve">
+    <value>Hokey Pokey Trap</value>
+  </data>
+  <data name="Structure64" xml:space="preserve">
+    <value>Radio Alarm Trap</value>
+  </data>
+  <data name="Structure66" xml:space="preserve">
+    <value>Paper Target</value>
+  </data>
+  <data name="Structure67" xml:space="preserve">
+    <value>Large Log Storage</value>
+  </data>
+  <data name="Structure68" xml:space="preserve">
+    <value>Deer Hide Rug</value>
+  </data>
+  <data name="Structure70" xml:space="preserve">
+    <value>Item Plating</value>
+  </data>
+  <data name="Structure71" xml:space="preserve">
+    <value>Powered Cross</value>
+  </data>
+  <data name="Structure72" xml:space="preserve">
+    <value>Gore Chair</value>
+  </data>
+  <data name="Structure73" xml:space="preserve">
+    <value>Gore Couch</value>
+  </data>
+  <data name="Structure74" xml:space="preserve">
+    <value>Uber Trap</value>
+  </data>
+  <data name="Structure75" xml:space="preserve">
+    <value>Round Table</value>
+  </data>
+  <data name="Structure76" xml:space="preserve">
+    <value>Grind Trap</value>
+  </data>
+  <data name="Structure77" xml:space="preserve">
+    <value>Spotlight</value>
+  </data>
+  <data name="Structure78" xml:space="preserve">
+    <value>Clock</value>
+  </data>
+  <data name="Structure79" xml:space="preserve">
+    <value>Spin Trap</value>
+  </data>
+  <data name="Structure80" xml:space="preserve">
+    <value>Double Bed</value>
+  </data>
+  <data name="Structure81" xml:space="preserve">
+    <value>Spear Thrower Trap</value>
+  </data>
+  <data name="Structure82" xml:space="preserve">
+    <value>Spear Rack</value>
+  </data>
+  <data name="Structure84" xml:space="preserve">
+    <value>Firewood Storage</value>
+  </data>
+  <data name="Structure85" xml:space="preserve">
+    <value>Leg Lamp</value>
+  </data>
+  <data name="Structure86" xml:space="preserve">
+    <value>Wall Weapon Rack</value>
+  </data>
+  <data name="Structure88" xml:space="preserve">
+    <value>Teleporter</value>
+  </data>
+  <data name="Structure89" xml:space="preserve">
+    <value>Repel Shrine</value>
+  </data>
+  <data name="Structure90" xml:space="preserve">
+    <value>Attract Shrine</value>
+  </data>
+  <data name="Structure91" xml:space="preserve">
+    <value>Couch</value>
+  </data>
+  <data name="Structure92" xml:space="preserve">
+    <value>Leaf Trap</value>
+  </data>
+  <data name="Structure93" xml:space="preserve">
+    <value>Molotov Tripwire Trap</value>
+  </data>
+  <data name="Structure94" xml:space="preserve">
+    <value>Explosive Tripwire Trap</value>
+  </data>
+  <data name="Structure95" xml:space="preserve">
+    <value>Arrow Holder</value>
+  </data>
+  <data name="Structure96" xml:space="preserve">
+    <value>Log Storage</value>
+  </data>
+  <data name="Structure97" xml:space="preserve">
+    <value>Chair (Fur)</value>
+  </data>
+  <data name="Structure98" xml:space="preserve">
+    <value>Small Platform</value>
+  </data>
+  <data name="Structure99" xml:space="preserve">
+    <value>Medium Platform</value>
+  </data>
+  <data name="Structure100" xml:space="preserve">
+    <value>Plater Counter</value>
+  </data>
+  <data name="Structure101" xml:space="preserve">
+    <value>Gold Armor Plater</value>
+  </data>
+  <data name="Structure102" xml:space="preserve">
+    <value>Hang Glider Launcher</value>
+  </data>
+  <data name="Structure103" xml:space="preserve">
+    <value>Hang Glider Launcher</value>
+  </data>
+  <data name="Structure104" xml:space="preserve">
+    <value>Explosive Storage</value>
+  </data>
+  <data name="Structure106" xml:space="preserve">
+    <value>Rabbit Hutch</value>
+  </data>
+  <data name="Structure107" xml:space="preserve">
+    <value>Small Rabbit Hutch</value>
+  </data>
+  <data name="Structure108" xml:space="preserve">
+    <value>House Boat</value>
+  </data>
+  <data name="Structure109" xml:space="preserve">
+    <value>Knight-V Holder</value>
+  </data>
+  <data name="Structure110" xml:space="preserve">
+    <value>Bird House</value>
+  </data>
+  <data name="Structure113" xml:space="preserve">
+    <value>Foldable Glider Holder</value>
+  </data>
+  <data name="Structure117" xml:space="preserve">
+    <value>Small Raft</value>
+  </data>
+  <data name="Structure118" xml:space="preserve">
+    <value>Mooring</value>
+  </data>
+  <data name="Structure119" xml:space="preserve">
+    <value>Large Raft</value>
+  </data>
+  <data name="WorldItemGolfCart" xml:space="preserve">
+    <value>Golf Cart</value>
+  </data>
+  <data name="WorldItemHangGlider" xml:space="preserve">
+    <value>Hang Glider</value>
+  </data>
+  <data name="WorldItemKnightV" xml:space="preserve">
+    <value>Knight V</value>
+  </data>
+  <data name="WorldItemRadio" xml:space="preserve">
+    <value>Radio</value>
+  </data>
+</root>

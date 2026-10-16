@@ -1,0 +1,21 @@
+@page "/Followers"
+@inherits EditorPageBase
+
+<RequiresSavegame>
+    <MudGrid>
+
+        <MudItem xs="12"
+                 lg="6">
+            <FollowerPanel Follower="FollowerPage.KelvinState"
+                           Name="@Localizer["Kelvin"]"
+                           ImageUrl="images/kv.jpg" />
+        </MudItem>
+        <MudItem xs="12"
+                 lg="6">
+            <FollowerPanel Follower="FollowerPage.VirginiaState"
+                           Name="@Localizer["Virginia"]"
+                           ImageUrl="images/vg.jpg" />
+        </MudItem>
+
+    </MudGrid>
+</RequiresSavegame>

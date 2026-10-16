@@ -1,0 +1,64 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net10.0-windows10.0.17763.0</TargetFramework>
+        <UseWPF>true</UseWPF>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <RootNamespace>SoTF.Editor.Desktop</RootNamespace>
+        <ApplicationIcon>Icon.ico</ApplicationIcon>
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+        <DebugType>embedded</DebugType>
+        <Description>A Savegame Editor For Sons Of The Forest</Description>
+        <Copyright>Copyright (c) 2026 poolfullofmilk</Copyright>
+        <Version>1.0</Version>
+        <AssemblyTitle>SoTF Editor</AssemblyTitle>
+        <Product>SoTF Editor</Product>
+        <Company>poolfullofmilk</Company>
+        <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+        <NoWarn>CA1873</NoWarn>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <AssemblyName>SoTF.Editor_v$(Version)</AssemblyName>
+        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+        <SelfContained>true</SelfContained>
+        <PublishSingleFile>true</PublishSingleFile>
+        <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+        <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+        <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    </PropertyGroup>
+    <Target
+        Name="BundleWebRoot"
+        BeforeTargets="_ComputeFilesToBundle"
+        DependsOnTargets="CopyStaticWebAssetsToPublishDirectory"
+    >
+        <ItemGroup>
+            <WebRootFile Include="$(PublishDir)wwwroot\**" />
+            <ResolvedFileToPublish
+                Include="@(WebRootFile)"
+                RelativePath="wwwroot\%(RecursiveDir)%(Filename)%(Extension)"
+            />
+        </ItemGroup>
+    </Target>
+    <Target Name="RemoveLooseWebRoot" AfterTargets="Publish">
+        <RemoveDir Directories="$(PublishDir)wwwroot" />
+        <Delete Files="$(PublishDir)$(AssemblyName).staticwebassets.endpoints.json" />
+    </Target>
+    <ItemGroup>
+        <Using Include="Microsoft.Extensions.Localization" />
+        <Using Include="SoTF.Editor.Data.Resources" />
+        <Using Include="System.IO" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference
+            Include="Microsoft.AspNetCore.Components.WebView.Wpf"
+            Version="10.0.110"
+        />
+        <PackageReference Include="MudBlazor" Version="9.11.0" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\SoTF.Editor.Data\SoTF.Editor.Data.csproj" />
+        <ProjectReference Include="..\SoTF.Editor.Services\SoTF.Editor.Services.csproj" />
+    </ItemGroup>
+</Project>

@@ -1,0 +1,43 @@
+name: Release
+
+# A Version Tag Releases, A Manual Run Only Builds
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    env:
+      PUBLISH_DIRECTORY: SoTF.Editor.Desktop/bin/Release/net10.0-windows10.0.17763.0/win-x64/publish
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Publish Exe
+        run: dotnet publish SoTF.Editor.Desktop -c Release
+
+      - name: Upload Exe
+        uses: actions/upload-artifact@v7
+        with:
+          name: SoTF.Editor
+          path: ${{ env.PUBLISH_DIRECTORY }}/SoTF.Editor_v*.exe
+          if-no-files-found: error
+
+      # The Tag Must Match The Version In SoTF.Editor.Desktop.csproj
+      - name: Create Release
+        if: github.ref_type == 'tag'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" "$PUBLISH_DIRECTORY/SoTF.Editor_$GITHUB_REF_NAME.exe" --title "SoTF Editor $GITHUB_REF_NAME" --notes ""

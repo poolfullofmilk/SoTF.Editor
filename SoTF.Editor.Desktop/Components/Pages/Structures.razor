@@ -1,0 +1,143 @@
+@page "/Structures"
+@inherits EditorPageBase
+
+<RequiresSavegame>
+    <MudStack Spacing="6"
+              Class="page-fill">
+        <Header Title="@Localizer["Batch"]">
+            <MudPaper Elevation="4"
+                      Class="rounded-panel pa-4">
+                <MudStack Spacing="3">
+                    <MudText Typo="Typo.body2"
+                             Class="mud-text-secondary">
+                        @Localizer["BatchHint"]
+                    </MudText>
+                    @* Batch Type *@
+                    <MudSelect T="ScrewStructure"
+                               @bind-Value="StructuresPage.BatchSelectedStructureType"
+                               Label="@Localizer["StructureType"]"
+                               HelperText="@Localizer["AllTypesHint"]"
+                               ToStringFunc="StructureName"
+                               Clearable
+                               Dense>
+                        @foreach (var structure in StructuresPage.StructureTypes)
+                        {
+                            <MudSelectItem Value="structure">@StructureName(structure)</MudSelectItem>
+                        }
+                    </MudSelect>
+                    @foreach (var origin in s_origins)
+                    {
+                        <MudStack Row
+                                  AlignItems="AlignItems.Center"
+                                  Wrap="Wrap.Wrap"
+                                  Spacing="2">
+                            <MudText Typo="Typo.subtitle2"
+                                     Style="width:200px">
+                                @Localizer[origin.TitleKey]
+                            </MudText>
+                            @foreach (var batch in origin.Batches)
+                            {
+                                @* Batch Button *@
+                                <MudButton Variant="Variant.Text"
+                                           Size="Size.Small"
+                                           Color="@(batch.Mode == ScrewStructureModificationMode.Remove ? Color.Error : Color.Default)"
+                                           OnClick="() => SetAll(origin.Origin, batch.Mode)">
+                                    @Localizer[batch.LabelKey]
+                                </MudButton>
+                            }
+                        </MudStack>
+                    }
+                </MudStack>
+            </MudPaper>
+        </Header>
+
+        <Header Title="@Localizer["Structures"]"
+                Class="fill">
+            <TitleContent>
+                <MudSpacer />
+                @* Structure Search *@
+                <MudTextField T="string"
+                              @bind-Value="_filter"
+                              DebounceInterval="300"
+                              Placeholder="@Localizer["Filter"]"
+                              Adornment="Adornment.Start"
+                              AdornmentIcon="@Icons.Material.Rounded.Search"
+                              Clearable
+                              Margin="Margin.Dense"
+                              Style="max-width:280px" />
+            </TitleContent>
+            <ChildContent>
+                <MudPaper Elevation="4"
+                          Class="rounded-panel pa-2 fill fill-column">
+                    <MudTable T="ScrewStructureWrapper"
+                              Items="FilteredStructures"
+                              GroupBy="s_groupByName"
+                              Dense
+                              Hover
+                              FixedHeader
+                              Elevation="0"
+                              Class="fill">
+
+                        <HeaderContent>
+                            <MudTh>@Localizer["Name"]</MudTh>
+                            <MudTh>@Localizer["Category"]</MudTh>
+                            <MudTh>@Localizer["Added"]</MudTh>
+                            <MudTh>@Localizer["PercentDone"]</MudTh>
+                            <MudTh>@Localizer["Modification"]</MudTh>
+                            <MudTh />
+                        </HeaderContent>
+                        <GroupHeaderTemplate>
+                            <MudTh colspan="6">
+                                <MudText Typo="Typo.subtitle2">@($"{context.Key} ({context.Items.Count()})")</MudText>
+                            </MudTh>
+                        </GroupHeaderTemplate>
+                        <RowTemplate>
+                            <MudTd>
+                                <ItemLabel Name="@context.Name"
+                                           Detail="@Localizer[context.Origin == ScrewStructureOrigin.Finished ? "FinishedStructures" : "UnfinishedStructures"]"
+                                           ImageUrl="@IconOf(context)" />
+                            </MudTd>
+                            <MudTd>@context.Category</MudTd>
+                            <MudTd>@($"{context.Added} / {context.BuildCost}")</MudTd>
+                            <MudTd>
+                                <MudText Typo="Typo.body2"
+                                         Style="@($"color:{context.PctDoneColor}")">
+                                    @context.PctDonePrintable
+                                </MudText>
+                            </MudTd>
+                            <MudTd>
+                                @* Modification *@
+                                <MudSelect T="ScrewStructureModificationMode?"
+                                           @bind-Value="context.ModificationMode"
+                                           ToStringFunc="ModeName"
+                                           Disabled="@(context.ModificationModes.Count <= 1)"
+                                           Dense
+                                           Margin="Margin.Dense"
+                                           Style="min-width:150px">
+                                    @foreach (var mode in context.ModificationModes)
+                                    {
+                                        <MudSelectItem T="ScrewStructureModificationMode?"
+                                                       Value="mode">
+                                            @ModeName(mode)
+                                        </MudSelectItem>
+                                    }
+                                </MudSelect>
+                            </MudTd>
+                            <MudTd Style="text-align:right">
+                                <ShowOnMapButton Position="context.Position" />
+                                @* Change Type *@
+                                <Tooltip Text="@Localizer["ChangeType"]">
+                                    <MudIconButton Icon="@Icons.Material.Rounded.SwapHoriz"
+                                                   Size="Size.Small"
+                                                   Disabled="@(!context.CanChangeType())"
+                                                   OnClick="() => ChangeTypeAsync(context)" />
+                                </Tooltip>
+                            </MudTd>
+                        </RowTemplate>
+
+                    </MudTable>
+                </MudPaper>
+            </ChildContent>
+        </Header>
+    </MudStack>
+</RequiresSavegame>

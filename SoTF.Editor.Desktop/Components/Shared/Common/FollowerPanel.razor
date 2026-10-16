@@ -1,0 +1,140 @@
+@* Follower Panel *@
+<Header Title="@Name">
+    <TitleContent>
+        <MudChip T="string"
+                 Variant="Variant.Text"
+                 Size="Size.Small">
+            @Follower.Status
+        </MudChip>
+        <MudSpacer />
+        <ShowOnMapButton Position="MapPosition" />
+    </TitleContent>
+    <ChildContent>
+        <MudPaper Elevation="4"
+                  Class="rounded-panel pa-4">
+            <MudStack Spacing="3">
+                <MudStack Row
+                          AlignItems="AlignItems.Center"
+                          Spacing="4">
+                    <MudImage Src="@ImageUrl"
+                              Alt="@Name"
+                              Width="96"
+                              Class="rounded-inner" />
+                    <MudStack Spacing="0">
+                        <MudText Typo="Typo.body2"
+                                 Class="mud-text-secondary selectable-text">
+                            @($"{Localizer["UniqueId"]}: {Follower.UniqueId?.ToString() ?? "-"}")
+                        </MudText>
+                        <MudText Typo="Typo.body2"
+                                 Class="mud-text-secondary selectable-text">
+                            @($"{Localizer["Position"]}: {Follower.Pos.PrintableShort}")
+                        </MudText>
+                    </MudStack>
+                </MudStack>
+
+                <MudStack Row
+                          Wrap="Wrap.Wrap"
+                          Spacing="2">
+                    @* Fill Bars *@
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Info"
+                               Size="Size.Small"
+                               StartIcon="@Icons.Material.Rounded.BatteryChargingFull"
+                               Disabled="@(!InSave)"
+                               OnClick="() => FollowerPageViewModel.FillAllBars(Follower)">
+                        @Localizer["FillAllBars"]
+                    </MudButton>
+                    @* Move To Player *@
+                    <MudButton Variant="Variant.Text"
+                               Size="Size.Small"
+                               StartIcon="@Icons.Material.Rounded.NearMe"
+                               Disabled="@(!CanMoveToPlayer)"
+                               OnClick="() => FollowerPageViewModel.MoveToPlayer(Follower, PlayerPage.PlayerState.Pos)">
+                        @Localizer["MoveToPlayer"]
+                    </MudButton>
+                    @* Move To Other *@
+                    <MudButton Variant="Variant.Text"
+                               Size="Size.Small"
+                               StartIcon="@Icons.Material.Rounded.NearMe"
+                               Disabled="@(!CanMoveToOther)"
+                               OnClick="MoveToOther">
+                        @(IsKelvin ? Localizer["MoveToVirginia"] : Localizer["MoveToKelvin"])
+                    </MudButton>
+                    @* Revive *@
+                    <Tooltip Text="@Localizer["ReviveTooltip"]">
+                        <MudButton Variant="Variant.Text"
+                                   Size="Size.Small"
+                                   StartIcon="@Icons.Material.Rounded.Favorite"
+                                   OnClick="Revive">
+                            @Localizer["Revive"]
+                        </MudButton>
+                    </Tooltip>
+                    @* Spawn *@
+                    <MudButton Variant="Variant.Text"
+                               Size="Size.Small"
+                               StartIcon="@Icons.Material.Rounded.GroupAdd"
+                               OnClick="SpawnAsync">
+                        @Localizer["Spawn"]
+                    </MudButton>
+                </MudStack>
+
+                @* Health *@
+                <StatSlider Label="@Localizer["Health"]"
+                            @bind-Value="Follower.Health" />
+                @* Anger *@
+                <StatSlider Label="@Localizer["Anger"]"
+                            @bind-Value="Follower.Anger" />
+                @* Fear *@
+                <StatSlider Label="@Localizer["Fear"]"
+                            @bind-Value="Follower.Fear" />
+                @* Fullness *@
+                <StatSlider Label="@Localizer["Fullness"]"
+                            @bind-Value="Follower.Fullness" />
+                @* Hydration *@
+                <StatSlider Label="@Localizer["Hydration"]"
+                            @bind-Value="Follower.Hydration" />
+                @* Energy *@
+                <StatSlider Label="@Localizer["Energy"]"
+                            @bind-Value="Follower.Energy" />
+                @* Affection *@
+                <StatSlider Label="@Localizer["Affection"]"
+                            @bind-Value="Follower.Affection" />
+
+                @* Outfit *@
+                <MudSelect T="Outfit"
+                           @bind-Value="Follower.Outfit"
+                           Label="@Localizer["Outfit"]"
+                           ToStringFunc="outfit => outfit?.Name ?? string.Empty">
+                    @foreach (var outfit in Follower.Outfits)
+                    {
+                        <MudSelectItem Value="outfit">@outfit.Name</MudSelectItem>
+                    }
+                </MudSelect>
+
+                <MudText Typo="Typo.subtitle2"
+                         Class="mt-2">
+                    @Localizer["Equipment"]
+                </MudText>
+                <MudStack Row
+                          Wrap="Wrap.Wrap"
+                          Spacing="0">
+                    @foreach (var equippableItem in Follower.Inventory)
+                    {
+                        @* Equipment *@
+                        <MudCheckBox T="bool"
+                                     @bind-Value="equippableItem.Selected"
+                                     Color="Color.Info"
+                                     Dense
+                                     Label="@equippableItem.Name" />
+                    }
+                </MudStack>
+
+                <MudText Typo="Typo.subtitle2"
+                         Class="mt-2">
+                    @Localizer["Influences"]
+                </MudText>
+                <InfluencesEditor Influences="Follower.Influences" />
+            </MudStack>
+        </MudPaper>
+    </ChildContent>
+</Header>

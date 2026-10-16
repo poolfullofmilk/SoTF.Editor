@@ -1,0 +1,210 @@
+@page "/Map"
+@inherits EditorPageBase
+
+<RequiresSavegame>
+    <MudStack Row
+              AlignItems="AlignItems.Stretch"
+              Spacing="6"
+              Class="page-fill">
+        @* Filter Panel *@
+        <MudPaper Elevation="4"
+                  Class="rounded-panel pa-4 overflow-y-auto"
+                  Style="width:320px;flex-shrink:0">
+            <MudStack Spacing="3">
+                @* Full Text *@
+                <MudTextField T="string"
+                              Value="MapViewModel.MapFilter.FullText"
+                              ValueChanged="SetFullText"
+                              DebounceInterval="500"
+                              Label="@Localizer["Search"]"
+                              Placeholder="@Localizer["SearchPlaceholder"]"
+                              HelperText="@Localizer["SearchTooltip"]"
+                              Adornment="Adornment.Start"
+                              AdornmentIcon="@Icons.Material.Rounded.Search"
+                              Clearable />
+                @* Area Filter *@
+                <MudSelect T="IAreaFilter"
+                           Value="MapViewModel.MapFilter.AreaFilter"
+                           ValueChanged="SetAreaFilter"
+                           Label="@Localizer["Area"]"
+                           ToStringFunc="areaFilter => areaFilter?.Name ?? string.Empty"
+                           Dense>
+                    @foreach (var areaFilter in MapViewModel.MapFilter.AreaFilterTypeValues)
+                    {
+                        <MudSelectItem Value="areaFilter">@areaFilter.Name</MudSelectItem>
+                    }
+                </MudSelect>
+                @* Requirements Filter *@
+                <MudSelect T="MapFilter.RequirementsFilterType"
+                           Value="MapViewModel.MapFilter.RequirementsFilter"
+                           ValueChanged="SetRequirementsFilter"
+                           Label="@Localizer["Requirements"]"
+                           HelperText="@Localizer["RequirementsTooltip"]"
+                           ToStringFunc="RequirementsName"
+                           Dense>
+                    @foreach (var requirementsFilter in Enum.GetValues<MapFilter.RequirementsFilterType>())
+                    {
+                        <MudSelectItem Value="requirementsFilter">@RequirementsName(requirementsFilter)</MudSelectItem>
+                    }
+                </MudSelect>
+                @* Uncollected Only *@
+                <MudSwitch T="bool"
+                           Value="MapViewModel.MapFilter.ShowOnlyUncollectedItems"
+                           ValueChanged="SetUncollectedOnly"
+                           Color="Color.Info"
+                           Label="@Localizer["UncollectedOnly"]" />
+                @* Dark Map *@
+                <MudSwitch T="bool"
+                           @bind-Value="MapViewModel.DarkMap"
+                           Color="Color.Info"
+                           Label="@Localizer["DarkMap"]" />
+
+                <MudStack Row
+                          AlignItems="AlignItems.Center"
+                          Spacing="2">
+                    <MudText Typo="Typo.subtitle2">@Localizer["PointsOfInterest"]</MudText>
+                    <MudSpacer />
+                    @* Deselect All *@
+                    <MudButton Variant="Variant.Text"
+                               Size="Size.Small"
+                               OnClick="MapViewModel.DeselectAll">
+                        @Localizer["DeselectAll"]
+                    </MudButton>
+                </MudStack>
+
+                <MudStack Spacing="0">
+                    @foreach (var grouper in MapViewModel.PoiGroups.OrderBy(grouper => grouper.BaseTitle))
+                    {
+                        @switch (grouper)
+                        {
+                            case PoiGroup poiGroup:
+                                @* Group Checkbox *@
+                                <MudCheckBox T="bool"
+                                             Value="poiGroup.Enabled"
+                                             ValueChanged="value => SetEnabled(poiGroup, value)"
+                                             Color="Color.Info"
+                                             Dense>
+                                    <MudStack Row
+                                              AlignItems="AlignItems.Center"
+                                              Spacing="2">
+                                        <MudImage Src="@poiGroup.Icon"
+                                                  Alt="@poiGroup.BaseTitle"
+                                                  Width="20"
+                                                  Height="20" />
+                                        <MudText Typo="Typo.body2">@poiGroup.Title</MudText>
+                                    </MudStack>
+                                </MudCheckBox>
+                                break;
+                            case PoiGroupCollection poiGroupCollection:
+                                @* Collection Checkbox *@
+                                <MudCheckBox T="bool?"
+                                             Value="CollectionState(poiGroupCollection)"
+                                             ValueChanged="value => SetEnabled(poiGroupCollection, value == true)"
+                                             TriState
+                                             Color="Color.Info"
+                                             Dense>
+                                    <MudText Typo="Typo.body2">@poiGroupCollection.Title</MudText>
+                                </MudCheckBox>
+                                @foreach (var poiGroup in poiGroupCollection.PoiGroups.OrderBy(group => group.BaseTitle))
+                                {
+                                    @* Sub Group Checkbox *@
+                                    <MudCheckBox T="bool"
+                                                 Value="poiGroup.Enabled"
+                                                 ValueChanged="value => SetEnabled(poiGroup, value)"
+                                                 Color="Color.Info"
+                                                 Dense
+                                                 Class="ml-6">
+                                        <MudStack Row
+                                                  AlignItems="AlignItems.Center"
+                                                  Spacing="2">
+                                            <MudImage Src="@poiGroup.Icon"
+                                                      Alt="@poiGroup.BaseTitle"
+                                                      Width="20"
+                                                      Height="20" />
+                                            <MudText Typo="Typo.body2">@poiGroup.Title</MudText>
+                                        </MudStack>
+                                    </MudCheckBox>
+                                }
+                                break;
+                        }
+                    }
+                </MudStack>
+            </MudStack>
+        </MudPaper>
+
+        @* Map Viewport *@
+        <MudPaper Elevation="4"
+                  Class="rounded-panel flex-grow-1 position-relative overflow-hidden"
+                  Style="@($"min-width:0;background-color:{MapBackground}")">
+            <MudElement HtmlTag="div"
+                        @bind-Ref="_viewport"
+                        Class="map-viewport"
+                        @onclick="() => MapViewModel.SelectPoi(null)">
+                <MudElement HtmlTag="div"
+                            @bind-Ref="_canvas"
+                            Class="map-canvas">
+                    @* Map Image *@
+                    <img src="@MapViewModel.MapImageUrl"
+                         alt="@Localizer["Map"]"
+                         class="map-image" />
+                    <svg class="map-zipline"
+                         viewBox="0 0 4096 4096">
+                        @foreach (var zipline in MapViewModel.VisibleZiplines())
+                        {
+                            <line x1="@zipline.PointA.MapLeft"
+                                  y1="@zipline.PointA.MapTop"
+                                  x2="@zipline.PointB.MapLeft"
+                                  y2="@zipline.PointB.MapTop"
+                                  stroke="@ZiplineColor"
+                                  stroke-width="3"
+                                  stroke-dasharray="8 6" />
+                        }
+                    </svg>
+                    @if (_focusPixel is { } focus)
+                    {
+                        <img src="images/icons/crosshair.svg"
+                             alt="@Localizer["Position"]"
+                             class="map-poi"
+                             style="@PoiStyle(focus.Left, focus.Top, 32, 0, 98)" />
+                    }
+                    @foreach (var poi in MapViewModel.VisiblePois())
+                    {
+                        @* Point Icon *@
+                        <img src="@poi.Icon"
+                             alt="@poi.Title"
+                             title="@poi.Title"
+                             class="@(poi.IsSelected ? "map-poi selected" : "map-poi")"
+                             style="@PoiStyle(poi.MapLeft, poi.MapTop, poi.IconSize, poi.IconRotation, poi.IconZIndex)"
+                             @onclick="() => MapViewModel.SelectPoi(poi)"
+                             @onclick:stopPropagation />
+                    }
+                </MudElement>
+            </MudElement>
+
+            @* Zoom Buttons *@
+            <MudStack Spacing="1"
+                      Class="position-absolute ma-4"
+                      Style="top:0;left:0">
+                <MudIconButton Icon="@Icons.Material.Rounded.Add"
+                               aria-label="@Localizer["ZoomIn"]"
+                               Variant="Variant.Filled"
+                               Size="Size.Small"
+                               OnClick="() => ZoomAsync(1.5)" />
+                <MudIconButton Icon="@Icons.Material.Rounded.Remove"
+                               aria-label="@Localizer["ZoomOut"]"
+                               Variant="Variant.Filled"
+                               Size="Size.Small"
+                               OnClick="() => ZoomAsync(1 / 1.5)" />
+            </MudStack>
+
+            @if (MapViewModel.SelectedPoi is BasePoi selectedPoi)
+            {
+                <MudPaper Elevation="4"
+                          Class="rounded-panel pa-4 map-overlay position-absolute ma-4 overflow-y-auto"
+                          Style="top:0;right:0;width:360px;max-height:calc(100% - 32px)">
+                    <PoiDetails Poi="selectedPoi" />
+                </MudPaper>
+            }
+        </MudPaper>
+    </MudStack>
+</RequiresSavegame>

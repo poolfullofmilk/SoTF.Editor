@@ -1,0 +1,79 @@
+@* Influences Editor *@
+<MudStack Spacing="3">
+    @if (ShowDisclaimer)
+    {
+        <MudText Typo="Typo.caption"
+                 Class="mud-text-secondary text-relaxed"
+                 Style="white-space:pre-line">
+            @Localizer["InfluencesHint"]
+        </MudText>
+    }
+
+    @foreach (var influence in Influences)
+    {
+        <MudPaper Elevation="0"
+                  Class="rounded-inner pa-3"
+                  Style="background-color:var(--mud-palette-background)">
+            <MudStack Spacing="1">
+                <MudStack Row
+                          AlignItems="AlignItems.Center"
+                          Spacing="2">
+                    <MudText Typo="Typo.subtitle2">@influence.PrintableTypeId</MudText>
+                    <MudSpacer />
+                    @if (CanRemove)
+                    {
+                        @* Remove Influence *@
+                        <MudIconButton Icon="@Icons.Material.Rounded.Delete"
+                                       aria-label="@Localizer["Remove"]"
+                                       Color="Color.Error"
+                                       Size="Size.Small"
+                                       OnClick="() => Remove(influence)" />
+                    }
+                </MudStack>
+                @* Sentiment *@
+                <StatSlider Label="@Localizer["Sentiment"]"
+                            Value="influence.Sentiment"
+                            ValueChanged="value => Change(() => influence.Sentiment = value)"
+                            Min="-100" />
+                @* Anger *@
+                <StatSlider Label="@Localizer["Anger"]"
+                            Value="influence.Anger"
+                            ValueChanged="value => Change(() => influence.Anger = value)"
+                            Min="-100" />
+                @* Fear *@
+                <StatSlider Label="@Localizer["Fear"]"
+                            Value="influence.Fear"
+                            ValueChanged="value => Change(() => influence.Fear = value)"
+                            Min="-100" />
+            </MudStack>
+        </MudPaper>
+    }
+
+    @if (MissingTypes.Any())
+    {
+        <MudStack Row
+                  AlignItems="AlignItems.Center"
+                  Spacing="2">
+            @* Influence Type *@
+            <MudSelect T="string"
+                       @bind-Value="_newType"
+                       Label="@Localizer["Influences"]"
+                       ToStringFunc="TypeName"
+                       Dense
+                       Class="flex-grow-1">
+                @foreach (var type in MissingTypes)
+                {
+                    <MudSelectItem Value="type">@TypeName(type)</MudSelectItem>
+                }
+            </MudSelect>
+            @* Add Influence *@
+            <MudButton Variant="Variant.Text"
+                       Size="Size.Small"
+                       StartIcon="@Icons.Material.Rounded.Add"
+                       Disabled="@(_newType is null)"
+                       OnClick="Add">
+                @Localizer["Add"]
+            </MudButton>
+        </MudStack>
+    }
+</MudStack>

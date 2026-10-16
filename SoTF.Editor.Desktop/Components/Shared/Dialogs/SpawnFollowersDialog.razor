@@ -1,0 +1,28 @@
+<MudDialog>
+
+    <DialogContent>
+        <MudStack Spacing="4">
+            <MudText Typo="Typo.body2"
+                     Class="text-relaxed">
+                @Localizer["SpawnFollowersWarning"]
+            </MudText>
+            @* Count *@
+            <MudNumericField T="int"
+                             @bind-Value="_count"
+                             Min="1"
+                             Max="Max"
+                             Label="@Localizer["Count"]" />
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        @* Cancel Button *@
+        <MudButton OnClick="@MudDialog.Cancel">@Localizer["Cancel"]</MudButton>
+        @* Spawn Button *@
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Info"
+                   OnClick="Spawn">
+            @Localizer["Spawn"]
+        </MudButton>
+    </DialogActions>
+
+</MudDialog>

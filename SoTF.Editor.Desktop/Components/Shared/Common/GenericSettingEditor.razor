@@ -1,0 +1,46 @@
+@* Setting Editor *@
+@switch (Setting.Type)
+{
+    case GenericSetting.DataType.String:
+        <MudTextField T="string"
+                      @bind-Value="Setting.StringValue"
+                      Margin="Margin.Dense" />
+        break;
+    case GenericSetting.DataType.Boolean:
+        <MudSwitch T="bool"
+                   Value="Setting.BoolValue ?? false"
+                   ValueChanged="value => Setting.BoolValue = value"
+                   Color="Color.Info" />
+        break;
+    case GenericSetting.DataType.Integer:
+        <MudNumericField T="int?"
+                         @bind-Value="Setting.IntValue"
+                         Min="Setting.MinInt"
+                         Max="Setting.MaxInt"
+                         Margin="Margin.Dense"
+                         Style="max-width:160px" />
+        break;
+    case GenericSetting.DataType.Enum:
+        <MudSelect T="object"
+                   @bind-Value="Setting.SelectedItem"
+                   ToStringFunc="value => value is null ? string.Empty : Setting.PossibleValues.GetValueOrDefault(value, value.ToString() ?? string.Empty)"
+                   Dense
+                   Margin="Margin.Dense">
+            @foreach (var possibleValue in Setting.PossibleValues)
+            {
+                <MudSelectItem T="object"
+                               Value="possibleValue.Key">
+                    @possibleValue.Value
+                </MudSelectItem>
+            }
+        </MudSelect>
+        break;
+    default:
+        <MudTextField T="string"
+                      Value="Setting.StringValue"
+                      ReadOnly
+                      Underline="false"
+                      Margin="Margin.Dense"
+                      Class="selectable-text" />
+        break;
+}

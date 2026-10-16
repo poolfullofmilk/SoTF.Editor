@@ -1,0 +1,261 @@
+@inherits LayoutComponentBase
+
+@* Providers *@
+<MudThemeProvider Theme="AppTheme.Custom"
+                  IsDarkMode />
+<MudPopoverProvider />
+<MudDialogProvider BackdropClick="false"
+                   CloseButton="true"
+                   MaxWidth="MaxWidth.False" />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Elevation="4"
+               Style="background-color:color-mix(in srgb, var(--mud-palette-appbar-background) var(--glass-opacity), transparent); backdrop-filter:var(--glass-blur)">
+        <MudStack Row
+                  AlignItems="AlignItems.Center"
+                  Class="mud-width-full px-2"
+                  Spacing="4">
+            <MudText Typo="Typo.h6"
+                     Class="text-truncate">
+                @AppInfo.DisplayName
+            </MudText>
+
+            @if (MainViewModel.SelectedSavegame is { } savegame)
+            {
+                @* Savegame Chip *@
+                <Tooltip Text="@savegame.FullPath">
+                    <MudChip T="string"
+                             Variant="Variant.Text"
+                             Size="Size.Small"
+                             Icon="@Icons.Material.Rounded.Save"
+                             Href="/">
+                        @SavegameLabel(savegame)
+                    </MudChip>
+                </Tooltip>
+            }
+
+            <MudSpacer />
+
+            @* Right *@
+            <MudStack Row
+                      AlignItems="AlignItems.Center"
+                      Spacing="1">
+
+                @* Save *@
+                <Tooltip Text="@($"{Localizer["Save"]} (Ctrl+S)")"
+                         RootClass="d-flex">
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Info"
+                               Size="Size.Small"
+                               StartIcon="@Icons.Material.Rounded.Save"
+                               Disabled="@(!HasSavegame)"
+                               OnClick="SaveAsync"
+                               data-shortcut="save">
+                        @Localizer["Save"]
+                    </MudButton>
+                </Tooltip>
+
+                @* Reload *@
+                <Tooltip Text="@($"{Localizer["ReloadSavegame"]} (F5)")"
+                         RootClass="d-flex">
+                    <MudIconButton Icon="@Icons.Material.Rounded.Refresh"
+                                   aria-label="@Localizer["ReloadSavegame"]"
+                                   Size="Size.Small"
+                                   Disabled="@(!HasSavegame)"
+                                   OnClick="ReloadAsync"
+                                   data-shortcut="reload" />
+                </Tooltip>
+
+                @* Backup Menu *@
+                <Tooltip Text="@Localizer["Backups"]"
+                         RootClass="d-flex">
+                    <MudMenu Icon="@Icons.Material.Rounded.Restore"
+                             AriaLabel="@Localizer["Backups"]"
+                             Size="Size.Small"
+                             Disabled="@(!HasSavegame)"
+                             AnchorOrigin="Origin.BottomRight"
+                             TransformOrigin="Origin.TopRight">
+                        @* Open Folder *@
+                        <MudMenuItem Icon="@Icons.Material.Rounded.FolderOpen"
+                                     Label="@Localizer["OpenSavegameFolder"]"
+                                     OnClick="OpenSavegameFolder" />
+                        @* Open Backup Folder *@
+                        <MudMenuItem Icon="@Icons.Material.Rounded.SnippetFolder"
+                                     Label="@Localizer["OpenBackupFolder"]"
+                                     OnClick="OpenBackupFolder" />
+                        <MudDivider />
+                        @* Restore Oldest *@
+                        <MudMenuItem Icon="@Icons.Material.Rounded.History"
+                                     Label="@Localizer["RestoreOldestBackup"]"
+                                     OnClick="() => RestoreBackupAsync(false)" />
+                        @* Restore Newest *@
+                        <MudMenuItem Icon="@Icons.Material.Rounded.Update"
+                                     Label="@Localizer["RestoreNewestBackup"]"
+                                     OnClick="() => RestoreBackupAsync(true)" />
+                    </MudMenu>
+                </Tooltip>
+
+                @* Tools Menu *@
+                <Tooltip Text="@Localizer["Tools"]"
+                         RootClass="d-flex">
+                    <MudMenu Icon="@Icons.Material.Rounded.Handyman"
+                             AriaLabel="@Localizer["Tools"]"
+                             Size="Size.Small"
+                             AnchorOrigin="Origin.BottomRight"
+                             TransformOrigin="Origin.TopRight">
+                        @* Regrow Trees *@
+                        <MudMenuItem Icon="@Icons.Material.Rounded.Forest"
+                                     Disabled="@(!HasSavegame)"
+                                     Label="@Localizer["RegrowTrees"]"
+                                     OnClick="() => ShowDialogAsync<RegrowTreesDialog>()" />
+                        @* Eternal Fires *@
+                        <MudMenuItem Icon="@Icons.Material.Rounded.LocalFireDepartment"
+                                     Disabled="@(!HasSavegame)"
+                                     Label="@Localizer["EternalFires"]"
+                                     OnClick="() => RunTool(MainViewModel.EternalFires)" />
+                        @* Reset Fires *@
+                        <MudMenuItem Icon="@Icons.Material.Rounded.Fireplace"
+                                     Disabled="@(!HasSavegame)"
+                                     Label="@Localizer["ResetFires"]"
+                                     OnClick="() => RunTool(MainViewModel.ResetFires)" />
+                        @* Structure Damage *@
+                        <MudMenuItem Icon="@Icons.Material.Rounded.HomeRepairService"
+                                     Disabled="@(!HasSavegame)"
+                                     Label="@Localizer["ResetStructureDamage"]"
+                                     OnClick="() => RunTool(MainViewModel.ResetStructureDamage)" />
+                        @* World Item Cloner *@
+                        <MudMenuItem Icon="@Icons.Material.Rounded.ContentCopy"
+                                     Disabled="@(!HasSavegame)"
+                                     Label="@Localizer["WorldItemCloner"]"
+                                     OnClick="() => ShowDialogAsync<WorldItemClonerDialog>()" />
+                        @* Consumed Items *@
+                        <MudMenuItem Icon="@Icons.Material.Rounded.Restaurant"
+                                     Disabled="@(!HasSavegame)"
+                                     Label="@Localizer["ConsumedItems"]"
+                                     OnClick="() => ShowDialogAsync<ConsumedItemsDialog>()" />
+                        @* Item Plater *@
+                        <MudMenuItem Icon="@Icons.Material.Rounded.AutoAwesome"
+                                     Disabled="@(!HasSavegame)"
+                                     Label="@Localizer["ItemPlater"]"
+                                     OnClick="() => ShowDialogAsync<ItemPlaterDialog>()" />
+                        <MudDivider />
+                        @* Cannibal Anger *@
+                        <MudMenuItem Icon="@Icons.Material.Rounded.SentimentSatisfied"
+                                     Disabled="@(!HasSavegame)"
+                                     Label="@Localizer["ResetCannibalAnger"]"
+                                     OnClick="() => RunTool(MainViewModel.ResetCannibalAnger)" />
+                        @* Reset Containers *@
+                        <MudMenuItem Icon="@Icons.Material.Rounded.Inventory2"
+                                     Disabled="@(!HasSavegame)"
+                                     Label="@Localizer["ResetContainers"]"
+                                     OnClick="() => RunTool(GameStatePage.ResetContainers)" />
+                        @* Reset Traps *@
+                        <MudMenuItem Icon="@Icons.Material.Rounded.PestControl"
+                                     Disabled="@(!HasSavegame)"
+                                     Label="@Localizer["ResetTraps"]"
+                                     OnClick="() => RunTool(MainViewModel.ResetTraps)" />
+                        @* Set To Endgame *@
+                        <MudMenuItem Icon="@Icons.Material.Rounded.Flag"
+                                     Disabled="@(!HasSavegame)"
+                                     Label="@Localizer["SetToEndgame"]"
+                                     OnClick="SetToEndgame" />
+                        @* Unlocks *@
+                        <MudMenuItem Icon="@Icons.Material.Rounded.LockOpen"
+                                     Label="@Localizer["Unlocks"]"
+                                     OnClick="() => ShowDialogAsync<UnlocksDialog>()" />
+                    </MudMenu>
+                </Tooltip>
+
+                @* Language Menu *@
+                <LanguagePicker />
+
+                @* Help Menu *@
+                <Tooltip Text="@Localizer["Help"]"
+                         RootClass="d-flex">
+                    <MudMenu Icon="@Icons.Material.Rounded.HelpOutline"
+                             AriaLabel="@Localizer["Help"]"
+                             Size="Size.Small"
+                             AnchorOrigin="Origin.BottomRight"
+                             TransformOrigin="Origin.TopRight">
+                        @* Project Page *@
+                        <MudMenuItem Icon="@Icons.Custom.Brands.GitHub"
+                                     Label="@Localizer["GitHubProject"]"
+                                     Href="@AppInfo.RepositoryUrl" />
+                        @* Latest Release *@
+                        <MudMenuItem Icon="@Icons.Material.Rounded.Download"
+                                     Label="@Localizer["DownloadLatestVersion"]"
+                                     Href="@AppInfo.LatestReleaseUrl" />
+                        @* Check Updates *@
+                        <MudMenuItem Icon="@Icons.Material.Rounded.SystemUpdateAlt"
+                                     Label="@Localizer["CheckForUpdates"]"
+                                     OnClick="() => CheckForUpdatesAsync(true)" />
+                        @* Check Updates On Start *@
+                        <MudMenuItem Icon="@(CheckForUpdatesOnStart ? Icons.Material.Rounded.CheckBox : Icons.Material.Rounded.CheckBoxOutlineBlank)"
+                                     Label="@Localizer["CheckForUpdatesOnStart"]"
+                                     AutoClose="false"
+                                     OnClick="ToggleCheckForUpdates" />
+                        <MudDivider />
+                        @* About *@
+                        <MudMenuItem Icon="@Icons.Material.Rounded.Info"
+                                     Label="@Localizer["About"]"
+                                     OnClick="() => ShowDialogAsync<AboutDialog>()" />
+                    </MudMenu>
+                </Tooltip>
+
+            </MudStack>
+        </MudStack>
+    </MudAppBar>
+
+    @* Main Content *@
+    <MudMainContent Class="page-gutter">
+        <MudStack Row
+                  AlignItems="AlignItems.Start"
+                  Spacing="6">
+            @* Navigation Panel *@
+            <MudPaper Elevation="4"
+                      Class="rounded-panel pa-2 nav-panel">
+                <MudStack Spacing="1">
+                    @foreach (var link in s_pages)
+                    {
+                        @* Page Button *@
+                        <MudButton StartIcon="@link.Icon"
+                                   Color="@(IsActive(link) ? Color.Secondary : Color.Default)"
+                                   Variant="@(IsActive(link) ? Variant.Filled : Variant.Text)"
+                                   Class="justify-start"
+                                   Style="@(IsActive(link) ? null : "padding:6px 16px")"
+                                   FullWidth
+                                   Disabled="@(link.NeedsSavegame && !HasSavegame)"
+                                   Href="@link.Href">
+                            @Localizer[link.LabelKey]
+                        </MudButton>
+                    }
+                </MudStack>
+            </MudPaper>
+
+            @* Page *@
+            <MudElement HtmlTag="section"
+                        Class="flex-grow-1"
+                        Style="min-width:0">
+                <ErrorBoundary @ref="_errorBoundary">
+                    <ChildContent>
+                        @Body
+                    </ChildContent>
+                    <ErrorContent Context="exception">
+                        <EmptyState Icon="@Icons.Material.Rounded.ErrorOutline"
+                                    Color="Color.Error"
+                                    Text="@exception.Message">
+                            @* Recover *@
+                            <MudButton Variant="Variant.Filled"
+                                       Color="Color.Info"
+                                       Size="Size.Small"
+                                       OnClick="RecoverFromError">
+                                @Localizer["Ok"]
+                            </MudButton>
+                        </EmptyState>
+                    </ErrorContent>
+                </ErrorBoundary>
+            </MudElement>
+        </MudStack>
+    </MudMainContent>
+</MudLayout>

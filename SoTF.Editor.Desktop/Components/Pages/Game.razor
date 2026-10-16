@@ -1,0 +1,181 @@
+@page "/Game"
+@inherits EditorPageBase
+
+<RequiresSavegame>
+    <MudTabs Elevation="4"
+             TabHeaderClass="mb-6"
+             AlwaysShowScrollButtons
+             Rounded>
+
+        @* Setup Tab *@
+        <MudTabPanel ToolTip="@Localizer["GameSetup"].Value"
+                     Icon="@Icons.Material.Rounded.Tune"
+                     IconColor="Color.Tertiary">
+            <MudStack Spacing="6">
+                <MudPaper Elevation="4"
+                          Class="rounded-panel pa-4">
+                    <MudGrid>
+
+                        <MudItem xs="12"
+                                 md="6">
+                            @* Game Mode *@
+                            <MudSelect T="string"
+                                       @bind-Value="GameSetup.SelectedMode"
+                                       Label="@Localizer["Mode"]"
+                                       ToStringFunc="value => LabelOf(s_modes, value)">
+                                @foreach (var mode in s_modes)
+                                {
+                                    <MudSelectItem Value="mode.Value">@Localizer[mode.LabelKey]</MudSelectItem>
+                                }
+                            </MudSelect>
+                        </MudItem>
+                        <MudItem xs="12"
+                                 md="6">
+                            <MudTextField T="string"
+                                          Value="GameSetup.Uid"
+                                          Label="@Localizer["Uid"]"
+                                          ReadOnly />
+                        </MudItem>
+
+                    </MudGrid>
+                </MudPaper>
+
+                @if (IsCustom)
+                {
+                    @foreach (var group in SetupGroups)
+                    {
+                        <Header Title="@Localizer[group.TitleKey]">
+                            <MudPaper Elevation="4"
+                                      Class="rounded-panel pa-4">
+                                <MudGrid>
+
+                                    @foreach (var setting in group.Selects)
+                                    {
+                                        <MudItem xs="12"
+                                                 sm="6"
+                                                 md="4">
+                                            @* Setup Select *@
+                                            <MudSelect T="string"
+                                                       Value="setting.Get()"
+                                                       ValueChanged="value => setting.Set(value)"
+                                                       Label="@Localizer[setting.LabelKey]"
+                                                       Clearable
+                                                       ToStringFunc="value => LabelOf(setting.Options, value)">
+                                                @foreach (var option in setting.Options)
+                                                {
+                                                    <MudSelectItem Value="option.Value">@Localizer[option.LabelKey]</MudSelectItem>
+                                                }
+                                            </MudSelect>
+                                        </MudItem>
+                                    }
+                                    @foreach (var toggle in group.Toggles)
+                                    {
+                                        <MudItem xs="12"
+                                                 sm="6"
+                                                 md="4">
+                                            @* Setup Switch *@
+                                            <MudSwitch T="bool"
+                                                       Value="toggle.Get()"
+                                                       ValueChanged="value => toggle.Set(value)"
+                                                       Color="Color.Info"
+                                                       Label="@Localizer[toggle.LabelKey]" />
+                                        </MudItem>
+                                    }
+
+                                </MudGrid>
+                            </MudPaper>
+                        </Header>
+                    }
+                }
+            </MudStack>
+        </MudTabPanel>
+
+        @* State Tab *@
+        <MudTabPanel ToolTip="@Localizer["GameState"].Value"
+                     Icon="@Icons.Material.Rounded.Schedule"
+                     IconColor="Color.Tertiary">
+            <MudStack Spacing="6">
+                <MudPaper Elevation="4"
+                          Class="rounded-panel pa-4">
+                    <MudSimpleTable Dense
+                                    Elevation="0">
+                        <tbody>
+                            @foreach (var setting in GameState.Settings)
+                            {
+                                <tr>
+                                    <td style="width:40%">@Localizer[TextKeys.Setting(setting.Name)]</td>
+                                    <td>
+                                        <GenericSettingEditor Setting="setting" />
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </MudSimpleTable>
+                </MudPaper>
+
+                <Header Title="@Localizer["WorldObjectStates"]">
+                    <MudPaper Elevation="4"
+                              Class="rounded-panel pa-4">
+                        <MudText Typo="Typo.caption"
+                                 Class="mud-text-secondary text-relaxed"
+                                 Style="white-space:pre-line">
+                            @Localizer["WorldObjectStatesHint"]
+                        </MudText>
+                        @* World Object Search *@
+                        <MudTextField T="string"
+                                      @bind-Value="_namedIntFilter"
+                                      DebounceInterval="300"
+                                      Placeholder="@Localizer["Filter"]"
+                                      Adornment="Adornment.Start"
+                                      AdornmentIcon="@Icons.Material.Rounded.Search"
+                                      Clearable
+                                      Class="my-2" />
+                        <MudTable T="GenericSetting"
+                                  Items="FilteredNamedIntDatas"
+                                  Dense
+                                  Hover
+                                  Virtualize
+                                  Elevation="0">
+
+                            <HeaderContent>
+                                <MudTh>@Localizer["Name"]</MudTh>
+                                <MudTh>@Localizer["Value"]</MudTh>
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd Class="selectable-text">@context.Name</MudTd>
+                                <MudTd>
+                                    <GenericSettingEditor Setting="context" />
+                                </MudTd>
+                            </RowTemplate>
+
+                        </MudTable>
+                    </MudPaper>
+                </Header>
+            </MudStack>
+        </MudTabPanel>
+
+        @* Weather Tab *@
+        <MudTabPanel ToolTip="@Localizer["WeatherState"].Value"
+                     Icon="@Icons.Material.Rounded.WbSunny"
+                     IconColor="Color.Tertiary">
+            <MudPaper Elevation="4"
+                      Class="rounded-panel pa-4">
+                <MudSimpleTable Dense
+                                Elevation="0">
+                    <tbody>
+                        @foreach (var setting in Weather.Settings)
+                        {
+                            <tr>
+                                <td style="width:40%">@Localizer[TextKeys.Setting(setting.Name)]</td>
+                                <td>
+                                    <GenericSettingEditor Setting="setting" />
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </MudSimpleTable>
+            </MudPaper>
+        </MudTabPanel>
+
+    </MudTabs>
+</RequiresSavegame>

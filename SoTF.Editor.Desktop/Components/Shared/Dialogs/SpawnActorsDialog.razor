@@ -1,0 +1,123 @@
+<MudDialog>
+
+    <DialogContent>
+        <MudGrid>
+
+            <MudItem xs="12"
+                     md="6">
+                <MudStack Spacing="3">
+                    <MudAlert Severity="Severity.Warning"
+                              Dense
+                              Class="rounded-inner">
+                        @Localizer["SpawnActorsWarning"]
+                    </MudAlert>
+                    <MudText Typo="Typo.body2"
+                             Class="selectable-text">
+                        @($"{Localizer["Destination"]}: {_viewModel.Destination}")
+                    </MudText>
+                    @* Actor Type *@
+                    <MudSelect T="ActorType"
+                               @bind-Value="_viewModel.SelectedActorType"
+                               Label="@Localizer["ActorType"]"
+                               ToStringFunc="actorType => actorType?.Name ?? string.Empty"
+                               Dense>
+                        @foreach (var actorType in _viewModel.AllActorTypes)
+                        {
+                            <MudSelectItem Value="actorType">@actorType.Name</MudSelectItem>
+                        }
+                    </MudSelect>
+                    @* Count *@
+                    <MudNumericField T="int"
+                                     @bind-Value="_viewModel.SpawnCount"
+                                     Min="1"
+                                     Max="500"
+                                     Label="@Localizer["Count"]" />
+                    @* Family *@
+                    <MudSelect T="int?"
+                               @bind-Value="_viewModel.FamilyId"
+                               Label="@Localizer["Family"]"
+                               ToStringFunc="FamilyName"
+                               Dense>
+                        @foreach (var familyId in _viewModel.AllFamilyIds)
+                        {
+                            <MudSelectItem T="int?"
+                                           Value="familyId">
+                                @FamilyName(familyId)
+                            </MudSelectItem>
+                        }
+                    </MudSelect>
+                    @* Spawn Pattern *@
+                    <MudSelect T="SpawnPattern"
+                               @bind-Value="_viewModel.SelectedSpawnPattern"
+                               Label="@Localizer["SpawnPattern"]"
+                               ToStringFunc="PatternName"
+                               Dense>
+                        @foreach (var pattern in Enum.GetValues<SpawnPattern>())
+                        {
+                            <MudSelectItem Value="pattern">@PatternName(pattern)</MudSelectItem>
+                        }
+                    </MudSelect>
+                    @* Space Between *@
+                    <MudNumericField T="int"
+                                     @bind-Value="_viewModel.SpaceBetween"
+                                     Min="0"
+                                     Label="@Localizer["SpaceBetween"]"
+                                     HelperText="@Localizer["SpaceBetweenTooltip"]" />
+                    <MudText Typo="Typo.subtitle2">@Localizer["Offset"]</MudText>
+                    <MudStack Row
+                              Spacing="2">
+                        @* Offset X *@
+                        <MudNumericField T="float"
+                                         @bind-Value="_viewModel.XOffset"
+                                         Label="X"
+                                         Step="0.5f" />
+                        @* Offset Y *@
+                        <MudNumericField T="float"
+                                         @bind-Value="_viewModel.YOffset"
+                                         Label="Y"
+                                         Step="0.5f" />
+                        @* Offset Z *@
+                        <MudNumericField T="float"
+                                         @bind-Value="_viewModel.ZOffset"
+                                         Label="Z"
+                                         Step="0.5f" />
+                    </MudStack>
+                    @* Area *@
+                    <MudSelect T="Area"
+                               @bind-Value="_viewModel.SelectedArea"
+                               Label="@Localizer["Area"]"
+                               ToStringFunc="area => area?.Name ?? string.Empty"
+                               Dense>
+                        @foreach (var area in _viewModel.Areas)
+                        {
+                            <MudSelectItem Value="area">@area.Name</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudStack>
+            </MudItem>
+
+            <MudItem xs="12"
+                     md="6">
+                <Header Title="@Localizer["Influences"]">
+                    <InfluencesEditor Influences="_viewModel.Influences"
+                                      ShowDisclaimer
+                                      CanRemove />
+                </Header>
+            </MudItem>
+
+        </MudGrid>
+    </DialogContent>
+    <DialogActions>
+        @* Cancel Button *@
+        <MudButton OnClick="@MudDialog.Cancel">@Localizer["Cancel"]</MudButton>
+        @* Spawn Button *@
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Info"
+                   StartIcon="@Icons.Material.Rounded.GroupAdd"
+                   Disabled="@(!_viewModel.CanSpawn())"
+                   OnClick="Spawn">
+            @Localizer["CreateActors"]
+        </MudButton>
+    </DialogActions>
+
+</MudDialog>

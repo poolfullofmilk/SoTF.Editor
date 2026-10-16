@@ -1,0 +1,107 @@
+using Microsoft.AspNetCore.Components;
+using MudBlazor;
+using SoTF.Editor.Data.Enums;
+using SoTF.Editor.Data.Models;
+using SoTF.Editor.Desktop.Components.Shared.Common;
+using SoTF.Editor.Desktop.Components.Shared.Dialogs;
+using SoTF.Editor.Services.Pages;
+
+namespace SoTF.Editor.Desktop.Components.Pages;
+
+public partial class Structures : EditorPageBase
+{
+    private static readonly TableGroupDefinition<ScrewStructureWrapper> s_groupByName = new()
+    {
+        Selector = wrapper => wrapper.Name,
+    };
+
+    // The Batch Buttons Each Origin Offered Before
+    private static readonly OriginBatch[] s_origins =
+    [
+        new(
+            ScrewStructureOrigin.Unfinished,
+            "UnfinishedStructures",
+            [
+                new(ScrewStructureModificationMode.None, "ResetAll"),
+                new(ScrewStructureModificationMode.Remove, "SetAllToRemove"),
+                new(ScrewStructureModificationMode.AlmostFinish, "SetAllToAlmostFinish"),
+                new(ScrewStructureModificationMode.Finish, "SetAllToFinish"),
+                new(ScrewStructureModificationMode.Unfinish, "SetAllToUnfinish"),
+            ]
+        ),
+        new(
+            ScrewStructureOrigin.Finished,
+            "FinishedStructures",
+            [
+                new(ScrewStructureModificationMode.None, "ResetAll"),
+                new(ScrewStructureModificationMode.Remove, "SetAllToRemove"),
+                new(ScrewStructureModificationMode.AlmostFinish, "SetAllToAlmostFinish"),
+                new(ScrewStructureModificationMode.Unfinish, "SetAllToUnfinish"),
+            ]
+        ),
+    ];
+
+    [Inject]
+    public required StructuresPageViewModel StructuresPage { get; set; }
+
+    [Inject]
+    public required IDialogService DialogService { get; set; }
+
+    private string? _filter;
+
+    private IEnumerable<ScrewStructureWrapper> FilteredStructures =>
+        StructuresPage
+            .Structures.Where(wrapper =>
+                string.IsNullOrWhiteSpace(_filter)
+                || wrapper.Name.Contains(_filter, StringComparison.OrdinalIgnoreCase)
+                || wrapper.Category.Contains(_filter, StringComparison.OrdinalIgnoreCase)
+            )
+            .OrderBy(wrapper => wrapper.Name)
+            .ThenBy(wrapper => wrapper.PctDone);
+
+    private string ModeName(ScrewStructureModificationMode? mode)
+    {
+        return Localizer[TextKeys.StructureMode(mode ?? ScrewStructureModificationMode.None)];
+    }
+
+    public static string StructureName(ScrewStructure? structure)
+    {
+        return structure is null ? string.Empty : $"{structure.CategoryName} · {structure.Name}";
+    }
+
+    private static string? IconOf(ScrewStructureWrapper wrapper)
+    {
+        return wrapper.ScrewStructure?.Icon is { } icon ? $"images/structures/{icon}" : null;
+    }
+
+    private void SetAll(ScrewStructureOrigin origin, ScrewStructureModificationMode mode)
+    {
+        StructuresPage.SetModificationMode(FilteredStructures, origin, mode);
+    }
+
+    private async Task ChangeTypeAsync(ScrewStructureWrapper wrapper)
+    {
+        var parameters = new DialogParameters<ChangeStructureTypeDialog>
+        {
+            { dialog => dialog.Structure, wrapper },
+        };
+        var dialog = await DialogService.ShowAsync<ChangeStructureTypeDialog>(
+            Localizer["ChangeType"],
+            parameters,
+            new DialogOptions { MaxWidth = MaxWidth.Small, FullWidth = true }
+        );
+
+        if (await dialog.Result is { Canceled: false, Data: ScrewStructure selected })
+        {
+            StructuresPageViewModel.ChangeType(wrapper, selected);
+        }
+    }
+
+    private sealed record BatchMode(ScrewStructureModificationMode Mode, string LabelKey);
+
+    private sealed record OriginBatch(
+        ScrewStructureOrigin Origin,
+        string TitleKey,
+        BatchMode[] Batches
+    );
+}

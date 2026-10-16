@@ -1,0 +1,70 @@
+<MudDialog>
+
+    <DialogContent>
+        <MudStack Spacing="4">
+            <MudText Typo="Typo.body2"
+                     Class="text-relaxed">
+                @Localizer["TeleportHint"]
+            </MudText>
+            <MudSimpleTable Dense
+                            Elevation="0">
+                <tbody>
+                    <tr>
+                        <td class="mud-text-secondary">@Localizer["ToTeleport"]</td>
+                        <td>@_viewModel.Target</td>
+                    </tr>
+                    <tr>
+                        <td class="mud-text-secondary">@Localizer["Destination"]</td>
+                        <td>@_viewModel.Destination</td>
+                    </tr>
+                    <tr>
+                        <td class="mud-text-secondary">@Localizer["Position"]</td>
+                        <td class="selectable-text">@($"X: {_viewModel.X:F2}, Y: {_viewModel.Y:F2}, Z: {_viewModel.Z:F2}")</td>
+                    </tr>
+                </tbody>
+            </MudSimpleTable>
+            <MudText Typo="Typo.subtitle2">@Localizer["Offset"]</MudText>
+            <MudStack Row
+                      Spacing="2">
+                @* Offset X *@
+                <MudNumericField T="float"
+                                 @bind-Value="_viewModel.XOffset"
+                                 Label="X"
+                                 Step="0.5f" />
+                @* Offset Y *@
+                <MudNumericField T="float"
+                                 @bind-Value="_viewModel.YOffset"
+                                 Label="Y"
+                                 Step="0.5f" />
+                @* Offset Z *@
+                <MudNumericField T="float"
+                                 @bind-Value="_viewModel.ZOffset"
+                                 Label="Z"
+                                 Step="0.5f" />
+            </MudStack>
+            @* Area *@
+            <MudSelect T="Area"
+                       @bind-Value="_viewModel.SelectedArea"
+                       Label="@Localizer["Area"]"
+                       ToStringFunc="area => area?.Name ?? string.Empty"
+                       Dense>
+                @foreach (var area in _viewModel.Areas)
+                {
+                    <MudSelectItem Value="area">@area.Name</MudSelectItem>
+                }
+            </MudSelect>
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        @* Cancel Button *@
+        <MudButton OnClick="@MudDialog.Cancel">@Localizer["Cancel"]</MudButton>
+        @* Teleport Button *@
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Info"
+                   StartIcon="@Icons.Material.Rounded.NearMe"
+                   OnClick="Teleport">
+            @Localizer["Teleport"]
+        </MudButton>
+    </DialogActions>
+
+</MudDialog>

@@ -1,0 +1,110 @@
+using System.Windows;
+using Microsoft.Web.WebView2.Core;
+using SoTF.Editor.Desktop.Interop;
+using SoTF.Editor.Services.Savegames;
+
+namespace SoTF.Editor.Desktop;
+
+public partial class MainWindow : Window
+{
+    private const string DropMessage = "SavegameDropped";
+
+    private readonly MainViewModel _mainViewModel;
+
+    public MainWindow(IServiceProvider services, MainViewModel mainViewModel)
+    {
+        InitializeComponent();
+        _mainViewModel = mainViewModel;
+        WebView.Services = services;
+        WebView.BlazorWebViewInitialized += (_, eventArgs) =>
+            SetUpBrowser(eventArgs.WebView.CoreWebView2);
+        SourceInitialized += (_, _) => WindowCaptionTheme.Apply(this);
+    }
+
+    public void BringToFront()
+    {
+        if (WindowState == WindowState.Minimized)
+        {
+            WindowState = WindowState.Normal;
+        }
+
+        Activate();
+    }
+
+    private void SetUpBrowser(CoreWebView2 browser)
+    {
+        // Page Background Before The First Paint, No White Flash
+        WebView.WebView.DefaultBackgroundColor = System.Drawing.Color.FromArgb(0x20, 0x20, 0x20);
+
+        // F5 And Ctrl R Reach The Page, Not A Reload
+        browser.Settings.AreBrowserAcceleratorKeysEnabled = false;
+
+        browser.AddWebResourceRequestedFilter(
+            LocalFiles.Host + "*",
+            CoreWebView2WebResourceContext.Image
+        );
+        browser.WebResourceRequested += (_, eventArgs) => ServeLocalFile(browser, eventArgs);
+        browser.WebMessageReceived += (_, eventArgs) => OpenDroppedSavegame(eventArgs);
+    }
+
+    private static void ServeLocalFile(
+        CoreWebView2 browser,
+        CoreWebView2WebResourceRequestedEventArgs eventArgs
+    )
+    {
+        // Requests For Other Hosts Belong To Blazor Or The Web
+        if (LocalFiles.PathOf(eventArgs.Request.Uri) is not { } path)
+        {
+            return;
+        }
+
+        // Serve Only Savegame Thumbnails
+        if (
+            !File.Exists(path)
+            || Path.GetExtension(path).ToLowerInvariant() is not (".png" or ".jpg" or ".jpeg")
+        )
+        {
+            eventArgs.Response = browser.Environment.CreateWebResourceResponse(
+                null,
+                404,
+                "Not Found",
+                ""
+            );
+            return;
+        }
+
+        var contentType = Path.GetExtension(path).Equals(".png", StringComparison.OrdinalIgnoreCase)
+            ? "image/png"
+            : "image/jpeg";
+        eventArgs.Response = browser.Environment.CreateWebResourceResponse(
+            new MemoryStream(File.ReadAllBytes(path)),
+            200,
+            "OK",
+            $"Content-Type: {contentType}"
+        );
+    }
+
+    private void OpenDroppedSavegame(CoreWebView2WebMessageReceivedEventArgs eventArgs)
+    {
+        // Blazor Shares This Channel, Its Own Messages Pass Untouched
+        if (
+            eventArgs.TryGetWebMessageAsString() != DropMessage
+            || eventArgs.AdditionalObjects.OfType<CoreWebView2File>().FirstOrDefault()?.Path
+                is not { } path
+        )
+        {
+            return;
+        }
+
+        var directory = Directory.Exists(path) ? path : Path.GetDirectoryName(path);
+        if (
+            SavegameManager.CreateSaveInfo(
+                directory == null ? null : new DirectoryInfo(directory)
+            ) is
+            { } savegame
+        )
+        {
+            _mainViewModel.RequestOpen(savegame);
+        }
+    }
+}

@@ -1,0 +1,240 @@
+@page "/Player"
+@inherits EditorPageBase
+
+<RequiresSavegame>
+    <MudGrid>
+
+        <MudItem xs="12"
+                 lg="6">
+            <Header Title="@Localizer["Player"]">
+                <TitleContent>
+                    <MudSpacer />
+                    <ShowOnMapButton Position="State.Pos" />
+                </TitleContent>
+                <ChildContent>
+                    <MudPaper Elevation="4"
+                              Class="rounded-panel pa-4">
+                        <MudStack Spacing="2">
+                            <MudStack Row
+                                      Wrap="Wrap.Wrap"
+                                      Spacing="2">
+                                @* Fill Bars *@
+                                <MudButton Variant="Variant.Filled"
+                                           Color="Color.Info"
+                                           Size="Size.Small"
+                                           StartIcon="@Icons.Material.Rounded.BatteryChargingFull"
+                                           OnClick="PlayerPage.FillAllBars">
+                                    @Localizer["FillAllBars"]
+                                </MudButton>
+                                @* Move To Kelvin *@
+                                <MudButton Variant="Variant.Text"
+                                           Size="Size.Small"
+                                           StartIcon="@Icons.Material.Rounded.NearMe"
+                                           Disabled="@(!IsInSave(FollowerPage.KelvinState))"
+                                           OnClick="() => PlayerPage.MoveToFollower(FollowerPage.KelvinState)">
+                                    @Localizer["MoveToKelvin"]
+                                </MudButton>
+                                @* Move To Virginia *@
+                                <MudButton Variant="Variant.Text"
+                                           Size="Size.Small"
+                                           StartIcon="@Icons.Material.Rounded.NearMe"
+                                           Disabled="@(!IsInSave(FollowerPage.VirginiaState))"
+                                           OnClick="() => PlayerPage.MoveToFollower(FollowerPage.VirginiaState)">
+                                    @Localizer["MoveToVirginia"]
+                                </MudButton>
+                            </MudStack>
+
+                            <MudText Typo="Typo.body2"
+                                     Class="mud-text-secondary selectable-text">
+                                @($"{Localizer["Position"]}: {State.Pos.PrintableShort} · {Localizer["Area"]}: {State.Pos.Area.Name}")
+                            </MudText>
+
+                            @* Strength *@
+                            <StatSlider Label="@Localizer["StrengthLevel"]"
+                                        Value="State.StrengthLevel"
+                                        ValueChanged="value => State.StrengthLevel = (int)value"
+                                        Max="100" />
+                            @* Max Health *@
+                            <StatSlider Label="@Localizer["MaxHealth"]"
+                                        Value="State.MaxHealth"
+                                        ValueChanged="value => State.MaxHealth = value"
+                                        Max="MaxHealthCeiling" />
+                            @* Current Health *@
+                            <StatSlider Label="@Localizer["CurrentHealth"]"
+                                        @bind-Value="State.CurrentHealth"
+                                        Min="0.1f"
+                                        Max="State.MaxHealth"
+                                        Step="0.1f" />
+                            @* Sickness *@
+                            <StatSlider Label="@Localizer["Sickness"]"
+                                        @bind-Value="State.Sickness"
+                                        Max="State.MaxHealth"
+                                        Step="0.1f" />
+                            @* Fullness *@
+                            <StatSlider Label="@Localizer["Fullness"]"
+                                        @bind-Value="State.Fullness" />
+                            @* Hydration *@
+                            <StatSlider Label="@Localizer["Hydration"]"
+                                        @bind-Value="State.Hydration" />
+                            @* Rest *@
+                            <StatSlider Label="@Localizer["Rest"]"
+                                        @bind-Value="State.Rest" />
+                            @* Stamina *@
+                            <StatSlider Label="@Localizer["Stamina"]"
+                                        @bind-Value="State.Stamina" />
+                            @* Fullness Buff *@
+                            <StatSlider Label="@Localizer["FullnessBuff"]"
+                                        @bind-Value="State.FullnessBuff"
+                                        Min="-100"
+                                        Max="65535" />
+                            @* Hydration Buff *@
+                            <StatSlider Label="@Localizer["HydrationBuff"]"
+                                        @bind-Value="State.HydrationBuff"
+                                        Min="-100"
+                                        Max="65535" />
+                            @* Rest Buff *@
+                            <StatSlider Label="@Localizer["RestBuff"]"
+                                        @bind-Value="State.RestBuff"
+                                        Max="1"
+                                        Step="0.1f" />
+
+                            @* Outfit *@
+                            <MudSelect T="Item"
+                                       @bind-Value="State.SelectedCloth"
+                                       Label="@Localizer["Outfit"]"
+                                       ToStringFunc="item => item?.Name ?? string.Empty"
+                                       Class="mt-2">
+                                @foreach (var cloth in PlayerPage.AvailableClothes)
+                                {
+                                    <MudSelectItem Value="cloth">@cloth.Name</MudSelectItem>
+                                }
+                            </MudSelect>
+                        </MudStack>
+                    </MudPaper>
+                </ChildContent>
+            </Header>
+        </MudItem>
+
+        <MudItem xs="12"
+                 lg="6">
+            <Header Title="@Localizer["EquippedArmor"]">
+                <TitleContent>
+                    <MudSpacer />
+                    @* Default Durability *@
+                    <Tooltip Text="@Localizer["SetAllToDefaultTooltip"]">
+                        <MudButton Variant="Variant.Text"
+                                   Size="Size.Small"
+                                   Disabled="@(!ArmorPage.HasArmorPieces())"
+                                   OnClick="ArmorPage.SetAllToDefault">
+                            @Localizer["SetAllToDefault"]
+                        </MudButton>
+                    </Tooltip>
+                    @* Max Durability *@
+                    <Tooltip Text="@Localizer["SetAllToMaxTooltip"]">
+                        <MudButton Variant="Variant.Text"
+                                   Size="Size.Small"
+                                   Disabled="@(!ArmorPage.HasArmorPieces())"
+                                   OnClick="ArmorPage.SetAllToMax">
+                            @Localizer["SetAllToMax"]
+                        </MudButton>
+                    </Tooltip>
+                </TitleContent>
+                <ChildContent>
+                    <MudPaper Elevation="4"
+                              Class="rounded-panel pa-4">
+                        <MudStack Spacing="2">
+                            @foreach (var armour in ArmorPage.Armour)
+                            {
+                                <MudStack Row
+                                          AlignItems="AlignItems.Center"
+                                          Spacing="4"
+                                          Class="pa-1">
+                                    <MudImage Src="@armour.ImageUrl"
+                                              Alt="@armour.Name"
+                                              Class="thumb rounded-thumb" />
+                                    <MudStack Spacing="0"
+                                              Class="flex-grow-1"
+                                              Style="min-width:0">
+                                        <MudText Typo="Typo.body1"
+                                                 Class="text-truncate text-tight">
+                                            @armour.Name
+                                        </MudText>
+                                        <MudText Typo="Typo.caption"
+                                                 Class="mud-text-secondary">
+                                            @($"{Localizer["Slot"]} {armour.Slot}")
+                                        </MudText>
+                                    </MudStack>
+                                    @* Durability *@
+                                    <MudNumericField T="float"
+                                                     @bind-Value="armour.ArmourPiece.RemainingArmourpoints"
+                                                     Min="armour.MinDurability"
+                                                     Max="armour.MaxDurability"
+                                                     Variant="Variant.Outlined"
+                                                     Margin="Margin.Dense"
+                                                     Label="@Localizer["Durability"]"
+                                                     Style="width:140px" />
+                                    @* Default Button *@
+                                    <Tooltip Text="@Localizer["SetToDefaultDurability"]">
+                                        <MudIconButton Icon="@Icons.Material.Rounded.SettingsBackupRestore"
+                                                       Size="Size.Small"
+                                                       OnClick="() => armour.ArmourPiece.RemainingArmourpoints = armour.DefaultDurability" />
+                                    </Tooltip>
+                                    @* Max Button *@
+                                    <Tooltip Text="@Localizer["SetToMaxDurability"]">
+                                        <MudIconButton Icon="@Icons.Material.Rounded.KeyboardDoubleArrowUp"
+                                                       Size="Size.Small"
+                                                       OnClick="() => armour.ArmourPiece.RemainingArmourpoints = armour.MaxDurability" />
+                                    </Tooltip>
+                                    @* Remove Button *@
+                                    <Tooltip Text="@Localizer["Remove"]">
+                                        <MudIconButton Icon="@Icons.Material.Rounded.Delete"
+                                                       Color="Color.Error"
+                                                       Size="Size.Small"
+                                                       OnClick="() => ArmorPage.RemoveArmour(armour)" />
+                                    </Tooltip>
+                                </MudStack>
+                            }
+
+                            <MudDivider Class="my-2" />
+
+                            <MudStack Row
+                                      AlignItems="AlignItems.Center"
+                                      Wrap="Wrap.Wrap"
+                                      Spacing="2">
+                                @* New Armor *@
+                                <MudSelect T="Item"
+                                           @bind-Value="ArmorPage.NewArmour.SelectedItem"
+                                           Label="@Localizer["Name"]"
+                                           ToStringFunc="item => item?.Name ?? string.Empty"
+                                           Class="flex-grow-1"
+                                           Style="min-width:200px">
+                                    @foreach (var armourType in ArmorPage.ArmourTypes)
+                                    {
+                                        <MudSelectItem Value="armourType">@armourType.Name</MudSelectItem>
+                                    }
+                                </MudSelect>
+                                @* New Durability *@
+                                <MudNumericField T="int"
+                                                 @bind-Value="ArmorPage.NewArmour.RemainingArmourpoints"
+                                                 Min="1"
+                                                 Label="@Localizer["Durability"]"
+                                                 HelperText="@Localizer["DurabilityTooltip"]"
+                                                 Style="width:140px" />
+                                @* Add Armor *@
+                                <MudButton Variant="Variant.Filled"
+                                           Color="Color.Info"
+                                           Size="Size.Small"
+                                           StartIcon="@Icons.Material.Rounded.Add"
+                                           Disabled="@(!ArmorPage.NewArmour.CanAddArmor())"
+                                           OnClick="ArmorPage.NewArmour.AddArmor">
+                                    @Localizer["Add"]
+                                </MudButton>
+                            </MudStack>
+                        </MudStack>
+                    </MudPaper>
+                </ChildContent>
+            </Header>
+        </MudItem>
+
+    </MudGrid>
+</RequiresSavegame>

@@ -1,0 +1,55 @@
+<MudDialog>
+
+    <TitleContent>
+        <MudText Typo="Typo.h6">@Localizer["ItemPlater"]</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudStack Spacing="4">
+            <MudAlert Severity="Severity.Warning"
+                      Dense
+                      Class="rounded-inner"
+                      Style="white-space:pre-line">
+                @Localizer["ItemPlaterWarning"]
+            </MudAlert>
+            @foreach (var group in OptionGroups)
+            {
+                <MudStack Spacing="0">
+                    <MudText Typo="Typo.subtitle2">@group.Title</MudText>
+                    <MudStack Row
+                              Wrap="Wrap.Wrap"
+                              Spacing="0">
+                        @foreach (var option in group.Options)
+                        {
+                            @* Option *@
+                            <MudCheckBox T="bool"
+                                         Value="option.Get()"
+                                         ValueChanged="option.Set"
+                                         Color="Color.Info"
+                                         Label="@option.Label" />
+                        }
+                    </MudStack>
+                </MudStack>
+            }
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        @* Remove Plating *@
+        <MudButton Color="Color.Error"
+                   Disabled="@(!_viewModel.CanModifyPlating())"
+                   OnClick="() => Apply(_viewModel.RemovePlating)">
+            @Localizer["RemovePlating"]
+        </MudButton>
+        <MudSpacer />
+        @* Cancel Button *@
+        <MudButton OnClick="@MudDialog.Cancel">@Localizer["Cancel"]</MudButton>
+        @* Add Plating *@
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Info"
+                   StartIcon="@Icons.Material.Rounded.AutoAwesome"
+                   Disabled="@(!_viewModel.CanModifyPlating())"
+                   OnClick="() => Apply(_viewModel.AddPlating)">
+            @Localizer["AddPlating"]
+        </MudButton>
+    </DialogActions>
+
+</MudDialog>

@@ -1,0 +1,5 @@
+<Solution>
+    <Project Path="SoTF.Editor.Data/SoTF.Editor.Data.csproj" />
+    <Project Path="SoTF.Editor.Services/SoTF.Editor.Services.csproj" />
+    <Project Path="SoTF.Editor.Desktop/SoTF.Editor.Desktop.csproj" />
+</Solution>

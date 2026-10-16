@@ -1,0 +1,19 @@
+@* Language Menu *@
+<Tooltip Text="@Localizer["Language"]"
+         RootClass="d-flex">
+    <MudMenu Icon="@Icons.Material.Rounded.Language"
+             AriaLabel="@Localizer["Language"]"
+             Size="Size.Small"
+             AnchorOrigin="Origin.BottomRight"
+             TransformOrigin="Origin.TopRight">
+        @foreach (var (culture, name) in AppCulture.Languages)
+        {
+            @* Language *@
+            <MudMenuItem Icon="@(AppCulture.Current == culture ? Icons.Material.Rounded.Check : string.Empty)"
+                         IconColor="Color.Secondary"
+                         OnClick="@(() => SetCultureAsync(culture))">
+                @name
+            </MudMenuItem>
+        }
+    </MudMenu>
+</Tooltip>

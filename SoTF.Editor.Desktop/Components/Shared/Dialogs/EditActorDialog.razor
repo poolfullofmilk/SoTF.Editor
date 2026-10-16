@@ -1,0 +1,186 @@
+<MudDialog>
+
+    <TitleContent>
+        <MudText Typo="Typo.h6">@_viewModel.Actor.PrintableTitle</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudGrid>
+
+            <MudItem xs="12"
+                     md="6">
+                <MudStack Spacing="4">
+                    <MudStack Row
+                              Spacing="4">
+                        <MudImage Src="@_viewModel.Actor.ImageUrl"
+                                  Alt="@_viewModel.Actor.ActorType?.Name"
+                                  Width="120"
+                                  Class="rounded-inner" />
+                        <MudSimpleTable Dense
+                                        Elevation="0"
+                                        Class="flex-grow-1">
+                            <tbody>
+                                @foreach (var detail in Details)
+                                {
+                                    <tr>
+                                        <td class="mud-text-secondary">@detail.Label</td>
+                                        <td class="selectable-text">@detail.Value</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </MudSimpleTable>
+                    </MudStack>
+
+                    <Header Title="@Localizer["Influences"]">
+                        <InfluencesEditor Influences="_viewModel.Influences"
+                                          ShowDisclaimer
+                                          CanRemove
+                                          OnChanged="() => _viewModel.ModifyOptions.UpdateInfluences = true" />
+                    </Header>
+                </MudStack>
+            </MudItem>
+
+            <MudItem xs="12"
+                     md="6">
+                <MudStack Spacing="3">
+                    <MudText Typo="Typo.subtitle1">@Localizer["Selection"]</MudText>
+                    @* Modification Mode *@
+                    <MudRadioGroup T="ActorModificationMode"
+                                   @bind-Value="_viewModel.ModificationMode">
+                        <MudRadio Value="ActorModificationMode.Modify"
+                                  Color="Color.Info">
+                            @Localizer["Modify"]
+                        </MudRadio>
+                        <MudRadio Value="ActorModificationMode.Remove"
+                                  Color="Color.Error">
+                            @Localizer["Remove"]
+                        </MudRadio>
+                    </MudRadioGroup>
+                    @* Actor Selection *@
+                    <MudSelect T="short?"
+                               @bind-Value="_viewModel.ActorSelection"
+                               ToStringFunc="SelectionName"
+                               Dense>
+                        @foreach (var selection in EditActorViewModel.AllActorSelections)
+                        {
+                            <MudSelectItem T="short?"
+                                           Value="selection.Key">
+                                @selection.Value
+                            </MudSelectItem>
+                        }
+                    </MudSelect>
+                    <MudStack Row
+                              Wrap="Wrap.Wrap"
+                              Spacing="0">
+                        @* Skip Kelvin *@
+                        <MudCheckBox T="bool"
+                                     @bind-Value="_viewModel.SkipKelvin"
+                                     Color="Color.Info"
+                                     Label="@Localizer["SkipKelvin"]" />
+                        @* Skip Virginia *@
+                        <MudCheckBox T="bool"
+                                     @bind-Value="_viewModel.SkipVirginia"
+                                     Color="Color.Info"
+                                     Label="@Localizer["SkipVirginia"]" />
+                        @* Same Area *@
+                        <MudCheckBox T="bool"
+                                     @bind-Value="_viewModel.OnlyInSameAreaAsActor"
+                                     Color="Color.Info"
+                                     Label="@Localizer["OnlySameArea"]" />
+                    </MudStack>
+
+                    @if (_viewModel.ModificationMode == ActorModificationMode.Modify)
+                    {
+                        <MudText Typo="Typo.subtitle1">@Localizer["Stats"]</MudText>
+                        <MudStack Row
+                                  AlignItems="AlignItems.Center"
+                                  Spacing="2">
+                            @* Energy *@
+                            <MudNumericField T="float"
+                                             @bind-Value="_viewModel.ModifyOptions.ActorEnergy"
+                                             Min="0"
+                                             Max="100"
+                                             Label="@Localizer["Energy"]" />
+                            @* Update Energy *@
+                            <MudCheckBox T="bool"
+                                         @bind-Value="_viewModel.ModifyOptions.UpdateEnergy"
+                                         Color="Color.Info"
+                                         Label="@Localizer["Update"]" />
+                        </MudStack>
+                        <MudStack Row
+                                  AlignItems="AlignItems.Center"
+                                  Spacing="2">
+                            @* Health *@
+                            <MudNumericField T="float"
+                                             @bind-Value="_viewModel.ModifyOptions.ActorHealth"
+                                             Min="0"
+                                             Label="@Localizer["Health"]" />
+                            @* Update Health *@
+                            <MudCheckBox T="bool"
+                                         @bind-Value="_viewModel.ModifyOptions.UpdateHealth"
+                                         Color="Color.Info"
+                                         Label="@Localizer["Update"]" />
+                        </MudStack>
+
+                        <MudText Typo="Typo.subtitle1">@Localizer["ModificationOptions"]</MudText>
+                        @* Remove Spawner *@
+                        <Tooltip Text="@Localizer["RemoveSpawnerTooltip"]">
+                            <MudCheckBox T="bool"
+                                         @bind-Value="_viewModel.ModifyOptions.RemoveSpawner"
+                                         Color="Color.Info"
+                                         Label="@Localizer["RemoveSpawner"]" />
+                        </Tooltip>
+                        @* Update Influences *@
+                        <MudCheckBox T="bool"
+                                     @bind-Value="_viewModel.ModifyOptions.UpdateInfluences"
+                                     Color="Color.Info"
+                                     Label="@Localizer["UpdateInfluences"]" />
+                        @* Replace Type *@
+                        <MudSelect T="ActorType"
+                                   @bind-Value="_viewModel.ModifyOptions.ReplaceType"
+                                   Label="@Localizer["ReplaceType"]"
+                                   ToStringFunc="actorType => actorType?.Name ?? string.Empty"
+                                   Dense>
+                            @foreach (var actorType in _viewModel.AllActorTypes)
+                            {
+                                <MudSelectItem Value="actorType">@(actorType.Id == -1 ? "—" : actorType.Name)</MudSelectItem>
+                            }
+                        </MudSelect>
+                        <MudText Typo="Typo.body2">@Localizer["Teleport"]</MudText>
+                        @* Teleport Mode *@
+                        <MudRadioGroup T="string"
+                                       @bind-Value="_viewModel.ModifyOptions.TeleportMode">
+                            <MudRadio Value="@string.Empty"
+                                      Color="Color.Info">
+                                @Localizer["None"]
+                            </MudRadio>
+                            <MudRadio Value="@("PlayerToNpc")"
+                                      Color="Color.Info">
+                                @Localizer["TeleportPlayerToNpc"]
+                            </MudRadio>
+                            <MudRadio Value="@("NpcToPlayer")"
+                                      Color="Color.Info">
+                                @Localizer["TeleportNpcToPlayer"]
+                            </MudRadio>
+                        </MudRadioGroup>
+                        <MudText Typo="Typo.caption"
+                                 Class="mud-text-secondary">
+                            @Localizer["TeleportManyWarning"]
+                        </MudText>
+                    }
+                </MudStack>
+            </MudItem>
+
+        </MudGrid>
+    </DialogContent>
+    <DialogActions>
+        @* Cancel Button *@
+        <MudButton OnClick="@MudDialog.Cancel">@Localizer["Cancel"]</MudButton>
+        @* Apply Button *@
+        <MudButton Variant="Variant.Filled"
+                   Color="@(_viewModel.ModificationMode == ActorModificationMode.Remove ? Color.Error : Color.Info)"
+                   OnClick="Apply">
+            @Localizer["Ok"]
+        </MudButton>
+    </DialogActions>
+
+</MudDialog>

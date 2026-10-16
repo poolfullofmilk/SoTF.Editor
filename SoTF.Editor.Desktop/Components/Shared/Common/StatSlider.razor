@@ -1,0 +1,32 @@
+@* Stat Slider *@
+<MudStack Row
+          AlignItems="AlignItems.Center"
+          Spacing="4">
+    <MudText Typo="Typo.body2"
+             Class="text-truncate"
+             Style="width:160px;flex-shrink:0">
+        @Label
+    </MudText>
+    @* Slider *@
+    <MudSlider T="float"
+               Value="Value"
+               ValueChanged="ValueChanged"
+               Min="Min"
+               Max="Max"
+               Step="Step"
+               Color="Color.Info"
+               Immediate
+               Class="flex-grow-1" />
+    @* Value Field *@
+    <MudNumericField T="float"
+                     Value="Value"
+                     ValueChanged="ValueChanged"
+                     Min="Min"
+                     Max="Max"
+                     Step="Step"
+                     Variant="Variant.Text"
+                     Margin="Margin.Dense"
+                     HideSpinButtons
+                     Format="0.##"
+                     Style="width:90px;flex-shrink:0" />
+</MudStack>

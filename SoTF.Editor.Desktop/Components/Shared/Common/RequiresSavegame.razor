@@ -1,0 +1,17 @@
+@if (MainViewModel.SelectedSavegame is null)
+{
+    <EmptyState Icon="@Icons.Material.Rounded.FolderOpen"
+                Text="@Localizer["OpenSavegameFirst"]">
+        @* Savegames Button *@
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Info"
+                   Size="Size.Small"
+                   Href="/">
+            @Localizer["Savegames"]
+        </MudButton>
+    </EmptyState>
+}
+else
+{
+    @ChildContent
+}

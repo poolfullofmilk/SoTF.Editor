@@ -1,0 +1,50 @@
+<MudDialog>
+
+    <TitleContent>
+        <MudText Typo="Typo.h6">@Localizer["Unlocks"]</MudText>
+    </TitleContent>
+    <DialogContent>
+        @if (_viewModel is null)
+        {
+            <EmptyState Icon="@Icons.Material.Rounded.PersonOff"
+                        Text="@Localizer["PlayerProfileNotFound", SavegameManager.GetSavePath()]" />
+        }
+        else
+        {
+            <MudStack Spacing="2">
+                @* Core Game *@
+                <MudSwitch T="bool"
+                           @bind-Value="_viewModel.CoreGameCompleted"
+                           Color="Color.Info"
+                           Label="@Localizer["CoreGameCompleted"]" />
+                @* Escaped Island *@
+                <MudSwitch T="bool"
+                           @bind-Value="_viewModel.EscapedIsland"
+                           Color="Color.Info"
+                           Label="@Localizer["EscapedIsland"]" />
+                @* Creative Mode *@
+                <MudSwitch T="bool"
+                           @bind-Value="_viewModel.CreativeMode"
+                           Color="Color.Info"
+                           Label="@Localizer["CreativeMode"]" />
+                @* Creative Item *@
+                <MudSwitch T="bool"
+                           @bind-Value="_viewModel.CreativeModeItem"
+                           Color="Color.Info"
+                           Label="@Localizer["CreativeModeItem"]" />
+            </MudStack>
+        }
+    </DialogContent>
+    <DialogActions>
+        @* Cancel Button *@
+        <MudButton OnClick="@MudDialog.Cancel">@Localizer["Cancel"]</MudButton>
+        @* Save Button *@
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Info"
+                   Disabled="@(_viewModel is null)"
+                   OnClick="Save">
+            @Localizer["Save"]
+        </MudButton>
+    </DialogActions>
+
+</MudDialog>
