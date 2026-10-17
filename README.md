@@ -14,6 +14,7 @@ A savegame editor for Sons of the Forest, with a verified backup before every sa
 - Kelvin and Virginia: stats, outfit, items, revive or spawn more
 - Game setup, game state, weather, NPCs and structures
 - A map to teleport the player and followers or spawn actors
+- Updates itself from inside the app
 - English and Dutch
 
 ## Quick start

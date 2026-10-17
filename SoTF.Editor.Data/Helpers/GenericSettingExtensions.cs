@@ -48,6 +48,7 @@ public static class GenericSettingExtensions
             JTokenType.Null => true,
             JTokenType.Boolean => !token.Value<bool>(),
             JTokenType.Integer => token.Value<long>() == 0,
+            JTokenType.Float => token.Value<double>() == 0,
             JTokenType.String => token.Value<string>() == "",
             _ => false,
         };

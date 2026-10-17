@@ -8,12 +8,16 @@ public class GenericSetting(string name, GenericSetting.DataType type, string? d
         String,
         Boolean,
         Integer,
+        Decimal,
         Enum,
     }
 
     public bool? BoolValue { get; set; }
 
     public int? IntValue { get; set; } = 0;
+
+    // A Double Writes Back The Exact Number It Read
+    public double? DecimalValue { get; set; }
 
     public object? SelectedItem { get; set; }
 
@@ -35,6 +39,7 @@ public class GenericSetting(string name, GenericSetting.DataType type, string? d
             DataType.String => StringValue,
             DataType.Boolean => BoolValue,
             DataType.Integer => IntValue,
+            DataType.Decimal => DecimalValue,
             DataType.Enum => SelectedItem,
             _ => throw new ArgumentOutOfRangeException(),
         };

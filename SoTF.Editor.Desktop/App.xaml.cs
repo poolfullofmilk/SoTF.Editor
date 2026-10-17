@@ -9,6 +9,7 @@ using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Models.Storage;
 using SoTF.Editor.Services.Actors;
+using SoTF.Editor.Services.Integration;
 using SoTF.Editor.Services.Map;
 using SoTF.Editor.Services.Pages;
 using SoTF.Editor.Services.Savegames;
@@ -25,6 +26,9 @@ public partial class App : Application
     protected override void OnStartup(StartupEventArgs eventArgs)
     {
         base.OnStartup(eventArgs);
+
+        // An Update Waits For The Old Exe First
+        Updater.FinishPreviousVersion(eventArgs.Args);
 
         // Two Editors On One Save Could Overwrite Each Other
         _showSignal = new EventWaitHandle(
@@ -137,7 +141,7 @@ public partial class App : Application
             serviceProvider.GetRequiredService<MainViewModel>()
         );
         MainWindow = window;
-        SessionEnding += (_, _) => window.IsSessionEnding = true;
+        SessionEnding += (_, _) => window.ClosesWithoutAsking = true;
         ThreadPool.RegisterWaitForSingleObject(
             _showSignal!,
             (_, _) => Dispatcher.InvokeAsync(window.BringToFront),

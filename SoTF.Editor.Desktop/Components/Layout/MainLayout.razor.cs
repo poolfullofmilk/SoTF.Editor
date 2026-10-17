@@ -323,25 +323,7 @@ public partial class MainLayout : IDisposable
 
         if (latest > AppInfo.Version)
         {
-            Snackbar.Add(
-                Localizer["UpdateAvailable", latest.ToString(2)],
-                Severity.Info,
-                options =>
-                {
-                    options.Action = Localizer["Download"];
-                    options.RequireInteraction = true;
-                    options.OnClick = _ =>
-                    {
-                        Process.Start(
-                            new ProcessStartInfo(AppInfo.LatestReleaseUrl)
-                            {
-                                UseShellExecute = true,
-                            }
-                        );
-                        return Task.CompletedTask;
-                    };
-                }
-            );
+            await UpdateDialog.ShowAsync(DialogService, latest);
         }
         else if (invokedManually)
         {

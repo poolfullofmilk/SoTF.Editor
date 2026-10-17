@@ -20,6 +20,14 @@
                          Margin="Margin.Dense"
                          Style="max-width:160px" />
         break;
+    case GenericSetting.DataType.Decimal:
+        <MudNumericField T="double?"
+                         @bind-Value="Setting.DecimalValue"
+                         Min="Setting.MinInt"
+                         Max="Setting.MaxInt"
+                         Margin="Margin.Dense"
+                         Style="max-width:160px" />
+        break;
     case GenericSetting.DataType.Enum:
         <MudSelect T="object"
                    @bind-Value="Setting.SelectedItem"

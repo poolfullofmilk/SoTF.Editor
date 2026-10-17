@@ -2,7 +2,12 @@
 
 public class PlayerState
 {
-    public float CurrentHealth { get; set; }
+    // Capped By Max Health, Comes Back When Max Rises
+    public float CurrentHealth
+    {
+        get => Math.Min(field, MaxHealth);
+        set;
+    }
 
     public float Fullness { get; set; }
 
@@ -12,18 +17,7 @@ public class PlayerState
 
     public float HydrationBuff { get; set; }
 
-    public float MaxHealth
-    {
-        get;
-        set
-        {
-            field = value;
-            if (CurrentHealth > value)
-            {
-                CurrentHealth = value;
-            }
-        }
-    }
+    public float MaxHealth { get; set; }
 
     public Position Pos { get; set; } = new(0, 0, 0);
 

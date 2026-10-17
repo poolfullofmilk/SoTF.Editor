@@ -1143,9 +1143,6 @@
   <data name="PlayerProfileNotFound" xml:space="preserve">
     <value>Geen spelersprofiel gevonden in {0}</value>
   </data>
-  <data name="Download" xml:space="preserve">
-    <value>Downloaden</value>
-  </data>
   <data name="CloneAtPlayer" xml:space="preserve">
     <value>Klonen Op Spelerspositie</value>
   </data>
@@ -1601,5 +1598,26 @@
   </data>
   <data name="RemoveConsumedItemsText" xml:space="preserve">
     <value>Elke regel in deze lijst wordt verwijderd, zodat die items weer kunnen verschijnen</value>
+  </data>
+  <data name="SettingStartingDayOffset" xml:space="preserve">
+    <value>Seizoensverschuiving</value>
+  </data>
+  <data name="SeasonDayOffsetHint" xml:space="preserve">
+    <value>Seizoenen volgen het aantal dagen plus de seizoensverschuiving, verlaag die om langer in een seizoen te blijven, verhoog die om verder te gaan</value>
+  </data>
+  <data name="Later" xml:space="preserve">
+    <value>Later</value>
+  </data>
+  <data name="UpdateNow" xml:space="preserve">
+    <value>Nu Bijwerken</value>
+  </data>
+  <data name="Downloading" xml:space="preserve">
+    <value>Downloaden</value>
+  </data>
+  <data name="UpdateText" xml:space="preserve">
+    <value>Je hebt versie {0}, bijwerken downloadt de nieuwe en start de editor opnieuw</value>
+  </data>
+  <data name="UpdateFailed" xml:space="preserve">
+    <value>Bijwerken mislukt, probeer het later opnieuw</value>
   </data>
 </root>

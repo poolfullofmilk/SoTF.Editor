@@ -37,6 +37,19 @@ public class WeatherPageViewModel
                 [(0, "Spring"), (1, "Summer"), (2, "Autumn"), (3, "Winter")]
             )
         );
+
+        // Seasons Follow Days Plus This Offset, Saved As 5.0
+        Settings.Add(
+            new GenericSetting(
+                "_startingDayOffset",
+                GenericSetting.DataType.Decimal,
+                "_startingDayOffset"
+            )
+            {
+                DecimalValue = weatherSystem["_startingDayOffset"]?.Value<double>() ?? 0,
+                MaxInt = 1000,
+            }
+        );
         Settings.Add(BoolSetting("_isRaining", weatherSystem));
         Settings.Add(BoolSetting("_rainBlocked", weatherSystem));
         Settings.Add(

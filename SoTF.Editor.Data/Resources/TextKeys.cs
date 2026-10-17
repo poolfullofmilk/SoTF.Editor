@@ -69,6 +69,7 @@ public static class TextKeys
         "_cloudState",
         "_currentRainType",
         "_currentSeason",
+        "_startingDayOffset",
     ];
 
     private static string Pascal(string text)

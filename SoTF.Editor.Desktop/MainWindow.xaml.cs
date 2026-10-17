@@ -15,7 +15,8 @@ public partial class MainWindow : Window
 
     private readonly MainViewModel _mainViewModel;
 
-    public bool IsSessionEnding { get; set; }
+    // Windows Shutting Down Or An Update Restarting
+    public bool ClosesWithoutAsking { get; set; }
 
     public MainWindow(IServiceProvider services, MainViewModel mainViewModel)
     {
@@ -31,7 +32,7 @@ public partial class MainWindow : Window
     private void ConfirmClose(object? sender, CancelEventArgs eventArgs)
     {
         // Windows Shutting Down Is Never Held Up
-        if (IsSessionEnding)
+        if (ClosesWithoutAsking)
         {
             return;
         }

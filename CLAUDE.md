@@ -87,6 +87,10 @@ Pages with lists (Storage, NPCs, Inventory, Structures, Map, the Game state tab)
 
 The last table row has no bottom line. A table whose rows virtualize keeps its columns with `fixed-columns` and a `ColGroup`, or the columns shift while scrolling.
 
+## Updates
+
+`UpdateChecker` reads the `releases/latest` redirect. On start (with Check For Updates On Start on) and from **Help → Check For Updates**, a newer version opens `UpdateDialog`. Update Now asks to discard unsaved edits, `Updater.DownloadAsync` saves `SoTF.Editor_v<new>.exe` beside the running exe (through a `.download` file), `Updater.Launch` starts it with `--after-update <pid>`, and the window closes without asking (`MainWindow.ClosesWithoutAsking`). The new exe calls `Updater.FinishPreviousVersion` before the single-instance check: it waits up to 15 s for the old process and deletes the other `SoTF.Editor_v*.exe` beside it. A Debug build or a renamed exe (`Updater.CanInstall` false) opens the release page instead. Build with `-p:Version=0.9` and use Check For Updates to see the dialog.
+
 ## Looks Wrong, Is Not
 
 - `WebResourceRequested` answers only `https://files.local/` (`LocalFiles`), and only for `.png` and `.jpg` files that exist. BlazorWebView routes its own requests through the same event; answering them breaks the page.
@@ -103,7 +107,9 @@ The last table row has no bottom line. A table whose rows virtualize keeps its c
 - The follower merge writes only the follower that was loaded; a follower missing from the save is left alone.
 - There is no Delete Backups action, on purpose.
 - The update check reads the `releases/latest` redirect without following it, so it needs no token. A `v1.0` tag parses as `1.0`, which is lower than the assembly's `1.0.0.0`, so it never prompts falsely.
-- The save holds no length per season. Only the custom game setting `SeasonLength` exists, and it applies to every season.
+- The save holds no length per season. Only the custom game setting `SeasonLength` exists, and it applies to every season. The Weather tab's Season Day Offset (`_startingDayOffset`) shifts where the year stands, so lowering it keeps the current season longer; it is not tested in game yet.
+- `_startingDayOffset` is saved as `5.0`. It is a `Decimal` setting holding a `double`, so a no-op save writes the exact number back; an `int` made every save a change.
+- `PlayerState.CurrentHealth` reads capped by `MaxHealth` but keeps the value set, so lowering max and raising it again brings current health back. Both health sliders share one scale, so the current health thumb stays put while max moves.
 
 ## Verify
 

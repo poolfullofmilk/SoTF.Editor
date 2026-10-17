@@ -1143,9 +1143,6 @@
   <data name="PlayerProfileNotFound" xml:space="preserve">
     <value>No player profile found in {0}</value>
   </data>
-  <data name="Download" xml:space="preserve">
-    <value>Download</value>
-  </data>
   <data name="CloneAtPlayer" xml:space="preserve">
     <value>Clone At Player Position</value>
   </data>
@@ -1601,5 +1598,26 @@
   </data>
   <data name="RemoveConsumedItemsText" xml:space="preserve">
     <value>Every entry in this list is removed, so those items can appear again</value>
+  </data>
+  <data name="SettingStartingDayOffset" xml:space="preserve">
+    <value>Season Day Offset</value>
+  </data>
+  <data name="SeasonDayOffsetHint" xml:space="preserve">
+    <value>Seasons follow the day count plus the season day offset, lower it to stay in a season longer, raise it to move ahead</value>
+  </data>
+  <data name="Later" xml:space="preserve">
+    <value>Later</value>
+  </data>
+  <data name="UpdateNow" xml:space="preserve">
+    <value>Update Now</value>
+  </data>
+  <data name="Downloading" xml:space="preserve">
+    <value>Downloading</value>
+  </data>
+  <data name="UpdateText" xml:space="preserve">
+    <value>You have version {0}, updating downloads the new one and restarts the editor</value>
+  </data>
+  <data name="UpdateFailed" xml:space="preserve">
+    <value>Update failed, try again later</value>
   </data>
 </root>
