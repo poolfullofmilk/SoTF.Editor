@@ -6,6 +6,9 @@ namespace SoTF.Editor.Services.Savegames;
 public class SaveDataWrapper(JToken parent)
 {
     private readonly Dictionary<string, JToken> _jsonStringNodes = [];
+
+    // Nested Documents As Loaded, An Undone Edit Is No Change
+    private readonly Dictionary<string, JToken> _loadedNodes = [];
     private readonly HashSet<string> _modified = [];
 
     public JToken Parent { get; } = parent;
@@ -26,23 +29,28 @@ public class SaveDataWrapper(JToken parent)
         // Nested Json Is Parsed Once, Edits Change That Copy
         var parsed = SaveJson.DeserializeRaw(token.ToString());
         _jsonStringNodes.Add(selector, parsed);
+        _loadedNodes.Add(selector, parsed.DeepClone());
         return parsed;
     }
 
     public bool HasModified()
     {
-        return _modified.Count > 0;
+        return _modified.Any(IsChanged);
     }
 
     public void SerializeAllModified()
     {
-        foreach (var key in _modified)
+        foreach (var key in _modified.Where(IsChanged))
         {
-            if (_jsonStringNodes.TryGetValue(key, out var token))
-            {
-                Parent.SelectToken(key)?.Replace(SaveJson.Serialize(token));
-            }
+            Parent.SelectToken(key)?.Replace(SaveJson.Serialize(_jsonStringNodes[key]));
         }
+    }
+
+    private bool IsChanged(string selector)
+    {
+        // A Token Edited In Place Has No Copy, It Counts
+        return !_loadedNodes.TryGetValue(selector, out var loaded)
+            || !JToken.DeepEquals(loaded, _jsonStringNodes[selector]);
     }
 
     public void ClearModified()

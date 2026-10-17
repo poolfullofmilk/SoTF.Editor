@@ -140,8 +140,16 @@ public class SavegameStore
         return true;
     }
 
-    public void SaveWrappers(Dictionary<FileType, SaveDataWrapper> changedWrappers)
+    public void SaveWrappers(Dictionary<FileType, SaveDataWrapper> wrappers)
     {
+        var changedWrappers = wrappers
+            .Where(pair => pair.Value.HasModified())
+            .ToDictionary(pair => pair.Key, pair => pair.Value);
+        if (changedWrappers.Count == 0)
+        {
+            return;
+        }
+
         // Nothing Is Written Until A Verified Copy Exists
         BackupManager.Create(_path);
 

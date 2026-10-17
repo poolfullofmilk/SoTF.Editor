@@ -166,12 +166,10 @@ public class FoodStorage(StorageDefinition definition, ItemList itemList, int in
                     var newFoodSpoilStorageModule = selectedItem
                         .FoodSpoilStorageModuleWrapper
                         ?.FoodSpoilStorageModule;
+                    // Only Another Food State Swaps The Module, Its Timer Stays
                     if (
                         newFoodSpoilStorageModule != null
-                        && !Equals(
-                            foodSpoilStorageModule,
-                            selectedItem.FoodSpoilStorageModuleWrapper?.FoodSpoilStorageModule
-                        )
+                        && !foodSpoilStorageModule.IsEqualTo(newFoodSpoilStorageModule)
                     )
                     {
                         return newFoodSpoilStorageModule;

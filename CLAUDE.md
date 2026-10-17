@@ -24,7 +24,17 @@ dotnet run --project SoTF.Editor.Desktop
 dotnet publish SoTF.Editor.Desktop -c Release
 ```
 
-The publish folder holds only `SoTF.Editor_v<Version>.exe`: `IncludeAllContentForSelfExtract` and the `BundleWebRoot` and `RemoveLooseWebRoot` targets pack `wwwroot` inside it. `.github/workflows/release.yml` publishes the same exe on a `v*` tag.
+The publish folder holds only `SoTF.Editor_v<Version>.exe`: `IncludeAllContentForSelfExtract` and the `BundleWebRoot` and `RemoveLooseWebRoot` targets pack `wwwroot` inside it.
+
+### Releasing
+
+A release is made by the workflow, not by hand, the way `WiFiWatch` does it. `.github/workflows/release.yml` publishes the exe on a `v*` tag and creates the release `SoTF Editor v<Version>` with an empty body and the exe as its only file.
+
+1. `git pull`, the owner edits the README on GitHub.
+2. Retake `Screenshots/Overview.png` (Player), `Storage.png` (a storage selected), `Npcs.png` (a group selected) and `Map.png` from a copy of a real savegame, copied with `cp -rp` and `touch -r` on the folder so the app bar shows the real save time. Over CDP: `Emulation.setDeviceMetricsOverride` with `1600 x 845` at scale `1.6` gives LetsWatch's `2560 x 1352`.
+3. Update the README for what shipped, bump `<Version>` in `SoTF.Editor.Desktop.csproj` (`1.1`, never `1.1.0`), publish, and launch the exe alone from an empty folder.
+4. Commit, push, then `git tag v<Version>` and `git push origin v<Version>`. The tag must match `<Version>`, the workflow looks for `SoTF.Editor_v<tag>.exe`.
+5. Once the new release is live, delete the previous one with its tag: `gh release delete v1.0 --yes --cleanup-tag`.
 
 ## Where Data Lives
 
@@ -36,6 +46,7 @@ The publish folder holds only `SoTF.Editor_v<Version>.exe`: `IncludeAllContentFo
 | Backups | `Documents\SoTF.Editor\Backups\<steam id>\<SinglePlayer or Multiplayer>\<save id>\<yyyy-MM-dd HH-mm-ss>` |
 | Unlocks backups | `Documents\SoTF.Editor\Backups\<steam id>\<file name>\<yyyy-MM-dd HH-mm-ss>` |
 | Real savegames | `%UserProfile%\AppData\LocalLow\Endnight\SonsOfTheForest\Saves\<steam id>\<mode>\<save id>` |
+| The game's own backups | `<save id>_backup_<yyyyMMddHHmmss>.zip` beside the save folder, one per in-game save; the editor ignores them |
 
 A Debug build uses `SoTF.Editor Debug` for all of these folders (`AppInfo.FolderName`), so a test run never mixes with the installed app.
 
@@ -46,6 +57,7 @@ A Debug build uses `SoTF.Editor Debug` for all of these folders (`AppInfo.Folder
 - Every page view model has `Load(Savegame?)` and `Update(Savegame)`. `MainViewModel.SaveChanges` runs every `Update` in a fixed order (setup, state, weather, inventory, armour, followers, player, storage, structures); each marks the `SaveDataWrapper` it changed.
 - `SavegameStore` writes only modified wrappers. `BackupManager.Create` first copies every file of the savegame and compares each copy byte for byte; if that fails, nothing is written. Loose files are written to a temp file and moved over; `SaveData.zip` is updated on a copy that then replaces it. The modified flags clear only after every file is written, so a failed save can be retried.
 - A save with no edits says **No Changes** and writes nothing. A rewrite on a no-op save is a bug.
+- `SaveDataWrapper` keeps each nested document as it was loaded and only counts a marked document that now differs (`JToken.DeepEquals`). So an edit undone, or a tool that finds nothing to change, writes nothing, and the close prompt only asks about real changes.
 - Restore makes a backup of the current files first, then copies the chosen backup back and removes files the backup lacks (the game renames the `.name` file on every save). The app never deletes a backup.
 - The Item Plater writes at once (`MainViewModel.SaveWrappers`), so it asks to discard unsaved edits and reloads before plating.
 - Closing the window with unsaved edits asks first; Windows shutting down never waits for it.
@@ -53,7 +65,8 @@ A Debug build uses `SoTF.Editor Debug` for all of these folders (`AppInfo.Folder
 - The game leaves out values that are `0` or `false`, so a missing field reads as its default, never as an error. The Game State and Weather tabs list every known field even when the save lacks it (a spring save has no `_currentSeason`), and `GenericSettingExtensions.MergeTo` adds a missing field only for a non-default value.
 - The player's cave or bunker is the `player.areaMask` entry (`IntValue`); followers and NPCs carry a `GraphMask`. Moving a follower writes both its position and its graph mask.
 - A storage keeps every slot the save holds, even past its definition: stone holders now hold two stacks, and dropping the extra one lost items on every save.
-- A stored item writes its loaded `UniqueItems` back untouched (food timers, actor seeds); only a changed count or item builds new ones (`StoredItem.UniqueItemsToSave`).
+- A stored item writes its loaded `UniqueItems` back untouched (food timers, actor seeds); only a changed count or item builds new ones (`StoredItem.UniqueItemsToSave`). A food storage swaps a food module only for another food state (`IsEqualTo` on `CurrentState`); comparing whole records reset spoil timers on every save.
+- The `Clothing` list holds the outfit plus other worn pieces such as the Rebreather. The outfit picker changes only the first outfit entry and keeps the rest, and no outfit listed means the starting Tactical Jacket (`495`). `PlayerPageViewModel.WornItemIds` feeds the map, so a worn Rebreather counts as owned.
 - Tools only change the in-memory JSON and return a message for the snackbar; nothing reaches the disk until Save. Unlocks is the exception: it edits the profile file directly, after its own backup.
 - Teleport and spawning edit the save, so they work with the game closed.
 
@@ -90,5 +103,7 @@ Pages with lists (Storage, NPCs, Inventory, Structures, Map) fill the window and
 
 - `PlayerArmourSystemModel`, `GenericModule` and `Position` (every spawn pattern places enough finite points) carry `SelfTestPasses()`.
 - After a change near saving, run a round trip on copies of the real savegames with a file-based app in the scratchpad: a no-op save leaves every file byte identical; an edit changes only what it should (compare after decoding the nested JSON strings); Restore Oldest brings every file back byte for byte.
+- Before touching anything near the real saves, hash every file under `Saves` and keep a verified copy; compare the hashes afterwards. Only the game may change them.
 - Look at the app over CDP: start it with `WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS=--remote-debugging-port=9333`, and `http://127.0.0.1:9333/json` lists the page. Check both languages.
+- In the game, test with an edited copy in a new folder, `Saves\<steam id>\SinglePlayer\<new ten digit id>`: Single Player, Continue lists it with its `GameName` and day count, even when it came from a multiplayer save. Load it, check, and quit without saving. Tab opens the inventory, Escape the pause menu; the game runs borderless on the primary screen, so screen captures work. Delete the test folder while the game is still running, then exit: Steam Auto-Cloud uploads a new folder at exit and downloads it again if it was deleted while the game was closed.
 - A Release exe run from another folder writes the real `%AppData%\SoTF.Editor` and `Documents\SoTF.Editor`; delete what a test run left there.

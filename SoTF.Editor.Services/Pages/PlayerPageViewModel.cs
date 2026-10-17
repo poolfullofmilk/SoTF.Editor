@@ -1,5 +1,4 @@
 using Newtonsoft.Json.Linq;
-using NLog;
 using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Models.Actors;
@@ -11,8 +10,10 @@ public class PlayerPageViewModel
 {
     private const string PlayerAreaMaskEntry = "player.areaMask";
 
-    private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
     private readonly List<Item> _availableClothes = [];
+
+    // Worn Pieces That Are No Outfit, Like The Rebreather
+    private readonly List<int> _otherWornItemIds = [];
 
     private readonly GameData _gameData;
 
@@ -25,6 +26,11 @@ public class PlayerPageViewModel
 
     public IEnumerable<Item> AvailableClothes => _availableClothes.OrderBy(item => item.Name);
 
+    public IEnumerable<int> WornItemIds =>
+        PlayerState.SelectedCloth is { } cloth
+            ? _otherWornItemIds.Append(cloth.Id)
+            : _otherWornItemIds;
+
     public void Load(Savegame? savegame)
     {
         if (savegame is { } selectedSavegame)
@@ -35,59 +41,46 @@ public class PlayerPageViewModel
         else
         {
             PlayerState.Reset();
+            _otherWornItemIds.Clear();
         }
     }
 
     private void LoadClothes(Savegame savegame)
     {
         _availableClothes.Clear();
+        _availableClothes.AddRange(
+            _gameData
+                .Items.Select(pair => pair.Value)
+                .Where(item => item.Type == "clothes" || item.IsWearableCloth)
+        );
+        _otherWornItemIds.Clear();
         PlayerState.SelectedCloth = null;
-        var newAvailableClothes = GetDefaultAvailableClothes()
-            .ToDictionary(pair => pair.Key, pair => pair.Value);
 
-        // A Save Without Clothing Data Still Lists The Default Clothes
-        var playerClothingSystem = savegame
-            .SavegameStore.LoadJsonRaw(SavegameStore.FileType.PlayerClothingSystemSaveData)
-            ?.GetJsonBasedToken(Constants.JsonKeys.PlayerClothingSystem);
-
-        if (playerClothingSystem?["Clothing"] is JArray clothing)
+        var clothing =
+            savegame
+                .SavegameStore.LoadJsonRaw(SavegameStore.FileType.PlayerClothingSystemSaveData)
+                ?.GetJsonBasedToken(Constants.JsonKeys.PlayerClothingSystem)
+                ?["Clothing"] as JArray;
+        foreach (var itemId in clothing?.Select(token => token.Value<int>()) ?? [])
         {
-            foreach (var itemId in clothing.Select(token => token.Value<int>()))
+            // The First Outfit Is Worn, The Rest Stays As Is
+            if (PlayerState.SelectedCloth == null && OutfitOf(itemId) is { } outfit)
             {
-                var item = _gameData.Items.GetItem(itemId);
-                if (item == null)
-                {
-                    s_logger.Info($"Found No Item For {itemId}");
-                }
-                else
-                {
-                    var itemInAvailableClothes = newAvailableClothes.GetValueOrDefault(itemId);
-                    if (itemInAvailableClothes != null)
-                    {
-                        PlayerState.SelectedCloth = itemInAvailableClothes;
-                    }
-                    else
-                    {
-                        // Keep A Worn Unlisted Cloth Selected So Saving Keeps It
-                        newAvailableClothes.Add(itemId, item);
-                        PlayerState.SelectedCloth = item;
-                    }
-                }
+                PlayerState.SelectedCloth = outfit;
+            }
+            else
+            {
+                _otherWornItemIds.Add(itemId);
             }
         }
 
-        _availableClothes.AddRange(newAvailableClothes.Values);
-
-        PlayerState.SelectedCloth ??= _availableClothes.FirstOrDefault(cloth =>
-            cloth.Id == Constants.Items.DefaultPlayerClothItemId
-        );
+        // No Outfit Listed Means The Starting Jacket
+        PlayerState.SelectedCloth ??= OutfitOf(Constants.Items.DefaultPlayerClothItemId);
     }
 
-    private IEnumerable<KeyValuePair<int, Item>> GetDefaultAvailableClothes()
+    private Item? OutfitOf(int itemId)
     {
-        return _gameData.Items.Where(item =>
-            item.Value.Type == "clothes" || item.Value.IsWearableCloth
-        );
+        return _availableClothes.FirstOrDefault(cloth => cloth.Id == itemId);
     }
 
     public void MoveToFollower(FollowerState followerState)
@@ -218,39 +211,27 @@ public class PlayerPageViewModel
             return false;
         }
 
-        var newClothings = clothing.ToList();
-        if (newClothings.Count > 1)
+        // Only The Outfit Changes, Other Worn Pieces Keep Their Place
+        var outfitToken = clothing.FirstOrDefault(token => OutfitOf(token.Value<int>()) != null);
+        var wornId = outfitToken?.Value<int>();
+        var selectedId = PlayerState.SelectedCloth?.Id;
+        var selectedIsDefault = selectedId is null or Constants.Items.DefaultPlayerClothItemId;
+        if (wornId == selectedId || (wornId == null && selectedIsDefault))
         {
-            var oldClothingIds = newClothings.Select(token => token.Value<int>());
-            s_logger.Warn($"Skipped Clothing Update, Found Several Clothes ({oldClothingIds})");
             return false;
         }
 
-        var existingClothing = newClothings.FirstOrDefault();
-
-        if (
-            PlayerState.SelectedCloth is { } selectedCloth
-            && selectedCloth.Id != Constants.Items.DefaultPlayerClothItemId
-        )
+        if (selectedIsDefault)
         {
-            if (existingClothing?.Value<int>() is { } existingItemId)
-            {
-                if (existingItemId == selectedCloth.Id)
-                {
-                    return false;
-                }
-            }
-
-            clothing.ReplaceAll(new JValue(PlayerState.SelectedCloth.Id));
+            outfitToken?.Remove();
+        }
+        else if (outfitToken == null)
+        {
+            clothing.Insert(0, selectedId!.Value);
         }
         else
         {
-            if (clothing.Count == 0)
-            {
-                return false;
-            }
-
-            clothing.Clear();
+            outfitToken.Replace(selectedId!.Value);
         }
 
         saveDataWrapper.MarkAsModified(Constants.JsonKeys.PlayerClothingSystem);

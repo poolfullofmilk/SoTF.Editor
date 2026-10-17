@@ -41,11 +41,8 @@ public class PoiLoader(
             })
             .ToHashSet();
 
-        if (playerPageViewModel.PlayerState.SelectedCloth is { } selectedCloth)
-        {
-            inventoryItems.Add(selectedCloth.Id);
-        }
-
+        // A Worn Rebreather Counts As Owned
+        inventoryItems.UnionWith(playerPageViewModel.WornItemIds);
         return inventoryItems;
     }
 

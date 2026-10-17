@@ -129,8 +129,8 @@ public class MainViewModel(
         }
 
         // Merging Only Touches The Open Copy, Nothing Reaches The Disk
-        var hasChanges = MergePages(selectedSavegame);
-        return selectedSavegame.SavegameStore.HasModified() || hasChanges;
+        MergePages(selectedSavegame);
+        return selectedSavegame.SavegameStore.HasModified();
     }
 
     public bool SaveChanges()
@@ -140,8 +140,9 @@ public class MainViewModel(
             return false;
         }
 
-        var hasChanges = MergePages(selectedSavegame);
-        hasChanges = selectedSavegame.SavegameStore.SaveAllModified() || hasChanges;
+        // Only Content That Differs From The Load Is Written
+        MergePages(selectedSavegame);
+        var hasChanges = selectedSavegame.SavegameStore.SaveAllModified();
 
         if (hasChanges)
         {
@@ -151,17 +152,18 @@ public class MainViewModel(
         return hasChanges;
     }
 
-    private bool MergePages(Savegame selectedSavegame)
+    private void MergePages(Savegame selectedSavegame)
     {
-        var hasChanges = gameSetupPage.Update(selectedSavegame);
-        hasChanges = gameStatePage.Update(selectedSavegame) || hasChanges;
-        hasChanges = weatherPage.Update(selectedSavegame) || hasChanges;
-        hasChanges = inventoryPage.Update(selectedSavegame) || hasChanges;
-        hasChanges = armorPage.Update(selectedSavegame) || hasChanges;
-        hasChanges = followerPage.Update(selectedSavegame) || hasChanges;
-        hasChanges = playerPage.Update(selectedSavegame) || hasChanges;
-        hasChanges = storagePage.Update(selectedSavegame) || hasChanges;
-        return structuresPage.Update(selectedSavegame) || hasChanges;
+        // Pages Mark Changes, The Store Knows What Really Differs
+        gameSetupPage.Update(selectedSavegame);
+        gameStatePage.Update(selectedSavegame);
+        weatherPage.Update(selectedSavegame);
+        inventoryPage.Update(selectedSavegame);
+        armorPage.Update(selectedSavegame);
+        followerPage.Update(selectedSavegame);
+        playerPage.Update(selectedSavegame);
+        storagePage.Update(selectedSavegame);
+        structuresPage.Update(selectedSavegame);
     }
 
     public void SaveWrappers(Dictionary<SavegameStore.FileType, SaveDataWrapper> wrappersToSave)
