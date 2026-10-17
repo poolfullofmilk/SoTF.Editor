@@ -15,6 +15,9 @@ public partial class PoiDetails
     [Parameter]
     public required BasePoi Poi { get; set; }
 
+    [Parameter]
+    public EventCallback OnMapChanged { get; set; }
+
     [Inject]
     public required MapViewModel MapViewModel { get; set; }
 
@@ -112,6 +115,18 @@ public partial class PoiDetails
 
             return lists;
         }
+    }
+
+    private async Task CloseAsync()
+    {
+        MapViewModel.SelectPoi(null);
+        await OnMapChanged.InvokeAsync();
+    }
+
+    private async Task RemoveZiplineAsync(ZiplinePoi zipline)
+    {
+        MapViewModel.RemoveZipline(zipline);
+        await OnMapChanged.InvokeAsync();
     }
 
     private static void RequestZipMove(ZipPointPoi zipPointPoi, bool createZipline)

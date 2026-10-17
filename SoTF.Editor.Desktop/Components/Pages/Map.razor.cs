@@ -10,9 +10,8 @@ namespace SoTF.Editor.Desktop.Components.Pages;
 
 public partial class Map : EditorPageBase
 {
-    // The Map Images Fade Into These At Their Edges
-    private const string DarkMapBackground = "#6186be";
-    private const string BrightMapBackground = "#9db4d4";
+    // The Map Image Fades Into This At Its Edges
+    private const string MapBackground = "#6186be";
 
     [Inject]
     public required MapViewModel MapViewModel { get; set; }
@@ -25,11 +24,6 @@ public partial class Map : EditorPageBase
     private ElementReference _canvas;
     private (float Left, float Top)? _focusPixel;
     private bool _isMapReady;
-
-    private static string MapBackground =>
-        MapViewModel.DarkMap ? DarkMapBackground : BrightMapBackground;
-
-    private static string ZiplineColor => MapViewModel.DarkMap ? "white" : "black";
 
     protected override void OnInitialized()
     {

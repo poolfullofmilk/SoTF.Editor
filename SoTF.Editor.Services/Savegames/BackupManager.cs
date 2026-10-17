@@ -1,6 +1,7 @@
 using System.Globalization;
 using NLog;
 using SoTF.Editor.Data.Helpers;
+using SoTF.Editor.Data.ViewModels;
 
 namespace SoTF.Editor.Services.Savegames;
 
@@ -67,16 +68,8 @@ public static class BackupManager
         return candidate;
     }
 
-    public static DateTime? Restore(string savegamePath, bool newest)
+    public static void Restore(string savegamePath, string backup)
     {
-        var backups = List(savegamePath);
-        if (backups.Count == 0)
-        {
-            return null;
-        }
-
-        var backup = newest ? backups[^1] : backups[0];
-
         // The Current State Is Kept, So Restores Can Be Undone
         Create(savegamePath);
 
@@ -99,23 +92,37 @@ public static class BackupManager
         }
 
         s_logger.Info($"Restored Backup {backup}");
-        return DateTime.TryParseExact(
-            Path.GetFileName(backup)[..FolderTimeFormat.Length],
-            FolderTimeFormat,
-            CultureInfo.InvariantCulture,
-            DateTimeStyles.None,
-            out var takenAt
-        )
-            ? takenAt
-            : Directory.GetCreationTime(backup);
     }
 
-    private static List<string> List(string savegamePath)
+    public static List<SavegameBackup> List(string savegamePath)
     {
+        // Newest First, A Suffixed Name Sorts After Its Twin
         var folder = FolderOf(savegamePath);
         return Directory.Exists(folder)
-            ? [.. Directory.GetDirectories(folder).Order(StringComparer.Ordinal)]
+            ?
+            [
+                .. Directory
+                    .GetDirectories(folder)
+                    .OrderDescending(StringComparer.Ordinal)
+                    .Select(path => new SavegameBackup(path, TakenAt(path))),
+            ]
             : [];
+    }
+
+    private static DateTime TakenAt(string backup)
+    {
+        var name = Path.GetFileName(backup);
+        return
+            name.Length >= FolderTimeFormat.Length
+            && DateTime.TryParseExact(
+                name[..FolderTimeFormat.Length],
+                FolderTimeFormat,
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.None,
+                out var takenAt
+            )
+            ? takenAt
+            : Directory.GetCreationTime(backup);
     }
 
     private static void CopyVerified(string file, string copy)

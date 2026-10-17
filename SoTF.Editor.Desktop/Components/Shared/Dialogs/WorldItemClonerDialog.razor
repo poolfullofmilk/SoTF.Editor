@@ -28,7 +28,7 @@
         <Tooltip Text="@Localizer["RemoveAllCopiesTooltip"]">
             <MudButton Color="Color.Error"
                        Disabled="@(!_viewModel.HasModifiableWorldItemTypeSelected())"
-                       OnClick="RemoveAll">
+                       OnClick="RemoveAllAsync">
                 @Localizer["RemoveAllCopies"]
             </MudButton>
         </Tooltip>

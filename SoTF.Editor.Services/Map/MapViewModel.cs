@@ -34,18 +34,6 @@ public class MapViewModel(
 
     public Position? FocusPosition { get; set; }
 
-    public static bool DarkMap
-    {
-        get => UserSettings.Current.DarkMap;
-        set
-        {
-            UserSettings.Current.DarkMap = value;
-            UserSettings.Current.Save();
-        }
-    }
-
-    public static string MapImageUrl => DarkMap ? "images/map/dark.jpg" : "images/map/bright.jpg";
-
     public void Build()
     {
         _builtRevision = mainViewModel.Revision;

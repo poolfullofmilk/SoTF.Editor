@@ -15,7 +15,7 @@
         <MudIconButton Icon="@Icons.Material.Rounded.Close"
                        aria-label="@Localizer["Close"]"
                        Size="Size.Small"
-                       OnClick="() => MapViewModel.SelectPoi(null)" />
+                       OnClick="CloseAsync" />
     </MudStack>
 
     @if (!string.IsNullOrEmpty(Poi.Description))
@@ -116,7 +116,7 @@
                        Color="Color.Error"
                        Size="Size.Small"
                        StartIcon="@Icons.Material.Rounded.Delete"
-                       OnClick="() => MapViewModel.RemoveZipline(zipPointPoi.Parent)">
+                       OnClick="() => RemoveZiplineAsync(zipPointPoi.Parent)">
                 @Localizer["DeleteBothAnchors"]
             </MudButton>
         }

@@ -70,6 +70,9 @@ window.sotfMap = (() => {
             { passive: false }
         );
 
+        // Icons Are Images, The Browser Would Drag Them Away
+        viewport.addEventListener("dragstart", (event) => event.preventDefault());
+
         viewport.addEventListener("pointerdown", (event) => {
             if (event.button !== 0) return;
             state.drag = { startX: event.clientX, startY: event.clientY, x: state.x, y: state.y };
@@ -102,11 +105,14 @@ window.sotfMap = (() => {
         apply();
     });
 
-    window.addEventListener("pointerup", () => {
+    // A Cancelled Pointer Ends The Drag Too, Or The Map Keeps Following
+    const endDrag = () => {
         if (!state) return;
         state.drag = null;
         state.viewport.classList.remove("dragging");
-    });
+    };
+    window.addEventListener("pointerup", endDrag);
+    window.addEventListener("pointercancel", endDrag);
 
     const centerOn = (mapX, mapY) => {
         if (!state) return;

@@ -23,6 +23,9 @@ public partial class ConsumedItemsDialog
     [Inject]
     public required ISnackbar Snackbar { get; set; }
 
+    [Inject]
+    public required IDialogService DialogService { get; set; }
+
     private ModifyConsumedItemsViewModel _viewModel = null!;
 
     protected override void OnInitialized()
@@ -30,10 +33,19 @@ public partial class ConsumedItemsDialog
         _viewModel = new ModifyConsumedItemsViewModel(MainViewModel.SelectedSavegame!, GameData);
     }
 
-    private void RemoveAll()
+    private async Task RemoveAllAsync()
     {
-        _viewModel.RemoveAll();
-        Close();
+        if (
+            await DialogService.ConfirmAsync(
+                Localizer,
+                Localizer["RemoveAll"],
+                Localizer["RemoveConsumedItemsText"]
+            )
+        )
+        {
+            _viewModel.RemoveAll();
+            Close();
+        }
     }
 
     private void Apply()

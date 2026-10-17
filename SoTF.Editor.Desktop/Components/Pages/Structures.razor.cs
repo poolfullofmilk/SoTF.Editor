@@ -44,9 +44,6 @@ public partial class Structures : EditorPageBase
     [Inject]
     public required StructuresPageViewModel StructuresPage { get; set; }
 
-    [Inject]
-    public required IDialogService DialogService { get; set; }
-
     private string? _filter;
 
     private IEnumerable<ScrewStructureWrapper> FilteredStructures =>
@@ -86,8 +83,16 @@ public partial class Structures : EditorPageBase
         return wrapper.ScrewStructure?.Icon is { } icon ? $"images/structures/{icon}" : null;
     }
 
-    private void SetAll(ScrewStructureOrigin origin, ScrewStructureModificationMode mode)
+    private async Task SetAllAsync(ScrewStructureOrigin origin, ScrewStructureModificationMode mode)
     {
+        if (
+            mode == ScrewStructureModificationMode.Remove
+            && !await ConfirmAsync("SetAllToRemove", "SetAllToRemoveText")
+        )
+        {
+            return;
+        }
+
         StructuresPage.SetModificationMode(FilteredStructures, origin, mode);
     }
 

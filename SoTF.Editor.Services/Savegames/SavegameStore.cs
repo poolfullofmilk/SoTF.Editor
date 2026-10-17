@@ -113,11 +113,6 @@ public class SavegameStore
         return new DirectoryInfo(_path).Parent;
     }
 
-    public DateTime? RestoreBackup(bool newest)
-    {
-        return BackupManager.Restore(_path, newest);
-    }
-
     public bool HasModified()
     {
         return _rawData.Values.Any(saveDataWrapper => saveDataWrapper?.HasModified() ?? false);

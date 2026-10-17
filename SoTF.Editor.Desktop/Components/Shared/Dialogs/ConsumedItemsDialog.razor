@@ -42,7 +42,7 @@
         @* Remove All *@
         <MudButton Color="Color.Error"
                    Disabled="@(_viewModel.ConsumedItems.Count == 0)"
-                   OnClick="RemoveAll">
+                   OnClick="RemoveAllAsync">
             @Localizer["RemoveAll"]
         </MudButton>
         <MudSpacer />

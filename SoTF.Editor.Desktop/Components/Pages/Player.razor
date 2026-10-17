@@ -195,7 +195,10 @@
                                 </MudStack>
                             }
 
-                            <MudDivider Class="my-2" />
+                            @if (ArmorPage.HasArmorPieces())
+                            {
+                                <MudDivider Class="my-2" />
+                            }
 
                             <MudStack Row
                                       AlignItems="AlignItems.Center"
@@ -218,7 +221,6 @@
                                                  @bind-Value="ArmorPage.NewArmour.RemainingArmourpoints"
                                                  Min="1"
                                                  Label="@Localizer["Durability"]"
-                                                 HelperText="@Localizer["DurabilityTooltip"]"
                                                  Style="width:140px" />
                                 @* Add Armor *@
                                 <MudButton Variant="Variant.Filled"
@@ -230,6 +232,10 @@
                                     @Localizer["Add"]
                                 </MudButton>
                             </MudStack>
+                            <MudText Typo="Typo.caption"
+                                     Class="mud-text-secondary">
+                                @Localizer["DurabilityTooltip"]
+                            </MudText>
                         </MudStack>
                     </MudPaper>
                 </ChildContent>

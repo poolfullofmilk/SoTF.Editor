@@ -58,7 +58,8 @@ A Debug build uses `SoTF.Editor Debug` for all of these folders (`AppInfo.Folder
 - `SavegameStore` writes only modified wrappers. `BackupManager.Create` first copies every file of the savegame and compares each copy byte for byte; if that fails, nothing is written. Loose files are written to a temp file and moved over; `SaveData.zip` is updated on a copy that then replaces it. The modified flags clear only after every file is written, so a failed save can be retried.
 - A save with no edits says **No Changes** and writes nothing. A rewrite on a no-op save is a bug.
 - `SaveDataWrapper` keeps each nested document as it was loaded and only counts a marked document that now differs (`JToken.DeepEquals`). So an edit undone, or a tool that finds nothing to change, writes nothing, and the close prompt only asks about real changes.
-- Restore makes a backup of the current files first, then copies the chosen backup back and removes files the backup lacks (the game renames the `.name` file on every save). The app never deletes a backup.
+- Restore makes a backup of the current files first, then copies the chosen backup back and removes files the backup lacks (the game renames the `.name` file on every save). The app never deletes a backup. **Backups → Restore Backup** lists them newest first (`BackupManager.List`), with Newest and Oldest greyed on the right.
+- Open, reload, save and restore run through `MainLayout.RunBusyAsync`: it shows the busy overlay and yields once, so the overlay paints before the blocking work.
 - The Item Plater writes at once (`MainViewModel.SaveWrappers`), so it asks to discard unsaved edits and reloads before plating.
 - Closing the window with unsaved edits asks first; Windows shutting down never waits for it.
 - Anything that changes actors goes through `MainViewModel.ModifyActors`: it writes unsaved follower edits into the JSON first, runs the change, then reloads followers and NPCs.
@@ -68,6 +69,7 @@ A Debug build uses `SoTF.Editor Debug` for all of these folders (`AppInfo.Folder
 - A stored item writes its loaded `UniqueItems` back untouched (food timers, actor seeds); only a changed count or item builds new ones (`StoredItem.UniqueItemsToSave`). A food storage swaps a food module only for another food state (`IsEqualTo` on `CurrentState`); comparing whole records reset spoil timers on every save.
 - The `Clothing` list holds the outfit plus other worn pieces such as the Rebreather. The outfit picker changes only the first outfit entry and keeps the rest, and no outfit listed means the starting Tactical Jacket (`495`). `PlayerPageViewModel.WornItemIds` feeds the map, so a worn Rebreather counts as owned.
 - Tools only change the in-memory JSON and return a message for the snackbar; nothing reaches the disk until Save. Unlocks is the exception: it edits the profile file directly, after its own backup.
+- Big actions ask first with one sentence of explanation: the tools menu, Fill All Storages, Apply To All Of Same Type, Remove All, Set All To Remove and Remove All Copies. Pages use `EditorPageBase.ConfirmAsync`.
 - Teleport and spawning edit the save, so they work with the game closed.
 
 ## Text
@@ -75,18 +77,22 @@ A Debug build uses `SoTF.Editor Debug` for all of these folders (`AppInfo.Folder
 - Editor text is `Resources/SharedResource.resx` (English) and `SharedResource.nl.resx` (Dutch); both hold the same keys. Pages use `Localizer`, services `AppText`.
 - `AppText.Culture` is the one source of the language. The WPF dispatcher keeps the startup thread culture, so setting `CultureInfo` does nothing; `AppLocalizer` reads `AppText.Culture` instead. English is the default, the `LanguagePicker` in the app bar switches and saves it.
 - Item, creature and structure names stay English in every language, in `GameNames.resx`, because the game shows them in English.
+- Labels are short Title Case. Longer sentences (hints, warnings, explanations, snackbar messages) are sentence case, still without ending punctuation.
 - Keys built at runtime (`Item12`, `ActorType9`, `StructureCategoryTreeShelter`) come only from `TextKeys`. A Debug start checks every one against the game data and asserts on any missing key, so a new item or enum value needs its key in both files.
 - Numbers follow the Windows number format; dates are `yyyy-MM-dd`.
 
 ## Layout
 
-Pages with lists (Storage, NPCs, Inventory, Structures, Map) fill the window and end `--page-bottom` above it, through the `page-fill`, `fill`, `fill-column` and `fit` classes in `SoTF.Editor.css`. Never size a panel with a `%` or `vh` height; it misses the bottom margin.
+Pages with lists (Storage, NPCs, Inventory, Structures, Map, the Game state tab) fill the window and end `--page-bottom` above it, through the `page-fill`, `fill`, `fill-column` and `fit` classes in `SoTF.Editor.css`. Never size a panel with a `%` or `vh` height; it misses the bottom margin. A `MudTabs` fills the page while the open tab's root carries `fill`; its other tabs scroll with the page.
+
+The last table row has no bottom line. A table whose rows virtualize keeps its columns with `fixed-columns` and a `ColGroup`, or the columns shift while scrolling.
 
 ## Looks Wrong, Is Not
 
 - `WebResourceRequested` answers only `https://files.local/` (`LocalFiles`), and only for `.png` and `.jpg` files that exist. BlazorWebView routes its own requests through the same event; answering them breaks the page.
 - `MainWindow` and WebView2 both use `#202020`, so the window never flashes white.
-- The map points are plain `<img>` in one canvas and pan and zoom in JS (`window.sotfMap` in `AppShell.js`): a map shows thousands of them. `MapViewModel` rebuilds them whenever `MainViewModel.Revision` moves (a reload or an actor change), because old points hold JSON that is no longer saved.
+- The map points are plain `<img>` in one canvas and pan and zoom in JS (`window.sotfMap` in `AppShell.js`): a map shows thousands of them. `MapViewModel` rebuilds them whenever `MainViewModel.Revision` moves (a reload or an actor change), because old points hold JSON that is no longer saved. The JS blocks native image dragging and ends a drag on `pointercancel`, or the map follows the cursor after a press on a point.
+- `PoiDetails` calls `OnMapChanged` after closing or removing, because a child's event only re-renders the child and the map page would keep the old overlay.
 - `AppShell.js` blurs the focused field before Ctrl S, so a number typed but not yet committed is saved too.
 - The static map points come from `lmachens/sons-of-the-forest-map` (MIT), credited in `THIRD-PARTY-NOTICES.txt`. Keep that file while `Pois.json` and `ItemPois.json` ship.
 - Regrow Trees regrows the share asked for, so 30% regrows about 30% of the cut trees.

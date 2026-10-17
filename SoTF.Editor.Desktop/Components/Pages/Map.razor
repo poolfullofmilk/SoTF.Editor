@@ -53,11 +53,6 @@
                            ValueChanged="SetUncollectedOnly"
                            Color="Color.Info"
                            Label="@Localizer["UncollectedOnly"]" />
-                @* Dark Map *@
-                <MudSwitch T="bool"
-                           @bind-Value="MapViewModel.DarkMap"
-                           Color="Color.Info"
-                           Label="@Localizer["DarkMap"]" />
 
                 <MudStack Row
                           AlignItems="AlignItems.Center"
@@ -144,7 +139,7 @@
                             @bind-Ref="_canvas"
                             Class="map-canvas">
                     @* Map Image *@
-                    <img src="@MapViewModel.MapImageUrl"
+                    <img src="images/map/dark.jpg"
                          alt="@Localizer["Map"]"
                          class="map-image" />
                     <svg class="map-zipline"
@@ -155,7 +150,7 @@
                                   y1="@zipline.PointA.MapTop"
                                   x2="@zipline.PointB.MapLeft"
                                   y2="@zipline.PointB.MapTop"
-                                  stroke="@ZiplineColor"
+                                  stroke="white"
                                   stroke-width="3"
                                   stroke-dasharray="8 6" />
                         }
@@ -202,7 +197,8 @@
                 <MudPaper Elevation="4"
                           Class="rounded-panel pa-4 map-overlay position-absolute ma-4 overflow-y-auto"
                           Style="top:0;right:0;width:360px;max-height:calc(100% - 32px)">
-                    <PoiDetails Poi="selectedPoi" />
+                    <PoiDetails Poi="selectedPoi"
+                                OnMapChanged="StateHasChanged" />
                 </MudPaper>
             }
         </MudPaper>

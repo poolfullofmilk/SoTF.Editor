@@ -31,7 +31,7 @@
                                    Color="Color.Error"
                                    Size="Size.Small"
                                    Disabled="@(!InventoryPage.HasInventoryItems())"
-                                   OnClick="InventoryPage.RemoveAllEquipped">
+                                   OnClick="RemoveAllAsync">
                             @Localizer["RemoveAll"]
                         </MudButton>
                     </TitleContent>
@@ -54,8 +54,13 @@
                                       FixedHeader
                                       Virtualize
                                       Elevation="0"
-                                      Class="fill">
+                                      Class="fill fixed-columns">
 
+                                <ColGroup>
+                                    <col />
+                                    <col class="count-column" />
+                                    <col class="actions-column" />
+                                </ColGroup>
                                 <HeaderContent>
                                     <MudTh>@Localizer["Name"]</MudTh>
                                     <MudTh>@Localizer["Count"]</MudTh>
@@ -79,12 +84,9 @@
                                     </MudTd>
                                     <MudTd Style="text-align:right">
                                         @* Max Button *@
-                                        <Tooltip Text="@Localizer["Max"]">
-                                            <MudIconButton Icon="@Icons.Material.Rounded.KeyboardDoubleArrowUp"
-                                                           Size="Size.Small"
-                                                           Disabled="context.IsEquipped"
-                                                           OnClick="context.SetToMax" />
-                                        </Tooltip>
+                                        <MaxButton Max="context.Max"
+                                                   Disabled="context.IsEquipped"
+                                                   OnClick="context.SetToMax" />
                                         @* Remove Button *@
                                         <Tooltip Text="@Localizer["Remove"]">
                                             <MudIconButton Icon="@Icons.Material.Rounded.Delete"

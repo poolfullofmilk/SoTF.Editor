@@ -1,0 +1,44 @@
+<MudDialog>
+
+    <TitleContent>
+        <MudText Typo="Typo.h6">@Localizer["RestoreBackupTitle"]</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudStack Spacing="2">
+            <MudText Typo="Typo.body2"
+                     Class="mud-text-secondary">
+                @Localizer["RestoreBackupText"]
+            </MudText>
+            <MudStack Spacing="0">
+                @foreach (var backup in Backups)
+                {
+                    @* Backup Row *@
+                    <MudStack Row
+                              AlignItems="AlignItems.Center"
+                              Class="@RowClass(backup)"
+                              @onclick="() => _selected = backup">
+                        <MudText Typo="Typo.body2">@Formatter.FormatDateTimeWithSeconds(backup.TakenAt)</MudText>
+                        <MudSpacer />
+                        <MudText Typo="Typo.body2"
+                                 Class="mud-text-secondary">
+                            @AgeLabel(backup)
+                        </MudText>
+                    </MudStack>
+                }
+            </MudStack>
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        @* Cancel Button *@
+        <MudButton OnClick="@MudDialog.Cancel">@Localizer["Cancel"]</MudButton>
+        @* Restore Button *@
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Info"
+                   StartIcon="@Icons.Material.Rounded.Restore"
+                   Disabled="@(_selected is null)"
+                   OnClick="Restore">
+            @Localizer["Restore"]
+        </MudButton>
+    </DialogActions>
+
+</MudDialog>

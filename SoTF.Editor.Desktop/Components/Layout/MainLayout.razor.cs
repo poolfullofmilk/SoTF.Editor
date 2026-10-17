@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
 using NLog;
 using SoTF.Editor.Data.Helpers;
+using SoTF.Editor.Data.ViewModels;
 using SoTF.Editor.Desktop.Components.Shared.Dialogs;
 using SoTF.Editor.Services.Integration;
 using SoTF.Editor.Services.Pages;
@@ -49,6 +50,7 @@ public partial class MainLayout : IDisposable
     public required ISnackbar Snackbar { get; set; }
 
     private ErrorBoundary? _errorBoundary;
+    private bool _isBusy;
 
     private bool HasSavegame => MainViewModel.SelectedSavegame != null;
 
@@ -122,7 +124,9 @@ public partial class MainLayout : IDisposable
 
         try
         {
-            if (MainViewModel.SaveChanges())
+            var saved = false;
+            await RunBusyAsync(() => saved = MainViewModel.SaveChanges());
+            if (saved)
             {
                 Snackbar.Add(Localizer["ChangesSaved"], Severity.Success);
             }
@@ -150,7 +154,7 @@ public partial class MainLayout : IDisposable
             return;
         }
 
-        MainViewModel.SelectSavegame(savegame);
+        await RunBusyAsync(() => MainViewModel.SelectSavegame(savegame));
         if (IsActive(s_pages[0]))
         {
             NavigationManager.NavigateTo("Player");
@@ -161,7 +165,24 @@ public partial class MainLayout : IDisposable
     {
         if (await DialogService.ConfirmDiscardAsync(Localizer, MainViewModel))
         {
-            MainViewModel.ReloadSavegame();
+            await RunBusyAsync(MainViewModel.ReloadSavegame);
+        }
+    }
+
+    private async Task RunBusyAsync(Action work)
+    {
+        // The Overlay Shows Before The Work Holds The Thread
+        _isBusy = true;
+        StateHasChanged();
+        await Task.Yield();
+        try
+        {
+            work();
+        }
+        finally
+        {
+            _isBusy = false;
+            StateHasChanged();
         }
     }
 
@@ -190,15 +211,31 @@ public partial class MainLayout : IDisposable
         );
     }
 
-    private async Task RestoreBackupAsync(bool newest)
+    private async Task RestoreBackupAsync()
     {
+        if (MainViewModel.SelectedSavegame is not { } savegame)
+        {
+            return;
+        }
+
+        var backups = BackupManager.List(savegame.FullPath);
+        if (backups.Count == 0)
+        {
+            Snackbar.Add(Localizer["NoBackupFound"], Severity.Info);
+            return;
+        }
+
+        var dialog = await DialogService.ShowAsync<RestoreBackupDialog>(
+            (string?)null,
+            new DialogParameters<RestoreBackupDialog>
+            {
+                { restoreDialog => restoreDialog.Backups, backups },
+            },
+            new DialogOptions { MaxWidth = MaxWidth.ExtraSmall, FullWidth = true }
+        );
         if (
-            MainViewModel.SelectedSavegame is not { } savegame
-            || !await DialogService.ConfirmAsync(
-                Localizer,
-                Localizer["RestoreBackupTitle"],
-                Localizer["RestoreBackupText"]
-            )
+            await dialog.Result is not { Canceled: false, Data: SavegameBackup backup }
+            || !await DialogService.ConfirmDiscardAsync(Localizer, MainViewModel)
         )
         {
             return;
@@ -206,15 +243,13 @@ public partial class MainLayout : IDisposable
 
         try
         {
-            if (savegame.SavegameStore.RestoreBackup(newest) is not { } takenAt)
+            await RunBusyAsync(() =>
             {
-                Snackbar.Add(Localizer["NoBackupFound"], Severity.Info);
-                return;
-            }
-
-            MainViewModel.ReloadSavegame();
+                BackupManager.Restore(savegame.FullPath, backup.Path);
+                MainViewModel.ReloadSavegame();
+            });
             Snackbar.Add(
-                Localizer["RestoredBackup", Formatter.FormatDateTime(takenAt)],
+                Localizer["RestoredBackup", Formatter.FormatDateTimeWithSeconds(backup.TakenAt)],
                 Severity.Success
             );
         }
@@ -227,8 +262,13 @@ public partial class MainLayout : IDisposable
     #endregion
 
     #region Tool Methods
-    private void RunTool(Func<string> tool)
+    private async Task RunToolAsync(string labelKey, string textKey, Func<string> tool)
     {
+        if (!await DialogService.ConfirmAsync(Localizer, Localizer[labelKey], Localizer[textKey]))
+        {
+            return;
+        }
+
         var message = tool();
         if (!string.IsNullOrEmpty(message))
         {
@@ -238,10 +278,17 @@ public partial class MainLayout : IDisposable
         MainViewModel.NotifyChanged();
     }
 
-    private void SetToEndgame()
+    private Task SetToEndgameAsync()
     {
-        GameStatePage.SetToEndgame();
-        Snackbar.Add(Localizer["ChangesAdded"], Severity.Info);
+        return RunToolAsync(
+            "SetToEndgame",
+            "SetToEndgameText",
+            () =>
+            {
+                GameStatePage.SetToEndgame();
+                return Localizer["ChangesAdded"];
+            }
+        );
     }
 
     private async Task ShowDialogAsync<TDialog>()

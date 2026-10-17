@@ -29,6 +29,22 @@ public partial class Storage : EditorPageBase
         _fillCount = 1;
     }
 
+    private async Task FillAllStoragesAsync()
+    {
+        if (await ConfirmAsync("FillAllStorages", "FillAllStoragesText"))
+        {
+            StoragePage.FillAllStorages();
+        }
+    }
+
+    private async Task ApplyToSameTypeAsync(IStorage source)
+    {
+        if (await ConfirmAsync("ApplyToSameType", "ApplyToSameTypeTooltip"))
+        {
+            StoragePage.ApplyToAllOfSameType(source);
+        }
+    }
+
     private void SelectFillItem(ItemWrapper? item)
     {
         _fillItem = item;

@@ -94,64 +94,80 @@
         <MudTabPanel ToolTip="@Localizer["GameState"].Value"
                      Icon="@Icons.Material.Rounded.Schedule"
                      IconColor="Color.Tertiary">
-            <MudStack Spacing="6">
-                <MudPaper Elevation="4"
-                          Class="rounded-panel pa-4">
-                    <MudSimpleTable Dense
-                                    Elevation="0">
-                        <tbody>
-                            @foreach (var setting in GameState.Settings)
-                            {
-                                <tr>
-                                    <td style="width:40%">@Localizer[TextKeys.Setting(setting.Name)]</td>
-                                    <td>
-                                        <GenericSettingEditor Setting="setting" />
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </MudSimpleTable>
-                </MudPaper>
+            <MudGrid Class="fill">
 
-                <Header Title="@Localizer["WorldObjectStates"]">
-                    <MudPaper Elevation="4"
-                              Class="rounded-panel pa-4">
-                        <MudText Typo="Typo.caption"
-                                 Class="mud-text-secondary text-relaxed"
-                                 Style="white-space:pre-line">
-                            @Localizer["WorldObjectStatesHint"]
-                        </MudText>
-                        @* World Object Search *@
-                        <MudTextField T="string"
-                                      @bind-Value="_namedIntFilter"
-                                      DebounceInterval="300"
-                                      Placeholder="@Localizer["Filter"]"
-                                      Adornment="Adornment.Start"
-                                      AdornmentIcon="@Icons.Material.Rounded.Search"
-                                      Clearable
-                                      Class="my-2" />
-                        <MudTable T="GenericSetting"
-                                  Items="FilteredNamedIntDatas"
-                                  Dense
-                                  Hover
-                                  Virtualize
-                                  Elevation="0">
+                <MudItem xs="12"
+                         md="6"
+                         Class="fill-column">
+                    <Header Title="@Localizer["GameState"]"
+                            Class="fit">
+                        <MudPaper Elevation="4"
+                                  Class="rounded-panel pa-4 overflow-y-auto fit">
+                            <MudSimpleTable Dense
+                                            Elevation="0">
+                                <tbody>
+                                    @foreach (var setting in GameState.Settings)
+                                    {
+                                        <tr>
+                                            <td style="width:40%">@Localizer[TextKeys.Setting(setting.Name)]</td>
+                                            <td>
+                                                <GenericSettingEditor Setting="setting" />
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </MudSimpleTable>
+                        </MudPaper>
+                    </Header>
+                </MudItem>
 
-                            <HeaderContent>
-                                <MudTh>@Localizer["Name"]</MudTh>
-                                <MudTh>@Localizer["Value"]</MudTh>
-                            </HeaderContent>
-                            <RowTemplate>
-                                <MudTd Class="selectable-text">@context.Name</MudTd>
-                                <MudTd>
-                                    <GenericSettingEditor Setting="context" />
-                                </MudTd>
-                            </RowTemplate>
+                <MudItem xs="12"
+                         md="6"
+                         Class="fill-column">
+                    <Header Title="@Localizer["WorldObjectStates"]"
+                            Class="fill">
+                        <MudPaper Elevation="4"
+                                  Class="rounded-panel pa-4 fill fill-column">
+                            <MudText Typo="Typo.caption"
+                                     Class="mud-text-secondary text-relaxed"
+                                     Style="white-space:pre-line">
+                                @Localizer["WorldObjectStatesHint"]
+                            </MudText>
+                            @* World Object Search *@
+                            <MudTextField T="string"
+                                          @bind-Value="_namedIntFilter"
+                                          DebounceInterval="300"
+                                          Placeholder="@Localizer["Filter"]"
+                                          Adornment="Adornment.Start"
+                                          AdornmentIcon="@Icons.Material.Rounded.Search"
+                                          Clearable
+                                          Class="my-2" />
+                            <MudTable T="GenericSetting"
+                                      Items="FilteredNamedIntDatas"
+                                      Dense
+                                      Hover
+                                      FixedHeader
+                                      Virtualize
+                                      Elevation="0"
+                                      Class="fill">
 
-                        </MudTable>
-                    </MudPaper>
-                </Header>
-            </MudStack>
+                                <HeaderContent>
+                                    <MudTh>@Localizer["Name"]</MudTh>
+                                    <MudTh>@Localizer["Value"]</MudTh>
+                                </HeaderContent>
+                                <RowTemplate>
+                                    <MudTd Class="selectable-text">@context.Name</MudTd>
+                                    <MudTd>
+                                        <GenericSettingEditor Setting="context" />
+                                    </MudTd>
+                                </RowTemplate>
+
+                            </MudTable>
+                        </MudPaper>
+                    </Header>
+                </MudItem>
+
+            </MudGrid>
         </MudTabPanel>
 
         @* Weather Tab *@

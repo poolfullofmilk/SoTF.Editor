@@ -151,22 +151,22 @@
     <value>About</value>
   </data>
   <data name="AboutText" xml:space="preserve">
-    <value>Edit Your Sons Of The Forest Savegames</value>
+    <value>Edit your Sons of the Forest savegames</value>
   </data>
   <data name="Backups" xml:space="preserve">
     <value>Backups</value>
   </data>
   <data name="ChangesAdded" xml:space="preserve">
-    <value>Changes Added, Save To Keep Them</value>
+    <value>Changes added, save to keep them</value>
   </data>
   <data name="Disclaimer" xml:space="preserve">
-    <value>A Fan Project, Not Affiliated With Endnight Games</value>
+    <value>A fan project, not affiliated with Endnight Games</value>
   </data>
   <data name="MapDataNotice" xml:space="preserve">
-    <value>Map Points From Sons Of The Forest Map By Leon Machens, MIT License</value>
+    <value>Map points from Sons of the Forest Map by Leon Machens, MIT license</value>
   </data>
   <data name="DropHint" xml:space="preserve">
-    <value>Drop A Savegame Folder Anywhere In The Window To Open It</value>
+    <value>Drop a savegame folder anywhere in the window to open it</value>
   </data>
   <data name="Help" xml:space="preserve">
     <value>Help</value>
@@ -175,7 +175,7 @@
     <value>Items</value>
   </data>
   <data name="NoSavegames" xml:space="preserve">
-    <value>No Savegames Found In This Folder</value>
+    <value>No savegames found in this folder</value>
   </data>
   <data name="NothingFound" xml:space="preserve">
     <value>Nothing Found</value>
@@ -307,7 +307,7 @@
     <value>Remove Spawner</value>
   </data>
   <data name="RemoveSpawnerTooltip" xml:space="preserve">
-    <value>Stops The NPC From Spawning Again</value>
+    <value>Stops the NPC from spawning again</value>
   </data>
   <data name="ReplaceType" xml:space="preserve">
     <value>Replace Type</value>
@@ -319,7 +319,7 @@
     <value>Skip Virginia</value>
   </data>
   <data name="TeleportManyWarning" xml:space="preserve">
-    <value>Teleporting Many Actors To One Spot Can Crash The Game</value>
+    <value>Teleporting many actors to one spot can crash the game</value>
   </data>
   <data name="None" xml:space="preserve">
     <value>None</value>
@@ -382,13 +382,13 @@
     <value>Set All To Default</value>
   </data>
   <data name="SetAllToDefaultTooltip" xml:space="preserve">
-    <value>Sets Every Piece To Its Default Durability</value>
+    <value>Sets every piece to its default durability</value>
   </data>
   <data name="SetAllToMax" xml:space="preserve">
     <value>Set All To Max</value>
   </data>
   <data name="SetAllToMaxTooltip" xml:space="preserve">
-    <value>Sets Every Piece To Max Durability</value>
+    <value>Sets every piece to max durability</value>
   </data>
   <data name="SetToDefaultDurability" xml:space="preserve">
     <value>Set To Default Durability</value>
@@ -397,7 +397,7 @@
     <value>Set To A Very High Durability</value>
   </data>
   <data name="DurabilityTooltip" xml:space="preserve">
-    <value>At 0 The Armor Breaks, It Can Go Very High</value>
+    <value>At 0 the armor breaks, it can go very high</value>
   </data>
   <data name="Durability" xml:space="preserve">
     <value>Durability</value>
@@ -412,10 +412,10 @@
     <value>Unknown Item</value>
   </data>
   <data name="ChangeTypeWarning" xml:space="preserve">
-    <value>Position And Rotation Stay, Which Can Cause Glitches Or Crashes</value>
+    <value>Position and rotation stay, which can cause glitches or crashes</value>
   </data>
   <data name="SpawnFollowersWarning" xml:space="preserve">
-    <value>Spawn In An Open Space, Many Followers Can Hurt Performance</value>
+    <value>Spawn in an open space, many followers can hurt performance</value>
   </data>
   <data name="SpawnFollowers" xml:space="preserve">
     <value>Spawn Followers</value>
@@ -424,13 +424,13 @@
     <value>No Fires Found</value>
   </data>
   <data name="FiresChanged" xml:space="preserve">
-    <value>Changed {0} Fires, Save To Keep Them</value>
+    <value>Changed {0} fires, save to keep them</value>
   </data>
   <data name="NoStructureDamage" xml:space="preserve">
     <value>No Structure Damage Found</value>
   </data>
   <data name="StructureDamageRepaired" xml:space="preserve">
-    <value>Repaired {0} Damaged Structures, Save To Keep Them</value>
+    <value>Repaired {0} damaged structures, save to keep them</value>
   </data>
   <data name="FillAllBars" xml:space="preserve">
     <value>Fill All Bars</value>
@@ -457,7 +457,7 @@
     <value>Outfit</value>
   </data>
   <data name="ReviveTooltip" xml:space="preserve">
-    <value>Revive Outside Buildings, The Follower Appears At The Player With The Items And Outfit Set Here</value>
+    <value>Revive outside buildings, the follower appears at the player with the items and outfit set here</value>
   </data>
   <data name="Alive" xml:space="preserve">
     <value>Alive</value>
@@ -628,13 +628,13 @@
     <value>Game State</value>
   </data>
   <data name="WorldObjectStatesHint" xml:space="preserve">
-    <value>Likely 0 Means Closed Or Not Happened, 1 Or 3 Means Opened Or Happened</value>
+    <value>Likely 0 means closed or not happened, 1 or 3 means opened or happened</value>
   </data>
   <data name="WorldObjectStates" xml:space="preserve">
     <value>World Object States</value>
   </data>
   <data name="InfluencesHint" xml:space="preserve">
-    <value>High Fear Makes Enemies Flee, High Anger Makes Them Attack</value>
+    <value>High fear makes enemies flee, high anger makes them attack</value>
   </data>
   <data name="Sentiment" xml:space="preserve">
     <value>Sentiment</value>
@@ -685,7 +685,7 @@
     <value>New Zipline From Here</value>
   </data>
   <data name="NewZiplineTooltip" xml:space="preserve">
-    <value>Then Click Where The Zipline Should End</value>
+    <value>Then click where the zipline should end</value>
   </data>
   <data name="DeleteBothAnchors" xml:space="preserve">
     <value>Delete Both Anchors</value>
@@ -700,7 +700,7 @@
     <value>Move To Clicked Position</value>
   </data>
   <data name="MoveToClickedTooltip" xml:space="preserve">
-    <value>Then Click Where The Anchor Should Go</value>
+    <value>Then click where the anchor should go</value>
   </data>
   <data name="SpawnActors" xml:space="preserve">
     <value>Spawn Actors</value>
@@ -724,7 +724,7 @@
     <value>Search</value>
   </data>
   <data name="SearchTooltip" xml:space="preserve">
-    <value>Searches Titles, Descriptions, Item Names And Item Types</value>
+    <value>Searches titles, descriptions, item names and item types</value>
   </data>
   <data name="SearchPlaceholder" xml:space="preserve">
     <value>Title, Description, Item</value>
@@ -744,9 +744,6 @@
   <data name="ItemId" xml:space="preserve">
     <value>Item ID</value>
   </data>
-  <data name="DarkMap" xml:space="preserve">
-    <value>Dark Map</value>
-  </data>
   <data name="Objects" xml:space="preserve">
     <value>Objects</value>
   </data>
@@ -757,13 +754,13 @@
     <value>Requirements</value>
   </data>
   <data name="RequirementsTooltip" xml:space="preserve">
-    <value>Filters By Whether You Own What A Place Needs, Like A Shovel Or Key Card</value>
+    <value>Filters by whether you own what a place needs, like a shovel or key card</value>
   </data>
   <data name="ActorType" xml:space="preserve">
     <value>Actor Type</value>
   </data>
   <data name="SpawnActorsWarning" xml:space="preserve">
-    <value>Too Many Enemies Or A Bad Spot Can Crash The Game</value>
+    <value>Too many enemies or a bad spot can crash the game</value>
   </data>
   <data name="CreateActors" xml:space="preserve">
     <value>Create Actors</value>
@@ -775,7 +772,7 @@
     <value>Space Between</value>
   </data>
   <data name="SpaceBetweenTooltip" xml:space="preserve">
-    <value>Space Between Each Actor, Above 0 Places Them In A Grid</value>
+    <value>Space between each actor, above 0 places them in a grid</value>
   </data>
   <data name="SpawnPattern" xml:space="preserve">
     <value>Spawn Pattern</value>
@@ -790,7 +787,7 @@
     <value>Destination</value>
   </data>
   <data name="TeleportHint" xml:space="preserve">
-    <value>X And Z Set The Spot, Y The Height, Pick The Right Area</value>
+    <value>X and Z set the spot, Y the height, pick the right area</value>
   </data>
   <data name="Offset" xml:space="preserve">
     <value>Offset</value>
@@ -865,7 +862,7 @@
     <value>Unlocks</value>
   </data>
   <data name="ByFamilyHint" xml:space="preserve">
-    <value>A Family Is A Group Of NPCs That Belong Together, Like A Tribe</value>
+    <value>A family is a group of NPCs that belong together, like a tribe</value>
   </data>
   <data name="ByFamily" xml:space="preserve">
     <value>By Family</value>
@@ -919,7 +916,7 @@
     <value>Apply To All Of Same Type</value>
   </data>
   <data name="ApplyToSameTypeTooltip" xml:space="preserve">
-    <value>Copies These Items And Counts To Every Storage Of This Type</value>
+    <value>Copies these items and counts to every storage of this type</value>
   </data>
   <data name="ChangeType" xml:space="preserve">
     <value>Change Type</value>
@@ -1033,7 +1030,7 @@
     <value>Constructions</value>
   </data>
   <data name="ItemPlaterWarning" xml:space="preserve">
-    <value>This Tool Saves Right Away And Reloads, Save Other Changes First</value>
+    <value>This tool saves right away and reloads, save other changes first</value>
   </data>
   <data name="FollowerItems" xml:space="preserve">
     <value>Follower Items</value>
@@ -1054,19 +1051,19 @@
     <value>Map</value>
   </data>
   <data name="AlreadyLatestVersion" xml:space="preserve">
-    <value>You Already Have The Latest Version</value>
+    <value>You already have the latest version</value>
   </data>
   <data name="ChangesSaved" xml:space="preserve">
     <value>Changes Saved</value>
   </data>
   <data name="OverwriteExternalChangesText" xml:space="preserve">
-    <value>The Game Changed This Savegame Since It Was Opened</value>
+    <value>The game changed this savegame since it was opened</value>
   </data>
   <data name="OverwriteExternalChangesTitle" xml:space="preserve">
     <value>Overwrite Changes</value>
   </data>
   <data name="RestoreBackupText" xml:space="preserve">
-    <value>The Current Files Get A Backup First, So This Can Be Undone</value>
+    <value>The current files get a backup first, so this can be undone</value>
   </data>
   <data name="RestoreBackupTitle" xml:space="preserve">
     <value>Restore Backup</value>
@@ -1075,10 +1072,10 @@
     <value>{0} Is Already Alive</value>
   </data>
   <data name="FollowerRevived" xml:space="preserve">
-    <value>Revived {0}, Save To Keep It</value>
+    <value>Revived {0}, save to keep it</value>
   </data>
   <data name="FollowersCreated" xml:space="preserve">
-    <value>Created {0} Followers, Save To Keep Them</value>
+    <value>Created {0} followers, save to keep them</value>
   </data>
   <data name="NoChanges" xml:space="preserve">
     <value>No Changes, Nothing Saved</value>
@@ -1096,10 +1093,10 @@
     <value>Half Chopped</value>
   </data>
   <data name="NoTreesRegrown" xml:space="preserve">
-    <value>No Trees In State {0} To Regrow</value>
+    <value>No trees in state {0} to regrow</value>
   </data>
   <data name="TreesRegrown" xml:space="preserve">
-    <value>Regrew {0} Trees In State {1}, Save To Keep Them</value>
+    <value>Regrew {0} trees in state {1}, save to keep them</value>
   </data>
   <data name="RegrowPercent" xml:space="preserve">
     <value>Regrow Percent</value>
@@ -1108,13 +1105,13 @@
     <value>Stumps</value>
   </data>
   <data name="ContainersReset" xml:space="preserve">
-    <value>Reset {0} Containers, Save To Keep Them</value>
+    <value>Reset {0} containers, save to keep them</value>
   </data>
   <data name="NothingToReset" xml:space="preserve">
     <value>Nothing To Reset</value>
   </data>
   <data name="TrapsReset" xml:space="preserve">
-    <value>Reset {0} Traps, Save To Keep Them</value>
+    <value>Reset {0} traps, save to keep them</value>
   </data>
   <data name="ChangeFolder" xml:space="preserve">
     <value>Change Folder</value>
@@ -1144,7 +1141,7 @@
     <value>Escaped Island</value>
   </data>
   <data name="PlayerProfileNotFound" xml:space="preserve">
-    <value>No Player Profile Found In {0}</value>
+    <value>No player profile found in {0}</value>
   </data>
   <data name="Download" xml:space="preserve">
     <value>Download</value>
@@ -1153,13 +1150,13 @@
     <value>Clone At Player Position</value>
   </data>
   <data name="CloneAtPlayerTooltip" xml:space="preserve">
-    <value>Creates A Copy At The Player</value>
+    <value>Creates a copy at the player</value>
   </data>
   <data name="RemoveAllCopies" xml:space="preserve">
     <value>Remove All Copies</value>
   </data>
   <data name="RemoveAllCopiesTooltip" xml:space="preserve">
-    <value>Removes Every Copy Of This Type From The Map</value>
+    <value>Removes every copy of this type from the map</value>
   </data>
   <data name="ClonesRemoved" xml:space="preserve">
     <value>Removed {0} Copies Of {1}</value>
@@ -1171,7 +1168,7 @@
     <value>Nothing To Move</value>
   </data>
   <data name="ObjectCloned" xml:space="preserve">
-    <value>Copied {0} To The Player, Save To Keep It</value>
+    <value>Copied {0} to the player, save to keep it</value>
   </data>
   <data name="UnknownWorldItem" xml:space="preserve">
     <value>Unknown Item {0}</value>
@@ -1186,16 +1183,10 @@
     <value>Discard Unsaved Changes</value>
   </data>
   <data name="DiscardChangesText" xml:space="preserve">
-    <value>Edits Not Saved Yet Will Be Lost</value>
+    <value>Edits not saved yet will be lost</value>
   </data>
   <data name="OpenBackupFolder" xml:space="preserve">
     <value>Open Backup Folder</value>
-  </data>
-  <data name="RestoreOldestBackup" xml:space="preserve">
-    <value>Restore Oldest Backup</value>
-  </data>
-  <data name="RestoreNewestBackup" xml:space="preserve">
-    <value>Restore Newest Backup</value>
   </data>
   <data name="NoBackupFound" xml:space="preserve">
     <value>No Backup Found</value>
@@ -1204,7 +1195,7 @@
     <value>Restored Backup From {0}</value>
   </data>
   <data name="UnableToRestoreBackup" xml:space="preserve">
-    <value>Unable To Restore Backup, Close The Game First</value>
+    <value>Unable to restore backup, close the game first</value>
   </data>
   <data name="Language" xml:space="preserve">
     <value>Language</value>
@@ -1558,12 +1549,57 @@
     <value>Change Many At Once</value>
   </data>
   <data name="AllTypesHint" xml:space="preserve">
-    <value>Leave Empty To Change Every Type</value>
+    <value>Leave empty to change every type</value>
   </data>
   <data name="StructureType" xml:space="preserve">
     <value>Structure Type</value>
   </data>
   <data name="BatchHint" xml:space="preserve">
-    <value>Sets Every Structure The List Below Shows, Written On Save</value>
+    <value>Sets every structure the list below shows, written on save</value>
+  </data>
+  <data name="Restore" xml:space="preserve">
+    <value>Restore</value>
+  </data>
+  <data name="Newest" xml:space="preserve">
+    <value>Newest</value>
+  </data>
+  <data name="Oldest" xml:space="preserve">
+    <value>Oldest</value>
+  </data>
+  <data name="ItemPlaterText" xml:space="preserve">
+    <value>Plating turns the chosen items, structures and building pieces gold, Remove plating turns them back to normal</value>
+  </data>
+  <data name="EternalFiresText" xml:space="preserve">
+    <value>Every fire in the world is lit with fuel that never runs out</value>
+  </data>
+  <data name="ResetFiresText" xml:space="preserve">
+    <value>Every fire in the world is lit with a fresh load of fuel</value>
+  </data>
+  <data name="ResetStructureDamageText" xml:space="preserve">
+    <value>All damage to your structures is repaired</value>
+  </data>
+  <data name="ResetCannibalAngerText" xml:space="preserve">
+    <value>Kills, cut trees and village visits go back to zero, so cannibals calm down</value>
+  </data>
+  <data name="ResetContainersText" xml:space="preserve">
+    <value>Opened crates, cases and supplies in the world are closed and full again</value>
+  </data>
+  <data name="ResetTrapsText" xml:space="preserve">
+    <value>Triggered traps are set again</value>
+  </data>
+  <data name="SetToEndgameText" xml:space="preserve">
+    <value>The story counts as finished, as if you chose to stay on the island</value>
+  </data>
+  <data name="RemoveAllText" xml:space="preserve">
+    <value>Every item leaves the inventory</value>
+  </data>
+  <data name="FillAllStoragesText" xml:space="preserve">
+    <value>Every storage fills up to the maximum</value>
+  </data>
+  <data name="SetAllToRemoveText" xml:space="preserve">
+    <value>Every structure in the list is marked for removal, saving removes them</value>
+  </data>
+  <data name="RemoveConsumedItemsText" xml:space="preserve">
+    <value>Every entry in this list is removed, so those items can appear again</value>
   </data>
 </root>

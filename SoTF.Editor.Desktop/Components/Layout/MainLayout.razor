@@ -9,6 +9,14 @@
                    MaxWidth="MaxWidth.False" />
 <MudSnackbarProvider />
 
+@* Busy Overlay *@
+<MudOverlay Visible="_isBusy"
+            DarkBackground
+            ZIndex="2000">
+    <MudProgressCircular Color="Color.Info"
+                         Indeterminate />
+</MudOverlay>
+
 <MudLayout>
     <MudAppBar Elevation="4"
                Style="background-color:color-mix(in srgb, var(--mud-palette-appbar-background) var(--glass-opacity), transparent); backdrop-filter:var(--glass-blur)">
@@ -85,14 +93,10 @@
                                      Label="@Localizer["OpenBackupFolder"]"
                                      OnClick="OpenBackupFolder" />
                         <MudDivider />
-                        @* Restore Oldest *@
+                        @* Restore Backup *@
                         <MudMenuItem Icon="@Icons.Material.Rounded.History"
-                                     Label="@Localizer["RestoreOldestBackup"]"
-                                     OnClick="() => RestoreBackupAsync(false)" />
-                        @* Restore Newest *@
-                        <MudMenuItem Icon="@Icons.Material.Rounded.Update"
-                                     Label="@Localizer["RestoreNewestBackup"]"
-                                     OnClick="() => RestoreBackupAsync(true)" />
+                                     Label="@Localizer["RestoreBackupTitle"]"
+                                     OnClick="RestoreBackupAsync" />
                     </MudMenu>
                 </Tooltip>
 
@@ -113,17 +117,17 @@
                         <MudMenuItem Icon="@Icons.Material.Rounded.LocalFireDepartment"
                                      Disabled="@(!HasSavegame)"
                                      Label="@Localizer["EternalFires"]"
-                                     OnClick="() => RunTool(MainViewModel.EternalFires)" />
+                                     OnClick="@(() => RunToolAsync("EternalFires", "EternalFiresText", MainViewModel.EternalFires))" />
                         @* Reset Fires *@
                         <MudMenuItem Icon="@Icons.Material.Rounded.Fireplace"
                                      Disabled="@(!HasSavegame)"
                                      Label="@Localizer["ResetFires"]"
-                                     OnClick="() => RunTool(MainViewModel.ResetFires)" />
+                                     OnClick="@(() => RunToolAsync("ResetFires", "ResetFiresText", MainViewModel.ResetFires))" />
                         @* Structure Damage *@
                         <MudMenuItem Icon="@Icons.Material.Rounded.HomeRepairService"
                                      Disabled="@(!HasSavegame)"
                                      Label="@Localizer["ResetStructureDamage"]"
-                                     OnClick="() => RunTool(MainViewModel.ResetStructureDamage)" />
+                                     OnClick="@(() => RunToolAsync("ResetStructureDamage", "ResetStructureDamageText", MainViewModel.ResetStructureDamage))" />
                         @* World Item Cloner *@
                         <MudMenuItem Icon="@Icons.Material.Rounded.ContentCopy"
                                      Disabled="@(!HasSavegame)"
@@ -144,22 +148,22 @@
                         <MudMenuItem Icon="@Icons.Material.Rounded.SentimentSatisfied"
                                      Disabled="@(!HasSavegame)"
                                      Label="@Localizer["ResetCannibalAnger"]"
-                                     OnClick="() => RunTool(MainViewModel.ResetCannibalAnger)" />
+                                     OnClick="@(() => RunToolAsync("ResetCannibalAnger", "ResetCannibalAngerText", MainViewModel.ResetCannibalAnger))" />
                         @* Reset Containers *@
                         <MudMenuItem Icon="@Icons.Material.Rounded.Inventory2"
                                      Disabled="@(!HasSavegame)"
                                      Label="@Localizer["ResetContainers"]"
-                                     OnClick="() => RunTool(GameStatePage.ResetContainers)" />
+                                     OnClick="@(() => RunToolAsync("ResetContainers", "ResetContainersText", GameStatePage.ResetContainers))" />
                         @* Reset Traps *@
                         <MudMenuItem Icon="@Icons.Material.Rounded.PestControl"
                                      Disabled="@(!HasSavegame)"
                                      Label="@Localizer["ResetTraps"]"
-                                     OnClick="() => RunTool(MainViewModel.ResetTraps)" />
+                                     OnClick="@(() => RunToolAsync("ResetTraps", "ResetTrapsText", MainViewModel.ResetTraps))" />
                         @* Set To Endgame *@
                         <MudMenuItem Icon="@Icons.Material.Rounded.Flag"
                                      Disabled="@(!HasSavegame)"
                                      Label="@Localizer["SetToEndgame"]"
-                                     OnClick="SetToEndgame" />
+                                     OnClick="SetToEndgameAsync" />
                         @* Unlocks *@
                         <MudMenuItem Icon="@Icons.Material.Rounded.LockOpen"
                                      Label="@Localizer["Unlocks"]"

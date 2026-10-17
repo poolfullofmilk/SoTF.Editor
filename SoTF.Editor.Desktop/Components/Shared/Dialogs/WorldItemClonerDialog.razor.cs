@@ -31,6 +31,9 @@ public partial class WorldItemClonerDialog
     [Inject]
     public required ISnackbar Snackbar { get; set; }
 
+    [Inject]
+    public required IDialogService DialogService { get; set; }
+
     private WorldItemTeleporterViewModel _viewModel = null!;
 
     protected override void OnInitialized()
@@ -43,9 +46,18 @@ public partial class WorldItemClonerDialog
         Close(_viewModel.CloneObjectAtPlayerPos(PlayerPage.PlayerState.Pos));
     }
 
-    private void RemoveAll()
+    private async Task RemoveAllAsync()
     {
-        Close(_viewModel.RemoveAllOfThisType());
+        if (
+            await DialogService.ConfirmAsync(
+                Localizer,
+                Localizer["RemoveAllCopies"],
+                Localizer["RemoveAllCopiesTooltip"]
+            )
+        )
+        {
+            Close(_viewModel.RemoveAllOfThisType());
+        }
     }
 
     private void Close(string message)

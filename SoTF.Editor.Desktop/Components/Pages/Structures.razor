@@ -41,7 +41,7 @@
                                 <MudButton Variant="Variant.Text"
                                            Size="Size.Small"
                                            Color="@(batch.Mode == ScrewStructureModificationMode.Remove ? Color.Error : Color.Default)"
-                                           OnClick="() => SetAll(origin.Origin, batch.Mode)">
+                                           OnClick="() => SetAllAsync(origin.Origin, batch.Mode)">
                                     @Localizer[batch.LabelKey]
                                 </MudButton>
                             }
@@ -88,7 +88,10 @@
                         </HeaderContent>
                         <GroupHeaderTemplate>
                             <MudTh colspan="6">
-                                <MudText Typo="Typo.subtitle2">@($"{context.Key} ({context.Items.Count()})")</MudText>
+                                <MudText Typo="Typo.subtitle2"
+                                         Class="group-title">
+                                    @($"{context.Key} ({context.Items.Count()})")
+                                </MudText>
                             </MudTh>
                         </GroupHeaderTemplate>
                         <RowTemplate>

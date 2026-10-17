@@ -92,7 +92,10 @@ public class MainViewModel(
         }
 
         var directoryInfo = new DirectoryInfo(UserSettings.Current.LastSavegame);
-        SelectSavegame(SavegameManager.CreateSaveInfo(directoryInfo));
+        if (SavegameManager.CreateSaveInfo(directoryInfo) is { } savegame)
+        {
+            RequestOpen(savegame);
+        }
     }
 
     public void ReloadSavegame()

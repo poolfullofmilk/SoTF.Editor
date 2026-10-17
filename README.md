@@ -23,7 +23,7 @@ A savegame editor for Sons of the Forest, with a verified backup before every sa
 
 ## ⚠️ Important
 - Start the game and stay in the main menu while you edit, then load the save, so Steam Cloud cannot overwrite your changes
-- Every save first copies the whole savegame to `Documents\SoTF.Editor\Backups`, and nothing there is ever deleted
+- Every save first copies the whole savegame to `Documents\SoTF.Editor\Backups`, nothing there is ever deleted, and any backup can be restored from the app
 - Windows may warn on the first run because the app is not signed: click More info, then Run anyway
 
 ## Technical details

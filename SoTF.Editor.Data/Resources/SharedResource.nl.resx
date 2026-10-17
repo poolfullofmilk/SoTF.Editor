@@ -151,22 +151,22 @@
     <value>Over</value>
   </data>
   <data name="AboutText" xml:space="preserve">
-    <value>Bewerk Je Sons Of The Forest Savegames</value>
+    <value>Bewerk je Sons of the Forest savegames</value>
   </data>
   <data name="Backups" xml:space="preserve">
     <value>Back-ups</value>
   </data>
   <data name="ChangesAdded" xml:space="preserve">
-    <value>Wijzigingen Toegevoegd, Sla Op Om Ze Te Bewaren</value>
+    <value>Wijzigingen toegevoegd, sla op om ze te bewaren</value>
   </data>
   <data name="Disclaimer" xml:space="preserve">
-    <value>Een Fanproject, Niet Verbonden Aan Endnight Games</value>
+    <value>Een fanproject, niet verbonden aan Endnight Games</value>
   </data>
   <data name="MapDataNotice" xml:space="preserve">
-    <value>Kaartpunten Van Sons Of The Forest Map Door Leon Machens, MIT Licentie</value>
+    <value>Kaartpunten van Sons of the Forest Map door Leon Machens, MIT-licentie</value>
   </data>
   <data name="DropHint" xml:space="preserve">
-    <value>Sleep Een Savegamemap In Het Venster Om Hem Te Openen</value>
+    <value>Sleep een savegamemap in het venster om hem te openen</value>
   </data>
   <data name="Help" xml:space="preserve">
     <value>Help</value>
@@ -175,7 +175,7 @@
     <value>Items</value>
   </data>
   <data name="NoSavegames" xml:space="preserve">
-    <value>Geen Savegames Gevonden In Deze Map</value>
+    <value>Geen savegames gevonden in deze map</value>
   </data>
   <data name="NothingFound" xml:space="preserve">
     <value>Niets Gevonden</value>
@@ -307,7 +307,7 @@
     <value>Spawner Verwijderen</value>
   </data>
   <data name="RemoveSpawnerTooltip" xml:space="preserve">
-    <value>De NPC Spawnt Niet Meer Opnieuw</value>
+    <value>De NPC spawnt niet meer opnieuw</value>
   </data>
   <data name="ReplaceType" xml:space="preserve">
     <value>Type Vervangen</value>
@@ -319,7 +319,7 @@
     <value>Virginia Overslaan</value>
   </data>
   <data name="TeleportManyWarning" xml:space="preserve">
-    <value>Veel Actoren Naar Eén Plek Teleporteren Kan De Game Laten Crashen</value>
+    <value>Veel actoren naar één plek teleporteren kan de game laten crashen</value>
   </data>
   <data name="None" xml:space="preserve">
     <value>Geen</value>
@@ -382,13 +382,13 @@
     <value>Alles Op Standaard Zetten</value>
   </data>
   <data name="SetAllToDefaultTooltip" xml:space="preserve">
-    <value>Zet Elk Stuk Op Zijn Standaard Duurzaamheid</value>
+    <value>Zet elk stuk op zijn standaard duurzaamheid</value>
   </data>
   <data name="SetAllToMax" xml:space="preserve">
     <value>Alles Op Max Zetten</value>
   </data>
   <data name="SetAllToMaxTooltip" xml:space="preserve">
-    <value>Zet Elk Stuk Op Maximale Duurzaamheid</value>
+    <value>Zet elk stuk op maximale duurzaamheid</value>
   </data>
   <data name="SetToDefaultDurability" xml:space="preserve">
     <value>Op Standaard Duurzaamheid Zetten</value>
@@ -397,7 +397,7 @@
     <value>Op Zeer Hoge Duurzaamheid Zetten</value>
   </data>
   <data name="DurabilityTooltip" xml:space="preserve">
-    <value>Bij 0 Breekt Het Pantser, Het Kan Zeer Hoog</value>
+    <value>Bij 0 breekt het pantser, het kan zeer hoog</value>
   </data>
   <data name="Durability" xml:space="preserve">
     <value>Duurzaamheid</value>
@@ -412,10 +412,10 @@
     <value>Onbekend Item</value>
   </data>
   <data name="ChangeTypeWarning" xml:space="preserve">
-    <value>Positie En Rotatie Blijven, Wat Glitches Of Crashes Kan Geven</value>
+    <value>Positie en rotatie blijven, wat glitches of crashes kan geven</value>
   </data>
   <data name="SpawnFollowersWarning" xml:space="preserve">
-    <value>Spawn Op Een Open Plek, Veel Volgers Kunnen De Prestaties Schaden</value>
+    <value>Spawn op een open plek, veel volgers kunnen de prestaties schaden</value>
   </data>
   <data name="SpawnFollowers" xml:space="preserve">
     <value>Volgers Spawnen</value>
@@ -424,13 +424,13 @@
     <value>Geen Vuren Gevonden</value>
   </data>
   <data name="FiresChanged" xml:space="preserve">
-    <value>{0} Vuren Aangepast, Sla Op Om Ze Te Bewaren</value>
+    <value>{0} vuren aangepast, sla op om ze te bewaren</value>
   </data>
   <data name="NoStructureDamage" xml:space="preserve">
     <value>Geen Schade Aan Constructies Gevonden</value>
   </data>
   <data name="StructureDamageRepaired" xml:space="preserve">
-    <value>{0} Beschadigde Constructies Hersteld, Sla Op Om Ze Te Bewaren</value>
+    <value>{0} beschadigde constructies hersteld, sla op om ze te bewaren</value>
   </data>
   <data name="FillAllBars" xml:space="preserve">
     <value>Alle Balken Vullen</value>
@@ -457,7 +457,7 @@
     <value>Outfit</value>
   </data>
   <data name="ReviveTooltip" xml:space="preserve">
-    <value>Doe Dit Buiten Gebouwen, De Volger Verschijnt Bij De Speler Met De Hier Gekozen Items En Outfit</value>
+    <value>Doe dit buiten gebouwen, de volger verschijnt bij de speler met de hier gekozen items en outfit</value>
   </data>
   <data name="Alive" xml:space="preserve">
     <value>Levend</value>
@@ -628,13 +628,13 @@
     <value>Spelstatus</value>
   </data>
   <data name="WorldObjectStatesHint" xml:space="preserve">
-    <value>Waarschijnlijk Is 0 Gesloten Of Niet Gebeurd, 1 Of 3 Geopend Of Gebeurd</value>
+    <value>Waarschijnlijk is 0 gesloten of niet gebeurd, 1 of 3 geopend of gebeurd</value>
   </data>
   <data name="WorldObjectStates" xml:space="preserve">
     <value>Status Van Wereldobjecten</value>
   </data>
   <data name="InfluencesHint" xml:space="preserve">
-    <value>Veel Angst Laat Vijanden Vluchten, Veel Woede Laat Ze Aanvallen</value>
+    <value>Veel angst laat vijanden vluchten, veel woede laat ze aanvallen</value>
   </data>
   <data name="Sentiment" xml:space="preserve">
     <value>Sentiment</value>
@@ -685,7 +685,7 @@
     <value>Nieuwe Tokkelbaan Vanaf Hier</value>
   </data>
   <data name="NewZiplineTooltip" xml:space="preserve">
-    <value>Klik Daarna Waar De Tokkelbaan Moet Eindigen</value>
+    <value>Klik daarna waar de tokkelbaan moet eindigen</value>
   </data>
   <data name="DeleteBothAnchors" xml:space="preserve">
     <value>Beide Ankers Verwijderen</value>
@@ -700,7 +700,7 @@
     <value>Naar Aangeklikte Positie Verplaatsen</value>
   </data>
   <data name="MoveToClickedTooltip" xml:space="preserve">
-    <value>Klik Daarna Waar Het Anker Heen Moet</value>
+    <value>Klik daarna waar het anker heen moet</value>
   </data>
   <data name="SpawnActors" xml:space="preserve">
     <value>Actoren Spawnen</value>
@@ -724,7 +724,7 @@
     <value>Zoeken</value>
   </data>
   <data name="SearchTooltip" xml:space="preserve">
-    <value>Zoekt In Titels, Beschrijvingen, Itemnamen En Itemtypes</value>
+    <value>Zoekt in titels, beschrijvingen, itemnamen en itemtypes</value>
   </data>
   <data name="SearchPlaceholder" xml:space="preserve">
     <value>Titel, Beschrijving, Item</value>
@@ -744,9 +744,6 @@
   <data name="ItemId" xml:space="preserve">
     <value>Item ID</value>
   </data>
-  <data name="DarkMap" xml:space="preserve">
-    <value>Donkere Kaart</value>
-  </data>
   <data name="Objects" xml:space="preserve">
     <value>Objecten</value>
   </data>
@@ -757,13 +754,13 @@
     <value>Vereisten</value>
   </data>
   <data name="RequirementsTooltip" xml:space="preserve">
-    <value>Filtert Op Of Je Hebt Wat Een Plek Nodig Heeft, Zoals Een Schop Of Sleutelkaart</value>
+    <value>Filtert op of je hebt wat een plek nodig heeft, zoals een schop of sleutelkaart</value>
   </data>
   <data name="ActorType" xml:space="preserve">
     <value>Actortype</value>
   </data>
   <data name="SpawnActorsWarning" xml:space="preserve">
-    <value>Te Veel Vijanden Of Een Slechte Plek Kan De Game Laten Crashen</value>
+    <value>Te veel vijanden of een slechte plek kan de game laten crashen</value>
   </data>
   <data name="CreateActors" xml:space="preserve">
     <value>Actoren Maken</value>
@@ -775,7 +772,7 @@
     <value>Tussenruimte</value>
   </data>
   <data name="SpaceBetweenTooltip" xml:space="preserve">
-    <value>Ruimte Tussen Elke Actor, Boven 0 In Een Raster</value>
+    <value>Ruimte tussen elke actor, boven 0 in een raster</value>
   </data>
   <data name="SpawnPattern" xml:space="preserve">
     <value>Spawnpatroon</value>
@@ -790,7 +787,7 @@
     <value>Bestemming</value>
   </data>
   <data name="TeleportHint" xml:space="preserve">
-    <value>X En Z Bepalen De Plek, Y De Hoogte, Kies Het Juiste Gebied</value>
+    <value>X en Z bepalen de plek, Y de hoogte, kies het juiste gebied</value>
   </data>
   <data name="Offset" xml:space="preserve">
     <value>Verschuiving</value>
@@ -865,7 +862,7 @@
     <value>Ontgrendelingen</value>
   </data>
   <data name="ByFamilyHint" xml:space="preserve">
-    <value>Een Familie Is Een Groep NPC's Die Bij Elkaar Horen, Zoals Een Stam</value>
+    <value>Een familie is een groep NPC's die bij elkaar horen, zoals een stam</value>
   </data>
   <data name="ByFamily" xml:space="preserve">
     <value>Per Familie</value>
@@ -919,7 +916,7 @@
     <value>Toepassen Op Alle Van Hetzelfde Type</value>
   </data>
   <data name="ApplyToSameTypeTooltip" xml:space="preserve">
-    <value>Kopieert Deze Items En Aantallen Naar Elke Opslag Van Dit Type</value>
+    <value>Kopieert deze items en aantallen naar elke opslag van dit type</value>
   </data>
   <data name="ChangeType" xml:space="preserve">
     <value>Type Wijzigen</value>
@@ -1033,7 +1030,7 @@
     <value>Bouwwerken</value>
   </data>
   <data name="ItemPlaterWarning" xml:space="preserve">
-    <value>Dit Hulpmiddel Slaat Meteen Op En Herlaadt, Sla Andere Wijzigingen Eerst Op</value>
+    <value>Dit hulpmiddel slaat meteen op en herlaadt, sla andere wijzigingen eerst op</value>
   </data>
   <data name="FollowerItems" xml:space="preserve">
     <value>Items Van Volgers</value>
@@ -1054,19 +1051,19 @@
     <value>Kaart</value>
   </data>
   <data name="AlreadyLatestVersion" xml:space="preserve">
-    <value>Je Hebt Al De Nieuwste Versie</value>
+    <value>Je hebt al de nieuwste versie</value>
   </data>
   <data name="ChangesSaved" xml:space="preserve">
     <value>Wijzigingen Opgeslagen</value>
   </data>
   <data name="OverwriteExternalChangesText" xml:space="preserve">
-    <value>De Game Heeft Deze Savegame Gewijzigd Sinds Hij Werd Geopend</value>
+    <value>De game heeft deze savegame gewijzigd sinds hij werd geopend</value>
   </data>
   <data name="OverwriteExternalChangesTitle" xml:space="preserve">
     <value>Wijzigingen Overschrijven</value>
   </data>
   <data name="RestoreBackupText" xml:space="preserve">
-    <value>De Huidige Bestanden Krijgen Eerst Een Back-up, Dit Kan Dus Ongedaan Worden</value>
+    <value>De huidige bestanden krijgen eerst een back-up, dit kan dus ongedaan worden</value>
   </data>
   <data name="RestoreBackupTitle" xml:space="preserve">
     <value>Back-up Terugzetten</value>
@@ -1075,10 +1072,10 @@
     <value>{0} Leeft Al</value>
   </data>
   <data name="FollowerRevived" xml:space="preserve">
-    <value>{0} Tot Leven Gewekt, Sla Op Om Het Te Bewaren</value>
+    <value>{0} tot leven gewekt, sla op om het te bewaren</value>
   </data>
   <data name="FollowersCreated" xml:space="preserve">
-    <value>{0} Volgers Gemaakt, Sla Op Om Ze Te Bewaren</value>
+    <value>{0} volgers gemaakt, sla op om ze te bewaren</value>
   </data>
   <data name="NoChanges" xml:space="preserve">
     <value>Geen Wijzigingen, Niets Opgeslagen</value>
@@ -1096,10 +1093,10 @@
     <value>Half Gekapt</value>
   </data>
   <data name="NoTreesRegrown" xml:space="preserve">
-    <value>Geen Bomen Met Status {0} Om Te Laten Teruggroeien</value>
+    <value>Geen bomen met status {0} om te laten teruggroeien</value>
   </data>
   <data name="TreesRegrown" xml:space="preserve">
-    <value>{0} Bomen Met Status {1} Teruggegroeid, Sla Op Om Ze Te Bewaren</value>
+    <value>{0} bomen met status {1} teruggegroeid, sla op om ze te bewaren</value>
   </data>
   <data name="RegrowPercent" xml:space="preserve">
     <value>Percentage Teruggroeien</value>
@@ -1108,13 +1105,13 @@
     <value>Stronken</value>
   </data>
   <data name="ContainersReset" xml:space="preserve">
-    <value>{0} Containers Gereset, Sla Op Om Ze Te Bewaren</value>
+    <value>{0} containers gereset, sla op om ze te bewaren</value>
   </data>
   <data name="NothingToReset" xml:space="preserve">
     <value>Niets Om Te Resetten</value>
   </data>
   <data name="TrapsReset" xml:space="preserve">
-    <value>{0} Vallen Gereset, Sla Op Om Ze Te Bewaren</value>
+    <value>{0} vallen gereset, sla op om ze te bewaren</value>
   </data>
   <data name="ChangeFolder" xml:space="preserve">
     <value>Map Wijzigen</value>
@@ -1144,7 +1141,7 @@
     <value>Van Het Eiland Ontsnapt</value>
   </data>
   <data name="PlayerProfileNotFound" xml:space="preserve">
-    <value>Geen Spelersprofiel Gevonden In {0}</value>
+    <value>Geen spelersprofiel gevonden in {0}</value>
   </data>
   <data name="Download" xml:space="preserve">
     <value>Downloaden</value>
@@ -1153,13 +1150,13 @@
     <value>Klonen Op Spelerspositie</value>
   </data>
   <data name="CloneAtPlayerTooltip" xml:space="preserve">
-    <value>Maakt Een Kopie Bij De Speler</value>
+    <value>Maakt een kopie bij de speler</value>
   </data>
   <data name="RemoveAllCopies" xml:space="preserve">
     <value>Alle Kopieën Verwijderen</value>
   </data>
   <data name="RemoveAllCopiesTooltip" xml:space="preserve">
-    <value>Verwijdert Elke Kopie Van Dit Type Van De Kaart</value>
+    <value>Verwijdert elke kopie van dit type van de kaart</value>
   </data>
   <data name="ClonesRemoved" xml:space="preserve">
     <value>{0} Kopieën Van {1} Verwijderd</value>
@@ -1171,7 +1168,7 @@
     <value>Niets Om Te Verplaatsen</value>
   </data>
   <data name="ObjectCloned" xml:space="preserve">
-    <value>{0} Gekopieerd Naar De Speler, Sla Op Om Het Te Bewaren</value>
+    <value>{0} gekopieerd naar de speler, sla op om het te bewaren</value>
   </data>
   <data name="UnknownWorldItem" xml:space="preserve">
     <value>Onbekend Item {0}</value>
@@ -1186,16 +1183,10 @@
     <value>Niet Opgeslagen Wijzigingen Verwerpen</value>
   </data>
   <data name="DiscardChangesText" xml:space="preserve">
-    <value>Wijzigingen Die Nog Niet Zijn Opgeslagen Gaan Verloren</value>
+    <value>Wijzigingen die nog niet zijn opgeslagen gaan verloren</value>
   </data>
   <data name="OpenBackupFolder" xml:space="preserve">
     <value>Back-upmap Openen</value>
-  </data>
-  <data name="RestoreOldestBackup" xml:space="preserve">
-    <value>Oudste Back-up Terugzetten</value>
-  </data>
-  <data name="RestoreNewestBackup" xml:space="preserve">
-    <value>Nieuwste Back-up Terugzetten</value>
   </data>
   <data name="NoBackupFound" xml:space="preserve">
     <value>Geen Back-up Gevonden</value>
@@ -1204,7 +1195,7 @@
     <value>Back-up Van {0} Teruggezet</value>
   </data>
   <data name="UnableToRestoreBackup" xml:space="preserve">
-    <value>Kan Back-up Niet Terugzetten, Sluit Eerst De Game</value>
+    <value>Kan back-up niet terugzetten, sluit eerst de game</value>
   </data>
   <data name="Language" xml:space="preserve">
     <value>Taal</value>
@@ -1558,12 +1549,57 @@
     <value>Veel Tegelijk Wijzigen</value>
   </data>
   <data name="AllTypesHint" xml:space="preserve">
-    <value>Leeg Laten Om Elk Type Te Wijzigen</value>
+    <value>Leeg laten om elk type te wijzigen</value>
   </data>
   <data name="StructureType" xml:space="preserve">
     <value>Constructietype</value>
   </data>
   <data name="BatchHint" xml:space="preserve">
-    <value>Zet Elke Constructie Die De Lijst Hieronder Toont, Geschreven Bij Opslaan</value>
+    <value>Zet elke constructie die de lijst hieronder toont, geschreven bij opslaan</value>
+  </data>
+  <data name="Restore" xml:space="preserve">
+    <value>Terugzetten</value>
+  </data>
+  <data name="Newest" xml:space="preserve">
+    <value>Nieuwste</value>
+  </data>
+  <data name="Oldest" xml:space="preserve">
+    <value>Oudste</value>
+  </data>
+  <data name="ItemPlaterText" xml:space="preserve">
+    <value>Vergulden maakt de gekozen items, constructies en bouwdelen goud, Verguldsel verwijderen maakt ze weer gewoon</value>
+  </data>
+  <data name="EternalFiresText" xml:space="preserve">
+    <value>Elk vuur in de wereld brandt met brandstof die nooit opraakt</value>
+  </data>
+  <data name="ResetFiresText" xml:space="preserve">
+    <value>Elk vuur in de wereld brandt met een nieuwe lading brandstof</value>
+  </data>
+  <data name="ResetStructureDamageText" xml:space="preserve">
+    <value>Alle schade aan je constructies wordt hersteld</value>
+  </data>
+  <data name="ResetCannibalAngerText" xml:space="preserve">
+    <value>Doden, gekapte bomen en dorpsbezoeken gaan terug naar nul, zodat kannibalen kalmeren</value>
+  </data>
+  <data name="ResetContainersText" xml:space="preserve">
+    <value>Geopende kisten, koffers en voorraden in de wereld zijn weer dicht en vol</value>
+  </data>
+  <data name="ResetTrapsText" xml:space="preserve">
+    <value>Afgegane vallen worden opnieuw gezet</value>
+  </data>
+  <data name="SetToEndgameText" xml:space="preserve">
+    <value>Het verhaal telt als uitgespeeld, alsof je op het eiland bleef</value>
+  </data>
+  <data name="RemoveAllText" xml:space="preserve">
+    <value>Elk item verdwijnt uit de inventaris</value>
+  </data>
+  <data name="FillAllStoragesText" xml:space="preserve">
+    <value>Elke opslag wordt tot het maximum gevuld</value>
+  </data>
+  <data name="SetAllToRemoveText" xml:space="preserve">
+    <value>Elke constructie in de lijst wordt gemarkeerd om te verwijderen, opslaan verwijdert ze</value>
+  </data>
+  <data name="RemoveConsumedItemsText" xml:space="preserve">
+    <value>Elke regel in deze lijst wordt verwijderd, zodat die items weer kunnen verschijnen</value>
   </data>
 </root>

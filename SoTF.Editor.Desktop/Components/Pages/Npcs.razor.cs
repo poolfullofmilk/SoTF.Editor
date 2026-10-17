@@ -12,9 +12,6 @@ public partial class Npcs : EditorPageBase
     [Inject]
     public required NpcsPageViewModel NpcsPage { get; set; }
 
-    [Inject]
-    public required IDialogService DialogService { get; set; }
-
     // Page State
     private bool _byFamily;
     private ActorCollection? _selected;

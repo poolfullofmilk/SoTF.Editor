@@ -14,6 +14,14 @@ public partial class Inventory : EditorPageBase
     private string? _unassignedFilter;
     private Category? _category;
 
+    private async Task RemoveAllAsync()
+    {
+        if (await ConfirmAsync("RemoveAll", "RemoveAllText"))
+        {
+            InventoryPage.RemoveAllEquipped();
+        }
+    }
+
     private void AddCategory()
     {
         if (_category is { } category)

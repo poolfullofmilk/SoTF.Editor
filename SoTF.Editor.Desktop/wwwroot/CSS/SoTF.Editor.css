@@ -97,12 +97,16 @@
 }
 
 /* Fill Pages End On The Bottom Gutter, Lists Scroll Inside */
-.page-fill {
+.page-fill,
+.mud-tabs:has(.mud-tab-panel-active > .fill) {
     height: calc(100vh - var(--page-top) - var(--page-bottom));
     min-height: 0;
 }
 
-.fill-column {
+/* Tabs Fill The Page While The Open Tab Fills */
+.fill-column,
+.mud-tabs:has(.mud-tab-panel-active > .fill),
+.mud-tabs-panels:has(> .mud-tab-panel-active > .fill) {
     display: flex;
     flex-direction: column;
     min-height: 0;
@@ -112,6 +116,10 @@
     .fill-column > .mud-input-control {
         flex: 0 0 auto;
     }
+
+.mud-tabs-panels:has(> .mud-tab-panel-active > .fill) {
+    flex: 1 1 0;
+}
 
 /* Fill Takes What Is Left, Fit Shrinks Only When Needed */
 .fill {
@@ -136,6 +144,19 @@
         min-height: 0;
         overflow-y: auto;
     }
+
+/* Fixed Columns Keep Their Width While Rows Scroll */
+.fixed-columns .mud-table-root {
+    table-layout: fixed;
+}
+
+.count-column {
+    width: 150px;
+}
+
+.actions-column {
+    width: 170px;
+}
 
 /* The Navigation Panel Stays Beside The Page While It Scrolls */
 .nav-panel {
@@ -241,6 +262,27 @@ html, body {
 /* Table */
 .mud-elevation-4.mud-table .mud-table-head .mud-table-cell {
     border-radius: 0 !important;
+}
+
+/* The Last Row Has No Line Under It, Virtualize Spacers Aside */
+.mud-table-body .mud-table-row:not(:has(~ .mud-table-row)) > .mud-table-cell,
+.mud-simple-table tbody tr:last-child > td {
+    border-bottom: none;
+}
+
+/* Group Titles Stand Apart From Their Rows */
+.group-title {
+    text-decoration: underline;
+    text-decoration-color: var(--mud-palette-info);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 5px;
+}
+
+/* Max Buttons Line Up Their Icons And Numbers */
+.max-button {
+    min-width: 88px;
+    justify-content: flex-start;
+    font-variant-numeric: tabular-nums;
 }
 
 /* Tabs */

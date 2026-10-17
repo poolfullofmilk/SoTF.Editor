@@ -16,7 +16,6 @@ public class UserSettings
     public string LastSavegame { get; set; } = "";
     public string Language { get; set; } = "en";
     public bool CheckForUpdates { get; set; } = true;
-    public bool DarkMap { get; set; } = true;
     public HashSet<string>? SelectedMapGroups { get; set; }
 
     private static UserSettings Load()

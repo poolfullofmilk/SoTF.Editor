@@ -6,9 +6,16 @@ public static class Formatter
 {
     // One Date Format Everywhere, Sortable And Language Neutral
     private const string DisplayDateTimeFormat = "yyyy-MM-dd HH:mm";
+    private const string DisplayDateTimeSecondsFormat = "yyyy-MM-dd HH:mm:ss";
 
     public static string FormatDateTime(DateTime value)
     {
         return value.ToString(DisplayDateTimeFormat, CultureInfo.InvariantCulture);
+    }
+
+    public static string FormatDateTimeWithSeconds(DateTime value)
+    {
+        // Backups Taken In The Same Minute Stay Apart
+        return value.ToString(DisplayDateTimeSecondsFormat, CultureInfo.InvariantCulture);
     }
 }

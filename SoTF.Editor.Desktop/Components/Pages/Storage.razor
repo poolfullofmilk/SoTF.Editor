@@ -18,7 +18,7 @@
                                    Size="Size.Small"
                                    StartIcon="@Icons.Material.Rounded.AllInbox"
                                    Disabled="@(!StoragePage.HasStorages())"
-                                   OnClick="StoragePage.FillAllStorages">
+                                   OnClick="FillAllStoragesAsync">
                             @Localizer["FillAllStorages"]
                         </MudButton>
                     </TitleContent>
@@ -35,7 +35,7 @@
                             @foreach (var collection in StoragePage.StorageCollections)
                             {
                                 <MudText Typo="Typo.subtitle2"
-                                         Class="px-3 pt-3 pb-1">
+                                         Class="group-title px-3 pt-3 pb-1">
                                     @($"{collection.Name} ({collection.Storages.Count})")
                                 </MudText>
                                 @foreach (var storage in collection.Storages)
@@ -125,7 +125,7 @@
                                         <Tooltip Text="@Localizer["ApplyToSameTypeTooltip"]">
                                             <MudButton Variant="Variant.Text"
                                                        Size="Size.Small"
-                                                       OnClick="() => StoragePage.ApplyToAllOfSameType(selected)">
+                                                       OnClick="() => ApplyToSameTypeAsync(selected)">
                                                 @Localizer["ApplyToSameType"]
                                             </MudButton>
                                         </Tooltip>
@@ -165,12 +165,9 @@
                                                              Margin="Margin.Dense"
                                                              Style="width:110px" />
                                             @* Slot Max *@
-                                            <Tooltip Text="@Localizer["Max"]">
-                                                <MudIconButton Icon="@Icons.Material.Rounded.KeyboardDoubleArrowUp"
-                                                               Size="Size.Small"
-                                                               Disabled="@(!storedItem.HasItem())"
-                                                               OnClick="storedItem.SetToMax" />
-                                            </Tooltip>
+                                            <MaxButton Max="storedItem.Max"
+                                                       Disabled="@(!storedItem.HasItem())"
+                                                       OnClick="storedItem.SetToMax" />
                                             @* Slot Remove *@
                                             <Tooltip Text="@Localizer["Remove"]">
                                                 <MudIconButton Icon="@Icons.Material.Rounded.Delete"
