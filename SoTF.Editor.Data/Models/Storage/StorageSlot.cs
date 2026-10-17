@@ -6,6 +6,6 @@ public class StorageSlot
 
     public int GetTotalStored()
     {
-        return StoredItems.Select(storedItem => storedItem.Count).Sum();
+        return StoredItems.Sum(storedItem => storedItem.Count);
     }
 }

@@ -12,31 +12,24 @@ public class StructuresPageViewModel
 {
     private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
 
-    private readonly List<ScrewStructure> _structureTypes;
+    private readonly Dictionary<int, ScrewStructure> _structuresById;
 
     public StructuresPageViewModel(GameData gameData)
     {
-        _structureTypes =
+        StructureTypes =
         [
             .. gameData
                 .ScrewStructures.OrderBy(screwStructure => screwStructure.CategoryName)
                 .ThenBy(screwStructure => screwStructure.Name),
         ];
+        _structuresById = gameData.ScrewStructures.ToDictionary(structure => structure.Id);
     }
 
     public ScrewStructure? BatchSelectedStructureType { get; set; }
 
     public List<ScrewStructureWrapper> Structures { get; } = [];
 
-    public IReadOnlyList<ScrewStructure> StructureTypes => _structureTypes;
-
-    public static void ChangeType(
-        ScrewStructureWrapper screwStructureWrapper,
-        ScrewStructure? selectedScrewStructure
-    )
-    {
-        screwStructureWrapper.Update(selectedScrewStructure);
-    }
+    public IReadOnlyList<ScrewStructure> StructureTypes { get; }
 
     public void Load(Savegame? savegame)
     {
@@ -44,94 +37,38 @@ public class StructuresPageViewModel
         if (savegame is { } selectedSavegame)
         {
             Structures.AddRange(
-                LoadStructures(selectedSavegame)
+                LoadStructures(selectedSavegame, ScrewStructureOrigin.Unfinished)
+                    .Concat(LoadStructures(selectedSavegame, ScrewStructureOrigin.Finished))
                     .OrderBy(wrapper => wrapper.Category)
                     .ThenBy(wrapper => wrapper.Name)
             );
         }
     }
 
-    private List<ScrewStructureWrapper> LoadStructures(Savegame selectedSavegame)
+    private List<ScrewStructureWrapper> LoadStructures(
+        Savegame savegame,
+        ScrewStructureOrigin origin
+    )
     {
-        var wrappers = new List<ScrewStructureWrapper>();
-        wrappers.AddRange(LoadUnfinishedStructures(selectedSavegame));
-        wrappers.AddRange(LoadFinishedStructures(selectedSavegame));
-        return wrappers;
-    }
-
-    private List<ScrewStructureWrapper> LoadFinishedStructures(Savegame selectedSavegame)
-    {
-        var wrappers = new List<ScrewStructureWrapper>();
-        if (
-            selectedSavegame.SavegameStore.LoadJsonRaw(
-                SavegameStore.FileType.ScrewStructureInstancesSaveData
-            )
-                is not { } saveDataWrapper
-            || saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.ScrewStructureInstances)
-                is not { } screwStructureInstances
-            || screwStructureInstances["_structures"] is not JArray structures
-        )
-        {
-            return wrappers;
-        }
-
-        var screwStructuresById = _structureTypes.ToDictionary(screwStructure => screwStructure.Id);
-
-        for (var index = 0; index < structures.Count; index++)
-        {
-            var structure = structures[index];
-            if (structure.Type == JTokenType.Null)
-            {
-                continue;
-            }
-
-            ScrewStructure? screwStructure = null;
-
-            var screwStructureId = structure["Id"]?.Value<int>();
-            if (screwStructureId is { } id)
-            {
-                screwStructure = screwStructuresById.GetValueOrDefault(id);
-            }
-
-            if (screwStructure == null && screwStructureId != null)
-            {
-                s_logger.Debug($"Found Unknown Finished Structure {screwStructureId}");
-            }
-
-            var position = structure["Pos"]?.ToObject<Position>() ?? null;
-            wrappers.Add(
-                new ScrewStructureWrapper(
-                    screwStructure,
-                    structure,
-                    screwStructure?.BuildCost ?? 0,
-                    position,
-                    ScrewStructureOrigin.Finished,
-                    index
+        var (fileType, jsonKey) =
+            origin == ScrewStructureOrigin.Unfinished
+                ? (
+                    SavegameStore.FileType.ScrewStructureNodeInstancesSaveData,
+                    Constants.JsonKeys.ScrewStructureNodeInstances
                 )
-            );
-        }
-
-        return wrappers;
-    }
-
-    private List<ScrewStructureWrapper> LoadUnfinishedStructures(Savegame selectedSavegame)
-    {
-        var wrappers = new List<ScrewStructureWrapper>();
+                : (
+                    SavegameStore.FileType.ScrewStructureInstancesSaveData,
+                    Constants.JsonKeys.ScrewStructureInstances
+                );
         if (
-            selectedSavegame.SavegameStore.LoadJsonRaw(
-                SavegameStore.FileType.ScrewStructureNodeInstancesSaveData
-            )
-                is not { } saveDataWrapper
-            || saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.ScrewStructureNodeInstances)
-                is not { } screwStructureNodeInstances
-            || screwStructureNodeInstances["_structures"] is not JArray structures
+            savegame.SavegameStore.LoadJsonRaw(fileType)?.GetJsonBasedToken(jsonKey)?["_structures"]
+            is not JArray structures
         )
         {
-            return wrappers;
+            return [];
         }
 
-        var screwStructuresById = _structureTypes.ToDictionary(screwStructure => screwStructure.Id);
-
+        var wrappers = new List<ScrewStructureWrapper>();
         for (var index = 0; index < structures.Count; index++)
         {
             var structure = structures[index];
@@ -140,30 +77,27 @@ public class StructuresPageViewModel
                 continue;
             }
 
-            ScrewStructure? screwStructure = null;
             var screwStructureId = structure["Id"]?.Value<int>();
-            if (screwStructureId is { } id)
-            {
-                screwStructure = screwStructuresById.GetValueOrDefault(id);
-            }
-
-            var added = structure["Added"]?.Value<int>() ?? 0;
-            var position = structure["Pos"]?.ToObject<Position>() ?? null;
-
+            var screwStructure = screwStructureId is { } id
+                ? _structuresById.GetValueOrDefault(id)
+                : null;
             if (screwStructure == null && screwStructureId != null)
             {
-                s_logger.Debug(
-                    $"Found Unknown Unfinished Structure {screwStructureId}, Added {added}"
-                );
+                s_logger.Debug($"Found Unknown {origin} Structure {screwStructureId}");
             }
 
+            // A Finished Structure Is Fully Built
+            var added =
+                origin == ScrewStructureOrigin.Unfinished
+                    ? structure["Added"]?.Value<int>() ?? 0
+                    : screwStructure?.BuildCost ?? 0;
             wrappers.Add(
                 new ScrewStructureWrapper(
                     screwStructure,
                     structure,
                     added,
-                    position,
-                    ScrewStructureOrigin.Unfinished,
+                    structure["Pos"]?.ToObject<Position>(),
+                    origin,
                     index
                 )
             );

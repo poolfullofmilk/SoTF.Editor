@@ -15,9 +15,7 @@ public class GameSetupPageViewModel
     public const string HardSurvivalGameMode = "HardSurvival";
     public const string SettingValueHigh = "High";
     public const string SettingValueDefault = "Default";
-
     public const string SettingValueLOW = "LOW";
-
     public const string SettingValueNORMAL = "NORMAL";
     public const string SettingValueNormal = "Normal";
     public const string SettingValueReduced = "Reduced";
@@ -26,15 +24,8 @@ public class GameSetupPageViewModel
     private const string NameKey = "Name";
     private const string SettingTypeKey = "SettingType";
 
-    private readonly Dictionary<string, bool?> _boolSettings = [];
-
-    private readonly HashSet<string> _settingsForNonCustom =
-    [
-        GameSetupKeys.Uid,
-        GameSetupKeys.Mode,
-    ];
-
-    private readonly Dictionary<string, int> _settingTypes = new()
+    // The Settings The Editor Knows, Each With Its Value Type
+    private static readonly Dictionary<string, int> s_settingTypes = new()
     {
         { GameSetupKeys.Mode, SettingTypeString },
         { GameSetupKeys.Uid, SettingTypeString },
@@ -68,266 +59,22 @@ public class GameSetupPageViewModel
     };
 
     private readonly Dictionary<string, string> _stringSettings = [];
+    private readonly Dictionary<string, bool> _boolSettings = [];
 
     public string? SelectedMode
     {
-        get => GetStringSetting(GameSetupKeys.Mode) ?? CustomGameMode;
-        set { SetStringSetting(GameSetupKeys.Mode, value); }
+        get => GetString(GameSetupKeys.Mode, CustomGameMode);
+        set => SetString(GameSetupKeys.Mode, value);
     }
 
-    public string Uid => GetStringSetting(GameSetupKeys.Uid) ?? "";
+    public string Uid => GetString(GameSetupKeys.Uid, "");
 
-    public string? SelectedEnemyHealth
+    public string GetString(string key, string fallback)
     {
-        get => GetStringSetting(GameSetupKeys.EnemyHealth) ?? SettingValueNORMAL;
-        set => SetStringSetting(GameSetupKeys.EnemyHealth, value);
+        return _stringSettings.GetValueOrDefault(key) ?? fallback;
     }
 
-    public string? SelectedEnemyDamage
-    {
-        get => GetStringSetting(GameSetupKeys.EnemyDamage) ?? SettingValueNORMAL;
-        set => SetStringSetting(GameSetupKeys.EnemyDamage, value);
-    }
-
-    public string? SelectedEnemyArmour
-    {
-        get => GetStringSetting(GameSetupKeys.EnemyArmour) ?? SettingValueNORMAL;
-        set => SetStringSetting(GameSetupKeys.EnemyArmour, value);
-    }
-
-    public string? SelectedEnemyAggression
-    {
-        get => GetStringSetting(GameSetupKeys.EnemyAggression) ?? SettingValueNORMAL;
-        set => SetStringSetting(GameSetupKeys.EnemyAggression, value);
-    }
-
-    public string? SelectedEnemySearchParties
-    {
-        get => GetStringSetting(GameSetupKeys.EnemySearchParties) ?? SettingValueNORMAL;
-        set => SetStringSetting(GameSetupKeys.EnemySearchParties, value);
-    }
-
-    public string? SelectedAnimalSpawnRate
-    {
-        get => GetStringSetting(GameSetupKeys.AnimalSpawnRate) ?? SettingValueNORMAL;
-        set => SetStringSetting(GameSetupKeys.AnimalSpawnRate, value);
-    }
-
-    public string? SelectedStartingSeason
-    {
-        get => GetStringSetting(GameSetupKeys.StartingSeason) ?? "Summer";
-        set => SetStringSetting(GameSetupKeys.StartingSeason, value);
-    }
-
-    public string? SelectedSeasonLength
-    {
-        get => GetStringSetting(GameSetupKeys.SeasonLength) ?? SettingValueDefault;
-        set => SetStringSetting(GameSetupKeys.SeasonLength, value);
-    }
-
-    public string? SelectedDayLength
-    {
-        get => GetStringSetting(GameSetupKeys.DayLength) ?? SettingValueDefault;
-        set => SetStringSetting(GameSetupKeys.DayLength, value);
-    }
-
-    public bool SelectedEnemySpawn
-    {
-        get
-        {
-            if (GetBoolSetting(GameSetupKeys.EnemySpawn, out var boolValue))
-            {
-                return boolValue ?? false;
-            }
-
-            return true;
-        }
-        set => SetBoolSetting(GameSetupKeys.EnemySpawn, value);
-    }
-
-    public bool SelectedInventoryPause
-    {
-        get
-        {
-            if (GetBoolSetting(GameSetupKeys.InventoryPause, out var boolValue))
-            {
-                return boolValue ?? true;
-            }
-
-            return true;
-        }
-        set => SetBoolSetting(GameSetupKeys.InventoryPause, value);
-    }
-
-    public string? SelectedConsumableEffects
-    {
-        get => GetStringSetting(GameSetupKeys.ConsumableEffects) ?? SettingValueNormal;
-        set => SetStringSetting(GameSetupKeys.ConsumableEffects, value);
-    }
-
-    public string? SelectedPlayerStatsDamage
-    {
-        get => GetStringSetting(GameSetupKeys.PlayerStatsDamage) ?? SettingValueOff;
-        set => SetStringSetting(GameSetupKeys.PlayerStatsDamage, value);
-    }
-
-    public string? SelectedPrecipitationFrequency
-    {
-        get => GetStringSetting(GameSetupKeys.PrecipitationFrequency) ?? SettingValueDefault;
-        set => SetStringSetting(GameSetupKeys.PrecipitationFrequency, value);
-    }
-
-    public string? SelectedColdPenalties
-    {
-        get => GetStringSetting(GameSetupKeys.ColdPenalties) ?? SettingValueNormal;
-        set => SetStringSetting(GameSetupKeys.ColdPenalties, value);
-    }
-
-    public string? SelectedBuildingResistance
-    {
-        get => GetStringSetting(GameSetupKeys.BuildingResistance) ?? SettingValueNORMAL;
-        set => SetStringSetting(GameSetupKeys.BuildingResistance, value);
-    }
-
-    public string? SelectedPvpDamage
-    {
-        get => GetStringSetting(GameSetupKeys.PvpDamage) ?? SettingValueNormal;
-        set => SetStringSetting(GameSetupKeys.PvpDamage, value);
-    }
-
-    public string? SelectedColdPenaltiesStatReduction
-    {
-        get => GetStringSetting(GameSetupKeys.ColdPenaltiesStatReduction) ?? SettingValueOff;
-        set => SetStringSetting(GameSetupKeys.ColdPenaltiesStatReduction, value);
-    }
-
-    public bool SelectedReducedFoodInContainers
-    {
-        get
-        {
-            if (GetBoolSetting(GameSetupKeys.ReducedFoodInContainers, out var boolValue))
-            {
-                return boolValue ?? false;
-            }
-
-            return false;
-        }
-        set => SetBoolSetting(GameSetupKeys.ReducedFoodInContainers, value);
-    }
-
-    public bool SelectedReducedAmmoInContainers
-    {
-        get
-        {
-            if (GetBoolSetting(GameSetupKeys.ReducedAmmoInContainers, out var boolValue))
-            {
-                return boolValue ?? false;
-            }
-
-            return false;
-        }
-        set => SetBoolSetting(GameSetupKeys.ReducedAmmoInContainers, value);
-    }
-
-    public bool SelectedSingleUseContainers
-    {
-        get
-        {
-            if (GetBoolSetting(GameSetupKeys.SingleUseContainers, out var boolValue))
-            {
-                return boolValue ?? false;
-            }
-
-            return false;
-        }
-        set => SetBoolSetting(GameSetupKeys.SingleUseContainers, value);
-    }
-
-    public bool SelectedPlayersTriggerTraps
-    {
-        get
-        {
-            if (GetBoolSetting(GameSetupKeys.PlayersTriggerTraps, out var boolValue))
-            {
-                return boolValue ?? false;
-            }
-
-            return false;
-        }
-        set => SetBoolSetting(GameSetupKeys.PlayersTriggerTraps, value);
-    }
-
-    public bool SelectedCreativeMode
-    {
-        get
-        {
-            if (GetBoolSetting(GameSetupKeys.CreativeMode, out var boolValue))
-            {
-                return boolValue ?? false;
-            }
-
-            return false;
-        }
-        set => SetBoolSetting(GameSetupKeys.CreativeMode, value);
-    }
-
-    public bool SelectedPlayersImmortalMode
-    {
-        get
-        {
-            if (GetBoolSetting(GameSetupKeys.PlayersImmortalMode, out var boolValue))
-            {
-                return boolValue ?? false;
-            }
-
-            return false;
-        }
-        set => SetBoolSetting(GameSetupKeys.PlayersImmortalMode, value);
-    }
-
-    public bool SelectedOneHitToCutTrees
-    {
-        get
-        {
-            if (GetBoolSetting(GameSetupKeys.OneHitToCutTrees, out var boolValue))
-            {
-                return boolValue ?? false;
-            }
-
-            return false;
-        }
-        set => SetBoolSetting(GameSetupKeys.OneHitToCutTrees, value);
-    }
-
-    public bool SelectedForcePlaceFullLoad
-    {
-        get
-        {
-            if (GetBoolSetting(GameSetupKeys.ForcePlaceFullLoad, out var boolValue))
-            {
-                return boolValue ?? false;
-            }
-
-            return false;
-        }
-        set => SetBoolSetting(GameSetupKeys.ForcePlaceFullLoad, value);
-    }
-
-    public bool SelectedNoCuttingsSpawn
-    {
-        get
-        {
-            if (GetBoolSetting(GameSetupKeys.NoCuttingsSpawn, out var boolValue))
-            {
-                return boolValue ?? false;
-            }
-
-            return false;
-        }
-        set => SetBoolSetting(GameSetupKeys.NoCuttingsSpawn, value);
-    }
-
-    private void SetStringSetting(string key, string? value)
+    public void SetString(string key, string? value)
     {
         if (value == null)
         {
@@ -339,33 +86,14 @@ public class GameSetupPageViewModel
         }
     }
 
-    private string? GetStringSetting(string key)
+    public bool GetBool(string key, bool fallback)
     {
-        return _stringSettings.GetValueOrDefault(key);
+        return _boolSettings.TryGetValue(key, out var value) ? value : fallback;
     }
 
-    private void SetBoolSetting(string key, bool? value)
+    public void SetBool(string key, bool value)
     {
-        if (value == null)
-        {
-            _boolSettings.Remove(key);
-        }
-        else
-        {
-            _boolSettings[key] = value;
-        }
-    }
-
-    private bool GetBoolSetting(string key, out bool? value)
-    {
-        if (!_boolSettings.ContainsKey(key))
-        {
-            value = null;
-            return false;
-        }
-
-        value = _boolSettings.GetValueOrDefault(key);
-        return true;
+        _boolSettings[key] = value;
     }
 
     public void Load(Savegame? savegame)
@@ -373,78 +101,44 @@ public class GameSetupPageViewModel
         _stringSettings.Clear();
         _boolSettings.Clear();
 
-        LoadSettings(savegame);
-    }
-
-    private void LoadSettings(Savegame? savegame)
-    {
-        if (
-            GetGameSetupSaveData(savegame) is not { } gameSetupSaveData
-            || GetSettings(gameSetupSaveData) is not { } settings
-        )
+        if (GetSettings(savegame) is not { } settings)
         {
             return;
         }
 
         foreach (var setting in settings)
         {
-            var name = setting[NameKey]?.Value<string>();
-
-            if (string.IsNullOrEmpty(name) || !_settingTypes.ContainsKey(name))
-            {
-                continue;
-            }
-
-            var settingType =
-                (setting[SettingTypeKey] ?? setting["SettingsType"])?.Value<int>()
-                ?? GuessSettingType(name);
             if (
-                settingType == null
-                || (settingType != SettingTypeString && settingType != SettingTypeBool)
+                setting[NameKey]?.Value<string>() is not { } name
+                || !s_settingTypes.TryGetValue(name, out var knownType)
             )
             {
                 continue;
             }
 
-            switch (settingType)
+            switch ((setting[SettingTypeKey] ?? setting["SettingsType"])?.Value<int>() ?? knownType)
             {
                 case SettingTypeString:
-                    if (SettingReader.ReadString(setting, out var stringValue))
+                    if (SettingReader.ReadString(setting) is { } stringValue)
                     {
-                        if (stringValue != null)
-                        {
-                            _stringSettings[name] = stringValue;
-                        }
+                        _stringSettings[name] = stringValue;
                     }
 
                     break;
                 case SettingTypeBool:
                     // The Game Leaves Out A False Value
                     _boolSettings[name] = SettingReader.ReadBool(setting) ?? false;
-
                     break;
             }
         }
     }
 
-    private static JToken? GetSettings(SaveDataWrapper gameSetupSaveData)
+    private static JToken? GetSettings(Savegame? savegame)
     {
-        return gameSetupSaveData.GetJsonBasedToken(JsonKeys.GameSetup)?[SettingsKey];
-    }
-
-    private static SaveDataWrapper? GetGameSetupSaveData(Savegame? savegame)
-    {
-        return savegame?.SavegameStore.LoadJsonRaw(SavegameStore.FileType.GameSetupSaveData);
-    }
-
-    private int? GuessSettingType(string name)
-    {
-        if (_settingTypes.TryGetValue(name, out var settingType))
-        {
-            return settingType;
-        }
-
-        return null;
+        return savegame
+            ?.SavegameStore.LoadJsonRaw(SavegameStore.FileType.GameSetupSaveData)
+            ?.GetJsonBasedToken(JsonKeys.GameSetup)
+            ?[SettingsKey];
     }
 
     public bool Update(Savegame savegame)
@@ -453,7 +147,7 @@ public class GameSetupPageViewModel
         var hasChanges = Merge(savegame);
 
         // A Setup Without A Mode Keeps Its Game Type
-        if (GetStringSetting(GameSetupKeys.Mode) is not { } mode)
+        if (!_stringSettings.TryGetValue(GameSetupKeys.Mode, out var mode))
         {
             return hasChanges;
         }
@@ -469,21 +163,17 @@ public class GameSetupPageViewModel
             return;
         }
 
-        var stringKeysToRemove = _stringSettings
-            .Keys.Where(key => !_settingsForNonCustom.Contains(key))
-            .ToList();
-        foreach (var key in stringKeysToRemove)
+        // A Preset Mode Keeps Only Its Own Settings
+        foreach (
+            var key in _stringSettings
+                .Keys.Where(key => key is not (GameSetupKeys.Uid or GameSetupKeys.Mode))
+                .ToList()
+        )
         {
             _stringSettings.Remove(key);
         }
 
-        var boolKeysToRemove = _boolSettings
-            .Keys.Where(key => !_settingsForNonCustom.Contains(key))
-            .ToList();
-        foreach (var key in boolKeysToRemove)
-        {
-            _boolSettings.Remove(key);
-        }
+        _boolSettings.Clear();
 
         switch (SelectedMode)
         {
@@ -531,94 +221,76 @@ public class GameSetupPageViewModel
 
     private bool Merge(Savegame savegame)
     {
-        if (
-            GetGameSetupSaveData(savegame) is not { } gameSetupSaveData
-            || GetSettings(gameSetupSaveData) is not JArray settings
-        )
+        var saveDataWrapper = savegame.SavegameStore.LoadJsonRaw(
+            SavegameStore.FileType.GameSetupSaveData
+        );
+        if (GetSettings(savegame) is not JArray settings || saveDataWrapper == null)
         {
             return false;
         }
 
         List<JToken> finalSettings = [];
-
-        var hasChanges = false;
-
         HashSet<string> existingSettings = [];
+        var hasChanges = false;
 
         foreach (var setting in settings)
         {
-            var name = setting[NameKey]?.Value<string>();
-
             // Settings The Editor Does Not Know Stay In The Save
-            if (string.IsNullOrEmpty(name) || !_settingTypes.ContainsKey(name))
+            if (
+                setting[NameKey]?.Value<string>() is not { } name
+                || name.Length == 0
+                || !s_settingTypes.ContainsKey(name)
+            )
             {
                 finalSettings.Add(setting);
                 continue;
             }
 
             existingSettings.Add(name);
-
             if (_stringSettings.TryGetValue(name, out var newStringValue))
             {
-                SettingReader.ReadString(setting, out var oldStringValue);
-                if (oldStringValue != newStringValue)
-                {
-                    hasChanges = true;
-                }
+                hasChanges |= SettingReader.ReadString(setting) != newStringValue;
             }
-            else if (_boolSettings.TryGetValue(name, out var newBoolSetting))
+            else if (_boolSettings.TryGetValue(name, out var newBoolValue))
             {
-                var oldBoolSetting = SettingReader.ReadBool(setting) ?? false;
-                if (oldBoolSetting != newBoolSetting)
-                {
-                    hasChanges = true;
-                }
+                hasChanges |= (SettingReader.ReadBool(setting) ?? false) != newBoolValue;
             }
         }
 
-        foreach (var stringSetting in _stringSettings)
+        // Known Settings Are Written Fresh As Name, Type And Value
+        foreach (var (key, value) in _stringSettings)
         {
-            if (!existingSettings.Contains(stringSetting.Key))
+            hasChanges |= !existingSettings.Contains(key);
+            if (value != "")
             {
-                hasChanges = true;
+                finalSettings.Add(
+                    new JObject
+                    {
+                        { NameKey, key },
+                        { SettingTypeKey, SettingTypeString },
+                        { SettingValueKeys.StringValue, value },
+                    }
+                );
             }
-
-            if (stringSetting.Value == "")
-            {
-                continue;
-            }
-
-            var setting = new JObject
-            {
-                { NameKey, stringSetting.Key },
-                { SettingTypeKey, SettingTypeString },
-                { SettingValueKeys.StringValue, stringSetting.Value },
-            };
-
-            finalSettings.Add(setting);
         }
 
-        foreach (var boolSetting in _boolSettings)
+        foreach (var (key, value) in _boolSettings)
         {
-            if (!existingSettings.Contains(boolSetting.Key))
-            {
-                hasChanges = true;
-            }
-
-            var setting = new JObject
-            {
-                { NameKey, boolSetting.Key },
-                { SettingTypeKey, SettingTypeBool },
-                { SettingValueKeys.BoolValue, boolSetting.Value },
-            };
-
-            finalSettings.Add(setting);
+            hasChanges |= !existingSettings.Contains(key);
+            finalSettings.Add(
+                new JObject
+                {
+                    { NameKey, key },
+                    { SettingTypeKey, SettingTypeBool },
+                    { SettingValueKeys.BoolValue, value },
+                }
+            );
         }
 
         if (hasChanges)
         {
             settings.ReplaceAll(finalSettings.ToArray());
-            gameSetupSaveData.MarkAsModified(JsonKeys.GameSetup);
+            saveDataWrapper.MarkAsModified(JsonKeys.GameSetup);
         }
 
         return hasChanges;

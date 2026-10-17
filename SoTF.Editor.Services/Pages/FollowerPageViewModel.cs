@@ -26,6 +26,16 @@ public class FollowerPageViewModel
     public FollowerState KelvinState { get; }
     public FollowerState VirginiaState { get; }
 
+    public FollowerState StateOf(int typeId)
+    {
+        return typeId == KelvinTypeId ? KelvinState : VirginiaState;
+    }
+
+    public FollowerState OtherOf(FollowerState follower)
+    {
+        return follower.TypeId == KelvinTypeId ? VirginiaState : KelvinState;
+    }
+
     public static void FillAllBars(FollowerState followerState)
     {
         followerState.Health = 100;
@@ -56,19 +66,9 @@ public class FollowerPageViewModel
         }
     }
 
-    public static void MoveToPlayer(FollowerState follower, Position playerPos)
+    public static void MoveTo(FollowerState follower, Position target)
     {
-        follower.Pos = Teleporter.MoveToPos(playerPos);
-    }
-
-    public void MoveToKelvin(FollowerState follower)
-    {
-        follower.Pos = Teleporter.MoveToPos(KelvinState.Pos);
-    }
-
-    public void MoveToVirginia(FollowerState follower)
-    {
-        follower.Pos = Teleporter.MoveToPos(VirginiaState.Pos);
+        follower.Pos = Teleporter.MoveToPos(target);
     }
 
     private void LoadDeathFlags(Savegame savegame)
@@ -93,36 +93,20 @@ public class FollowerPageViewModel
             return;
         }
 
-        var foundVirginia = false;
-        var foundKelvin = false;
-
+        // Only The First Kelvin And Virginia, Spawned Copies Stay Untouched
+        var found = new HashSet<int>();
         foreach (var actor in vailWorldSim["Actors"] ?? Enumerable.Empty<JToken>())
         {
-            var typeId = actor["TypeId"]?.Value<int>();
-            if (typeId is not (KelvinTypeId or VirginiaTypeId))
+            if (
+                actor["TypeId"]?.Value<int>()
+                    is not ((KelvinTypeId or VirginiaTypeId) and var typeId)
+                || !found.Add(typeId)
+            )
             {
                 continue;
             }
 
-            switch (typeId)
-            {
-                case KelvinTypeId when foundKelvin:
-                case VirginiaTypeId when foundVirginia:
-                    continue;
-            }
-
-            var followerModel = typeId == KelvinTypeId ? KelvinState : VirginiaState;
-
-            switch (typeId)
-            {
-                case KelvinTypeId:
-                    foundKelvin = true;
-                    break;
-                case VirginiaTypeId:
-                    foundVirginia = true;
-                    break;
-            }
-
+            var followerModel = StateOf(typeId);
             if (actor["UniqueId"]?.Value<int>() is { } uniqueId)
             {
                 followerModel.UniqueId = uniqueId;
@@ -177,51 +161,26 @@ public class FollowerPageViewModel
                 }
             }
 
-            if (actor["OutfitId"]?.Value<int>() is { } outfitId)
-            {
-                followerModel.Outfit = followerModel.Outfits.FirstOrDefault(outfit =>
-                    outfit.Id == outfitId
-                );
-            }
-            else
-            {
-                followerModel.Outfit = followerModel.Outfits.FirstOrDefault(outfit =>
-                    outfit.Id == 0
-                );
-            }
+            // The Game Leaves Out The Default Outfit
+            var outfitId = actor["OutfitId"]?.Value<int>() ?? 0;
+            followerModel.Outfit = followerModel.Outfits.FirstOrDefault(outfit =>
+                outfit.Id == outfitId
+            );
         }
 
         foreach (
             var influenceMemory in vailWorldSim["InfluenceMemory"] ?? Enumerable.Empty<JToken>()
         )
         {
-            if (influenceMemory["UniqueId"]?.Value<int>() is not { } uniqueId)
-            {
-                continue;
-            }
-
-            FollowerState followerState;
-
-            if (uniqueId == KelvinState.UniqueId)
-            {
-                followerState = KelvinState;
-            }
-            else if (uniqueId == VirginiaState.UniqueId)
-            {
-                followerState = VirginiaState;
-            }
-            else
-            {
-                continue;
-            }
-
-            foreach (
-                var influence in influenceMemory["Influences"]?.ToObject<List<Influence>>()
-                    ?? Enumerable.Empty<Influence>()
-            )
-            {
-                followerState.Influences.Add(influence);
-            }
+            var uniqueId = influenceMemory["UniqueId"]?.Value<int>();
+            var followerState =
+                uniqueId == null ? null
+                : uniqueId == KelvinState.UniqueId ? KelvinState
+                : uniqueId == VirginiaState.UniqueId ? VirginiaState
+                : null;
+            followerState?.Influences.AddRange(
+                influenceMemory["Influences"]?.ToObject<List<Influence>>() ?? []
+            );
         }
     }
 
@@ -235,7 +194,6 @@ public class FollowerPageViewModel
             return false;
         }
 
-        var followerModifier = new FollowerModifier(saveDataWrapper);
-        return followerModifier.Update([KelvinState, VirginiaState]);
+        return new FollowerModifier(saveDataWrapper).Update([KelvinState, VirginiaState]);
     }
 }

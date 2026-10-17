@@ -93,6 +93,19 @@ public class StoredItem
         }
     }
 
+    public void Fill()
+    {
+        // One Choice Fills An Empty Slot, Picking Sets The Max
+        if (!HasItem() && SupportedItems.Count == 1)
+        {
+            SelectedItem = SupportedItems[0];
+        }
+        else
+        {
+            SetToMax();
+        }
+    }
+
     public bool HasItem()
     {
         return SelectedItem != null;

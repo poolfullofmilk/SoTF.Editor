@@ -6,24 +6,9 @@ public class UniqueItem
 {
     public List<IStorageModule> Modules { get; init; } = [];
 
-    private bool Equals(UniqueItem other)
-    {
-        return Modules.SequenceEqual(other.Modules);
-    }
-
     public override bool Equals(object? obj)
     {
-        if (obj is null)
-        {
-            return false;
-        }
-
-        if (ReferenceEquals(this, obj))
-        {
-            return true;
-        }
-
-        return obj.GetType() == GetType() && Equals((UniqueItem)obj);
+        return obj is UniqueItem other && Modules.SequenceEqual(other.Modules);
     }
 
     public override int GetHashCode()

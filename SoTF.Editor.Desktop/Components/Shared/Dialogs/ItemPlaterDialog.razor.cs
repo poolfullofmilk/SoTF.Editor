@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using SoTF.Editor.Data.Models;
+using SoTF.Editor.Data.Resources;
 using SoTF.Editor.Services.Savegames;
 using SoTF.Editor.Services.Tools;
 
@@ -53,65 +54,24 @@ public partial class ItemPlaterDialog
             new(
                 Localizer["Structures"],
                 [
-                    new(
-                        Localizer["StructureCategoryStorage"],
-                        () => _viewModel.StorageStructures,
-                        value => _viewModel.StorageStructures = value
-                    ),
-                    new(
-                        Localizer["StructureCategoryFurniture"],
-                        () => _viewModel.FurnitureStructures,
-                        value => _viewModel.FurnitureStructures = value
-                    ),
-                    new(
-                        Localizer["StructureCategoryTraps"],
-                        () => _viewModel.TrapsStructures,
-                        value => _viewModel.TrapsStructures = value
-                    ),
-                    new(
-                        Localizer["StructureCategoryUtility"],
-                        () => _viewModel.UtilityStructures,
-                        value => _viewModel.UtilityStructures = value
-                    ),
-                    new(
-                        Localizer["StructureCategoryGardening"],
-                        () => _viewModel.GardeningStructures,
-                        value => _viewModel.GardeningStructures = value
-                    ),
-                    new(
-                        Localizer["StructureCategoryMisc"],
-                        () => _viewModel.MiscStructures,
-                        value => _viewModel.MiscStructures = value
+                    .. ItemPlaterViewModel.PlatableStructureCategories.Select(category =>
+                        Toggle(
+                            Localizer[TextKeys.StructureCategory(category)],
+                            _viewModel.StructureCategories,
+                            category
+                        )
                     ),
                 ]
             ),
             new(
                 Localizer["Constructions"],
                 [
-                    new(
-                        Localizer["ConstructionLog"],
-                        () => _viewModel.LogConstruction,
-                        value => _viewModel.LogConstruction = value
-                    ),
-                    new(
-                        Localizer["ConstructionLogPlank"],
-                        () => _viewModel.LogPlankConstruction,
-                        value => _viewModel.LogPlankConstruction = value
-                    ),
-                    new(
-                        Localizer["ConstructionStick"],
-                        () => _viewModel.StickConstruction,
-                        value => _viewModel.StickConstruction = value
-                    ),
-                    new(
-                        Localizer["ConstructionItem"],
-                        () => _viewModel.ItemConstruction,
-                        value => _viewModel.ItemConstruction = value
-                    ),
-                    new(
-                        Localizer["ConstructionStone"],
-                        () => _viewModel.StoneConstruction,
-                        value => _viewModel.StoneConstruction = value
+                    .. ItemPlaterViewModel.PlatableConstructionCategories.Select(category =>
+                        Toggle(
+                            Localizer[TextKeys.Construction(category)],
+                            _viewModel.ConstructionCategories,
+                            category
+                        )
                     ),
                 ]
             ),
@@ -140,6 +100,25 @@ public partial class ItemPlaterDialog
         MainViewModel.SaveWrappers(result.WrappersToSave);
         Snackbar.Add(result.Message, Severity.Success);
         MudDialog.Close(DialogResult.Ok(true));
+    }
+
+    private static Option Toggle<T>(string label, HashSet<T> selected, T value)
+    {
+        return new Option(
+            label,
+            () => selected.Contains(value),
+            isSelected =>
+            {
+                if (isSelected)
+                {
+                    selected.Add(value);
+                }
+                else
+                {
+                    selected.Remove(value);
+                }
+            }
+        );
     }
 
     private sealed record Option(string Label, Func<bool> Get, Action<bool> Set);

@@ -14,8 +14,6 @@ public partial class GameStatePageViewModel
     private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
     private readonly GameData _gameData;
 
-    private readonly Regex _resetCrateNameIdPattern = ResetCrateNameIdPattern();
-
     // The Order The Page Shows Them In
     private static readonly string[] s_settingNames =
     [
@@ -57,62 +55,29 @@ public partial class GameStatePageViewModel
 
     public string ResetContainers()
     {
-        var filtered = NamedIntDatas
-            .Where(setting => !_resetCrateNameIdPattern.IsMatch(setting.Name))
-            .ToList();
-
-        var numFixed = NamedIntDatas.Count - filtered.Count;
-
-        if (numFixed < 1)
-        {
-            return AppText.Get("NothingToReset");
-        }
-
-        NamedIntDatas.Clear();
-
-        filtered.ForEach(setting => NamedIntDatas.Add(setting));
-
-        return AppText.Format("ContainersReset", numFixed);
+        // A Container Without A State Is Closed And Full Again
+        var numFixed = NamedIntDatas.RemoveAll(setting =>
+            ResetCrateNameIdPattern().IsMatch(setting.Name)
+        );
+        return numFixed < 1
+            ? AppText.Get("NothingToReset")
+            : AppText.Format("ContainersReset", numFixed);
     }
 
     public void SetToEndgame()
     {
-        GenericSetting? stayedOnIslandSetting = null;
-        GenericSetting? coreGameCompletedSetting = null;
-
-        foreach (var namedIntData in NamedIntDatas)
+        foreach (var name in new[] { "Endgame.StayedOnIsland", "Endgame.CoreGameCompleted" })
         {
-            switch (namedIntData.Name)
+            var matches = NamedIntDatas.Where(setting => setting.Name == name).ToList();
+            if (matches.Count == 0)
             {
-                case "Endgame.StayedOnIsland":
-                    stayedOnIslandSetting = namedIntData;
-                    stayedOnIslandSetting.IntValue = 1;
-                    break;
-                case "Endgame.CoreGameCompleted":
-                    coreGameCompletedSetting = namedIntData;
-                    coreGameCompletedSetting.IntValue = 1;
-                    break;
+                var setting = new GenericSetting(name, GenericSetting.DataType.Integer);
+                NamedIntDatas.Add(setting);
+                matches.Add(setting);
             }
-        }
 
-        if (stayedOnIslandSetting == null)
-        {
-            var namedIntData = CreateNamedIntData("Endgame.StayedOnIsland");
-            namedIntData.IntValue = 1;
+            matches.ForEach(setting => setting.IntValue = 1);
         }
-
-        if (coreGameCompletedSetting == null)
-        {
-            var namedIntData = CreateNamedIntData("Endgame.CoreGameCompleted");
-            namedIntData.IntValue = 1;
-        }
-    }
-
-    private GenericSetting CreateNamedIntData(string name)
-    {
-        var setting = new GenericSetting(name, GenericSetting.DataType.Integer);
-        NamedIntDatas.Add(setting);
-        return setting;
     }
 
     public void Load(Savegame? savegame)
@@ -120,28 +85,22 @@ public partial class GameStatePageViewModel
         Settings.Clear();
         NamedIntDatas.Clear();
         PrefillNamedIntDatas(_gameData.NamedIntKeys);
-        var saveDataWrapper = savegame?.SavegameStore.LoadJsonRaw(
-            SavegameStore.FileType.GameStateSaveData
-        );
-        if (saveDataWrapper?.GetJsonBasedToken(Constants.JsonKeys.GameState) is not { } gameState)
+        if (
+            savegame
+                ?.SavegameStore.LoadJsonRaw(SavegameStore.FileType.GameStateSaveData)
+                ?.GetJsonBasedToken(Constants.JsonKeys.GameState)
+            is not { } gameState
+        )
         {
             return;
         }
 
-        LoadSettings(gameState);
-    }
-
-    private void LoadSettings(JToken gameState)
-    {
         // A Field The Game Left Out Shows At Its Default
-        foreach (var name in s_settingNames)
-        {
-            if (CreateSetting(name, gameState[name]) is { } setting)
-            {
-                Settings.Add(setting);
-            }
-        }
-
+        Settings.AddRange(
+            s_settingNames
+                .Select(name => CreateSetting(name, gameState[name]))
+                .OfType<GenericSetting>()
+        );
         LoadNamedIntDatas(gameState);
     }
 
@@ -223,46 +182,35 @@ public partial class GameStatePageViewModel
             return;
         }
 
-        var storedNamedIntSettings = new List<GenericSetting>();
-
+        var namedIntDatasByName = NamedIntDatas.ToDictionary(setting => setting.Name);
         foreach (var namedIntData in namedIntDatas)
         {
-            var nameId = namedIntData["SaveObjectNameId"]?.Value<string>();
-            if (nameId == null)
+            if (namedIntData["SaveObjectNameId"]?.Value<string>() is not { } nameId)
             {
                 continue;
             }
 
             // The Game Leaves Out A Zero Value
             var saveValue = namedIntData["SaveValue"]?.Value<int>() ?? 0;
-
             if (saveValue > 3)
             {
                 s_logger.Warn($"Found Save Value {saveValue} Above 3 For {nameId}");
             }
 
-            storedNamedIntSettings.Add(
+            if (namedIntDatasByName.TryGetValue(nameId, out var known))
+            {
+                known.IntValue = saveValue;
+                continue;
+            }
+
+            s_logger.Info($"Found New Named Int Data {nameId}");
+            NamedIntDatas.Add(
                 new GenericSetting(nameId, GenericSetting.DataType.Integer, namedIntData.Path)
                 {
                     IntValue = saveValue,
-                    MaxInt = saveValue > 3 ? saveValue : 3,
+                    MaxInt = Math.Max(saveValue, 3),
                 }
             );
-        }
-
-        var namedIntDatasByName = NamedIntDatas.ToDictionary(setting => setting.Name);
-
-        foreach (var storedNamedIntSetting in storedNamedIntSettings)
-        {
-            if (!namedIntDatasByName.TryGetValue(storedNamedIntSetting.Name, out var value))
-            {
-                s_logger.Info($"Found New Named Int Data {storedNamedIntSetting.Name}");
-                NamedIntDatas.Add(storedNamedIntSetting);
-            }
-            else
-            {
-                value.IntValue = storedNamedIntSetting.IntValue;
-            }
         }
     }
 
@@ -292,15 +240,14 @@ public partial class GameStatePageViewModel
     )
     {
         var hasChanges = false;
-        hasChanges =
-            newSettings.Aggregate(
-                false,
-                (current, setting) => setting.MergeTo(gameState) || current
-            ) || hasChanges;
+        foreach (var setting in newSettings)
+        {
+            hasChanges |= setting.MergeTo(gameState);
+        }
 
         if (gameState["NamedIntDatas"] is { } namedIntDataToken)
         {
-            hasChanges = MergeNamedIntDatas(newNamedIntDatas, namedIntDataToken) || hasChanges;
+            hasChanges |= MergeNamedIntDatas(newNamedIntDatas, namedIntDataToken);
         }
 
         return hasChanges;
@@ -311,9 +258,7 @@ public partial class GameStatePageViewModel
         JToken namedIntDataToken
     )
     {
-        var existingNamedIntData =
-            namedIntDataToken.ToObject<List<NamedIntData>>()
-            ?? Enumerable.Empty<NamedIntData>().ToList();
+        var existingNamedIntData = namedIntDataToken.ToObject<List<NamedIntData>>() ?? [];
         var newNamedIntData = newNamedIntDatas
             .Where(setting => setting.IntValue != null)
             .Select(setting => new NamedIntData(setting.Name, setting.IntValue!.Value))

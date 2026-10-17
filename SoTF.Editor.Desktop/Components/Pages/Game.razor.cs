@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Desktop.Components.Shared.Common;
 using SoTF.Editor.Services.Pages;
+using static SoTF.Editor.Data.Helpers.Constants;
 using static SoTF.Editor.Services.Pages.GameSetupPageViewModel;
 
 namespace SoTF.Editor.Desktop.Components.Pages;
@@ -48,15 +49,7 @@ public partial class Game : EditorPageBase
         new("Winter", "Winter"),
     ];
 
-    private static readonly SettingOption[] s_seasonLengths =
-    [
-        new("Short", "Short"),
-        new("Default", "Default"),
-        new("Long", "Long"),
-        new("Realistic", "Realistic"),
-    ];
-
-    private static readonly SettingOption[] s_dayLengths =
+    private static readonly SettingOption[] s_lengths =
     [
         new("Short", "Short"),
         new("Default", "Default"),
@@ -69,6 +62,105 @@ public partial class Game : EditorPageBase
         new("Low", "Low"),
         new("Default", "Default"),
         new(SettingValueHigh, "High"),
+    ];
+
+    // Each Setting With The Value The Game Assumes When Missing
+    private static readonly SettingGroup[] s_setupGroups =
+    [
+        new(
+            "CustomSettings",
+            [
+                new(
+                    "ConsumableEffects",
+                    GameSetupKeys.ConsumableEffects,
+                    SettingValueNormal,
+                    s_offNormalHard
+                ),
+                new(
+                    "PlayerStatsDamage",
+                    GameSetupKeys.PlayerStatsDamage,
+                    SettingValueOff,
+                    s_offNormalHard
+                ),
+                new(
+                    "AnimalSpawnRate",
+                    GameSetupKeys.AnimalSpawnRate,
+                    SettingValueNORMAL,
+                    s_lowNormalHigh
+                ),
+                new(
+                    "ColdPenalties",
+                    GameSetupKeys.ColdPenalties,
+                    SettingValueNormal,
+                    s_offNormalHard
+                ),
+                new(
+                    "BuildingResistance",
+                    GameSetupKeys.BuildingResistance,
+                    SettingValueNORMAL,
+                    s_lowNormalHigh
+                ),
+                new(
+                    "StatRegenerationPenalties",
+                    GameSetupKeys.ColdPenaltiesStatReduction,
+                    SettingValueOff,
+                    s_offNormalHard
+                ),
+            ],
+            [
+                new("InventoryPause", GameSetupKeys.InventoryPause, true),
+                new("ReducedFood", GameSetupKeys.ReducedFoodInContainers, false),
+                new("ReducedAmmo", GameSetupKeys.ReducedAmmoInContainers, false),
+                new("SingleUseContainers", GameSetupKeys.SingleUseContainers, false),
+                new("PlayersTriggerTraps", GameSetupKeys.PlayersTriggerTraps, false),
+                new("CreativeMode", GameSetupKeys.CreativeMode, false),
+                new("GodMode", GameSetupKeys.PlayersImmortalMode, false),
+                new("OneHitTrees", GameSetupKeys.OneHitToCutTrees, false),
+                new("InstantBuilding", GameSetupKeys.ForcePlaceFullLoad, false),
+                new("NoCuttingsSpawn", GameSetupKeys.NoCuttingsSpawn, false),
+            ]
+        ),
+        new(
+            "Enemies",
+            [
+                new("EnemyHealth", GameSetupKeys.EnemyHealth, SettingValueNORMAL, s_lowNormalHigh),
+                new("EnemyDamage", GameSetupKeys.EnemyDamage, SettingValueNORMAL, s_lowNormalHigh),
+                new("EnemyArmor", GameSetupKeys.EnemyArmour, SettingValueNORMAL, s_lowNormalHigh),
+                new(
+                    "EnemyAggression",
+                    GameSetupKeys.EnemyAggression,
+                    SettingValueNORMAL,
+                    s_lowNormalHigh
+                ),
+                new(
+                    "EnemySearchParties",
+                    GameSetupKeys.EnemySearchParties,
+                    SettingValueNORMAL,
+                    s_lowNormalHigh
+                ),
+            ],
+            [new("SpawnEnemies", GameSetupKeys.EnemySpawn, true)]
+        ),
+        new(
+            "Weather",
+            [
+                new("StartingSeason", GameSetupKeys.StartingSeason, "Summer", s_seasons),
+                new("SeasonLength", GameSetupKeys.SeasonLength, SettingValueDefault, s_lengths),
+                new("DayLength", GameSetupKeys.DayLength, SettingValueDefault, s_lengths),
+                new(
+                    "PrecipitationFrequency",
+                    GameSetupKeys.PrecipitationFrequency,
+                    SettingValueDefault,
+                    s_precipitation
+                ),
+            ],
+            []
+        ),
+        new(
+            "Multiplayer",
+            [new("PvpDamage", GameSetupKeys.PvpDamage, SettingValueNormal, s_pvpDamage)],
+            []
+        ),
     ];
 
     [Inject]
@@ -98,197 +190,16 @@ public partial class Game : EditorPageBase
             : value ?? string.Empty;
     }
 
-    private IEnumerable<SettingGroup> SetupGroups =>
-        [
-            new(
-                "CustomSettings",
-                [
-                    new(
-                        "ConsumableEffects",
-                        () => GameSetup.SelectedConsumableEffects,
-                        value => GameSetup.SelectedConsumableEffects = value,
-                        s_offNormalHard
-                    ),
-                    new(
-                        "PlayerStatsDamage",
-                        () => GameSetup.SelectedPlayerStatsDamage,
-                        value => GameSetup.SelectedPlayerStatsDamage = value,
-                        s_offNormalHard
-                    ),
-                    new(
-                        "AnimalSpawnRate",
-                        () => GameSetup.SelectedAnimalSpawnRate,
-                        value => GameSetup.SelectedAnimalSpawnRate = value,
-                        s_lowNormalHigh
-                    ),
-                    new(
-                        "ColdPenalties",
-                        () => GameSetup.SelectedColdPenalties,
-                        value => GameSetup.SelectedColdPenalties = value,
-                        s_offNormalHard
-                    ),
-                    new(
-                        "BuildingResistance",
-                        () => GameSetup.SelectedBuildingResistance,
-                        value => GameSetup.SelectedBuildingResistance = value,
-                        s_lowNormalHigh
-                    ),
-                    new(
-                        "StatRegenerationPenalties",
-                        () => GameSetup.SelectedColdPenaltiesStatReduction,
-                        value => GameSetup.SelectedColdPenaltiesStatReduction = value,
-                        s_offNormalHard
-                    ),
-                ],
-                [
-                    new(
-                        "InventoryPause",
-                        () => GameSetup.SelectedInventoryPause,
-                        value => GameSetup.SelectedInventoryPause = value
-                    ),
-                    new(
-                        "ReducedFood",
-                        () => GameSetup.SelectedReducedFoodInContainers,
-                        value => GameSetup.SelectedReducedFoodInContainers = value
-                    ),
-                    new(
-                        "ReducedAmmo",
-                        () => GameSetup.SelectedReducedAmmoInContainers,
-                        value => GameSetup.SelectedReducedAmmoInContainers = value
-                    ),
-                    new(
-                        "SingleUseContainers",
-                        () => GameSetup.SelectedSingleUseContainers,
-                        value => GameSetup.SelectedSingleUseContainers = value
-                    ),
-                    new(
-                        "PlayersTriggerTraps",
-                        () => GameSetup.SelectedPlayersTriggerTraps,
-                        value => GameSetup.SelectedPlayersTriggerTraps = value
-                    ),
-                    new(
-                        "CreativeMode",
-                        () => GameSetup.SelectedCreativeMode,
-                        value => GameSetup.SelectedCreativeMode = value
-                    ),
-                    new(
-                        "GodMode",
-                        () => GameSetup.SelectedPlayersImmortalMode,
-                        value => GameSetup.SelectedPlayersImmortalMode = value
-                    ),
-                    new(
-                        "OneHitTrees",
-                        () => GameSetup.SelectedOneHitToCutTrees,
-                        value => GameSetup.SelectedOneHitToCutTrees = value
-                    ),
-                    new(
-                        "InstantBuilding",
-                        () => GameSetup.SelectedForcePlaceFullLoad,
-                        value => GameSetup.SelectedForcePlaceFullLoad = value
-                    ),
-                    new(
-                        "NoCuttingsSpawn",
-                        () => GameSetup.SelectedNoCuttingsSpawn,
-                        value => GameSetup.SelectedNoCuttingsSpawn = value
-                    ),
-                ]
-            ),
-            new(
-                "Enemies",
-                [
-                    new(
-                        "EnemyHealth",
-                        () => GameSetup.SelectedEnemyHealth,
-                        value => GameSetup.SelectedEnemyHealth = value,
-                        s_lowNormalHigh
-                    ),
-                    new(
-                        "EnemyDamage",
-                        () => GameSetup.SelectedEnemyDamage,
-                        value => GameSetup.SelectedEnemyDamage = value,
-                        s_lowNormalHigh
-                    ),
-                    new(
-                        "EnemyArmor",
-                        () => GameSetup.SelectedEnemyArmour,
-                        value => GameSetup.SelectedEnemyArmour = value,
-                        s_lowNormalHigh
-                    ),
-                    new(
-                        "EnemyAggression",
-                        () => GameSetup.SelectedEnemyAggression,
-                        value => GameSetup.SelectedEnemyAggression = value,
-                        s_lowNormalHigh
-                    ),
-                    new(
-                        "EnemySearchParties",
-                        () => GameSetup.SelectedEnemySearchParties,
-                        value => GameSetup.SelectedEnemySearchParties = value,
-                        s_lowNormalHigh
-                    ),
-                ],
-                [
-                    new(
-                        "SpawnEnemies",
-                        () => GameSetup.SelectedEnemySpawn,
-                        value => GameSetup.SelectedEnemySpawn = value
-                    ),
-                ]
-            ),
-            new(
-                "Weather",
-                [
-                    new(
-                        "StartingSeason",
-                        () => GameSetup.SelectedStartingSeason,
-                        value => GameSetup.SelectedStartingSeason = value,
-                        s_seasons
-                    ),
-                    new(
-                        "SeasonLength",
-                        () => GameSetup.SelectedSeasonLength,
-                        value => GameSetup.SelectedSeasonLength = value,
-                        s_seasonLengths
-                    ),
-                    new(
-                        "DayLength",
-                        () => GameSetup.SelectedDayLength,
-                        value => GameSetup.SelectedDayLength = value,
-                        s_dayLengths
-                    ),
-                    new(
-                        "PrecipitationFrequency",
-                        () => GameSetup.SelectedPrecipitationFrequency,
-                        value => GameSetup.SelectedPrecipitationFrequency = value,
-                        s_precipitation
-                    ),
-                ],
-                []
-            ),
-            new(
-                "Multiplayer",
-                [
-                    new(
-                        "PvpDamage",
-                        () => GameSetup.SelectedPvpDamage,
-                        value => GameSetup.SelectedPvpDamage = value,
-                        s_pvpDamage
-                    ),
-                ],
-                []
-            ),
-        ];
-
     private sealed record SettingOption(string Value, string LabelKey);
 
     private sealed record SelectSetting(
         string LabelKey,
-        Func<string?> Get,
-        Action<string?> Set,
+        string Key,
+        string Fallback,
         SettingOption[] Options
     );
 
-    private sealed record ToggleSetting(string LabelKey, Func<bool> Get, Action<bool> Set);
+    private sealed record ToggleSetting(string LabelKey, string Key, bool Fallback);
 
     private sealed record SettingGroup(
         string TitleKey,

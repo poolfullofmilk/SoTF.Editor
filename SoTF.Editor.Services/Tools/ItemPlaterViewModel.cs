@@ -8,579 +8,307 @@ namespace SoTF.Editor.Services.Tools;
 
 public class ItemPlaterViewModel
 {
-    private readonly Dictionary<
-        ElementProfileCategory,
-        List<ElementProfile>
-    > _elementProfileCategories;
-    private readonly Dictionary<int, Item> _platableItems;
+    // Categories The Plater Offers, In Dialog Order
+    public static IReadOnlyList<string> PlatableStructureCategories { get; } =
+    ["storage", "furniture", "traps", "utility", "gardening", "misc"];
 
-    private readonly Dictionary<string, HashSet<int>> _screwStructureCategoryToIds;
+    public static IReadOnlyList<ElementProfileCategory> PlatableConstructionCategories { get; } =
+    [
+        ElementProfileCategory.Log,
+        ElementProfileCategory.LogPlank,
+        ElementProfileCategory.Stick,
+        ElementProfileCategory.Item,
+        ElementProfileCategory.Stone,
+    ];
 
-    private readonly HashSet<int> _weaponHolderScrewStructureIds;
+    private const int PlatingModuleId = 8;
+    private const int StructurePlatingStateType = 2;
 
-    public bool FollowerItems { get; set; } = true;
+    private readonly HashSet<int> _platableItemIds;
+    private readonly HashSet<int> _weaponHolderIds;
+    private readonly Dictionary<string, HashSet<int>> _structureIdsByCategory;
+    private readonly ILookup<ElementProfileCategory, ElementProfile> _profilesByCategory;
 
-    public bool FurnitureStructures { get; set; }
-
-    public bool GardeningStructures { get; set; }
-
-    public bool ItemConstruction { get; set; }
+    public ItemPlaterViewModel(GameData gameData)
+    {
+        _platableItemIds =
+        [
+            .. gameData.Items.Where(item => item.IsPlatable).Select(item => item.Id),
+        ];
+        _weaponHolderIds =
+        [
+            .. gameData
+                .ScrewStructures.Where(structure => structure.IsWeaponHolder)
+                .Select(structure => structure.Id),
+        ];
+        _structureIdsByCategory = gameData
+            .ScrewStructures.GroupBy(structure => structure.Category, structure => structure.Id)
+            .ToDictionary(group => group.Key, group => group.ToHashSet());
+        _profilesByCategory = gameData.ElementProfiles.ToLookup(profile => profile.Category);
+    }
 
     public bool ItemsInInventory { get; set; } = true;
 
     public bool ItemsInWeaponRacks { get; set; } = true;
 
-    public bool LogConstruction { get; set; }
+    public bool FollowerItems { get; set; } = true;
 
-    public bool LogPlankConstruction { get; set; }
+    public HashSet<string> StructureCategories { get; } = [];
 
-    public bool MiscStructures { get; set; }
-
-    public bool StickConstruction { get; set; }
-
-    public bool StoneConstruction { get; set; }
-
-    public bool StorageStructures { get; set; }
-
-    public bool TrapsStructures { get; set; }
-
-    public bool UtilityStructures { get; set; }
-
-    public ItemPlaterViewModel(GameData gameData)
-    {
-        _platableItems = gameData
-            .Items.Where(item => item.Value.IsPlatable)
-            .ToDictionary(pair => pair.Key, pair => pair.Value);
-        _weaponHolderScrewStructureIds =
-        [
-            .. gameData
-                .ScrewStructures.Where(screwStructure => screwStructure.IsWeaponHolder)
-                .Select(screwStructure => screwStructure.Id),
-        ];
-        _screwStructureCategoryToIds = gameData
-            .ScrewStructures.GroupBy(structure => structure.Category, structure => structure.Id)
-            .ToDictionary(ints => ints.Key, ints => ints.ToHashSet());
-        _elementProfileCategories = gameData
-            .ElementProfiles.GroupBy(profile => profile.Category)
-            .ToDictionary(profiles => profiles.Key, profiles => profiles.ToList());
-    }
+    public HashSet<ElementProfileCategory> ConstructionCategories { get; } = [];
 
     public bool CanModifyPlating()
     {
         return ItemsInInventory
             || ItemsInWeaponRacks
             || FollowerItems
-            || StorageStructures
-            || FurnitureStructures
-            || TrapsStructures
-            || UtilityStructures
-            || MiscStructures
-            || GardeningStructures
-            || LogConstruction
-            || LogPlankConstruction
-            || StickConstruction
-            || StoneConstruction
-            || ItemConstruction;
+            || StructureCategories.Count > 0
+            || ConstructionCategories.Count > 0;
     }
 
     public PlatingResult AddPlating(Savegame savegame)
     {
-        var modifiedCount = 0;
-
-        var wrappersToSave = new Dictionary<SavegameStore.FileType, SaveDataWrapper>();
-
-        if (
-            ItemsInInventory
-            && GetPlayerInventorySaveDataWrapper(savegame) is { } playerInventorySaveDataWrapper
-        )
-        {
-            var inventoryPlatings = AddPlatingForInventory(playerInventorySaveDataWrapper);
-            if (inventoryPlatings > 0)
-            {
-                wrappersToSave.TryAdd(
-                    SavegameStore.FileType.PlayerInventorySaveData,
-                    playerInventorySaveDataWrapper
-                );
-            }
-
-            modifiedCount += inventoryPlatings;
-        }
-
-        if (
-            ItemsInWeaponRacks
-            && GetScrewStructuresSaveDataWrapper(savegame) is { } screwStructuresSaveDataWrapper
-        )
-        {
-            var weaponRackPlatings = AddPlatingInWeaponRacks(screwStructuresSaveDataWrapper);
-            if (weaponRackPlatings > 0)
-            {
-                wrappersToSave.TryAdd(
-                    SavegameStore.FileType.ScrewStructureInstancesSaveData,
-                    screwStructuresSaveDataWrapper
-                );
-            }
-
-            modifiedCount += weaponRackPlatings;
-        }
-
-        if (FollowerItems && GetVailSaveDataWrapper(savegame) is { } vailSaveDataWrapper)
-        {
-            var followerItemPlatings = AddPlatingToFollowers(vailSaveDataWrapper);
-            if (followerItemPlatings > 0)
-            {
-                wrappersToSave.TryAdd(SavegameStore.FileType.SaveData, vailSaveDataWrapper);
-            }
-
-            modifiedCount += followerItemPlatings;
-        }
-
-        if (
-            (
-                StorageStructures
-                || FurnitureStructures
-                || TrapsStructures
-                || UtilityStructures
-                || MiscStructures
-                || GardeningStructures
-            ) && GetScrewStructuresSaveDataWrapper(savegame) is { } screwStructuresSaveDataWrapper2
-        )
-        {
-            var structurePlatings = AddPlatingToStructures(screwStructuresSaveDataWrapper2);
-            if (structurePlatings > 0)
-            {
-                wrappersToSave.TryAdd(
-                    SavegameStore.FileType.ScrewStructureInstancesSaveData,
-                    screwStructuresSaveDataWrapper2
-                );
-            }
-
-            modifiedCount += structurePlatings;
-        }
-
-        if (
-            (
-                LogConstruction
-                || LogPlankConstruction
-                || StickConstruction
-                || StoneConstruction
-                || ItemConstruction
-            ) && GetConstructionsSaveDataWrapper(savegame) is { } constructionsSaveDataWrapper
-        )
-        {
-            var constructionPlatings = AddPlatingToConstructions(constructionsSaveDataWrapper);
-            if (constructionPlatings > 0)
-            {
-                wrappersToSave.TryAdd(
-                    SavegameStore.FileType.ConstructionsSaveData,
-                    constructionsSaveDataWrapper
-                );
-            }
-
-            modifiedCount += constructionPlatings;
-        }
-
-        return new PlatingResult(AppText.Format("PlatingAdded", modifiedCount), wrappersToSave);
+        return Apply(savegame, true);
     }
 
-    private int AddPlatingToConstructions(SaveDataWrapper saveDataWrapper)
+    public PlatingResult RemovePlating(Savegame savegame)
     {
-        var numPlated = 0;
+        return Apply(savegame, false);
+    }
 
-        if (
-            saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.Constructions)
-                is not { } constructions
-            || constructions["Structures"] is not JArray structures
+    private PlatingResult Apply(Savegame savegame, bool plate)
+    {
+        var changedCount = 0;
+        var wrappersToSave = new Dictionary<SavegameStore.FileType, SaveDataWrapper>();
+
+        // Each Part Changes Its Own Document, Saved Only When Touched
+        void Change(
+            bool selected,
+            SavegameStore.FileType fileType,
+            string jsonKey,
+            Func<JToken, int> change
         )
         {
-            return numPlated;
+            if (
+                !selected
+                || savegame.SavegameStore.LoadJsonRaw(fileType) is not { } saveDataWrapper
+                || saveDataWrapper.GetJsonBasedToken(jsonKey) is not { } document
+            )
+            {
+                return;
+            }
+
+            var count = change(document);
+            if (count == 0)
+            {
+                return;
+            }
+
+            saveDataWrapper.MarkAsModified(jsonKey);
+            wrappersToSave.TryAdd(fileType, saveDataWrapper);
+            changedCount += count;
         }
 
-        var selectedUnplatedProfilesById = GetSelectedCategoryProfileIds(false);
+        Change(
+            ItemsInInventory,
+            SavegameStore.FileType.PlayerInventorySaveData,
+            Constants.JsonKeys.PlayerInventory,
+            inventory =>
+                ChangeItems(inventory.SelectToken("EquippedItems"), true, plate)
+                + ChangeItems(
+                    inventory.SelectToken("ItemInstanceManagerData.ItemBlocks"),
+                    false,
+                    plate
+                )
+        );
+        Change(
+            ItemsInWeaponRacks,
+            SavegameStore.FileType.ScrewStructureInstancesSaveData,
+            Constants.JsonKeys.ScrewStructureInstances,
+            instances => ChangeWeaponRacks(instances, plate)
+        );
+        Change(
+            FollowerItems,
+            SavegameStore.FileType.SaveData,
+            Constants.JsonKeys.NpcItemInstances,
+            npcItems => ChangeFollowerItems(npcItems, plate)
+        );
+        Change(
+            StructureCategories.Count > 0,
+            SavegameStore.FileType.ScrewStructureInstancesSaveData,
+            Constants.JsonKeys.ScrewStructureInstances,
+            instances => ChangeStructures(instances, plate)
+        );
+        Change(
+            ConstructionCategories.Count > 0,
+            SavegameStore.FileType.ConstructionsSaveData,
+            Constants.JsonKeys.Constructions,
+            constructions => ChangeConstructions(constructions, plate)
+        );
 
-        foreach (var structure in structures)
+        return new PlatingResult(
+            AppText.Format(plate ? "PlatingAdded" : "PlatingRemoved", changedCount),
+            wrappersToSave
+        );
+    }
+
+    private int ChangeItems(JToken? items, bool isEquipped, bool plate)
+    {
+        var changedCount = 0;
+        foreach (var token in items as JArray ?? [])
         {
-            if (structure is not JArray structureBlocks)
+            if (
+                token["ItemId"]?.Value<int>() is not { } itemId
+                || !_platableItemIds.Contains(itemId)
+            )
             {
                 continue;
             }
 
-            foreach (var structureBlock in structureBlocks)
+            var platingModules = FindPlatingModules(token);
+            if (plate && platingModules.Count == 0)
             {
-                if (structureBlock["Elements"] is not JArray elements)
-                {
-                    continue;
-                }
+                AddPlatingModule(token, isEquipped);
+                changedCount++;
+                continue;
+            }
 
-                foreach (var element in elements)
-                {
-                    if (
-                        element["ProfileID"]?.Value<int>() is not { } profileId
-                        || !selectedUnplatedProfilesById.TryGetValue(profileId, out var profile)
-                    )
-                    {
-                        continue;
-                    }
-
-                    numPlated++;
-                    element["ProfileID"] = profile.GoldPlatedId;
-                }
+            foreach (
+                var platingModule in platingModules.Where(module =>
+                    (module["IsPlated"]?.Value<bool>() ?? false) != plate
+                )
+            )
+            {
+                platingModule["IsPlated"] = plate;
+                changedCount++;
             }
         }
 
-        if (numPlated > 0)
-        {
-            saveDataWrapper.MarkAsModified(Constants.JsonKeys.Constructions);
-        }
-
-        return numPlated;
+        return changedCount;
     }
 
-    private int AddPlatingToStructures(SaveDataWrapper saveDataWrapper)
+    private int ChangeWeaponRacks(JToken instances, bool plate)
     {
-        var numPlated = 0;
-
-        if (
-            saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.ScrewStructureInstances)
-                is not { } screwStructureInstances
-            || screwStructureInstances["_structures"] is not JArray structures
+        var changedCount = 0;
+        foreach (
+            var storage in (instances["_structures"] as JArray ?? [])
+                .Where(structure =>
+                    structure["Id"]?.Value<int>() is { } id && _weaponHolderIds.Contains(id)
+                )
+                .SelectMany(rack => rack["Storages"] as JArray ?? [])
         )
         {
-            return numPlated;
+            changedCount += ChangeItems(storage["ItemBlocks"], false, plate);
         }
 
-        var selectedStructureTypeIds = GetSelectedStructureTypeIds();
+        return changedCount;
+    }
 
-        foreach (var structure in structures)
+    private int ChangeFollowerItems(JToken npcItemInstances, bool plate)
+    {
+        var changedCount = 0;
+        foreach (var actorData in npcItemInstances["ActorItems"] as JArray ?? [])
         {
-            if (
-                structure["Id"]?.Value<int>() is not { } id
-                || !selectedStructureTypeIds.Contains(id)
-            )
+            if (actorData["Items"] is JObject items)
+            {
+                changedCount += ChangeItems(items["ItemBlocks"], false, plate);
+            }
+        }
+
+        return changedCount;
+    }
+
+    private int ChangeStructures(JToken instances, bool plate)
+    {
+        var selectedIds = StructureCategories
+            .SelectMany(category => _structureIdsByCategory.GetValueOrDefault(category, []))
+            .ToHashSet();
+        var changedCount = 0;
+        foreach (var structure in instances["_structures"] as JArray ?? [])
+        {
+            if (structure["Id"]?.Value<int>() is not { } id || !selectedIds.Contains(id))
             {
                 continue;
             }
 
             if (structure["Modules"] is not JArray modules)
             {
-                modules = [];
-                structure["Modules"] = modules;
-            }
-
-            if (FindStructurePlatingModule(modules) != null)
-            {
-                continue;
-            }
-
-            modules.Add(CreateStructurePlatingModule());
-            numPlated++;
-        }
-
-        if (numPlated > 0)
-        {
-            saveDataWrapper.MarkAsModified(Constants.JsonKeys.ScrewStructureInstances);
-        }
-
-        return numPlated;
-    }
-
-    private Dictionary<int, ElementProfile> GetSelectedCategoryProfileIds(bool byPlatedId)
-    {
-        var result = new List<ElementProfile>();
-        if (LogConstruction)
-        {
-            result.AddRange(
-                _elementProfileCategories.GetValueOrDefault(ElementProfileCategory.Log, [])
-            );
-        }
-
-        if (LogPlankConstruction)
-        {
-            result.AddRange(
-                _elementProfileCategories.GetValueOrDefault(ElementProfileCategory.LogPlank, [])
-            );
-        }
-
-        if (StickConstruction)
-        {
-            result.AddRange(
-                _elementProfileCategories.GetValueOrDefault(ElementProfileCategory.Stick, [])
-            );
-        }
-
-        if (ItemConstruction)
-        {
-            result.AddRange(
-                _elementProfileCategories.GetValueOrDefault(ElementProfileCategory.Item, [])
-            );
-        }
-
-        if (StoneConstruction)
-        {
-            result.AddRange(
-                _elementProfileCategories.GetValueOrDefault(ElementProfileCategory.Stone, [])
-            );
-        }
-
-        return result.DistinctBy(KeySelector).ToDictionary(KeySelector);
-
-        int KeySelector(ElementProfile profile)
-        {
-            return byPlatedId ? profile.GoldPlatedId : profile.Id;
-        }
-    }
-
-    private HashSet<int> GetSelectedStructureTypeIds()
-    {
-        var result = new List<int>();
-        if (StorageStructures)
-        {
-            result.AddRange(_screwStructureCategoryToIds.GetValueOrDefault("storage", []));
-        }
-
-        if (FurnitureStructures)
-        {
-            result.AddRange(_screwStructureCategoryToIds.GetValueOrDefault("furniture", []));
-        }
-
-        if (TrapsStructures)
-        {
-            result.AddRange(_screwStructureCategoryToIds.GetValueOrDefault("traps", []));
-        }
-
-        if (UtilityStructures)
-        {
-            result.AddRange(_screwStructureCategoryToIds.GetValueOrDefault("utility", []));
-        }
-
-        if (MiscStructures)
-        {
-            result.AddRange(_screwStructureCategoryToIds.GetValueOrDefault("misc", []));
-        }
-
-        if (GardeningStructures)
-        {
-            result.AddRange(_screwStructureCategoryToIds.GetValueOrDefault("gardening", []));
-        }
-
-        return [.. result];
-    }
-
-    private static JObject CreateStructurePlatingModule()
-    {
-        return new JObject { ["StateDataTypeId"] = 2 };
-    }
-
-    private static JToken? FindStructurePlatingModule(JArray modules)
-    {
-        return modules.FirstOrDefault(module => module["StateDataTypeId"]?.Value<int>() == 2);
-    }
-
-    private int AddPlatingToFollowers(SaveDataWrapper saveDataWrapper)
-    {
-        var numPlated = 0;
-
-        if (
-            saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.NpcItemInstances)
-                is not { } npcItemInstances
-            || npcItemInstances["ActorItems"] is not JArray actorItems
-        )
-        {
-            return numPlated;
-        }
-
-        foreach (var actorData in actorItems)
-        {
-            if (
-                actorData["Items"] is not JObject items
-                || items["ItemBlocks"] is not JArray itemBlocks
-            )
-            {
-                continue;
-            }
-
-            numPlated += AddPlatings(itemBlocks, false);
-        }
-
-        if (numPlated > 0)
-        {
-            saveDataWrapper.MarkAsModified(Constants.JsonKeys.NpcItemInstances);
-        }
-
-        return numPlated;
-    }
-
-    private int AddPlatingInWeaponRacks(SaveDataWrapper saveDataWrapper)
-    {
-        var numPlated = 0;
-
-        if (
-            saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.ScrewStructureInstances)
-                is not { } screwStructureInstances
-            || screwStructureInstances["_structures"] is not JArray structures
-        )
-        {
-            return numPlated;
-        }
-
-        var weaponRacks =
-            from structure in structures
-            let structureId = structure["Id"]?.Value<int>()
-            where structureId.HasValue && _weaponHolderScrewStructureIds.Contains(structureId.Value)
-            select structure;
-
-        foreach (var weaponRack in weaponRacks)
-        {
-            if (weaponRack["Storages"] is not JArray storages)
-            {
-                continue;
-            }
-
-            foreach (var storage in storages)
-            {
-                if (storage["ItemBlocks"] is not JArray itemBlocks)
+                // Plating Needs Somewhere To Go, Removing Has Nothing To Do
+                if (!plate)
                 {
                     continue;
                 }
 
-                numPlated += AddPlatings(itemBlocks, false);
+                modules = [];
+                structure["Modules"] = modules;
+            }
+
+            var platingModules = modules
+                .Where(module =>
+                    module["StateDataTypeId"]?.Value<int>() == StructurePlatingStateType
+                )
+                .ToList();
+            if (plate && platingModules.Count == 0)
+            {
+                modules.Add(new JObject { ["StateDataTypeId"] = StructurePlatingStateType });
+                changedCount++;
+            }
+            else if (!plate)
+            {
+                platingModules.ForEach(module => module.Remove());
+                changedCount += platingModules.Count;
             }
         }
 
-        if (numPlated > 0)
-        {
-            saveDataWrapper.MarkAsModified(Constants.JsonKeys.ScrewStructureInstances);
-        }
-
-        return numPlated;
+        return changedCount;
     }
 
-    private int AddPlatingForInventory(SaveDataWrapper saveDataWrapper)
+    private int ChangeConstructions(JToken constructions, bool plate)
     {
-        var modifiedCount = 0;
-
-        if (
-            saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.PlayerInventory)
-            is not { } playerInventory
+        // Each Element Swaps Between Its Plain And Its Gold Profile
+        var profiles = ConstructionCategories.SelectMany(category => _profilesByCategory[category]);
+        var swaps = plate
+            ? profiles
+                .DistinctBy(profile => profile.Id)
+                .ToDictionary(profile => profile.Id, profile => profile.GoldPlatedId)
+            : profiles
+                .DistinctBy(profile => profile.GoldPlatedId)
+                .ToDictionary(profile => profile.GoldPlatedId, profile => profile.Id);
+        var changedCount = 0;
+        foreach (
+            var element in (constructions["Structures"] as JArray ?? [])
+                .OfType<JArray>()
+                .SelectMany(blocks => blocks)
+                .SelectMany(block => block["Elements"] as JArray ?? [])
         )
-        {
-            return modifiedCount;
-        }
-
-        if (playerInventory.SelectToken("EquippedItems") is JArray equippedItems)
-        {
-            modifiedCount += AddPlatings(equippedItems, true);
-        }
-
-        if (
-            playerInventory.SelectToken("ItemInstanceManagerData.ItemBlocks")
-            is JArray inventoryItems
-        )
-        {
-            modifiedCount += AddPlatings(inventoryItems, false);
-        }
-
-        if (modifiedCount > 0)
-        {
-            saveDataWrapper.MarkAsModified(Constants.JsonKeys.PlayerInventory);
-        }
-
-        return modifiedCount;
-    }
-
-    private static SaveDataWrapper? GetPlayerInventorySaveDataWrapper(Savegame savegame)
-    {
-        return savegame.SavegameStore.LoadJsonRaw(SavegameStore.FileType.PlayerInventorySaveData);
-    }
-
-    private static SaveDataWrapper? GetScrewStructuresSaveDataWrapper(Savegame savegame)
-    {
-        return savegame.SavegameStore.LoadJsonRaw(
-            SavegameStore.FileType.ScrewStructureInstancesSaveData
-        );
-    }
-
-    private static SaveDataWrapper? GetConstructionsSaveDataWrapper(Savegame savegame)
-    {
-        return savegame.SavegameStore.LoadJsonRaw(SavegameStore.FileType.ConstructionsSaveData);
-    }
-
-    private static SaveDataWrapper? GetVailSaveDataWrapper(Savegame savegame)
-    {
-        return savegame.SavegameStore.LoadJsonRaw(SavegameStore.FileType.SaveData);
-    }
-
-    private int AddPlatings(JArray items, bool isEquippedItems)
-    {
-        var numPlated = 0;
-        foreach (var token in items)
         {
             if (
-                token["ItemId"]?.Value<int>() is not { } itemId
-                || !_platableItems.ContainsKey(itemId)
+                element["ProfileID"]?.Value<int>() is { } profileId
+                && swaps.TryGetValue(profileId, out var newProfileId)
             )
             {
-                continue;
-            }
-
-            if (FindPlatingModules(token) is { Count: > 0 } platingModules)
-            {
-                foreach (var platingModule in platingModules)
-                {
-                    var isPlated = platingModule["IsPlated"]?.Value<bool>() ?? false;
-                    if (isPlated)
-                    {
-                        continue;
-                    }
-
-                    platingModule["IsPlated"] = true;
-                    numPlated++;
-                }
-            }
-            else
-            {
-                if (isEquippedItems)
-                {
-                    AddPlatingModuleToEquippedItem(token);
-                }
-                else
-                {
-                    AddPlatingModuleToInventoryItem(token);
-                }
-
-                numPlated++;
+                element["ProfileID"] = newProfileId;
+                changedCount++;
             }
         }
 
-        return numPlated;
+        return changedCount;
     }
 
-    private static void AddPlatingModuleToEquippedItem(JToken token)
+    private static void AddPlatingModule(JToken token, bool isEquipped)
     {
-        if (token["Modules"] is JArray modules)
+        // Equipped Items Hold Modules Themselves, Others Per Unique Item
+        if (isEquipped)
         {
-            modules.Add(CreatePlatingModule());
+            AddModuleTo(token);
+            return;
         }
-        else
-        {
-            token["Modules"] = new JArray { CreatePlatingModule() };
-        }
-    }
 
-    private static void AddPlatingModuleToInventoryItem(JToken token)
-    {
-        // Each Unique Item Carries Its Own Modules, None Is Added
         if (token["UniqueItems"] is JArray { Count: > 0 } uniqueItems)
         {
             foreach (var uniqueItem in uniqueItems.OfType<JObject>())
             {
-                if (uniqueItem["Modules"] is JArray modules)
-                {
-                    modules.Add(CreatePlatingModule());
-                }
-                else
-                {
-                    uniqueItem["Modules"] = new JArray { CreatePlatingModule() };
-                }
+                AddModuleTo(uniqueItem);
             }
 
             return;
@@ -594,419 +322,40 @@ public class ItemPlaterViewModel
         );
     }
 
+    private static void AddModuleTo(JToken holder)
+    {
+        if (holder["Modules"] is JArray modules)
+        {
+            modules.Add(CreatePlatingModule());
+        }
+        else
+        {
+            holder["Modules"] = new JArray { CreatePlatingModule() };
+        }
+    }
+
     private static JObject CreatePlatingModule()
     {
         return new JObject
         {
             ["IsPlated"] = true,
             ["Version"] = "0.0.0",
-            ["ModuleId"] = 8,
+            ["ModuleId"] = PlatingModuleId,
         };
     }
 
     private static List<JObject> FindPlatingModules(JToken token)
     {
-        var foundModules = new List<JObject>();
-
-        if (token["UniqueItems"] is JArray uniqueItems)
-        {
-            foreach (var uniqueItem in uniqueItems)
-            {
-                if (uniqueItem is not JObject jObject || jObject["Modules"] is not JArray modules)
-                {
-                    continue;
-                }
-
-                foundModules.AddRange(FindPlatingModules(modules));
-            }
-        }
-
-        if (token["Modules"] is JArray otherModules)
-        {
-            foundModules.AddRange(FindPlatingModules(otherModules));
-        }
-
-        return foundModules;
-    }
-
-    private static List<JObject> FindPlatingModules(JArray modules)
-    {
         return
         [
-            .. modules
-                .Where(module =>
-                    module is JObject moduleData && moduleData["ModuleId"]?.Value<int>() == 8
-                )
-                .Cast<JObject>(),
+            .. (token["UniqueItems"] as JArray ?? [])
+                .OfType<JObject>()
+                .Select(uniqueItem => uniqueItem["Modules"])
+                .Append(token["Modules"])
+                .OfType<JArray>()
+                .SelectMany(modules => modules.OfType<JObject>())
+                .Where(module => module["ModuleId"]?.Value<int>() == PlatingModuleId),
         ];
-    }
-
-    public PlatingResult RemovePlating(Savegame savegame)
-    {
-        var modifiedCount = 0;
-
-        var wrappersToSave = new Dictionary<SavegameStore.FileType, SaveDataWrapper>();
-
-        if (
-            ItemsInInventory
-            && GetPlayerInventorySaveDataWrapper(savegame) is { } playerInventorySaveDataWrapper
-        )
-        {
-            var inventoryPlatingsRemoved = RemovePlatingFromInventoryItems(
-                playerInventorySaveDataWrapper
-            );
-            if (inventoryPlatingsRemoved > 0)
-            {
-                wrappersToSave.Add(
-                    SavegameStore.FileType.PlayerInventorySaveData,
-                    playerInventorySaveDataWrapper
-                );
-            }
-
-            modifiedCount += inventoryPlatingsRemoved;
-        }
-
-        if (
-            ItemsInWeaponRacks
-            && GetScrewStructuresSaveDataWrapper(savegame) is { } screwStructuresSaveDataWrapper
-        )
-        {
-            var weaponRackPlatingsRemoved = RemovePlatingFromWeaponRacks(
-                screwStructuresSaveDataWrapper
-            );
-            if (weaponRackPlatingsRemoved > 0)
-            {
-                wrappersToSave.Add(
-                    SavegameStore.FileType.ScrewStructureInstancesSaveData,
-                    screwStructuresSaveDataWrapper
-                );
-            }
-
-            modifiedCount += weaponRackPlatingsRemoved;
-        }
-
-        if (FollowerItems && GetVailSaveDataWrapper(savegame) is { } vailSaveDataWrapper)
-        {
-            var followerPlatingsRemoved = RemovePlatingsFromFollowers(vailSaveDataWrapper);
-            if (followerPlatingsRemoved > 0)
-            {
-                wrappersToSave.Add(SavegameStore.FileType.SaveData, vailSaveDataWrapper);
-            }
-
-            modifiedCount += followerPlatingsRemoved;
-        }
-
-        if (
-            (
-                StorageStructures
-                || FurnitureStructures
-                || TrapsStructures
-                || UtilityStructures
-                || MiscStructures
-                || GardeningStructures
-            ) && GetScrewStructuresSaveDataWrapper(savegame) is { } screwStructuresSaveDataWrapper2
-        )
-        {
-            var structurePlatingsRemoved = RemovePlatingFromStructures(
-                screwStructuresSaveDataWrapper2
-            );
-            if (structurePlatingsRemoved > 0)
-            {
-                wrappersToSave.TryAdd(
-                    SavegameStore.FileType.ScrewStructureInstancesSaveData,
-                    screwStructuresSaveDataWrapper2
-                );
-            }
-
-            modifiedCount += structurePlatingsRemoved;
-        }
-
-        if (
-            (
-                LogConstruction
-                || LogPlankConstruction
-                || StickConstruction
-                || StoneConstruction
-                || ItemConstruction
-            ) && GetConstructionsSaveDataWrapper(savegame) is { } constructionsSaveDataWrapper
-        )
-        {
-            var constructionPlatingsRemoved = RemovePlatingFromConstructions(
-                constructionsSaveDataWrapper
-            );
-            if (constructionPlatingsRemoved > 0)
-            {
-                wrappersToSave.TryAdd(
-                    SavegameStore.FileType.ConstructionsSaveData,
-                    constructionsSaveDataWrapper
-                );
-            }
-
-            modifiedCount += constructionPlatingsRemoved;
-        }
-
-        return new PlatingResult(AppText.Format("PlatingRemoved", modifiedCount), wrappersToSave);
-    }
-
-    private int RemovePlatingFromConstructions(SaveDataWrapper saveDataWrapper)
-    {
-        var modifiedCount = 0;
-
-        if (
-            saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.Constructions)
-                is not { } constructions
-            || constructions["Structures"] is not JArray structures
-        )
-        {
-            return modifiedCount;
-        }
-
-        var selectedProfiles = GetSelectedCategoryProfileIds(true);
-
-        foreach (var structure in structures)
-        {
-            if (structure is not JArray structureBlocks)
-            {
-                continue;
-            }
-
-            foreach (var structureBlock in structureBlocks)
-            {
-                if (structureBlock["Elements"] is not JArray elements)
-                {
-                    continue;
-                }
-
-                foreach (var element in elements)
-                {
-                    if (
-                        element["ProfileID"]?.Value<int>() is not { } profileId
-                        || !selectedProfiles.TryGetValue(profileId, out var profile)
-                    )
-                    {
-                        continue;
-                    }
-
-                    modifiedCount++;
-                    element["ProfileID"] = profile.Id;
-                }
-            }
-        }
-
-        if (modifiedCount > 0)
-        {
-            saveDataWrapper.MarkAsModified(Constants.JsonKeys.Constructions);
-        }
-
-        return modifiedCount;
-    }
-
-    private int RemovePlatingFromStructures(SaveDataWrapper saveDataWrapper)
-    {
-        var modifiedCount = 0;
-
-        if (
-            saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.ScrewStructureInstances)
-                is not { } screwStructureInstances
-            || screwStructureInstances["_structures"] is not JArray structures
-        )
-        {
-            return modifiedCount;
-        }
-
-        var selectedStructureTypeIds = GetSelectedStructureTypeIds();
-
-        foreach (var structure in structures)
-        {
-            if (
-                structure["Id"]?.Value<int>() is not { } id
-                || !selectedStructureTypeIds.Contains(id)
-            )
-            {
-                continue;
-            }
-
-            if (structure["Modules"] is not JArray modules)
-            {
-                continue;
-            }
-
-            structure["Modules"] = RemoveStructurePlatingModule(modules, out var countRemoved);
-
-            modifiedCount += countRemoved;
-        }
-
-        if (modifiedCount > 0)
-        {
-            saveDataWrapper.MarkAsModified(Constants.JsonKeys.ScrewStructureInstances);
-        }
-
-        return modifiedCount;
-    }
-
-    private static JArray RemoveStructurePlatingModule(JArray modules, out int countRemoved)
-    {
-        countRemoved = 0;
-
-        if (modules.Count == 0)
-        {
-            return modules;
-        }
-
-        var newArray = new JArray();
-
-        foreach (var module in modules)
-        {
-            if (module["StateDataTypeId"]?.Value<int>() == 2)
-            {
-                countRemoved++;
-                continue;
-            }
-
-            newArray.Add(module);
-        }
-
-        return newArray;
-    }
-
-    private int RemovePlatingsFromFollowers(SaveDataWrapper saveDataWrapper)
-    {
-        var modifiedCount = 0;
-
-        if (
-            saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.NpcItemInstances)
-                is not { } npcItemInstances
-            || npcItemInstances["ActorItems"] is not JArray actorItems
-        )
-        {
-            return modifiedCount;
-        }
-
-        foreach (var actorData in actorItems)
-        {
-            if (
-                actorData["Items"] is not JObject items
-                || items["ItemBlocks"] is not JArray itemBlocks
-            )
-            {
-                continue;
-            }
-
-            modifiedCount += RemovePlatings(itemBlocks);
-        }
-
-        if (modifiedCount > 0)
-        {
-            saveDataWrapper.MarkAsModified(Constants.JsonKeys.NpcItemInstances);
-        }
-
-        return modifiedCount;
-    }
-
-    private int RemovePlatingFromWeaponRacks(SaveDataWrapper saveDataWrapper)
-    {
-        var modifiedCount = 0;
-
-        if (
-            saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.ScrewStructureInstances)
-                is not { } screwStructureInstances
-            || screwStructureInstances["_structures"] is not JArray structures
-        )
-        {
-            return modifiedCount;
-        }
-
-        var weaponRacks =
-            from structure in structures
-            let structureId = structure["Id"]?.Value<int>()
-            where structureId.HasValue && _weaponHolderScrewStructureIds.Contains(structureId.Value)
-            select structure;
-
-        foreach (var weaponRack in weaponRacks)
-        {
-            if (weaponRack["Storages"] is not JArray storages)
-            {
-                continue;
-            }
-
-            foreach (var storage in storages)
-            {
-                if (storage["ItemBlocks"] is not JArray itemBlocks)
-                {
-                    continue;
-                }
-
-                modifiedCount += RemovePlatings(itemBlocks);
-            }
-        }
-
-        if (modifiedCount > 0)
-        {
-            saveDataWrapper.MarkAsModified(Constants.JsonKeys.ScrewStructureInstances);
-        }
-
-        return modifiedCount;
-    }
-
-    private int RemovePlatingFromInventoryItems(SaveDataWrapper saveDataWrapper)
-    {
-        var modifiedCount = 0;
-        if (
-            saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.PlayerInventory)
-            is not { } playerInventory
-        )
-        {
-            return modifiedCount;
-        }
-
-        if (playerInventory.SelectToken("EquippedItems") is JArray equippedItems)
-        {
-            modifiedCount += RemovePlatings(equippedItems);
-        }
-
-        if (
-            playerInventory.SelectToken("ItemInstanceManagerData.ItemBlocks")
-            is JArray inventoryItems
-        )
-        {
-            modifiedCount += RemovePlatings(inventoryItems);
-        }
-
-        if (modifiedCount > 0)
-        {
-            saveDataWrapper.MarkAsModified(Constants.JsonKeys.PlayerInventory);
-        }
-
-        return modifiedCount;
-    }
-
-    private int RemovePlatings(JArray items)
-    {
-        var numPlatingRemoved = 0;
-        foreach (var token in items)
-        {
-            if (
-                token["ItemId"]?.Value<int>() is not { } itemId
-                || !_platableItems.ContainsKey(itemId)
-            )
-            {
-                continue;
-            }
-
-            foreach (var platingModule in FindPlatingModules(token))
-            {
-                var isPlated = platingModule["IsPlated"]?.Value<bool>() ?? false;
-                if (!isPlated)
-                {
-                    continue;
-                }
-
-                platingModule["IsPlated"] = false;
-                numPlatingRemoved++;
-            }
-        }
-
-        return numPlatingRemoved;
     }
 }
 

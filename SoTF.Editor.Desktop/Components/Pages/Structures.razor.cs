@@ -110,7 +110,7 @@ public partial class Structures : EditorPageBase
 
         if (await dialog.Result is { Canceled: false, Data: ScrewStructure selected })
         {
-            StructuresPageViewModel.ChangeType(wrapper, selected);
+            wrapper.Update(selected);
         }
     }
 

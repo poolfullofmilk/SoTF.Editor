@@ -16,46 +16,39 @@ public class MapManager(
     GameData gameData
 )
 {
-    private readonly List<ActorType> _actorTypes = gameData.ActorTypes;
-
     public List<PoiGroup> GetActorPois()
     {
-        var followerNonFollowerActors = npcsPageViewModel
-            .AllActors.Select(actor =>
+        // Followers Show At Start, Other Actors Start Hidden
+        var actorPois = npcsPageViewModel
+            .AllActors.Select(actor => new ActorPoi(actor)
             {
-                var poi = new ActorPoi(actor) { Enabled = actor.ActorType?.IsFollower() ?? false };
-                return poi;
+                Enabled = actor.ActorType?.IsFollower() ?? false,
             })
-            .GroupBy(actorPoi => actorPoi.Actor.ActorType?.IsFollower() ?? false)
-            .ToDictionary(group => group.Key, group => group.ToList());
-
+            .ToList();
         var result = new List<PoiGroup>();
-
-        if (followerNonFollowerActors.TryGetValue(true, out var followerPois))
+        var followerPois = actorPois
+            .Where(poi => poi.Enabled)
+            .OrderBy(poi => poi.Actor.ActorType?.Name ?? "???")
+            .ToList();
+        if (followerPois.Count > 0)
         {
-            var followerPoisSorted = followerPois
-                .OrderBy(followerPoi => followerPoi.Actor.ActorType?.Name ?? "???")
-                .ToList();
-
-            var icon = _actorTypes
-                .FirstOrDefault(type => type.Id == Constants.Actors.KelvinTypeId)
-                ?.IconPath;
-
             result.Add(
                 new PoiGroup(
                     true,
-                    followerPoisSorted,
+                    followerPois,
                     AppText.Get("Followers"),
                     PoiGroupKeys.Actors + "_followers",
                     PoiGroupType.Followers,
-                    icon
+                    gameData
+                        .ActorTypes.FirstOrDefault(type => type.Id == Constants.Actors.KelvinTypeId)
+                        ?.IconPath
                 )
             );
         }
 
-        if (followerNonFollowerActors.TryGetValue(false, out var actorPois))
-        {
-            var actorPoiGroups = actorPois
+        result.AddRange(
+            actorPois
+                .Where(poi => !poi.Enabled)
                 .GroupBy(poi => poi.Actor.ActorType ?? new ActorType(-1, "???"))
                 .OrderBy(group => group.Key.Name)
                 .Select(group => new PoiGroup(
@@ -66,10 +59,7 @@ public class MapManager(
                     PoiGroupType.Actors,
                     group.Key.IconPath
                 ))
-                .ToList();
-            result.AddRange(actorPoiGroups);
-        }
-
+        );
         return result;
     }
 
@@ -87,8 +77,8 @@ public class MapManager(
 
     public static Dictionary<string, List<WorldItemPoi>> GetWorldItemPois(Savegame savegame)
     {
-        return WorldItemTeleporterViewModel
-            .Load(savegame, true)
+        return WorldItemClonerViewModel
+            .Load(savegame)
             .Select(state => new WorldItemPoi(state))
             .GroupBy(poi => poi.State.Group)
             .ToDictionary(group => group.Key, group => group.ToList());
@@ -96,26 +86,24 @@ public class MapManager(
 
     public static List<ZiplinePoi> GetZiplinePois(Savegame savegame)
     {
-        var result = new List<ZiplinePoi>();
-
         if (
-            savegame.SavegameStore.LoadJsonRaw(SavegameStore.FileType.ZipLineManagerSaveData)
-                is not { } saveDataWrapper
-            || saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.ZipLineManager)?["Ziplines"]
-                is not { } ziplines
+            savegame
+                .SavegameStore.LoadJsonRaw(SavegameStore.FileType.ZipLineManagerSaveData)
+                ?.GetJsonBasedToken(Constants.JsonKeys.ZipLineManager)
+                ?["Ziplines"]
+            is not { } ziplines
         )
         {
-            return result;
+            return [];
         }
 
-        result.AddRange(
-            from token in ziplines
+        return
+        [
+            .. from token in ziplines
             let posA = token["_anchorAPosition"]?.ToObject<Position>()
             let posB = token["_anchorBPosition"]?.ToObject<Position>()
             where posA != null && posB != null
-            select new ZiplinePoi(token, posA, posB)
-        );
-
-        return result;
+            select new ZiplinePoi(token, posA, posB),
+        ];
     }
 }

@@ -21,7 +21,9 @@ public class Item : ICloneable
     public HashSet<int>? ModHashes { get; init; }
     public string? Image { get; init; }
     public string? ThumbnailUrl =>
-        Image == null ? null : "images/items/" + Image.ExtendFilenameWith("_tn");
+        Image == null
+            ? null
+            : $"images/items/{Path.GetFileNameWithoutExtension(Image)}_tn{Path.GetExtension(Image)}";
 
     public string NormalizedLowercaseName
     {
@@ -38,39 +40,14 @@ public class Item : ICloneable
         return MemberwiseClone();
     }
 
-    private bool Equals(Item other)
-    {
-        return Id == other.Id;
-    }
-
     public override bool Equals(object? obj)
     {
-        if (obj is null)
-        {
-            return false;
-        }
-
-        if (ReferenceEquals(this, obj))
-        {
-            return true;
-        }
-
-        return obj.GetType() == GetType() && Equals((Item)obj);
+        return obj is Item other && Id == other.Id;
     }
 
     public override int GetHashCode()
     {
         return Id;
-    }
-
-    public bool HasFoodSpoilModuleDefinition()
-    {
-        return FoodSpoilModuleDefinition != null;
-    }
-
-    public bool HasSourceActorModuleDefinition()
-    {
-        return SourceActorModuleDefinition != null;
     }
 
     public bool Matches(string normalizedLowercaseFullText)

@@ -220,27 +220,23 @@ public class MainViewModel(
         }
 
         var countReset = 0;
-
         foreach (var trapData in structureData)
         {
             var wasReset = false;
-            if (trapData["IsTriggered"] is { } isTriggeredToken && isTriggeredToken.Value<bool>())
+            if (trapData["IsTriggered"]?.Value<bool>() == true)
             {
                 trapData["IsTriggered"] = false;
                 wasReset = true;
             }
 
-            if (trapData["Data1"] is { } dataToken && dataToken.Value<int>() < 5)
+            if (trapData["Data1"]?.Value<int>() < 5)
             {
                 trapData["Data1"] = 5;
                 wasReset = true;
             }
 
             // A Trap Counts Once, However Much Of It Was Reset
-            if (wasReset)
-            {
-                countReset++;
-            }
+            countReset += wasReset ? 1 : 0;
         }
 
         if (countReset == 0)
@@ -299,10 +295,11 @@ public class MainViewModel(
         }
 
         var countChanged = 0;
-
-        foreach (var fireType in firesPerStructureType)
-        foreach (var firesByType in fireType.Children())
-        foreach (var fire in firesByType)
+        foreach (
+            var fire in firesPerStructureType
+                .SelectMany(fireType => fireType.Children())
+                .SelectMany(fires => fires)
+        )
         {
             fire["IsLit"] = isLit;
             fire["Fuel"] = fuel;
@@ -326,10 +323,7 @@ public class MainViewModel(
             return "";
         }
 
-        var follower =
-            typeId == Constants.Actors.KelvinTypeId
-                ? followerPage.KelvinState
-                : followerPage.VirginiaState;
+        var follower = followerPage.StateOf(typeId);
         var hasChanges = false;
         ModifyActors(savegame =>
             hasChanges = savegame.ReviveFollower(
@@ -340,13 +334,10 @@ public class MainViewModel(
             )
         );
 
-        var actorName = GameNames.Get(TextKeys.ActorType(typeId));
-        if (!hasChanges)
-        {
-            return AppText.Format("FollowerAlreadyAlive", actorName);
-        }
-
-        return AppText.Format("FollowerRevived", actorName);
+        return AppText.Format(
+            hasChanges ? "FollowerRevived" : "FollowerAlreadyAlive",
+            GameNames.Get(TextKeys.ActorType(typeId))
+        );
     }
 
     public string SpawnFollowers(int typeId, int count)
@@ -360,10 +351,7 @@ public class MainViewModel(
             return AppText.Get("UnableToSpawnFollowers");
         }
 
-        var follower =
-            typeId == Constants.Actors.KelvinTypeId
-                ? followerPage.KelvinState
-                : followerPage.VirginiaState;
+        var follower = followerPage.StateOf(typeId);
         var hasChanges = false;
 
         // Through ModifyActors So The NPCs Page And Map Show Them
@@ -430,23 +418,16 @@ public class MainViewModel(
                     ))
             );
 
+            // Each Line Shows Both Anchors And The Line Between
             var ziplinePois = MapManager.GetZiplinePois(selectedSavegame);
-
             if (ziplinePois.Count > 0)
             {
-                var zipPois = new List<IPoi>();
-
-                foreach (var ziplinePoi in ziplinePois)
-                {
-                    zipPois.Add(ziplinePoi.PointA);
-                    zipPois.Add(ziplinePoi.PointB);
-                    zipPois.Add(ziplinePoi);
-                }
-
                 poiGroups.Add(
                     new PoiGroup(
                         false,
-                        zipPois,
+                        ziplinePois.SelectMany(zipline =>
+                            new IPoi[] { zipline.PointA, zipline.PointB, zipline }
+                        ),
                         AppText.Get("Ziplines"),
                         PoiGroupType.ZipLines,
                         "images/icons/" + ZipPointPoi.IconFile
@@ -460,7 +441,7 @@ public class MainViewModel(
         poiGroups.Add(
             new PoiGroup(
                 true,
-                BuildPlayerPois(),
+                [new PlayerPoi(playerPage.PlayerState.Pos) { Enabled = true }],
                 AppText.Get("Player"),
                 PoiGroupType.Player,
                 "images/icons/" + PlayerPoi.IconFile
@@ -468,10 +449,5 @@ public class MainViewModel(
         );
 
         return [.. poiGroups.OrderBy(group => group.Title)];
-    }
-
-    private List<IPoi> BuildPlayerPois()
-    {
-        return [new PlayerPoi(playerPage.PlayerState.Pos) { Enabled = true }];
     }
 }

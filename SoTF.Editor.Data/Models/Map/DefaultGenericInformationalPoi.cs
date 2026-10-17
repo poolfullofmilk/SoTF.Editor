@@ -6,49 +6,27 @@ public class DefaultGenericInformationalPoi : InformationalPoi
 {
     private readonly string _icon;
 
-    protected DefaultGenericInformationalPoi(
-        float x,
-        float y,
-        Position? teleport,
-        string title,
-        string? description,
-        string icon,
-        IEnumerable<Item>? requirements,
-        bool isUnderground = false,
-        string? wikiLink = null
-    )
-        : base(x, y, teleport, title, description, requirements, isUnderground, wikiLink)
-    {
-        _icon = icon;
-    }
-
-    public override string Icon => BaseIcon(_icon);
-
-    public static DefaultGenericInformationalPoi Of(
+    public DefaultGenericInformationalPoi(
         RawPoi rawPoi,
         ItemList itemList,
         string icon,
         HashSet<int> inventoryItems,
-        AreaMaskManager areaMaskManager,
-        bool enabled
+        AreaMaskManager areaMaskManager
     )
-    {
-        var poi = new DefaultGenericInformationalPoi(
+        : base(
             rawPoi.X,
             rawPoi.Y,
             rawPoi.Teleport?.ToPosition(areaMaskManager),
             rawPoi.Title ?? "",
             rawPoi.Description,
-            icon,
             itemList.GetItems(rawPoi.Requirements),
+            inventoryItems,
             rawPoi.IsUnderground,
             rawPoi.Wiki
         )
-        {
-            MissingRequiredItems = rawPoi.GetMissingRequiredItems(inventoryItems),
-            Enabled = enabled,
-        };
-
-        return poi;
+    {
+        _icon = icon;
     }
+
+    public override string Icon => BaseIcon(_icon);
 }

@@ -5,6 +5,6 @@ namespace SoTF.Editor.Data.Models.SaveData.Storage.Module;
 [JsonConverter(typeof(StorageSaveDataModuleConverter))]
 public interface IStorageModule
 {
-    public int GetModuleId();
+    public int ModuleId { get; }
     bool IsEqualTo(IStorageModule? other);
 }

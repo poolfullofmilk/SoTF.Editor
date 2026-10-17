@@ -4,7 +4,8 @@ namespace SoTF.Editor.Data.Models.SaveData.Inventory;
 
 public class ItemBlockModel
 {
-    public List<JToken> Modules = []; //Only used by equipped items...hopefully
+    // Equipped Items Carry Modules, Read For Weapon Mods Only
+    public List<JToken> Modules = [];
 
     public List<JToken> UniqueItems = [];
     public int ItemId { get; set; }
@@ -23,6 +24,7 @@ public class ItemBlockModel
     public bool ShouldSerializeModules()
 #pragma warning restore CA1822
     {
+        // Newtonsoft Calls This, New Blocks Get No Modules
         return false;
     }
 }

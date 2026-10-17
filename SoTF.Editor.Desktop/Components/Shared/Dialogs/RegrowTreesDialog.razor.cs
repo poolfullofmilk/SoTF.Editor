@@ -11,13 +11,6 @@ public partial class RegrowTreesDialog
     [Inject]
     public required IStringLocalizer<SharedResource> Localizer { get; set; }
 
-    private static readonly VegetationStateOption[] s_states =
-    [
-        new(VegetationState.Gone, viewModel => viewModel.PrintGone),
-        new(VegetationState.HalfChopped, viewModel => viewModel.PrintHalfChopped),
-        new(VegetationState.Stumps, viewModel => viewModel.PrintStumps),
-    ];
-
     [CascadingParameter]
     public required IMudDialogInstance MudDialog { get; set; }
 
@@ -46,9 +39,4 @@ public partial class RegrowTreesDialog
         Snackbar.Add(_viewModel.Save(), Severity.Info);
         MudDialog.Close(DialogResult.Ok(true));
     }
-
-    private sealed record VegetationStateOption(
-        VegetationState State,
-        Func<RegrowTreesViewModel, string> Label
-    );
 }

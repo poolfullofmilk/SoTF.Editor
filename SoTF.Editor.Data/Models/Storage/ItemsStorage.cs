@@ -23,21 +23,15 @@ public class ItemsStorage : BaseStorage
             return supportedItems;
         }
 
-        var baseQ = itemList.Select(item => item.Value);
+        // Without A List, Anything Fitting A Shelf Or Holder
+        var candidates = itemList.Where(item =>
+            Definition.RestrictedItemIds is { Count: > 0 } restrictedItemIds
+                ? restrictedItemIds.Contains(item.Id)
+                : item.IsInventoryItem
+                    && (item.StorageMax?.Shelf > 0 || item.StorageMax?.Holder > 0)
+        );
 
-        if (Definition.RestrictedItemIds is { Count: > 0 } restrictedItemIds)
-        {
-            baseQ = baseQ.Where(item => restrictedItemIds.Contains(item.Id));
-        }
-        else
-        {
-            baseQ = baseQ.Where(item =>
-                item is { IsInventoryItem: true }
-                && (item.StorageMax?.Shelf > 0 || item.StorageMax?.Holder > 0)
-            );
-        }
-
-        foreach (var item in baseQ)
+        foreach (var item in candidates)
         {
             AddEffectiveSupportedItem(item, storageDefinition, supportedItems);
         }

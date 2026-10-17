@@ -2,97 +2,38 @@ using SoTF.Editor.Data.Models.Map.Static;
 
 namespace SoTF.Editor.Data.Models.Map;
 
-public class CaveOrBunkerPoi : DefaultGenericInformationalPoi, IPoiWithItems
+public class CaveOrBunkerPoi : DefaultGenericInformationalPoi
 {
-    private readonly HashSet<int> _inventoryItems;
     private readonly IEnumerable<Item>? _items;
     private readonly IEnumerable<string>? _objects;
 
-    private CaveOrBunkerPoi(
-        float x,
-        float y,
-        Position? teleport,
-        string title,
-        string? description,
+    public CaveOrBunkerPoi(
+        RawPoi rawPoi,
+        ItemList itemList,
         string icon,
-        IEnumerable<Item>? requirements,
-        IEnumerable<Item>? items,
         HashSet<int> inventoryItems,
-        IEnumerable<string>? objects,
-        bool isUnderground = false,
-        string? wikiLink = null
+        AreaMaskManager areaMaskManager
     )
-        : base(x, y, teleport, title, description, icon, requirements, isUnderground, wikiLink)
+        : base(rawPoi, itemList, icon, inventoryItems, areaMaskManager)
     {
-        _items = items;
-        _objects = objects;
-        _inventoryItems = inventoryItems;
+        _items = itemList.GetItems(rawPoi.Items);
+        _objects = rawPoi.Objects;
     }
 
     public string? Objects =>
         _objects == null || !_objects.Any() ? null : string.Join(", ", _objects);
 
-    public IEnumerable<ItemInInventoryWrapper>? Items =>
-        !_items?.Any() ?? false
-            ? null
-            : _items?.Select(item => new ItemInInventoryWrapper(item, HasItemInInventory(item)));
-
-    public bool HasAnyItems => Items?.Any() ?? false;
-
-    private bool HasItemInInventory(Item item)
-    {
-        return _inventoryItems.Contains(item.Id);
-    }
+    public IEnumerable<ItemInInventoryWrapper>? Items => Wrap(_items);
 
     protected override bool ShouldFilter(MapFilter mapFilter)
     {
-        return (mapFilter.ShowOnlyUncollectedItems && HasAllItemsInInventory())
+        return (mapFilter.ShowOnlyUncollectedItems && (_items?.All(Owns) ?? true))
             || base.ShouldFilter(mapFilter);
     }
 
     protected override bool FullTextFilter(string normalizedLowercaseFullText)
     {
         return base.FullTextFilter(normalizedLowercaseFullText)
-            && !AnyItemContains(normalizedLowercaseFullText);
-    }
-
-    private bool AnyItemContains(string normalizedLowercaseFullText)
-    {
-        return Items?.Any(item => item.Item.Matches(normalizedLowercaseFullText)) ?? false;
-    }
-
-    private bool HasAllItemsInInventory()
-    {
-        return _items?.All(HasItemInInventory) ?? true;
-    }
-
-    public static new CaveOrBunkerPoi Of(
-        RawPoi rawPoi,
-        ItemList itemList,
-        string icon,
-        HashSet<int> inventoryItems,
-        AreaMaskManager areaMaskManager,
-        bool enabled
-    )
-    {
-        var poi = new CaveOrBunkerPoi(
-            rawPoi.X,
-            rawPoi.Y,
-            rawPoi.Teleport?.ToPosition(areaMaskManager),
-            rawPoi.Title ?? "",
-            rawPoi.Description,
-            icon,
-            itemList.GetItems(rawPoi.Requirements),
-            itemList.GetItems(rawPoi.Items),
-            inventoryItems,
-            rawPoi.Objects,
-            rawPoi.IsUnderground,
-            rawPoi.Wiki
-        )
-        {
-            MissingRequiredItems = rawPoi.GetMissingRequiredItems(inventoryItems),
-            Enabled = enabled,
-        };
-        return poi;
+            && !(_items?.Any(item => item.Matches(normalizedLowercaseFullText)) ?? false);
     }
 }

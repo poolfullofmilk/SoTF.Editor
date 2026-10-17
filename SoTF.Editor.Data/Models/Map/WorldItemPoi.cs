@@ -17,10 +17,4 @@ public class WorldItemPoi(WorldItemState state) : BasePoi(state.Position)
         };
 
     public override string Title => State.ObjectName;
-
-    protected override bool ShouldFilter(MapFilter mapFilter)
-    {
-        return mapFilter.RequirementsFilter == MapFilter.RequirementsFilterType.InaccessibleOnly
-            || base.ShouldFilter(mapFilter);
-    }
 }

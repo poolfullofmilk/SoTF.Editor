@@ -49,7 +49,7 @@
                                Size="Size.Small"
                                StartIcon="@Icons.Material.Rounded.NearMe"
                                Disabled="@(!CanMoveToPlayer)"
-                               OnClick="() => FollowerPageViewModel.MoveToPlayer(Follower, PlayerPage.PlayerState.Pos)">
+                               OnClick="() => FollowerPageViewModel.MoveTo(Follower, PlayerPage.PlayerState.Pos)">
                         @Localizer["MoveToPlayer"]
                     </MudButton>
                     @* Move To Other *@

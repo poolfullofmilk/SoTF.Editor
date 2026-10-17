@@ -7,8 +7,9 @@ namespace SoTF.Editor.Data.Models.Storage;
 public class FoodStorage(StorageDefinition definition, ItemList itemList, int index)
     : RestrictedStorage(definition, itemList, index)
 {
-    private const int DefaultItemIdForUnselectedSlot = 436; //fish
-    private const int DefaultVariantForUnselectedSlot = 4; //dried
+    // Empty Racks Fill Up With Dried Fish
+    private const int DefaultItemIdForUnselectedSlot = 436;
+    private const int DefaultVariantForUnselectedSlot = 4;
     private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
 
     public override void SetSaveData(StorageSaveData saveData)
@@ -23,117 +24,86 @@ public class FoodStorage(StorageDefinition definition, ItemList itemList, int in
             var itemBlock in saveData.Storages.SelectMany(storageBlock => storageBlock.ItemBlocks)
         )
         {
-            if (
-                supportedItems.FirstOrDefault(supportedItem =>
-                    supportedItem.Item.Id == itemBlock.ItemId
-                )
-                is null
-            )
+            if (supportedItems.All(supportedItem => supportedItem.Item.Id != itemBlock.ItemId))
             {
                 s_logger.Warn($"Skipped Unsupported Item {itemBlock.ItemId}");
                 continue;
             }
 
+            // Every Unique Item Is One Rack Slot
             foreach (var uniqueItem in itemBlock.UniqueItems)
             {
                 if (currentSlot >= Slots.Count)
                 {
-                    var storageSlot = new StorageSlot();
-                    Slots.Add(storageSlot);
-                }
-
-                if (uniqueItem.Modules.Count == 0)
-                {
-                    Slots[currentSlot++]
-                        .StoredItems.Add(
-                            new StoredItem(null, 0, supportedItems, Definition.MaxPerSlot)
-                        );
-                    continue;
+                    Slots.Add(new StorageSlot());
                 }
 
                 var foodSpoilStorageModule = uniqueItem
                     .Modules.OfType<FoodSpoilStorageModule>()
                     .FirstOrDefault();
+                var selectedItem =
+                    foodSpoilStorageModule == null
+                        ? null
+                        : supportedItems.FirstOrDefault(itemWrapper =>
+                            itemWrapper.Item.Id == itemBlock.ItemId
+                            && (
+                                itemWrapper.FoodSpoilStorageModuleWrapper?.FoodSpoilStorageModule.IsEqualTo(
+                                    foodSpoilStorageModule
+                                ) ?? false
+                            )
+                        );
 
-                var selectedItem = supportedItems.FirstOrDefault(itemWrapper =>
-                    itemWrapper.Item.Id == itemBlock.ItemId
-                    && foodSpoilStorageModule != null
-                    && (
-                        itemWrapper.FoodSpoilStorageModuleWrapper?.FoodSpoilStorageModule.IsEqualTo(
-                            foodSpoilStorageModule
-                        ) ?? false
-                    )
-                );
-
-                var storedItem = new StoredItem(
-                    selectedItem,
-                    selectedItem == null ? 0 : 1,
-                    supportedItems,
-                    Definition.MaxPerSlot,
-                    [uniqueItem]
-                );
-                Slots[currentSlot++].StoredItems.Add(storedItem);
+                Slots[currentSlot++]
+                    .StoredItems.Add(
+                        uniqueItem.Modules.Count == 0
+                            ? new StoredItem(null, 0, supportedItems, Definition.MaxPerSlot)
+                            : new StoredItem(
+                                selectedItem,
+                                selectedItem == null ? 0 : 1,
+                                supportedItems,
+                                Definition.MaxPerSlot,
+                                [uniqueItem]
+                            )
+                    );
             }
         }
 
-        foreach (var storageSlot in Slots)
+        foreach (var storageSlot in Slots.Where(slot => slot.StoredItems.Count == 0))
         {
-            if (storageSlot.StoredItems.Count != 0)
-            {
-                continue;
-            }
-
-            var storedItem = new StoredItem(null, 0, supportedItems, Definition.MaxPerSlot);
-            storageSlot.StoredItems.Add(storedItem);
+            storageSlot.StoredItems.Add(
+                new StoredItem(null, 0, supportedItems, Definition.MaxPerSlot)
+            );
         }
     }
 
     public override StorageSaveData ToStorageSaveData()
     {
-        var storageSaveData = new StorageSaveData { Id = Definition.Id, Storages = [] };
-
-        var groupedByItemIds = Slots
-            .SelectMany(slot => slot.StoredItems)
-            .Where(item => item is { Count: > 0, SelectedItem: not null })
-            .GroupBy(item => item.SelectedItem?.Item.Id ?? -1)
-            .ToDictionary(items => items.Key, items => items.ToList());
-
-        var storageBlock = new StorageBlock
+        // One Item Block Per Food, One Unique Item Per Slot
+        var storageBlock = new StorageBlock();
+        foreach (
+            var group in Slots
+                .SelectMany(slot => slot.StoredItems)
+                .Where(item => item is { Count: > 0, SelectedItem: not null })
+                .GroupBy(item => item.SelectedItem!.Item.Id)
+        )
         {
-            ItemBlocks = new List<StorageItemBlock>(groupedByItemIds.Keys.Count),
-        };
-        storageSaveData.Storages.Add(storageBlock);
-
-        foreach (var grouped in groupedByItemIds)
-        {
-            if (grouped.Key == -1)
-            {
-                continue;
-            }
-
-            var storageItemBlock = new StorageItemBlock
-            {
-                TotalCount = grouped.Value.Count,
-                ItemId = grouped.Key,
-                UniqueItems = new List<UniqueItem>(grouped.Value.Count),
-            };
-
-            foreach (var storedItem in grouped.Value)
-            {
-                if (storedItem.Count == 0 || storedItem.SelectedItem is not { } selectedItem)
+            storageBlock.ItemBlocks.Add(
+                new StorageItemBlock
                 {
-                    continue;
+                    TotalCount = group.Count(),
+                    ItemId = group.Key,
+                    UniqueItems =
+                    [
+                        .. group.Select(storedItem => new UniqueItem
+                        {
+                            Modules = SelectModules(storedItem, storedItem.SelectedItem!),
+                        }),
+                    ],
                 }
-
-                var modules = SelectModules(storedItem, selectedItem);
-
-                storageItemBlock.UniqueItems.Add(new UniqueItem { Modules = modules });
-            }
-
-            storageBlock.ItemBlocks.Add(storageItemBlock);
+            );
         }
 
-        return storageSaveData;
+        return new StorageSaveData { Id = Definition.Id, Storages = [storageBlock] };
     }
 
     private static List<IStorageModule> SelectModules(
@@ -141,83 +111,52 @@ public class FoodStorage(StorageDefinition definition, ItemList itemList, int in
         ItemWrapper selectedItem
     )
     {
-        var hasFoodSpoilModule = false;
-        var hasSourceActorModule = false;
-        var storedModules =
+        var chosenFoodModule = selectedItem.FoodSpoilStorageModuleWrapper?.FoodSpoilStorageModule;
+        var modules =
             storedItem
-                .Modules?.Where(module => !ModuleShouldBeFiltered(selectedItem, module))
+                .Modules?.Where(module =>
+                    module switch
+                    {
+                        FoodSpoilStorageModule => selectedItem.Item.FoodSpoilModuleDefinition
+                            != null,
+                        SourceActorStorageModule => selectedItem.Item.SourceActorModuleDefinition
+                            != null,
+                        _ => true,
+                    }
+                )
                 .Select(module =>
-                {
-                    switch (module)
-                    {
-                        case FoodSpoilStorageModule:
-                            hasFoodSpoilModule = true;
-                            break;
-                        case SourceActorStorageModule:
-                            hasSourceActorModule = true;
-                            break;
-                    }
-
-                    if (module is not FoodSpoilStorageModule foodSpoilStorageModule)
-                    {
-                        return module;
-                    }
-
-                    var newFoodSpoilStorageModule = selectedItem
-                        .FoodSpoilStorageModuleWrapper
-                        ?.FoodSpoilStorageModule;
                     // Only Another Food State Swaps The Module, Its Timer Stays
-                    if (
-                        newFoodSpoilStorageModule != null
-                        && !foodSpoilStorageModule.IsEqualTo(newFoodSpoilStorageModule)
-                    )
-                    {
-                        return newFoodSpoilStorageModule;
-                    }
-
-                    return foodSpoilStorageModule;
-                })
+                    module is FoodSpoilStorageModule foodModule
+                    && chosenFoodModule != null
+                    && !foodModule.IsEqualTo(chosenFoodModule)
+                        ? chosenFoodModule
+                        : module
+                )
                 .ToList()
             ?? [];
 
         if (
             selectedItem.Item.FoodSpoilModuleDefinition is { } foodSpoilModuleDefinition
-            && !hasFoodSpoilModule
+            && !modules.OfType<FoodSpoilStorageModule>().Any()
         )
         {
-            storedModules.Add(
-                selectedItem.FoodSpoilStorageModuleWrapper?.FoodSpoilStorageModule
-                    ?? foodSpoilModuleDefinition.BuildNewModuleWithDefaults()
-            );
+            modules.Add(chosenFoodModule ?? foodSpoilModuleDefinition.BuildNewModuleWithDefaults());
         }
 
         if (
             selectedItem.Item.SourceActorModuleDefinition is { } sourceActorModuleDefinition
-            && !hasSourceActorModule
+            && !modules.OfType<SourceActorStorageModule>().Any()
         )
         {
-            storedModules.Add(sourceActorModuleDefinition.BuildNewModuleWithDefaults());
+            modules.Add(sourceActorModuleDefinition.BuildNewModuleWithDefaults());
         }
 
-        return storedModules;
-    }
-
-    private static bool ModuleShouldBeFiltered(ItemWrapper selectedItem, IStorageModule module)
-    {
-        return (
-                module is FoodSpoilStorageModule
-                && !selectedItem.Item.HasFoodSpoilModuleDefinition()
-            )
-            || (
-                module is SourceActorStorageModule
-                && !selectedItem.Item.HasSourceActorModuleDefinition()
-            );
+        return modules;
     }
 
     public override void SetAllToMax()
     {
-        foreach (var slot in Slots)
-        foreach (var storedItem in slot.StoredItems)
+        foreach (var storedItem in Slots.SelectMany(slot => slot.StoredItems))
         {
             if (!storedItem.HasItem() && storedItem.SupportedItems.Count > 0)
             {
@@ -227,9 +166,9 @@ public class FoodStorage(StorageDefinition definition, ItemList itemList, int in
                         is { CurrentState: DefaultVariantForUnselectedSlot }
                 );
             }
-            else if (storedItem.HasItem())
+            else
             {
-                storedItem.Count = storedItem.Max;
+                storedItem.SetToMax();
             }
         }
     }

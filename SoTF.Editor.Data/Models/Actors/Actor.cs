@@ -19,7 +19,6 @@ public class Actor
     [JsonIgnore]
     public string StatePrintable => AppText.Get(TextKeys.ActorState(State), $"??? ({State})");
 
-    public int VariationId { get; set; }
     public Dictionary<string, float>? Stats { get; set; }
     public int TypeId { get; set; }
     public int UniqueId { get; set; }

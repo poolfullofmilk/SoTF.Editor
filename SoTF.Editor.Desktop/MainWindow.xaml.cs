@@ -98,10 +98,13 @@ public partial class MainWindow : Window
         }
 
         // Serve Only Savegame Thumbnails
-        if (
-            !File.Exists(path)
-            || Path.GetExtension(path).ToLowerInvariant() is not (".png" or ".jpg" or ".jpeg")
-        )
+        var contentType = Path.GetExtension(path).ToLowerInvariant() switch
+        {
+            ".png" => "image/png",
+            ".jpg" or ".jpeg" => "image/jpeg",
+            _ => null,
+        };
+        if (contentType == null || !File.Exists(path))
         {
             eventArgs.Response = browser.Environment.CreateWebResourceResponse(
                 null,
@@ -112,9 +115,6 @@ public partial class MainWindow : Window
             return;
         }
 
-        var contentType = Path.GetExtension(path).Equals(".png", StringComparison.OrdinalIgnoreCase)
-            ? "image/png"
-            : "image/jpeg";
         eventArgs.Response = browser.Environment.CreateWebResourceResponse(
             new MemoryStream(File.ReadAllBytes(path)),
             200,

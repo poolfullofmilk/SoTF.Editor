@@ -9,7 +9,9 @@ namespace SoTF.Editor.Services.Actors;
 
 internal static class ActorCreator
 {
-    public static KeyValuePair<int, JToken>? CreateFollower(
+    private static readonly string s_template = ResourceFile.Read("ActorTemplate.txt");
+
+    public static (int UniqueId, JToken Actor)? CreateFollower(
         int typeId,
         JToken vailWorldSim,
         Position pos
@@ -21,25 +23,27 @@ internal static class ActorCreator
         }
 
         var uniqueId = GetNextFreeUniqueId(UniqueIdsOf(vailWorldSim));
-
-        var templateText = ResourceFile
-            .Read("ActorTemplate.txt")
-            .Replace("{uniqueId}", uniqueId.ToString())
-            .Replace("{typeId}", typeId.ToString())
-            .Replace("{actorSeed}", Random.Shared.Next().ToString());
-        var actorTemplate = JToken.Parse(templateText);
-
-        actorTemplate["Position"] = JToken.FromObject(pos);
-        actorTemplate["GraphMask"] = pos.Area.GraphMask;
-
+        var actor = NewActor(uniqueId, typeId, Random.Shared.Next(), pos);
         if (typeId == VirginiaTypeId)
         {
-            actorTemplate["NextGiftTime"] = 1000f;
+            actor["NextGiftTime"] = 1000f;
         }
 
-        actorArray.Add(actorTemplate);
+        actorArray.Add(actor);
+        return (uniqueId, actor);
+    }
 
-        return new KeyValuePair<int, JToken>(uniqueId, actorTemplate);
+    private static JToken NewActor(int uniqueId, int typeId, int actorSeed, Position pos)
+    {
+        var actor = JToken.Parse(
+            s_template
+                .Replace("{uniqueId}", uniqueId.ToString())
+                .Replace("{typeId}", typeId.ToString())
+                .Replace("{actorSeed}", actorSeed.ToString())
+        );
+        actor["Position"] = JToken.FromObject(pos);
+        actor["GraphMask"] = pos.Area.GraphMask;
+        return actor;
     }
 
     private static int GetNextFreeUniqueId(HashSet<int> allUniqueIds, int uniqueId = 1)
@@ -72,60 +76,39 @@ internal static class ActorCreator
         SpawnPattern spawnPattern
     )
     {
-        var newUniqueIds = new HashSet<int>();
-
         if (vailWorldSim["Actors"] is not JArray actorArray)
         {
-            return newUniqueIds;
+            return [];
         }
 
-        var allUniqueIds = UniqueIdsOf(vailWorldSim);
-
-        var templateText = ResourceFile
-            .Read("ActorTemplate.txt")
-            .Replace("{uniqueId}", "0")
-            .Replace("{typeId}", actorType.Id.ToString())
-            .Replace("{actorSeed}", "0");
-        var actorTemplate = JToken.Parse(templateText);
-
-        actorTemplate["Position"] = JToken.FromObject(position);
+        var actorTemplate = NewActor(0, actorType.Id, 0, position);
         if (familyId != null)
         {
             actorTemplate["FamilyId"] = familyId;
         }
 
-        actorTemplate["GraphMask"] = position.Area.GraphMask;
+        // Spread Out Only With Room, Else All On The Spot
+        var coordinates =
+            spaceBetween > 0 && spawnCount > 0
+                ? position.DistributeCoordinates(spawnCount, spaceBetween, spawnPattern)
+                : [];
 
+        var allUniqueIds = UniqueIdsOf(vailWorldSim);
+        var newUniqueIds = new HashSet<int>();
         var nextUniqueId = 1;
-
-        List<Tuple<float, float>>? distributedCoordinates = null;
-
-        if (spaceBetween > 0 && spawnCount > 0)
-        {
-            distributedCoordinates = position.DistributeCoordinates(
-                spawnCount,
-                spaceBetween,
-                spawnPattern
-            );
-        }
-
         for (var spawned = 0; spawned < spawnCount; spawned++)
         {
             var cloned = actorTemplate.DeepClone();
-
             nextUniqueId = GetNextFreeUniqueId(allUniqueIds, nextUniqueId);
             allUniqueIds.Add(nextUniqueId);
             newUniqueIds.Add(nextUniqueId);
             cloned["UniqueId"] = nextUniqueId;
             cloned["ActorSeed"] = Random.Shared.Next();
 
-            if (distributedCoordinates != null)
+            if (spawned < coordinates.Count)
             {
-                if (spawned < distributedCoordinates.Count)
-                {
-                    var (newX, newZ) = distributedCoordinates[spawned];
-                    cloned["Position"] = JToken.FromObject(new Position(newX, position.Y, newZ));
-                }
+                var (newX, newZ) = coordinates[spawned];
+                cloned["Position"] = JToken.FromObject(new Position(newX, position.Y, newZ));
             }
 
             actorArray.Add(cloned);

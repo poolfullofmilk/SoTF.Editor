@@ -11,24 +11,9 @@ public class Area(string name, int areaMask, int graphMask)
         return AreaMask != 0;
     }
 
-    private bool Equals(Area other)
-    {
-        return AreaMask == other.AreaMask && GraphMask == other.GraphMask;
-    }
-
     public override bool Equals(object? obj)
     {
-        if (obj is null)
-        {
-            return false;
-        }
-
-        if (ReferenceEquals(this, obj))
-        {
-            return true;
-        }
-
-        return obj.GetType() == GetType() && Equals((Area)obj);
+        return obj is Area other && AreaMask == other.AreaMask && GraphMask == other.GraphMask;
     }
 
     public override int GetHashCode()

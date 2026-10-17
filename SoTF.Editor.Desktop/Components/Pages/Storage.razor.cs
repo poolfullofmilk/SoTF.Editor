@@ -50,24 +50,4 @@ public partial class Storage : EditorPageBase
         _fillItem = item;
         _fillCount = item?.Max ?? 1;
     }
-
-    private static Position? PositionOf(IStorage storage)
-    {
-        return storage switch
-        {
-            BaseStorage baseStorage => baseStorage.Pos,
-            AdvancedItemsStorage advancedItemsStorage => advancedItemsStorage.Pos,
-            _ => null,
-        };
-    }
-
-    private static List<ItemWrapper> SupportedItemsOf(IStorage storage)
-    {
-        return storage switch
-        {
-            BaseStorage baseStorage => baseStorage.SupportedItems,
-            AdvancedItemsStorage advancedItemsStorage => advancedItemsStorage.SupportedItems,
-            _ => [],
-        };
-    }
 }

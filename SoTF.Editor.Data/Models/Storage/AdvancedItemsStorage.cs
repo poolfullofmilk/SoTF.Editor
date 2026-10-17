@@ -20,8 +20,7 @@ public class AdvancedItemsStorage : IStorage
 
         for (var slotNumber = 0; slotNumber < definition.Slots.Count; slotNumber++)
         {
-            var storageSlot = new StorageSlot();
-            Slots.Add(storageSlot);
+            Slots.Add(new StorageSlot());
         }
     }
 
@@ -85,16 +84,10 @@ public class AdvancedItemsStorage : IStorage
         {
             var slot = Slots[slotNumber];
             slot.StoredItems.Clear();
-            if (storedItems.GetValueOrDefault(slotNumber) is { } storedItem)
-            {
-                slot.StoredItems.Add(storedItem);
-            }
-            else
-            {
-                var supportedItems = GetSupportedItems(slotNumber);
-                var emptyStoredItem = new StoredItem(null, 0, supportedItems, null);
-                slot.StoredItems.Add(emptyStoredItem);
-            }
+            slot.StoredItems.Add(
+                storedItems.GetValueOrDefault(slotNumber)
+                    ?? new StoredItem(null, 0, GetSupportedItems(slotNumber), null)
+            );
         }
     }
 
@@ -159,17 +152,9 @@ public class AdvancedItemsStorage : IStorage
 
     public void SetAllToMax()
     {
-        foreach (var slot in Slots)
-        foreach (var storedItem in slot.StoredItems)
+        foreach (var storedItem in Slots.SelectMany(slot => slot.StoredItems))
         {
-            if (!storedItem.HasItem() && storedItem.SupportedItems.Count == 1)
-            {
-                storedItem.SelectedItem = storedItem.SupportedItems[0];
-            }
-            else if (storedItem.HasItem())
-            {
-                storedItem.Count = storedItem.Max;
-            }
+            storedItem.Fill();
         }
     }
 
@@ -207,25 +192,19 @@ public class AdvancedItemsStorage : IStorage
 
     private List<ItemWrapper> GetSupportedItems(int slotIndex)
     {
-        var itemWrappers = new List<ItemWrapper>();
-
         if (slotIndex >= _definition.Slots.Count)
         {
             s_logger.Warn($"Skipped Extra Slots For {_definition.Name} ({_definition.Id})");
-            return itemWrappers;
+            return [];
         }
 
-        var slotDefinition = _definition.Slots[slotIndex];
-
-        foreach (var (itemId, max) in slotDefinition.RestrictedItems)
+        List<ItemWrapper> itemWrappers = [];
+        foreach (var (itemId, max) in _definition.Slots[slotIndex].RestrictedItems)
         {
-            var item = _items.GetItem(itemId);
-            if (item == null)
+            if (_items.GetItem(itemId) is { } item)
             {
-                continue;
+                itemWrappers.Add(new ItemWrapper(item, max));
             }
-
-            itemWrappers.Add(new ItemWrapper(item, max));
         }
 
         return itemWrappers;
@@ -233,21 +212,17 @@ public class AdvancedItemsStorage : IStorage
 
     private int? GetSlotIndex(int currentSlot)
     {
-        if (_definition.Id != 58) //58 = Advanced Log Sled, fix for Rabbit Holders
+        // The Advanced Log Sled Saves Its Rabbit Holders In Pairs
+        if (_definition.Id != 58)
         {
             return currentSlot;
         }
 
-        if (currentSlot <= 10)
-        {
-            return (currentSlot - 1) / 2;
-        }
-
-        return null;
+        return currentSlot <= 10 ? (currentSlot - 1) / 2 : null;
     }
 
     private int GetTotalStored()
     {
-        return Slots.Select(item => item.GetTotalStored()).Sum();
+        return Slots.Sum(slot => slot.GetTotalStored());
     }
 }

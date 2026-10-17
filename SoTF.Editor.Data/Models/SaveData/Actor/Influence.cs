@@ -13,22 +13,10 @@ public class Influence
 
     public required string TypeId { get; init; }
 
-    [JsonIgnore]
     public static IEnumerable<string> AllTypes => [Type.Player, Type.Cannibal, Type.Creepy];
 
     [JsonIgnore]
     public string PrintableTypeId => AppText.Get(TextKeys.Influence(TypeId));
-
-    public static Influence AsFillerWithDefaults(string typeId)
-    {
-        return new Influence
-        {
-            Anger = 0,
-            Fear = 0,
-            Sentiment = 0,
-            TypeId = typeId,
-        };
-    }
 
     public static class Type
     {

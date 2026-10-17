@@ -8,26 +8,12 @@ public class StorageItemBlock
     public int TotalCount { get; init; }
     public List<UniqueItem> UniqueItems { get; init; } = [];
 
-    private bool Equals(StorageItemBlock other)
-    {
-        return ItemId == other.ItemId
-            && TotalCount == other.TotalCount
-            && UniqueItems.SequenceEqual(other.UniqueItems);
-    }
-
     public override bool Equals(object? obj)
     {
-        if (obj is null)
-        {
-            return false;
-        }
-
-        if (ReferenceEquals(this, obj))
-        {
-            return true;
-        }
-
-        return obj.GetType() == GetType() && Equals((StorageItemBlock)obj);
+        return obj is StorageItemBlock other
+            && ItemId == other.ItemId
+            && TotalCount == other.TotalCount
+            && UniqueItems.SequenceEqual(other.UniqueItems);
     }
 
     public override int GetHashCode()

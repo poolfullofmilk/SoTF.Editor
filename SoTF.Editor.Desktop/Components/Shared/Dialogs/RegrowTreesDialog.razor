@@ -11,15 +11,15 @@
                          ValueChanged="value => _viewModel.VegetationStateIsAllSelected = value"
                          Color="Color.Info"
                          Label="@_viewModel.PrintAll" />
-            @foreach (var state in s_states)
+            @foreach (var state in RegrowTreesViewModel.States)
             {
                 @* State *@
                 <MudCheckBox T="bool"
-                             Value="_viewModel.VegetationStateSelected.HasFlag(state.State)"
-                             ValueChanged="value => Toggle(state.State, value)"
+                             Value="_viewModel.VegetationStateSelected.HasFlag(state)"
+                             ValueChanged="value => Toggle(state, value)"
                              Color="Color.Info"
                              Class="ml-6"
-                             Label="@state.Label(_viewModel)" />
+                             Label="@_viewModel.Label(state)" />
             }
             @* Percent *@
             <MudSlider T="int"

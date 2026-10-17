@@ -6,49 +6,29 @@ using SoTF.Editor.Services.Pages;
 
 namespace SoTF.Editor.Services.Map;
 
-public class MapTeleportWindowViewModel
+public class MapTeleportWindowViewModel(
+    BasePoi destination,
+    TeleportTarget teleportTarget,
+    AreaMaskManager areaMaskManager
+)
 {
-    private readonly BasePoi _destination;
+    public Area SelectedArea { get; set; } = destination.Position?.Area ?? AreaMaskManager.Surface;
 
-    private readonly TeleportTarget _teleportTarget;
+    public float XOffset { get; set; } = destination.TeleportationOffset;
 
-    public MapTeleportWindowViewModel(
-        BasePoi destination,
-        TeleportTarget teleportTarget,
-        AreaMaskManager areaMaskManager
-    )
-    {
-        _destination = destination;
-        _teleportTarget = teleportTarget;
-        X = destination.Position?.X ?? destination.X;
-        Y = destination.Position?.Y ?? 0;
-        Z = destination.Position?.Z ?? destination.Z;
+    public float YOffset { get; set; } = destination.TeleportationOffset;
 
-        destination.GetTeleportationOffset(out var xOffset, out var yOffset, out var zOffset);
-        XOffset = xOffset;
-        YOffset = yOffset;
-        ZOffset = zOffset;
+    public float ZOffset { get; set; } = destination.TeleportationOffset;
 
-        Areas = [.. areaMaskManager.GetAllAreas().OrderBy(area => area.Name)];
-        SelectedArea = destination.Position?.Area ?? AreaMaskManager.Surface;
-    }
+    public List<Area> Areas { get; } =
+    [.. areaMaskManager.GetAllAreas().OrderBy(area => area.Name)];
 
-    public Area SelectedArea { get; set; }
+    public float X { get; } = destination.Position?.X ?? destination.X;
+    public float Y { get; } = destination.Position?.Y ?? 0;
+    public float Z { get; } = destination.Position?.Z ?? destination.Z;
 
-    public float XOffset { get; set; }
-
-    public float YOffset { get; set; }
-
-    public float ZOffset { get; set; }
-
-    public List<Area> Areas { get; }
-
-    public float X { get; }
-    public float Y { get; }
-    public float Z { get; }
-
-    public string Target => AppText.Get(TextKeys.TeleportTarget(_teleportTarget));
-    public string Destination => _destination.Title;
+    public string Target => AppText.Get(TextKeys.TeleportTarget(teleportTarget));
+    public string Destination => destination.Title;
 
     public void DoTeleport(PlayerState playerState, FollowerPageViewModel followers)
     {
@@ -57,7 +37,7 @@ public class MapTeleportWindowViewModel
             Area = SelectedArea,
         };
 
-        switch (_teleportTarget)
+        switch (teleportTarget)
         {
             case TeleportTarget.Kelvin:
                 followers.KelvinState.Pos = newPosition;

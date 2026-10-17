@@ -14,154 +14,144 @@ public class FollowerModifier(SaveDataWrapper saveDataWrapper)
 {
     public bool Revive(int typeId, HashSet<int> itemIds, Outfit? outfit, Position pos)
     {
-        var vailWorldSim = saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.VailWorldSim);
-        if (vailWorldSim == null)
+        if (
+            saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.VailWorldSim)
+            is not { } vailWorldSim
+        )
         {
             return false;
         }
 
-        var hasChangesInVailWorldSim = false;
-        var hasChangesInNpcItemInstances = false;
+        var actorsByUniqueId = (vailWorldSim["Actors"] ?? Enumerable.Empty<JToken>())
+            .Where(actor =>
+                actor["TypeId"]?.Value<int>() == typeId && actor["UniqueId"]?.Value<int>() != null
+            )
+            .ToDictionary(actor => actor["UniqueId"]!.Value<int>());
 
-        Dictionary<int, JToken> uniqueIdToActorTokenForType = [];
-
-        foreach (var actor in vailWorldSim["Actors"] ?? Enumerable.Empty<JToken>())
+        var vailWorldSimChanged = false;
+        foreach (var (uniqueId, actor) in actorsByUniqueId)
         {
-            var actorTypeId = actor["TypeId"]?.Value<int>();
-            if (actorTypeId != typeId)
-            {
-                continue;
-            }
-
-            if (actor["UniqueId"]?.Value<int>() is not { } actorUniqueId)
-            {
-                continue;
-            }
-
-            uniqueIdToActorTokenForType.Add(actorUniqueId, actor);
-        }
-
-        foreach (var (uniqueId, actor) in uniqueIdToActorTokenForType)
-        {
-            hasChangesInVailWorldSim =
-                JsonModifier.CompareAndModify(actor["State"], StateAlive)
-                || hasChangesInVailWorldSim;
-
+            vailWorldSimChanged |= JsonModifier.CompareAndModify(actor["State"], StateAlive);
             if (actor["Stats"] is { } stats)
             {
-                hasChangesInVailWorldSim =
-                    JsonModifier.CompareAndModify(stats, "Health", f => f < FullHealth, FullHealth)
-                    || hasChangesInVailWorldSim;
-                hasChangesInVailWorldSim =
-                    JsonModifier.CompareAndModify(
-                        stats,
-                        "Hydration",
-                        f => f < FullHydration,
-                        FullHydration
-                    ) || hasChangesInVailWorldSim;
-                hasChangesInVailWorldSim =
-                    JsonModifier.CompareAndModify(stats, "Energy", f => f < FullEnergy, FullEnergy)
-                    || hasChangesInVailWorldSim;
-                hasChangesInVailWorldSim =
-                    JsonModifier.CompareAndModify(
-                        stats,
-                        "Affection",
-                        f => f < FullAffection,
-                        FullAffection
-                    ) || hasChangesInVailWorldSim;
-                hasChangesInVailWorldSim =
-                    JsonModifier.CompareAndModify(stats, "Fear", f => f > NoFear, NoFear)
-                    || hasChangesInVailWorldSim;
+                vailWorldSimChanged |= JsonModifier.CompareAndModify(
+                    stats,
+                    "Health",
+                    value => value < FullHealth,
+                    FullHealth
+                );
+                vailWorldSimChanged |= JsonModifier.CompareAndModify(
+                    stats,
+                    "Hydration",
+                    value => value < FullHydration,
+                    FullHydration
+                );
+                vailWorldSimChanged |= JsonModifier.CompareAndModify(
+                    stats,
+                    "Energy",
+                    value => value < FullEnergy,
+                    FullEnergy
+                );
+                vailWorldSimChanged |= JsonModifier.CompareAndModify(
+                    stats,
+                    "Affection",
+                    value => value < FullAffection,
+                    FullAffection
+                );
+                vailWorldSimChanged |= JsonModifier.CompareAndModify(
+                    stats,
+                    "Fear",
+                    value => value > NoFear,
+                    NoFear
+                );
             }
 
-            hasChangesInVailWorldSim =
-                ResetPlayerInfluence(vailWorldSim, uniqueId) || hasChangesInVailWorldSim;
+            vailWorldSimChanged |= ResetPlayerInfluence(vailWorldSim, uniqueId);
         }
 
-        hasChangesInVailWorldSim =
-            ResetPlayerKillStatsForType(typeId, vailWorldSim) || hasChangesInVailWorldSim;
+        vailWorldSimChanged |= ResetPlayerKillStatsForType(typeId, vailWorldSim);
 
-        if (uniqueIdToActorTokenForType.Count == 0)
+        // A Follower Gone From The Save Is Created Anew
+        if (
+            actorsByUniqueId.Count == 0
+            && ActorCreator.CreateFollower(typeId, vailWorldSim, pos) is (var newId, var newActor)
+        )
         {
-            if (ActorCreator.CreateFollower(typeId, vailWorldSim, pos) is { } created)
-            {
-                uniqueIdToActorTokenForType.Add(created.Key, created.Value);
-                AddInfluencesForNewFollower(vailWorldSim, created.Key);
-                hasChangesInVailWorldSim = true;
-            }
+            actorsByUniqueId.Add(newId, newActor);
+            AddInfluencesForNewFollower(vailWorldSim, newId);
+            vailWorldSimChanged = true;
         }
 
-        foreach (var (uniqueId, actor) in uniqueIdToActorTokenForType)
+        var npcItemInstancesChanged = false;
+        foreach (var (uniqueId, actor) in actorsByUniqueId)
         {
-            hasChangesInVailWorldSim =
-                EquipItemsInActor(actor, itemIds) || hasChangesInVailWorldSim;
-            hasChangesInNpcItemInstances =
-                EquipItemsInNpcItemInstances(uniqueId, itemIds) || hasChangesInNpcItemInstances;
-
-            hasChangesInVailWorldSim = EquipOutfit(actor, outfit) || hasChangesInVailWorldSim;
+            vailWorldSimChanged |= EquipItemsInActor(actor, itemIds);
+            npcItemInstancesChanged |= EquipItemsInNpcItemInstances(uniqueId, itemIds);
+            vailWorldSimChanged |= EquipOutfit(actor, outfit);
         }
 
-        if (hasChangesInVailWorldSim)
+        return MarkModified(vailWorldSimChanged, npcItemInstancesChanged);
+    }
+
+    private bool MarkModified(bool vailWorldSimChanged, bool npcItemInstancesChanged)
+    {
+        if (vailWorldSimChanged)
         {
             saveDataWrapper.MarkAsModified(Constants.JsonKeys.VailWorldSim);
         }
 
-        if (hasChangesInNpcItemInstances)
+        if (npcItemInstancesChanged)
         {
             saveDataWrapper.MarkAsModified(Constants.JsonKeys.NpcItemInstances);
         }
 
-        return hasChangesInVailWorldSim || hasChangesInNpcItemInstances;
+        return vailWorldSimChanged || npcItemInstancesChanged;
     }
 
     private static void AddInfluencesForNewFollower(JToken vailWorldSim, int uniqueId)
     {
-        AddInfluences(
-            vailWorldSim,
-            uniqueId,
-            [
-                new Influence
-                {
-                    TypeId = Influence.Type.Player,
-                    Anger = NoAnger,
-                    Fear = NoFear,
-                    Sentiment = FullSentiment,
-                },
-                new Influence
-                {
-                    TypeId = Influence.Type.Cannibal,
-                    Anger = FullAnger,
-                    Fear = FullFear,
-                    Sentiment = LowestSentiment,
-                },
-                new Influence
-                {
-                    TypeId = Influence.Type.Creepy,
-                    Anger = FullAnger,
-                    Fear = FullFear,
-                    Sentiment = LowestSentiment,
-                },
-            ]
-        );
-    }
-
-    private static void AddInfluences(JToken vailWorldSim, int uniqueId, List<Influence> influences)
-    {
-        if (vailWorldSim["InfluenceMemory"] is not JArray influenceMemoryToken)
+        if (vailWorldSim["InfluenceMemory"] is not JArray influenceMemory)
         {
-            influenceMemoryToken = [];
-            vailWorldSim["InfluenceMemory"] = influenceMemoryToken;
+            influenceMemory = [];
+            vailWorldSim["InfluenceMemory"] = influenceMemory;
         }
 
-        influenceMemoryToken.Add(JToken.FromObject(new InfluenceMemory(uniqueId, influences)));
+        // A New Follower Likes The Player And Fears Everyone Else
+        influenceMemory.Add(
+            JToken.FromObject(
+                new InfluenceMemory(
+                    uniqueId,
+                    [
+                        new Influence
+                        {
+                            TypeId = Influence.Type.Player,
+                            Anger = NoAnger,
+                            Fear = NoFear,
+                            Sentiment = FullSentiment,
+                        },
+                        new Influence
+                        {
+                            TypeId = Influence.Type.Cannibal,
+                            Anger = FullAnger,
+                            Fear = FullFear,
+                            Sentiment = LowestSentiment,
+                        },
+                        new Influence
+                        {
+                            TypeId = Influence.Type.Creepy,
+                            Anger = FullAnger,
+                            Fear = FullFear,
+                            Sentiment = LowestSentiment,
+                        },
+                    ]
+                )
+            )
+        );
     }
 
     private static bool EquipItemsInActor(JToken actor, HashSet<int> itemIds)
     {
-        var oldEquippedItemsToken = actor["EquippedItems"];
-        var usedOldItemIds = oldEquippedItemsToken?.ToObject<HashSet<int>>() ?? [];
-
-        if (itemIds.SetEquals(usedOldItemIds))
+        if (itemIds.SetEquals(actor["EquippedItems"]?.ToObject<HashSet<int>>() ?? []))
         {
             return false;
         }
@@ -181,17 +171,16 @@ public class FollowerModifier(SaveDataWrapper saveDataWrapper)
         }
 
         var hasChanges = false;
-
         if (npcItemInstances["ActorItems"] == null)
         {
             npcItemInstances["ActorItems"] = new JArray();
             hasChanges = true;
         }
 
-        var actorItemsForActor = (
-            npcItemInstances["ActorItems"]?.Children() ?? Enumerable.Empty<JToken>()
-        ).FirstOrDefault(token => token["UniqueId"]?.Value<int>() == uniqueId);
-
+        var actorItems = npcItemInstances["ActorItems"]!;
+        var actorItemsForActor = actorItems
+            .Children()
+            .FirstOrDefault(token => token["UniqueId"]?.Value<int>() == uniqueId);
         if (actorItemsForActor is null)
         {
             actorItemsForActor = new JObject
@@ -200,9 +189,9 @@ public class FollowerModifier(SaveDataWrapper saveDataWrapper)
                 ["Items"] = new JObject { ["Version"] = "0.0.0", ["ItemBlocks"] = new JArray() },
             };
 
-            if (npcItemInstances["ActorItems"] is JArray actorItems)
+            if (actorItems is JArray actorItemsArray)
             {
-                actorItems.Add(actorItemsForActor);
+                actorItemsArray.Add(actorItemsForActor);
                 hasChanges = true;
             }
         }
@@ -212,21 +201,25 @@ public class FollowerModifier(SaveDataWrapper saveDataWrapper)
             return hasChanges;
         }
 
-        var actorItemsToBeRemoved = itemBlocks
-            .Where(token =>
-                token["ItemId"]?.Value<int>() is { } itemId && !itemIds.Contains(itemId)
-            )
-            .ToList();
-        actorItemsToBeRemoved.ForEach(token => token.Remove());
-        hasChanges = actorItemsToBeRemoved.Count > 0 || hasChanges;
+        // Unequipped Items Leave, Every Kept Block Holds At Least One
+        foreach (
+            var itemBlock in itemBlocks
+                .Where(token =>
+                    token["ItemId"]?.Value<int>() is { } itemId && !itemIds.Contains(itemId)
+                )
+                .ToList()
+        )
+        {
+            itemBlock.Remove();
+            hasChanges = true;
+        }
 
         var itemIdsExisting = new HashSet<int>();
-
         foreach (var itemBlock in itemBlocks)
         {
             if (itemBlock["TotalCount"] is { } totalCountToken && totalCountToken.Value<int>() < 1)
             {
-                itemBlock["TotalCount"]?.Replace(1);
+                totalCountToken.Replace(1);
                 hasChanges = true;
             }
 
@@ -247,33 +240,21 @@ public class FollowerModifier(SaveDataWrapper saveDataWrapper)
 
     private static bool EquipOutfit(JToken actor, Outfit? outfit)
     {
+        // The Game Leaves Out The Default Outfit
         var outfitIdToken = actor["OutfitId"];
-        var oldOutfitId = outfitIdToken?.Value<int>() ?? 0;
         var newOutfitId = outfit?.Id ?? 0;
-
-        if (oldOutfitId == newOutfitId)
+        if ((outfitIdToken?.Value<int>() ?? 0) == newOutfitId)
         {
             return false;
         }
 
         if (newOutfitId == 0)
         {
-            actor
-                .Children<JToken>()
-                .OfType<JProperty>()
-                .FirstOrDefault(token => token.Name == "OutfitId")
-                ?.Remove();
+            outfitIdToken?.Parent?.Remove();
         }
         else
         {
-            if (outfitIdToken == null)
-            {
-                actor["OutfitId"] = newOutfitId;
-            }
-            else
-            {
-                outfitIdToken.Replace(newOutfitId);
-            }
+            actor["OutfitId"] = newOutfitId;
         }
 
         return true;
@@ -281,106 +262,78 @@ public class FollowerModifier(SaveDataWrapper saveDataWrapper)
 
     private static bool ResetPlayerKillStatsForType(int typeId, JToken vailWorldSim)
     {
-        var hasChanges = false;
-
-        foreach (var killStat in vailWorldSim["KillStatsList"] ?? Enumerable.Empty<JToken>())
+        if (
+            (vailWorldSim["KillStatsList"] ?? Enumerable.Empty<JToken>())
+                .Where(killStat => killStat["TypeId"]?.Value<int>() == typeId)
+                .Select(killStat => killStat["PlayerKilled"])
+                .FirstOrDefault(playerKilled => playerKilled?.Value<int>() > 0)
+            is not { } playerKilledToken
+        )
         {
-            if (
-                killStat["TypeId"]?.Value<int>() != typeId
-                || killStat["PlayerKilled"] is not { } playerKilledToken
-                || playerKilledToken.Value<int>() <= 0
-            )
-            {
-                continue;
-            }
-
-            if (playerKilledToken.Value<int>() != 0)
-            {
-                playerKilledToken.Replace(0);
-                hasChanges = true;
-            }
-
-            break;
+            return false;
         }
 
-        return hasChanges;
+        playerKilledToken.Replace(0);
+        return true;
     }
 
     private static bool ResetPlayerInfluence(JToken vailWorldSim, int uniqueId)
     {
-        var hasChanges = false;
-
-        foreach (
-            var influenceMemory in vailWorldSim["InfluenceMemory"] ?? Enumerable.Empty<JToken>()
+        // The First Memory Of This Follower, Its First Player Influence
+        if (
+            (vailWorldSim["InfluenceMemory"] ?? Enumerable.Empty<JToken>())
+                .FirstOrDefault(memory => memory["UniqueId"]?.Value<int>() == uniqueId)
+                ?["Influences"]?.FirstOrDefault(influence =>
+                    influence["TypeId"]?.ToString() == Influence.Type.Player
+                )
+            is not { } playerInfluence
         )
         {
-            if (influenceMemory["UniqueId"]?.Value<int>() != uniqueId)
-            {
-                continue;
-            }
-
-            foreach (
-                var influenceToken in influenceMemory["Influences"] ?? Enumerable.Empty<JToken>()
-            )
-            {
-                if (influenceToken["TypeId"]?.ToString() != "Player")
-                {
-                    continue;
-                }
-
-                hasChanges =
-                    JsonModifier.CompareAndModify(
-                        influenceToken,
-                        "Sentiment",
-                        f => f < FullSentiment,
-                        FullSentiment
-                    ) || hasChanges;
-                hasChanges =
-                    JsonModifier.CompareAndModify(
-                        influenceToken,
-                        "Anger",
-                        f => f > NoAnger,
-                        NoAnger
-                    ) || hasChanges;
-                hasChanges =
-                    JsonModifier.CompareAndModify(influenceToken, "Fear", f => f > NoFear, NoFear)
-                    || hasChanges;
-                break;
-            }
-
-            break;
+            return false;
         }
 
+        var hasChanges = JsonModifier.CompareAndModify(
+            playerInfluence,
+            "Sentiment",
+            value => value < FullSentiment,
+            FullSentiment
+        );
+        hasChanges |= JsonModifier.CompareAndModify(
+            playerInfluence,
+            "Anger",
+            value => value > NoAnger,
+            NoAnger
+        );
+        hasChanges |= JsonModifier.CompareAndModify(
+            playerInfluence,
+            "Fear",
+            value => value > NoFear,
+            NoFear
+        );
         return hasChanges;
     }
 
     public bool Update(IEnumerable<FollowerState> followerStates)
     {
-        var vailWorldSim = saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.VailWorldSim);
-        if (vailWorldSim == null)
+        if (
+            saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.VailWorldSim)
+            is not { } vailWorldSim
+        )
         {
             return false;
         }
 
-        var hasChangesInVailWorldSim = false;
-        var hasChangesInNpcItemInstances = false;
-
+        var vailWorldSimChanged = false;
+        var npcItemInstancesChanged = false;
         var statesByTypeId = followerStates.ToDictionary(state => state.TypeId);
 
-        foreach (var actor in vailWorldSim["Actors"]?.ToList() ?? Enumerable.Empty<JToken>())
+        foreach (var actor in vailWorldSim["Actors"]?.ToList() ?? [])
         {
-            var typeId = actor["TypeId"]?.Value<int>();
-            if (
-                typeId is not { } theTypeId
-                || !statesByTypeId.TryGetValue(theTypeId, out var followerModel)
-            )
-            {
-                continue;
-            }
-
             // Only The Follower The Page Loaded, Never Its Spawned Copies
             if (
-                actor["UniqueId"]?.Value<int>() is not { } uniqueId
+                actor["TypeId"]?.Value<int>() is not { } typeId
+                || !statesByTypeId.TryGetValue(typeId, out var followerModel)
+                || actor["UniqueId"]?.Value<int>() is not { } uniqueId
                 || uniqueId != followerModel.UniqueId
             )
             {
@@ -394,7 +347,7 @@ public class FollowerModifier(SaveDataWrapper saveDataWrapper)
             )
             {
                 position.Replace(JToken.FromObject(followerModel.Pos));
-                hasChangesInVailWorldSim = true;
+                vailWorldSimChanged = true;
             }
 
             // Entering Or Leaving A Cave Changes The Graph Mask
@@ -404,56 +357,47 @@ public class FollowerModifier(SaveDataWrapper saveDataWrapper)
             )
             {
                 actor["GraphMask"] = followerModel.Pos.Area.GraphMask;
-                hasChangesInVailWorldSim = true;
+                vailWorldSimChanged = true;
             }
 
             // The Item Instances Follow Only A Real Change
             var itemIds = followerModel.GetSelectedInventoryItemIds();
             if (EquipItemsInActor(actor, itemIds))
             {
-                hasChangesInVailWorldSim = true;
-                hasChangesInNpcItemInstances =
-                    EquipItemsInNpcItemInstances(uniqueId, itemIds) || hasChangesInNpcItemInstances;
+                vailWorldSimChanged = true;
+                npcItemInstancesChanged |= EquipItemsInNpcItemInstances(uniqueId, itemIds);
             }
 
-            hasChangesInVailWorldSim =
-                UpdateInfluenceMemory(vailWorldSim, followerModel.Influences, uniqueId)
-                || hasChangesInVailWorldSim;
-            hasChangesInVailWorldSim =
-                EquipOutfit(actor, followerModel.Outfit) || hasChangesInVailWorldSim;
+            vailWorldSimChanged |= UpdateInfluenceMemory(
+                vailWorldSim,
+                followerModel.Influences,
+                uniqueId
+            );
+            vailWorldSimChanged |= EquipOutfit(actor, followerModel.Outfit);
 
             if (actor["Stats"] is not { } stats)
             {
                 continue;
             }
 
-            hasChangesInVailWorldSim =
-                ModifyStat(stats, "Health", followerModel.Health) || hasChangesInVailWorldSim;
-            hasChangesInVailWorldSim =
-                ModifyStat(stats, "Anger", followerModel.Anger) || hasChangesInVailWorldSim;
-            hasChangesInVailWorldSim =
-                ModifyStat(stats, "Fear", followerModel.Fear) || hasChangesInVailWorldSim;
-            hasChangesInVailWorldSim =
-                ModifyStat(stats, "Fullness", followerModel.Fullness) || hasChangesInVailWorldSim;
-            hasChangesInVailWorldSim =
-                ModifyStat(stats, "Hydration", followerModel.Hydration) || hasChangesInVailWorldSim;
-            hasChangesInVailWorldSim =
-                ModifyStat(stats, "Energy", followerModel.Energy) || hasChangesInVailWorldSim;
-            hasChangesInVailWorldSim =
-                ModifyStat(stats, "Affection", followerModel.Affection) || hasChangesInVailWorldSim;
+            foreach (
+                var (key, value) in new (string, float)[]
+                {
+                    ("Health", followerModel.Health),
+                    ("Anger", followerModel.Anger),
+                    ("Fear", followerModel.Fear),
+                    ("Fullness", followerModel.Fullness),
+                    ("Hydration", followerModel.Hydration),
+                    ("Energy", followerModel.Energy),
+                    ("Affection", followerModel.Affection),
+                }
+            )
+            {
+                vailWorldSimChanged |= ModifyStat(stats, key, value);
+            }
         }
 
-        if (hasChangesInVailWorldSim)
-        {
-            saveDataWrapper.MarkAsModified(Constants.JsonKeys.VailWorldSim);
-        }
-
-        if (hasChangesInNpcItemInstances)
-        {
-            saveDataWrapper.MarkAsModified(Constants.JsonKeys.NpcItemInstances);
-        }
-
-        return hasChangesInVailWorldSim || hasChangesInNpcItemInstances;
+        return MarkModified(vailWorldSimChanged, npcItemInstancesChanged);
     }
 
     private static bool UpdateInfluenceMemory(
@@ -499,11 +443,6 @@ public class FollowerModifier(SaveDataWrapper saveDataWrapper)
         List<Influence> newInfluences
     )
     {
-        if (existingInfluences.Count == 0 && newInfluences.Count == 0)
-        {
-            return false;
-        }
-
         if (existingInfluences.Count != newInfluences.Count)
         {
             return true;
@@ -520,39 +459,28 @@ public class FollowerModifier(SaveDataWrapper saveDataWrapper)
                 continue;
             }
 
-            if (!newInfluencesByType.TryGetValue(typeId, out var newInfluence))
-            {
-                return true;
-            }
-
-            var anger = existingInfluence["Anger"]?.Value<float>() ?? 0f;
-            var fear = existingInfluence["Fear"]?.Value<float>() ?? 0f;
-            var sentiment = existingInfluence["Sentiment"]?.Value<float>() ?? 0f;
-
             if (
-                Math.Abs(anger - newInfluence.Anger) > 0.001
-                || Math.Abs(fear - newInfluence.Fear) > 0.001
-                || Math.Abs(sentiment - newInfluence.Sentiment) > 0.001
+                !newInfluencesByType.Remove(typeId, out var newInfluence)
+                || Math.Abs((existingInfluence["Anger"]?.Value<float>() ?? 0f) - newInfluence.Anger)
+                    > 0.001
+                || Math.Abs((existingInfluence["Fear"]?.Value<float>() ?? 0f) - newInfluence.Fear)
+                    > 0.001
+                || Math.Abs(
+                    (existingInfluence["Sentiment"]?.Value<float>() ?? 0f) - newInfluence.Sentiment
+                ) > 0.001
             )
             {
                 return true;
             }
-
-            newInfluencesByType.Remove(typeId);
         }
 
         return newInfluencesByType.Count > 0;
     }
 
-    private static bool ModifyStat(JToken stats, string key, float? newValue)
+    private static bool ModifyStat(JToken stats, string key, float newValue)
     {
-        if (newValue == null)
-        {
-            return false;
-        }
-
         // The Game Leaves Out Zero, Missing Reads As Zero
-        if (Math.Abs((stats[key]?.Value<float>() ?? 0f) - newValue.Value) < 0.001)
+        if (Math.Abs((stats[key]?.Value<float>() ?? 0f) - newValue) < 0.001)
         {
             return false;
         }
@@ -569,47 +497,41 @@ public class FollowerModifier(SaveDataWrapper saveDataWrapper)
         Position pos
     )
     {
-        var vailWorldSim = saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.VailWorldSim);
-        if (vailWorldSim == null || count <= 0)
+        if (
+            saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.VailWorldSim)
+                is not { } vailWorldSim
+            || count <= 0
+        )
         {
             return false;
         }
 
-        var hasChangesInVailWorldSim = false;
-        var hasChangesInNpcItemInstances = false;
+        var vailWorldSimChanged = false;
+        var npcItemInstancesChanged = false;
 
         var basePos = new Position(pos.X + 1, pos.Y + 5, pos.Z + 1);
-        var coordinates = basePos.DistributeCoordinates(count, 2, SpawnPattern.Grid);
-
-        foreach (var (newX, newZ) in coordinates)
+        foreach (var (newX, newZ) in basePos.DistributeCoordinates(count, 2, SpawnPattern.Grid))
         {
-            var usedPos = new Position(newX, basePos.Y, newZ);
-            if (ActorCreator.CreateFollower(typeId, vailWorldSim, usedPos) is not { } created)
+            if (
+                ActorCreator.CreateFollower(
+                    typeId,
+                    vailWorldSim,
+                    new Position(newX, basePos.Y, newZ)
+                )
+                is not
+                (var newId, var newActor)
+            )
             {
                 continue;
             }
 
-            hasChangesInVailWorldSim = true;
-            AddInfluencesForNewFollower(vailWorldSim, created.Key);
-
-            hasChangesInVailWorldSim =
-                EquipItemsInActor(created.Value, itemIds) || hasChangesInVailWorldSim;
-            hasChangesInNpcItemInstances =
-                EquipItemsInNpcItemInstances(created.Key, itemIds) || hasChangesInNpcItemInstances;
-            hasChangesInVailWorldSim =
-                EquipOutfit(created.Value, outfit) || hasChangesInVailWorldSim;
+            vailWorldSimChanged = true;
+            AddInfluencesForNewFollower(vailWorldSim, newId);
+            EquipItemsInActor(newActor, itemIds);
+            npcItemInstancesChanged |= EquipItemsInNpcItemInstances(newId, itemIds);
+            EquipOutfit(newActor, outfit);
         }
 
-        if (hasChangesInVailWorldSim)
-        {
-            saveDataWrapper.MarkAsModified(Constants.JsonKeys.VailWorldSim);
-        }
-
-        if (hasChangesInNpcItemInstances)
-        {
-            saveDataWrapper.MarkAsModified(Constants.JsonKeys.NpcItemInstances);
-        }
-
-        return hasChangesInVailWorldSim || hasChangesInNpcItemInstances;
+        return MarkModified(vailWorldSimChanged, npcItemInstancesChanged);
     }
 }

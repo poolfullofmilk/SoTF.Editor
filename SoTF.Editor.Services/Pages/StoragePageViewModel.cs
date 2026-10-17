@@ -61,14 +61,7 @@ public class StoragePageViewModel
 
     public static IEnumerable<StoredItem> StoredItemsOf(IStorage storage)
     {
-        var slots = storage switch
-        {
-            BaseStorage baseStorage => baseStorage.Slots,
-            AdvancedItemsStorage advancedItemsStorage => advancedItemsStorage.Slots,
-            _ => [],
-        };
-
-        return slots.SelectMany(slot => slot.StoredItems);
+        return storage.Slots.SelectMany(slot => slot.StoredItems);
     }
 
     public static void ClearAll(IStorage storage)
@@ -104,103 +97,48 @@ public class StoragePageViewModel
     {
         foreach (var storedItem in StoredItemsOf(storage))
         {
-            if (storedItem.SelectedItem != null)
-            {
-                storedItem.Count = storedItem.Max;
-            }
+            storedItem.SetToMax();
         }
+    }
+
+    private IStorageDefinition? DefinitionOf(int id)
+    {
+        return _storageDefinitions.GetValueOrDefault(id)
+            ?? (IStorageDefinition?)_advancedStorageDefinitions.GetValueOrDefault(id);
+    }
+
+    private static JArray? StructuresOf(Savegame savegame)
+    {
+        return savegame
+                .SavegameStore.LoadJsonRaw(SavegameStore.FileType.ScrewStructureInstancesSaveData)
+                ?.GetJsonBasedToken(Constants.JsonKeys.ScrewStructureInstances)
+                ?["_structures"] as JArray;
     }
 
     public void Load(Savegame? savegame)
     {
         SelectedStorage = null;
         StorageCollections.Clear();
-
-        if (savegame is not { } selectedSavegame)
+        if (savegame == null || StructuresOf(savegame) is not { } structures)
         {
             return;
         }
 
-        if (ReadStorageCollections(selectedSavegame) is not { } storageCollectionsById)
-        {
-            return;
-        }
-
-        foreach (
-            var storageCollection in storageCollectionsById.Values.OrderBy(collection =>
-                collection.Name
-            )
-        )
-        {
-            StorageCollections.Add(storageCollection);
-        }
-    }
-
-    private List<StorageSaveData>? LoadStorageSaveData(Savegame selectedSavegame)
-    {
-        if (
-            selectedSavegame
-                .SavegameStore.LoadJsonRaw(SavegameStore.FileType.ScrewStructureInstancesSaveData)
-                ?.GetJsonBasedToken(Constants.JsonKeys.ScrewStructureInstances)
-                ?["_structures"]
-            is not JArray structures
-        )
-        {
-            return null;
-        }
-
-        var result = new List<StorageSaveData>();
-
-        foreach (var structure in structures)
-        {
-            if (
-                structure.ToObject<StorageSaveData>() is not { } storageSaveData
-                || !StorageIdKnown(storageSaveData.Id)
-            )
-            {
-                continue;
-            }
-
-            result.Add(storageSaveData);
-        }
-
-        return result;
-    }
-
-    private bool StorageIdKnown(int id)
-    {
-        return _storageDefinitions.ContainsKey(id) || _advancedStorageDefinitions.ContainsKey(id);
-    }
-
-    private Dictionary<int, StorageCollection>? ReadStorageCollections(Savegame selectedSavegame)
-    {
-        if (LoadStorageSaveData(selectedSavegame) is not { } storageSaveData)
-        {
-            return null;
-        }
-
+        // One Collection Per Storage Type, Numbered In Save Order
         var storageCollectionsById = new Dictionary<int, StorageCollection>();
-
-        foreach (var saveData in storageSaveData)
+        foreach (
+            var saveData in structures.Select(structure => structure.ToObject<StorageSaveData>())
+        )
         {
-            var storageDefinition =
-                _storageDefinitions.GetValueOrDefault(saveData.Id)
-                ?? (IStorageDefinition?)_advancedStorageDefinitions.GetValueOrDefault(saveData.Id);
-            if (storageDefinition == null)
+            if (saveData == null || DefinitionOf(saveData.Id) is not { } storageDefinition)
             {
                 continue;
             }
 
-            StorageCollection storageCollection;
-
-            if (!storageCollectionsById.TryGetValue(saveData.Id, out var value))
+            if (!storageCollectionsById.TryGetValue(saveData.Id, out var storageCollection))
             {
                 storageCollection = new StorageCollection(saveData.Id, storageDefinition.Name);
                 storageCollectionsById.Add(saveData.Id, storageCollection);
-            }
-            else
-            {
-                storageCollection = value;
             }
 
             var storage = _storageFactory.Build(
@@ -208,25 +146,17 @@ public class StoragePageViewModel
                 storageCollection.Storages.Count + 1
             );
             storage.SetSaveData(saveData);
-
             storageCollection.Storages.Add(storage);
         }
 
-        return storageCollectionsById;
+        StorageCollections.AddRange(
+            storageCollectionsById.Values.OrderBy(collection => collection.Name)
+        );
     }
 
     public bool Update(Savegame savegame)
     {
-        if (
-            savegame.SavegameStore.LoadJsonRaw(
-                SavegameStore.FileType.ScrewStructureInstancesSaveData
-            )
-                is not { } saveDataWrapper
-            || saveDataWrapper
-                .GetJsonBasedToken(Constants.JsonKeys.ScrewStructureInstances)
-                ?["_structures"]
-                is not JArray structures
-        )
+        if (StructuresOf(savegame) is not { } structures)
         {
             return false;
         }
@@ -237,30 +167,23 @@ public class StoragePageViewModel
             .GroupBy(saveData => saveData.Id)
             .ToDictionary(group => group.Key, group => group.ToList());
 
+        // Storages Of One Type Match Their Rows In Save Order
         var processedCountById = new Dictionary<int, int>();
-
         var hasChanges = false;
-
         foreach (var structureToken in structures)
         {
             if (
                 structureToken["Id"]?.Value<int>() is not { } structureId
-                || !StorageIdKnown(structureId)
+                || DefinitionOf(structureId) == null
             )
             {
                 continue;
             }
 
-            if (newStorageSaveDataById.GetValueOrDefault(structureId) is not { } newStorageSaveData)
-            {
-                s_logger.Warn($"Skipped Saving Storages, Found No New Data For {structureId}");
-                return false;
-            }
-
             var processedCount = processedCountById.GetValueOrDefault(structureId, 0);
             if (
-                newStorageSaveData.Count <= processedCount
-                || newStorageSaveData[processedCount] is not { } newSaveData
+                newStorageSaveDataById.GetValueOrDefault(structureId) is not { } newStorageSaveData
+                || newStorageSaveData.Count <= processedCount
             )
             {
                 s_logger.Warn(
@@ -277,34 +200,29 @@ public class StoragePageViewModel
                 return false;
             }
 
+            processedCountById[structureId] = processedCount + 1;
+            var newSaveData = newStorageSaveData[processedCount];
             if (oldStorageSaveData.Equals(newSaveData))
             {
                 s_logger.Info($"Kept Unchanged Storage {structureId} At {processedCount}");
-                processedCountById[structureId] = processedCount + 1;
                 continue;
             }
 
-            hasChanges = MergeIntoStorageBlock(structureToken, newSaveData) || hasChanges;
-            processedCountById[structureId] = processedCount + 1;
+            if (structureToken["Storages"] is { } storagesToken)
+            {
+                storagesToken.Replace(JToken.FromObject(newSaveData.Storages));
+                hasChanges = true;
+            }
         }
 
         if (hasChanges)
         {
-            saveDataWrapper.MarkAsModified(Constants.JsonKeys.ScrewStructureInstances);
+            savegame
+                .SavegameStore.LoadJsonRaw(SavegameStore.FileType.ScrewStructureInstancesSaveData)!
+                .MarkAsModified(Constants.JsonKeys.ScrewStructureInstances);
         }
 
         return hasChanges;
-    }
-
-    private static bool MergeIntoStorageBlock(JToken target, StorageSaveData newData)
-    {
-        if (target["Storages"] is not { } storagesToken)
-        {
-            return false;
-        }
-
-        storagesToken.Replace(JToken.FromObject(newData.Storages));
-        return true;
     }
 
     public class StorageCollection(int storageTypeId, string name)

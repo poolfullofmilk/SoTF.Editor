@@ -3,6 +3,7 @@ namespace SoTF.Editor.Data.Models.Map;
 public abstract class InformationalPoi : BasePoi
 {
     private readonly IEnumerable<Item>? _requirements;
+    private readonly HashSet<int> _inventoryItems;
 
     protected InformationalPoi(
         float x,
@@ -11,12 +12,14 @@ public abstract class InformationalPoi : BasePoi
         string title,
         string? description,
         IEnumerable<Item>? requirements,
+        HashSet<int> inventoryItems,
         bool isUnderground = false,
         string? wikiLink = null
     )
         : base(x, y, teleport)
     {
         _requirements = requirements;
+        _inventoryItems = inventoryItems;
         Title = title;
         Description = description;
         IsUnderground = teleport?.Area.IsUnderground() ?? isUnderground;
@@ -25,62 +28,37 @@ public abstract class InformationalPoi : BasePoi
 
     public string? WikiLink { get; }
 
-    protected int[]? MissingRequiredItems { get; init; }
-
-    public IEnumerable<ItemInInventoryWrapper> Requirements => GetRequirements();
+    public IEnumerable<ItemInInventoryWrapper> Requirements => Wrap(_requirements) ?? [];
 
     public override string Title { get; }
 
     public override bool IsUnderground { get; }
 
-    public bool HasAnyRequirements => _requirements != null && _requirements.Any();
+    public bool HasAnyRequirements => _requirements?.Any() == true;
 
-    private List<ItemInInventoryWrapper> GetRequirements()
+    protected bool Owns(Item item)
     {
-        if (_requirements == null || !_requirements.Any())
-        {
-            return [];
-        }
-
-        return
-        [
-            .. _requirements.Select(item => new ItemInInventoryWrapper(
-                item,
-                HasRequiredItem(item)
-            )),
-        ];
+        return _inventoryItems.Contains(item.Id);
     }
 
-    private bool HasRequiredItem(Item item)
+    protected IEnumerable<ItemInInventoryWrapper>? Wrap(IEnumerable<Item>? items)
     {
-        return MissingRequiredItems == null
-            || MissingRequiredItems.Length == 0
-            || !MissingRequiredItems.Contains(item.Id);
+        // Nothing To List Reads As No List
+        return items?.Any() == true
+            ? items.Select(item => new ItemInInventoryWrapper(item, Owns(item)))
+            : null;
     }
 
     protected override bool ShouldFilter(MapFilter mapFilter)
     {
-        return (
-                mapFilter.RequirementsFilter is var requirementsFilter
-                && ShouldFilterByRequirements(requirementsFilter)
-            ) || base.ShouldFilter(mapFilter);
-    }
-
-    private bool ShouldFilterByRequirements(MapFilter.RequirementsFilterType requirementsFilter)
-    {
-        return requirementsFilter switch
+        var hasRequiredItems = _requirements?.All(Owns) ?? true;
+        var hiddenByRequirements = mapFilter.RequirementsFilter switch
         {
-            MapFilter.RequirementsFilterType.All => false,
-            MapFilter.RequirementsFilterType.InaccessibleOnly => _requirements == null
-                || !_requirements.Any()
-                || HasRequiredItems(),
-            MapFilter.RequirementsFilterType.AccessibleOnly => !HasRequiredItems(),
+            MapFilter.RequirementsFilterType.InaccessibleOnly => !HasAnyRequirements
+                || hasRequiredItems,
+            MapFilter.RequirementsFilterType.AccessibleOnly => !hasRequiredItems,
             _ => false,
         };
-    }
-
-    private bool HasRequiredItems()
-    {
-        return MissingRequiredItems == null || MissingRequiredItems.Length == 0;
+        return hiddenByRequirements || ShouldFilterByPlace(mapFilter);
     }
 }

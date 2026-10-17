@@ -12,7 +12,6 @@ public class EditActorViewModel
     {
         Actor = actor;
         AllActorTypes = allActorTypes;
-        ActorSelection = AllActorSelections.FirstOrDefault().Key;
         ModifyOptions.ReplaceType = allActorTypes.First();
         ModifyOptions.ActorEnergy = Actor.Stats?.GetValueOrDefault("Energy", 100f) ?? 100f;
         ModifyOptions.UpdateEnergy = !Actor.Stats?.ContainsKey("Energy") ?? true;
@@ -32,7 +31,7 @@ public class EditActorViewModel
         }
     }
 
-    public short? ActorSelection { get; set; }
+    public short? ActorSelection { get; set; } = 0;
 
     public ActorModificationMode ModificationMode { get; set; } = ActorModificationMode.Modify;
 
@@ -70,13 +69,13 @@ public class ModifyOptions
         get;
         set
         {
+            // Back At The Loaded Value Means No Update
             _originalEnergy ??= value;
-
-            if (_originalEnergy != null && Math.Abs(_originalEnergy.Value - value) < 0.01)
+            if (Math.Abs(_originalEnergy.Value - value) < 0.01)
             {
                 UpdateEnergy = false;
             }
-            else if (Math.Abs(ActorEnergy - value) > 0.01)
+            else if (Math.Abs(field - value) > 0.01)
             {
                 UpdateEnergy = true;
             }
@@ -91,12 +90,11 @@ public class ModifyOptions
         set
         {
             _originalHealth ??= value;
-
-            if (_originalHealth != null && Math.Abs(_originalHealth.Value - value) < 0.01)
+            if (Math.Abs(_originalHealth.Value - value) < 0.01)
             {
                 UpdateHealth = false;
             }
-            else if (Math.Abs(ActorHealth - value) > 0.01)
+            else if (Math.Abs(field - value) > 0.01)
             {
                 UpdateHealth = true;
             }

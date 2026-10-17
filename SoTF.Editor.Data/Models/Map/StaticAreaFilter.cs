@@ -8,6 +8,6 @@ public class StaticAreaFilter(string nameKey, Predicate<IPoi> predicate) : IArea
 
     public bool ShouldInclude(IPoi poi)
     {
-        return predicate.Invoke(poi);
+        return predicate(poi);
     }
 }

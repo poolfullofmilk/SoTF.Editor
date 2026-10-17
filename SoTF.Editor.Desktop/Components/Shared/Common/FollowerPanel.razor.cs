@@ -44,22 +44,14 @@ public partial class FollowerPanel
 
     // A Follower Missing From The Save Sits At Origin
     private bool InSave => Follower.UniqueId != null;
-    private bool OtherInSave =>
-        (IsKelvin ? FollowerPage.VirginiaState : FollowerPage.KelvinState).UniqueId != null;
+    private bool OtherInSave => FollowerPage.OtherOf(Follower).UniqueId != null;
     private bool CanMoveToPlayer => InSave && PlayerOnSurface;
     private bool CanMoveToOther => InSave && OtherInSave;
     private Data.Models.Position? MapPosition => InSave ? Follower.Pos : null;
 
     private void MoveToOther()
     {
-        if (IsKelvin)
-        {
-            FollowerPage.MoveToVirginia(Follower);
-        }
-        else
-        {
-            FollowerPage.MoveToKelvin(Follower);
-        }
+        FollowerPageViewModel.MoveTo(Follower, FollowerPage.OtherOf(Follower).Pos);
     }
 
     private void Revive()

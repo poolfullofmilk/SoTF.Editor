@@ -16,15 +16,12 @@ public abstract class RestrictedStorage : BaseStorage
     )
     {
         var supportedItems = new List<ItemWrapper>();
-
-        var baseQ = itemList.Select(item => item.Value);
-
-        if (Definition.RestrictedItemIds is { Count: > 0 } restrictedItemIds)
-        {
-            baseQ = baseQ.Where(item => restrictedItemIds.Contains(item.Id));
-        }
-
-        foreach (var item in baseQ)
+        foreach (
+            var item in itemList.Where(item =>
+                Definition.RestrictedItemIds is not { Count: > 0 } restrictedItemIds
+                || restrictedItemIds.Contains(item.Id)
+            )
+        )
         {
             AddEffectiveSupportedItem(item, storageDefinition, supportedItems);
         }

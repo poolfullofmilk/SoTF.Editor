@@ -48,6 +48,8 @@ public static class TextKeys
     public static string StructureMode(ScrewStructureModificationMode mode) =>
         $"StructureMode{mode}";
 
+    public static string Construction(ElementProfileCategory category) => $"Construction{category}";
+
     public static string Setting(string name) => "Setting" + Pascal(name.TrimStart('_'));
 
     // Game State And Weather Fields The Pages Show
@@ -81,15 +83,15 @@ public static class TextKeys
     {
         // Every Runtime Key, Built The Way The App Builds It
         var gameKeys = gameData
-            .Items.Select(item => Item(item.Key))
+            .Items.Select(item => Item(item.Id))
             .Concat(gameData.ActorTypes.Select(actorType => ActorType(actorType.Id)))
             .Concat(gameData.ScrewStructures.Select(structure => Structure(structure.Id)))
             .Concat(gameData.StorageDefinitions.Select(storage => Structure(storage.Id)))
             .Concat(gameData.AdvancedStorageDefinitions.Select(storage => Structure(storage.Id)))
             .Concat(
                 gameData.Items.SelectMany(item =>
-                    item.Value.FoodSpoilModuleDefinition?.Variants.Select(variant =>
-                        ItemVariant(item.Key, variant)
+                    item.FoodSpoilModuleDefinition?.Variants.Select(variant =>
+                        ItemVariant(item.Id, variant)
                     )
                     ?? []
                 )
@@ -110,7 +112,7 @@ public static class TextKeys
             );
 
         var appKeys = gameData
-            .Items.Select(item => item.Value.Type)
+            .Items.Select(item => item.Type)
             .Where(type => type.Length > 0)
             .Select(ItemType)
             .Concat(
@@ -133,6 +135,7 @@ public static class TextKeys
             .Concat(Enum.GetValues<SpawnPattern>().Select(SpawnPattern))
             .Concat(Enum.GetValues<TeleportTarget>().Select(TeleportTarget))
             .Concat(Enum.GetValues<ScrewStructureModificationMode>().Select(StructureMode))
+            .Concat(Enum.GetValues<ElementProfileCategory>().Select(Construction))
             .Concat(SettingNames.Select(Setting))
             .Concat(
                 Enum.GetValues<PoiGroupType>()

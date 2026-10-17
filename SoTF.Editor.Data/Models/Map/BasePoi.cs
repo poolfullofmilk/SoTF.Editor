@@ -7,13 +7,9 @@ public abstract class BasePoi : IPoi
     private Position? _position;
 
     protected BasePoi(Position position)
-    {
-        _position = position;
-        X = position.X;
-        Z = position.Z;
-        (MapLeft, MapTop) = CoordinateConverter.IngameToPixel(position.X, position.Z);
-    }
+        : this(position.X, position.Z, position) { }
 
+    // The Marker And The Teleport Spot Can Differ
     protected BasePoi(float x, float y, Position? position)
     {
         X = x;
@@ -28,28 +24,13 @@ public abstract class BasePoi : IPoi
 
     public float Z { get; private set; }
 
-    private string NormalizedLowercaseTitle
-    {
-        get { return field ??= TranslationHelper.Normalize(Title).ToLower(); }
-    }
+    private string NormalizedLowercaseTitle =>
+        field ??= TranslationHelper.Normalize(Title).ToLower();
 
-    private string? NormalizedLowercaseDescription
-    {
-        get
-        {
-            if (field != null)
-            {
-                return field;
-            }
-
-            if (Description != null)
-            {
-                field = TranslationHelper.Normalize(Description).ToLower();
-            }
-
-            return field;
-        }
-    }
+    private string? NormalizedLowercaseDescription =>
+        field ??= Description is { } description
+            ? TranslationHelper.Normalize(description).ToLower()
+            : null;
 
     public Position? Position
     {
@@ -93,7 +74,7 @@ public abstract class BasePoi : IPoi
 
     public float MapTop { get; private set; }
 
-    public virtual void ApplyFilter(MapFilter mapFilter)
+    public void ApplyFilter(MapFilter mapFilter)
     {
         Filtered = ShouldFilter(mapFilter);
     }
@@ -102,36 +83,23 @@ public abstract class BasePoi : IPoi
 
     public string? Description { get; init; }
 
-    public virtual void GetTeleportationOffset(
-        out float xOffset,
-        out float yOffset,
-        out float zOffset
-    )
-    {
-        xOffset = 1;
-        yOffset = 1;
-        zOffset = 1;
-    }
+    // Teleports Land One Step Away, Items Right On The Point
+    public virtual float TeleportationOffset => 1;
 
     protected virtual bool ShouldFilter(MapFilter mapFilter)
     {
-        return ShouldFilterByArea(mapFilter) || ShouldFilterByFullText(mapFilter);
+        // Only Places With Requirements Can Be Inaccessible
+        return mapFilter.RequirementsFilter == MapFilter.RequirementsFilterType.InaccessibleOnly
+            || ShouldFilterByPlace(mapFilter);
     }
 
-    private bool ShouldFilterByArea(MapFilter mapFilter)
+    protected bool ShouldFilterByPlace(MapFilter mapFilter)
     {
-        if (mapFilter.AreaFilter != AreaFilter.All)
-        {
-            return !mapFilter.AreaFilter.ShouldInclude(this);
-        }
-
-        return false;
-    }
-
-    private bool ShouldFilterByFullText(MapFilter mapFilter)
-    {
-        return !string.IsNullOrWhiteSpace(mapFilter.NormalizedLowercaseFullText)
-            && FullTextFilter(mapFilter.NormalizedLowercaseFullText);
+        return (mapFilter.AreaFilter != AreaFilter.All && !mapFilter.AreaFilter.ShouldInclude(this))
+            || (
+                !string.IsNullOrWhiteSpace(mapFilter.NormalizedLowercaseFullText)
+                && FullTextFilter(mapFilter.NormalizedLowercaseFullText)
+            );
     }
 
     protected virtual bool FullTextFilter(string normalizedLowercaseFullText)

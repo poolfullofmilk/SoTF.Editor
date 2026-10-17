@@ -56,24 +56,9 @@ public class Position(float x, float y, float z)
         return X.Equals(other.X) && Y.Equals(other.Y) && Z.Equals(other.Z);
     }
 
-    private bool Equals(Position other)
-    {
-        return HasSameCoordinates(other) && Area.Equals(other.Area);
-    }
-
     public override bool Equals(object? obj)
     {
-        if (obj is null)
-        {
-            return false;
-        }
-
-        if (ReferenceEquals(this, obj))
-        {
-            return true;
-        }
-
-        return obj.GetType() == GetType() && Equals((Position)obj);
+        return obj is Position other && HasSameCoordinates(other) && Area.Equals(other.Area);
     }
 
     public override int GetHashCode()
@@ -81,7 +66,7 @@ public class Position(float x, float y, float z)
         return HashCode.Combine(X, Y, Z, Area);
     }
 
-    public List<Tuple<float, float>> DistributeCoordinates(
+    public List<(float X, float Z)> DistributeCoordinates(
         int count,
         int space,
         SpawnPattern spawnPattern
@@ -90,58 +75,39 @@ public class Position(float x, float y, float z)
         // No Space Means Everyone On The Spot
         if (space <= 0)
         {
-            return [.. Enumerable.Repeat(Tuple.Create(X, Z), Math.Max(count, 1))];
+            return [.. Enumerable.Repeat((X, Z), Math.Max(count, 1))];
         }
 
         return spawnPattern switch
         {
             SpawnPattern.Cross => DistributeCoordinatesInCross(count, space),
-            SpawnPattern.VerticalLine => DistributeCoordinatesInLine(
-                count,
-                space,
-                LineOrientation.Vertical
-            ),
-            SpawnPattern.HorizontalLine => DistributeCoordinatesInLine(
-                count,
-                space,
-                LineOrientation.Horizontal
-            ),
+            SpawnPattern.VerticalLine => DistributeCoordinatesInLine(count, space, false),
+            SpawnPattern.HorizontalLine => DistributeCoordinatesInLine(count, space, true),
             SpawnPattern.Random => DistributeCoordinatesRandomly(count, space),
             SpawnPattern.Rectangle => DistributeCoordinatesInRectangle(count, space),
             _ => DistributeCoordinatesInGrid(count, space),
         };
     }
 
-    private List<Tuple<float, float>> DistributeCoordinatesInGrid(int count, int space)
+    private List<(float X, float Z)> DistributeCoordinatesInGrid(int count, int space)
     {
-        var newCoordinates = new List<Tuple<float, float>> { Tuple.Create(X, Z) };
-
-        var currentCount = 1;
-        var currentLevel = 0;
+        // A Square Spiral Outwards From The Center
+        List<(float X, float Z)> newCoordinates = [(X, Z)];
+        float[] directionX = [1, 0, -1, 0];
+        float[] directionZ = [0, -1, 0, 1];
+        var currentX = X;
+        var currentZ = Z;
         var currentDirection = 0;
 
-        float[] directionX = [1, 0, -1, 0];
-        float[] directionY = [0, -1, 0, 1];
-
-        var curX = X;
-        var curZ = Z;
-
-        while (currentCount < count)
+        for (var level = 1; newCoordinates.Count < count; level++)
         {
-            currentLevel++;
-            for (var index = 0; index < 2; index++)
+            for (var side = 0; side < 2; side++)
             {
-                for (
-                    var innerIndex = 0;
-                    innerIndex < currentLevel && currentCount < count;
-                    innerIndex++
-                )
+                for (var step = 0; step < level && newCoordinates.Count < count; step++)
                 {
-                    curX += directionX[currentDirection] * space;
-                    curZ += directionY[currentDirection] * space;
-
-                    newCoordinates.Add(Tuple.Create(curX, curZ));
-                    currentCount++;
+                    currentX += directionX[currentDirection] * space;
+                    currentZ += directionZ[currentDirection] * space;
+                    newCoordinates.Add((currentX, currentZ));
                 }
 
                 currentDirection = (currentDirection + 1) % 4;
@@ -151,146 +117,70 @@ public class Position(float x, float y, float z)
         return newCoordinates;
     }
 
-    private List<Tuple<float, float>> DistributeCoordinatesRandomly(int count, int space)
+    private List<(float X, float Z)> DistributeCoordinatesRandomly(int count, int space)
     {
-        var newCoordinates = new List<Tuple<float, float>> { Tuple.Create(X, Z) };
-
+        List<(float X, float Z)> newCoordinates = [(X, Z)];
         for (var index = 1; index < count; index++)
         {
             var angle = (float)(Random.Shared.NextDouble() * 2 * Math.PI);
             var radius = (float)(Random.Shared.NextDouble() * space);
-
-            var newX = X + radius * (float)Math.Cos(angle);
-            var newY = Z + radius * (float)Math.Sin(angle);
-
-            newCoordinates.Add(Tuple.Create(newX, newY));
+            newCoordinates.Add(
+                (X + radius * (float)Math.Cos(angle), Z + radius * (float)Math.Sin(angle))
+            );
         }
 
         return newCoordinates;
     }
 
-    private List<Tuple<float, float>> DistributeCoordinatesInLine(
+    private List<(float X, float Z)> DistributeCoordinatesInLine(
         int count,
         int space,
-        LineOrientation orientation
+        bool horizontal
     )
     {
-        var newCoordinates = new List<Tuple<float, float>> { Tuple.Create(X, Z) };
-
-        var halfCount = count / 2;
-
-        for (var index = 1; index <= halfCount; index++)
-        {
-            float newX,
-                newY;
-
-            if (orientation == LineOrientation.Horizontal)
-            {
-                newX = X + index * space;
-                newY = Z;
-                newCoordinates.Add(Tuple.Create(newX, newY));
-
-                newX = X - index * space;
-            }
-            else
-            {
-                newX = X;
-                newY = Z + index * space;
-                newCoordinates.Add(Tuple.Create(newX, newY));
-
-                newY = Z - index * space;
-            }
-
-            newCoordinates.Add(Tuple.Create(newX, newY));
-        }
-
-        if (count % 2 != 0)
-        {
-            float newX,
-                newY;
-
-            if (orientation == LineOrientation.Horizontal)
-            {
-                newX = X + (halfCount + 1) * space;
-                newY = Z;
-            }
-            else
-            {
-                newX = X;
-                newY = Z + (halfCount + 1) * space;
-            }
-
-            newCoordinates.Add(Tuple.Create(newX, newY));
-        }
-
-        return newCoordinates;
-    }
-
-    private List<Tuple<float, float>> DistributeCoordinatesInCross(int count, int space)
-    {
-        var newCoordinates = new List<Tuple<float, float>> { Tuple.Create(X, Z) };
-        var halfCount = count / 4;
-
-        for (var index = 1; index <= halfCount; index++)
-        {
-            // Right
-            var newX = X + index * space;
-            var newY = Z;
-            newCoordinates.Add(Tuple.Create(newX, newY));
-
-            // Left
-            newX = X - index * space;
-            newCoordinates.Add(Tuple.Create(newX, newY));
-
-            // Top
-            newX = X;
-            newY = Z + index * space;
-            newCoordinates.Add(Tuple.Create(newX, newY));
-
-            // Bottom
-            newY = Z - index * space;
-            newCoordinates.Add(Tuple.Create(newX, newY));
-        }
-
-        if (count % 4 != 0)
-        {
-            var extraCount = count % 4;
-
-            for (var index = 0; index < extraCount; index++)
-            {
-                float newX,
-                    newY;
-
-                switch (index)
+        // The Center, Then One Step Further Each Side In Turn
+        return
+        [
+            (X, Z),
+            .. Enumerable
+                .Range(0, count)
+                .Select(index =>
                 {
-                    case 0:
-                        newX = X + (halfCount + 1) * space;
-                        newY = Z;
-                        break;
-                    case 1:
-                        newX = X - (halfCount + 1) * space;
-                        newY = Z;
-                        break;
-                    default:
-                        newX = X;
-                        newY = Z + (halfCount + 1) * space;
-                        break;
-                }
-
-                newCoordinates.Add(Tuple.Create(newX, newY));
-            }
-        }
-
-        return newCoordinates;
+                    var offset = (index / 2 + 1) * space * (index % 2 == 0 ? 1 : -1);
+                    return horizontal ? (X + offset, Z) : (X, Z + offset);
+                }),
+        ];
     }
 
-    private List<Tuple<float, float>> DistributeCoordinatesInRectangle(int count, int space)
+    private List<(float X, float Z)> DistributeCoordinatesInCross(int count, int space)
+    {
+        // The Center, Then Right, Left, Up, Down, Ring By Ring
+        return
+        [
+            (X, Z),
+            .. Enumerable
+                .Range(0, count)
+                .Select(index =>
+                {
+                    var reach = (index / 4 + 1) * space;
+                    return (index % 4) switch
+                    {
+                        0 => (X + reach, Z),
+                        1 => (X - reach, Z),
+                        2 => (X, Z + reach),
+                        _ => (X, Z - reach),
+                    };
+                }),
+        ];
+    }
+
+    private List<(float X, float Z)> DistributeCoordinatesInRectangle(int count, int space)
     {
         // Points Walk The Edge Of A Square, Evenly Spaced
         var side = count * space / 4f;
         var left = X - side / 2;
         var top = Z - side / 2;
-        var newCoordinates = new List<Tuple<float, float>>();
+        List<(float X, float Z)> newCoordinates = [];
 
         for (var index = 0; index < count; index++)
         {
@@ -300,10 +190,10 @@ public class Position(float x, float y, float z)
             newCoordinates.Add(
                 edge switch
                 {
-                    0 => Tuple.Create(left + along, top),
-                    1 => Tuple.Create(left + side, top + along),
-                    2 => Tuple.Create(left + side - along, top + side),
-                    _ => Tuple.Create(left, top + side - along),
+                    0 => (left + along, top),
+                    1 => (left + side, top + along),
+                    2 => (left + side - along, top + side),
+                    _ => (left, top + side - along),
                 }
             );
         }
@@ -322,7 +212,7 @@ public class Position(float x, float y, float z)
             if (
                 coordinates.Count < count
                 || coordinates.Any(coordinate =>
-                    !float.IsFinite(coordinate.Item1) || !float.IsFinite(coordinate.Item2)
+                    !float.IsFinite(coordinate.X) || !float.IsFinite(coordinate.Z)
                 )
             )
             {
@@ -330,12 +220,12 @@ public class Position(float x, float y, float z)
             }
         }
 
-        return true;
-    }
-
-    private enum LineOrientation
-    {
-        Horizontal,
-        Vertical,
+        // Lines And Crosses Keep Their Order, Center First
+        return center
+                .DistributeCoordinates(3, 2, SpawnPattern.HorizontalLine)
+                .SequenceEqual([(10, 20), (12, 20), (8, 20), (14, 20)])
+            && center
+                .DistributeCoordinates(5, 2, SpawnPattern.Cross)
+                .SequenceEqual([(10, 20), (12, 20), (8, 20), (10, 22), (10, 18), (14, 20)]);
     }
 }

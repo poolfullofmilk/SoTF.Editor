@@ -7,12 +7,4 @@ public record RawItemPoi(
     int[]? Requirements,
     int[]? AltItemIds,
     Teleport Teleport
-)
-{
-    public int[]? GetMissingRequiredItems(HashSet<int> inventoryItems)
-    {
-        return Requirements == null || Requirements.Length == 0
-            ? null
-            : [.. Requirements.Where(itemId => !inventoryItems.Contains(itemId))];
-    }
-}
+);

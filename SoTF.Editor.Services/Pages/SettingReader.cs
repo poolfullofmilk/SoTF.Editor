@@ -15,17 +15,9 @@ public static class SettingReader
         return token?[IntValue]?.Value<int>();
     }
 
-    public static bool ReadString(JToken? token, out string? value)
+    public static string? ReadString(JToken? token)
     {
-        var valueToken = token?[StringValue];
-        if (valueToken == null)
-        {
-            value = null;
-            return false;
-        }
-
-        value = valueToken.Value<string>();
-        return true;
+        return token?[StringValue]?.Value<string>();
     }
 
     public static bool? ReadBool(JToken? token)

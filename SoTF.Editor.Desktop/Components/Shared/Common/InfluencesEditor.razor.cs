@@ -41,7 +41,7 @@ public partial class InfluencesEditor
     {
         if (_newType is { } type)
         {
-            Influences.Add(Influence.AsFillerWithDefaults(type));
+            Influences.Add(new Influence { TypeId = type });
             _newType = null;
             await OnChanged.InvokeAsync();
         }

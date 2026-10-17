@@ -17,10 +17,4 @@ public class ZipPointPoi(Position position, ZiplinePoi parent) : BasePoi(positio
     public override int IconZIndex => -1;
 
     public override string Title => AppText.Get("ZiplineAnchor");
-
-    protected override bool ShouldFilter(MapFilter mapFilter)
-    {
-        return mapFilter.RequirementsFilter == MapFilter.RequirementsFilterType.InaccessibleOnly
-            || base.ShouldFilter(mapFilter);
-    }
 }

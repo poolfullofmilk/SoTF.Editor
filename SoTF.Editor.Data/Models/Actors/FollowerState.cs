@@ -73,8 +73,7 @@ public class FollowerState
             equippableItem.Selected = false;
         }
 
-        var temporaryItems = Inventory.Where(item => item.IsTemporary).ToList();
-        temporaryItems.ForEach(temporaryItem => Inventory.Remove(temporaryItem));
+        Inventory.RemoveAll(item => item.IsTemporary);
 
         Outfit = null;
         UniqueId = null;

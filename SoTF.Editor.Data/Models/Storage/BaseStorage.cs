@@ -20,8 +20,7 @@ public abstract class BaseStorage : IStorage
 
         for (var slotNumber = 0; slotNumber < definition.Slots; slotNumber++)
         {
-            var storageSlot = new StorageSlot();
-            Slots.Add(storageSlot);
+            Slots.Add(new StorageSlot());
         }
     }
 
@@ -44,8 +43,7 @@ public abstract class BaseStorage : IStorage
             // A Save Can Hold More Slots Than Defined, All Stay
             if (currentSlot >= Slots.Count)
             {
-                var storageSlot = new StorageSlot();
-                Slots.Add(storageSlot);
+                Slots.Add(new StorageSlot());
             }
 
             if (storageBlock.ItemBlocks.Count == 0)
@@ -106,8 +104,7 @@ public abstract class BaseStorage : IStorage
                         _logger.Warn(
                             $"Found Slot {currentSlot} Above Slot Count {Slots.Count} For {Definition.Name} ({Definition.Id})"
                         );
-                        var storageSlot = new StorageSlot();
-                        Slots.Add(storageSlot);
+                        Slots.Add(new StorageSlot());
                     }
 
                     Slots[currentSlot++].StoredItems.Add(storedItem);
@@ -121,15 +118,11 @@ public abstract class BaseStorage : IStorage
             }
         }
 
-        foreach (var storageSlot in Slots)
+        foreach (var storageSlot in Slots.Where(slot => slot.StoredItems.Count == 0))
         {
-            if (storageSlot.StoredItems.Count > 0)
-            {
-                continue;
-            }
-
-            var storedItem = new StoredItem(null, 0, supportedItems, Definition.MaxPerSlot);
-            storageSlot.StoredItems.Add(storedItem);
+            storageSlot.StoredItems.Add(
+                new StoredItem(null, 0, supportedItems, Definition.MaxPerSlot)
+            );
         }
     }
 
@@ -137,17 +130,9 @@ public abstract class BaseStorage : IStorage
 
     public virtual void SetAllToMax()
     {
-        foreach (var slot in Slots)
-        foreach (var storedItem in slot.StoredItems)
+        foreach (var storedItem in Slots.SelectMany(slot => slot.StoredItems))
         {
-            if (!storedItem.HasItem() && storedItem.SupportedItems.Count == 1)
-            {
-                storedItem.SelectedItem = storedItem.SupportedItems[0];
-            }
-            else if (storedItem.HasItem())
-            {
-                storedItem.Count = storedItem.Max;
-            }
+            storedItem.Fill();
         }
     }
 
@@ -164,7 +149,7 @@ public abstract class BaseStorage : IStorage
 
     private int GetTotalStored()
     {
-        return Slots.Select(item => item.GetTotalStored()).Sum();
+        return Slots.Sum(slot => slot.GetTotalStored());
     }
 
     protected abstract List<ItemWrapper> GetSupportedItems();

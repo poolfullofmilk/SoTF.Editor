@@ -11,4 +11,10 @@ public class PlayerPoi(Position position) : BasePoi(position)
     public override int IconZIndex => 50;
 
     public override string Title => AppText.Get("Player");
+
+    // The Player Stays In Sight Under Every Requirements Filter
+    protected override bool ShouldFilter(MapFilter mapFilter)
+    {
+        return ShouldFilterByPlace(mapFilter);
+    }
 }

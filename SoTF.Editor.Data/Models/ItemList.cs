@@ -2,18 +2,13 @@
 
 namespace SoTF.Editor.Data.Models;
 
-public class ItemList : IEnumerable<KeyValuePair<int, Item>>
+public class ItemList(IEnumerable<Item> items) : IEnumerable<Item>
 {
-    private readonly Dictionary<int, Item> _items;
+    private readonly Dictionary<int, Item> _items = items.ToDictionary(item => item.Id);
 
-    public ItemList(IEnumerable<Item> items)
+    public IEnumerator<Item> GetEnumerator()
     {
-        _items = items.ToDictionary(item => item.Id, item => item);
-    }
-
-    public IEnumerator<KeyValuePair<int, Item>> GetEnumerator()
-    {
-        return _items.GetEnumerator();
+        return _items.Values.GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
@@ -28,16 +23,6 @@ public class ItemList : IEnumerable<KeyValuePair<int, Item>>
 
     public IEnumerable<Item>? GetItems(IEnumerable<int>? itemIds)
     {
-        return itemIds?.Select(GetItem).Where(item => item != null).Select(item => item!).ToList();
-    }
-
-    public List<Item> GetItemsWithHashes()
-    {
-        return
-        [
-            .. _items
-                .Where(item => item.Value.ModHashes is { Count: > 0 })
-                .Select(item => item.Value),
-        ];
+        return itemIds?.Select(GetItem).OfType<Item>().ToList();
     }
 }

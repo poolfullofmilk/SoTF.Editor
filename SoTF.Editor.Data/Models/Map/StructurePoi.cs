@@ -13,10 +13,4 @@ public class StructurePoi(ScrewStructureWrapper screwStructureWrapper)
             : DefaultIcon;
 
     public override int IconSize => 24;
-
-    protected override bool ShouldFilter(MapFilter mapFilter)
-    {
-        return mapFilter.RequirementsFilter == MapFilter.RequirementsFilterType.InaccessibleOnly
-            || base.ShouldFilter(mapFilter);
-    }
 }

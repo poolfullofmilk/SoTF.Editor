@@ -25,15 +25,9 @@ public class ItemWrapper
 
     public string Name => FoodSpoilStorageModuleWrapper?.Name ?? Item.Name;
 
-    public int Max => _maxPerSlot ?? MaxPerSlotFromItemDefinition() ?? 1;
-
-    private int? MaxPerSlotFromItemDefinition()
-    {
-        return _preferHolder ? MaxPerSlotPreferringHolder() : Item.StorageMax?.Shelf;
-    }
-
-    private int? MaxPerSlotPreferringHolder()
-    {
-        return Item.StorageMax?.Holder ?? Item.StorageMax?.Shelf;
-    }
+    public int Max =>
+        _maxPerSlot
+        ?? (_preferHolder ? Item.StorageMax?.Holder : null)
+        ?? Item.StorageMax?.Shelf
+        ?? 1;
 }

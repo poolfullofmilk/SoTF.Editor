@@ -53,19 +53,22 @@ public class MapViewModel(
         }
     }
 
-    public IEnumerable<IPoi> AllPois()
+    private IEnumerable<PoiGroup> AllGroups()
     {
-        RebuildIfStale();
         return _poiGroups.SelectMany(grouper =>
             grouper switch
             {
-                PoiGroup poiGroup => poiGroup.Pois,
-                PoiGroupCollection poiGroupCollection => poiGroupCollection.PoiGroups.SelectMany(
-                    group => group.Pois
-                ),
-                _ => [],
+                PoiGroup poiGroup => [poiGroup],
+                PoiGroupCollection poiGroupCollection => poiGroupCollection.PoiGroups,
+                _ => Enumerable.Empty<PoiGroup>(),
             }
         );
+    }
+
+    public IEnumerable<IPoi> AllPois()
+    {
+        RebuildIfStale();
+        return AllGroups().SelectMany(group => group.Pois);
     }
 
     public IEnumerable<IPoi> VisiblePois()
@@ -92,17 +95,10 @@ public class MapViewModel(
                     playerPoi.Position = playerPage.PlayerState.Pos;
                     break;
                 case ActorPoi { IsFollower: true } actorPoi:
-                    actorPoi.Position = FollowerOf(actorPoi.Actor.TypeId).Pos;
+                    actorPoi.Position = followerPage.StateOf(actorPoi.Actor.TypeId).Pos;
                     break;
             }
         }
-    }
-
-    private FollowerState FollowerOf(int typeId)
-    {
-        return typeId == Constants.Actors.KelvinTypeId
-            ? followerPage.KelvinState
-            : followerPage.VirginiaState;
     }
 
     public void SelectPoi(IPoi? poi)
@@ -173,16 +169,7 @@ public class MapViewModel(
             SelectedPoi = null;
         }
 
-        foreach (var poiGroup in _poiGroups.OfType<PoiGroup>())
-        {
-            poiGroup.Pois.ExceptWith(pois);
-        }
-
-        foreach (
-            var poiGroup in _poiGroups
-                .OfType<PoiGroupCollection>()
-                .SelectMany(collection => collection.PoiGroups)
-        )
+        foreach (var poiGroup in AllGroups())
         {
             poiGroup.Pois.ExceptWith(pois);
         }
@@ -235,14 +222,7 @@ public class MapViewModel(
 
     private static void Toggle(HashSet<string> selected, string groupKey, bool enabled)
     {
-        if (enabled)
-        {
-            selected.Add(groupKey);
-        }
-        else
-        {
-            selected.Remove(groupKey);
-        }
+        _ = enabled ? selected.Add(groupKey) : selected.Remove(groupKey);
     }
 
     private static void LoadSavedSelectedPois(List<IPoiGrouper> poiGrouperList)

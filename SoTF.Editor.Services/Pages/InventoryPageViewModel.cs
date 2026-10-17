@@ -11,49 +11,50 @@ namespace SoTF.Editor.Services.Pages;
 
 public class InventoryPageViewModel
 {
+    private const string BlueprintPagePrefix = "DiscoverablePageUnlocked_";
     private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
 
-    private readonly HashSet<int> _blueprintItemIds =
+    // Blueprints, From Item Plating To Gold Armor Plater
+    private static readonly int[] s_blueprintItemIds =
     [
-        665, //Item Plating
-        666, //Powered Cross
-        670, //Gore Chair
-        671, //Gore Couch
-        672, //Uber Trap
-        679, //Grind Trap
-        680, //Spotlight
-        681, //Clock
-        682, //Spin Trap
-        688, //Spear Thrower Trap
-        701, //Leg Lamp
-        709, //Teleporter
-        710, //Repel Shrine
-        711, //Attract Shrine
-        713, //Plater Counter
-        714, //Gold Armor Plater
+        665,
+        666,
+        670,
+        671,
+        672,
+        679,
+        680,
+        681,
+        682,
+        688,
+        701,
+        709,
+        710,
+        711,
+        713,
+        714,
         726,
     ];
 
     private readonly List<InventoryItem> _inventory = [];
-
     private readonly ItemList _itemList;
     private readonly List<InventoryItem> _unassignedItems = [];
 
     public InventoryPageViewModel(GameData gameData)
     {
         _itemList = gameData.Items;
-
-        var categories = gameData
-            .Items.Where(item => item.Value.IsInventoryItem)
-            .Select(item => item.Value.Type)
-            .Distinct()
-            .OrderBy(type => type)
-            .Select(type => new Category(type));
-
-        Categories.AddRange(categories);
+        Categories =
+        [
+            .. _itemList
+                .Where(item => item.IsInventoryItem)
+                .Select(item => item.Type)
+                .Distinct()
+                .Order()
+                .Select(type => new Category(type)),
+        ];
     }
 
-    public List<Category> Categories { get; } = [];
+    public List<Category> Categories { get; }
 
     public IReadOnlyList<InventoryItem> Inventory => _inventory;
 
@@ -72,252 +73,165 @@ public class InventoryPageViewModel
         string? filter
     )
     {
-        var normalizedFilter = TranslationHelper.Normalize(filter ?? "").ToLower();
+        var normalizedFilter = TranslationHelper.Normalize(filter ?? "");
         return items
             .Where(item =>
-                string.IsNullOrWhiteSpace(normalizedFilter) || FilterItem(item, normalizedFilter)
+                string.IsNullOrWhiteSpace(normalizedFilter)
+                || item.NormalizedName.Contains(
+                    normalizedFilter,
+                    StringComparison.OrdinalIgnoreCase
+                )
+                || item.TypeRendered.Contains(normalizedFilter, StringComparison.OrdinalIgnoreCase)
+                || item.Id.ToString().Contains(normalizedFilter)
             )
             .OrderBy(item => item.Name);
     }
 
     public void RemoveItemFromInventory(InventoryItem? inventoryItem)
     {
-        if (inventoryItem == null)
+        if (inventoryItem != null && _inventory.Remove(inventoryItem))
         {
-            return;
+            _unassignedItems.Add(inventoryItem);
         }
-
-        _unassignedItems.Add(inventoryItem);
-        _inventory.Remove(inventoryItem);
     }
 
     public void AddUnassignedItem(InventoryItem? inventoryItem)
     {
-        if (inventoryItem == null)
+        if (inventoryItem != null && _unassignedItems.Remove(inventoryItem))
         {
-            return;
+            _inventory.Add(inventoryItem);
         }
-
-        _inventory.Add(inventoryItem);
-        _unassignedItems.Remove(inventoryItem);
-    }
-
-    private static bool FilterItem(InventoryItem item, string filter)
-    {
-        return item.NormalizedName.Contains(filter, StringComparison.OrdinalIgnoreCase)
-            || item.TypeRendered.Contains(filter, StringComparison.OrdinalIgnoreCase)
-            || item.Id.ToString().Contains(filter);
     }
 
     public void Load(Savegame? savegame)
     {
+        _inventory.Clear();
+        _unassignedItems.Clear();
         if (savegame == null)
         {
-            _inventory.Clear();
-            _unassignedItems.Clear();
             return;
         }
 
-        HashSet<int> assignedItems = [];
-
-        var saveData = savegame
-            .SavegameStore.LoadJsonRaw(SavegameStore.FileType.PlayerInventorySaveData)
-            ?.Parent.ToObject<PlayerInventoryDataModel>();
-        if (saveData != null)
+        if (
+            savegame
+                .SavegameStore.LoadJsonRaw(SavegameStore.FileType.PlayerInventorySaveData)
+                ?.Parent.ToObject<PlayerInventoryDataModel>()
+                ?.Data.PlayerInventory is
+            { } playerInventory
+        )
         {
-            var playerInventoryModel = saveData.Data.PlayerInventory;
-            var inventoryItems = playerInventoryModel
-                .ItemInstanceManagerData.ItemBlocks.Select(itemBlock =>
-                {
-                    var item = _itemList.GetItem(itemBlock.ItemId);
-                    if (
-                        item?.StorageMax?.Inventory is { } maxInInventory
-                        && maxInInventory < itemBlock.TotalCount
-                    )
-                    {
-                        item = (Item)item.Clone();
-                        item.StorageMax = new StorageMax(
-                            itemBlock.TotalCount,
-                            item.StorageMax?.Shelf ?? 0,
-                            item.StorageMax?.Holder
-                        );
-                        s_logger.Info(
-                            $"Found Item {item.Id} Count {itemBlock.TotalCount} Above Its Max {maxInInventory}"
-                        );
-                    }
+            _inventory.AddRange(
+                playerInventory.ItemInstanceManagerData.ItemBlocks.Select(
+                    itemBlock => new InventoryItem(itemBlock, ItemHolding(itemBlock))
+                )
+            );
 
-                    return new InventoryItem(itemBlock, item);
-                })
-                .ToList();
-
-            var equippedItems = playerInventoryModel
-                .EquippedItems?.Select(itemBlock =>
-                {
-                    var item = _itemList.GetItem(itemBlock.ItemId);
-                    if (
-                        item?.StorageMax?.Inventory is { } maxInInventory
-                        && maxInInventory < itemBlock.TotalCount
-                    )
-                    {
-                        s_logger.Info(
-                            $"Found Item {item.Id} Count {itemBlock.TotalCount} Above Its Max {maxInInventory}"
-                        );
-                    }
-
-                    itemBlock.TotalCount = 1;
-
-                    return new InventoryItem(itemBlock, item, true);
-                })
-                .ToList();
-
-            if (equippedItems != null)
+            // Equipped Items Count One Each
+            foreach (var itemBlock in playerInventory.EquippedItems ?? [])
             {
-                inventoryItems.AddRange(equippedItems);
-            }
-
-            _inventory.Clear();
-            _inventory.AddRange(inventoryItems);
-
-            foreach (var inventoryItem in inventoryItems)
-            {
-                assignedItems.Add(inventoryItem.Id);
+                itemBlock.TotalCount = 1;
+                _inventory.Add(
+                    new InventoryItem(itemBlock, _itemList.GetItem(itemBlock.ItemId), true)
+                );
             }
         }
-        else
-        {
-            _inventory.Clear();
-        }
 
-        var unassignedItems = _itemList
-            .Where(item => !assignedItems.Contains(item.Value.Id))
-            .Where(item => item.Value is { IsInventoryItem: true, StorageMax.Inventory: > 0 })
-            .Select(item => BuildUnassignedItem(item.Value));
-
-        _unassignedItems.Clear();
-        _unassignedItems.AddRange(unassignedItems);
+        var heldItemIds = _inventory.Select(item => item.Id).ToHashSet();
+        _unassignedItems.AddRange(
+            _itemList
+                .Where(item =>
+                    !heldItemIds.Contains(item.Id)
+                    && item is { IsInventoryItem: true, StorageMax.Inventory: > 0 }
+                )
+                .Select(item => new InventoryItem(ItemBlockModel.Unassigned(item), item))
+        );
     }
 
-    private static InventoryItem BuildUnassignedItem(Item item)
+    private Item? ItemHolding(ItemBlockModel itemBlock)
     {
-        var itemBlock = ItemBlockModel.Unassigned(item);
-        return new InventoryItem(itemBlock, item);
+        // A Count Above Max Raises The Max For This Stack
+        var item = _itemList.GetItem(itemBlock.ItemId);
+        if (item?.StorageMax is not { } storageMax || storageMax.Inventory >= itemBlock.TotalCount)
+        {
+            return item;
+        }
+
+        s_logger.Info(
+            $"Found Item {item.Id} Count {itemBlock.TotalCount} Above Its Max {storageMax.Inventory}"
+        );
+        var raisedItem = (Item)item.Clone();
+        raisedItem.StorageMax = storageMax with { Inventory = itemBlock.TotalCount };
+        return raisedItem;
     }
 
     public bool Update(Savegame savegame)
     {
-        var saveDataWrapper = savegame.SavegameStore.LoadJsonRaw(
-            SavegameStore.FileType.PlayerInventorySaveData
-        );
-
-        if (saveDataWrapper == null)
-        {
-            return false;
-        }
-
-        var selectedItems = new List<InventoryItem>(_inventory);
-
-        var hasChanged = MergeInventory(saveDataWrapper, selectedItems);
-        return EnsureBlueprintStatusUpdated(savegame.SavegameStore, selectedItems) || hasChanged;
-    }
-
-    private static bool MergeInventory(
-        SaveDataWrapper saveDataWrapper,
-        List<InventoryItem> selectedItems
-    )
-    {
         if (
-            saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.PlayerInventory)
-            is not { } playerInventory
-        )
-        {
-            return false;
-        }
-
-        if (!PlayerInventoryModel.Merge(playerInventory, selectedItems))
-        {
-            return false;
-        }
-
-        saveDataWrapper.MarkAsModified(Constants.JsonKeys.PlayerInventory);
-        return true;
-    }
-
-    private bool EnsureBlueprintStatusUpdated(
-        SavegameStore savegameStore,
-        List<InventoryItem> inventoryItems
-    )
-    {
-        if (
-            savegameStore.LoadJsonRaw(SavegameStore.FileType.PlayerStateSaveData)
+            savegame.SavegameStore.LoadJsonRaw(SavegameStore.FileType.PlayerInventorySaveData)
             is not { } saveDataWrapper
         )
         {
             return false;
         }
 
+        var hasChanges =
+            saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.PlayerInventory)
+                is { } playerInventory
+            && PlayerInventoryModel.Merge(playerInventory, _inventory);
+        if (hasChanges)
+        {
+            saveDataWrapper.MarkAsModified(Constants.JsonKeys.PlayerInventory);
+        }
+
+        return UpdateBlueprintPages(savegame.SavegameStore) | hasChanges;
+    }
+
+    private bool UpdateBlueprintPages(SavegameStore savegameStore)
+    {
         if (
-            saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.PlayerState) is not { } playerState
-            || playerState["_entries"] is not JArray entries
+            savegameStore.LoadJsonRaw(SavegameStore.FileType.PlayerStateSaveData)
+                is not { } saveDataWrapper
+            || saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.PlayerState)?["_entries"]
+                is not JArray entries
         )
         {
             return false;
         }
 
-        var addedBlueprintItems = new HashSet<int>();
-
+        // A Held Blueprint Has Its Page Unlocked
+        var heldItemIds = _inventory.Select(item => item.Id).ToHashSet();
+        var blueprintItemIdsByPage = s_blueprintItemIds.ToDictionary(itemId =>
+            BlueprintPagePrefix + itemId
+        );
+        var listedItemIds = new HashSet<int>();
         var hasChanges = false;
-
-        foreach (
-            var inventoryItem in inventoryItems.Where(inventoryItem =>
-                _blueprintItemIds.Contains(inventoryItem.Id)
-            )
-        )
-        {
-            addedBlueprintItems.Add(inventoryItem.Id);
-        }
-
-        var blueprintTokensExisting = new HashSet<int>();
-
         foreach (var pageEntry in entries)
         {
-            var name = pageEntry["Name"]?.Value<string>();
-
-            foreach (
-                var itemId in _blueprintItemIds.Where(itemId =>
-                    name == $"DiscoverablePageUnlocked_{itemId}"
-                )
-            )
-            {
-                blueprintTokensExisting.Add(itemId);
-
-                var isEnabled = pageEntry["BoolValue"]?.Value<bool>() ?? false;
-                var isAdded = addedBlueprintItems.Contains(itemId);
-                if (isEnabled != isAdded)
-                {
-                    pageEntry["BoolValue"] = isAdded;
-                    hasChanges = true;
-                }
-
-                break;
-            }
-        }
-
-        foreach (var blueprintItemId in _blueprintItemIds)
-        {
             if (
-                blueprintTokensExisting.Contains(blueprintItemId)
-                || !addedBlueprintItems.Contains(blueprintItemId)
+                pageEntry["Name"]?.Value<string>() is not { } name
+                || !blueprintItemIdsByPage.TryGetValue(name, out var itemId)
             )
             {
                 continue;
             }
 
+            listedItemIds.Add(itemId);
+            var isHeld = heldItemIds.Contains(itemId);
+            if ((pageEntry["BoolValue"]?.Value<bool>() ?? false) != isHeld)
+            {
+                pageEntry["BoolValue"] = isHeld;
+                hasChanges = true;
+            }
+        }
+
+        foreach (
+            var itemId in s_blueprintItemIds.Where(itemId =>
+                heldItemIds.Contains(itemId) && !listedItemIds.Contains(itemId)
+            )
+        )
+        {
             entries.Add(
-                new JObject
-                {
-                    { "Name", $"DiscoverablePageUnlocked_{blueprintItemId}" },
-                    { "BoolValue", true },
-                }
+                new JObject { { "Name", BlueprintPagePrefix + itemId }, { "BoolValue", true } }
             );
             hasChanges = true;
         }
@@ -332,26 +246,18 @@ public class InventoryPageViewModel
 
     public void SetAllEquippedToMin()
     {
-        foreach (var inventoryItem in _inventory)
-        {
-            inventoryItem.TotalCount = 1;
-        }
+        _inventory.ForEach(inventoryItem => inventoryItem.TotalCount = 1);
     }
 
     public void SetAllEquippedToMax()
     {
-        foreach (var inventoryItem in _inventory)
-        {
-            inventoryItem.TotalCount = inventoryItem.Max;
-        }
+        _inventory.ForEach(inventoryItem => inventoryItem.TotalCount = inventoryItem.Max);
     }
 
     public void RemoveAllEquipped()
     {
-        foreach (var inventoryItem in _inventory.ToList())
-        {
-            RemoveItemFromInventory(inventoryItem);
-        }
+        _unassignedItems.AddRange(_inventory);
+        _inventory.Clear();
     }
 
     public bool HasInventoryItems()
@@ -361,13 +267,8 @@ public class InventoryPageViewModel
 
     public void AddAllFromCategory(Category category)
     {
-        var items = _unassignedItems.Where(item => item.Type == category.Type).ToList();
-        foreach (var inventoryItem in items)
-        {
-            _unassignedItems.Remove(inventoryItem);
-        }
-
-        _inventory.AddRange(items);
+        _inventory.AddRange(_unassignedItems.Where(item => item.Type == category.Type));
+        _unassignedItems.RemoveAll(item => item.Type == category.Type);
     }
 }
 

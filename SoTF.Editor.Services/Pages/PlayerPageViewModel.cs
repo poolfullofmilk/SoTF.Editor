@@ -8,7 +8,37 @@ namespace SoTF.Editor.Services.Pages;
 
 public class PlayerPageViewModel
 {
+    private const string PlayerPositionEntry = "player.position";
     private const string PlayerAreaMaskEntry = "player.areaMask";
+    private const string StrengthLevelEntry = "StrengthLevel";
+    private const string SicknessEntry = "Sickness";
+
+    // Float Entries The Page Edits, Read And Written Alike
+    private static readonly Dictionary<
+        string,
+        (Func<PlayerState, float> Get, Action<PlayerState, float> Set)
+    > s_floatEntries = new()
+    {
+        ["MaxHealth"] = (state => state.MaxHealth, (state, value) => state.MaxHealth = value),
+        ["CurrentHealth"] = (
+            state => state.CurrentHealth,
+            (state, value) => state.CurrentHealth = value
+        ),
+        ["Hydration"] = (state => state.Hydration, (state, value) => state.Hydration = value),
+        ["HydrationBuff"] = (
+            state => state.HydrationBuff,
+            (state, value) => state.HydrationBuff = value
+        ),
+        ["Fullness"] = (state => state.Fullness, (state, value) => state.Fullness = value),
+        ["FullnessBuff"] = (
+            state => state.FullnessBuff,
+            (state, value) => state.FullnessBuff = value
+        ),
+        ["Rest"] = (state => state.Rest, (state, value) => state.Rest = value),
+        ["RestBuff"] = (state => state.RestBuff, (state, value) => state.RestBuff = value),
+        ["Stamina"] = (state => state.Stamina, (state, value) => state.Stamina = value),
+        [SicknessEntry] = (state => state.Sickness, (state, value) => state.Sickness = value),
+    };
 
     private readonly List<Item> _availableClothes = [];
 
@@ -49,19 +79,12 @@ public class PlayerPageViewModel
     {
         _availableClothes.Clear();
         _availableClothes.AddRange(
-            _gameData
-                .Items.Select(pair => pair.Value)
-                .Where(item => item.Type == "clothes" || item.IsWearableCloth)
+            _gameData.Items.Where(item => item.Type == "clothes" || item.IsWearableCloth)
         );
         _otherWornItemIds.Clear();
         PlayerState.SelectedCloth = null;
 
-        var clothing =
-            savegame
-                .SavegameStore.LoadJsonRaw(SavegameStore.FileType.PlayerClothingSystemSaveData)
-                ?.GetJsonBasedToken(Constants.JsonKeys.PlayerClothingSystem)
-                ?["Clothing"] as JArray;
-        foreach (var itemId in clothing?.Select(token => token.Value<int>()) ?? [])
+        foreach (var itemId in ClothingOf(savegame)?.Select(token => token.Value<int>()) ?? [])
         {
             // The First Outfit Is Worn, The Rest Stays As Is
             if (PlayerState.SelectedCloth == null && OutfitOf(itemId) is { } outfit)
@@ -78,6 +101,23 @@ public class PlayerPageViewModel
         PlayerState.SelectedCloth ??= OutfitOf(Constants.Items.DefaultPlayerClothItemId);
     }
 
+    private static JArray? ClothingOf(Savegame? savegame)
+    {
+        return savegame
+                ?.SavegameStore.LoadJsonRaw(SavegameStore.FileType.PlayerClothingSystemSaveData)
+                ?.GetJsonBasedToken(Constants.JsonKeys.PlayerClothingSystem)
+                ?["Clothing"] as JArray;
+    }
+
+    private static JArray? EntriesOf(Savegame? savegame)
+    {
+        return (
+                savegame
+                    ?.SavegameStore.LoadJsonRaw(SavegameStore.FileType.PlayerStateSaveData)
+                    ?.GetJsonBasedToken(Constants.JsonKeys.PlayerState) as JObject
+            )?["_entries"] as JArray;
+    }
+
     private Item? OutfitOf(int itemId)
     {
         return _availableClothes.FirstOrDefault(cloth => cloth.Id == itemId);
@@ -85,13 +125,9 @@ public class PlayerPageViewModel
 
     public void MoveToFollower(FollowerState followerState)
     {
-        var followerPos = followerState.Pos;
-        var playerPos = PlayerState.Pos;
-
-        Teleporter.MovePlayerToPos(ref playerPos, ref followerPos);
-
-        followerState.Pos = followerPos;
-        PlayerState.Pos = playerPos;
+        // The Player Takes The Spot, The Follower Steps Up Beside
+        PlayerState.Pos = followerState.Pos.WithoutOffset();
+        followerState.Pos = Teleporter.MoveToPos(followerState.Pos);
     }
 
     public void FillAllBars()
@@ -107,18 +143,19 @@ public class PlayerPageViewModel
         PlayerState.Sickness = 0;
     }
 
+    private static Position? PositionOf(JToken entry)
+    {
+        return entry["FloatArrayValue"]?.ToObject<float[]>() is { Length: 3 } values
+            ? new Position(values[0], values[1], values[2])
+            : null;
+    }
+
     private void LoadPlayerData(Savegame savegame)
     {
         // A Missing Field Must Not Keep The Last Save's Value
         PlayerState.Reset();
 
-        if (
-            savegame
-                .SavegameStore.LoadJsonRaw(SavegameStore.FileType.PlayerStateSaveData)
-                ?.GetJsonBasedToken(Constants.JsonKeys.PlayerState)
-                is not JObject playerState
-            || playerState["_entries"] is not JArray entries
-        )
+        if (EntriesOf(savegame) is not { } entries)
         {
             return;
         }
@@ -128,58 +165,19 @@ public class PlayerPageViewModel
 
         foreach (var entry in entries)
         {
-            var name = entry["Name"]?.ToString();
-
-            switch (name)
+            switch (entry["Name"]?.ToString())
             {
-                case "player.position":
-                    var playerPosFloatArray = entry["FloatArrayValue"]?.ToObject<float[]>();
-
-                    if (playerPosFloatArray is { Length: 3 })
-                    {
-                        playerPos = new Position(
-                            playerPosFloatArray[0],
-                            playerPosFloatArray[1],
-                            playerPosFloatArray[2]
-                        );
-                    }
-
+                case PlayerPositionEntry:
+                    playerPos = PositionOf(entry) ?? playerPos;
                     break;
                 case PlayerAreaMaskEntry:
                     areaMask = SettingReader.ReadInt(entry) ?? 0;
                     break;
-                case "StrengthLevel":
+                case StrengthLevelEntry:
                     PlayerState.StrengthLevel = SettingReader.ReadInt(entry) ?? 0;
                     break;
-                case "MaxHealth":
-                    PlayerState.MaxHealth = SettingReader.ReadFloat(entry) ?? 0f;
-                    break;
-                case "CurrentHealth":
-                    PlayerState.CurrentHealth = SettingReader.ReadFloat(entry) ?? 0f;
-                    break;
-                case "Hydration":
-                    PlayerState.Hydration = SettingReader.ReadFloat(entry) ?? 0f;
-                    break;
-                case "HydrationBuff":
-                    PlayerState.HydrationBuff = SettingReader.ReadFloat(entry) ?? 0f;
-                    break;
-                case "Fullness":
-                    PlayerState.Fullness = SettingReader.ReadFloat(entry) ?? 0f;
-                    break;
-                case "FullnessBuff":
-                    PlayerState.FullnessBuff = SettingReader.ReadFloat(entry) ?? 0f;
-                    break;
-                case "Rest":
-                    PlayerState.Rest = SettingReader.ReadFloat(entry) ?? 0f;
-                    break;
-                case "RestBuff":
-                    PlayerState.RestBuff = SettingReader.ReadFloat(entry) ?? 0f;
-                    break;
-                case "Stamina":
-                    PlayerState.Stamina = SettingReader.ReadFloat(entry) ?? 0f;
-                    break;
-                case "Sickness":
-                    PlayerState.Sickness = SettingReader.ReadFloat(entry) ?? 0f;
+                case { } name when s_floatEntries.TryGetValue(name, out var accessor):
+                    accessor.Set(PlayerState, SettingReader.ReadFloat(entry) ?? 0f);
                     break;
             }
         }
@@ -192,21 +190,12 @@ public class PlayerPageViewModel
 
     public bool Update(Savegame? savegame)
     {
-        var hasChanges = UpdatePlayerState(savegame);
-        hasChanges = UpdateClothes(savegame) || hasChanges;
-        return hasChanges;
+        return UpdatePlayerState(savegame) | UpdateClothes(savegame);
     }
 
     private bool UpdateClothes(Savegame? savegame)
     {
-        if (
-            savegame?.SavegameStore.LoadJsonRaw(SavegameStore.FileType.PlayerClothingSystemSaveData)
-                is not { } saveDataWrapper
-            || saveDataWrapper
-                .GetJsonBasedToken(Constants.JsonKeys.PlayerClothingSystem)
-                ?["Clothing"]
-                is not JArray clothing
-        )
+        if (ClothingOf(savegame) is not { } clothing)
         {
             return false;
         }
@@ -234,126 +223,61 @@ public class PlayerPageViewModel
             outfitToken.Replace(selectedId!.Value);
         }
 
-        saveDataWrapper.MarkAsModified(Constants.JsonKeys.PlayerClothingSystem);
-
+        savegame!
+            .SavegameStore.LoadJsonRaw(SavegameStore.FileType.PlayerClothingSystemSaveData)!
+            .MarkAsModified(Constants.JsonKeys.PlayerClothingSystem);
         return true;
     }
 
     private bool UpdatePlayerState(Savegame? savegame)
     {
-        if (
-            savegame?.SavegameStore.LoadJsonRaw(SavegameStore.FileType.PlayerStateSaveData)
-                is not { } saveDataWrapper
-            || saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.PlayerState)
-                is not JObject playerState
-            || playerState["_entries"] is not JArray entries
-        )
+        if (EntriesOf(savegame) is not { } entries)
         {
             return false;
         }
 
         var hasChanges = false;
-
         foreach (var entry in entries)
         {
-            var name = entry["Name"]?.ToString();
-
-            switch (name)
+            switch (entry["Name"]?.ToString())
             {
-                case "player.position":
-                    if (
-                        entry["FloatArrayValue"] is { } floatArrayToken
-                        && floatArrayToken.ToObject<float[]>() is { Length: 3 } playerPosFloatArray
-                    )
-                    {
-                        var oldPlayerPos = new Position(
-                            playerPosFloatArray[0],
-                            playerPosFloatArray[1],
-                            playerPosFloatArray[2]
-                        );
-                        // The Area Lives In Its Own Entry Below
-                        if (!oldPlayerPos.HasSameCoordinates(PlayerState.Pos))
-                        {
-                            floatArrayToken.Replace(
-                                JToken.FromObject(
-                                    new[]
-                                    {
-                                        PlayerState.Pos.X,
-                                        PlayerState.Pos.Y,
-                                        PlayerState.Pos.Z,
-                                    }
-                                )
-                            );
-                            hasChanges = true;
-                        }
-                    }
-
+                // The Area Lives In Its Own Entry Below
+                case PlayerPositionEntry
+                    when PositionOf(entry) is { } oldPlayerPos
+                        && !oldPlayerPos.HasSameCoordinates(PlayerState.Pos):
+                    entry["FloatArrayValue"]!.Replace(
+                        JToken.FromObject(
+                            new[] { PlayerState.Pos.X, PlayerState.Pos.Y, PlayerState.Pos.Z }
+                        )
+                    );
+                    hasChanges = true;
                     break;
                 case PlayerAreaMaskEntry:
-                    hasChanges =
-                        SettingWriter.WriteInt(entry, PlayerState.Pos.Area.AreaMask) || hasChanges;
+                    hasChanges |= SettingWriter.WriteInt(entry, PlayerState.Pos.Area.AreaMask);
                     break;
-                case "StrengthLevel":
-                    hasChanges =
-                        SettingWriter.WriteInt(entry, PlayerState.StrengthLevel) || hasChanges;
+                case StrengthLevelEntry:
+                    hasChanges |= SettingWriter.WriteInt(entry, PlayerState.StrengthLevel);
                     break;
-                case "MaxHealth":
-                    hasChanges =
-                        SettingWriter.WriteFloat(entry, PlayerState.MaxHealth) || hasChanges;
+                // The Game Leaves Out A Healthy Player's Sickness
+                case SicknessEntry when PlayerState.Sickness == 0:
+                    hasChanges |= SettingWriter.RemoveFloat(entry);
                     break;
-                case "CurrentHealth":
                 case "TargetHealth":
-                    hasChanges =
-                        SettingWriter.WriteFloat(entry, PlayerState.CurrentHealth) || hasChanges;
+                    hasChanges |= SettingWriter.WriteFloat(entry, PlayerState.CurrentHealth);
                     break;
-                case "Hydration":
-                    hasChanges =
-                        SettingWriter.WriteFloat(entry, PlayerState.Hydration) || hasChanges;
-                    break;
-                case "HydrationBuff":
-                    hasChanges =
-                        SettingWriter.WriteFloat(entry, PlayerState.HydrationBuff) || hasChanges;
-                    break;
-                case "Fullness":
-                    hasChanges =
-                        SettingWriter.WriteFloat(entry, PlayerState.Fullness) || hasChanges;
-                    break;
-                case "FullnessBuff":
-                    hasChanges =
-                        SettingWriter.WriteFloat(entry, PlayerState.FullnessBuff) || hasChanges;
-                    break;
-                case "Rest":
-                    hasChanges = SettingWriter.WriteFloat(entry, PlayerState.Rest) || hasChanges;
-                    break;
-                case "RestBuff":
-                    hasChanges =
-                        SettingWriter.WriteFloat(entry, PlayerState.RestBuff) || hasChanges;
-                    break;
-                case "Stamina":
-                    hasChanges = SettingWriter.WriteFloat(entry, PlayerState.Stamina) || hasChanges;
-                    break;
-                case "Sickness":
-                    if (PlayerState.Sickness == 0)
-                    {
-                        hasChanges = SettingWriter.RemoveFloat(entry) || hasChanges;
-                    }
-                    else
-                    {
-                        hasChanges =
-                            SettingWriter.WriteFloat(entry, PlayerState.Sickness) || hasChanges;
-                    }
-
+                case { } name when s_floatEntries.TryGetValue(name, out var accessor):
+                    hasChanges |= SettingWriter.WriteFloat(entry, accessor.Get(PlayerState));
                     break;
             }
         }
 
-        if (!hasChanges)
+        if (hasChanges)
         {
-            return false;
+            savegame!
+                .SavegameStore.LoadJsonRaw(SavegameStore.FileType.PlayerStateSaveData)!
+                .MarkAsModified(Constants.JsonKeys.PlayerState);
         }
 
-        saveDataWrapper.MarkAsModified(Constants.JsonKeys.PlayerState);
-
-        return true;
+        return hasChanges;
     }
 }

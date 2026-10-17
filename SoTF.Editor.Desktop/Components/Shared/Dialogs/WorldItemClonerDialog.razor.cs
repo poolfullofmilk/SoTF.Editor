@@ -12,13 +12,6 @@ public partial class WorldItemClonerDialog
     [Inject]
     public required IStringLocalizer<SharedResource> Localizer { get; set; }
 
-    private static readonly WorldItemType?[] s_cloneableTypes =
-    [
-        WorldItemType.HangGlider,
-        WorldItemType.KnightV,
-        WorldItemType.Radio,
-    ];
-
     [CascadingParameter]
     public required IMudDialogInstance MudDialog { get; set; }
 
@@ -34,11 +27,11 @@ public partial class WorldItemClonerDialog
     [Inject]
     public required IDialogService DialogService { get; set; }
 
-    private WorldItemTeleporterViewModel _viewModel = null!;
+    private WorldItemClonerViewModel _viewModel = null!;
 
     protected override void OnInitialized()
     {
-        _viewModel = new WorldItemTeleporterViewModel(MainViewModel.SelectedSavegame!);
+        _viewModel = new WorldItemClonerViewModel(MainViewModel.SelectedSavegame!);
     }
 
     private void Clone()
@@ -70,8 +63,8 @@ public partial class WorldItemClonerDialog
         MudDialog.Close(DialogResult.Ok(true));
     }
 
-    private static string ItemName(WorldItemType? type)
+    private static string ItemName(WorldItemType type)
     {
-        return type is { } value ? GameNames.Get(TextKeys.WorldItem(value)) : string.Empty;
+        return GameNames.Get(TextKeys.WorldItem(type));
     }
 }

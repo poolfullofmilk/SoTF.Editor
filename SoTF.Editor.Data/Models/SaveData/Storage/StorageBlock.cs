@@ -8,24 +8,9 @@ public class StorageBlock
     public string Version => "0.0.0";
 #pragma warning restore CA1822
 
-    private bool Equals(StorageBlock other)
-    {
-        return ItemBlocks.SequenceEqual(other.ItemBlocks);
-    }
-
     public override bool Equals(object? obj)
     {
-        if (obj is null)
-        {
-            return false;
-        }
-
-        if (ReferenceEquals(this, obj))
-        {
-            return true;
-        }
-
-        return obj.GetType() == GetType() && Equals((StorageBlock)obj);
+        return obj is StorageBlock other && ItemBlocks.SequenceEqual(other.ItemBlocks);
     }
 
     public override int GetHashCode()

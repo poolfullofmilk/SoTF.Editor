@@ -5,9 +5,6 @@ namespace SoTF.Editor.Data.Models.SaveData;
 
 internal class StringTypeConverter : JsonConverter
 {
-    public override bool CanRead => true;
-    public override bool CanWrite => true;
-
     public override bool CanConvert(Type objectType)
     {
         return true;
@@ -20,12 +17,8 @@ internal class StringTypeConverter : JsonConverter
         JsonSerializer serializer
     )
     {
-        if (reader.Value is string json)
-        {
-            return SaveJson.DeserializeObject(json, objectType);
-        }
-
-        return null;
+        // The Save Nests Whole Documents As Strings
+        return reader.Value is string json ? SaveJson.DeserializeObject(json, objectType) : null;
     }
 
     public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)

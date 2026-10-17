@@ -5,7 +5,6 @@ namespace SoTF.Editor.Data.Models.SaveData.Storage;
 
 public class GenericStorageModuleConverter : JsonConverter<GenericModule>
 {
-    public override bool CanWrite => true;
     public override bool CanRead => false;
 
     public override void WriteJson(

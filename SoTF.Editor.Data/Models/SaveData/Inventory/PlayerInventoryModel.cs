@@ -16,8 +16,7 @@ public record PlayerInventoryModel
 
         if (playerInventory.SelectToken("EquippedItems") is JArray equippedItems)
         {
-            hasChanges =
-                ProcessEquippedItems(selectedItems, equippedItems, processedItemIds) || hasChanges;
+            hasChanges |= ProcessEquippedItems(selectedItems, equippedItems, processedItemIds);
         }
 
         // Goes Last, It Adds Every Item Not Processed Yet
@@ -26,9 +25,7 @@ public record PlayerInventoryModel
             is JArray inventoryItems
         )
         {
-            hasChanges =
-                ProcessInventoryItems(selectedItems, inventoryItems, processedItemIds)
-                || hasChanges;
+            hasChanges |= ProcessInventoryItems(selectedItems, inventoryItems, processedItemIds);
         }
 
         if (playerInventory.SelectToken("QuickSelect.Slots") is JArray quickSelectSlots)
@@ -44,13 +41,15 @@ public record PlayerInventoryModel
         JContainer quickSelectSlots
     )
     {
+        // Hotbar Slots Of Removed Items Go Too
         var allIds = selectedItems.Select(item => item.Id).ToHashSet();
-        var filteredTokens = quickSelectSlots
-            .Where(token =>
-                token["ItemId"]?.Value<int>() is not { } itemId || allIds.Contains(itemId)
-            )
-            .ToList();
-        quickSelectSlots.ReplaceAll(filteredTokens);
+        quickSelectSlots.ReplaceAll(
+            quickSelectSlots
+                .Where(token =>
+                    token["ItemId"]?.Value<int>() is not { } itemId || allIds.Contains(itemId)
+                )
+                .ToList()
+        );
     }
 
     private static bool ProcessInventoryItems(
@@ -85,8 +84,7 @@ public record PlayerInventoryModel
             .ToList();
 
         finalTokens.AddRange(newItemBlocks);
-
-        hasChanges = hasChanges || newItemBlocks.Count != 0;
+        hasChanges |= newItemBlocks.Count != 0;
 
         if (hasChanges)
         {
@@ -181,7 +179,7 @@ public record PlayerInventoryModel
         Item item
     )
     {
-        if (previousTotalCount == selectedItem.TotalCount || !item.HasFoodSpoilModuleDefinition())
+        if (previousTotalCount == selectedItem.TotalCount || item.FoodSpoilModuleDefinition == null)
         {
             return;
         }
@@ -194,8 +192,7 @@ public record PlayerInventoryModel
         var uniqueItemsCount = uniqueItems.Count;
         if (uniqueItemsCount > selectedItem.TotalCount)
         {
-            var retainedItems = uniqueItems.Take(new Range(0, selectedItem.TotalCount)).ToList();
-            itemBlock["UniqueItems"] = new JArray(retainedItems);
+            itemBlock["UniqueItems"] = new JArray(uniqueItems.Take(selectedItem.TotalCount));
         }
         else
         {

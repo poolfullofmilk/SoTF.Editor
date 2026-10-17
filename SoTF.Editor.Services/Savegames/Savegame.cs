@@ -12,14 +12,14 @@ namespace SoTF.Editor.Services.Savegames;
 public partial class Savegame
 {
     private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
-    private readonly Regex _nameFilePattern = NameFilePattern();
 
     public Savegame(string fullPath, string dirName, SavegameStore savegameStore)
     {
         SavegameStore = savegameStore;
         FullPath = fullPath;
         Title = dirName;
-        ReadSaveData();
+        LastSaveTime = SavegameStore.LastWriteTime;
+        GameName = FindGameName();
     }
 
     public string FullPath { get; }
@@ -28,9 +28,9 @@ public partial class Savegame
 
     public string Title => !string.IsNullOrWhiteSpace(GameName) ? $"{GameName} ({field})" : field;
 
-    public string? GameName { get; private set; }
+    public string? GameName { get; }
 
-    public DateTime LastSaveTime { get; private set; }
+    public DateTime LastSaveTime { get; }
     public string? ThumbnailPath => SavegameStore.GetThumbPath();
 
     public long RegrowTrees(VegetationState vegetationStateSelected, int pctRegrow)
@@ -43,15 +43,13 @@ public partial class Savegame
             return 0;
         }
 
-        var worldObjectLocatorManager = saveDataWrapper.GetJsonBasedToken(
-            Constants.JsonKeys.WorldObjectLocatorManager
-        );
-        if (worldObjectLocatorManager is not JObject)
+        if (
+            saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.WorldObjectLocatorManager)
+            is not JObject worldObjectLocatorManager
+        )
         {
             return 0;
         }
-
-        var countRegrown = 0;
 
         var candidates = (
             worldObjectLocatorManager["SerializedStates"] ?? Enumerable.Empty<JToken>()
@@ -60,20 +58,19 @@ public partial class Savegame
                 VegetationStateOf(serializedState) is var state and not VegetationState.None
                 && vegetationStateSelected.HasFlag(state)
             )
-            .ToList();
+            .ToArray();
 
-        if (candidates.Count > 0)
-        {
-            // Only The Requested Share Regrows, Spread Over The Island
-            countRegrown = (int)Math.Round(pctRegrow / 100.0 * candidates.Count);
-            var regrown = candidates.ToArray();
-            Random.Shared.Shuffle(regrown);
-            regrown.Take(countRegrown).ToList().ForEach(candidate => candidate.Remove());
-        }
-
+        // Only The Requested Share Regrows, Spread Over The Island
+        var countRegrown = (int)Math.Round(pctRegrow / 100.0 * candidates.Length);
         if (countRegrown == 0)
         {
             return 0;
+        }
+
+        Random.Shared.Shuffle(candidates);
+        foreach (var candidate in candidates.Take(countRegrown))
+        {
+            candidate.Remove();
         }
 
         saveDataWrapper.MarkAsModified(Constants.JsonKeys.WorldObjectLocatorManager);
@@ -117,12 +114,6 @@ public partial class Savegame
         return followerModifier.Revive(typeId, itemIds, outfit, pos);
     }
 
-    private void ReadSaveData()
-    {
-        LastSaveTime = SavegameStore.LastWriteTime;
-        GameName = FindGameName();
-    }
-
     private string? FindGameName()
     {
         // The Game Renames It Each Save, The Newest One Counts
@@ -136,8 +127,8 @@ public partial class Savegame
             return null;
         }
 
-        var patternMatch = _nameFilePattern.Match(Path.GetFileName(nameFile));
-        if (!patternMatch.Success || patternMatch.Groups.Count < 2)
+        var patternMatch = NameFilePattern().Match(Path.GetFileName(nameFile));
+        if (!patternMatch.Success)
         {
             s_logger.Warn($"Found Unexpected Name In {nameFile}, Using The File Name");
             return Path.GetFileNameWithoutExtension(nameFile).Replace("_", " ");

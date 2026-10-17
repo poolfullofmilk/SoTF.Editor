@@ -13,7 +13,7 @@ public class PoiGroupCollection(
 {
     public List<PoiGroup> PoiGroups { get; } = [.. groups];
 
-    private int Count => PoiGroups.Select(group => group.Count).Sum();
+    private int Count => PoiGroups.Sum(group => group.Count);
     public string GroupKey { get; } = groupKey;
 
     public string Title => $"{BaseTitle} ({Count})";

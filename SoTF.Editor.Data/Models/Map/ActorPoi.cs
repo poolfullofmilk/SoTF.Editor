@@ -27,10 +27,4 @@ public class ActorPoi : BasePoi
     public override string Icon => Actor.ActorType?.IconPath ?? DefaultIcon;
 
     public override int IconZIndex => IsFollower ? 50 : base.IconZIndex;
-
-    protected override bool ShouldFilter(MapFilter mapFilter)
-    {
-        return mapFilter.RequirementsFilter == MapFilter.RequirementsFilterType.InaccessibleOnly
-            || base.ShouldFilter(mapFilter);
-    }
 }

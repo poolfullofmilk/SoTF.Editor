@@ -39,57 +39,46 @@ public class SavegameStore
     public SavegameStore(string path)
     {
         _path = path;
-        LastWriteTime = ReadLastWriteTime();
+        LastWriteTime = Directory.GetLastWriteTime(_path);
     }
 
-    public DateTime LastWriteTime { get; private set; }
-
-    private DateTime ReadLastWriteTime()
-    {
-        return Directory.GetLastWriteTime(_path);
-    }
+    public DateTime LastWriteTime { get; }
 
     public SaveDataWrapper? LoadJsonRaw(FileType fileType)
     {
         if (!_rawData.TryGetValue(fileType, out var saveDataWrapper))
         {
-            saveDataWrapper = LoadJson<JToken>(fileType) is { } data
-                ? new SaveDataWrapper(data)
-                : null;
+            saveDataWrapper = LoadJson(fileType) is { } data ? new SaveDataWrapper(data) : null;
             _rawData[fileType] = saveDataWrapper;
         }
 
         return saveDataWrapper;
     }
 
-    private T? LoadJson<T>(FileType fileType)
+    private JToken? LoadJson(FileType fileType)
     {
+        // A Loose File Wins Over The Copy In The Archive
         var fileName = fileType.GetFilename();
         var path = ResolvePath(fileName);
-        return File.Exists(path)
-            ? SaveJson.DeserializeFromFile<T>(path)
-            : LoadJsonFromArchiveIfExists<T>(fileName);
-    }
+        if (File.Exists(path))
+        {
+            return SaveJson.DeserializeFromFile<JToken>(path);
+        }
 
-    private T? LoadJsonFromArchiveIfExists<T>(string fileName)
-    {
         var archivePath = ResolvePath(FileType.SaveDataArchive.GetFilename());
         if (!File.Exists(archivePath))
         {
-            return default;
+            return null;
         }
 
         using var archive = ZipFile.OpenRead(archivePath);
-        var fileEntry = archive.GetEntry(fileName);
-        if (fileEntry == null)
+        if (archive.GetEntry(fileName) is not { } fileEntry)
         {
-            return default;
+            return null;
         }
 
-        using var stream = fileEntry.Open();
-        using var streamReader = new StreamReader(stream);
-        var json = streamReader.ReadToEnd();
-        return SaveJson.DeserializeFromString<T>(json);
+        using var streamReader = new StreamReader(fileEntry.Open());
+        return SaveJson.DeserializeFromString<JToken>(streamReader.ReadToEnd());
     }
 
     private string ResolvePath(string fileName)
@@ -120,29 +109,22 @@ public class SavegameStore
 
     public bool SaveAllModified()
     {
-        var changedWrappers = _rawData
-            .Where(pair => pair.Value != null && pair.Value.HasModified())
-            .ToDictionary(pair => pair.Key, pair => pair.Value!);
-
-        if (changedWrappers.Count == 0)
-        {
-            s_logger.Info("Found No Changes");
-            return false;
-        }
-
-        SaveWrappers(changedWrappers);
-
-        return true;
+        return SaveWrappers(
+            _rawData
+                .Where(pair => pair.Value != null)
+                .ToDictionary(pair => pair.Key, pair => pair.Value!)
+        );
     }
 
-    public void SaveWrappers(Dictionary<FileType, SaveDataWrapper> wrappers)
+    public bool SaveWrappers(Dictionary<FileType, SaveDataWrapper> wrappers)
     {
         var changedWrappers = wrappers
             .Where(pair => pair.Value.HasModified())
             .ToDictionary(pair => pair.Key, pair => pair.Value);
         if (changedWrappers.Count == 0)
         {
-            return;
+            s_logger.Info("Found No Changes");
+            return false;
         }
 
         // Nothing Is Written Until A Verified Copy Exists
@@ -195,6 +177,8 @@ public class SavegameStore
         {
             saveDataWrapper.ClearModified();
         }
+
+        return true;
     }
 
     private static void WriteReplacing(string path, Action<string> write)

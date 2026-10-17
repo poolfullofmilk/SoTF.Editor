@@ -9,7 +9,7 @@
             <MudSelect T="WorldItemType?"
                        @bind-Value="_viewModel.SelectedWorldItemType"
                        Label="@Localizer["WorldItem"]">
-                @foreach (var worldItemType in s_cloneableTypes)
+                @foreach (var worldItemType in WorldItemClonerViewModel.CloneableTypes)
                 {
                     <MudSelectItem T="WorldItemType?"
                                    Value="@worldItemType">

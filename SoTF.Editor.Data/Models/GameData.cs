@@ -113,8 +113,7 @@ public class FollowerData
         [
             .. (_equippableItems.GetValueOrDefault(typeId) ?? [])
                 .Select(items.GetItem)
-                .Where(item => item is not null)
-                .Select(item => item!),
+                .OfType<Item>(),
         ];
     }
 }

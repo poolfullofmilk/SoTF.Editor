@@ -25,29 +25,15 @@ public class NpcsPageViewModel
 
     public List<Actor> AllActors { get; } = [];
 
-    public void Load(Savegame? selectedSavegame)
+    public void Load(Savegame? savegame)
     {
         AllActors.Clear();
         ActorsByType.Clear();
         ActorsByFamily.Clear();
-        if (selectedSavegame != null)
-        {
-            LoadNpcs(selectedSavegame);
-        }
-    }
-
-    private void LoadNpcs(Savegame? savegame)
-    {
         if (
-            savegame?.SavegameStore.LoadJsonRaw(SavegameStore.FileType.SaveData)
-            is not { } saveDataWrapper
-        )
-        {
-            return;
-        }
-
-        if (
-            saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.VailWorldSim)
+            savegame
+                ?.SavegameStore.LoadJsonRaw(SavegameStore.FileType.SaveData)
+                ?.GetJsonBasedToken(Constants.JsonKeys.VailWorldSim)
             is not { } vailWorldSim
         )
         {
@@ -72,11 +58,7 @@ public class NpcsPageViewModel
                 ?.ToDictionary(killStat => killStat.TypeId)
             ?? [];
 
-        AllActors.Clear();
-        AllActors.AddRange(
-            vailWorldSim["Actors"]?.ToObject<List<Actor>>() ?? Enumerable.Empty<Actor>().ToList()
-        );
-
+        AllActors.AddRange(vailWorldSim["Actors"]?.ToObject<List<Actor>>() ?? []);
         foreach (var actor in AllActors)
         {
             if (actor is { GraphMask: { } graphMask, Position: { } position })
@@ -97,16 +79,13 @@ public class NpcsPageViewModel
             }
 
             actor.KillStats = killStatsByType.GetValueOrDefault(actor.TypeId);
-
-            if (_actorTypes.TryGetValue(actor.TypeId, out var actorType))
+            if (!_actorTypes.TryGetValue(actor.TypeId, out var actorType))
             {
-                actor.ActorType = actorType;
-            }
-            else
-            {
-                actor.ActorType = new ActorType(-1, AppText.Get("Unknown"));
+                actorType = new ActorType(-1, AppText.Get("Unknown"));
                 s_logger.Warn($"Found No Actor Type For {actor.TypeId}");
             }
+
+            actor.ActorType = actorType;
         }
 
         ActorsByType.AddRange(
@@ -115,7 +94,7 @@ public class NpcsPageViewModel
                 .ThenBy(actor => actor.FamilyId)
                 .GroupBy(actor => actor.TypeId)
                 .Select(typeGroup => new ActorCollection(
-                    _actorTypes.GetValueOrDefault(typeGroup.Key)?.Name ?? AppText.Get("Unknown"),
+                    typeGroup.First().ActorType!.Name,
                     [.. typeGroup]
                 ))
                 .OrderBy(collection => collection.Name)
@@ -146,55 +125,38 @@ public class NpcsPageViewModel
 
     private static string BuildNameForActorList(List<Actor> subActors)
     {
-        var uniqueNames = GetUniqueNamesOfActors(subActors);
+        var uniqueNames = subActors
+            .Select(actor => actor.ActorType?.Name)
+            .OfType<string>()
+            .ToHashSet();
         if (uniqueNames.Count == 1)
         {
             return uniqueNames.First();
         }
 
-        if (subActors.TrueForAll(actor => actor.ActorType?.Classification == "animal"))
+        // A Kind Or Gender Every Actor Shares Names The Group
+        var key = (
+            SharedValue(subActors.Select(actor => actor.ActorType?.Classification)),
+            SharedValue(subActors.Select(actor => actor.ActorType?.Gender))
+        ) switch
         {
-            return AppText.Get("GroupAnimals");
-        }
-
-        if (subActors.TrueForAll(actor => actor.ActorType?.Classification == "creep"))
-        {
-            return AppText.Get("GroupCreeps");
-        }
-
-        if (subActors.TrueForAll(actor => actor.ActorType?.Classification == "misc"))
-        {
-            return AppText.Get("GroupMisc");
-        }
-
-        var allMale = subActors.TrueForAll(actor => actor.ActorType?.Gender == "male");
-        var allFemale = subActors.TrueForAll(actor => actor.ActorType?.Gender == "female");
-
-        if (subActors.TrueForAll(actor => actor.ActorType?.Classification == "cannibal"))
-        {
-            return allMale
-                ? AppText.Get("GroupMaleCannibals")
-                : AppText.Get(allFemale ? "GroupFemaleCannibals" : "GroupMixedCannibals");
-        }
-
-        if (subActors.TrueForAll(actor => actor.ActorType?.Classification == "muddyCannibal"))
-        {
-            return allMale
-                ? AppText.Get("GroupMaleMuddyCannibals")
-                : AppText.Get(allFemale ? "GroupFemaleMuddyCannibals" : "GroupMixedMuddyCannibals");
-        }
-
-        return AppText.Get(
-            subActors.TrueForAll(actor => actor.FamilyId == 0) ? "GroupNoFamily" : "GroupMixed"
-        );
+            ("animal", _) => "GroupAnimals",
+            ("creep", _) => "GroupCreeps",
+            ("misc", _) => "GroupMisc",
+            ("cannibal", "male") => "GroupMaleCannibals",
+            ("cannibal", "female") => "GroupFemaleCannibals",
+            ("cannibal", _) => "GroupMixedCannibals",
+            ("muddyCannibal", "male") => "GroupMaleMuddyCannibals",
+            ("muddyCannibal", "female") => "GroupFemaleMuddyCannibals",
+            ("muddyCannibal", _) => "GroupMixedMuddyCannibals",
+            _ when subActors.TrueForAll(actor => actor.FamilyId == 0) => "GroupNoFamily",
+            _ => "GroupMixed",
+        };
+        return AppText.Get(key);
     }
 
-    private static HashSet<string> GetUniqueNamesOfActors(IEnumerable<Actor> subActors)
+    private static string? SharedValue(IEnumerable<string?> values)
     {
-        var uniqueNames = subActors
-            .Where(actor => actor.ActorType?.Name != null)
-            .Select(actor => actor.ActorType!.Name)
-            .ToHashSet();
-        return uniqueNames;
+        return values.Distinct().Take(2).ToList() is [var sharedValue] ? sharedValue : null;
     }
 }

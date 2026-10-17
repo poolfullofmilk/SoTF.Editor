@@ -42,7 +42,7 @@
 
                 @if (IsCustom)
                 {
-                    @foreach (var group in SetupGroups)
+                    @foreach (var group in s_setupGroups)
                     {
                         <Header Title="@Localizer[group.TitleKey]">
                             <MudPaper Elevation="4"
@@ -56,8 +56,8 @@
                                                  md="4">
                                             @* Setup Select *@
                                             <MudSelect T="string"
-                                                       Value="setting.Get()"
-                                                       ValueChanged="value => setting.Set(value)"
+                                                       Value="GameSetup.GetString(setting.Key, setting.Fallback)"
+                                                       ValueChanged="value => GameSetup.SetString(setting.Key, value)"
                                                        Label="@Localizer[setting.LabelKey]"
                                                        Clearable
                                                        ToStringFunc="value => LabelOf(setting.Options, value)">
@@ -75,8 +75,8 @@
                                                  md="4">
                                             @* Setup Switch *@
                                             <MudSwitch T="bool"
-                                                       Value="toggle.Get()"
-                                                       ValueChanged="value => toggle.Set(value)"
+                                                       Value="GameSetup.GetBool(toggle.Key, toggle.Fallback)"
+                                                       ValueChanged="value => GameSetup.SetBool(toggle.Key, value)"
                                                        Color="Color.Info"
                                                        Label="@Localizer[toggle.LabelKey]" />
                                         </MudItem>

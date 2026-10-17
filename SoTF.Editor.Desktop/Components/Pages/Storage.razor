@@ -70,7 +70,7 @@
                             Class="fit">
                         <TitleContent>
                             <MudSpacer />
-                            <ShowOnMapButton Position="PositionOf(selected)" />
+                            <ShowOnMapButton Position="selected.Pos" />
                         </TitleContent>
                         <ChildContent>
                             <MudPaper Elevation="4"
@@ -87,7 +87,7 @@
                                                    Label="@Localizer["FillAllWith"]"
                                                    ToStringFunc="item => item?.Name ?? string.Empty"
                                                    Style="min-width:220px">
-                                            @foreach (var item in SupportedItemsOf(selected))
+                                            @foreach (var item in selected.SupportedItems)
                                             {
                                                 <MudSelectItem Value="item">@item.Name</MudSelectItem>
                                             }

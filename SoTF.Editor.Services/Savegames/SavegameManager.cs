@@ -16,10 +16,9 @@ public static class SavegameManager
 
     public static string GetSavePath()
     {
-        var savesPath = !string.IsNullOrWhiteSpace(UserSettings.Current.SavegamePath)
+        return !string.IsNullOrWhiteSpace(UserSettings.Current.SavegamePath)
             ? UserSettings.Current.SavegamePath
             : GetSavegamePathFromAppData();
-        return savesPath;
     }
 
     private static Dictionary<string, Savegame> FindSaveGames(string savesPath)
@@ -38,13 +37,12 @@ public static class SavegameManager
             );
             return fileInfos
                 .Select(file => CreateSaveInfo(file.Directory))
-                .Where(savegame => savegame != null)
-                .Select(savegame => savegame!)
+                .OfType<Savegame>()
                 .OrderByDescending(savegame => savegame.LastSaveTime)
                 .DistinctBy(savegame => savegame.FullPath)
                 .ToDictionary(savegame => savegame.FullPath, savegame => savegame);
         }
-        catch (Exception exception)
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
         {
             s_logger.Error(exception, $"Failed To Read Savegames From {savesPath}");
         }

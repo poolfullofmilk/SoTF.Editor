@@ -8,106 +8,66 @@ namespace SoTF.Editor.Services.Tools;
 
 public class RegrowTreesViewModel
 {
-    private int _countGone;
-    private int _countHalfChopped;
-    private int _countStumps;
+    private const VegetationState AllStates =
+        VegetationState.Gone | VegetationState.HalfChopped | VegetationState.Stumps;
 
-    private readonly Savegame _selectedSavegame;
-
-    public RegrowTreesViewModel(Savegame selectedSavegame)
+    // Each State With Its Text Key, In Dialog Order
+    private static readonly Dictionary<VegetationState, string> s_stateKeys = new()
     {
-        _selectedSavegame = selectedSavegame;
-        LoadTreeCounts(selectedSavegame);
+        [VegetationState.Gone] = "Gone",
+        [VegetationState.HalfChopped] = "HalfChopped",
+        [VegetationState.Stumps] = "Stumps",
+    };
+
+    private readonly Dictionary<VegetationState, int> _counts;
+    private readonly Savegame _savegame;
+
+    public RegrowTreesViewModel(Savegame savegame)
+    {
+        _savegame = savegame;
+        _counts = (
+            savegame
+                .SavegameStore.LoadJsonRaw(SavegameStore.FileType.WorldObjectLocatorManagerSaveData)
+                ?.GetJsonBasedToken(Constants.JsonKeys.WorldObjectLocatorManager)
+                ?["SerializedStates"]
+            ?? Enumerable.Empty<JToken>()
+        )
+            .GroupBy(Savegame.VegetationStateOf)
+            .ToDictionary(group => group.Key, group => group.Count());
     }
+
+    public static IEnumerable<VegetationState> States => s_stateKeys.Keys;
 
     public int PctRegrow { get; set; } = 100;
 
-    public VegetationState VegetationStateSelected { get; set; } =
-        VegetationState.Gone | VegetationState.HalfChopped | VegetationState.Stumps;
+    public VegetationState VegetationStateSelected { get; set; } = AllStates;
 
     public string PrintAll =>
-        $"{AppText.Get("All")} ({_countGone + _countStumps + _countHalfChopped})";
-
-    public string PrintStumps => $"{AppText.Get("Stumps")} ({_countStumps})";
-
-    public string PrintHalfChopped => $"{AppText.Get("HalfChopped")} ({_countHalfChopped})";
-
-    public string PrintGone => $"{AppText.Get("Gone")} ({_countGone})";
+        $"{AppText.Get("All")} ({States.Sum(state => _counts.GetValueOrDefault(state))})";
 
     public bool VegetationStateIsAllSelected
     {
-        get =>
-            VegetationStateSelected.HasFlag(VegetationState.Gone)
-            && VegetationStateSelected.HasFlag(VegetationState.HalfChopped)
-            && VegetationStateSelected.HasFlag(VegetationState.Stumps);
-        set
-        {
-            var vegetationState = !value
-                ? VegetationState.None
-                : VegetationState.Gone | VegetationState.HalfChopped | VegetationState.Stumps;
-            VegetationStateSelected = vegetationState;
-        }
+        get => VegetationStateSelected.HasFlag(AllStates);
+        set => VegetationStateSelected = value ? AllStates : VegetationState.None;
     }
 
-    private void LoadTreeCounts(Savegame selectedSavegame)
+    public string Label(VegetationState state)
     {
-        if (
-            selectedSavegame.SavegameStore.LoadJsonRaw(
-                SavegameStore.FileType.WorldObjectLocatorManagerSaveData
-            )
-                is not { } saveDataWrapper
-            || saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.WorldObjectLocatorManager)
-                is not { } worldObjectLocatorManager
-        )
-        {
-            return;
-        }
-
-        foreach (
-            var serializedState in worldObjectLocatorManager["SerializedStates"]
-                ?? Enumerable.Empty<JToken>()
-        )
-        {
-            switch (Savegame.VegetationStateOf(serializedState))
-            {
-                case VegetationState.Gone:
-                    _countGone++;
-                    break;
-                case VegetationState.HalfChopped:
-                    _countHalfChopped++;
-                    break;
-                case VegetationState.Stumps:
-                    _countStumps++;
-                    break;
-            }
-        }
+        return $"{AppText.Get(s_stateKeys[state])} ({_counts.GetValueOrDefault(state)})";
     }
 
     public string Save()
     {
-        var countRegrown = _selectedSavegame.RegrowTrees(VegetationStateSelected, PctRegrow);
-
-        var statesPrintable = new List<string>();
-        if ((VegetationStateSelected & VegetationState.Gone) != 0)
-        {
-            statesPrintable.Add(AppText.Get("Gone"));
-        }
-
-        if ((VegetationStateSelected & VegetationState.HalfChopped) != 0)
-        {
-            statesPrintable.Add(AppText.Get("HalfChopped"));
-        }
-
-        if ((VegetationStateSelected & VegetationState.Stumps) != 0)
-        {
-            statesPrintable.Add(AppText.Get("Stumps"));
-        }
-
-        var resultMessage =
-            countRegrown == 0
-                ? AppText.Format("NoTreesRegrown", string.Join(", ", statesPrintable))
-                : AppText.Format("TreesRegrown", countRegrown, string.Join(", ", statesPrintable));
-        return resultMessage;
+        var countRegrown = _savegame.RegrowTrees(VegetationStateSelected, PctRegrow);
+        var states = string.Join(
+            ", ",
+            States
+                .Where(state => VegetationStateSelected.HasFlag(state))
+                .Select(state => AppText.Get(s_stateKeys[state]))
+        );
+        return countRegrown == 0
+            ? AppText.Format("NoTreesRegrown", states)
+            : AppText.Format("TreesRegrown", countRegrown, states);
     }
 
     public bool CanRegrowTrees()

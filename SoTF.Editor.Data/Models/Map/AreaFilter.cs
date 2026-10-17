@@ -16,12 +16,7 @@ public class AreaFilter(Area area) : IAreaFilter
 
     public bool ShouldInclude(IPoi poi)
     {
-        if (poi is not BasePoi basePoi)
-        {
-            return false;
-        }
-
-        return basePoi.Position?.Area.Equals(area) ?? false;
+        return poi.Position?.Area.Equals(area) == true;
     }
 
     public string Name => area.Name;

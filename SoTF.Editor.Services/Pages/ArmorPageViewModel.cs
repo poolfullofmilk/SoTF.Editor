@@ -16,18 +16,14 @@ public class ArmorPageViewModel
     {
         NewArmour = new NewArmourPiece(_armour);
         _itemList = gameData.Items;
-        foreach (
-            var armorItem in _itemList
-                .Where(item => item.Value.IsEquippableArmor)
-                .OrderBy(item => item.Value.Name)
-        )
-        {
-            ArmourTypes.Add(armorItem.Value);
-        }
+        ArmourTypes =
+        [
+            .. _itemList.Where(item => item.IsEquippableArmor).OrderBy(item => item.Name),
+        ];
     }
 
     public IEnumerable<ArmourData> Armour => _armour.OrderBy(armourData => armourData.Slot);
-    public List<Item> ArmourTypes { get; } = [];
+    public List<Item> ArmourTypes { get; }
 
     public NewArmourPiece NewArmour { get; }
 
@@ -39,17 +35,18 @@ public class ArmorPageViewModel
     public void Load(Savegame? savegame)
     {
         _armour.Clear();
-        var armour = savegame
-            ?.SavegameStore.LoadJsonRaw(SavegameStore.FileType.PlayerArmourSystemSaveData)
-            ?.Parent.ToObject<PlayerArmourDataModel>();
-
-        if (armour != null)
-        {
-            foreach (var armourPiece in armour.Data.PlayerArmourSystem.ArmourPieces)
-            {
-                _armour.Add(new ArmourData(armourPiece, _itemList.GetItem(armourPiece.ItemId)));
-            }
-        }
+        var armourPieces =
+            savegame
+                ?.SavegameStore.LoadJsonRaw(SavegameStore.FileType.PlayerArmourSystemSaveData)
+                ?.Parent.ToObject<PlayerArmourDataModel>()
+                ?.Data.PlayerArmourSystem.ArmourPieces
+            ?? [];
+        _armour.AddRange(
+            armourPieces.Select(armourPiece => new ArmourData(
+                armourPiece,
+                _itemList.GetItem(armourPiece.ItemId)
+            ))
+        );
     }
 
     public bool Update(Savegame savegame)
@@ -63,25 +60,22 @@ public class ArmorPageViewModel
             return false;
         }
 
-        var selectedArmorPieces = _armour.Select(armourData => armourData.ArmourPiece).ToList();
-        var hasChanges = PlayerArmourSystemModel.Merge(
-            playerArmourData.Data.PlayerArmourSystem,
-            selectedArmorPieces
-        );
-
-        if (!hasChanges)
+        var armourSystem = playerArmourData.Data.PlayerArmourSystem;
+        if (
+            !PlayerArmourSystemModel.Merge(
+                armourSystem,
+                [.. _armour.Select(armourData => armourData.ArmourPiece)]
+            )
+        )
         {
-            return hasChanges;
+            return false;
         }
 
         saveDataWrapper
             .GetJsonBasedToken(Constants.JsonKeys.PlayerArmourSystem)
-            ?["ArmourPieces"]?.Replace(
-                JToken.FromObject(playerArmourData.Data.PlayerArmourSystem.ArmourPieces)
-            );
+            ?["ArmourPieces"]?.Replace(JToken.FromObject(armourSystem.ArmourPieces));
         saveDataWrapper.MarkAsModified(Constants.JsonKeys.PlayerArmourSystem);
-
-        return hasChanges;
+        return true;
     }
 
     public bool HasArmorPieces()
@@ -128,32 +122,27 @@ public class ArmorPageViewModel
 
         public void AddArmor()
         {
-            if (_sink.Count == 10)
+            if (!CanAddArmor())
             {
                 return;
             }
-
-            var nextSlot = PlayerArmourSystemModel.ArmorSlots.First(slot =>
-                _sink.All(piece => piece.Slot != slot)
-            );
 
             var armourPiece = new ArmourPieceModel
             {
                 ItemId = SelectedItem!.Id,
                 RemainingArmourpoints = RemainingArmourpoints,
-                Slot = nextSlot,
+                Slot = PlayerArmourSystemModel.ArmorSlots.First(slot =>
+                    _sink.All(piece => piece.Slot != slot)
+                ),
             };
             _sink.Add(new ArmourData(armourPiece, SelectedItem));
         }
 
         public bool CanAddArmor()
         {
-            return HasItemSelected() && RemainingArmourpoints > 0 && _sink.Count < 10;
-        }
-
-        public bool HasItemSelected()
-        {
-            return SelectedItem != null;
+            return SelectedItem != null
+                && RemainingArmourpoints > 0
+                && _sink.Count < PlayerArmourSystemModel.ArmorSlots.Count;
         }
     }
 }

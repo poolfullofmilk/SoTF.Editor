@@ -13,22 +13,16 @@ public class WeatherPageViewModel
     public void Load(Savegame? savegame)
     {
         Settings.Clear();
-        var saveDataWrapper = savegame?.SavegameStore.LoadJsonRaw(
-            SavegameStore.FileType.WeatherSystemSaveData
-        );
         if (
-            saveDataWrapper?.GetJsonBasedToken(Constants.JsonKeys.WeatherSystem)
+            savegame
+                ?.SavegameStore.LoadJsonRaw(SavegameStore.FileType.WeatherSystemSaveData)
+                ?.GetJsonBasedToken(Constants.JsonKeys.WeatherSystem)
             is not { } weatherSystem
         )
         {
             return;
         }
 
-        LoadSettings(weatherSystem);
-    }
-
-    private void LoadSettings(JToken weatherSystem)
-    {
         // Missing Fields Show Their Default, Spring Has No Season
         Settings.Add(
             EnumSetting(
@@ -112,20 +106,17 @@ public class WeatherPageViewModel
             return false;
         }
 
-        if (!Merge(weatherSystem, Settings))
+        var hasChanges = false;
+        foreach (var setting in Settings)
         {
-            return false;
+            hasChanges |= setting.MergeTo(weatherSystem);
         }
 
-        saveDataWrapper.MarkAsModified(Constants.JsonKeys.WeatherSystem);
-        return true;
-    }
+        if (hasChanges)
+        {
+            saveDataWrapper.MarkAsModified(Constants.JsonKeys.WeatherSystem);
+        }
 
-    private static bool Merge(JToken weatherSystem, IEnumerable<GenericSetting> settings)
-    {
-        return settings.Aggregate(
-            false,
-            (current, setting) => setting.MergeTo(weatherSystem) || current
-        );
+        return hasChanges;
     }
 }
