@@ -179,6 +179,26 @@
                 <MudSimpleTable Dense
                                 Elevation="0">
                     <tbody>
+                        @* Season Select *@
+                        @if (CurrentSeason is { } season)
+                        {
+                            <tr>
+                                <td style="width:40%">@Localizer["Season"]</td>
+                                <td>
+                                    <MudSelect T="string"
+                                               Value="season"
+                                               ValueChanged="ChangeSeason"
+                                               ToStringFunc="value => LabelOf(s_seasons, value)"
+                                               Dense
+                                               Margin="Margin.Dense">
+                                        @foreach (var option in s_seasons)
+                                        {
+                                            <MudSelectItem Value="option.Value">@Localizer[option.LabelKey]</MudSelectItem>
+                                        }
+                                    </MudSelect>
+                                </td>
+                            </tr>
+                        }
                         @foreach (var setting in Weather.Settings)
                         {
                             <tr>

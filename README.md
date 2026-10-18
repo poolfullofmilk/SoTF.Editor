@@ -11,8 +11,8 @@ A savegame editor for Sons of the Forest, with a verified backup before every sa
 ## Features
 - Player stats, outfit, armour and inventory
 - Every storage filled, maxed or cleared in one click
-- Kelvin and Virginia: stats, outfit, items, revive or spawn more
-- Game setup, game state, weather, NPCs and structures
+- Kelvin and Virginia, spawned copies too: stats, outfit, items, revive or spawn more
+- Game setup, game state, season and weather, NPCs and structures
 - A map to teleport the player and followers or spawn actors
 - Updates itself from inside the app
 - English and Dutch
@@ -25,6 +25,7 @@ A savegame editor for Sons of the Forest, with a verified backup before every sa
 ## ⚠️ Important
 - Start the game and stay in the main menu while you edit, then load the save, so Steam Cloud cannot overwrite your changes
 - Every save first copies the whole savegame to `Documents\SoTF.Editor\Backups`, nothing there is ever deleted, and any backup can be restored from the app
+- A multiplayer client save only holds your own player, the world lives in the host's save
 - Windows may warn on the first run because the app is not signed: click More info, then Run anyway
 
 ## Technical details

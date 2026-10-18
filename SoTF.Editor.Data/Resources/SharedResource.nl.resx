@@ -1600,7 +1600,7 @@
     <value>Seizoensverschuiving</value>
   </data>
   <data name="SeasonDayOffsetHint" xml:space="preserve">
-    <value>Seizoenen volgen het aantal dagen plus de seizoensverschuiving, verlaag die om langer in een seizoen te blijven, verhoog die om verder te gaan</value>
+    <value>Seizoenen volgen het aantal dagen plus de seizoensverschuiving, een seizoen kiezen verschuift die met hele seizoenen, verlagen houdt het huidige seizoen langer</value>
   </data>
   <data name="Later" xml:space="preserve">
     <value>Later</value>
@@ -1625,5 +1625,8 @@
   </data>
   <data name="ClientSaveHasNoWorld" xml:space="preserve">
     <value>Een clientsave bevat alleen je speler, de wereld zit in de save van de host</value>
+  </data>
+  <data name="Season" xml:space="preserve">
+    <value>Seizoen</value>
   </data>
 </root>

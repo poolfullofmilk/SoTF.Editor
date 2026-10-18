@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Desktop.Components.Shared.Common;
 using SoTF.Editor.Services.Pages;
@@ -195,6 +196,46 @@ public partial class Game : EditorPageBase
         return options.FirstOrDefault(option => option.Value == value) is { } option
             ? Localizer[option.LabelKey]
             : value ?? string.Empty;
+    }
+
+    // The Season Follows Days Plus Offset, Picking Moves The Offset
+    private GenericSetting? OffsetSetting =>
+        Weather.Settings.FirstOrDefault(setting => setting.Name == "_startingDayOffset");
+
+    private double? DaysPerSeason =>
+        SeasonCalendar.DaysPerSeason(
+            GameSetup.GetString(GameSetupKeys.SeasonLength, SettingValueDefault)
+        );
+
+    private double DaysPlayed =>
+        (GameStateValue("GameDays") ?? 0) + ((GameStateValue("GameHours") ?? 0) / 24.0);
+
+    private string? CurrentSeason =>
+        DaysPerSeason is { } daysPerSeason && OffsetSetting is { } offset
+            ? s_seasons[
+                SeasonCalendar.SeasonAt(DaysPlayed, offset.DecimalValue ?? 0, daysPerSeason)
+            ].Value
+            : null;
+
+    private int? GameStateValue(string name)
+    {
+        return GameState.Settings.FirstOrDefault(setting => setting.Name == name)?.IntValue;
+    }
+
+    private void ChangeSeason(string? season)
+    {
+        var index = Array.FindIndex(s_seasons, option => option.Value == season);
+        if (index < 0 || DaysPerSeason is not { } daysPerSeason || OffsetSetting is not { } offset)
+        {
+            return;
+        }
+
+        offset.DecimalValue = SeasonCalendar.OffsetFor(
+            index,
+            DaysPlayed,
+            offset.DecimalValue ?? 0,
+            daysPerSeason
+        );
     }
 
     private sealed record SettingOption(string Value, string LabelKey);
