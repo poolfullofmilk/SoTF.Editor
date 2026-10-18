@@ -70,7 +70,6 @@ public static class TextKeys
         "_rainBlocked",
         "_cloudState",
         "_currentRainType",
-        "_currentSeason",
         "_startingDayOffset",
     ];
 

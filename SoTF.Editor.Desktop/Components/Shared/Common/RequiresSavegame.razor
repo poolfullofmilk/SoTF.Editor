@@ -11,6 +11,11 @@
         </MudButton>
     </EmptyState>
 }
+else if (MissesWorld)
+{
+    <EmptyState Icon="@Icons.Material.Rounded.Public"
+                Text="@Localizer["ClientSaveHasNoWorld"]" />
+}
 else
 {
     @ChildContent

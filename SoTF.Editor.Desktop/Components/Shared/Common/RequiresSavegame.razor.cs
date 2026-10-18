@@ -13,4 +13,10 @@ public partial class RequiresSavegame
 
     [Inject]
     public required MainViewModel MainViewModel { get; set; }
+
+    [Parameter]
+    public bool NeedsWorld { get; set; }
+
+    private bool MissesWorld =>
+        NeedsWorld && MainViewModel.SelectedSavegame?.IsMultiPlayerClient() == true;
 }

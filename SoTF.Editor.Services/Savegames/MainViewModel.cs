@@ -194,15 +194,38 @@ public class MainViewModel(
             return "";
         }
 
+        // Kills, Recent Kills Per Day, Cut Trees And Village Sightings
+        var hasChanges = false;
         foreach (var killStat in vailWorldSim["KillStatsList"] ?? Enumerable.Empty<JToken>())
         {
-            killStat["PlayerKilled"]?.Replace(0);
+            hasChanges |= ResetToZero(killStat["PlayerKilled"]);
+            if (killStat["KilledOnDay"] is JObject { Count: > 0 } killedOnDay)
+            {
+                killedOnDay.RemoveAll();
+                hasChanges = true;
+            }
         }
 
-        vailWorldSim["PlayerStats"]?["CutTrees"]?.Replace(0);
-        vailWorldSim["PlayerStats"]?["SeenInVillageCount"]?.Replace(0);
+        hasChanges |= ResetToZero(vailWorldSim["PlayerStats"]?["CutTrees"]);
+        hasChanges |= ResetToZero(vailWorldSim["PlayerStats"]?["SeenInVillageCount"]);
+        if (!hasChanges)
+        {
+            return AppText.Get("NothingToReset");
+        }
+
         saveDataWrapper.MarkAsModified(Constants.JsonKeys.VailWorldSim);
         return AppText.Get("ChangesAdded");
+    }
+
+    private static bool ResetToZero(JToken? value)
+    {
+        if (value == null || value.Value<double>() == 0)
+        {
+            return false;
+        }
+
+        value.Replace(0);
+        return true;
     }
 
     public string ResetTraps()

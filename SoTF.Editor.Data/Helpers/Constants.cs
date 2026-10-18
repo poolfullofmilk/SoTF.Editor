@@ -49,7 +49,7 @@ public static class Constants
         public const string PlayersImmortalMode = "GameSetting.Survival.PlayersImmortalMode";
         public const string OneHitToCutTrees = "GameSetting.Survival.OneHitToCutTrees";
         public const string EnemySpawn = "GameSetting.Vail.EnemySpawn";
-        public const string InventoryPause = "GameSetting.Vail.InventoryPause";
+        public const string PausedInInventory = "GameSetting.Survival.PausedInInventory";
         public const string ColdPenalties = "GameSetting.Survival.ColdPenalties";
         public const string ReducedFoodInContainers =
             "GameSetting.Survival.ReducedFoodInContainers";
@@ -59,8 +59,9 @@ public static class Constants
         public const string ForcePlaceFullLoad = "GameSetting.FreeForm.ForcePlaceFullLoad";
         public const string NoCuttingsSpawn = "GameSetting.Construction.NoCuttingsSpawn";
         public const string PvpDamage = "GameSetting.Multiplayer.PvpDamage";
-        public const string ColdPenaltiesStatReduction =
-            "GameSetting.Survival.ColdPenaltiesStatReduction";
+        public const string StatRegenerationPenalty =
+            "GameSetting.Survival.StatRegenerationPenalty";
+        public const string MultiplayerCheats = "GameSetting.Multiplayer.Cheats";
     }
 
     public static class SettingValueKeys

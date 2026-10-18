@@ -1509,9 +1509,6 @@
   <data name="SettingCurrentRainType" xml:space="preserve">
     <value>Soort Regen</value>
   </data>
-  <data name="SettingCurrentSeason" xml:space="preserve">
-    <value>Seizoen</value>
-  </data>
   <data name="CrashSiteTree" xml:space="preserve">
     <value>Boom</value>
   </data>
@@ -1619,5 +1616,14 @@
   </data>
   <data name="UpdateFailed" xml:space="preserve">
     <value>Bijwerken mislukt, probeer het later opnieuw</value>
+  </data>
+  <data name="MultiplayerCheats" xml:space="preserve">
+    <value>Consolecheats</value>
+  </data>
+  <data name="MaxHealthFollowsStrength" xml:space="preserve">
+    <value>Het spel bepaalt de maximale gezondheid uit het krachtniveau</value>
+  </data>
+  <data name="ClientSaveHasNoWorld" xml:space="preserve">
+    <value>Een clientsave bevat alleen je speler, de wereld zit in de save van de host</value>
   </data>
 </root>

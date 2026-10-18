@@ -56,30 +56,6 @@ public class FollowerState
     public List<EquippableItem> Inventory { get; } = [];
     public List<Influence> Influences { get; } = [];
 
-    public void Reset()
-    {
-        State = null;
-        IsMarkedDead = false;
-        Pos = new Position(0, 0, 0);
-        Health = 0.0f;
-        Anger = 0.0f;
-        Fear = 0.0f;
-        Fullness = 0.0f;
-        Hydration = 0.0f;
-        Energy = 0.0f;
-        Affection = 0.0f;
-        foreach (var equippableItem in Inventory)
-        {
-            equippableItem.Selected = false;
-        }
-
-        Inventory.RemoveAll(item => item.IsTemporary);
-
-        Outfit = null;
-        UniqueId = null;
-        Influences.Clear();
-    }
-
     public HashSet<int> GetSelectedInventoryItemIds()
     {
         return [.. Inventory.Where(item => item.Selected).Select(item => item.ItemId)];

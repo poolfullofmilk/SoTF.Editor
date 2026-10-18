@@ -6,6 +6,23 @@
                  Size="Size.Small">
             @Follower.Status
         </MudChip>
+        @if (Copies.Count > 1)
+        {
+            @* Copy Select *@
+            <MudSelect T="FollowerState"
+                       Value="Follower"
+                       ValueChanged="FollowerPage.Select"
+                       ToStringFunc="CopyLabel"
+                       Variant="Variant.Outlined"
+                       Margin="Margin.Dense"
+                       Dense
+                       Style="max-width:160px">
+                @foreach (var copy in Copies)
+                {
+                    <MudSelectItem Value="copy">@CopyLabel(copy)</MudSelectItem>
+                }
+            </MudSelect>
+        }
         <MudSpacer />
         <ShowOnMapButton Position="MapPosition" />
     </TitleContent>

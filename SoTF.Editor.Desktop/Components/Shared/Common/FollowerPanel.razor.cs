@@ -14,7 +14,7 @@ public partial class FollowerPanel
     public required IStringLocalizer<SharedResource> Localizer { get; set; }
 
     [Parameter]
-    public required FollowerState Follower { get; set; }
+    public int TypeId { get; set; }
 
     [Parameter]
     public required string Name { get; set; }
@@ -37,7 +37,12 @@ public partial class FollowerPanel
     [Inject]
     public required ISnackbar Snackbar { get; set; }
 
-    private bool IsKelvin => Follower.TypeId == Constants.Actors.KelvinTypeId;
+    private FollowerState Follower => FollowerPage.StateOf(TypeId);
+
+    // Spawned Copies Get Picked One At A Time
+    private List<FollowerState> Copies => FollowerPage.CopiesOf(TypeId);
+
+    private bool IsKelvin => TypeId == Constants.Actors.KelvinTypeId;
 
     // Followers Cannot Follow The Player Into Caves
     private bool PlayerOnSurface => PlayerPage.PlayerState.Pos.Area.IsSurface();
@@ -48,6 +53,11 @@ public partial class FollowerPanel
     private bool CanMoveToPlayer => InSave && PlayerOnSurface;
     private bool CanMoveToOther => InSave && OtherInSave;
     private Data.Models.Position? MapPosition => InSave ? Follower.Pos : null;
+
+    private string CopyLabel(FollowerState copy)
+    {
+        return $"{Name} {Copies.IndexOf(copy) + 1}";
+    }
 
     private void MoveToOther()
     {

@@ -325,16 +325,17 @@ public class FollowerModifier(SaveDataWrapper saveDataWrapper)
 
         var vailWorldSimChanged = false;
         var npcItemInstancesChanged = false;
-        var statesByTypeId = followerStates.ToDictionary(state => state.TypeId);
+        var statesByUniqueId = followerStates
+            .Where(state => state.UniqueId != null)
+            .ToDictionary(state => state.UniqueId!.Value);
 
         foreach (var actor in vailWorldSim["Actors"]?.ToList() ?? [])
         {
-            // Only The Follower The Page Loaded, Never Its Spawned Copies
+            // Each Loaded Follower Writes Only Its Own Actor
             if (
-                actor["TypeId"]?.Value<int>() is not { } typeId
-                || !statesByTypeId.TryGetValue(typeId, out var followerModel)
-                || actor["UniqueId"]?.Value<int>() is not { } uniqueId
-                || uniqueId != followerModel.UniqueId
+                actor["UniqueId"]?.Value<int>() is not { } uniqueId
+                || !statesByUniqueId.Remove(uniqueId, out var followerModel)
+                || actor["TypeId"]?.Value<int>() != followerModel.TypeId
             )
             {
                 continue;

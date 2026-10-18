@@ -33,6 +33,13 @@ public class PlayerState
 
     public int StrengthLevel { get; set; }
 
+    public void ChangeStrengthLevel(int level)
+    {
+        // The Game Adds Two Max Health Per Level Above One
+        StrengthLevel = level;
+        MaxHealth = 100 + (2 * Math.Max(level - 1, 0));
+    }
+
     public void Reset()
     {
         Pos = new Position(0, 0, 0);

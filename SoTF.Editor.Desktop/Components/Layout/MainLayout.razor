@@ -110,27 +110,27 @@
                              TransformOrigin="Origin.TopRight">
                         @* Regrow Trees *@
                         <MudMenuItem Icon="@Icons.Material.Rounded.Forest"
-                                     Disabled="@(!HasSavegame)"
+                                     Disabled="@(!HasWorld)"
                                      Label="@Localizer["RegrowTrees"]"
                                      OnClick="() => ShowDialogAsync<RegrowTreesDialog>()" />
                         @* Eternal Fires *@
                         <MudMenuItem Icon="@Icons.Material.Rounded.LocalFireDepartment"
-                                     Disabled="@(!HasSavegame)"
+                                     Disabled="@(!HasWorld)"
                                      Label="@Localizer["EternalFires"]"
                                      OnClick="@(() => RunToolAsync("EternalFires", "EternalFiresText", MainViewModel.EternalFires))" />
                         @* Reset Fires *@
                         <MudMenuItem Icon="@Icons.Material.Rounded.Fireplace"
-                                     Disabled="@(!HasSavegame)"
+                                     Disabled="@(!HasWorld)"
                                      Label="@Localizer["ResetFires"]"
                                      OnClick="@(() => RunToolAsync("ResetFires", "ResetFiresText", MainViewModel.ResetFires))" />
                         @* Structure Damage *@
                         <MudMenuItem Icon="@Icons.Material.Rounded.HomeRepairService"
-                                     Disabled="@(!HasSavegame)"
+                                     Disabled="@(!HasWorld)"
                                      Label="@Localizer["ResetStructureDamage"]"
                                      OnClick="@(() => RunToolAsync("ResetStructureDamage", "ResetStructureDamageText", MainViewModel.ResetStructureDamage))" />
                         @* World Item Cloner *@
                         <MudMenuItem Icon="@Icons.Material.Rounded.ContentCopy"
-                                     Disabled="@(!HasSavegame)"
+                                     Disabled="@(!HasWorld)"
                                      Label="@Localizer["WorldItemCloner"]"
                                      OnClick="() => ShowDialogAsync<WorldItemClonerDialog>()" />
                         @* Consumed Items *@
@@ -146,22 +146,22 @@
                         <MudDivider />
                         @* Cannibal Anger *@
                         <MudMenuItem Icon="@Icons.Material.Rounded.SentimentSatisfied"
-                                     Disabled="@(!HasSavegame)"
+                                     Disabled="@(!HasWorld)"
                                      Label="@Localizer["ResetCannibalAnger"]"
                                      OnClick="@(() => RunToolAsync("ResetCannibalAnger", "ResetCannibalAngerText", MainViewModel.ResetCannibalAnger))" />
                         @* Reset Containers *@
                         <MudMenuItem Icon="@Icons.Material.Rounded.Inventory2"
-                                     Disabled="@(!HasSavegame)"
+                                     Disabled="@(!HasWorld)"
                                      Label="@Localizer["ResetContainers"]"
                                      OnClick="@(() => RunToolAsync("ResetContainers", "ResetContainersText", GameStatePage.ResetContainers))" />
                         @* Reset Traps *@
                         <MudMenuItem Icon="@Icons.Material.Rounded.PestControl"
-                                     Disabled="@(!HasSavegame)"
+                                     Disabled="@(!HasWorld)"
                                      Label="@Localizer["ResetTraps"]"
                                      OnClick="@(() => RunToolAsync("ResetTraps", "ResetTrapsText", MainViewModel.ResetTraps))" />
                         @* Set To Endgame *@
                         <MudMenuItem Icon="@Icons.Material.Rounded.Flag"
-                                     Disabled="@(!HasSavegame)"
+                                     Disabled="@(!HasWorld)"
                                      Label="@Localizer["SetToEndgame"]"
                                      OnClick="SetToEndgameAsync" />
                         @* Unlocks *@

@@ -23,15 +23,6 @@ public class WeatherPageViewModel
             return;
         }
 
-        // Missing Fields Show Their Default, Spring Has No Season
-        Settings.Add(
-            EnumSetting(
-                "_currentSeason",
-                weatherSystem,
-                [(0, "Spring"), (1, "Summer"), (2, "Autumn"), (3, "Winter")]
-            )
-        );
-
         // Seasons Follow Days Plus This Offset, Saved As 5.0
         Settings.Add(
             new GenericSetting(

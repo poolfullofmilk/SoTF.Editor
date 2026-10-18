@@ -1,18 +1,18 @@
 @page "/Followers"
 @inherits EditorPageBase
 
-<RequiresSavegame>
+<RequiresSavegame NeedsWorld>
     <MudGrid>
 
         <MudItem xs="12"
                  lg="6">
-            <FollowerPanel Follower="FollowerPage.KelvinState"
+            <FollowerPanel TypeId="Constants.Actors.KelvinTypeId"
                            Name="@Localizer["Kelvin"]"
                            ImageUrl="images/kv.jpg" />
         </MudItem>
         <MudItem xs="12"
                  lg="6">
-            <FollowerPanel Follower="FollowerPage.VirginiaState"
+            <FollowerPanel TypeId="Constants.Actors.VirginiaTypeId"
                            Name="@Localizer["Virginia"]"
                            ImageUrl="images/vg.jpg" />
         </MudItem>

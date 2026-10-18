@@ -41,7 +41,7 @@ public class GameSetupPageViewModel
         { GameSetupKeys.ConsumableEffects, SettingTypeString },
         { GameSetupKeys.PlayerStatsDamage, SettingTypeString },
         { GameSetupKeys.EnemySpawn, SettingTypeBool },
-        { GameSetupKeys.InventoryPause, SettingTypeBool },
+        { GameSetupKeys.PausedInInventory, SettingTypeBool },
         { GameSetupKeys.ReducedFoodInContainers, SettingTypeBool },
         { GameSetupKeys.ReducedAmmoInContainers, SettingTypeBool },
         { GameSetupKeys.SingleUseContainers, SettingTypeBool },
@@ -55,7 +55,8 @@ public class GameSetupPageViewModel
         { GameSetupKeys.ForcePlaceFullLoad, SettingTypeBool },
         { GameSetupKeys.NoCuttingsSpawn, SettingTypeBool },
         { GameSetupKeys.PvpDamage, SettingTypeString },
-        { GameSetupKeys.ColdPenaltiesStatReduction, SettingTypeString },
+        { GameSetupKeys.StatRegenerationPenalty, SettingTypeString },
+        { GameSetupKeys.MultiplayerCheats, SettingTypeBool },
     };
 
     private readonly Dictionary<string, string> _stringSettings = [];
@@ -181,7 +182,7 @@ public class GameSetupPageViewModel
                 _boolSettings[GameSetupKeys.EnemySpawn] = false;
                 _boolSettings[GameSetupKeys.ReducedFoodInContainers] = false;
                 _boolSettings[GameSetupKeys.SingleUseContainers] = false;
-                _boolSettings[GameSetupKeys.InventoryPause] = true;
+                _boolSettings[GameSetupKeys.PausedInInventory] = true;
                 _boolSettings[GameSetupKeys.PlayersTriggerTraps] = false;
                 _stringSettings[GameSetupKeys.AnimalSpawnRate] = SettingValueHigh;
                 _stringSettings[GameSetupKeys.ConsumableEffects] = SettingValueOff;
@@ -197,7 +198,7 @@ public class GameSetupPageViewModel
                 _boolSettings[GameSetupKeys.EnemySpawn] = true;
                 _boolSettings[GameSetupKeys.ReducedFoodInContainers] = true;
                 _boolSettings[GameSetupKeys.SingleUseContainers] = true;
-                _boolSettings[GameSetupKeys.InventoryPause] = false;
+                _boolSettings[GameSetupKeys.PausedInInventory] = false;
                 _boolSettings[GameSetupKeys.PlayersTriggerTraps] = true;
                 _stringSettings[GameSetupKeys.EnemyAggression] = SettingValueHigh;
                 _stringSettings[GameSetupKeys.EnemyArmour] = SettingValueHigh;

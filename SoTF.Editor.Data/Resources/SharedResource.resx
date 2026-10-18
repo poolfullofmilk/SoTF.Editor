@@ -1509,9 +1509,6 @@
   <data name="SettingCurrentRainType" xml:space="preserve">
     <value>Rain Type</value>
   </data>
-  <data name="SettingCurrentSeason" xml:space="preserve">
-    <value>Season</value>
-  </data>
   <data name="CrashSiteTree" xml:space="preserve">
     <value>Tree</value>
   </data>
@@ -1619,5 +1616,14 @@
   </data>
   <data name="UpdateFailed" xml:space="preserve">
     <value>Update failed, try again later</value>
+  </data>
+  <data name="MultiplayerCheats" xml:space="preserve">
+    <value>Console Cheats</value>
+  </data>
+  <data name="MaxHealthFollowsStrength" xml:space="preserve">
+    <value>The game sets max health from the strength level</value>
+  </data>
+  <data name="ClientSaveHasNoWorld" xml:space="preserve">
+    <value>A client save only holds your player, the world lives in the host's save</value>
   </data>
 </root>

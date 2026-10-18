@@ -103,12 +103,14 @@ The last table row has no bottom line. A table whose rows virtualize keeps its c
 - Armour pieces keep the slot they were loaded in; only a new or clashing piece takes the next free slot (`PlayerArmourSystemModel.ArmorSlots`). Renumbering moved durabilities and made every save a change.
 - `NamedIntDatas` compare as a set: the editor sorts them, the game does not.
 - `GenericModule` compares its token with `JToken.DeepEquals`; a record compares a `JObject` by reference and made every storage look changed.
-- The game setup merge writes each known setting as name, type and value only; settings the editor does not know stay untouched.
-- The follower merge writes only the follower that was loaded; a follower missing from the save is left alone.
+- The game setup merge writes each known setting as name, type and value only; settings the editor does not know stay untouched. Keys come from the game's own list in `global-metadata.dat`: Inventory Pause is `GameSetting.Survival.PausedInInventory`, Stat Regeneration Penalties is `GameSetting.Survival.StatRegenerationPenalty`. `SleepingDelay` and `InstantSleepSeasonSwitch` exist but their values are unknown, so the page leaves them out.
+- Every Kelvin and Virginia in the save, spawned copies included, gets its own `FollowerState`; the panel picks one at a time and the merge writes each by unique id. A follower missing from the save is left alone.
+- A MultiplayerClient save holds only the player: world pages show a hint and world tools are disabled.
 - There is no Delete Backups action, on purpose.
 - The update check reads the `releases/latest` redirect without following it, so it needs no token. A `v1.0` tag parses as `1.0`, which is lower than the assembly's `1.0.0.0`, so it never prompts falsely.
-- The save holds no length per season. Only the custom game setting `SeasonLength` exists, and it applies to every season. The Weather tab's Season Day Offset (`_startingDayOffset`) shifts where the year stands, so lowering it keeps the current season longer; it is not tested in game yet.
+- The save holds no length per season. Only the custom game setting `SeasonLength` exists, and it applies to every season. The Weather tab's Season Day Offset (`_startingDayOffset`) shifts where the year stands, so lowering it keeps the current season longer; it is not tested in game yet. The tab has no Season: the game derives it from days and the offset.
 - `_startingDayOffset` is saved as `5.0`. It is a `Decimal` setting holding a `double`, so a no-op save writes the exact number back; an `int` made every save a change.
+- Max Health is `100 + 2` per Strength Level above 1, so the page derives it and keeps the box read-only. `TargetHealth` is written only when Current Health changed. Moving the player clears `player.localToRaftUniqueId`, or the game puts them back on the raft.
 - `PlayerState.CurrentHealth` reads capped by `MaxHealth` but keeps the value set, so lowering max and raising it again brings current health back. Both health sliders share one scale, so the current health thumb stays put while max moves.
 
 ## Verify

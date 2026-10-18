@@ -54,6 +54,9 @@ public partial class MainLayout : IDisposable
 
     private bool HasSavegame => MainViewModel.SelectedSavegame != null;
 
+    // A Client Save Holds Only The Player, Not The World
+    private bool HasWorld => MainViewModel.SelectedSavegame?.IsMultiPlayerClient() == false;
+
     private static bool CheckForUpdatesOnStart => UserSettings.Current.CheckForUpdates;
 
     protected override void OnInitialized()

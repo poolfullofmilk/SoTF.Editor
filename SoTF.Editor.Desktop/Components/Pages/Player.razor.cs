@@ -8,8 +8,8 @@ namespace SoTF.Editor.Desktop.Components.Pages;
 
 public partial class Player : EditorPageBase
 {
-    // Max Health Grows With Strength, Leave Room Above The Default
-    private const float DefaultMaxHealthCeiling = 500;
+    // Strength 100 Gives 298 Max Health
+    private const float DefaultMaxHealthCeiling = 300;
 
     [Inject]
     public required PlayerPageViewModel PlayerPage { get; set; }

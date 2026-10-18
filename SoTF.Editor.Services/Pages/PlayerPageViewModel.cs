@@ -12,6 +12,8 @@ public class PlayerPageViewModel
     private const string PlayerAreaMaskEntry = "player.areaMask";
     private const string StrengthLevelEntry = "StrengthLevel";
     private const string SicknessEntry = "Sickness";
+    private const string CurrentHealthEntry = "CurrentHealth";
+    private const string RaftEntry = "player.localToRaftUniqueId";
 
     // Float Entries The Page Edits, Read And Written Alike
     private static readonly Dictionary<
@@ -20,7 +22,7 @@ public class PlayerPageViewModel
     > s_floatEntries = new()
     {
         ["MaxHealth"] = (state => state.MaxHealth, (state, value) => state.MaxHealth = value),
-        ["CurrentHealth"] = (
+        [CurrentHealthEntry] = (
             state => state.CurrentHealth,
             (state, value) => state.CurrentHealth = value
         ),
@@ -236,7 +238,13 @@ public class PlayerPageViewModel
             return false;
         }
 
+        // Target Health Follows Only A Changed Current Health
+        var currentHealthChanged = entries.Any(entry =>
+            entry["Name"]?.ToString() == CurrentHealthEntry
+            && Math.Abs((SettingReader.ReadFloat(entry) ?? 0f) - PlayerState.CurrentHealth) >= 0.001
+        );
         var hasChanges = false;
+        var positionChanged = false;
         foreach (var entry in entries)
         {
             switch (entry["Name"]?.ToString())
@@ -251,6 +259,7 @@ public class PlayerPageViewModel
                         )
                     );
                     hasChanges = true;
+                    positionChanged = true;
                     break;
                 case PlayerAreaMaskEntry:
                     hasChanges |= SettingWriter.WriteInt(entry, PlayerState.Pos.Area.AreaMask);
@@ -262,13 +271,25 @@ public class PlayerPageViewModel
                 case SicknessEntry when PlayerState.Sickness == 0:
                     hasChanges |= SettingWriter.RemoveFloat(entry);
                     break;
-                case "TargetHealth":
+                case "TargetHealth" when currentHealthChanged:
                     hasChanges |= SettingWriter.WriteFloat(entry, PlayerState.CurrentHealth);
                     break;
                 case { } name when s_floatEntries.TryGetValue(name, out var accessor):
                     hasChanges |= SettingWriter.WriteFloat(entry, accessor.Get(PlayerState));
                     break;
             }
+        }
+
+        // Moving Clears The Raft Link, Else The Game Snaps Back
+        if (
+            positionChanged
+            && entries.FirstOrDefault(entry => entry["Name"]?.ToString() == RaftEntry)
+                is JObject raftEntry
+            && SettingReader.ReadString(raftEntry) is { } raftId
+            && raftId != Guid.Empty.ToString()
+        )
+        {
+            raftEntry["StringValue"] = Guid.Empty.ToString();
         }
 
         if (hasChanges)

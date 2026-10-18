@@ -52,13 +52,17 @@
                             @* Strength *@
                             <StatSlider Label="@Localizer["StrengthLevel"]"
                                         Value="State.StrengthLevel"
-                                        ValueChanged="value => State.StrengthLevel = (int)value"
+                                        ValueChanged="value => State.ChangeStrengthLevel((int)value)"
+                                        Min="1"
                                         Max="100" />
                             @* Max Health *@
-                            <StatSlider Label="@Localizer["MaxHealth"]"
-                                        Value="State.MaxHealth"
-                                        ValueChanged="value => State.MaxHealth = value"
-                                        Max="MaxHealthCeiling" />
+                            <Tooltip Text="@Localizer["MaxHealthFollowsStrength"]"
+                                     RootClass="d-block">
+                                <StatSlider Label="@Localizer["MaxHealth"]"
+                                            Value="State.MaxHealth"
+                                            Max="MaxHealthCeiling"
+                                            Disabled />
+                            </Tooltip>
                             @* Current Health *@
                             <StatSlider Label="@Localizer["CurrentHealth"]"
                                         @bind-Value="State.CurrentHealth"

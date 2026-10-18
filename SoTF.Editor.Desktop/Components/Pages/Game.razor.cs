@@ -27,6 +27,13 @@ public partial class Game : EditorPageBase
         new(SettingValueHard, "Hard"),
     ];
 
+    // The Game Only Knows Normal And Hard Stat Regeneration
+    private static readonly SettingOption[] s_normalHard =
+    [
+        new(SettingValueNormal, "Normal"),
+        new(SettingValueHard, "Hard"),
+    ];
+
     private static readonly SettingOption[] s_lowNormalHigh =
     [
         new(SettingValueLOW, "Low"),
@@ -102,13 +109,13 @@ public partial class Game : EditorPageBase
                 ),
                 new(
                     "StatRegenerationPenalties",
-                    GameSetupKeys.ColdPenaltiesStatReduction,
-                    SettingValueOff,
-                    s_offNormalHard
+                    GameSetupKeys.StatRegenerationPenalty,
+                    SettingValueNormal,
+                    s_normalHard
                 ),
             ],
             [
-                new("InventoryPause", GameSetupKeys.InventoryPause, true),
+                new("InventoryPause", GameSetupKeys.PausedInInventory, false),
                 new("ReducedFood", GameSetupKeys.ReducedFoodInContainers, false),
                 new("ReducedAmmo", GameSetupKeys.ReducedAmmoInContainers, false),
                 new("SingleUseContainers", GameSetupKeys.SingleUseContainers, false),
@@ -159,7 +166,7 @@ public partial class Game : EditorPageBase
         new(
             "Multiplayer",
             [new("PvpDamage", GameSetupKeys.PvpDamage, SettingValueNormal, s_pvpDamage)],
-            []
+            [new("MultiplayerCheats", GameSetupKeys.MultiplayerCheats, true)]
         ),
     ];
 

@@ -15,16 +15,21 @@ public class FollowerPageViewModel
     private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
 
     private readonly AreaMaskManager _areaManager;
+    private readonly GameData _gameData;
+
+    // Every Kelvin And Virginia In The Save, Spawned Copies Included
+    private readonly List<FollowerState> _followers = [];
+    private readonly Dictionary<int, FollowerState> _selectedByTypeId = [];
 
     public FollowerPageViewModel(GameData gameData)
     {
+        _gameData = gameData;
         _areaManager = gameData.AreaManager;
-        KelvinState = BuildFollowerState(gameData, KelvinTypeId);
-        VirginiaState = BuildFollowerState(gameData, VirginiaTypeId);
+        SelectFirstOfEachType();
     }
 
-    public FollowerState KelvinState { get; }
-    public FollowerState VirginiaState { get; }
+    public FollowerState KelvinState => _selectedByTypeId[KelvinTypeId];
+    public FollowerState VirginiaState => _selectedByTypeId[VirginiaTypeId];
 
     public FollowerState StateOf(int typeId)
     {
@@ -34,6 +39,32 @@ public class FollowerPageViewModel
     public FollowerState OtherOf(FollowerState follower)
     {
         return follower.TypeId == KelvinTypeId ? VirginiaState : KelvinState;
+    }
+
+    public List<FollowerState> CopiesOf(int typeId)
+    {
+        return [.. _followers.Where(follower => follower.TypeId == typeId)];
+    }
+
+    public FollowerState? StateOfActor(int uniqueId)
+    {
+        return _followers.FirstOrDefault(follower => follower.UniqueId == uniqueId);
+    }
+
+    public void Select(FollowerState follower)
+    {
+        _selectedByTypeId[follower.TypeId] = follower;
+    }
+
+    private void SelectFirstOfEachType()
+    {
+        // A Follower Missing From The Save Gets A Stand In
+        foreach (var typeId in new[] { KelvinTypeId, VirginiaTypeId })
+        {
+            _selectedByTypeId[typeId] =
+                _followers.FirstOrDefault(follower => follower.TypeId == typeId)
+                ?? BuildFollowerState(_gameData, typeId);
+        }
     }
 
     public static void FillAllBars(FollowerState followerState)
@@ -56,14 +87,14 @@ public class FollowerPageViewModel
 
     public void Load(Savegame? selectedSavegame)
     {
-        KelvinState.Reset();
-        VirginiaState.Reset();
-
+        _followers.Clear();
         if (selectedSavegame != null)
         {
             LoadFollowerData(selectedSavegame);
-            LoadDeathFlags(selectedSavegame);
         }
+
+        SelectFirstOfEachType();
+        LoadDeathFlags(selectedSavegame);
     }
 
     public static void MoveTo(FollowerState follower, Position target)
@@ -71,14 +102,18 @@ public class FollowerPageViewModel
         follower.Pos = Teleporter.MoveToPos(target);
     }
 
-    private void LoadDeathFlags(Savegame savegame)
+    private void LoadDeathFlags(Savegame? savegame)
     {
         // A Dead Follower Can Be Gone From The Actor List
         var gameState = savegame
-            .SavegameStore.LoadJsonRaw(SavegameStore.FileType.GameStateSaveData)
+            ?.SavegameStore.LoadJsonRaw(SavegameStore.FileType.GameStateSaveData)
             ?.GetJsonBasedToken(Constants.JsonKeys.GameState);
-        KelvinState.IsMarkedDead = gameState?["IsRobbyDead"]?.Value<bool>() ?? false;
-        VirginiaState.IsMarkedDead = gameState?["IsVirginiaDead"]?.Value<bool>() ?? false;
+        var kelvinDead = gameState?["IsRobbyDead"]?.Value<bool>() ?? false;
+        var virginiaDead = gameState?["IsVirginiaDead"]?.Value<bool>() ?? false;
+        foreach (var follower in _followers.Append(KelvinState).Append(VirginiaState))
+        {
+            follower.IsMarkedDead = follower.TypeId == KelvinTypeId ? kelvinDead : virginiaDead;
+        }
     }
 
     private void LoadFollowerData(Savegame savegame)
@@ -93,24 +128,23 @@ public class FollowerPageViewModel
             return;
         }
 
-        // Only The First Kelvin And Virginia, Spawned Copies Stay Untouched
+        // One State Per Follower Actor, A Repeated Id Only Once
         var found = new HashSet<int>();
         foreach (var actor in vailWorldSim["Actors"] ?? Enumerable.Empty<JToken>())
         {
             if (
                 actor["TypeId"]?.Value<int>()
                     is not ((KelvinTypeId or VirginiaTypeId) and var typeId)
-                || !found.Add(typeId)
+                || actor["UniqueId"]?.Value<int>() is not { } uniqueId
+                || !found.Add(uniqueId)
             )
             {
                 continue;
             }
 
-            var followerModel = StateOf(typeId);
-            if (actor["UniqueId"]?.Value<int>() is { } uniqueId)
-            {
-                followerModel.UniqueId = uniqueId;
-            }
+            var followerModel = BuildFollowerState(_gameData, typeId);
+            followerModel.UniqueId = uniqueId;
+            _followers.Add(followerModel);
 
             followerModel.State = actor["State"]?.Value<int>() ?? -1;
 
@@ -151,9 +185,7 @@ public class FollowerPageViewModel
                             $"Found Unknown Item {itemId} In Follower {typeId} Inventory"
                         );
                         var item = new Item { Id = itemId };
-                        followerModel.Inventory.Add(
-                            new EquippableItem(item, true) { Selected = true }
-                        );
+                        followerModel.Inventory.Add(new EquippableItem(item) { Selected = true });
                         continue;
                     }
 
@@ -172,11 +204,8 @@ public class FollowerPageViewModel
             var influenceMemory in vailWorldSim["InfluenceMemory"] ?? Enumerable.Empty<JToken>()
         )
         {
-            var uniqueId = influenceMemory["UniqueId"]?.Value<int>();
-            var followerState =
-                uniqueId == null ? null
-                : uniqueId == KelvinState.UniqueId ? KelvinState
-                : uniqueId == VirginiaState.UniqueId ? VirginiaState
+            var followerState = influenceMemory["UniqueId"]?.Value<int>() is { } uniqueId
+                ? StateOfActor(uniqueId)
                 : null;
             followerState?.Influences.AddRange(
                 influenceMemory["Influences"]?.ToObject<List<Influence>>() ?? []
@@ -194,6 +223,6 @@ public class FollowerPageViewModel
             return false;
         }
 
-        return new FollowerModifier(saveDataWrapper).Update([KelvinState, VirginiaState]);
+        return new FollowerModifier(saveDataWrapper).Update(_followers);
     }
 }

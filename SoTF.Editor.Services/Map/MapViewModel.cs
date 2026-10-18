@@ -95,7 +95,9 @@ public class MapViewModel(
                     playerPoi.Position = playerPage.PlayerState.Pos;
                     break;
                 case ActorPoi { IsFollower: true } actorPoi:
-                    actorPoi.Position = followerPage.StateOf(actorPoi.Actor.TypeId).Pos;
+                    actorPoi.Position =
+                        followerPage.StateOfActor(actorPoi.Actor.UniqueId)?.Pos
+                        ?? actorPoi.Position;
                     break;
             }
         }
