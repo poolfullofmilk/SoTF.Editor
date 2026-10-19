@@ -48,6 +48,7 @@ public class PlayerPageViewModel
     private readonly List<int> _otherWornItemIds = [];
 
     private readonly GameData _gameData;
+    private readonly LoadedValues _loaded = new();
 
     public PlayerPageViewModel(GameData gameData)
     {
@@ -63,6 +64,13 @@ public class PlayerPageViewModel
             ? _otherWornItemIds.Append(cloth.Id)
             : _otherWornItemIds;
 
+    public bool HasChanges => _loaded.AnyPropertyChanged(nameof(PlayerState), PlayerState);
+
+    public bool IsChanged(string propertyName)
+    {
+        return _loaded.IsPropertyChanged(nameof(PlayerState), PlayerState, propertyName);
+    }
+
     public void Load(Savegame? savegame)
     {
         if (savegame is { } selectedSavegame)
@@ -75,6 +83,9 @@ public class PlayerPageViewModel
             PlayerState.Reset();
             _otherWornItemIds.Clear();
         }
+
+        _loaded.Clear();
+        _loaded.RememberProperties(nameof(PlayerState), PlayerState);
     }
 
     private void LoadClothes(Savegame savegame)

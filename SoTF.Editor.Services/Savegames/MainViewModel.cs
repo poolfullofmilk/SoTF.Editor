@@ -124,6 +124,24 @@ public class MainViewModel(
         NotifyChanged();
     }
 
+    public bool HasChanges(string page)
+    {
+        // Pages By Their Route, Compared With The Last Load
+        return page switch
+        {
+            "Player" => playerPage.HasChanges || armorPage.HasChanges,
+            "Inventory" => inventoryPage.HasChanges,
+            "Storage" => storagePage.HasChanges,
+            "Followers" => followerPage.HasChanges,
+            "Game" => gameSetupPage.HasChanges
+                || gameStatePage.HasChanges
+                || weatherPage.HasChanges,
+            "Npcs" => npcsPage.HasChanges,
+            "Structures" => structuresPage.HasChanges,
+            _ => false,
+        };
+    }
+
     public bool HasUnsavedChanges()
     {
         if (SelectedSavegame is not { } selectedSavegame)

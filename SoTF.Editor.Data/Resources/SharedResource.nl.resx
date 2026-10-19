@@ -1824,4 +1824,10 @@
   <data name="RemoveSelected" xml:space="preserve">
     <value>Geselecteerde Verwijderen</value>
   </data>
+  <data name="LoadPreset" xml:space="preserve">
+    <value>Voorinstelling Laden</value>
+  </data>
+  <data name="LoadPresetText" xml:space="preserve">
+    <value>Elke instelling krijgt de waarden van die modus. De modus wordt Aangepast, zodat je elke instelling nog kan wijzigen</value>
+  </data>
 </root>

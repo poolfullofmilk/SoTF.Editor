@@ -7,4 +7,7 @@ public partial class GenericSettingEditor
 {
     [Parameter]
     public required GenericSetting Setting { get; set; }
+
+    [Parameter]
+    public bool Changed { get; set; }
 }

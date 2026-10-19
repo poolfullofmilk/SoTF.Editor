@@ -122,10 +122,12 @@
                                          Href="@AppInfo.RepositoryUrl" />
                             @* Updates Menu *@
                             <MudMenu StartIcon="@Icons.Material.Rounded.SystemUpdateAlt"
-                                     Label="@Localizer["Updates"]">
+                                     Label="@Localizer["Updates"]"
+                                     Class="@UpdateDotClass">
                                 @* Check Updates *@
                                 <MudMenuItem Icon="@Icons.Material.Rounded.Refresh"
                                              Label="@Localizer["CheckForUpdates"]"
+                                             Class="@UpdateDotClass"
                                              OnClick="() => CheckForUpdatesAsync(true)" />
                                 @* Latest Release *@
                                 <MudMenuItem Icon="@Icons.Material.Rounded.Download"
@@ -166,6 +168,7 @@
                                    Disabled="@(link.NeedsSavegame && !HasSavegame)"
                                    Href="@link.Href">
                             @Localizer[link.LabelKey]
+                            <ChangedDot When="@MainViewModel.HasChanges(link.Href)" />
                         </MudButton>
                     }
                 </MudStack>

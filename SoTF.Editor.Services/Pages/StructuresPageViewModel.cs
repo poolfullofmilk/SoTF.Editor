@@ -29,6 +29,8 @@ public class StructuresPageViewModel
 
     public List<ScrewStructureWrapper> Structures { get; } = [];
 
+    public bool HasChanges => Structures.Any(structure => structure.IsChanged);
+
     public IReadOnlyList<ScrewStructure> StructureTypes { get; }
 
     public void Load(Savegame? savegame)

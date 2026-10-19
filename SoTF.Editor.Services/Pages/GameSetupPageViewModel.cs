@@ -61,6 +61,8 @@ public class GameSetupPageViewModel
 
     private readonly Dictionary<string, string> _stringSettings = [];
     private readonly Dictionary<string, bool> _boolSettings = [];
+    private readonly Dictionary<string, string> _loadedStrings = [];
+    private readonly Dictionary<string, bool> _loadedBools = [];
 
     public string? SelectedMode
     {
@@ -97,7 +99,61 @@ public class GameSetupPageViewModel
         _boolSettings[key] = value;
     }
 
+    public void ApplyPreset(string mode)
+    {
+        // A Preset Fills Every Setting, Custom Keeps Them Editable
+        SelectedMode = mode;
+        PrepareSettingsBeforeMerge();
+        if (mode == CreativeGameMode)
+        {
+            _boolSettings[GameSetupKeys.CreativeMode] = true;
+        }
+
+        SelectedMode = CustomGameMode;
+    }
+
+    public bool HasChanges =>
+        !SameEntries(_stringSettings, _loadedStrings) || !SameEntries(_boolSettings, _loadedBools);
+
+    public bool IsChanged(string key, string fallback)
+    {
+        return GetString(key, fallback) != (_loadedStrings.GetValueOrDefault(key) ?? fallback);
+    }
+
+    public bool IsChanged(string key, bool fallback)
+    {
+        return GetBool(key, fallback)
+            != (_loadedBools.TryGetValue(key, out var loaded) ? loaded : fallback);
+    }
+
+    private static bool SameEntries<TValue>(
+        Dictionary<string, TValue> current,
+        Dictionary<string, TValue> loaded
+    )
+    {
+        return current.Count == loaded.Count
+            && current.All(pair =>
+                loaded.TryGetValue(pair.Key, out var value) && Equals(value, pair.Value)
+            );
+    }
+
     public void Load(Savegame? savegame)
+    {
+        LoadSettings(savegame);
+        _loadedStrings.Clear();
+        _loadedBools.Clear();
+        foreach (var (key, value) in _stringSettings)
+        {
+            _loadedStrings[key] = value;
+        }
+
+        foreach (var (key, value) in _boolSettings)
+        {
+            _loadedBools[key] = value;
+        }
+    }
+
+    private void LoadSettings(Savegame? savegame)
     {
         _stringSettings.Clear();
         _boolSettings.Clear();
@@ -255,6 +311,11 @@ public class GameSetupPageViewModel
             else if (_boolSettings.TryGetValue(name, out var newBoolValue))
             {
                 hasChanges |= (SettingReader.ReadBool(setting) ?? false) != newBoolValue;
+            }
+            else
+            {
+                // Back To Its Default, So It Leaves The Save
+                hasChanges = true;
             }
         }
 

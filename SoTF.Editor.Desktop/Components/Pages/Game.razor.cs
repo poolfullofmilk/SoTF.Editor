@@ -258,6 +258,22 @@ public partial class Game : EditorPageBase
 
     private string? _namedIntFilter;
 
+    private bool ModeChanged => GameSetup.IsChanged(GameSetupKeys.Mode, CustomGameMode);
+
+    // Season Changes With The Offset, Picking One Moves It
+    private bool SeasonChanged => OffsetSetting is { } offset && Weather.IsChanged(offset);
+
+    private static IEnumerable<SettingOption> Presets =>
+        s_modes.Where(mode => mode.Value != CustomGameMode);
+
+    private async Task LoadPresetAsync(string mode)
+    {
+        if (await ConfirmAsync("LoadPreset", "LoadPresetText"))
+        {
+            GameSetup.ApplyPreset(mode);
+        }
+    }
+
     private bool IsCustom => GameSetup.SelectedMode == CustomGameMode;
 
     private IEnumerable<GenericSetting> FilteredNamedIntDatas =>

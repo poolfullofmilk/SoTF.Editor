@@ -25,7 +25,72 @@ public class NpcsPageViewModel
 
     public List<Actor> AllActors { get; } = [];
 
+    private readonly LoadedValues _loaded = new();
+    private int _loadedCount;
+    private Savegame? _loadedFrom;
+
+    public bool HasChanges => _loadedCount != AllActors.Count || AllActors.Any(IsChanged);
+
+    public bool IsChanged(Actor actor)
+    {
+        return _loaded.IsChanged(LoadedValues.Format(actor.UniqueId), ValueOf(actor));
+    }
+
+    public bool IsChanged(ActorCollection collection)
+    {
+        return collection.Actors.Any(IsChanged);
+    }
+
+    private static string ValueOf(Actor actor)
+    {
+        var stats = string.Join(
+            " ",
+            (actor.Stats ?? [])
+                .OrderBy(stat => stat.Key)
+                .Select(stat => $"{stat.Key} {LoadedValues.Format(stat.Value)}")
+        );
+        var influences = string.Join(
+            " ",
+            (actor.Influences ?? [])
+                .OrderBy(influence => influence.TypeId)
+                .Select(influence =>
+                    FormattableString.Invariant(
+                        $"{influence.TypeId} {influence.Anger} {influence.Fear} {influence.Sentiment}"
+                    )
+                )
+        );
+        return string.Join(
+            "|",
+            actor.TypeId,
+            actor.FamilyId,
+            actor.State,
+            actor.OutfitId,
+            actor.GraphMask,
+            actor.SpawnerId,
+            LoadedValues.Format(actor.Position),
+            stats,
+            influences
+        );
+    }
+
     public void Load(Savegame? savegame)
+    {
+        LoadActors(savegame);
+
+        // Actor Changes Reload The Same Savegame, Keep The First Load
+        if (!ReferenceEquals(savegame, _loadedFrom))
+        {
+            _loadedFrom = savegame;
+            _loaded.Clear();
+            _loadedCount = AllActors.Count;
+            foreach (var actor in AllActors)
+            {
+                _loaded.Remember(LoadedValues.Format(actor.UniqueId), ValueOf(actor));
+            }
+        }
+    }
+
+    private void LoadActors(Savegame? savegame)
     {
         AllActors.Clear();
         ActorsByType.Clear();

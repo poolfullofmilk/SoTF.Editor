@@ -47,10 +47,12 @@
                             <MudText Typo="Typo.body2"
                                      Class="mud-text-secondary selectable-text">
                                 @($"{Localizer["Position"]}: {State.Pos.PrintableShort} · {Localizer["Area"]}: {State.Pos.Area.Name}")
+                                <ChangedDot When="@PlayerPage.IsChanged(nameof(PlayerState.Pos))" />
                             </MudText>
 
                             @* Strength *@
                             <StatSlider Label="@Localizer["StrengthLevel"]"
+                                        Changed="@PlayerPage.IsChanged(nameof(PlayerState.StrengthLevel))"
                                         Value="State.StrengthLevel"
                                         ValueChanged="value => State.ChangeStrengthLevel((int)value)"
                                         Info="@Localizer["StrengthLevelInfo"]"
@@ -60,61 +62,73 @@
                             <Tooltip Text="@Localizer["MaxHealthFollowsStrength"]"
                                      RootClass="d-block">
                                 <StatSlider Label="@Localizer["MaxHealth"]"
+                                            Changed="@PlayerPage.IsChanged(nameof(PlayerState.MaxHealth))"
                                             Value="State.MaxHealth"
                                             Max="MaxHealthCeiling"
                                             ReadOnly />
                             </Tooltip>
                             @* Current Health *@
                             <StatSlider Label="@Localizer["CurrentHealth"]"
+                                        Changed="@PlayerPage.IsChanged(nameof(PlayerState.CurrentHealth))"
                                         @bind-Value="State.CurrentHealth"
                                         Min="0.1f"
                                         Max="MaxHealthCeiling"
                                         Step="0.1f" />
                             @* Sickness *@
                             <StatSlider Label="@Localizer["Sickness"]"
+                                        Changed="@PlayerPage.IsChanged(nameof(PlayerState.Sickness))"
                                         @bind-Value="State.Sickness"
                                         Max="State.MaxHealth"
                                         Step="0.1f" />
                             @* Fullness *@
                             <StatSlider Label="@Localizer["Fullness"]"
+                                        Changed="@PlayerPage.IsChanged(nameof(PlayerState.Fullness))"
                                         @bind-Value="State.Fullness" />
                             @* Hydration *@
                             <StatSlider Label="@Localizer["Hydration"]"
+                                        Changed="@PlayerPage.IsChanged(nameof(PlayerState.Hydration))"
                                         @bind-Value="State.Hydration" />
                             @* Rest *@
                             <StatSlider Label="@Localizer["Rest"]"
+                                        Changed="@PlayerPage.IsChanged(nameof(PlayerState.Rest))"
                                         @bind-Value="State.Rest" />
                             @* Stamina *@
                             <StatSlider Label="@Localizer["Stamina"]"
+                                        Changed="@PlayerPage.IsChanged(nameof(PlayerState.Stamina))"
                                         @bind-Value="State.Stamina" />
                             @* Fullness Buff *@
                             <StatSlider Label="@Localizer["FullnessBuff"]"
+                                        Changed="@PlayerPage.IsChanged(nameof(PlayerState.FullnessBuff))"
                                         @bind-Value="State.FullnessBuff"
                                         Min="-100"
                                         Max="65535" />
                             @* Hydration Buff *@
                             <StatSlider Label="@Localizer["HydrationBuff"]"
+                                        Changed="@PlayerPage.IsChanged(nameof(PlayerState.HydrationBuff))"
                                         @bind-Value="State.HydrationBuff"
                                         Min="-100"
                                         Max="65535" />
                             @* Rest Buff *@
                             <StatSlider Label="@Localizer["RestBuff"]"
+                                        Changed="@PlayerPage.IsChanged(nameof(PlayerState.RestBuff))"
                                         @bind-Value="State.RestBuff"
                                         Max="1"
                                         Step="0.1f" />
 
                             @* Outfit *@
-                            <MudSelect T="Item"
-                                       Variant="Variant.Outlined"
-                                       @bind-Value="State.SelectedCloth"
-                                       Label="@Localizer["Outfit"]"
-                                       ToStringFunc="item => item?.Name ?? string.Empty"
-                                       Class="mt-2">
-                                @foreach (var cloth in PlayerPage.AvailableClothes)
-                                {
-                                    <MudSelectItem Value="cloth">@cloth.Name</MudSelectItem>
-                                }
-                            </MudSelect>
+                            <ChangedBadge When="@PlayerPage.IsChanged(nameof(PlayerState.SelectedCloth))"
+                                          Class="d-block mt-2">
+                                <MudSelect T="Item"
+                                           Variant="Variant.Outlined"
+                                           @bind-Value="State.SelectedCloth"
+                                           Label="@Localizer["Outfit"]"
+                                           ToStringFunc="item => item?.Name ?? string.Empty">
+                                    @foreach (var cloth in PlayerPage.AvailableClothes)
+                                    {
+                                        <MudSelectItem Value="cloth">@cloth.Name</MudSelectItem>
+                                    }
+                                </MudSelect>
+                            </ChangedBadge>
                         </MudStack>
                     </MudPaper>
                 </ChildContent>
@@ -123,7 +137,8 @@
 
         <MudItem xs="12"
                  lg="6">
-            <Header Title="@Localizer["EquippedArmor"]">
+            <Header Title="@Localizer["EquippedArmor"]"
+                    Changed="@ArmorPage.HasChanges">
                 <TitleContent>
                     <MudSpacer />
                     @* Default Durability *@
@@ -155,9 +170,12 @@
                                           AlignItems="AlignItems.Center"
                                           Spacing="4"
                                           Class="pa-1">
-                                    <MudImage Src="@armour.ImageUrl"
-                                              Alt="@armour.Name"
-                                              Class="thumb rounded-thumb" />
+                                    <ChangedBadge When="@ArmorPage.IsChanged(armour)"
+                                                  Class="d-flex flex-shrink-0">
+                                        <MudImage Src="@armour.ImageUrl"
+                                                  Alt="@armour.Name"
+                                                  Class="thumb rounded-thumb" />
+                                    </ChangedBadge>
                                     <MudStack Spacing="0"
                                               Class="flex-grow-1"
                                               Style="min-width:0">

@@ -1824,4 +1824,10 @@
   <data name="RemoveSelected" xml:space="preserve">
     <value>Remove Selected</value>
   </data>
+  <data name="LoadPreset" xml:space="preserve">
+    <value>Load Preset</value>
+  </data>
+  <data name="LoadPresetText" xml:space="preserve">
+    <value>Every setting takes the values of that mode. The mode becomes Custom, so you can still change each one</value>
+  </data>
 </root>

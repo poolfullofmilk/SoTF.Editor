@@ -47,9 +47,12 @@
                                     <MudStack Row
                                               AlignItems="AlignItems.Center"
                                               Spacing="2">
-                                        <MudImage Src="@collection.Actors.FirstOrDefault()?.ActorType?.IconPath"
-                                                  Alt="@collection.Name"
-                                                  Class="thumb thumb-round" />
+                                        <ChangedBadge When="@NpcsPage.IsChanged(collection)"
+                                                      Class="d-flex flex-shrink-0">
+                                            <MudImage Src="@collection.Actors.FirstOrDefault()?.ActorType?.IconPath"
+                                                      Alt="@collection.Name"
+                                                      Class="thumb thumb-round" />
+                                        </ChangedBadge>
                                         <MudText Typo="Typo.body2"
                                                  Class="text-truncate">
                                             @collection.Name
@@ -98,6 +101,7 @@
                                         <ItemLabel Name="@(context.ActorType?.Name ?? "???")"
                                                    Detail="@($"{context.ActorType?.PrintableClassification} · {context.ActorType?.PrintableGender}")"
                                                    ImageUrl="@context.ActorType?.IconPath"
+                                                   Changed="@NpcsPage.IsChanged(context)"
                                                    Round />
                                     </MudTd>
                                     <MudTd Class="selectable-text">@context.UniqueId</MudTd>

@@ -62,12 +62,24 @@ try
     var pristine = HashFiles(savegamePath);
     main.SelectSavegame(new Savegame(savegamePath, "1000000001", new SavegameStore(savegamePath)));
 
-    // A Save Without Edits Writes Nothing
+    // A Save Without Edits Writes Nothing And Shows No Changes
+    string[] pageRoutes =
+    [
+        "Player",
+        "Inventory",
+        "Storage",
+        "Followers",
+        "Game",
+        "Npcs",
+        "Structures",
+    ];
+    Check(pageRoutes.All(route => !main.HasChanges(route)), "Fresh Load Shows No Changes");
     Check(!main.SaveChanges(), "No Edits Report No Changes");
     Check(SameHashes(pristine, HashFiles(savegamePath)), "No Edits Leave Every File Identical");
 
     // One Edit Per Page, Each Saved, Reloaded And Read Back
     EditAndCheck(
+        "Player",
         "Player",
         () => player.PlayerState.Fullness = 42,
         () => Math.Abs(player.PlayerState.Fullness - 42) < 0.01
@@ -75,6 +87,7 @@ try
 
     EditAndCheck(
         "Armour",
+        "Player",
         armor.SetAllToMax,
         () =>
             armor.Armour.All(piece =>
@@ -85,6 +98,7 @@ try
     var added = inventory.Filter(null, null, false).First(item => !inventory.IsHeld(item));
     EditAndCheck(
         "Inventory",
+        "Inventory",
         () => inventory.AddUnassignedItem(added),
         () => inventory.Inventory.Any(item => item.Id == added.Id)
     );
@@ -92,6 +106,7 @@ try
     var (collectionIndex, storageIndex) = FirstFillableStorage(storage);
     var fillItemId = 0;
     EditAndCheck(
+        "Storage",
         "Storage",
         () =>
         {
@@ -107,12 +122,14 @@ try
 
     EditAndCheck(
         "Followers",
+        "Followers",
         () => followers.KelvinState.Health = 77,
         () => Math.Abs(followers.KelvinState.Health - 77) < 0.01
     );
 
     EditAndCheck(
         "Game Setup",
+        "Game",
         () => setup.SetString(Constants.GameSetupKeys.EnemyHealth, "High"),
         () => setup.GetString(Constants.GameSetupKeys.EnemyHealth, "") == "High"
     );
@@ -120,6 +137,7 @@ try
     var days = SettingOf(gameState.Settings, "GameDays").IntValue ?? 0;
     EditAndCheck(
         "Game State",
+        "Game",
         () => SettingOf(gameState.Settings, "GameDays").IntValue = days + 1,
         () => SettingOf(gameState.Settings, "GameDays").IntValue == days + 1
     );
@@ -127,6 +145,7 @@ try
     var offset = SettingOf(weather.Settings, "_startingDayOffset").DecimalValue ?? 0;
     EditAndCheck(
         "Weather",
+        "Game",
         () => SettingOf(weather.Settings, "_startingDayOffset").DecimalValue = offset + 5,
         () =>
             Math.Abs(
@@ -140,6 +159,7 @@ try
     var actorId = actor.UniqueId;
     EditAndCheck(
         "NPCs",
+        "Npcs",
         () =>
         {
             var edit = new EditActorViewModel(actor, gameData.ActorTypes) { ActorSelection = 0 };
@@ -153,6 +173,7 @@ try
     var structureCount = structures.Structures.Count;
     EditAndCheck(
         "Structures",
+        "Structures",
         () =>
             structures
                 .Structures.First(wrapper =>
@@ -162,9 +183,20 @@ try
         () => structures.Structures.Count == structureCount - 1
     );
 
+    EditAndCheck(
+        "Game Preset",
+        "Game",
+        () => setup.ApplyPreset(GameSetupPageViewModel.HardGameMode),
+        () =>
+            setup.SelectedMode == GameSetupPageViewModel.CustomGameMode
+            && setup.GetString(Constants.GameSetupKeys.AnimalSpawnRate, "")
+                == GameSetupPageViewModel.SettingValueLOW
+    );
+
     var target = new Position(-900, 120, 850) { Area = player.PlayerState.Pos.Area };
     EditAndCheck(
         "Map Teleport",
+        "Player",
         () => player.PlayerState.Pos = target,
         () => player.PlayerState.Pos.HasSameCoordinates(target)
     );
@@ -174,10 +206,12 @@ try
     BackupManager.Restore(savegamePath, oldest.Path);
     Check(SameHashes(pristine, HashFiles(savegamePath)), "Restore Oldest Brings Every File Back");
 
-    void EditAndCheck(string page, Action edit, Func<bool> readBack)
+    void EditAndCheck(string page, string route, Action edit, Func<bool> readBack)
     {
         edit();
+        Check(main.HasChanges(route), $"{page} Edit Shows As Changed");
         Check(main.SaveChanges(), $"{page} Edit Saves");
+        Check(!main.HasChanges(route), $"{page} Shows No Changes After Saving");
         Check(readBack(), $"{page} Edit Reads Back After Reload");
         Check(!main.SaveChanges(), $"{page} Leaves Nothing Unsaved");
     }

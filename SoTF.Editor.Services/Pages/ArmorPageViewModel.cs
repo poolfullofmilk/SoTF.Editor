@@ -10,6 +10,9 @@ namespace SoTF.Editor.Services.Pages;
 public class ArmorPageViewModel
 {
     private readonly List<ArmourData> _armour = [];
+    private readonly Dictionary<ArmourData, string> _loaded = new(
+        ReferenceEqualityComparer.Instance
+    );
     private readonly ItemList _itemList;
 
     public ArmorPageViewModel(GameData gameData)
@@ -26,6 +29,19 @@ public class ArmorPageViewModel
     public List<Item> ArmourTypes { get; }
 
     public NewArmourPiece NewArmour { get; }
+
+    public bool HasChanges => _loaded.Count != _armour.Count || _armour.Any(IsChanged);
+
+    public bool IsChanged(ArmourData armourData)
+    {
+        // A Piece Added Since The Load Was Never Remembered
+        return !_loaded.TryGetValue(armourData, out var loaded) || loaded != ValueOf(armourData);
+    }
+
+    private static string ValueOf(ArmourData armourData)
+    {
+        return $"{armourData.Id} {armourData.ArmourPiece.RemainingArmourpoints}";
+    }
 
     public void RemoveArmour(ArmourData armourData)
     {
@@ -47,6 +63,12 @@ public class ArmorPageViewModel
                 _itemList.GetItem(armourPiece.ItemId)
             ))
         );
+
+        _loaded.Clear();
+        foreach (var armourData in _armour)
+        {
+            _loaded[armourData] = ValueOf(armourData);
+        }
     }
 
     public bool Update(Savegame savegame)

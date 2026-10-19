@@ -4,7 +4,7 @@ A savegame editor for Sons of the Forest. A WPF window hosts a `BlazorWebView` w
 
 | Project | Holds |
 |---|---|
-| `SoTF.Editor.Data` (`net10.0`) | Savegame and game data models, view models, enums, helpers (`AppInfo`, `SaveJson`, `Formatter`, `Teleporter`, coordinates), and `Resources`: the resx text, `TextKeys`, `GameNames.resx`, the embedded `GameData.json`, `Pois.json`, `ItemPois.json` and `ActorTemplate.txt` |
+| `SoTF.Editor.Data` (`net10.0`) | Savegame and game data models, view models, enums, helpers (`AppInfo`, `SaveJson`, `Formatter`, `LoadedValues`, `Teleporter`, coordinates), and `Resources`: the resx text, `TextKeys`, `GameNames.resx`, the embedded `GameData.json`, `Pois.json`, `ItemPois.json` and `ActorTemplate.txt` |
 | `SoTF.Editor.Services` (`net10.0`) | `Savegames` (finding, loading, saving, backups, `MainViewModel`), `Pages` (one view model per page), `Actors`, `Map`, `Tools`, `Settings`, `Integration` (update check and updater) |
 | `SoTF.Editor.Desktop` | `App` (startup, logging, single instance, DI), `MainWindow` (WebView2 host), `Components`, `Theming/AppTheme`, `Interop` (`LocalFiles`, `WindowCaptionTheme`), `wwwroot` |
 | `Tests` | `SaveRoundTrip.cs`, a file-based app, and `Sample`, the savegame it edits |
@@ -85,7 +85,18 @@ A Debug build uses `SoTF.Editor Debug` for all of these folders (`AppInfo.Folder
 
 - The left menu holds every page, Tools included (`/Tools`). The app bar holds Save, Reload, Backups, Language and Help, nothing else.
 - The Tools page lists each tool as a card with an icon, a one-sentence description and a chip: **Needs Save** (most), **Saves At Once** in amber (Item Plater, Unlocks), or **Host Save Only** greyed out for world tools on a client save. A hint at the top says tools need Save like any other edit.
-- Help holds GitHub, an **Updates** submenu (Check For Updates, Download Latest Version) and About. When a newer version was found, Help carries a red dot (`MudBadge`) until the app restarts, so a dismissed update dialog is not forgotten.
+- Help holds GitHub, an **Updates** submenu (Check For Updates, Download Latest Version) and About. When a newer version was found, a red dot leads the way until the app restarts, so a dismissed update dialog is not forgotten: a `MudBadge` on Help, then the `update-dot` class on the Updates submenu and Check For Updates, which draws the same dot after their text.
+- The left menu shows an amber dot on every page with changes (`MainViewModel.HasChanges(route)`). The layout only re-renders on navigation and loads, so a page's dot appears once you move to another page; the fields on the page show theirs at once.
+
+## Change Dots
+
+A small amber dot marks every value that differs from what was loaded from disk, and saving clears them all.
+
+- Each page view model remembers its values when a save is loaded and answers `IsChanged(...)` per value and `HasChanges` for the page. Named values (player, followers, NPCs, game state and weather) go through `LoadedValues`; list entries that keep their object (armour pieces, inventory items, storages) are keyed by reference; structures need no memory, a set modification or new type is the change. `LoadedValues.Format` formats every value the same way, floats invariant, items and outfits by id, positions with their area.
+- `ChangedBadge` puts the dot on the corner of an input or picture (`MudBadge` with `Color.Warning`), `ChangedDot` puts it inline after a text. `StatSlider`, `GenericSettingEditor`, `ItemLabel` and `Header` take a `Changed` parameter.
+- Followers and NPCs reload after every actor change (`ModifyActors`), so they remember values only when the savegame object itself changes. A real load or a save creates a new one, an actor change does not.
+- Tools that only touch the world JSON (fires, traps, containers, anger) have no field to mark.
+- Removed entries have nothing left to mark, so they show in the page dot and, for armour, the Equipped Armor title.
 
 ## Text
 
@@ -105,7 +116,8 @@ Lists and tables run edge to edge in their panel: the paper carries `panel-flush
 
 The last table row has no bottom line. A table whose rows virtualize keeps its columns with `fixed-columns` and a `ColGroup`, or the columns shift while scrolling.
 
-- Inventory is one alphabetical list of every item. Held items show count, max and delete; the rest are greyed (`not-held`) with a green add button. A Held Only switch, a type filter and Add All From Category sit in the toolbar (`InventoryPageViewModel.Filter`).
+- The Game tab's **Load Preset** menu (Normal, Hard, Hard Survival, Peaceful, Creative) fills every setting with that mode's values and switches the mode to Custom, so each one stays editable (`GameSetupPageViewModel.ApplyPreset`, the same table `PrepareSettingsBeforeMerge` writes for a preset mode; Creative also turns on Creative Mode). It asks first.
+- Inventory is one alphabetical list of every item, not virtualized: 377 rows render fast, and virtualizing rows of two heights made scrolling jump. Held items show count, max and delete; the rest are greyed (`not-held`) with a green add button. A Held Only switch, a type filter and Add All From Category sit in the toolbar (`InventoryPageViewModel.Filter`).
 - Map collections with sub groups (Actors, Items, Structures) start folded behind an expand button; their checkbox still covers every sub group.
 - Max Health is derived, so it shows as a read-only bar (`StatSlider ReadOnly`), not a slider.
 - The follower copy picker (Kelvin 1, Kelvin 2) is an outlined select at the top right inside the panel. NPC thumbs are round and cropped (`thumb-round`), so odd-sized images line up.
@@ -136,6 +148,8 @@ The last table row has no bottom line. A table whose rows virtualize keeps its c
 - `NamedIntDatas` compare as a set: the editor sorts them, the game does not.
 - `GenericModule` compares its token with `JToken.DeepEquals`; a record compares a `JObject` by reference and made every storage look changed.
 - `SaveDataWrapper.SerializeAllModified` skips a key with no parsed node (`TryGetValue`): a token edited in place is already in the parent.
+- The setup merge drops a known setting the editor no longer holds (back at its default) and counts that as a change; before 2.0 it was dropped only when something else also changed.
+- Group title rows in a hovered table (Structures) keep no hover: `.mud-table-row:has(.group-title)` overrides MudBlazor's row hover, because they are titles, not rows to click.
 - The game setup merge writes each known setting as name, type and value only; settings the editor does not know stay untouched. Keys come from the game's own list in `global-metadata.dat`: Inventory Pause is `GameSetting.Survival.PausedInInventory`, Stat Regeneration Penalties is `GameSetting.Survival.StatRegenerationPenalty`. `SleepingDelay` and `InstantSleepSeasonSwitch` exist but their values are unknown, so the page leaves them out.
 - Every Kelvin and Virginia in the save, spawned copies included, gets its own `FollowerState`; the panel picks one at a time and the merge writes each by unique id. A follower missing from the save is left alone. The game calls Kelvin `Robby` (`IsRobbyDead`).
 - A MultiplayerClient save holds only the player: world pages show a hint and world tools are disabled.
@@ -148,7 +162,7 @@ The last table row has no bottom line. A table whose rows virtualize keeps its c
 ## Verify
 
 - `PlayerArmourSystemModel`, `GenericModule` and `Position` (every spawn pattern places enough finite points) carry `SelfTestPasses()`.
-- `dotnet run Tests/SaveRoundTrip.cs` copies the sample to temp, checks that a save without edits reports No Changes and leaves every file identical, makes one edit per page (Player, Armour, Inventory, Storage, Followers, Game Setup, Game State, Weather, NPCs, Structures, Map teleport), saves, reloads, reads it back and checks nothing is left unsaved, then restores the oldest backup and compares every file byte for byte. It exits 1 on any failure and the release workflow runs it. It restores the Debug settings file and deletes only the sample's backup folder. A new page or edit path gets a line there.
+- `dotnet run Tests/SaveRoundTrip.cs` copies the sample to temp, checks that a fresh load shows no change dots and that a save without edits reports No Changes and leaves every file identical, makes one edit per page (Player, Armour, Inventory, Storage, Followers, Game Setup, Game State, Weather, NPCs, Structures, a Hard preset, Map teleport), checks the page shows as changed, saves, checks the dots are gone, reloads, reads it back and checks nothing is left unsaved, then restores the oldest backup and compares every file byte for byte. It exits 1 on any failure and the release workflow runs it. It restores the Debug settings file and deletes only the sample's backup folder. A new page or edit path gets a line there.
 - The sample is a real multiplayer save with `MultiplayerPlayerRolesSaveData.json` removed, because that file held friends' Steam ids and names. Never commit a save file that names real players.
 - After a change near saving, also run a round trip on copies of the real savegames with a file-based app in the scratchpad: a no-op save leaves every file byte identical; an edit changes only what it should (compare after decoding the nested JSON strings); Restore Oldest brings every file back byte for byte.
 - After a refactor, compare old and new behaviour: `git archive HEAD` into the scratchpad, run one harness (`#:project` plus `Microsoft.Extensions.DependencyInjection`, registered like `App`) against both Services projects on the same save copies, and diff what it writes: page state, every map point under each filter, and every decoded file after page edits, tools, actor edits and plating. Seeds and GUIDs are random, so normalize them first. The harness writes the Debug settings and backups, so it restores the settings file and removes only the backup folders it created.

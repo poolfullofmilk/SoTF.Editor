@@ -10,7 +10,33 @@ public class WeatherPageViewModel
 {
     public List<GenericSetting> Settings { get; } = [];
 
+    private IEnumerable<GenericSetting> AllSettings => Settings;
+
+    private readonly LoadedValues _loaded = new();
+
+    public bool HasChanges => AllSettings.Any(IsChanged);
+
+    public bool IsChanged(GenericSetting setting)
+    {
+        return _loaded.IsChanged(setting.Name, setting.GetValue());
+    }
+
+    private void Remember()
+    {
+        _loaded.Clear();
+        foreach (var setting in AllSettings)
+        {
+            _loaded.Remember(setting.Name, setting.GetValue());
+        }
+    }
+
     public void Load(Savegame? savegame)
+    {
+        LoadSettings(savegame);
+        Remember();
+    }
+
+    private void LoadSettings(Savegame? savegame)
     {
         Settings.Clear();
         if (

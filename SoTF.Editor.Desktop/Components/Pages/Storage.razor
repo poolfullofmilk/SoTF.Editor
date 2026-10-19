@@ -47,6 +47,7 @@
                                         <MudText Typo="Typo.body2"
                                                  Class="text-truncate">
                                             @storage.Description
+                                            <ChangedDot When="@StoragePage.IsChanged(storage)" />
                                         </MudText>
                                     </MudElement>
                                 }
@@ -140,9 +141,12 @@
                                         <MudStack Row
                                                   AlignItems="AlignItems.Center"
                                                   Spacing="3">
-                                            <MudImage Src="@(storedItem.SelectedItem?.Item.ThumbnailUrl ?? "images/icons/question-mark.svg")"
-                                                      Alt="@storedItem.SelectedItem?.Name"
-                                                      Class="thumb rounded-thumb" />
+                                            <ChangedBadge When="@StoragePage.IsChanged(selected, storedItem)"
+                                                          Class="d-flex flex-shrink-0">
+                                                <MudImage Src="@(storedItem.SelectedItem?.Item.ThumbnailUrl ?? "images/icons/question-mark.svg")"
+                                                          Alt="@storedItem.SelectedItem?.Name"
+                                                          Class="thumb rounded-thumb" />
+                                            </ChangedBadge>
                                             @* Slot Item *@
                                             <MudSelect T="ItemWrapper"
                                                        @bind-Value="storedItem.SelectedItem"

@@ -39,6 +39,26 @@ public partial class GameStatePageViewModel
     public List<GenericSetting> Settings { get; } = [];
     public List<GenericSetting> NamedIntDatas { get; } = [];
 
+    private IEnumerable<GenericSetting> AllSettings => Settings.Concat(NamedIntDatas);
+
+    private readonly LoadedValues _loaded = new();
+
+    public bool HasChanges => AllSettings.Any(IsChanged);
+
+    public bool IsChanged(GenericSetting setting)
+    {
+        return _loaded.IsChanged(setting.Name, setting.GetValue());
+    }
+
+    private void Remember()
+    {
+        _loaded.Clear();
+        foreach (var setting in AllSettings)
+        {
+            _loaded.Remember(setting.Name, setting.GetValue());
+        }
+    }
+
     private void PrefillNamedIntDatas(List<string> namedIntKeys)
     {
         foreach (var namedIntKey in namedIntKeys)
@@ -81,6 +101,12 @@ public partial class GameStatePageViewModel
     }
 
     public void Load(Savegame? savegame)
+    {
+        LoadSettings(savegame);
+        Remember();
+    }
+
+    private void LoadSettings(Savegame? savegame)
     {
         Settings.Clear();
         NamedIntDatas.Clear();

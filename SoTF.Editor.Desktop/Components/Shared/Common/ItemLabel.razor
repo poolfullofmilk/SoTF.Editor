@@ -2,17 +2,20 @@
 <MudStack Row
           AlignItems="AlignItems.Center"
           Spacing="3">
-    @if (!string.IsNullOrEmpty(ImageUrl))
-    {
-        <MudImage Src="@ImageUrl"
-                  Alt="@Name"
-                  Class="@ImageClass" />
-    }
-    else
-    {
-        <MudIcon Icon="@Icons.Material.Rounded.QuestionMark"
-                 Class="thumb" />
-    }
+    <ChangedBadge When="Changed"
+                  Class="d-flex flex-shrink-0">
+        @if (!string.IsNullOrEmpty(ImageUrl))
+        {
+            <MudImage Src="@ImageUrl"
+                      Alt="@Name"
+                      Class="@ImageClass" />
+        }
+        else
+        {
+            <MudIcon Icon="@Icons.Material.Rounded.QuestionMark"
+                     Class="thumb" />
+        }
+    </ChangedBadge>
     <MudStack Spacing="0"
               Style="min-width:0">
         <MudText Typo="Typo.body2"

@@ -53,6 +53,9 @@ public partial class MainLayout : IDisposable
 
     private bool HasSavegame => MainViewModel.SelectedSavegame != null;
 
+    // The Dot Leads From Help Down To Check For Updates
+    private string? UpdateDotClass => _availableUpdate is null ? null : "update-dot";
+
     protected override void OnInitialized()
     {
         MainViewModel.Changed += OnChanged;

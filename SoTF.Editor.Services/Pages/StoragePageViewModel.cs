@@ -27,6 +27,38 @@ public class StoragePageViewModel
 
     public List<StorageCollection> StorageCollections { get; } = [];
 
+    // Every Slot As Loaded, Per Storage In Slot Order
+    private readonly Dictionary<IStorage, List<string>> _loaded = new(
+        ReferenceEqualityComparer.Instance
+    );
+
+    public bool HasChanges => _loaded.Keys.Any(IsChanged);
+
+    public bool IsChanged(IStorage storage)
+    {
+        return !_loaded.TryGetValue(storage, out var loaded)
+            || !loaded.SequenceEqual(ValuesOf(storage));
+    }
+
+    public bool IsChanged(IStorage storage, StoredItem storedItem)
+    {
+        var index = StoredItemsOf(storage).ToList().IndexOf(storedItem);
+        return !_loaded.TryGetValue(storage, out var loaded)
+            || index < 0
+            || index >= loaded.Count
+            || loaded[index] != ValueOf(storedItem);
+    }
+
+    private static List<string> ValuesOf(IStorage storage)
+    {
+        return [.. StoredItemsOf(storage).Select(ValueOf)];
+    }
+
+    private static string ValueOf(StoredItem storedItem)
+    {
+        return LoadedValues.Format($"{storedItem.SelectedItem?.Item.Id} {storedItem.Count}");
+    }
+
     public IStorage? SelectedStorage { get; set; }
 
     public void ApplyToAllOfSameType(IStorage source)
@@ -116,6 +148,16 @@ public class StoragePageViewModel
     }
 
     public void Load(Savegame? savegame)
+    {
+        LoadStorages(savegame);
+        _loaded.Clear();
+        foreach (var storage in StorageCollections.SelectMany(collection => collection.Storages))
+        {
+            _loaded[storage] = ValuesOf(storage);
+        }
+    }
+
+    private void LoadStorages(Savegame? savegame)
     {
         SelectedStorage = null;
         StorageCollections.Clear();

@@ -61,6 +61,10 @@ public class ScrewStructureWrapper
 
     public ImmutableSortedSet<ScrewStructureModificationMode> ModificationModes { get; }
 
+    // Changed Once A Mode Or A New Type Is Picked
+    public bool IsChanged =>
+        _modificationMode != ScrewStructureModificationMode.None || ChangedTypeId != null;
+
     public JToken Token { get; }
     public Position? Position { get; }
     public ScrewStructureOrigin Origin { get; }

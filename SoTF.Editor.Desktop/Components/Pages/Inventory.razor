@@ -82,7 +82,6 @@
                               Dense
                               Hover
                               FixedHeader
-                              Virtualize
                               Elevation="0"
                               Class="fill fixed-columns">
 
@@ -102,7 +101,8 @@
                                 <MudTd>
                                     <ItemLabel Name="@context.Name"
                                                Detail="@($"{context.TypeRendered} · {context.Id}")"
-                                               ImageUrl="@context.ImageUrl" />
+                                               ImageUrl="@context.ImageUrl"
+                                               Changed="@InventoryPage.IsChanged(context)" />
                                 </MudTd>
                                 <MudTd>
                                     @* Count *@
@@ -134,7 +134,8 @@
                                 <MudTd Class="not-held">
                                     <ItemLabel Name="@context.Name"
                                                Detail="@($"{context.TypeRendered} · {context.Id}")"
-                                               ImageUrl="@context.ImageUrl" />
+                                               ImageUrl="@context.ImageUrl"
+                                               Changed="@InventoryPage.IsChanged(context)" />
                                 </MudTd>
                                 <MudTd />
                                 <MudTd Style="text-align:right">

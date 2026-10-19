@@ -13,6 +13,9 @@ public partial class Header
     public string? Info { get; set; }
 
     [Parameter]
+    public bool Changed { get; set; }
+
+    [Parameter]
     public RenderFragment? TitleContent { get; set; }
 
     [Parameter]

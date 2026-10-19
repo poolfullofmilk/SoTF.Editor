@@ -40,6 +40,11 @@ public class InventoryPageViewModel
     private readonly ItemList _itemList;
     private readonly List<InventoryItem> _unassignedItems = [];
 
+    // Each Item's Count At Load, None When Not Held
+    private readonly Dictionary<InventoryItem, int?> _loadedCounts = new(
+        ReferenceEqualityComparer.Instance
+    );
+
     public InventoryPageViewModel(GameData gameData)
     {
         _itemList = gameData.Items;
@@ -79,6 +84,18 @@ public class InventoryPageViewModel
                 || item.Id.ToString().Contains(normalizedFilter)
             )
             .OrderBy(item => item.Name);
+    }
+
+    public bool HasChanges => _loadedCounts.Keys.Any(IsChanged);
+
+    public bool IsChanged(InventoryItem item)
+    {
+        return !_loadedCounts.TryGetValue(item, out var loaded) || loaded != CountOf(item);
+    }
+
+    private int? CountOf(InventoryItem item)
+    {
+        return IsHeld(item) ? item.TotalCount : null;
     }
 
     public void RemoveItemFromInventory(InventoryItem? inventoryItem)
@@ -139,6 +156,12 @@ public class InventoryPageViewModel
                 )
                 .Select(item => new InventoryItem(ItemBlockModel.Unassigned(item), item))
         );
+
+        _loadedCounts.Clear();
+        foreach (var item in _inventory.Concat(_unassignedItems))
+        {
+            _loadedCounts[item] = CountOf(item);
+        }
     }
 
     private Item? ItemHolding(ItemBlockModel itemBlock)

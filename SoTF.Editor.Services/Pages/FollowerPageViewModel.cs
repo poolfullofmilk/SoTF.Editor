@@ -20,6 +20,8 @@ public class FollowerPageViewModel
     // Every Kelvin And Virginia In The Save, Spawned Copies Included
     private readonly List<FollowerState> _followers = [];
     private readonly Dictionary<int, FollowerState> _selectedByTypeId = [];
+    private readonly LoadedValues _loaded = new();
+    private Savegame? _loadedFrom;
 
     public FollowerPageViewModel(GameData gameData)
     {
@@ -49,6 +51,62 @@ public class FollowerPageViewModel
     public FollowerState? StateOfActor(int uniqueId)
     {
         return _followers.FirstOrDefault(follower => follower.UniqueId == uniqueId);
+    }
+
+    public bool HasChanges => _followers.Concat(_selectedByTypeId.Values).Any(IsChanged);
+
+    public bool IsChanged(FollowerState follower)
+    {
+        return _loaded.AnyPropertyChanged(ScopeOf(follower), follower)
+            || follower.Inventory.Any(item => IsChanged(follower, item))
+            || InfluencesChanged(follower);
+    }
+
+    public bool IsChanged(FollowerState follower, string propertyName)
+    {
+        return _loaded.IsPropertyChanged(ScopeOf(follower), follower, propertyName);
+    }
+
+    public bool IsChanged(FollowerState follower, EquippableItem item)
+    {
+        return _loaded.IsChanged($"{ScopeOf(follower)}.Item.{item.ItemId}", item.Selected);
+    }
+
+    public bool InfluencesChanged(FollowerState follower)
+    {
+        return _loaded.IsChanged($"{ScopeOf(follower)}.Influences", InfluencesOf(follower));
+    }
+
+    private void Remember(FollowerState follower)
+    {
+        _loaded.RememberProperties(ScopeOf(follower), follower);
+        foreach (var item in follower.Inventory)
+        {
+            _loaded.Remember($"{ScopeOf(follower)}.Item.{item.ItemId}", item.Selected);
+        }
+
+        _loaded.Remember($"{ScopeOf(follower)}.Influences", InfluencesOf(follower));
+    }
+
+    private static string ScopeOf(FollowerState follower)
+    {
+        return $"{follower.TypeId}.{follower.UniqueId}";
+    }
+
+    private static string InfluencesOf(FollowerState follower)
+    {
+        return string.Join(
+            "|",
+            follower
+                .Influences.OrderBy(influence => influence.TypeId)
+                .Select(influence =>
+                    LoadedValues.Format(
+                        FormattableString.Invariant(
+                            $"{influence.TypeId} {influence.Anger} {influence.Fear} {influence.Sentiment}"
+                        )
+                    )
+                )
+        );
     }
 
     public void Select(FollowerState follower)
@@ -95,6 +153,17 @@ public class FollowerPageViewModel
 
         SelectFirstOfEachType();
         LoadDeathFlags(selectedSavegame);
+
+        // Actor Changes Reload The Same Savegame, Keep The First Load
+        if (!ReferenceEquals(selectedSavegame, _loadedFrom))
+        {
+            _loadedFrom = selectedSavegame;
+            _loaded.Clear();
+            foreach (var follower in _followers.Concat(_selectedByTypeId.Values))
+            {
+                Remember(follower);
+            }
+        }
     }
 
     public static void MoveTo(FollowerState follower, Position target)

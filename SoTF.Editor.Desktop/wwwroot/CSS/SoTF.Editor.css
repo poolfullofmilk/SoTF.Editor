@@ -166,7 +166,24 @@
 
 /* Info Buttons Lift Softly, Wider And Lighter Than Map Points */
 .info-button svg {
-    filter: drop-shadow(0 2px 8px rgba(0,0,0, 0.35));
+    filter: drop-shadow(0 3px 12px rgba(0,0,0, 0.22));
+}
+
+/* Badge Dots Inline: Red On The Way To An Update, Amber On Changes */
+.update-dot .mud-menu-item-text::after,
+.changed-dot {
+    content: "";
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    margin-left: 8px;
+    border-radius: 50%;
+    background-color: var(--mud-palette-error);
+    vertical-align: middle;
+}
+
+.changed-dot {
+    background-color: var(--mud-palette-warning);
 }
 
 /* Inside A Switch Label The Button Follows The Text Line */
@@ -303,6 +320,11 @@ html, body {
 .mud-table-body .mud-table-row:not(:has(~ .mud-table-row)) > .mud-table-cell,
 .mud-simple-table tbody tr:last-child > td {
     border-bottom: none;
+}
+
+/* Group Titles Are Not Rows, So Hover Leaves Them Alone */
+.mud-table-hover .mud-table-container .mud-table-root .mud-table-body .mud-table-row:has(.group-title):hover {
+    background-color: transparent;
 }
 
 /* Group Titles Stand Apart From Their Rows */

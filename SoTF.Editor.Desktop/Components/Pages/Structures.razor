@@ -97,7 +97,8 @@
                             <MudTd>
                                 <ItemLabel Name="@context.Name"
                                            Detail="@Localizer[context.Origin == ScrewStructureOrigin.Finished ? "FinishedStructures" : "UnfinishedStructures"]"
-                                           ImageUrl="@IconOf(context)" />
+                                           ImageUrl="@IconOf(context)"
+                                           Changed="@context.IsChanged" />
                             </MudTd>
                             <MudTd>@context.Category</MudTd>
                             <MudTd>@($"{context.Added} / {context.BuildCost}")</MudTd>
