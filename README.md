@@ -9,12 +9,13 @@ A savegame editor for Sons of the Forest, with a verified backup before every sa
 | ![Storage](Screenshots/Storage.png) | ![NPCs](Screenshots/Npcs.png) | ![Map](Screenshots/Map.png) |
 
 ## Features
-- Player stats, outfit, armour and inventory
+- Player stats, outfit, armour and one inventory list of every item
 - Every storage filled, maxed or cleared in one click
 - Kelvin and Virginia, spawned copies too: stats, outfit, items, revive or spawn more
-- Game setup, game state, season and weather, NPCs and structures
+- Game setup, game state, season and weather, NPCs and structures, with info buttons that explain each setting
 - A map to teleport the player and followers or spawn actors
-- Updates itself from inside the app
+- Tools on their own page, such as regrow trees, reset fires, traps and containers, and item plating
+- Updates itself from inside the app, shows what changed and keeps the previous version
 - English and Dutch
 
 ## Quick start
@@ -24,10 +25,12 @@ A savegame editor for Sons of the Forest, with a verified backup before every sa
 
 ## ⚠️ Important
 - Start the game and stay in the main menu while you edit, then load the save, so Steam Cloud cannot overwrite your changes
-- Every save first copies the whole savegame to `Documents\SoTF.Editor\Backups`, nothing there is ever deleted, and any backup can be restored from the app
+- Every save first copies the whole savegame to `Documents\SoTF.Editor\Backups`, and any backup can be restored or deleted from the app
+- Past 500 MB of backups the oldest go, but every savegame keeps its first one
 - A multiplayer client save only holds your own player, the world lives in the host's save
 - Windows may warn on the first run because the app is not signed: click More info, then Run anyway
 
 ## Technical details
 - .NET 10, WPF, Blazor and MudBlazor, one self-contained exe
+- Every release first passes a save round trip test on a sample savegame
 - GPL-3.0, builds on SOTFEdit and map point data that are both MIT, see [THIRD-PARTY-NOTICES.txt](THIRD-PARTY-NOTICES.txt)
