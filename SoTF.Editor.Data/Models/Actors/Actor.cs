@@ -26,7 +26,10 @@ public class Actor
     public int? GraphMask { get; set; }
 
     [JsonIgnore]
-    public string ImageUrl => $"images/actors/{ActorType?.Image}";
+    public string ImageUrl =>
+        ActorType?.Image is { } image
+            ? $"images/actors/{image}"
+            : ActorType?.IconPath ?? "images/icons/question-mark.svg";
 
     public string PrintableTitle =>
         $"{ActorType?.Name ?? "???"} - UniqueId {UniqueId} - TypeId {TypeId} - FamilyId {FamilyId}";

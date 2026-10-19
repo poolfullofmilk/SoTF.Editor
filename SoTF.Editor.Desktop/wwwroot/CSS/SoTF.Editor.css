@@ -158,6 +158,11 @@
     overflow: hidden;
 }
 
+/* A Scrolling List Keeps Scrolling, Auto Clips The Corners Too */
+.panel-flush.overflow-y-auto {
+    overflow-y: auto;
+}
+
 /* Items Not In The Backpack Stay Grey Until Added */
 .not-held > * {
     opacity: 0.5;
