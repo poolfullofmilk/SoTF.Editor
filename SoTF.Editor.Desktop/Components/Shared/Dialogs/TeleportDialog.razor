@@ -28,22 +28,26 @@
                       Spacing="2">
                 @* Offset X *@
                 <MudNumericField T="float"
+                                 Variant="Variant.Outlined"
                                  @bind-Value="_viewModel.XOffset"
                                  Label="X"
                                  Step="0.5f" />
                 @* Offset Y *@
                 <MudNumericField T="float"
+                                 Variant="Variant.Outlined"
                                  @bind-Value="_viewModel.YOffset"
                                  Label="Y"
                                  Step="0.5f" />
                 @* Offset Z *@
                 <MudNumericField T="float"
+                                 Variant="Variant.Outlined"
                                  @bind-Value="_viewModel.ZOffset"
                                  Label="Z"
                                  Step="0.5f" />
             </MudStack>
             @* Area *@
             <MudSelect T="Area"
+                       Variant="Variant.Outlined"
                        @bind-Value="_viewModel.SelectedArea"
                        Label="@Localizer["Area"]"
                        ToStringFunc="area => area?.Name ?? string.Empty"

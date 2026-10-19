@@ -49,10 +49,9 @@ public partial class MainLayout : IDisposable
 
     private ErrorBoundary? _errorBoundary;
     private bool _isBusy;
+    private ReleaseInfo? _availableUpdate;
 
     private bool HasSavegame => MainViewModel.SelectedSavegame != null;
-
-    private static bool CheckForUpdatesOnStart => UserSettings.Current.CheckForUpdates;
 
     protected override void OnInitialized()
     {
@@ -85,7 +84,7 @@ public partial class MainLayout : IDisposable
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender && UserSettings.Current.CheckForUpdates)
+        if (firstRender)
         {
             await CheckForUpdatesAsync(false);
         }
@@ -282,12 +281,6 @@ public partial class MainLayout : IDisposable
         MainViewModel.NotifyChanged();
     }
 
-    private static void ToggleCheckForUpdates()
-    {
-        UserSettings.Current.CheckForUpdates = !UserSettings.Current.CheckForUpdates;
-        UserSettings.Current.Save();
-    }
-
     private async Task CheckForUpdatesAsync(bool invokedManually)
     {
         var latest = await UpdateChecker.CheckAsync();
@@ -303,6 +296,9 @@ public partial class MainLayout : IDisposable
 
         if (latest.Version > AppInfo.Version)
         {
+            // The Badge Stays After The Dialog Is Dismissed
+            _availableUpdate = latest;
+            StateHasChanged();
             await UpdateDialog.ShowAsync(DialogService, latest);
         }
         else if (invokedManually)

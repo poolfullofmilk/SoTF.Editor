@@ -82,6 +82,7 @@
                                               Spacing="2">
                                         @* Fill Item *@
                                         <MudSelect T="ItemWrapper"
+                                                   Variant="Variant.Outlined"
                                                    Value="_fillItem"
                                                    ValueChanged="SelectFillItem"
                                                    Label="@Localizer["FillAllWith"]"
@@ -94,6 +95,7 @@
                                         </MudSelect>
                                         @* Fill Count *@
                                         <MudNumericField T="int"
+                                                         Variant="Variant.Outlined"
                                                          @bind-Value="_fillCount"
                                                          Label="@Localizer["Count"]"
                                                          Min="1"

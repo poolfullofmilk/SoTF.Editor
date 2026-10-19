@@ -15,7 +15,6 @@ public class UserSettings
     public string SavegamePath { get; set; } = "";
     public string LastSavegame { get; set; } = "";
     public string Language { get; set; } = "en";
-    public bool CheckForUpdates { get; set; } = true;
     public HashSet<string>? SelectedMapGroups { get; set; }
 
     private static UserSettings Load()

@@ -1191,9 +1191,6 @@
   <data name="Language" xml:space="preserve">
     <value>Taal</value>
   </data>
-  <data name="CheckForUpdatesOnStart" xml:space="preserve">
-    <value>Bij Start Controleren Op Updates</value>
-  </data>
   <data name="ClassificationAnimal" xml:space="preserve">
     <value>Dier</value>
   </data>
@@ -1600,7 +1597,7 @@
     <value>Downloaden</value>
   </data>
   <data name="UpdateText" xml:space="preserve">
-    <value>Je hebt versie {0}. Bijwerken downloadt de nieuwe en herstart de editor, de oude blijft als weg terug</value>
+    <value>Je hebt versie {0}. Bijwerken downloadt de nieuwe en herstart de editor</value>
   </data>
   <data name="UpdateFailed" xml:space="preserve">
     <value>Bijwerken mislukt, probeer het later opnieuw</value>
@@ -1820,5 +1817,11 @@
   </data>
   <data name="UnlocksText" xml:space="preserve">
     <value>Profielontgrendelingen zoals het einde en Creatieve Modus, voor elke save</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Toepassen</value>
+  </data>
+  <data name="RemoveSelected" xml:space="preserve">
+    <value>Geselecteerde Verwijderen</value>
   </data>
 </root>

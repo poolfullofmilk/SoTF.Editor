@@ -4,9 +4,17 @@ A savegame editor for Sons of the Forest, with a verified backup before every sa
 
 ![Overview](Screenshots/Overview.png)
 
-| Storage | NPCs | Map |
+| Inventory | Storage | Followers |
 |---|---|---|
-| ![Storage](Screenshots/Storage.png) | ![NPCs](Screenshots/Npcs.png) | ![Map](Screenshots/Map.png) |
+| ![Inventory](Screenshots/Inventory.png) | ![Storage](Screenshots/Storage.png) | ![Followers](Screenshots/Followers.png) |
+
+| Game | NPCs | Structures |
+|---|---|---|
+| ![Game](Screenshots/Game.png) | ![NPCs](Screenshots/Npcs.png) | ![Structures](Screenshots/Structures.png) |
+
+| Map | Tools | Backups |
+|---|---|---|
+| ![Map](Screenshots/Map.png) | ![Tools](Screenshots/Tools.png) | ![Backups](Screenshots/Backups.png) |
 
 ## Features
 - Player stats, outfit, armour and one inventory list of every item
@@ -15,7 +23,7 @@ A savegame editor for Sons of the Forest, with a verified backup before every sa
 - Game setup, game state, season and weather, NPCs and structures, with info buttons that explain each setting
 - A map to teleport the player and followers or spawn actors
 - Tools on their own page, such as regrow trees, reset fires, traps and containers, and item plating
-- Updates itself from inside the app, shows what changed and keeps the previous version
+- Updates itself from inside the app and shows what changed
 - English and Dutch
 
 ## Quick start

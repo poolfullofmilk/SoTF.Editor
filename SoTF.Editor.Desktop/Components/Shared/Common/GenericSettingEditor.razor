@@ -3,6 +3,7 @@
 {
     case GenericSetting.DataType.String:
         <MudTextField T="string"
+                      Variant="Variant.Outlined"
                       @bind-Value="Setting.StringValue"
                       Margin="Margin.Dense" />
         break;
@@ -14,6 +15,7 @@
         break;
     case GenericSetting.DataType.Integer:
         <MudNumericField T="int?"
+                         Variant="Variant.Outlined"
                          @bind-Value="Setting.IntValue"
                          Min="Setting.MinInt"
                          Max="Setting.MaxInt"
@@ -22,6 +24,7 @@
         break;
     case GenericSetting.DataType.Decimal:
         <MudNumericField T="double?"
+                         Variant="Variant.Outlined"
                          @bind-Value="Setting.DecimalValue"
                          Min="Setting.MinInt"
                          Max="Setting.MaxInt"
@@ -30,6 +33,7 @@
         break;
     case GenericSetting.DataType.Enum:
         <MudSelect T="object"
+                   Variant="Variant.Outlined"
                    @bind-Value="Setting.SelectedItem"
                    ToStringFunc="value => value is null ? string.Empty : Setting.PossibleValues.GetValueOrDefault(value, value.ToString() ?? string.Empty)"
                    Dense

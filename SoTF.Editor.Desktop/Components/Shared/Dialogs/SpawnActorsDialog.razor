@@ -8,6 +8,7 @@
                 <MudStack Spacing="3">
                     <MudAlert Severity="Severity.Warning"
                               Dense
+                              Elevation="4"
                               Class="rounded-inner">
                         @Localizer["SpawnActorsWarning"]
                     </MudAlert>
@@ -17,6 +18,7 @@
                     </MudText>
                     @* Actor Type *@
                     <MudSelect T="ActorType"
+                               Variant="Variant.Outlined"
                                @bind-Value="_viewModel.SelectedActorType"
                                Label="@Localizer["ActorType"]"
                                ToStringFunc="actorType => actorType?.Name ?? string.Empty"
@@ -28,12 +30,14 @@
                     </MudSelect>
                     @* Count *@
                     <MudNumericField T="int"
+                                     Variant="Variant.Outlined"
                                      @bind-Value="_viewModel.SpawnCount"
                                      Min="1"
                                      Max="500"
                                      Label="@Localizer["Count"]" />
                     @* Family *@
                     <MudSelect T="int?"
+                               Variant="Variant.Outlined"
                                @bind-Value="_viewModel.FamilyId"
                                Label="@Localizer["Family"]"
                                ToStringFunc="FamilyName"
@@ -48,6 +52,7 @@
                     </MudSelect>
                     @* Spawn Pattern *@
                     <MudSelect T="SpawnPattern"
+                               Variant="Variant.Outlined"
                                @bind-Value="_viewModel.SelectedSpawnPattern"
                                Label="@Localizer["SpawnPattern"]"
                                ToStringFunc="PatternName"
@@ -59,6 +64,7 @@
                     </MudSelect>
                     @* Space Between *@
                     <MudNumericField T="int"
+                                     Variant="Variant.Outlined"
                                      @bind-Value="_viewModel.SpaceBetween"
                                      Min="0"
                                      Label="@Localizer["SpaceBetween"]"
@@ -68,22 +74,26 @@
                               Spacing="2">
                         @* Offset X *@
                         <MudNumericField T="float"
+                                         Variant="Variant.Outlined"
                                          @bind-Value="_viewModel.XOffset"
                                          Label="X"
                                          Step="0.5f" />
                         @* Offset Y *@
                         <MudNumericField T="float"
+                                         Variant="Variant.Outlined"
                                          @bind-Value="_viewModel.YOffset"
                                          Label="Y"
                                          Step="0.5f" />
                         @* Offset Z *@
                         <MudNumericField T="float"
+                                         Variant="Variant.Outlined"
                                          @bind-Value="_viewModel.ZOffset"
                                          Label="Z"
                                          Step="0.5f" />
                     </MudStack>
                     @* Area *@
                     <MudSelect T="Area"
+                               Variant="Variant.Outlined"
                                @bind-Value="_viewModel.SelectedArea"
                                Label="@Localizer["Area"]"
                                ToStringFunc="area => area?.Name ?? string.Empty"

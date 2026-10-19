@@ -13,6 +13,7 @@
             <MudStack Spacing="3">
                 @* Full Text *@
                 <MudTextField T="string"
+                              Variant="Variant.Outlined"
                               Value="MapViewModel.MapFilter.FullText"
                               ValueChanged="SetFullText"
                               DebounceInterval="500"
@@ -24,6 +25,7 @@
                               Clearable />
                 @* Area Filter *@
                 <MudSelect T="IAreaFilter"
+                           Variant="Variant.Outlined"
                            Value="MapViewModel.MapFilter.AreaFilter"
                            ValueChanged="SetAreaFilter"
                            Label="@Localizer["Area"]"
@@ -36,6 +38,7 @@
                 </MudSelect>
                 @* Requirements Filter *@
                 <MudSelect T="MapFilter.RequirementsFilterType"
+                           Variant="Variant.Outlined"
                            Value="MapViewModel.MapFilter.RequirementsFilter"
                            ValueChanged="SetRequirementsFilter"
                            Label="@Localizer["Requirements"]"

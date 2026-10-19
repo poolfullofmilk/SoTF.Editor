@@ -123,6 +123,7 @@
 
                 @* Outfit *@
                 <MudSelect T="Outfit"
+                           Variant="Variant.Outlined"
                            @bind-Value="Follower.Outfit"
                            Label="@Localizer["Outfit"]"
                            ToStringFunc="outfit => outfit?.Name ?? string.Empty">

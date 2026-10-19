@@ -1191,9 +1191,6 @@
   <data name="Language" xml:space="preserve">
     <value>Language</value>
   </data>
-  <data name="CheckForUpdatesOnStart" xml:space="preserve">
-    <value>Check For Updates On Start</value>
-  </data>
   <data name="ClassificationAnimal" xml:space="preserve">
     <value>Animal</value>
   </data>
@@ -1600,7 +1597,7 @@
     <value>Downloading</value>
   </data>
   <data name="UpdateText" xml:space="preserve">
-    <value>You have version {0}. Updating downloads the new one and restarts the editor, the old one stays as a way back</value>
+    <value>You have version {0}. Updating downloads the new one and restarts the editor</value>
   </data>
   <data name="UpdateFailed" xml:space="preserve">
     <value>Update failed, try again later</value>
@@ -1820,5 +1817,11 @@
   </data>
   <data name="UnlocksText" xml:space="preserve">
     <value>Profile unlocks such as the ending and Creative Mode, for every save</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="RemoveSelected" xml:space="preserve">
+    <value>Remove Selected</value>
   </data>
 </root>

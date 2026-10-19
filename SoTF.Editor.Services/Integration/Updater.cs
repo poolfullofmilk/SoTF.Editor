@@ -74,18 +74,15 @@ public static class Updater
             // Already Gone
         }
 
-        // Keep The Previous Version As A Way Back
-        var olderPaths = Directory
+        var oldPaths = Directory
             .EnumerateFiles(
                 Path.GetDirectoryName(Environment.ProcessPath)!,
                 $"{ExecutablePrefix}*.exe"
             )
             .Where(path =>
                 !string.Equals(path, Environment.ProcessPath, StringComparison.OrdinalIgnoreCase)
-            )
-            .OrderByDescending(VersionOf)
-            .Skip(1);
-        foreach (var oldPath in olderPaths)
+            );
+        foreach (var oldPath in oldPaths)
         {
             try
             {
@@ -97,13 +94,5 @@ public static class Updater
                 // A Locked Old Exe Is Left For Next Time
             }
         }
-    }
-
-    private static Version VersionOf(string executablePath)
-    {
-        var name = Path.GetFileNameWithoutExtension(executablePath);
-        return Version.TryParse(name[ExecutablePrefix.Length..], out var version)
-            ? version
-            : new Version(0, 0);
     }
 }

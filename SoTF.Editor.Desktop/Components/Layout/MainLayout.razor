@@ -106,38 +106,38 @@
                 @* Help Menu *@
                 <Tooltip Text="@Localizer["Help"]"
                          RootClass="d-flex">
-                    <MudMenu Icon="@Icons.Material.Rounded.Help"
-                             AriaLabel="@Localizer["Help"]"
-                             Size="Size.Small"
-                             AnchorOrigin="Origin.BottomRight"
-                             TransformOrigin="Origin.TopRight">
-                        @* Project Page *@
-                        <MudMenuItem Icon="@Icons.Custom.Brands.GitHub"
-                                     Label="@Localizer["GitHubProject"]"
-                                     Href="@AppInfo.RepositoryUrl" />
-                        @* Updates Menu *@
-                        <MudMenu StartIcon="@Icons.Material.Rounded.SystemUpdateAlt"
-                                 Label="@Localizer["Updates"]">
-                            @* Check Updates *@
-                            <MudMenuItem Icon="@Icons.Material.Rounded.Refresh"
-                                         Label="@Localizer["CheckForUpdates"]"
-                                         OnClick="() => CheckForUpdatesAsync(true)" />
-                            @* Check Updates On Start *@
-                            <MudMenuItem Icon="@(CheckForUpdatesOnStart ? Icons.Material.Rounded.CheckBox : Icons.Material.Rounded.CheckBoxOutlineBlank)"
-                                         Label="@Localizer["CheckForUpdatesOnStart"]"
-                                         AutoClose="false"
-                                         OnClick="ToggleCheckForUpdates" />
-                            @* Latest Release *@
-                            <MudMenuItem Icon="@Icons.Material.Rounded.Download"
-                                         Label="@Localizer["DownloadLatestVersion"]"
-                                         Href="@AppInfo.LatestReleaseUrl" />
+                    <MudBadge Dot
+                              Overlap
+                              Color="Color.Error"
+                              Visible="@(_availableUpdate is not null)">
+                        <MudMenu Icon="@Icons.Material.Rounded.Help"
+                                 AriaLabel="@Localizer["Help"]"
+                                 Size="Size.Small"
+                                 AnchorOrigin="Origin.BottomRight"
+                                 TransformOrigin="Origin.TopRight">
+                            @* Project Page *@
+                            <MudMenuItem Icon="@Icons.Custom.Brands.GitHub"
+                                         Label="@Localizer["GitHubProject"]"
+                                         Href="@AppInfo.RepositoryUrl" />
+                            @* Updates Menu *@
+                            <MudMenu StartIcon="@Icons.Material.Rounded.SystemUpdateAlt"
+                                     Label="@Localizer["Updates"]">
+                                @* Check Updates *@
+                                <MudMenuItem Icon="@Icons.Material.Rounded.Refresh"
+                                             Label="@Localizer["CheckForUpdates"]"
+                                             OnClick="() => CheckForUpdatesAsync(true)" />
+                                @* Latest Release *@
+                                <MudMenuItem Icon="@Icons.Material.Rounded.Download"
+                                             Label="@Localizer["DownloadLatestVersion"]"
+                                             Href="@AppInfo.LatestReleaseUrl" />
+                            </MudMenu>
+                            <MudDivider />
+                            @* About *@
+                            <MudMenuItem Icon="@Icons.Material.Rounded.Info"
+                                         Label="@Localizer["About"]"
+                                         OnClick="() => ShowDialogAsync<AboutDialog>()" />
                         </MudMenu>
-                        <MudDivider />
-                        @* About *@
-                        <MudMenuItem Icon="@Icons.Material.Rounded.Info"
-                                     Label="@Localizer["About"]"
-                                     OnClick="() => ShowDialogAsync<AboutDialog>()" />
-                    </MudMenu>
+                    </MudBadge>
                 </Tooltip>
 
             </MudStack>

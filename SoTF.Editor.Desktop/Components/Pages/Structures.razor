@@ -11,6 +11,7 @@
                 <MudStack Spacing="3">
                     @* Batch Type *@
                     <MudSelect T="ScrewStructure"
+                               Variant="Variant.Outlined"
                                @bind-Value="StructuresPage.BatchSelectedStructureType"
                                Label="@Localizer["StructureType"]"
                                HelperText="@Localizer["AllTypesHint"]"
@@ -54,6 +55,7 @@
                 <MudSpacer />
                 @* Structure Search *@
                 <MudTextField T="string"
+                              Variant="Variant.Outlined"
                               @bind-Value="_filter"
                               DebounceInterval="300"
                               Placeholder="@Localizer["Filter"]"
@@ -108,6 +110,7 @@
                             <MudTd>
                                 @* Modification *@
                                 <MudSelect T="ScrewStructureModificationMode?"
+                                           Variant="Variant.Outlined"
                                            @bind-Value="context.ModificationMode"
                                            ToStringFunc="ModeName"
                                            Disabled="@(context.ModificationModes.Count <= 1)"

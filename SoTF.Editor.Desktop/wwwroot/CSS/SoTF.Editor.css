@@ -50,6 +50,7 @@
     --row-hover: color-mix(in srgb, var(--mud-palette-black) var(--row-hover-amount), transparent);
     --row-selected: color-mix(in srgb, var(--mud-palette-black) 18%, transparent);
     --thumb-size: 32px;
+    --icon-shadow: drop-shadow(0 2px 4px rgba(0,0,0, 0.6));
 }
 
 /* App Bar Glass On Menus, Selects And Dropdowns */
@@ -161,6 +162,16 @@
 /* A Scrolling List Keeps Scrolling, Auto Clips The Corners Too */
 .panel-flush.overflow-y-auto {
     overflow-y: auto;
+}
+
+/* Info Buttons Lift Off The Surface Like The Map Points */
+.info-button svg {
+    filter: var(--icon-shadow);
+}
+
+/* Inside A Switch Label The Button Follows The Text Line */
+.mud-switch .mud-tooltip-root {
+    vertical-align: middle;
 }
 
 /* Items Not In The Backpack Stay Grey Until Added */
@@ -393,7 +404,7 @@ html, body {
     position: absolute;
     transform: translate(-50%, -50%) scale(calc(1 / var(--map-zoom, 1))) rotate(var(--rotation, 0deg));
     cursor: pointer;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0, 0.6));
+    filter: var(--icon-shadow);
 }
 
     .map-poi.selected {

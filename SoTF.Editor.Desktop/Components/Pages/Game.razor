@@ -23,6 +23,7 @@
                                       Spacing="1">
                                 @* Game Mode *@
                                 <MudSelect T="string"
+                                           Variant="Variant.Outlined"
                                            @bind-Value="GameSetup.SelectedMode"
                                            Label="@Localizer["Mode"]"
                                            ToStringFunc="value => LabelOf(s_modes, value)">
@@ -40,6 +41,7 @@
                                       AlignItems="AlignItems.Center"
                                       Spacing="1">
                                 <MudTextField T="string"
+                                              Variant="Variant.Outlined"
                                               Value="GameSetup.Uid"
                                               Label="@Localizer["Uid"]"
                                               ReadOnly />
@@ -69,6 +71,7 @@
                                                       Spacing="1">
                                                 @* Setup Select *@
                                                 <MudSelect T="string"
+                                                           Variant="Variant.Outlined"
                                                            Value="GameSetup.GetString(setting.Key, setting.Fallback)"
                                                            ValueChanged="value => GameSetup.SetString(setting.Key, value)"
                                                            Label="@Localizer[setting.LabelKey]"
@@ -93,9 +96,10 @@
                                             <MudSwitch T="bool"
                                                        Value="GameSetup.GetBool(toggle.Key, toggle.Fallback)"
                                                        ValueChanged="value => GameSetup.SetBool(toggle.Key, value)"
-                                                       Color="Color.Info"
-                                                       Label="@Localizer[toggle.LabelKey]" />
-                                            <InfoButton Text="@Localizer[toggle.InfoKey]" />
+                                                       Color="Color.Info">
+                                                @Localizer[toggle.LabelKey]
+                                                <InfoButton Text="@Localizer[toggle.InfoKey]" />
+                                            </MudSwitch>
                                         </MudItem>
                                     }
 
@@ -158,11 +162,13 @@
                                   Class="rounded-panel panel-flush fill fill-column">
                             @* World Object Search *@
                             <MudTextField T="string"
+                                          Variant="Variant.Outlined"
                                           @bind-Value="_namedIntFilter"
                                           DebounceInterval="300"
                                           Placeholder="@Localizer["Filter"]"
                                           Adornment="Adornment.Start"
                                           AdornmentIcon="@Icons.Material.Rounded.Search"
+                                          Margin="Margin.Dense"
                                           Clearable
                                           Class="flex-grow-0 px-4 pt-4 pb-2" />
                             <MudTable T="GenericSetting"
@@ -216,6 +222,7 @@
                                 </td>
                                 <td>
                                     <MudSelect T="string"
+                                               Variant="Variant.Outlined"
                                                Value="season"
                                                ValueChanged="ChangeSeason"
                                                ToStringFunc="value => LabelOf(s_seasons, value)"

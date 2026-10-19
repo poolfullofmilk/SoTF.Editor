@@ -105,6 +105,7 @@
 
                             @* Outfit *@
                             <MudSelect T="Item"
+                                       Variant="Variant.Outlined"
                                        @bind-Value="State.SelectedCloth"
                                        Label="@Localizer["Outfit"]"
                                        ToStringFunc="item => item?.Name ?? string.Empty"
@@ -211,6 +212,7 @@
                                       Spacing="2">
                                 @* New Armor *@
                                 <MudSelect T="Item"
+                                           Variant="Variant.Outlined"
                                            @bind-Value="ArmorPage.NewArmour.SelectedItem"
                                            Label="@Localizer["Name"]"
                                            ToStringFunc="item => item?.Name ?? string.Empty"
@@ -223,6 +225,7 @@
                                 </MudSelect>
                                 @* New Durability *@
                                 <MudNumericField T="int"
+                                                 Variant="Variant.Outlined"
                                                  @bind-Value="ArmorPage.NewArmour.RemainingArmourpoints"
                                                  Min="1"
                                                  Label="@Localizer["Durability"]"

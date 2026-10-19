@@ -10,6 +10,7 @@
                      md="6">
                 <MudStack Spacing="4">
                     <MudStack Row
+                              AlignItems="AlignItems.Start"
                               Spacing="4">
                         <MudImage Src="@_viewModel.Actor.ImageUrl"
                                   Alt="@_viewModel.Actor.ActorType?.Name"
@@ -57,6 +58,7 @@
                     </MudRadioGroup>
                     @* Actor Selection *@
                     <MudSelect T="short?"
+                               Variant="Variant.Outlined"
                                @bind-Value="_viewModel.ActorSelection"
                                ToStringFunc="SelectionName"
                                Dense>
@@ -96,6 +98,7 @@
                                   Spacing="2">
                             @* Energy *@
                             <MudNumericField T="float"
+                                             Variant="Variant.Outlined"
                                              @bind-Value="_viewModel.ModifyOptions.ActorEnergy"
                                              Min="0"
                                              Max="100"
@@ -111,6 +114,7 @@
                                   Spacing="2">
                             @* Health *@
                             <MudNumericField T="float"
+                                             Variant="Variant.Outlined"
                                              @bind-Value="_viewModel.ModifyOptions.ActorHealth"
                                              Min="0"
                                              Label="@Localizer["Health"]" />
@@ -136,6 +140,7 @@
                                      Label="@Localizer["UpdateInfluences"]" />
                         @* Replace Type *@
                         <MudSelect T="ActorType"
+                                   Variant="Variant.Outlined"
                                    @bind-Value="_viewModel.ModifyOptions.ReplaceType"
                                    Label="@Localizer["ReplaceType"]"
                                    ToStringFunc="actorType => actorType?.Name ?? string.Empty"
@@ -177,7 +182,7 @@
         <MudButton Variant="Variant.Filled"
                    Color="@(_viewModel.ModificationMode == ActorModificationMode.Remove ? Color.Error : Color.Info)"
                    OnClick="Apply">
-            @Localizer["Ok"]
+            @(_viewModel.ModificationMode == ActorModificationMode.Remove ? Localizer["Remove"] : Localizer["Apply"])
         </MudButton>
     </DialogActions>
 

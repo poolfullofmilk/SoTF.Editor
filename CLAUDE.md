@@ -36,8 +36,8 @@ The publish folder holds only `SoTF.Editor_v<Version>.exe`: `IncludeAllContentFo
 A release is made by the workflow, not by hand, the way `WiFiWatch` does it. `.github/workflows/release.yml` runs `Tests/SaveRoundTrip.cs`, publishes the exe on a `v*` tag and creates the release `SoTF Editor v<Version>` with the exe as its only file. Unlike other projects the body is not empty: it lists the commit titles since the previous tag (`fetch-depth: 0`, `git describe` on `<tag>^`), and the update dialog shows them under What Changed. So commit titles are what users read.
 
 1. `git pull`, the owner edits the README on GitHub.
-2. Retake `Screenshots/Overview.png` (Player), `Storage.png` (a storage selected), `Npcs.png` (a group selected) and `Map.png` from a copy of a real savegame, copied with `cp -rp` and `touch -r` on the folder so the app bar shows the real save time. Over CDP: `Emulation.setDeviceMetricsOverride` with `1600 x 845` at scale `1.6` gives LetsWatch's `2560 x 1352`.
-3. Update the README for what shipped, bump `<Version>` in `SoTF.Editor.Desktop.csproj` (`1.1`, never `1.1.0`), publish, and launch the exe alone from an empty folder.
+2. Bump `<Version>` in `SoTF.Editor.Desktop.csproj` first (`1.1`, never `1.1.0`), so the Debug build is not older than the latest release and shows no update dialog or badge. Then retake all ten screenshots from a copy of a real savegame, copied with `cp -rp` and `touch -r` on the folder so the app bar shows the real save time: `Overview.png` (Player), `Inventory.png`, `Storage.png` (Arrow Holder #1 selected), `Followers.png`, `Game.png` (setup tab), `Npcs.png` (Baby selected), `Structures.png`, `Map.png`, `Tools.png` and `Backups.png` (Restore Backup with a row selected). Over CDP: `Emulation.setDeviceMetricsOverride` with `1600 x 845` at scale `1.6` gives LetsWatch's `2560 x 1352`. The README shows Overview, then three rows of three.
+3. Update the README for what shipped, publish, and launch the exe alone from an empty folder. The installed copy holds the single-instance handle, so close it first.
 4. Commit, push, then `git tag v<Version>` and `git push origin v<Version>`. The tag must match `<Version>`, the workflow looks for `SoTF.Editor_v<tag>.exe`.
 5. Once the new release is live, delete the previous one with its tag: `gh release delete v1.0 --yes --cleanup-tag`. Not before: the new run needs the previous tag for its notes.
 
@@ -85,7 +85,7 @@ A Debug build uses `SoTF.Editor Debug` for all of these folders (`AppInfo.Folder
 
 - The left menu holds every page, Tools included (`/Tools`). The app bar holds Save, Reload, Backups, Language and Help, nothing else.
 - The Tools page lists each tool as a card with an icon, a one-sentence description and a chip: **Needs Save** (most), **Saves At Once** in amber (Item Plater, Unlocks), or **Host Save Only** greyed out for world tools on a client save. A hint at the top says tools need Save like any other edit.
-- Help holds GitHub, an **Updates** submenu (Check For Updates, Check For Updates On Start, Download Latest Version) and About.
+- Help holds GitHub, an **Updates** submenu (Check For Updates, Download Latest Version) and About. When a newer version was found, Help carries a red dot (`MudBadge`) until the app restarts, so a dismissed update dialog is not forgotten.
 
 ## Text
 
@@ -93,7 +93,7 @@ A Debug build uses `SoTF.Editor Debug` for all of these folders (`AppInfo.Folder
 - `AppText.Culture` is the one source of the language. The WPF dispatcher keeps the startup thread culture, so setting `CultureInfo` does nothing; `AppLocalizer` reads `AppText.Culture` instead. English is the default, the `LanguagePicker` in the app bar switches and saves it.
 - Item, creature and structure names stay English in every language, in `GameNames.resx`, because the game shows them in English.
 - Labels are short Title Case. Longer sentences (hints, info, warnings, snackbar messages) are sentence case, short, and never end in a symbol; with two sentences only the last goes without a full stop.
-- A field or section that needs explaining gets a blue `InfoButton` (`Icons.Material.Rounded.Info` in a tooltip), not a caption: `Header` takes `Info`, `StatSlider` takes `Info`, and the Game tab puts one beside every setup setting. Their keys are the label key plus `Info` (`EnemyHealthInfo`). Game State and Weather rows get theirs from `TextKeys.SettingInfo` for the names in `TextKeys.SettingsWithInfo`.
+- A field or section that needs explaining gets a blue `InfoButton` (`Icons.Material.Rounded.Info` in a tooltip, with the map points' drop shadow and a small left margin), not a caption: `Header` takes `Info`, `StatSlider` takes `Info`, and the Game tab puts one beside every setup setting. Beside a switch it sits inside the switch label, so it follows a wrapped line; a button inside a label never toggles the switch. Their keys are the label key plus `Info` (`EnemyHealthInfo`). Game State and Weather rows get theirs from `TextKeys.SettingInfo` for the names in `TextKeys.SettingsWithInfo`.
 - Keys built at runtime (`Item12`, `ActorType9`, `StructureCategoryTreeShelter`, `SettingGameDaysInfo`) come only from `TextKeys`. A Debug start checks every one against the game data and asserts on any missing key, so a new item, enum value or info field needs its key in both files.
 - Numbers follow the Windows number format; dates are `yyyy-MM-dd`; sizes are `Formatter.FormatSize` in MB.
 
@@ -110,11 +110,14 @@ The last table row has no bottom line. A table whose rows virtualize keeps its c
 - Max Health is derived, so it shows as a read-only bar (`StatSlider ReadOnly`), not a slider.
 - The follower copy picker (Kelvin 1, Kelvin 2) is an outlined select at the top right inside the panel. NPC thumbs are round and cropped (`thumb-round`), so odd-sized images line up.
 - Icons are `Icons.Material.Rounded.*`, the filled forms (`Folder`, `Help`, `Error`), never the outlined ones.
-- A dialog closes with its X only: no Cancel or Later button beside it. `ConfirmDialog` keeps Yes and No and hides the X.
+- Every `MudTextField`, `MudSelect` and `MudNumericField` is `Variant.Outlined`. MudBlazor 9 has no global default for it, so each one sets it. Toolbars and table cells add `Margin.Dense`. The one exception is the read-only value text in `GenericSettingEditor`, which is a label, not an input.
+- Alerts (`MudAlert`) carry `Elevation="4"` like panels.
+- A dialog closes with its X only: never a Cancel, Close, Later or OK button beside it. A button in the actions does something and says what (Apply, Remove, Remove Selected, Restore). `ConfirmDialog` keeps Yes and No and hides the X.
+- The actor dialog's picture sits at the top of its row (`AlignItems.Start`); a stretched row made the square pictures tall.
 
 ## Updates
 
-`UpdateChecker.CheckAsync` reads the `releases/latest` redirect and returns the tag and version. On start (with Check For Updates On Start on) and from **Help → Updates → Check For Updates**, a newer version opens `UpdateDialog`, which loads the release body through the GitHub API (`AppInfo.ReleaseApiUrl`, no token) and lists it under What Changed; no notes just hide the list. Update Now asks to discard unsaved edits, `Updater.DownloadAsync` saves `SoTF.Editor_<tag>.exe` beside the running exe from the tag's asset URL (so `v1.5.1` works too), through a `.download` file, `Updater.Launch` starts it with `--after-update <pid>`, and the window closes without asking (`MainWindow.ClosesWithoutAsking`). The new exe calls `Updater.FinishPreviousVersion` before the single-instance check: it waits up to 15 s for the old process and keeps the newest older `SoTF.Editor_v*.exe` as a way back, deleting any older ones. A protected folder such as Program Files (`UnauthorizedAccessException`) says so and opens the release page. A Debug build or a renamed exe (`Updater.CanInstall` false) opens the release page instead. Build with `-p:Version=0.9` and use Check For Updates to see the dialog.
+`UpdateChecker.CheckAsync` reads the `releases/latest` redirect and returns the tag and version. It runs on every start (there is no setting) and from **Help → Updates → Check For Updates**; a newer version opens `UpdateDialog` and sets the red dot on Help. The dialog loads the release body through the GitHub API (`AppInfo.ReleaseApiUrl`, no token) and lists it under What Changed; no notes just hide the list. Update Now asks to discard unsaved edits, `Updater.DownloadAsync` saves `SoTF.Editor_<tag>.exe` beside the running exe from the tag's asset URL (so `v1.5.1` works too), through a `.download` file, `Updater.Launch` starts it with `--after-update <pid>`, and the window closes without asking (`MainWindow.ClosesWithoutAsking`). The new exe calls `Updater.FinishPreviousVersion` before the single-instance check: it waits up to 15 s for the old process and deletes every other `SoTF.Editor_v*.exe` beside it. A protected folder such as Program Files (`UnauthorizedAccessException`) says so and opens the release page. A Debug build or a renamed exe (`Updater.CanInstall` false) opens the release page instead. Build with `-p:Version=0.9` and use Check For Updates to see the dialog.
 
 ## Looks Wrong, Is Not
 
@@ -124,6 +127,8 @@ The last table row has no bottom line. A table whose rows virtualize keeps its c
 - `PoiDetails` calls `OnMapChanged` after closing or removing, because a child's event only re-renders the child and the map page would keep the old overlay.
 - `AppShell.js` blurs the focused field before Ctrl S, so a number typed but not yet committed is saved too.
 - `MudSelect` puts its `Class` and `Style` on an inner element, so placing one (the follower copy picker) takes a `MudElement` around it.
+- `panel-flush` sets `overflow: hidden` to clip its corners, which beats MudBlazor's `overflow-y-auto`; `.panel-flush.overflow-y-auto` brings scrolling back. Without it the NPC, Storage and Game State lists stopped scrolling in 1.6.
+- Actor types 31, 52 (Eddy) and 100 have no picture in the game data, so `Actor.ImageUrl` falls back to the type's icon, the question mark.
 - The static map points come from `lmachens/sons-of-the-forest-map` (MIT), and much of the save handling started from SOTFEdit by codengine (MIT). Both are credited in `THIRD-PARTY-NOTICES.txt` with their licence text, which is all MIT asks; keep the file while either code or data ships. The editor itself is GPL-3.0.
 - Regrow Trees regrows the share asked for, so 30% regrows about 30% of the cut trees.
 - Armour pieces keep the slot they were loaded in; only a new or clashing piece takes the next free slot (`PlayerArmourSystemModel.ArmorSlots`). Renumbering moved durabilities and made every save a change.

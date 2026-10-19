@@ -39,19 +39,23 @@
                               Class="pa-4 pb-2">
                         @* Item Search *@
                         <MudTextField T="string"
+                                      Variant="Variant.Outlined"
                                       @bind-Value="_filter"
                                       DebounceInterval="300"
                                       Placeholder="@Localizer["Filter"]"
                                       Adornment="Adornment.Start"
                                       AdornmentIcon="@Icons.Material.Rounded.Search"
+                                      Margin="Margin.Dense"
                                       Clearable />
                         @* Category *@
                         <MudSelect T="Category"
+                                   Variant="Variant.Outlined"
                                    @bind-Value="_category"
                                    Placeholder="@Localizer["Type"]"
                                    ToStringFunc="category => category?.TypeRendered ?? string.Empty"
                                    Clearable
                                    Dense
+                                   Margin="Margin.Dense"
                                    Style="max-width:200px">
                             @foreach (var category in InventoryPage.Categories)
                             {
@@ -103,6 +107,7 @@
                                 <MudTd>
                                     @* Count *@
                                     <MudNumericField T="int"
+                                                     Variant="Variant.Outlined"
                                                      @bind-Value="context.TotalCount"
                                                      Min="1"
                                                      Max="context.Max"

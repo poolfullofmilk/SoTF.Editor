@@ -8,6 +8,7 @@
             </MudText>
             @* Structure Type *@
             <MudSelect T="ScrewStructure"
+                       Variant="Variant.Outlined"
                        @bind-Value="_selected"
                        Label="@Localizer["StructureType"]"
                        ToStringFunc="StructureName"
@@ -20,12 +21,12 @@
         </MudStack>
     </DialogContent>
     <DialogActions>
-        @* Ok Button *@
+        @* Apply Button *@
         <MudButton Variant="Variant.Filled"
                    Color="Color.Info"
                    Disabled="@(_selected is null)"
                    OnClick="Ok">
-            @Localizer["Ok"]
+            @Localizer["Apply"]
         </MudButton>
     </DialogActions>
 

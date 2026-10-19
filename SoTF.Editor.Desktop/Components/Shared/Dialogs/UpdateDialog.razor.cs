@@ -10,7 +10,6 @@ using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.ViewModels;
 using SoTF.Editor.Services.Integration;
 using SoTF.Editor.Services.Savegames;
-using SoTF.Editor.Services.Settings;
 
 namespace SoTF.Editor.Desktop.Components.Shared.Dialogs;
 
@@ -39,8 +38,6 @@ public partial class UpdateDialog
     private bool _isInstalling;
     private List<string> _notes = [];
 
-    private static bool CheckForUpdatesOnStart => UserSettings.Current.CheckForUpdates;
-
     protected override async Task OnInitializedAsync()
     {
         _notes = await UpdateChecker.NotesAsync(Release.Tag);
@@ -53,12 +50,6 @@ public partial class UpdateDialog
             new DialogParameters<UpdateDialog> { { dialog => dialog.Release, release } },
             new DialogOptions { MaxWidth = MaxWidth.ExtraSmall, FullWidth = true }
         );
-    }
-
-    private static void SetCheckForUpdatesOnStart(bool checkOnStart)
-    {
-        UserSettings.Current.CheckForUpdates = checkOnStart;
-        UserSettings.Current.Save();
     }
 
     private async Task InstallAsync()
