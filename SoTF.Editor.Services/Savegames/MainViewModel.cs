@@ -126,6 +126,12 @@ public class MainViewModel(
 
     public bool HasChanges(string page)
     {
+        // Nothing Loaded Means Nothing Changed
+        if (SelectedSavegame is null)
+        {
+            return false;
+        }
+
         // Pages By Their Route, Compared With The Last Load
         return page switch
         {

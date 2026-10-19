@@ -59,10 +59,7 @@ try
     var structures = provider.GetRequiredService<StructuresPageViewModel>();
     var actorModifier = provider.GetRequiredService<ActorModifier>();
 
-    var pristine = HashFiles(savegamePath);
-    main.SelectSavegame(new Savegame(savegamePath, "1000000001", new SavegameStore(savegamePath)));
-
-    // A Save Without Edits Writes Nothing And Shows No Changes
+    // Nothing Open Shows No Changes, Before And After A Load
     string[] pageRoutes =
     [
         "Player",
@@ -73,6 +70,12 @@ try
         "Npcs",
         "Structures",
     ];
+    Check(pageRoutes.All(route => !main.HasChanges(route)), "No Savegame Shows No Changes");
+
+    var pristine = HashFiles(savegamePath);
+    main.SelectSavegame(new Savegame(savegamePath, "1000000001", new SavegameStore(savegamePath)));
+
+    // A Save Without Edits Writes Nothing And Shows No Changes
     Check(pageRoutes.All(route => !main.HasChanges(route)), "Fresh Load Shows No Changes");
     Check(!main.SaveChanges(), "No Edits Report No Changes");
     Check(SameHashes(pristine, HashFiles(savegamePath)), "No Edits Leave Every File Identical");

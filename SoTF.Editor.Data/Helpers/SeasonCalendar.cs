@@ -30,8 +30,13 @@ public static class SeasonCalendar
 
     public static double OffsetFor(int season, double days, double offset, double daysPerSeason)
     {
-        // Whole Seasons Forward, So The Day Within It Stays
+        // The Short Way Round, So Going Back Restores It
         var seasonsAhead = (season - SeasonAt(days, offset, daysPerSeason) + 4) % 4;
+        if (seasonsAhead == 3)
+        {
+            seasonsAhead = -1;
+        }
+
         return offset + (seasonsAhead * daysPerSeason);
     }
 
@@ -40,7 +45,8 @@ public static class SeasonCalendar
         // Tested In Game: Day 36 Offset 5 Spring, 15 Autumn
         return SeasonAt(36.4, 5, 5) == 0
             && SeasonAt(36.4, 15, 5) == 2
-            && OffsetFor(3, 36.4, 5, 5) == 20
+            && OffsetFor(3, 36.4, 5, 5) == 0
+            && OffsetFor(0, 36.4, OffsetFor(1, 36.4, 5, 5), 5) == 5
             && SeasonAt(36.4, OffsetFor(1, 36.4, 15, 5), 5) == 1
             && SeasonAt(2, -8, 5) == 2;
     }

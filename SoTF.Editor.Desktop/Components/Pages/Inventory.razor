@@ -101,19 +101,21 @@
                                 <MudTd>
                                     <ItemLabel Name="@context.Name"
                                                Detail="@($"{context.TypeRendered} · {context.Id}")"
-                                               ImageUrl="@context.ImageUrl"
-                                               Changed="@InventoryPage.IsChanged(context)" />
+                                               ImageUrl="@context.ImageUrl" />
                                 </MudTd>
                                 <MudTd>
                                     @* Count *@
-                                    <MudNumericField T="int"
-                                                     Variant="Variant.Outlined"
-                                                     @bind-Value="context.TotalCount"
-                                                     Min="1"
-                                                     Max="context.Max"
-                                                     Disabled="context.IsEquipped"
-                                                     Margin="Margin.Dense"
-                                                     Style="width:110px" />
+                                    <ChangedBadge When="@InventoryPage.IsChanged(context)"
+                                                  Class="d-inline-block">
+                                        <MudNumericField T="int"
+                                                         Variant="Variant.Outlined"
+                                                         @bind-Value="context.TotalCount"
+                                                         Min="1"
+                                                         Max="context.Max"
+                                                         Disabled="context.IsEquipped"
+                                                         Margin="Margin.Dense"
+                                                         Style="width:110px" />
+                                    </ChangedBadge>
                                 </MudTd>
                                 <MudTd Style="text-align:right">
                                     @* Max Button *@
@@ -134,10 +136,11 @@
                                 <MudTd Class="not-held">
                                     <ItemLabel Name="@context.Name"
                                                Detail="@($"{context.TypeRendered} · {context.Id}")"
-                                               ImageUrl="@context.ImageUrl"
-                                               Changed="@InventoryPage.IsChanged(context)" />
+                                               ImageUrl="@context.ImageUrl" />
                                 </MudTd>
-                                <MudTd />
+                                <MudTd>
+                                    <ChangedDot When="@InventoryPage.IsChanged(context)" />
+                                </MudTd>
                                 <MudTd Style="text-align:right">
                                     @* Add Button *@
                                     <Tooltip Text="@Localizer["AddToInventory"]">

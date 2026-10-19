@@ -161,7 +161,7 @@
                                             </td>
                                             <td>
                                                 <GenericSettingEditor Setting="setting"
-                                                                      Changed="@GameState.IsChanged(setting)" />
+                                                                      ChangedWhen="GameState.IsChanged" />
                                             </td>
                                         </tr>
                                     }
@@ -207,7 +207,7 @@
                                     <MudTd Class="selectable-text">@context.Name</MudTd>
                                     <MudTd>
                                         <GenericSettingEditor Setting="context"
-                                                              Changed="@GameState.IsChanged(context)" />
+                                                              ChangedWhen="GameState.IsChanged" />
                                     </MudTd>
                                 </RowTemplate>
 
@@ -275,7 +275,7 @@
                                             </td>
                                 <td>
                                     <GenericSettingEditor Setting="setting"
-                                                          Changed="@Weather.IsChanged(setting)" />
+                                                          ChangedWhen="Weather.IsChanged" />
                                 </td>
                             </tr>
                         }

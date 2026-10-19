@@ -172,7 +172,8 @@
                     <InfoButton Text="@Localizer["InfluencesInfo"]" />
                     <ChangedDot When="@FollowerPage.InfluencesChanged(Follower)" />
                 </MudStack>
-                <InfluencesEditor Influences="Follower.Influences" />
+                <InfluencesEditor Influences="Follower.Influences"
+                                  OnChanged="StateHasChanged" />
             </MudStack>
         </MudPaper>
     </ChildContent>
