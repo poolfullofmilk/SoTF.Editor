@@ -19,11 +19,18 @@ jobs:
     env:
       PUBLISH_DIRECTORY: SoTF.Editor.Desktop/bin/Release/net10.0-windows10.0.17763.0/win-x64/publish
     steps:
+      # Full History, The Notes List Commits Since The Last Tag
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-dotnet@v6
         with:
           dotnet-version: 10.0.x
+
+      # A Save Without Edits Writes Nothing, Every Page Edit Reads Back
+      - name: Test Save Round Trip
+        run: dotnet run Tests/SaveRoundTrip.cs
 
       - name: Publish Exe
         run: dotnet publish SoTF.Editor.Desktop -c Release
@@ -40,4 +47,7 @@ jobs:
         if: github.ref_type == 'tag'
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" "$PUBLISH_DIRECTORY/SoTF.Editor_$GITHUB_REF_NAME.exe" --title "SoTF Editor $GITHUB_REF_NAME" --notes ""
+        run: |
+          previous=$(git describe --tags --abbrev=0 "$GITHUB_REF_NAME^" 2>/dev/null || true)
+          git log --format="- %s" "${previous:+$previous..}$GITHUB_REF_NAME" > notes.md
+          gh release create "$GITHUB_REF_NAME" "$PUBLISH_DIRECTORY/SoTF.Editor_$GITHUB_REF_NAME.exe" --title "SoTF Editor $GITHUB_REF_NAME" --notes-file notes.md

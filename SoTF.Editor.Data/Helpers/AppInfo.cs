@@ -8,6 +8,8 @@ public static class AppInfo
     public const string Author = "poolfullofmilk";
     public const string RepositoryUrl = "https://github.com/poolfullofmilk/SoTF.Editor";
     public const string LatestReleaseUrl = RepositoryUrl + "/releases/latest";
+    public const string ReleaseApiUrl =
+        "https://api.github.com/repos/" + Author + "/SoTF.Editor/releases/tags/";
     public const string NoticesUrl = RepositoryUrl + "/blob/master/THIRD-PARTY-NOTICES.txt";
 
     public static Version Version { get; } =

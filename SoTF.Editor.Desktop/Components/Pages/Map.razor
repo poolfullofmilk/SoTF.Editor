@@ -91,16 +91,27 @@
                                 </MudCheckBox>
                                 break;
                             case PoiGroupCollection poiGroupCollection:
-                                @* Collection Checkbox *@
-                                <MudCheckBox T="bool?"
-                                             Value="CollectionState(poiGroupCollection)"
-                                             ValueChanged="value => SetEnabled(poiGroupCollection, value == true)"
-                                             TriState
-                                             Color="Color.Info"
-                                             Dense>
-                                    <MudText Typo="Typo.body2">@poiGroupCollection.Title</MudText>
-                                </MudCheckBox>
-                                @foreach (var poiGroup in poiGroupCollection.PoiGroups.OrderBy(group => group.BaseTitle))
+                                <MudStack Row
+                                          AlignItems="AlignItems.Center"
+                                          Spacing="0">
+                                    @* Collection Checkbox *@
+                                    <MudCheckBox T="bool?"
+                                                 Value="CollectionState(poiGroupCollection)"
+                                                 ValueChanged="value => SetEnabled(poiGroupCollection, value == true)"
+                                                 TriState
+                                                 Color="Color.Info"
+                                                 Dense>
+                                        <MudText Typo="Typo.body2">@poiGroupCollection.Title</MudText>
+                                    </MudCheckBox>
+                                    <MudSpacer />
+                                    @* Expand Button *@
+                                    <Tooltip Text="@(IsExpanded(poiGroupCollection) ? Localizer["Collapse"] : Localizer["Expand"])">
+                                        <MudIconButton Icon="@(IsExpanded(poiGroupCollection) ? Icons.Material.Rounded.ExpandLess : Icons.Material.Rounded.ExpandMore)"
+                                                       Size="Size.Small"
+                                                       OnClick="() => ToggleExpanded(poiGroupCollection)" />
+                                    </Tooltip>
+                                </MudStack>
+                                @foreach (var poiGroup in ExpandedGroups(poiGroupCollection))
                                 {
                                     @* Sub Group Checkbox *@
                                     <MudCheckBox T="bool"

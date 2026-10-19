@@ -18,7 +18,7 @@ public partial class Storage : EditorPageBase
     private string StorageRowClass(IStorage storage)
     {
         var selected = StoragePage.SelectedStorage == storage ? " list-row-selected" : "";
-        return "list-row rounded-inner px-3 py-2" + selected;
+        return "list-row px-4 py-2" + selected;
     }
 
     private void SelectStorage(IStorage storage)

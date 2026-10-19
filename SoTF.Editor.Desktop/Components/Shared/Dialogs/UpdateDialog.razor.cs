@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using NLog;
 using SoTF.Editor.Data.Helpers;
+using SoTF.Editor.Data.ViewModels;
 using SoTF.Editor.Services.Integration;
 using SoTF.Editor.Services.Savegames;
 using SoTF.Editor.Services.Settings;
@@ -33,17 +34,23 @@ public partial class UpdateDialog
     public required ISnackbar Snackbar { get; set; }
 
     [Parameter]
-    public required Version Version { get; set; }
+    public required ReleaseInfo Release { get; set; }
 
     private bool _isInstalling;
+    private List<string> _notes = [];
 
     private static bool CheckForUpdatesOnStart => UserSettings.Current.CheckForUpdates;
 
-    public static Task ShowAsync(IDialogService dialogService, Version version)
+    protected override async Task OnInitializedAsync()
+    {
+        _notes = await UpdateChecker.NotesAsync(Release.Tag);
+    }
+
+    public static Task ShowAsync(IDialogService dialogService, ReleaseInfo release)
     {
         return dialogService.ShowAsync<UpdateDialog>(
             null,
-            new DialogParameters<UpdateDialog> { { dialog => dialog.Version, version } },
+            new DialogParameters<UpdateDialog> { { dialog => dialog.Release, release } },
             new DialogOptions { MaxWidth = MaxWidth.ExtraSmall, FullWidth = true }
         );
     }
@@ -65,17 +72,14 @@ public partial class UpdateDialog
         // A Debug Build Has No Release Exe To Replace
         if (!Updater.CanInstall)
         {
-            Process.Start(
-                new ProcessStartInfo(AppInfo.LatestReleaseUrl) { UseShellExecute = true }
-            );
-            MudDialog.Close();
+            OpenReleasePage();
             return;
         }
 
         _isInstalling = true;
         try
         {
-            Updater.Launch(await Updater.DownloadAsync(Version));
+            Updater.Launch(await Updater.DownloadAsync(Release));
 
             // The New Exe Waits, Edits Were Already Discarded
             if (Application.Current.MainWindow is MainWindow window)
@@ -84,11 +88,17 @@ public partial class UpdateDialog
                 _ = window.Dispatcher.BeginInvoke(window.Close);
             }
         }
+        catch (UnauthorizedAccessException exception)
+        {
+            // A Protected Folder Like Program Files Takes A Manual Download
+            s_logger.Error(exception, "Failed To Update, The App Folder Is Protected");
+            Snackbar.Add(Localizer["UpdateFolderProtected"], Severity.Warning);
+            OpenReleasePage();
+        }
         catch (Exception exception)
             when (exception
                     is HttpRequestException
                         or IOException
-                        or UnauthorizedAccessException
                         or TaskCanceledException
                         or Win32Exception
             )
@@ -97,5 +107,11 @@ public partial class UpdateDialog
             Snackbar.Add(Localizer["UpdateFailed"], Severity.Error);
             _isInstalling = false;
         }
+    }
+
+    private void OpenReleasePage()
+    {
+        Process.Start(new ProcessStartInfo(AppInfo.LatestReleaseUrl) { UseShellExecute = true });
+        MudDialog.Close();
     }
 }

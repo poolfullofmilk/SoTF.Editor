@@ -10,6 +10,10 @@
                      Class="mx-2">
                 @Title
             </MudText>
+            @if (Info is not null)
+            {
+                <InfoButton Text="@Info" />
+            }
             @TitleContent
         </MudStack>
     }

@@ -42,7 +42,11 @@ public class SaveDataWrapper(JToken parent)
     {
         foreach (var key in _modified.Where(IsChanged))
         {
-            Parent.SelectToken(key)?.Replace(SaveJson.Serialize(_jsonStringNodes[key]));
+            // A Token Edited In Place Is Already In The Parent
+            if (_jsonStringNodes.TryGetValue(key, out var node))
+            {
+                Parent.SelectToken(key)?.Replace(SaveJson.Serialize(node));
+            }
         }
     }
 

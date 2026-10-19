@@ -1,0 +1,59 @@
+@page "/Tools"
+@inherits EditorPageBase
+
+<RequiresSavegame>
+    <MudStack Spacing="6">
+        <MudAlert Severity="Severity.Info"
+                  Dense
+                  Class="rounded-panel">
+            @Localizer["ToolsHint"]
+        </MudAlert>
+
+        @foreach (var section in s_sections)
+        {
+            <Header Title="@Localizer[section.TitleKey]">
+                <MudGrid>
+
+                    @foreach (var tool in section.Tools)
+                    {
+                        <MudItem xs="12"
+                                 sm="6"
+                                 lg="4">
+                            @* Tool Card *@
+                            <MudPaper Elevation="4"
+                                      Class="@CardClass(tool)"
+                                      @onclick="() => RunAsync(tool)">
+                                <MudStack Row
+                                          AlignItems="AlignItems.Start"
+                                          Spacing="3">
+                                    <MudIcon Icon="@tool.Icon"
+                                             Color="Color.Info" />
+                                    <MudStack Spacing="1"
+                                              Style="min-width:0">
+                                        <MudText Typo="Typo.subtitle1"
+                                                 Class="text-tight"
+                                                 Style="font-weight:700">
+                                            @Localizer[tool.TitleKey]
+                                        </MudText>
+                                        <MudText Typo="Typo.body2"
+                                                 Class="mud-text-secondary text-relaxed">
+                                            @Localizer[tool.TextKey]
+                                        </MudText>
+                                        <MudChip T="string"
+                                                 Variant="Variant.Text"
+                                                 Size="Size.Small"
+                                                 Color="@ChipColor(tool)"
+                                                 Class="ml-0 align-self-start">
+                                            @Localizer[ChipKey(tool)]
+                                        </MudChip>
+                                    </MudStack>
+                                </MudStack>
+                            </MudPaper>
+                        </MudItem>
+                    }
+
+                </MudGrid>
+            </Header>
+        }
+    </MudStack>
+</RequiresSavegame>

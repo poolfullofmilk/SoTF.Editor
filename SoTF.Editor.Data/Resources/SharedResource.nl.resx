@@ -111,9 +111,6 @@
   <data name="Add" xml:space="preserve">
     <value>Toevoegen</value>
   </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Annuleren</value>
-  </data>
   <data name="Close" xml:space="preserve">
     <value>Sluiten</value>
   </data>
@@ -627,13 +624,13 @@
   <data name="GameState" xml:space="preserve">
     <value>Spelstatus</value>
   </data>
-  <data name="WorldObjectStatesHint" xml:space="preserve">
+  <data name="WorldObjectStatesInfo" xml:space="preserve">
     <value>Waarschijnlijk is 0 gesloten of niet gebeurd, 1 of 3 geopend of gebeurd</value>
   </data>
   <data name="WorldObjectStates" xml:space="preserve">
     <value>Status Van Wereldobjecten</value>
   </data>
-  <data name="InfluencesHint" xml:space="preserve">
+  <data name="InfluencesInfo" xml:space="preserve">
     <value>Veel angst laat vijanden vluchten, veel woede laat ze aanvallen</value>
   </data>
   <data name="Sentiment" xml:space="preserve">
@@ -656,9 +653,6 @@
   </data>
   <data name="ItemsInInventory" xml:space="preserve">
     <value>Items In Inventaris</value>
-  </data>
-  <data name="UnassignedItems" xml:space="preserve">
-    <value>Niet Toegewezen Items</value>
   </data>
   <data name="Count" xml:space="preserve">
     <value>Aantal</value>
@@ -1599,12 +1593,6 @@
   <data name="SettingStartingDayOffset" xml:space="preserve">
     <value>Seizoensverschuiving</value>
   </data>
-  <data name="SeasonDayOffsetHint" xml:space="preserve">
-    <value>Seizoenen volgen het aantal dagen plus de seizoensverschuiving, een seizoen kiezen verschuift die met hele seizoenen, verlagen houdt het huidige seizoen langer</value>
-  </data>
-  <data name="Later" xml:space="preserve">
-    <value>Later</value>
-  </data>
   <data name="UpdateNow" xml:space="preserve">
     <value>Nu Bijwerken</value>
   </data>
@@ -1612,7 +1600,7 @@
     <value>Downloaden</value>
   </data>
   <data name="UpdateText" xml:space="preserve">
-    <value>Je hebt versie {0}, bijwerken downloadt de nieuwe en start de editor opnieuw</value>
+    <value>Je hebt versie {0}. Bijwerken downloadt de nieuwe en herstart de editor, de oude blijft als weg terug</value>
   </data>
   <data name="UpdateFailed" xml:space="preserve">
     <value>Bijwerken mislukt, probeer het later opnieuw</value>
@@ -1628,5 +1616,209 @@
   </data>
   <data name="Season" xml:space="preserve">
     <value>Seizoen</value>
+  </data>
+  <data name="Updates" xml:space="preserve">
+    <value>Updates</value>
+  </data>
+  <data name="WhatChanged" xml:space="preserve">
+    <value>Wat Is Er Nieuw</value>
+  </data>
+  <data name="UpdateFolderProtected" xml:space="preserve">
+    <value>De map van de editor is beveiligd, dus de releasepagina opent om hem zelf te downloaden</value>
+  </data>
+  <data name="Collapse" xml:space="preserve">
+    <value>Inklappen</value>
+  </data>
+  <data name="Expand" xml:space="preserve">
+    <value>Uitklappen</value>
+  </data>
+  <data name="HeldOnly" xml:space="preserve">
+    <value>Alleen In Bezit</value>
+  </data>
+  <data name="AddToInventory" xml:space="preserve">
+    <value>Aan Inventaris Toevoegen</value>
+  </data>
+  <data name="StrengthLevelInfo" xml:space="preserve">
+    <value>Kracht verhoogt de schade van slagwapens en de maximale gezondheid. Die is 100 plus 2 per niveau boven 1</value>
+  </data>
+  <data name="MultiplayerClientInfo" xml:space="preserve">
+    <value>Saves van spellen waarin je bij iemand anders meedeed. Ze bevatten alleen je eigen speler, de wereld zit in de save van de host</value>
+  </data>
+  <data name="ModeInfo" xml:space="preserve">
+    <value>De moeilijkheid waarmee het spel gemaakt is. Aangepast maakt elke instelling hieronder vrij</value>
+  </data>
+  <data name="UidInfo" xml:space="preserve">
+    <value>Het id dat het spel aan deze save geeft. Het verandert nooit</value>
+  </data>
+  <data name="SeasonInfo" xml:space="preserve">
+    <value>Het seizoen volgt uit het aantal dagen en de seizoensverschuiving. Een keuze verschuift die met hele seizoenen</value>
+  </data>
+  <data name="ConsumableEffectsInfo" xml:space="preserve">
+    <value>Hoeveel eten, drinken en medicijnen helpen. Moeilijk geeft minder</value>
+  </data>
+  <data name="PlayerStatsDamageInfo" xml:space="preserve">
+    <value>Hoeveel schade honger, dorst en vermoeidheid doen</value>
+  </data>
+  <data name="AnimalSpawnRateInfo" xml:space="preserve">
+    <value>Hoeveel dieren er op het eiland leven</value>
+  </data>
+  <data name="ColdPenaltiesInfo" xml:space="preserve">
+    <value>Hoeveel kou je pijn doet</value>
+  </data>
+  <data name="BuildingResistanceInfo" xml:space="preserve">
+    <value>Hoeveel schade je bouwwerken kunnen hebben</value>
+  </data>
+  <data name="StatRegenerationPenaltiesInfo" xml:space="preserve">
+    <value>Weinig eten, drinken of rust vertraagt hoe snel je gezondheid terugkomt</value>
+  </data>
+  <data name="InventoryPauseInfo" xml:space="preserve">
+    <value>De wereld staat stil zolang de inventaris open is</value>
+  </data>
+  <data name="ReducedFoodInfo" xml:space="preserve">
+    <value>Minder eten te vinden in de wereld</value>
+  </data>
+  <data name="ReducedAmmoInfo" xml:space="preserve">
+    <value>Minder munitie te vinden in de wereld</value>
+  </data>
+  <data name="SingleUseContainersInfo" xml:space="preserve">
+    <value>Kisten en koffers blijven leeg eens ze open zijn</value>
+  </data>
+  <data name="PlayersTriggerTrapsInfo" xml:space="preserve">
+    <value>Vallen gaan ook af bij spelers</value>
+  </data>
+  <data name="CreativeModeInfo" xml:space="preserve">
+    <value>Bouwen zonder materialen te verzamelen</value>
+  </data>
+  <data name="GodModeInfo" xml:space="preserve">
+    <value>Spelers krijgen geen schade</value>
+  </data>
+  <data name="OneHitTreesInfo" xml:space="preserve">
+    <value>Bomen vallen met één slag</value>
+  </data>
+  <data name="InstantBuildingInfo" xml:space="preserve">
+    <value>Geplaatste bouwwerken zijn meteen af</value>
+  </data>
+  <data name="NoCuttingsSpawnInfo" xml:space="preserve">
+    <value>Gekapte bomen en struiken laten niets achter</value>
+  </data>
+  <data name="EnemyHealthInfo" xml:space="preserve">
+    <value>Hoeveel gezondheid vijanden hebben</value>
+  </data>
+  <data name="EnemyDamageInfo" xml:space="preserve">
+    <value>Hoe hard vijanden slaan</value>
+  </data>
+  <data name="EnemyArmorInfo" xml:space="preserve">
+    <value>Hoeveel schade het pantser van vijanden tegenhoudt</value>
+  </data>
+  <data name="EnemyAggressionInfo" xml:space="preserve">
+    <value>Hoe snel vijanden aanvallen in plaats van toe te kijken</value>
+  </data>
+  <data name="EnemySearchPartiesInfo" xml:space="preserve">
+    <value>Hoe vaak groepen vijanden naar je komen zoeken</value>
+  </data>
+  <data name="SpawnEnemiesInfo" xml:space="preserve">
+    <value>Zet uit om zonder vijanden te spelen</value>
+  </data>
+  <data name="StartingSeasonInfo" xml:space="preserve">
+    <value>Het seizoen waarin het spel begon. De seizoensverschuiving bepaalt het huidige</value>
+  </data>
+  <data name="SeasonLengthInfo" xml:space="preserve">
+    <value>Hoeveel dagen een seizoen duurt. Elk seizoen is even lang</value>
+  </data>
+  <data name="DayLengthInfo" xml:space="preserve">
+    <value>Hoe lang een dag in het echt duurt</value>
+  </data>
+  <data name="PrecipitationFrequencyInfo" xml:space="preserve">
+    <value>Hoe vaak het regent of sneeuwt</value>
+  </data>
+  <data name="PvpDamageInfo" xml:space="preserve">
+    <value>Of spelers elkaar pijn kunnen doen in multiplayer</value>
+  </data>
+  <data name="MultiplayerCheatsInfo" xml:space="preserve">
+    <value>Laat spelers consolecheats gebruiken in multiplayer</value>
+  </data>
+  <data name="SettingGameNameInfo" xml:space="preserve">
+    <value>De naam in de savelijst van het spel</value>
+  </data>
+  <data name="SettingGameTypeInfo" xml:space="preserve">
+    <value>De moeilijkheid waarmee deze save begon</value>
+  </data>
+  <data name="SettingSaveTimeInfo" xml:space="preserve">
+    <value>Wanneer het spel laatst opsloeg</value>
+  </data>
+  <data name="SettingGameDaysInfo" xml:space="preserve">
+    <value>Overleefde dagen. Het seizoen volgt eruit</value>
+  </data>
+  <data name="SettingGameHoursInfo" xml:space="preserve">
+    <value>Het uur van de huidige dag</value>
+  </data>
+  <data name="SettingCrashSiteInfo" xml:space="preserve">
+    <value>Waar de helikopter bij de start neerstortte</value>
+  </data>
+  <data name="SettingIsVirginiaDeadInfo" xml:space="preserve">
+    <value>Of het verhaal Virginia als dood behandelt</value>
+  </data>
+  <data name="SettingIsRobbyDeadInfo" xml:space="preserve">
+    <value>Of het verhaal Kelvin als dood behandelt. Het spel noemt hem Robby</value>
+  </data>
+  <data name="SettingIsRainingInfo" xml:space="preserve">
+    <value>Of het nu regent</value>
+  </data>
+  <data name="SettingRainBlockedInfo" xml:space="preserve">
+    <value>Houdt regen tegen</value>
+  </data>
+  <data name="SettingCloudStateInfo" xml:space="preserve">
+    <value>Hoe bewolkt de lucht is</value>
+  </data>
+  <data name="SettingCurrentRainTypeInfo" xml:space="preserve">
+    <value>Hoe hard het nu regent</value>
+  </data>
+  <data name="SettingStartingDayOffsetInfo" xml:space="preserve">
+    <value>Verschuift waar het jaar staat. Lager houdt het huidige seizoen langer</value>
+  </data>
+  <data name="DeleteBackup" xml:space="preserve">
+    <value>Back-up Verwijderen</value>
+  </data>
+  <data name="DeleteBackupText" xml:space="preserve">
+    <value>De back-up van {0} wordt voorgoed verwijderd</value>
+  </data>
+  <data name="UnableToDeleteBackup" xml:space="preserve">
+    <value>Kan de back-up niet verwijderen</value>
+  </data>
+  <data name="BackupUsage" xml:space="preserve">
+    <value>Back-ups gebruiken {0} van {1}. Daarboven gaan de oudste weg, behalve de allereerste</value>
+  </data>
+  <data name="BackupsPruned" xml:space="preserve">
+    <value>Back-ups gingen over {1}, dus de {0} oudste zijn verwijderd. De allereerste blijft</value>
+  </data>
+  <data name="ToolsHint" xml:space="preserve">
+    <value>Hulpmiddelen wijzigen de open save en hebben Opslaan nodig, zoals elke andere wijziging. Vergulden en Ontgrendelingen schrijven meteen</value>
+  </data>
+  <data name="ToolsWorld" xml:space="preserve">
+    <value>Wereld</value>
+  </data>
+  <data name="ToolsPlayer" xml:space="preserve">
+    <value>Speler</value>
+  </data>
+  <data name="NeedsSave" xml:space="preserve">
+    <value>Opslaan Nodig</value>
+  </data>
+  <data name="SavesAtOnce" xml:space="preserve">
+    <value>Slaat Meteen Op</value>
+  </data>
+  <data name="HostSaveOnly" xml:space="preserve">
+    <value>Alleen Save Van Host</value>
+  </data>
+  <data name="RegrowTreesText" xml:space="preserve">
+    <value>Gekapte bomen groeien terug, zoveel als het deel dat je kiest</value>
+  </data>
+  <data name="WorldItemClonerText" xml:space="preserve">
+    <value>Kopieert een golfkar, deltavlieger, Knight V of radio naar waar je staat</value>
+  </data>
+  <data name="ConsumedItemsText" xml:space="preserve">
+    <value>Het spel onthoudt eenmalige items die je gebruikte. Verwijderen laat je ze opnieuw gebruiken</value>
+  </data>
+  <data name="UnlocksText" xml:space="preserve">
+    <value>Profielontgrendelingen zoals het einde en Creatieve Modus, voor elke save</value>
   </data>
 </root>

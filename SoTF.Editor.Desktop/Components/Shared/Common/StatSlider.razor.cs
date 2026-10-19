@@ -23,5 +23,8 @@ public partial class StatSlider
     public float Step { get; set; } = 1;
 
     [Parameter]
-    public bool Disabled { get; set; }
+    public bool ReadOnly { get; set; }
+
+    [Parameter]
+    public string? Info { get; set; }
 }

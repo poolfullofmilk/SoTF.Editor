@@ -1,7 +1,7 @@
 <MudDialog>
 
     <TitleContent>
-        <MudText Typo="Typo.h6">@Localizer["UpdateAvailable", Version.ToString(2)]</MudText>
+        <MudText Typo="Typo.h6">@Localizer["UpdateAvailable", Release.Tag.TrimStart('v')]</MudText>
     </TitleContent>
     <DialogContent>
         <MudStack Spacing="2">
@@ -9,6 +9,23 @@
                      Class="text-relaxed">
                 @Localizer["UpdateText", AppInfo.Version.ToString(2)]
             </MudText>
+            @if (_notes.Count > 0)
+            {
+                <MudText Typo="Typo.subtitle2">@Localizer["WhatChanged"]</MudText>
+                <MudStack Spacing="1">
+                    @foreach (var note in _notes)
+                    {
+                        <MudStack Row
+                                  AlignItems="AlignItems.Start"
+                                  Spacing="2">
+                            <MudIcon Icon="@Icons.Material.Rounded.CheckCircle"
+                                     Color="Color.Info"
+                                     Size="Size.Small" />
+                            <MudText Typo="Typo.body2">@note</MudText>
+                        </MudStack>
+                    }
+                </MudStack>
+            }
             @* Check On Start *@
             <MudCheckBox T="bool"
                          Value="CheckForUpdatesOnStart"
@@ -18,8 +35,6 @@
         </MudStack>
     </DialogContent>
     <DialogActions>
-        @* Later Button *@
-        <MudButton OnClick="@MudDialog.Cancel">@Localizer["Later"]</MudButton>
         @* Update Button *@
         <MudButton Variant="Variant.Filled"
                    Color="Color.Info"

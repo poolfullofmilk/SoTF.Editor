@@ -20,7 +20,7 @@
                 @* Change Folder *@
                 <MudButton Variant="Variant.Filled"
                            Size="Size.Small"
-                           StartIcon="@Icons.Material.Rounded.FolderOpen"
+                           StartIcon="@Icons.Material.Rounded.Folder"
                            OnClick="ChangeFolder">
                     @Localizer["ChangeFolder"]
                 </MudButton>
@@ -61,7 +61,8 @@
     {
         @foreach (var group in SavegameGroups)
         {
-            <Header Title="@group.Title">
+            <Header Title="@group.Title"
+                    Info="@group.Info">
                 <MudGrid>
 
                     @foreach (var savegame in group.Savegames)

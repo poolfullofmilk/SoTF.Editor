@@ -83,6 +83,13 @@
     border-radius: var(--radius-thumb) !important;
 }
 
+/* Actor Portraits And Icons Share One Round Frame */
+.thumb-round {
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: var(--mud-palette-background);
+}
+
 /* Item, Actor And Structure Icons In Rows */
 .thumb {
     width: var(--thumb-size);
@@ -144,6 +151,17 @@
         min-height: 0;
         overflow-y: auto;
     }
+
+/* Lists Run Edge To Edge, The Panel Clips Them To Its Corners */
+.panel-flush {
+    padding: 0 0 var(--radius-inner) !important;
+    overflow: hidden;
+}
+
+/* Items Not In The Backpack Stay Grey Until Added */
+.not-held > * {
+    opacity: 0.5;
+}
 
 /* Fixed Columns Keep Their Width While Rows Scroll */
 .fixed-columns .mud-table-root {
@@ -213,6 +231,7 @@ html, body {
 .mud-tooltip {
     white-space: pre-line;
     text-align: left;
+    max-width: 360px;
 }
 
 /* Blazor Shows This Only After A Crash */
@@ -318,6 +337,11 @@ html, body {
     .hover-card:hover {
         background-color: color-mix(in srgb, var(--mud-palette-black) var(--row-hover-amount), var(--mud-palette-surface));
     }
+
+/* A Tool The Open Savegame Cannot Use Stays Grey */
+.tool-unavailable {
+    opacity: 0.5;
+}
 
 /* Savegame Thumbnails Keep The Game's Wide Ratio */
 .savegame-thumb {

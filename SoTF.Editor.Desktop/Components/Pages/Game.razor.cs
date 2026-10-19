@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
+using SoTF.Editor.Data.Resources;
 using SoTF.Editor.Desktop.Components.Shared.Common;
 using SoTF.Editor.Services.Pages;
 using static SoTF.Editor.Data.Helpers.Constants;
@@ -82,92 +83,167 @@ public partial class Game : EditorPageBase
                     "ConsumableEffects",
                     GameSetupKeys.ConsumableEffects,
                     SettingValueNormal,
-                    s_offNormalHard
+                    s_offNormalHard,
+                    "ConsumableEffectsInfo"
                 ),
                 new(
                     "PlayerStatsDamage",
                     GameSetupKeys.PlayerStatsDamage,
                     SettingValueOff,
-                    s_offNormalHard
+                    s_offNormalHard,
+                    "PlayerStatsDamageInfo"
                 ),
                 new(
                     "AnimalSpawnRate",
                     GameSetupKeys.AnimalSpawnRate,
                     SettingValueNORMAL,
-                    s_lowNormalHigh
+                    s_lowNormalHigh,
+                    "AnimalSpawnRateInfo"
                 ),
                 new(
                     "ColdPenalties",
                     GameSetupKeys.ColdPenalties,
                     SettingValueNormal,
-                    s_offNormalHard
+                    s_offNormalHard,
+                    "ColdPenaltiesInfo"
                 ),
                 new(
                     "BuildingResistance",
                     GameSetupKeys.BuildingResistance,
                     SettingValueNORMAL,
-                    s_lowNormalHigh
+                    s_lowNormalHigh,
+                    "BuildingResistanceInfo"
                 ),
                 new(
                     "StatRegenerationPenalties",
                     GameSetupKeys.StatRegenerationPenalty,
                     SettingValueNormal,
-                    s_normalHard
+                    s_normalHard,
+                    "StatRegenerationPenaltiesInfo"
                 ),
             ],
             [
-                new("InventoryPause", GameSetupKeys.PausedInInventory, false),
-                new("ReducedFood", GameSetupKeys.ReducedFoodInContainers, false),
-                new("ReducedAmmo", GameSetupKeys.ReducedAmmoInContainers, false),
-                new("SingleUseContainers", GameSetupKeys.SingleUseContainers, false),
-                new("PlayersTriggerTraps", GameSetupKeys.PlayersTriggerTraps, false),
-                new("CreativeMode", GameSetupKeys.CreativeMode, false),
-                new("GodMode", GameSetupKeys.PlayersImmortalMode, false),
-                new("OneHitTrees", GameSetupKeys.OneHitToCutTrees, false),
-                new("InstantBuilding", GameSetupKeys.ForcePlaceFullLoad, false),
-                new("NoCuttingsSpawn", GameSetupKeys.NoCuttingsSpawn, false),
+                new("InventoryPause", GameSetupKeys.PausedInInventory, false, "InventoryPauseInfo"),
+                new("ReducedFood", GameSetupKeys.ReducedFoodInContainers, false, "ReducedFoodInfo"),
+                new("ReducedAmmo", GameSetupKeys.ReducedAmmoInContainers, false, "ReducedAmmoInfo"),
+                new(
+                    "SingleUseContainers",
+                    GameSetupKeys.SingleUseContainers,
+                    false,
+                    "SingleUseContainersInfo"
+                ),
+                new(
+                    "PlayersTriggerTraps",
+                    GameSetupKeys.PlayersTriggerTraps,
+                    false,
+                    "PlayersTriggerTrapsInfo"
+                ),
+                new("CreativeMode", GameSetupKeys.CreativeMode, false, "CreativeModeInfo"),
+                new("GodMode", GameSetupKeys.PlayersImmortalMode, false, "GodModeInfo"),
+                new("OneHitTrees", GameSetupKeys.OneHitToCutTrees, false, "OneHitTreesInfo"),
+                new(
+                    "InstantBuilding",
+                    GameSetupKeys.ForcePlaceFullLoad,
+                    false,
+                    "InstantBuildingInfo"
+                ),
+                new("NoCuttingsSpawn", GameSetupKeys.NoCuttingsSpawn, false, "NoCuttingsSpawnInfo"),
             ]
         ),
         new(
             "Enemies",
             [
-                new("EnemyHealth", GameSetupKeys.EnemyHealth, SettingValueNORMAL, s_lowNormalHigh),
-                new("EnemyDamage", GameSetupKeys.EnemyDamage, SettingValueNORMAL, s_lowNormalHigh),
-                new("EnemyArmor", GameSetupKeys.EnemyArmour, SettingValueNORMAL, s_lowNormalHigh),
+                new(
+                    "EnemyHealth",
+                    GameSetupKeys.EnemyHealth,
+                    SettingValueNORMAL,
+                    s_lowNormalHigh,
+                    "EnemyHealthInfo"
+                ),
+                new(
+                    "EnemyDamage",
+                    GameSetupKeys.EnemyDamage,
+                    SettingValueNORMAL,
+                    s_lowNormalHigh,
+                    "EnemyDamageInfo"
+                ),
+                new(
+                    "EnemyArmor",
+                    GameSetupKeys.EnemyArmour,
+                    SettingValueNORMAL,
+                    s_lowNormalHigh,
+                    "EnemyArmorInfo"
+                ),
                 new(
                     "EnemyAggression",
                     GameSetupKeys.EnemyAggression,
                     SettingValueNORMAL,
-                    s_lowNormalHigh
+                    s_lowNormalHigh,
+                    "EnemyAggressionInfo"
                 ),
                 new(
                     "EnemySearchParties",
                     GameSetupKeys.EnemySearchParties,
                     SettingValueNORMAL,
-                    s_lowNormalHigh
+                    s_lowNormalHigh,
+                    "EnemySearchPartiesInfo"
                 ),
             ],
-            [new("SpawnEnemies", GameSetupKeys.EnemySpawn, true)]
+            [new("SpawnEnemies", GameSetupKeys.EnemySpawn, true, "SpawnEnemiesInfo")]
         ),
         new(
             "Weather",
             [
-                new("StartingSeason", GameSetupKeys.StartingSeason, "Summer", s_seasons),
-                new("SeasonLength", GameSetupKeys.SeasonLength, SettingValueDefault, s_lengths),
-                new("DayLength", GameSetupKeys.DayLength, SettingValueDefault, s_lengths),
+                new(
+                    "StartingSeason",
+                    GameSetupKeys.StartingSeason,
+                    "Summer",
+                    s_seasons,
+                    "StartingSeasonInfo"
+                ),
+                new(
+                    "SeasonLength",
+                    GameSetupKeys.SeasonLength,
+                    SettingValueDefault,
+                    s_lengths,
+                    "SeasonLengthInfo"
+                ),
+                new(
+                    "DayLength",
+                    GameSetupKeys.DayLength,
+                    SettingValueDefault,
+                    s_lengths,
+                    "DayLengthInfo"
+                ),
                 new(
                     "PrecipitationFrequency",
                     GameSetupKeys.PrecipitationFrequency,
                     SettingValueDefault,
-                    s_precipitation
+                    s_precipitation,
+                    "PrecipitationFrequencyInfo"
                 ),
             ],
             []
         ),
         new(
             "Multiplayer",
-            [new("PvpDamage", GameSetupKeys.PvpDamage, SettingValueNormal, s_pvpDamage)],
-            [new("MultiplayerCheats", GameSetupKeys.MultiplayerCheats, true)]
+            [
+                new(
+                    "PvpDamage",
+                    GameSetupKeys.PvpDamage,
+                    SettingValueNormal,
+                    s_pvpDamage,
+                    "PvpDamageInfo"
+                ),
+            ],
+            [
+                new(
+                    "MultiplayerCheats",
+                    GameSetupKeys.MultiplayerCheats,
+                    true,
+                    "MultiplayerCheatsInfo"
+                ),
+            ]
         ),
     ];
 
@@ -217,6 +293,13 @@ public partial class Game : EditorPageBase
             ].Value
             : null;
 
+    private string? InfoOf(string settingName)
+    {
+        return TextKeys.SettingsWithInfo.Contains(settingName)
+            ? Localizer[TextKeys.SettingInfo(settingName)].Value
+            : null;
+    }
+
     private int? GameStateValue(string name)
     {
         return GameState.Settings.FirstOrDefault(setting => setting.Name == name)?.IntValue;
@@ -244,10 +327,11 @@ public partial class Game : EditorPageBase
         string LabelKey,
         string Key,
         string Fallback,
-        SettingOption[] Options
+        SettingOption[] Options,
+        string InfoKey
     );
 
-    private sealed record ToggleSetting(string LabelKey, string Key, bool Fallback);
+    private sealed record ToggleSetting(string LabelKey, string Key, bool Fallback, string InfoKey);
 
     private sealed record SettingGroup(
         string TitleKey,

@@ -28,7 +28,8 @@ public partial class Home : EditorPageBase
             ),
             new SavegameGroup(
                 Localizer["MultiplayerClient"],
-                [.. _savegames.Where(savegame => savegame.IsMultiPlayerClient())]
+                [.. _savegames.Where(savegame => savegame.IsMultiPlayerClient())],
+                Localizer["MultiplayerClientInfo"]
             ),
         }.Where(group => group.Savegames.Count > 0);
 
@@ -81,5 +82,9 @@ public partial class Home : EditorPageBase
         LoadSavegames();
     }
 
-    private sealed record SavegameGroup(string Title, List<Savegame> Savegames);
+    private sealed record SavegameGroup(
+        string Title,
+        List<Savegame> Savegames,
+        string? Info = null
+    );
 }

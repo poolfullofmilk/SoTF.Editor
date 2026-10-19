@@ -30,4 +30,4 @@ A savegame editor for Sons of the Forest, with a verified backup before every sa
 
 ## Technical details
 - .NET 10, WPF, Blazor and MudBlazor, one self-contained exe
-- GPL-3.0, the map point data is MIT, see [THIRD-PARTY-NOTICES.txt](THIRD-PARTY-NOTICES.txt)
+- GPL-3.0, builds on SOTFEdit and map point data that are both MIT, see [THIRD-PARTY-NOTICES.txt](THIRD-PARTY-NOTICES.txt)

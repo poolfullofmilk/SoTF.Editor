@@ -58,23 +58,17 @@ public class InventoryPageViewModel
 
     public IReadOnlyList<InventoryItem> Inventory => _inventory;
 
-    public IEnumerable<InventoryItem> FilterInventory(string? filter)
+    public bool IsHeld(InventoryItem item)
     {
-        return Filter(_inventory, filter);
+        return _inventory.Contains(item);
     }
 
-    public IEnumerable<InventoryItem> FilterUnassignedItems(string? filter)
+    public IEnumerable<InventoryItem> Filter(string? filter, string? type, bool heldOnly)
     {
-        return Filter(_unassignedItems, filter);
-    }
-
-    private static IEnumerable<InventoryItem> Filter(
-        IEnumerable<InventoryItem> items,
-        string? filter
-    )
-    {
+        // One List, Held Items And Everything That Could Be Added
         var normalizedFilter = TranslationHelper.Normalize(filter ?? "");
-        return items
+        return (heldOnly ? _inventory : _inventory.Concat(_unassignedItems))
+            .Where(item => type == null || item.Type == type)
             .Where(item =>
                 string.IsNullOrWhiteSpace(normalizedFilter)
                 || item.NormalizedName.Contains(

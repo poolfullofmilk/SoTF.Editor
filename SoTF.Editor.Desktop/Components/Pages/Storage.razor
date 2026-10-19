@@ -24,18 +24,18 @@
                     </TitleContent>
                     <ChildContent>
                         <MudPaper Elevation="4"
-                                  Class="rounded-panel pa-2 overflow-y-auto fill">
+                                  Class="rounded-panel panel-flush overflow-y-auto fill">
                             @if (StoragePage.StorageCollections.Count == 0)
                             {
                                 <MudText Typo="Typo.body2"
-                                         Class="mud-text-secondary pa-3">
+                                         Class="mud-text-secondary pa-4">
                                     @Localizer["NothingFound"]
                                 </MudText>
                             }
                             @foreach (var collection in StoragePage.StorageCollections)
                             {
                                 <MudText Typo="Typo.subtitle2"
-                                         Class="group-title px-3 pt-3 pb-1">
+                                         Class="group-title px-4 pt-4 pb-1">
                                     @($"{collection.Name} ({collection.Storages.Count})")
                                 </MudText>
                                 @foreach (var storage in collection.Storages)

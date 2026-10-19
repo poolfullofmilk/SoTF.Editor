@@ -30,9 +30,9 @@
                         </MudSimpleTable>
                     </MudStack>
 
-                    <Header Title="@Localizer["Influences"]">
+                    <Header Title="@Localizer["Influences"]"
+                            Info="@Localizer["InfluencesInfo"]">
                         <InfluencesEditor Influences="_viewModel.Influences"
-                                          ShowDisclaimer
                                           CanRemove
                                           OnChanged="() => _viewModel.ModifyOptions.UpdateInfluences = true" />
                     </Header>
@@ -173,8 +173,6 @@
         </MudGrid>
     </DialogContent>
     <DialogActions>
-        @* Cancel Button *@
-        <MudButton OnClick="@MudDialog.Cancel">@Localizer["Cancel"]</MudButton>
         @* Apply Button *@
         <MudButton Variant="Variant.Filled"
                    Color="@(_viewModel.ModificationMode == ActorModificationMode.Remove ? Color.Error : Color.Info)"

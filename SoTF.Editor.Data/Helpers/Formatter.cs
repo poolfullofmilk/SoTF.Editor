@@ -13,6 +13,11 @@ public static class Formatter
         return value.ToString(DisplayDateTimeFormat, CultureInfo.InvariantCulture);
     }
 
+    public static string FormatSize(long bytes)
+    {
+        return $"{bytes / 1048576.0:0.0} MB";
+    }
+
     public static string FormatDateTimeWithSeconds(DateTime value)
     {
         // Backups Taken In The Same Minute Stay Apart

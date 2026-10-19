@@ -12,9 +12,6 @@ public partial class InfluencesEditor
     public required List<Influence> Influences { get; set; }
 
     [Parameter]
-    public bool ShowDisclaimer { get; set; }
-
-    [Parameter]
     public bool CanRemove { get; set; }
 
     // Tells The Owner The Influences Need Saving

@@ -6,23 +6,6 @@
                  Size="Size.Small">
             @Follower.Status
         </MudChip>
-        @if (Copies.Count > 1)
-        {
-            @* Copy Select *@
-            <MudSelect T="FollowerState"
-                       Value="Follower"
-                       ValueChanged="FollowerPage.Select"
-                       ToStringFunc="CopyLabel"
-                       Variant="Variant.Text"
-                       Margin="Margin.Dense"
-                       Dense
-                       Style="max-width:160px">
-                @foreach (var copy in Copies)
-                {
-                    <MudSelectItem Value="copy">@CopyLabel(copy)</MudSelectItem>
-                }
-            </MudSelect>
-        }
         <MudSpacer />
         <ShowOnMapButton Position="MapPosition" />
     </TitleContent>
@@ -47,6 +30,27 @@
                             @($"{Localizer["Position"]}: {Follower.Pos.PrintableShort}")
                         </MudText>
                     </MudStack>
+                    <MudSpacer />
+                    @if (Copies.Count > 1)
+                    {
+                        @* Copy Select *@
+                        <MudElement HtmlTag="div"
+                                    Class="align-self-start"
+                                    Style="width:160px">
+                            <MudSelect T="FollowerState"
+                                       Value="Follower"
+                                       ValueChanged="FollowerPage.Select"
+                                       ToStringFunc="CopyLabel"
+                                       Variant="Variant.Outlined"
+                                       Margin="Margin.Dense"
+                                       Dense>
+                                @foreach (var copy in Copies)
+                                {
+                                    <MudSelectItem Value="copy">@CopyLabel(copy)</MudSelectItem>
+                                }
+                            </MudSelect>
+                        </MudElement>
+                    }
                 </MudStack>
 
                 <MudStack Row
@@ -146,10 +150,13 @@
                     }
                 </MudStack>
 
-                <MudText Typo="Typo.subtitle2"
-                         Class="mt-2">
-                    @Localizer["Influences"]
-                </MudText>
+                <MudStack Row
+                          AlignItems="AlignItems.Center"
+                          Spacing="1"
+                          Class="mt-2">
+                    <MudText Typo="Typo.subtitle2">@Localizer["Influences"]</MudText>
+                    <InfoButton Text="@Localizer["InfluencesInfo"]" />
+                </MudStack>
                 <InfluencesEditor Influences="Follower.Influences" />
             </MudStack>
         </MudPaper>

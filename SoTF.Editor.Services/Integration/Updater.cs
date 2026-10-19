@@ -1,14 +1,15 @@
 using System.Diagnostics;
 using SoTF.Editor.Data.Helpers;
+using SoTF.Editor.Data.ViewModels;
 
 namespace SoTF.Editor.Services.Integration;
 
 public static class Updater
 {
-    // Releases Always Carry One Exe Named After Their Version
+    // Releases Always Carry One Exe Named After Their Tag
     private const string ExecutablePrefix = "SoTF.Editor_v";
     private const string AssetUrlFormat =
-        AppInfo.RepositoryUrl + "/releases/download/v{0}/SoTF.Editor_v{0}.exe";
+        AppInfo.RepositoryUrl + "/releases/download/{0}/SoTF.Editor_{0}.exe";
     private const string AfterUpdateArgument = "--after-update";
 
     private static readonly HttpClient s_httpClient = new() { Timeout = TimeSpan.FromMinutes(5) };
@@ -18,17 +19,16 @@ public static class Updater
         Path.GetFileName(Environment.ProcessPath)
             ?.StartsWith(ExecutablePrefix, StringComparison.OrdinalIgnoreCase) == true;
 
-    public static async Task<string> DownloadAsync(Version version)
+    public static async Task<string> DownloadAsync(ReleaseInfo release)
     {
-        var versionText = version.ToString(2);
         var targetPath = Path.Combine(
             Path.GetDirectoryName(Environment.ProcessPath)!,
-            $"{ExecutablePrefix}{versionText}.exe"
+            $"SoTF.Editor_{release.Tag}.exe"
         );
         var partialPath = targetPath + ".download";
 
         using var response = await s_httpClient.GetAsync(
-            string.Format(AssetUrlFormat, versionText),
+            string.Format(AssetUrlFormat, release.Tag),
             HttpCompletionOption.ResponseHeadersRead
         );
         response.EnsureSuccessStatusCode();
@@ -74,19 +74,19 @@ public static class Updater
             // Already Gone
         }
 
-        // Old Exes Beside This One Are Replaced Builds, Not Data
-        foreach (
-            var oldPath in Directory.EnumerateFiles(
+        // Keep The Previous Version As A Way Back
+        var olderPaths = Directory
+            .EnumerateFiles(
                 Path.GetDirectoryName(Environment.ProcessPath)!,
                 $"{ExecutablePrefix}*.exe"
             )
-        )
+            .Where(path =>
+                !string.Equals(path, Environment.ProcessPath, StringComparison.OrdinalIgnoreCase)
+            )
+            .OrderByDescending(VersionOf)
+            .Skip(1);
+        foreach (var oldPath in olderPaths)
         {
-            if (string.Equals(oldPath, Environment.ProcessPath, StringComparison.OrdinalIgnoreCase))
-            {
-                continue;
-            }
-
             try
             {
                 File.Delete(oldPath);
@@ -97,5 +97,13 @@ public static class Updater
                 // A Locked Old Exe Is Left For Next Time
             }
         }
+    }
+
+    private static Version VersionOf(string executablePath)
+    {
+        var name = Path.GetFileNameWithoutExtension(executablePath);
+        return Version.TryParse(name[ExecutablePrefix.Length..], out var version)
+            ? version
+            : new Version(0, 0);
     }
 }

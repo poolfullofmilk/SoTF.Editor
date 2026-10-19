@@ -111,9 +111,6 @@
   <data name="Add" xml:space="preserve">
     <value>Add</value>
   </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
   <data name="Close" xml:space="preserve">
     <value>Close</value>
   </data>
@@ -627,13 +624,13 @@
   <data name="GameState" xml:space="preserve">
     <value>Game State</value>
   </data>
-  <data name="WorldObjectStatesHint" xml:space="preserve">
+  <data name="WorldObjectStatesInfo" xml:space="preserve">
     <value>Likely 0 means closed or not happened, 1 or 3 means opened or happened</value>
   </data>
   <data name="WorldObjectStates" xml:space="preserve">
     <value>World Object States</value>
   </data>
-  <data name="InfluencesHint" xml:space="preserve">
+  <data name="InfluencesInfo" xml:space="preserve">
     <value>High fear makes enemies flee, high anger makes them attack</value>
   </data>
   <data name="Sentiment" xml:space="preserve">
@@ -656,9 +653,6 @@
   </data>
   <data name="ItemsInInventory" xml:space="preserve">
     <value>Items In Inventory</value>
-  </data>
-  <data name="UnassignedItems" xml:space="preserve">
-    <value>Unassigned Items</value>
   </data>
   <data name="Count" xml:space="preserve">
     <value>Count</value>
@@ -1599,12 +1593,6 @@
   <data name="SettingStartingDayOffset" xml:space="preserve">
     <value>Season Day Offset</value>
   </data>
-  <data name="SeasonDayOffsetHint" xml:space="preserve">
-    <value>Seasons follow the day count plus the season day offset, picking a season moves the offset by whole seasons, lowering it keeps the current season longer</value>
-  </data>
-  <data name="Later" xml:space="preserve">
-    <value>Later</value>
-  </data>
   <data name="UpdateNow" xml:space="preserve">
     <value>Update Now</value>
   </data>
@@ -1612,7 +1600,7 @@
     <value>Downloading</value>
   </data>
   <data name="UpdateText" xml:space="preserve">
-    <value>You have version {0}, updating downloads the new one and restarts the editor</value>
+    <value>You have version {0}. Updating downloads the new one and restarts the editor, the old one stays as a way back</value>
   </data>
   <data name="UpdateFailed" xml:space="preserve">
     <value>Update failed, try again later</value>
@@ -1628,5 +1616,209 @@
   </data>
   <data name="Season" xml:space="preserve">
     <value>Season</value>
+  </data>
+  <data name="Updates" xml:space="preserve">
+    <value>Updates</value>
+  </data>
+  <data name="WhatChanged" xml:space="preserve">
+    <value>What Changed</value>
+  </data>
+  <data name="UpdateFolderProtected" xml:space="preserve">
+    <value>The editor's folder is protected, so the release page opens to download it yourself</value>
+  </data>
+  <data name="Collapse" xml:space="preserve">
+    <value>Collapse</value>
+  </data>
+  <data name="Expand" xml:space="preserve">
+    <value>Expand</value>
+  </data>
+  <data name="HeldOnly" xml:space="preserve">
+    <value>Held Only</value>
+  </data>
+  <data name="AddToInventory" xml:space="preserve">
+    <value>Add To Inventory</value>
+  </data>
+  <data name="StrengthLevelInfo" xml:space="preserve">
+    <value>Strength raises melee damage and max health. Max health is 100 plus 2 per level above 1</value>
+  </data>
+  <data name="MultiplayerClientInfo" xml:space="preserve">
+    <value>Saves from games you joined on someone else's server. They only hold your own player, the world lives in the host's save</value>
+  </data>
+  <data name="ModeInfo" xml:space="preserve">
+    <value>The difficulty the game was made with. Custom unlocks every setting below</value>
+  </data>
+  <data name="UidInfo" xml:space="preserve">
+    <value>The id the game gives this save. It never changes</value>
+  </data>
+  <data name="SeasonInfo" xml:space="preserve">
+    <value>The season follows from the day count and the season day offset. Picking one moves the offset by whole seasons</value>
+  </data>
+  <data name="ConsumableEffectsInfo" xml:space="preserve">
+    <value>How much food, drinks and medicine help. Hard gives less</value>
+  </data>
+  <data name="PlayerStatsDamageInfo" xml:space="preserve">
+    <value>How much damage hunger, thirst and tiredness do</value>
+  </data>
+  <data name="AnimalSpawnRateInfo" xml:space="preserve">
+    <value>How many animals live on the island</value>
+  </data>
+  <data name="ColdPenaltiesInfo" xml:space="preserve">
+    <value>How much being cold hurts you</value>
+  </data>
+  <data name="BuildingResistanceInfo" xml:space="preserve">
+    <value>How much damage your structures can take</value>
+  </data>
+  <data name="StatRegenerationPenaltiesInfo" xml:space="preserve">
+    <value>Low hunger, thirst or rest slow down how fast health comes back</value>
+  </data>
+  <data name="InventoryPauseInfo" xml:space="preserve">
+    <value>The world stands still while the inventory is open</value>
+  </data>
+  <data name="ReducedFoodInfo" xml:space="preserve">
+    <value>Less food to find in the world</value>
+  </data>
+  <data name="ReducedAmmoInfo" xml:space="preserve">
+    <value>Less ammo to find in the world</value>
+  </data>
+  <data name="SingleUseContainersInfo" xml:space="preserve">
+    <value>Crates and cases stay empty once opened</value>
+  </data>
+  <data name="PlayersTriggerTrapsInfo" xml:space="preserve">
+    <value>Traps also go off on players</value>
+  </data>
+  <data name="CreativeModeInfo" xml:space="preserve">
+    <value>Build without gathering materials</value>
+  </data>
+  <data name="GodModeInfo" xml:space="preserve">
+    <value>Players take no damage</value>
+  </data>
+  <data name="OneHitTreesInfo" xml:space="preserve">
+    <value>Trees fall with one hit</value>
+  </data>
+  <data name="InstantBuildingInfo" xml:space="preserve">
+    <value>Placed structures finish at once</value>
+  </data>
+  <data name="NoCuttingsSpawnInfo" xml:space="preserve">
+    <value>Cut trees and bushes leave nothing behind</value>
+  </data>
+  <data name="EnemyHealthInfo" xml:space="preserve">
+    <value>How much health enemies have</value>
+  </data>
+  <data name="EnemyDamageInfo" xml:space="preserve">
+    <value>How hard enemies hit</value>
+  </data>
+  <data name="EnemyArmorInfo" xml:space="preserve">
+    <value>How much damage enemy armour blocks</value>
+  </data>
+  <data name="EnemyAggressionInfo" xml:space="preserve">
+    <value>How quickly enemies attack instead of watching</value>
+  </data>
+  <data name="EnemySearchPartiesInfo" xml:space="preserve">
+    <value>How often groups of enemies come looking for you</value>
+  </data>
+  <data name="SpawnEnemiesInfo" xml:space="preserve">
+    <value>Turn off to play without enemies</value>
+  </data>
+  <data name="StartingSeasonInfo" xml:space="preserve">
+    <value>The season the game started in. The season day offset decides the current one</value>
+  </data>
+  <data name="SeasonLengthInfo" xml:space="preserve">
+    <value>How many days a season lasts. Every season gets the same length</value>
+  </data>
+  <data name="DayLengthInfo" xml:space="preserve">
+    <value>How long a day lasts in real time</value>
+  </data>
+  <data name="PrecipitationFrequencyInfo" xml:space="preserve">
+    <value>How often it rains or snows</value>
+  </data>
+  <data name="PvpDamageInfo" xml:space="preserve">
+    <value>Whether players can hurt each other in multiplayer</value>
+  </data>
+  <data name="MultiplayerCheatsInfo" xml:space="preserve">
+    <value>Lets players use console cheats in multiplayer</value>
+  </data>
+  <data name="SettingGameNameInfo" xml:space="preserve">
+    <value>The name in the game's save list</value>
+  </data>
+  <data name="SettingGameTypeInfo" xml:space="preserve">
+    <value>The difficulty this save was started with</value>
+  </data>
+  <data name="SettingSaveTimeInfo" xml:space="preserve">
+    <value>When the game last saved</value>
+  </data>
+  <data name="SettingGameDaysInfo" xml:space="preserve">
+    <value>Days survived. The season follows from it</value>
+  </data>
+  <data name="SettingGameHoursInfo" xml:space="preserve">
+    <value>The hour of the current day</value>
+  </data>
+  <data name="SettingCrashSiteInfo" xml:space="preserve">
+    <value>Where the helicopter crashed at the start</value>
+  </data>
+  <data name="SettingIsVirginiaDeadInfo" xml:space="preserve">
+    <value>Whether the story treats Virginia as dead</value>
+  </data>
+  <data name="SettingIsRobbyDeadInfo" xml:space="preserve">
+    <value>Whether the story treats Kelvin as dead. The game calls him Robby</value>
+  </data>
+  <data name="SettingIsRainingInfo" xml:space="preserve">
+    <value>Whether it rains right now</value>
+  </data>
+  <data name="SettingRainBlockedInfo" xml:space="preserve">
+    <value>Keeps rain from starting</value>
+  </data>
+  <data name="SettingCloudStateInfo" xml:space="preserve">
+    <value>How cloudy the sky is</value>
+  </data>
+  <data name="SettingCurrentRainTypeInfo" xml:space="preserve">
+    <value>How heavy the current rain is</value>
+  </data>
+  <data name="SettingStartingDayOffsetInfo" xml:space="preserve">
+    <value>Shifts where the year stands. Lowering it keeps the current season longer</value>
+  </data>
+  <data name="DeleteBackup" xml:space="preserve">
+    <value>Delete Backup</value>
+  </data>
+  <data name="DeleteBackupText" xml:space="preserve">
+    <value>The backup from {0} is deleted for good</value>
+  </data>
+  <data name="UnableToDeleteBackup" xml:space="preserve">
+    <value>Unable to delete the backup</value>
+  </data>
+  <data name="BackupUsage" xml:space="preserve">
+    <value>Backups use {0} of {1}. Past that, the oldest go, except the very first</value>
+  </data>
+  <data name="BackupsPruned" xml:space="preserve">
+    <value>Backups passed {1}, so the {0} oldest were deleted. The very first stays</value>
+  </data>
+  <data name="ToolsHint" xml:space="preserve">
+    <value>Tools change the open save and need Save, like any other edit. The Plater and Unlocks write at once</value>
+  </data>
+  <data name="ToolsWorld" xml:space="preserve">
+    <value>World</value>
+  </data>
+  <data name="ToolsPlayer" xml:space="preserve">
+    <value>Player</value>
+  </data>
+  <data name="NeedsSave" xml:space="preserve">
+    <value>Needs Save</value>
+  </data>
+  <data name="SavesAtOnce" xml:space="preserve">
+    <value>Saves At Once</value>
+  </data>
+  <data name="HostSaveOnly" xml:space="preserve">
+    <value>Host Save Only</value>
+  </data>
+  <data name="RegrowTreesText" xml:space="preserve">
+    <value>Cut trees grow back, as many as the share you pick</value>
+  </data>
+  <data name="WorldItemClonerText" xml:space="preserve">
+    <value>Copies a golf cart, glider, Knight V or radio to where you stand</value>
+  </data>
+  <data name="ConsumedItemsText" xml:space="preserve">
+    <value>The game remembers one-time items you used. Removing them lets you use them again</value>
+  </data>
+  <data name="UnlocksText" xml:space="preserve">
+    <value>Profile unlocks such as the ending and Creative Mode, for every save</value>
   </data>
 </root>

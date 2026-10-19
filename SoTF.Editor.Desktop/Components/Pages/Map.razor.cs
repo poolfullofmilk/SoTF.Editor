@@ -71,6 +71,27 @@ public partial class Map : EditorPageBase
         return Localizer[TextKeys.RequirementsFilter(requirementsFilter)];
     }
 
+    // Sub Groups Start Folded, The Checkbox Still Covers All
+    private readonly HashSet<string> _expandedCollections = [];
+
+    private bool IsExpanded(PoiGroupCollection collection)
+    {
+        return _expandedCollections.Contains(collection.GroupKey);
+    }
+
+    private void ToggleExpanded(PoiGroupCollection collection)
+    {
+        if (!_expandedCollections.Remove(collection.GroupKey))
+        {
+            _expandedCollections.Add(collection.GroupKey);
+        }
+    }
+
+    private IEnumerable<PoiGroup> ExpandedGroups(PoiGroupCollection collection)
+    {
+        return IsExpanded(collection) ? collection.PoiGroups.OrderBy(group => group.BaseTitle) : [];
+    }
+
     private static bool? CollectionState(PoiGroupCollection collection)
     {
         // Mixed Sub Groups Show The Third State

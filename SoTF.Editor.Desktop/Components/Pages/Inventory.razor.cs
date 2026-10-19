@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using SoTF.Editor.Data.ViewModels;
 using SoTF.Editor.Desktop.Components.Shared.Common;
 using SoTF.Editor.Services.Pages;
 
@@ -10,9 +11,12 @@ public partial class Inventory : EditorPageBase
     public required InventoryPageViewModel InventoryPage { get; set; }
 
     // Page State
-    private string? _inventoryFilter;
-    private string? _unassignedFilter;
+    private string? _filter;
     private Category? _category;
+    private bool _heldOnly;
+
+    private IEnumerable<InventoryItem> Items =>
+        InventoryPage.Filter(_filter, _category?.Type, _heldOnly);
 
     private async Task RemoveAllAsync()
     {

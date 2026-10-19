@@ -23,7 +23,7 @@ public partial class MainLayout : IDisposable
 
     private static readonly PageLink[] s_pages =
     [
-        new("/", "Savegames", Icons.Material.Rounded.FolderOpen, false),
+        new("/", "Savegames", Icons.Material.Rounded.Folder, false),
         new("Player", "Player", Icons.Material.Rounded.Person, true),
         new("Inventory", "Inventory", Icons.Material.Rounded.Backpack, true),
         new("Storage", "Storage", Icons.Material.Rounded.Inventory2, true),
@@ -32,13 +32,11 @@ public partial class MainLayout : IDisposable
         new("Npcs", "Npcs", Icons.Material.Rounded.Pets, true),
         new("Structures", "Structures", Icons.Material.Rounded.Cabin, true),
         new("Map", "Map", Icons.Material.Rounded.Map, true),
+        new("Tools", "Tools", Icons.Material.Rounded.Handyman, true),
     ];
 
     [Inject]
     public required MainViewModel MainViewModel { get; set; }
-
-    [Inject]
-    public required GameStatePageViewModel GameStatePage { get; set; }
 
     [Inject]
     public required IDialogService DialogService { get; set; }
@@ -54,9 +52,6 @@ public partial class MainLayout : IDisposable
 
     private bool HasSavegame => MainViewModel.SelectedSavegame != null;
 
-    // A Client Save Holds Only The Player, Not The World
-    private bool HasWorld => MainViewModel.SelectedSavegame?.IsMultiPlayerClient() == false;
-
     private static bool CheckForUpdatesOnStart => UserSettings.Current.CheckForUpdates;
 
     protected override void OnInitialized()
@@ -64,6 +59,17 @@ public partial class MainLayout : IDisposable
         MainViewModel.Changed += OnChanged;
         MainViewModel.OpenRequested += OnOpenRequested;
         NavigationManager.LocationChanged += OnLocationChanged;
+        BackupManager.Pruned += OnBackupsPruned;
+    }
+
+    private void OnBackupsPruned(int count)
+    {
+        _ = InvokeAsync(() =>
+            Snackbar.Add(
+                Localizer["BackupsPruned", count, Formatter.FormatSize(BackupManager.SizeLimit)],
+                Severity.Warning
+            )
+        );
     }
 
     private void OnLocationChanged(object? sender, LocationChangedEventArgs eventArgs)
@@ -264,36 +270,7 @@ public partial class MainLayout : IDisposable
     }
     #endregion
 
-    #region Tool Methods
-    private async Task RunToolAsync(string labelKey, string textKey, Func<string> tool)
-    {
-        if (!await DialogService.ConfirmAsync(Localizer, Localizer[labelKey], Localizer[textKey]))
-        {
-            return;
-        }
-
-        var message = tool();
-        if (!string.IsNullOrEmpty(message))
-        {
-            Snackbar.Add(message, Severity.Info);
-        }
-
-        MainViewModel.NotifyChanged();
-    }
-
-    private Task SetToEndgameAsync()
-    {
-        return RunToolAsync(
-            "SetToEndgame",
-            "SetToEndgameText",
-            () =>
-            {
-                GameStatePage.SetToEndgame();
-                return Localizer["ChangesAdded"];
-            }
-        );
-    }
-
+    #region Help Methods
     private async Task ShowDialogAsync<TDialog>()
         where TDialog : IComponent
     {
@@ -324,7 +301,7 @@ public partial class MainLayout : IDisposable
             return;
         }
 
-        if (latest > AppInfo.Version)
+        if (latest.Version > AppInfo.Version)
         {
             await UpdateDialog.ShowAsync(DialogService, latest);
         }
@@ -340,6 +317,7 @@ public partial class MainLayout : IDisposable
         MainViewModel.Changed -= OnChanged;
         MainViewModel.OpenRequested -= OnOpenRequested;
         NavigationManager.LocationChanged -= OnLocationChanged;
+        BackupManager.Pruned -= OnBackupsPruned;
         GC.SuppressFinalize(this);
     }
 

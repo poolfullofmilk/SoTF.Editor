@@ -2,22 +2,41 @@
 <MudStack Row
           AlignItems="AlignItems.Center"
           Spacing="4">
-    <MudText Typo="Typo.body2"
-             Class="text-truncate"
-             Style="width:160px;flex-shrink:0">
-        @Label
-    </MudText>
-    @* Slider *@
-    <MudSlider T="float"
-               Value="Value"
-               ValueChanged="ValueChanged"
-               Min="Min"
-               Max="Max"
-               Step="Step"
-               Disabled="Disabled"
-               Color="Color.Info"
-               Immediate
-               Class="flex-grow-1" />
+    <MudStack Row
+              AlignItems="AlignItems.Center"
+              Spacing="1"
+              Style="width:160px;flex-shrink:0">
+        <MudText Typo="Typo.body2"
+                 Class="text-truncate">
+            @Label
+        </MudText>
+        @if (Info is not null)
+        {
+            <InfoButton Text="@Info" />
+        }
+    </MudStack>
+    @if (ReadOnly)
+    {
+        <MudProgressLinear Value="Value"
+                           Min="Min"
+                           Max="Max"
+                           Color="Color.Info"
+                           Rounded
+                           Class="flex-grow-1" />
+    }
+    else
+    {
+        @* Slider *@
+        <MudSlider T="float"
+                   Value="Value"
+                   ValueChanged="ValueChanged"
+                   Min="Min"
+                   Max="Max"
+                   Step="Step"
+                   Color="Color.Info"
+                   Immediate
+                   Class="flex-grow-1" />
+    }
     @* Value Field *@
     <MudNumericField T="float"
                      Value="Value"
@@ -25,7 +44,7 @@
                      Min="Min"
                      Max="Max"
                      Step="Step"
-                     Disabled="Disabled"
+                     ReadOnly="ReadOnly"
                      Variant="Variant.Text"
                      Margin="Margin.Dense"
                      HideSpinButtons

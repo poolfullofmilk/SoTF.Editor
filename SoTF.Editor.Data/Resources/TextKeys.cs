@@ -52,6 +52,26 @@ public static class TextKeys
 
     public static string Setting(string name) => "Setting" + Pascal(name.TrimStart('_'));
 
+    public static string SettingInfo(string name) => Setting(name) + "Info";
+
+    // Fields That Need A Word Of Explanation
+    public static IReadOnlyList<string> SettingsWithInfo { get; } =
+    [
+        "GameName",
+        "GameType",
+        "SaveTime",
+        "GameDays",
+        "GameHours",
+        "CrashSite",
+        "IsVirginiaDead",
+        "IsRobbyDead",
+        "_isRaining",
+        "_rainBlocked",
+        "_cloudState",
+        "_currentRainType",
+        "_startingDayOffset",
+    ];
+
     // Game State And Weather Fields The Pages Show
     public static IReadOnlyList<string> SettingNames { get; } =
     [
@@ -136,6 +156,7 @@ public static class TextKeys
             .Concat(Enum.GetValues<ScrewStructureModificationMode>().Select(StructureMode))
             .Concat(Enum.GetValues<ElementProfileCategory>().Select(Construction))
             .Concat(SettingNames.Select(Setting))
+            .Concat(SettingsWithInfo.Select(SettingInfo))
             .Concat(
                 Enum.GetValues<PoiGroupType>()
                     .Where(type => type is >= PoiGroupType.Bunkers and <= PoiGroupType.Lakes)

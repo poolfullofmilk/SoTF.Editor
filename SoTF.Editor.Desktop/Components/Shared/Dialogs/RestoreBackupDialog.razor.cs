@@ -1,13 +1,24 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using NLog;
+using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.ViewModels;
+using SoTF.Editor.Services.Savegames;
 
 namespace SoTF.Editor.Desktop.Components.Shared.Dialogs;
 
 public partial class RestoreBackupDialog
 {
+    private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
+
     [Inject]
     public required IStringLocalizer<SharedResource> Localizer { get; set; }
+
+    [Inject]
+    public required IDialogService DialogService { get; set; }
+
+    [Inject]
+    public required ISnackbar Snackbar { get; set; }
 
     [CascadingParameter]
     public required IMudDialogInstance MudDialog { get; set; }
@@ -18,10 +29,17 @@ public partial class RestoreBackupDialog
 
     private SavegameBackup? _selected;
 
+    private string UsageText =>
+        Localizer[
+            "BackupUsage",
+            Formatter.FormatSize(BackupManager.TotalSize()),
+            Formatter.FormatSize(BackupManager.SizeLimit)
+        ];
+
     private string RowClass(SavegameBackup backup)
     {
         var selected = backup == _selected ? " list-row-selected" : "";
-        return "list-row rounded-inner px-3 py-2" + selected;
+        return "list-row rounded-inner px-3 py-1" + selected;
     }
 
     private string AgeLabel(SavegameBackup backup)
@@ -32,6 +50,40 @@ public partial class RestoreBackupDialog
         }
 
         return backup == Backups[^1] ? Localizer["Oldest"] : "";
+    }
+
+    private async Task DeleteAsync(SavegameBackup backup)
+    {
+        if (
+            !await DialogService.ConfirmAsync(
+                Localizer,
+                Localizer["DeleteBackup"],
+                Localizer["DeleteBackupText", Formatter.FormatDateTimeWithSeconds(backup.TakenAt)]
+            )
+        )
+        {
+            return;
+        }
+
+        try
+        {
+            BackupManager.Delete(backup.Path);
+            Backups.Remove(backup);
+            if (_selected == backup)
+            {
+                _selected = null;
+            }
+
+            if (Backups.Count == 0)
+            {
+                MudDialog.Cancel();
+            }
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+        {
+            s_logger.Error(exception, "Failed To Delete Backup");
+            Snackbar.Add(Localizer["UnableToDeleteBackup"], Severity.Error);
+        }
     }
 
     private void Restore()

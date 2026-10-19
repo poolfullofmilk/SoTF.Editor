@@ -28,13 +28,13 @@
                         </MudText>
                     }
                     <MudPaper Elevation="4"
-                              Class="rounded-panel pa-2 overflow-y-auto fill">
+                              Class="rounded-panel panel-flush overflow-y-auto fill">
                         @foreach (var grouping in Groupings)
                         {
                             @if (grouping.Title is { } title)
                             {
                                 <MudText Typo="Typo.subtitle2"
-                                         Class="group-title px-3 pt-3 pb-1">
+                                         Class="group-title px-4 pt-4 pb-1">
                                     @title
                                 </MudText>
                             }
@@ -49,7 +49,7 @@
                                               Spacing="2">
                                         <MudImage Src="@collection.Actors.FirstOrDefault()?.ActorType?.IconPath"
                                                   Alt="@collection.Name"
-                                                  Class="thumb" />
+                                                  Class="thumb thumb-round" />
                                         <MudText Typo="Typo.body2"
                                                  Class="text-truncate">
                                             @collection.Name
@@ -75,7 +75,7 @@
                     <Header Title="@selected.Name"
                             Class="fill">
                         <MudPaper Elevation="4"
-                                  Class="rounded-panel pa-2 fill fill-column">
+                                  Class="rounded-panel panel-flush fill fill-column">
                             <MudTable T="Actor"
                                       Items="selected.Actors"
                                       Dense
@@ -97,7 +97,8 @@
                                     <MudTd>
                                         <ItemLabel Name="@(context.ActorType?.Name ?? "???")"
                                                    Detail="@($"{context.ActorType?.PrintableClassification} · {context.ActorType?.PrintableGender}")"
-                                                   ImageUrl="@context.ActorType?.IconPath" />
+                                                   ImageUrl="@context.ActorType?.IconPath"
+                                                   Round />
                                     </MudTd>
                                     <MudTd Class="selectable-text">@context.UniqueId</MudTd>
                                     <MudTd>@context.FamilyId</MudTd>

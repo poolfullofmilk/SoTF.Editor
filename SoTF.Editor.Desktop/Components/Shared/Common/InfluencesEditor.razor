@@ -1,14 +1,5 @@
 @* Influences Editor *@
 <MudStack Spacing="3">
-    @if (ShowDisclaimer)
-    {
-        <MudText Typo="Typo.caption"
-                 Class="mud-text-secondary text-relaxed"
-                 Style="white-space:pre-line">
-            @Localizer["InfluencesHint"]
-        </MudText>
-    }
-
     @foreach (var influence in Influences)
     {
         <MudPaper Elevation="0"

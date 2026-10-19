@@ -4,14 +4,11 @@
 <RequiresSavegame NeedsWorld>
     <MudStack Spacing="6"
               Class="page-fill">
-        <Header Title="@Localizer["Batch"]">
+        <Header Title="@Localizer["Batch"]"
+                Info="@Localizer["BatchHint"]">
             <MudPaper Elevation="4"
                       Class="rounded-panel pa-4">
                 <MudStack Spacing="3">
-                    <MudText Typo="Typo.body2"
-                             Class="mud-text-secondary">
-                        @Localizer["BatchHint"]
-                    </MudText>
                     @* Batch Type *@
                     <MudSelect T="ScrewStructure"
                                @bind-Value="StructuresPage.BatchSelectedStructureType"
@@ -68,7 +65,7 @@
             </TitleContent>
             <ChildContent>
                 <MudPaper Elevation="4"
-                          Class="rounded-panel pa-2 fill fill-column">
+                          Class="rounded-panel panel-flush fill fill-column">
                     <MudTable T="ScrewStructureWrapper"
                               Items="FilteredStructures"
                               GroupBy="s_groupByName"

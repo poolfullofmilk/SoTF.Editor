@@ -39,7 +39,7 @@ public partial class Npcs : EditorPageBase
     private string CollectionRowClass(ActorCollection collection)
     {
         var selected = _selected == collection ? " list-row-selected" : "";
-        return "list-row rounded-inner px-3 py-2" + selected;
+        return "list-row px-4 py-2" + selected;
     }
 
     private async Task EditAsync(Actor actor)
