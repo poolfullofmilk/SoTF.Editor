@@ -8,11 +8,11 @@
 
             <MudItem xs="12"
                      md="6">
-                <MudStack Spacing="3">
+                <MudStack Spacing="4">
 
                     @* Details Section *@
                     <MudPaper Elevation="0"
-                              Class="dialog-section">
+                              Class="inset rounded-panel pa-4">
                         <MudStack Row
                                   AlignItems="AlignItems.Start"
                                   Spacing="4">
@@ -43,33 +43,30 @@
                         </MudStack>
                     </MudPaper>
 
-                    @* Influences Section *@
-                    <MudPaper Elevation="0"
-                              Class="dialog-section">
-                        <MudStack Spacing="2">
-                            <MudStack Row
-                                      AlignItems="AlignItems.Center"
-                                      Spacing="1">
-                                <MudText Typo="Typo.subtitle2">@Localizer["Influences"]</MudText>
-                                <InfoButton Text="@Localizer["InfluencesInfo"]" />
-                            </MudStack>
-                            <InfluencesEditor Influences="_viewModel.Influences"
-                                              CanRemove
-                                              OnChanged="() => _viewModel.ModifyOptions.UpdateInfluences = true" />
+                    @* Influences *@
+                    <MudStack Spacing="2">
+                        <MudStack Row
+                                  AlignItems="AlignItems.Center"
+                                  Spacing="1">
+                            <MudText Typo="Typo.subtitle2">@Localizer["Influences"]</MudText>
+                            <InfoButton Text="@Localizer["InfluencesInfo"]" />
                         </MudStack>
-                    </MudPaper>
+                        <InfluencesEditor Influences="_viewModel.Influences"
+                                          CanRemove
+                                          OnChanged="() => _viewModel.ModifyOptions.UpdateInfluences = true" />
+                    </MudStack>
 
                 </MudStack>
             </MudItem>
 
             <MudItem xs="12"
                      md="6">
-                <MudStack Spacing="3">
+                <MudStack Spacing="4">
 
                     @* Selection Section *@
                     <MudPaper Elevation="0"
-                              Class="dialog-section">
-                        <MudStack Spacing="3">
+                              Class="inset rounded-panel pa-4">
+                        <MudStack Spacing="2">
                             <MudText Typo="Typo.subtitle2">@Localizer["Selection"]</MudText>
                             @* Modification Mode *@
                             <MudRadioGroup T="ActorModificationMode"
@@ -88,7 +85,6 @@
                                        Variant="Variant.Outlined"
                                        @bind-Value="_viewModel.ActorSelection"
                                        ToStringFunc="SelectionName"
-                                       Margin="Margin.Dense"
                                        Dense>
                                 @foreach (var selection in EditActorViewModel.AllActorSelections)
                                 {
@@ -127,7 +123,7 @@
                     {
                         @* Stats Section *@
                         <MudPaper Elevation="0"
-                                  Class="dialog-section">
+                                  Class="inset rounded-panel pa-4">
                             <MudStack Spacing="2">
                                 <MudText Typo="Typo.subtitle2">@Localizer["Stats"]</MudText>
                                 <MudStack Row
@@ -146,7 +142,6 @@
                                                      @bind-Value="_viewModel.ModifyOptions.ActorEnergy"
                                                      Min="0"
                                                      Max="100"
-                                                     Margin="Margin.Dense"
                                                      Disabled="@(!_viewModel.ModifyOptions.UpdateEnergy)" />
                                 </MudStack>
                                 <MudStack Row
@@ -164,7 +159,6 @@
                                                      Variant="Variant.Outlined"
                                                      @bind-Value="_viewModel.ModifyOptions.ActorHealth"
                                                      Min="0"
-                                                     Margin="Margin.Dense"
                                                      Disabled="@(!_viewModel.ModifyOptions.UpdateHealth)" />
                                 </MudStack>
                             </MudStack>
@@ -172,7 +166,7 @@
 
                         @* Options Section *@
                         <MudPaper Elevation="0"
-                                  Class="dialog-section">
+                                  Class="inset rounded-panel pa-4">
                             <MudStack Spacing="2">
                                 <MudText Typo="Typo.subtitle2">@Localizer["ModificationOptions"]</MudText>
                                 <MudStack Row
@@ -199,7 +193,6 @@
                                            @bind-Value="_viewModel.ModifyOptions.ReplaceType"
                                            Label="@Localizer["ReplaceType"]"
                                            ToStringFunc="actorType => actorType?.Name ?? string.Empty"
-                                           Margin="Margin.Dense"
                                            Dense>
                                     @foreach (var actorType in _viewModel.AllActorTypes)
                                     {
@@ -211,8 +204,8 @@
 
                         @* Teleport Section *@
                         <MudPaper Elevation="0"
-                                  Class="dialog-section">
-                            <MudStack Spacing="1">
+                                  Class="inset rounded-panel pa-4">
+                            <MudStack Spacing="2">
                                 <MudText Typo="Typo.subtitle2">@Localizer["Teleport"]</MudText>
                                 @* Teleport Mode *@
                                 <MudRadioGroup T="string"

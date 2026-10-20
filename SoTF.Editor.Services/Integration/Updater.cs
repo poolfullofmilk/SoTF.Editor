@@ -27,19 +27,27 @@ public static class Updater
         );
         var partialPath = targetPath + ".download";
 
-        using var response = await s_httpClient.GetAsync(
-            string.Format(AssetUrlFormat, release.Tag),
-            HttpCompletionOption.ResponseHeadersRead
-        );
-        response.EnsureSuccessStatusCode();
-        await using (var file = File.Create(partialPath))
+        try
         {
-            await response.Content.CopyToAsync(file);
-        }
+            using var response = await s_httpClient.GetAsync(
+                string.Format(AssetUrlFormat, release.Tag),
+                HttpCompletionOption.ResponseHeadersRead
+            );
+            response.EnsureSuccessStatusCode();
+            await using (var file = File.Create(partialPath))
+            {
+                await response.Content.CopyToAsync(file);
+            }
 
-        // Only A Complete Download Gets The Real Name
-        File.Move(partialPath, targetPath, overwrite: true);
-        return targetPath;
+            // Only A Complete Download Gets The Real Name
+            File.Move(partialPath, targetPath, overwrite: true);
+            return targetPath;
+        }
+        catch
+        {
+            File.Delete(partialPath);
+            throw;
+        }
     }
 
     public static void Launch(string executablePath)

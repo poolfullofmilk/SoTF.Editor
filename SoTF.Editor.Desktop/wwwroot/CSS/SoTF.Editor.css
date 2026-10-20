@@ -69,10 +69,8 @@
     backdrop-filter: var(--glass-blur);
 }
 
-/* A Dialog Group Sits On The Page Colour */
-.dialog-section {
-    padding: 16px 20px;
-    border-radius: var(--radius-panel) !important;
+/* An Inset Surface Sits On The Page Colour Inside A Panel Or Dialog */
+.inset {
     background-color: var(--mud-palette-background) !important;
 }
 

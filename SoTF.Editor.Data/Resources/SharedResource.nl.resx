@@ -138,9 +138,6 @@
   <data name="Unknown" xml:space="preserve">
     <value>Onbekend</value>
   </data>
-  <data name="Update" xml:space="preserve">
-    <value>Bijwerken</value>
-  </data>
   <data name="Value" xml:space="preserve">
     <value>Waarde</value>
   </data>
@@ -1241,6 +1238,9 @@
   </data>
   <data name="RestoredBackup" xml:space="preserve">
     <value>Back-up Van {0} Teruggezet</value>
+  </data>
+  <data name="UnableToOpen" xml:space="preserve">
+    <value>Kan de savegame niet openen, zie het logbestand</value>
   </data>
   <data name="UnableToRestoreBackup" xml:space="preserve">
     <value>Kan back-up niet terugzetten, sluit eerst de game</value>

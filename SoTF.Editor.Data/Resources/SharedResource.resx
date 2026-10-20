@@ -138,9 +138,6 @@
   <data name="Unknown" xml:space="preserve">
     <value>Unknown</value>
   </data>
-  <data name="Update" xml:space="preserve">
-    <value>Update</value>
-  </data>
   <data name="Value" xml:space="preserve">
     <value>Value</value>
   </data>
@@ -1241,6 +1238,9 @@
   </data>
   <data name="RestoredBackup" xml:space="preserve">
     <value>Restored Backup From {0}</value>
+  </data>
+  <data name="UnableToOpen" xml:space="preserve">
+    <value>Unable to open the savegame, see the log</value>
   </data>
   <data name="UnableToRestoreBackup" xml:space="preserve">
     <value>Unable to restore backup, close the game first</value>

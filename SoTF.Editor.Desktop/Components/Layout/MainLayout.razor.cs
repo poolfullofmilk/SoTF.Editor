@@ -197,7 +197,11 @@ public partial class MainLayout : IDisposable
             return;
         }
 
-        await RunBusyAsync(() => MainViewModel.SelectSavegame(savegame));
+        if (!await TryBusyAsync(() => MainViewModel.SelectSavegame(savegame), "UnableToOpen"))
+        {
+            return;
+        }
+
         if (IsActive(s_pages[0]))
         {
             NavigationManager.NavigateTo("Player");
@@ -208,7 +212,7 @@ public partial class MainLayout : IDisposable
     {
         if (await DialogService.ConfirmDiscardAsync(Localizer, MainViewModel))
         {
-            await RunBusyAsync(MainViewModel.ReloadSavegame);
+            await TryBusyAsync(MainViewModel.ReloadSavegame, "UnableToOpen");
         }
     }
 
@@ -218,6 +222,24 @@ public partial class MainLayout : IDisposable
         {
             MainViewModel.SelectSavegame(null);
             NavigationManager.NavigateTo("/");
+        }
+    }
+
+    private async Task<bool> TryBusyAsync(Action work, string failureKey)
+    {
+        try
+        {
+            await RunBusyAsync(work);
+            return true;
+        }
+        catch (Exception exception)
+        {
+            // A Half Loaded Savegame Is Closed, Never Left Open
+            s_logger.Error(exception, "Failed To Load Savegame");
+            MainViewModel.SelectSavegame(null);
+            Snackbar.Add(Localizer[failureKey], Severity.Error);
+            NavigationManager.NavigateTo("/");
+            return false;
         }
     }
 
