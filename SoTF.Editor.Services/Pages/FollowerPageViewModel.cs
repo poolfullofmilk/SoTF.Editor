@@ -72,7 +72,12 @@ public class FollowerPageViewModel
         return _loaded.IsChanged($"{ScopeOf(follower)}.Item.{item.ItemId}", item.Selected);
     }
 
-    public bool InfluencesChanged(FollowerState follower)
+    public bool IsChanged(FollowerState follower, Influence influence, string propertyName)
+    {
+        return _loaded.IsPropertyChanged(ScopeOf(follower, influence), influence, propertyName);
+    }
+
+    private bool InfluencesChanged(FollowerState follower)
     {
         return _loaded.IsChanged($"{ScopeOf(follower)}.Influences", InfluencesOf(follower));
     }
@@ -86,11 +91,20 @@ public class FollowerPageViewModel
         }
 
         _loaded.Remember($"{ScopeOf(follower)}.Influences", InfluencesOf(follower));
+        foreach (var influence in follower.Influences)
+        {
+            _loaded.RememberProperties(ScopeOf(follower, influence), influence);
+        }
     }
 
     private static string ScopeOf(FollowerState follower)
     {
         return $"{follower.TypeId}.{follower.UniqueId}";
+    }
+
+    private static string ScopeOf(FollowerState follower, Influence influence)
+    {
+        return $"{ScopeOf(follower)}.Influence.{influence.TypeId}";
     }
 
     private static string InfluencesOf(FollowerState follower)

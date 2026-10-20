@@ -2,17 +2,14 @@ using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models.Actors;
+using SoTF.Editor.Data.Models.SaveData.Actor;
 using SoTF.Editor.Desktop.Components.Shared.Dialogs;
 using SoTF.Editor.Services.Pages;
-using SoTF.Editor.Services.Savegames;
 
 namespace SoTF.Editor.Desktop.Components.Shared.Common;
 
-public partial class FollowerPanel
+public partial class FollowerPanel : EditorPageBase
 {
-    [Inject]
-    public required IStringLocalizer<SharedResource> Localizer { get; set; }
-
     [Parameter]
     public int TypeId { get; set; }
 
@@ -27,12 +24,6 @@ public partial class FollowerPanel
 
     [Inject]
     public required PlayerPageViewModel PlayerPage { get; set; }
-
-    [Inject]
-    public required MainViewModel MainViewModel { get; set; }
-
-    [Inject]
-    public required IDialogService DialogService { get; set; }
 
     [Inject]
     public required ISnackbar Snackbar { get; set; }
@@ -53,6 +44,11 @@ public partial class FollowerPanel
     private bool CanMoveToPlayer => InSave && PlayerOnSurface;
     private bool CanMoveToOther => InSave && OtherInSave;
     private Data.Models.Position? MapPosition => InSave ? Follower.Pos : null;
+
+    private bool IsInfluenceChanged(Influence influence, string propertyName)
+    {
+        return FollowerPage.IsChanged(Follower, influence, propertyName);
+    }
 
     private string CopyLabel(FollowerState copy)
     {

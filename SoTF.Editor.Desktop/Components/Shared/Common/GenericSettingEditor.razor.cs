@@ -3,14 +3,11 @@ using SoTF.Editor.Data.Models;
 
 namespace SoTF.Editor.Desktop.Components.Shared.Common;
 
-public partial class GenericSettingEditor
+public partial class GenericSettingEditor : EditorPageBase
 {
     [Parameter]
     public required GenericSetting Setting { get; set; }
 
-    // Asked On Every Render, The Editor Re-Renders Alone On Input
     [Parameter]
-    public Func<GenericSetting, bool>? ChangedWhen { get; set; }
-
-    private bool Changed => ChangedWhen?.Invoke(Setting) == true;
+    public bool Changed { get; set; }
 }

@@ -5,7 +5,7 @@ using SoTF.Editor.Services.Savegames;
 
 namespace SoTF.Editor.Desktop.Components.Shared.Common;
 
-public abstract class EditorPageBase : ComponentBase, IDisposable
+public abstract class EditorPageBase : ComponentBase, IHandleEvent, IDisposable
 {
     [Inject]
     public required IStringLocalizer<SharedResource> Localizer { get; set; }
@@ -26,6 +26,15 @@ public abstract class EditorPageBase : ComponentBase, IDisposable
     protected Task<bool> ConfirmAsync(string labelKey, string textKey)
     {
         return DialogService.ConfirmAsync(Localizer, Localizer[labelKey], Localizer[textKey]);
+    }
+
+    async Task IHandleEvent.HandleEventAsync(EventCallbackWorkItem callback, object? argument)
+    {
+        // After Every Edit The Menu Dots Follow Too
+        var task = callback.InvokeAsync(argument);
+        StateHasChanged();
+        await task;
+        MainViewModel.NotifyChanged();
     }
 
     private void OnChanged()

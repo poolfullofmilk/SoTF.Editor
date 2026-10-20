@@ -1,0 +1,39 @@
+<MudDialog>
+
+    <TitleContent>
+        <MudText Typo="Typo.h6">@Localizer["SaveChangesTitle"]</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudStack Spacing="2">
+            <MudText Typo="Typo.body2"
+                     Class="mud-text-secondary">
+                @Localizer["SaveChangesText"]
+            </MudText>
+            @foreach (var link in Pages)
+            {
+                <MudStack Row
+                          AlignItems="AlignItems.Center"
+                          Spacing="3"
+                          Class="px-3 py-1">
+                    <MudIcon Icon="@link.Icon"
+                             Size="Size.Small" />
+                    <MudText Typo="Typo.body2">@Localizer[link.LabelKey]</MudText>
+                </MudStack>
+            }
+            <MudText Typo="Typo.caption"
+                     Class="mud-text-secondary text-relaxed">
+                @Localizer["SaveChangesBackup"]
+            </MudText>
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        @* Save Button *@
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Info"
+                   StartIcon="@Icons.Material.Rounded.Save"
+                   OnClick="Save">
+            @Localizer["Save"]
+        </MudButton>
+    </DialogActions>
+
+</MudDialog>

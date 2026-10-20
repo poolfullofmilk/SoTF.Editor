@@ -50,7 +50,6 @@
     --row-hover: color-mix(in srgb, var(--mud-palette-black) var(--row-hover-amount), transparent);
     --row-selected: color-mix(in srgb, var(--mud-palette-black) 18%, transparent);
     --thumb-size: 32px;
-    --icon-shadow: drop-shadow(0 2px 4px rgba(0,0,0, 0.6));
 }
 
 /* App Bar Glass On Menus, Selects And Dropdowns */
@@ -164,22 +163,24 @@
     overflow-y: auto;
 }
 
-/* Info Buttons Lift Softly, Wider And Lighter Than Map Points */
+/* Info Buttons Lift Softly On A Wide Light Shadow */
 .info-button svg {
     filter: drop-shadow(0 3px 12px rgba(0,0,0, 0.22));
 }
 
-/* Badge Dots Inline: Red On The Way To An Update, Amber On Changes */
+/* Top Right Text Dots: Red For Updates, Amber For Changes */
 .update-dot .mud-menu-item-text::after,
 .changed-dot {
     content: "";
     display: inline-block;
+    flex-shrink: 0;
+    align-self: flex-start;
     width: 9px;
     height: 9px;
-    margin-left: 8px;
+    margin-left: 4px;
     border-radius: 50%;
     background-color: var(--mud-palette-error);
-    vertical-align: middle;
+    vertical-align: top;
 }
 
 .changed-dot {
@@ -194,6 +195,11 @@
 /* Items Not In The Backpack Stay Grey Until Added */
 .not-held > * {
     opacity: 0.5;
+}
+
+/* Opaque Tables Scroll On The GPU, Transparent Ones Repaint */
+.mud-table-container {
+    background-color: inherit;
 }
 
 /* Fixed Columns Keep Their Width While Rows Scroll */
@@ -426,7 +432,6 @@ html, body {
     position: absolute;
     transform: translate(-50%, -50%) scale(calc(1 / var(--map-zoom, 1))) rotate(var(--rotation, 0deg));
     cursor: pointer;
-    filter: var(--icon-shadow);
 }
 
     .map-poi.selected {
@@ -444,7 +449,7 @@ html, body {
     pointer-events: none;
 }
 
-/* Floating Panels Over The Map Take The Glass Look */
+/* Panels And Buttons Over The Map Take The Glass Look */
 .map-overlay {
     background-color: color-mix(in srgb, var(--mud-palette-surface) var(--glass-opacity), transparent) !important;
     backdrop-filter: var(--glass-blur);

@@ -22,7 +22,7 @@ A savegame editor for Sons of the Forest, with a verified backup before every sa
 - Kelvin and Virginia, spawned copies too: stats, outfit, items, revive or spawn more
 - Game setup, game state, season and weather, NPCs and structures, with info buttons that explain each setting
 - Game presets such as Hard that you can still tweak setting by setting
-- A small yellow dot on every value you changed since the save was loaded
+- A small yellow dot on every value you changed and on its page in the menu, and a summary of the changed pages before every save
 - A map to teleport the player and followers or spawn actors
 - Tools on their own page, such as regrow trees, reset fires, traps and containers, and item plating
 - Updates itself from inside the app and shows what changed

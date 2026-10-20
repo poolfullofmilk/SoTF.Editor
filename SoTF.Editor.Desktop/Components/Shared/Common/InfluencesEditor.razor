@@ -23,16 +23,19 @@
                 </MudStack>
                 @* Sentiment *@
                 <StatSlider Label="@Localizer["Sentiment"]"
+                            Changed="@IsChanged(influence, nameof(influence.Sentiment))"
                             Value="influence.Sentiment"
                             ValueChanged="value => Change(() => influence.Sentiment = value)"
                             Min="-100" />
                 @* Anger *@
                 <StatSlider Label="@Localizer["Anger"]"
+                            Changed="@IsChanged(influence, nameof(influence.Anger))"
                             Value="influence.Anger"
                             ValueChanged="value => Change(() => influence.Anger = value)"
                             Min="-100" />
                 @* Fear *@
                 <StatSlider Label="@Localizer["Fear"]"
+                            Changed="@IsChanged(influence, nameof(influence.Fear))"
                             Value="influence.Fear"
                             ValueChanged="value => Change(() => influence.Fear = value)"
                             Min="-100" />

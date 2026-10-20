@@ -33,6 +33,8 @@ public class MainViewModel(
     // Bumped Whenever Actors Or The Savegame Itself Change
     public int Revision { get; private set; }
 
+    private bool _toolsChanged;
+
     public event Action? Changed;
 
     public event Action<Savegame>? OpenRequested;
@@ -47,6 +49,7 @@ public class MainViewModel(
     {
         SelectedSavegame = savegame;
         Revision++;
+        _toolsChanged = false;
 
         playerPage.Load(savegame);
         armorPage.Load(savegame);
@@ -144,6 +147,7 @@ public class MainViewModel(
                 || weatherPage.HasChanges,
             "Npcs" => npcsPage.HasChanges,
             "Structures" => structuresPage.HasChanges,
+            "Tools" => _toolsChanged,
             _ => false,
         };
     }
@@ -206,6 +210,13 @@ public class MainViewModel(
     #endregion
 
     #region Tool Methods
+    public void FinishTool()
+    {
+        // Ponytail: Unsaved Actor Edits Also Light It, Track Per Tool
+        _toolsChanged |= SelectedSavegame?.SavegameStore.HasModified() == true;
+        NotifyChanged();
+    }
+
     public string ResetCannibalAnger()
     {
         if (

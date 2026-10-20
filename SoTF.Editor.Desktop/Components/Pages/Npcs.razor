@@ -47,15 +47,13 @@
                                     <MudStack Row
                                               AlignItems="AlignItems.Center"
                                               Spacing="2">
-                                        <ChangedBadge When="@NpcsPage.IsChanged(collection)"
-                                                      Class="d-flex flex-shrink-0">
-                                            <MudImage Src="@collection.Actors.FirstOrDefault()?.ActorType?.IconPath"
-                                                      Alt="@collection.Name"
-                                                      Class="thumb thumb-round" />
-                                        </ChangedBadge>
+                                        <MudImage Src="@collection.Actors.FirstOrDefault()?.ActorType?.IconPath"
+                                                  Alt="@collection.Name"
+                                                  Class="thumb thumb-round" />
                                         <MudText Typo="Typo.body2"
                                                  Class="text-truncate">
                                             @collection.Name
+                                            <ChangedDot When="@NpcsPage.IsChanged(collection)" />
                                         </MudText>
                                     </MudStack>
                                 </MudElement>

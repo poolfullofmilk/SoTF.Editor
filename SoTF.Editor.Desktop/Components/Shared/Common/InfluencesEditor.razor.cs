@@ -18,10 +18,18 @@ public partial class InfluencesEditor
     [Parameter]
     public EventCallback OnChanged { get; set; }
 
+    [Parameter]
+    public Func<Influence, string, bool>? ChangedWhen { get; set; }
+
     private string? _newType;
 
     private IEnumerable<string> MissingTypes =>
         Influence.AllTypes.Where(type => Influences.All(influence => influence.TypeId != type));
+
+    private bool IsChanged(Influence influence, string propertyName)
+    {
+        return ChangedWhen?.Invoke(influence, propertyName) == true;
+    }
 
     private string TypeName(string? type)
     {

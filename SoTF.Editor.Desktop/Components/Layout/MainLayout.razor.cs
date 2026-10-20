@@ -133,6 +133,11 @@ public partial class MainLayout : IDisposable
             return;
         }
 
+        if (!await ConfirmSaveAsync())
+        {
+            return;
+        }
+
         try
         {
             var saved = false;
@@ -151,6 +156,26 @@ public partial class MainLayout : IDisposable
             s_logger.Error(exception, "Failed To Save");
             Snackbar.Add(Localizer["UnableToSave", exception.Message], Severity.Error);
         }
+    }
+
+    private async Task<bool> ConfirmSaveAsync()
+    {
+        // No Page Marked Saves Straight Away, The Store Decides
+        var changedPages = s_pages.Where(page => MainViewModel.HasChanges(page.Href)).ToList();
+        if (changedPages.Count == 0)
+        {
+            return true;
+        }
+
+        var dialog = await DialogService.ShowAsync<SaveChangesDialog>(
+            (string?)null,
+            new DialogParameters<SaveChangesDialog>
+            {
+                { saveDialog => saveDialog.Pages, changedPages },
+            },
+            new DialogOptions { MaxWidth = MaxWidth.ExtraSmall, FullWidth = true }
+        );
+        return await dialog.Result is { Canceled: false };
     }
 
     private void OnOpenRequested(Savegame savegame)
@@ -320,5 +345,5 @@ public partial class MainLayout : IDisposable
         GC.SuppressFinalize(this);
     }
 
-    private sealed record PageLink(string Href, string LabelKey, string Icon, bool NeedsSavegame);
+    public sealed record PageLink(string Href, string LabelKey, string Icon, bool NeedsSavegame);
 }

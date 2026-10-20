@@ -183,7 +183,7 @@ public partial class Tools : EditorPageBase
             Snackbar.Add(message, Severity.Info);
         }
 
-        MainViewModel.NotifyChanged();
+        MainViewModel.FinishTool();
     }
 
     private string SetToEndgame()
@@ -200,7 +200,7 @@ public partial class Tools : EditorPageBase
             new DialogOptions { MaxWidth = MaxWidth.Small, FullWidth = true }
         );
         await dialog.Result;
-        MainViewModel.NotifyChanged();
+        MainViewModel.FinishTool();
     }
 
     private enum ToolKind

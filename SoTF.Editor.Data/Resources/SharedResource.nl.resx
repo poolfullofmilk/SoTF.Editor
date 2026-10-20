@@ -1062,6 +1062,15 @@
   <data name="RestoreBackupTitle" xml:space="preserve">
     <value>Back-up Terugzetten</value>
   </data>
+  <data name="SaveChangesTitle" xml:space="preserve">
+    <value>Wijzigingen Opslaan</value>
+  </data>
+  <data name="SaveChangesText" xml:space="preserve">
+    <value>Deze pagina's hebben wijzigingen</value>
+  </data>
+  <data name="SaveChangesBackup" xml:space="preserve">
+    <value>Eerst wordt een back-up van de hele savegame gemaakt</value>
+  </data>
   <data name="FollowerAlreadyAlive" xml:space="preserve">
     <value>{0} Leeft Al</value>
   </data>

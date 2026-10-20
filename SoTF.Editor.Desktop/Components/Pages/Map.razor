@@ -191,18 +191,20 @@
             </MudElement>
 
             @* Zoom Buttons *@
-            <MudStack Spacing="1"
+            <MudStack Spacing="2"
                       Class="position-absolute ma-4"
                       Style="top:0;left:0">
                 <MudIconButton Icon="@Icons.Material.Rounded.Add"
                                aria-label="@Localizer["ZoomIn"]"
                                Variant="Variant.Filled"
                                Size="Size.Small"
+                               Class="map-overlay"
                                OnClick="() => ZoomAsync(1.5)" />
                 <MudIconButton Icon="@Icons.Material.Rounded.Remove"
                                aria-label="@Localizer["ZoomOut"]"
                                Variant="Variant.Filled"
                                Size="Size.Small"
+                               Class="map-overlay"
                                OnClick="() => ZoomAsync(1 / 1.5)" />
             </MudStack>
 

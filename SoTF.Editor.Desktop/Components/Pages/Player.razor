@@ -137,8 +137,7 @@
 
         <MudItem xs="12"
                  lg="6">
-            <Header Title="@Localizer["EquippedArmor"]"
-                    Changed="@ArmorPage.HasChanges">
+            <Header Title="@Localizer["EquippedArmor"]">
                 <TitleContent>
                     <MudSpacer />
                     @* Default Durability *@
@@ -170,12 +169,9 @@
                                           AlignItems="AlignItems.Center"
                                           Spacing="4"
                                           Class="pa-1">
-                                    <ChangedBadge When="@ArmorPage.IsChanged(armour)"
-                                                  Class="d-flex flex-shrink-0">
-                                        <MudImage Src="@armour.ImageUrl"
-                                                  Alt="@armour.Name"
-                                                  Class="thumb rounded-thumb" />
-                                    </ChangedBadge>
+                                    <MudImage Src="@armour.ImageUrl"
+                                              Alt="@armour.Name"
+                                              Class="thumb rounded-thumb" />
                                     <MudStack Spacing="0"
                                               Class="flex-grow-1"
                                               Style="min-width:0">
@@ -189,14 +185,16 @@
                                         </MudText>
                                     </MudStack>
                                     @* Durability *@
-                                    <MudNumericField T="float"
-                                                     @bind-Value="armour.ArmourPiece.RemainingArmourpoints"
-                                                     Min="armour.MinDurability"
-                                                     Max="armour.MaxDurability"
-                                                     Variant="Variant.Outlined"
-                                                     Margin="Margin.Dense"
-                                                     Label="@Localizer["Durability"]"
-                                                     Style="width:140px" />
+                                    <ChangedBadge When="@ArmorPage.IsChanged(armour)">
+                                        <MudNumericField T="float"
+                                                         @bind-Value="armour.ArmourPiece.RemainingArmourpoints"
+                                                         Min="armour.MinDurability"
+                                                         Max="armour.MaxDurability"
+                                                         Variant="Variant.Outlined"
+                                                         Margin="Margin.Dense"
+                                                         Label="@Localizer["Durability"]"
+                                                         Style="width:140px" />
+                                    </ChangedBadge>
                                     @* Default Button *@
                                     <Tooltip Text="@Localizer["SetToDefaultDurability"]">
                                         <MudIconButton Icon="@Icons.Material.Rounded.SettingsBackupRestore"

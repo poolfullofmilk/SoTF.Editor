@@ -115,8 +115,8 @@
                                                        ValueChanged="value => GameSetup.SetBool(toggle.Key, value)"
                                                        Color="Color.Info">
                                                 @Localizer[toggle.LabelKey]
-                                                <InfoButton Text="@Localizer[toggle.InfoKey]" />
                                                 <ChangedDot When="@GameSetup.IsChanged(toggle.Key, toggle.Fallback)" />
+                                                <InfoButton Text="@Localizer[toggle.InfoKey]" />
                                             </MudSwitch>
                                         </MudItem>
                                     }
@@ -161,7 +161,7 @@
                                             </td>
                                             <td>
                                                 <GenericSettingEditor Setting="setting"
-                                                                      ChangedWhen="GameState.IsChanged" />
+                                                                      Changed="@GameState.IsChanged(setting)" />
                                             </td>
                                         </tr>
                                     }
@@ -207,7 +207,7 @@
                                     <MudTd Class="selectable-text">@context.Name</MudTd>
                                     <MudTd>
                                         <GenericSettingEditor Setting="context"
-                                                              ChangedWhen="GameState.IsChanged" />
+                                                              Changed="@GameState.IsChanged(context)" />
                                     </MudTd>
                                 </RowTemplate>
 
@@ -275,7 +275,7 @@
                                             </td>
                                 <td>
                                     <GenericSettingEditor Setting="setting"
-                                                          ChangedWhen="Weather.IsChanged" />
+                                                          Changed="@Weather.IsChanged(setting)" />
                                 </td>
                             </tr>
                         }

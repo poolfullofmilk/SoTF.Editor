@@ -97,8 +97,7 @@
                             <MudTd>
                                 <ItemLabel Name="@context.Name"
                                            Detail="@Localizer[context.Origin == ScrewStructureOrigin.Finished ? "FinishedStructures" : "UnfinishedStructures"]"
-                                           ImageUrl="@IconOf(context)"
-                                           Changed="@context.IsChanged" />
+                                           ImageUrl="@IconOf(context)" />
                             </MudTd>
                             <MudTd>@context.Category</MudTd>
                             <MudTd>@($"{context.Added} / {context.BuildCost}")</MudTd>
@@ -110,22 +109,25 @@
                             </MudTd>
                             <MudTd>
                                 @* Modification *@
-                                <MudSelect T="ScrewStructureModificationMode?"
-                                           Variant="Variant.Outlined"
-                                           @bind-Value="context.ModificationMode"
-                                           ToStringFunc="ModeName"
-                                           Disabled="@(context.ModificationModes.Count <= 1)"
-                                           Dense
-                                           Margin="Margin.Dense"
-                                           Style="min-width:150px">
-                                    @foreach (var mode in context.ModificationModes)
-                                    {
-                                        <MudSelectItem T="ScrewStructureModificationMode?"
-                                                       Value="mode">
-                                            @ModeName(mode)
-                                        </MudSelectItem>
-                                    }
-                                </MudSelect>
+                                <ChangedBadge When="@context.IsChanged"
+                                              Class="d-block">
+                                    <MudSelect T="ScrewStructureModificationMode?"
+                                               Variant="Variant.Outlined"
+                                               @bind-Value="context.ModificationMode"
+                                               ToStringFunc="ModeName"
+                                               Disabled="@(context.ModificationModes.Count <= 1)"
+                                               Dense
+                                               Margin="Margin.Dense"
+                                               Style="min-width:150px">
+                                        @foreach (var mode in context.ModificationModes)
+                                        {
+                                            <MudSelectItem T="ScrewStructureModificationMode?"
+                                                           Value="mode">
+                                                @ModeName(mode)
+                                            </MudSelectItem>
+                                        }
+                                    </MudSelect>
+                                </ChangedBadge>
                             </MudTd>
                             <MudTd Style="text-align:right">
                                 <ShowOnMapButton Position="context.Position" />

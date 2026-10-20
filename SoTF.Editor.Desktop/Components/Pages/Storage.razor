@@ -141,12 +141,9 @@
                                         <MudStack Row
                                                   AlignItems="AlignItems.Center"
                                                   Spacing="3">
-                                            <ChangedBadge When="@StoragePage.IsChanged(selected, storedItem)"
-                                                          Class="d-flex flex-shrink-0">
-                                                <MudImage Src="@(storedItem.SelectedItem?.Item.ThumbnailUrl ?? "images/icons/question-mark.svg")"
-                                                          Alt="@storedItem.SelectedItem?.Name"
-                                                          Class="thumb rounded-thumb" />
-                                            </ChangedBadge>
+                                            <MudImage Src="@(storedItem.SelectedItem?.Item.ThumbnailUrl ?? "images/icons/question-mark.svg")"
+                                                      Alt="@storedItem.SelectedItem?.Name"
+                                                      Class="thumb rounded-thumb" />
                                             @* Slot Item *@
                                             <MudSelect T="ItemWrapper"
                                                        @bind-Value="storedItem.SelectedItem"
@@ -162,14 +159,16 @@
                                                 }
                                             </MudSelect>
                                             @* Slot Count *@
-                                            <MudNumericField T="int"
-                                                             @bind-Value="storedItem.Count"
-                                                             Min="0"
-                                                             Max="storedItem.Max"
-                                                             Disabled="@(!storedItem.HasItem())"
-                                                             Variant="Variant.Outlined"
-                                                             Margin="Margin.Dense"
-                                                             Style="width:110px" />
+                                            <ChangedBadge When="@StoragePage.IsChanged(selected, storedItem)">
+                                                <MudNumericField T="int"
+                                                                 @bind-Value="storedItem.Count"
+                                                                 Min="0"
+                                                                 Max="storedItem.Max"
+                                                                 Disabled="@(!storedItem.HasItem())"
+                                                                 Variant="Variant.Outlined"
+                                                                 Margin="Margin.Dense"
+                                                                 Style="width:110px" />
+                                            </ChangedBadge>
                                             @* Slot Max *@
                                             <MaxButton Max="storedItem.Max"
                                                        Disabled="@(!storedItem.HasItem())"

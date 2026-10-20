@@ -1,3 +1,5 @@
+@inherits EditorPageBase
+
 @* Follower Panel *@
 <Header Title="@Name">
     <TitleContent>
@@ -170,9 +172,9 @@
                           Class="mt-2">
                     <MudText Typo="Typo.subtitle2">@Localizer["Influences"]</MudText>
                     <InfoButton Text="@Localizer["InfluencesInfo"]" />
-                    <ChangedDot When="@FollowerPage.InfluencesChanged(Follower)" />
                 </MudStack>
                 <InfluencesEditor Influences="Follower.Influences"
+                                  ChangedWhen="IsInfluenceChanged"
                                   OnChanged="StateHasChanged" />
             </MudStack>
         </MudPaper>

@@ -1062,6 +1062,15 @@
   <data name="RestoreBackupTitle" xml:space="preserve">
     <value>Restore Backup</value>
   </data>
+  <data name="SaveChangesTitle" xml:space="preserve">
+    <value>Save Changes</value>
+  </data>
+  <data name="SaveChangesText" xml:space="preserve">
+    <value>These pages have changes</value>
+  </data>
+  <data name="SaveChangesBackup" xml:space="preserve">
+    <value>A backup of the whole savegame is made first</value>
+  </data>
   <data name="FollowerAlreadyAlive" xml:space="preserve">
     <value>{0} Is Already Alive</value>
   </data>
