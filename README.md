@@ -4,17 +4,14 @@ A savegame editor for Sons of the Forest, with a verified backup before every sa
 
 ![Overview](Screenshots/Overview.png)
 
-| Inventory | Storage | Followers |
-|---|---|---|
-| ![Inventory](Screenshots/Inventory.png) | ![Storage](Screenshots/Storage.png) | ![Followers](Screenshots/Followers.png) |
-
-| Game | NPCs | Structures |
-|---|---|---|
-| ![Game](Screenshots/Game.png) | ![NPCs](Screenshots/Npcs.png) | ![Structures](Screenshots/Structures.png) |
-
-| Map | Tools | Backups |
-|---|---|---|
-| ![Map](Screenshots/Map.png) | ![Tools](Screenshots/Tools.png) | ![Backups](Screenshots/Backups.png) |
+<table>
+  <tr><th width="33%">Inventory</th><th width="33%">Storage</th><th width="33%">Followers</th></tr>
+  <tr><td><img src="Screenshots/Inventory.png" alt="Inventory" width="100%"></td><td><img src="Screenshots/Storage.png" alt="Storage" width="100%"></td><td><img src="Screenshots/Followers.png" alt="Followers" width="100%"></td></tr>
+  <tr><th width="33%">Game</th><th width="33%">NPCs</th><th width="33%">Structures</th></tr>
+  <tr><td><img src="Screenshots/Game.png" alt="Game" width="100%"></td><td><img src="Screenshots/Npcs.png" alt="NPCs" width="100%"></td><td><img src="Screenshots/Structures.png" alt="Structures" width="100%"></td></tr>
+  <tr><th width="33%">Map</th><th width="33%">Tools</th><th width="33%">Backups</th></tr>
+  <tr><td><img src="Screenshots/Map.png" alt="Map" width="100%"></td><td><img src="Screenshots/Tools.png" alt="Tools" width="100%"></td><td><img src="Screenshots/Backups.png" alt="Backups" width="100%"></td></tr>
+</table>
 
 ## Features
 - Player stats, outfit, armour and one inventory list of every item
