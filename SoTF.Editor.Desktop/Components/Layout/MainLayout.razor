@@ -137,20 +137,11 @@
                             <MudMenuItem Icon="@Icons.Custom.Brands.GitHub"
                                          Label="@Localizer["GitHubProject"]"
                                          Href="@AppInfo.RepositoryUrl" />
-                            @* Updates Menu *@
-                            <MudMenu StartIcon="@Icons.Material.Rounded.SystemUpdateAlt"
-                                     Label="@Localizer["Updates"]"
-                                     Class="@UpdateDotClass">
-                                @* Check Updates *@
-                                <MudMenuItem Icon="@Icons.Material.Rounded.Refresh"
-                                             Label="@Localizer["CheckForUpdates"]"
-                                             Class="@UpdateDotClass"
-                                             OnClick="() => CheckForUpdatesAsync(true)" />
-                                @* Latest Release *@
-                                <MudMenuItem Icon="@Icons.Material.Rounded.Download"
-                                             Label="@Localizer["DownloadLatestVersion"]"
-                                             Href="@AppInfo.LatestReleaseUrl" />
-                            </MudMenu>
+                            @* Check Updates *@
+                            <MudMenuItem Icon="@Icons.Material.Rounded.SystemUpdateAlt"
+                                         Label="@Localizer["CheckForUpdates"]"
+                                         Class="@UpdateDotClass"
+                                         OnClick="() => CheckForUpdatesAsync(true)" />
                             <MudDivider />
                             @* About *@
                             <MudMenuItem Icon="@Icons.Material.Rounded.Info"

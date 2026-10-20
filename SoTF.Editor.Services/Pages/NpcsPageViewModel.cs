@@ -29,19 +29,21 @@ public class NpcsPageViewModel
     private int _loadedCount;
     private Savegame? _loadedFrom;
 
-    public bool HasChanges => _loadedCount != AllActors.Count || AllActors.Any(IsChanged);
+    // Changed Actors Are Worked Out Once Per Load
+    private readonly HashSet<Actor> _changed = new(ReferenceEqualityComparer.Instance);
 
-    public int ChangeCount =>
-        Math.Max(Math.Abs(_loadedCount - AllActors.Count), AllActors.Count(IsChanged));
+    public bool HasChanges => _loadedCount != AllActors.Count || _changed.Count > 0;
+
+    public int ChangeCount => Math.Max(Math.Abs(_loadedCount - AllActors.Count), _changed.Count);
 
     public bool IsChanged(Actor actor)
     {
-        return _loaded.IsChanged(LoadedValues.Format(actor.UniqueId), ValueOf(actor));
+        return _changed.Contains(actor);
     }
 
     public bool IsChanged(ActorCollection collection)
     {
-        return collection.Actors.Any(IsChanged);
+        return collection.Actors.Any(_changed.Contains);
     }
 
     private static string ValueOf(Actor actor)
@@ -80,6 +82,8 @@ public class NpcsPageViewModel
     {
         LoadActors(savegame);
 
+        _changed.Clear();
+
         // Actor Changes Reload The Same Savegame, Keep The First Load
         if (!ReferenceEquals(savegame, _loadedFrom))
         {
@@ -90,7 +94,15 @@ public class NpcsPageViewModel
             {
                 _loaded.Remember(LoadedValues.Format(actor.UniqueId), ValueOf(actor));
             }
+
+            return;
         }
+
+        _changed.UnionWith(
+            AllActors.Where(actor =>
+                _loaded.IsChanged(LoadedValues.Format(actor.UniqueId), ValueOf(actor))
+            )
+        );
     }
 
     private void LoadActors(Savegame? savegame)

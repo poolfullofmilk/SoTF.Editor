@@ -18,6 +18,12 @@ public partial class ShowOnMapButton
     [Inject]
     public required NavigationManager NavigationManager { get; set; }
 
+    // A Native Title Keeps Table Rows Light
+    private string? Title =>
+        Position is null
+            ? null
+            : $"{Localizer["ShowOnMap"]}\n{Position.PrintableShort} {Position.Area.Name}";
+
     private void Show()
     {
         MapViewModel.FocusPosition = Position;

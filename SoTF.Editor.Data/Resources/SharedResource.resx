@@ -837,9 +837,6 @@
   <data name="CloseSavegame" xml:space="preserve">
     <value>Close Savegame</value>
   </data>
-  <data name="DownloadLatestVersion" xml:space="preserve">
-    <value>Download Latest Version</value>
-  </data>
   <data name="GitHubProject" xml:space="preserve">
     <value>GitHub Project</value>
   </data>
@@ -1676,9 +1673,6 @@
   </data>
   <data name="Season" xml:space="preserve">
     <value>Season</value>
-  </data>
-  <data name="Updates" xml:space="preserve">
-    <value>Updates</value>
   </data>
   <data name="WhatChanged" xml:space="preserve">
     <value>What Changed</value>

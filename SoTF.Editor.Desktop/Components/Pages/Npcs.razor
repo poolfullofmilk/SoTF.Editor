@@ -110,11 +110,11 @@
                                     <MudTd Style="text-align:right">
                                         <ShowOnMapButton Position="context.Position" />
                                         @* Edit Actor *@
-                                        <Tooltip Text="@Localizer["Edit"]">
-                                            <MudIconButton Icon="@Icons.Material.Rounded.Edit"
-                                                           Size="Size.Small"
-                                                           OnClick="() => EditAsync(context)" />
-                                        </Tooltip>
+                                        <MudIconButton Icon="@Icons.Material.Rounded.Edit"
+                                                       aria-label="@Localizer["Edit"]"
+                                                       title="@Localizer["Edit"]"
+                                                       Size="Size.Small"
+                                                       OnClick="() => EditAsync(context)" />
                                     </MudTd>
                                 </RowTemplate>
 

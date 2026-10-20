@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Globalization;
 using System.Reflection;
 using SoTF.Editor.Data.Models;
@@ -46,21 +47,24 @@ public sealed class LoadedValues
             .Any(property => IsChanged($"{scope}.{property.Name}", property.GetValue(model)));
     }
 
-    public IEnumerable<string> KeysStartingWith(string prefix)
-    {
-        return _values.Keys.Where(key => key.StartsWith(prefix, StringComparison.Ordinal));
-    }
+    private static readonly ConcurrentDictionary<Type, PropertyInfo[]> s_editableProperties = [];
 
-    private static IEnumerable<PropertyInfo> EditableProperties(Type type)
+    private static PropertyInfo[] EditableProperties(Type type)
     {
         // Settable Values Only, Computed Labels Follow The Language
-        return type.GetProperties()
-            .Where(property =>
-                property.CanRead
-                && property.CanWrite
-                && property.GetIndexParameters().Length == 0
-                && IsValue(property.PropertyType)
-            );
+        return s_editableProperties.GetOrAdd(
+            type,
+            type =>
+                [
+                    .. type.GetProperties()
+                        .Where(property =>
+                            property.CanRead
+                            && property.CanWrite
+                            && property.GetIndexParameters().Length == 0
+                            && IsValue(property.PropertyType)
+                        ),
+                ]
+        );
     }
 
     private static bool IsValue(Type type)
