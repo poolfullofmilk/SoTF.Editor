@@ -8,35 +8,57 @@
 
             <MudItem xs="12"
                      md="6">
-                <MudStack Spacing="4">
-                    <MudStack Row
-                              AlignItems="AlignItems.Start"
-                              Spacing="4">
-                        <MudImage Src="@_viewModel.Actor.ImageUrl"
-                                  Alt="@_viewModel.Actor.ActorType?.Name"
-                                  Width="120"
-                                  Class="rounded-inner" />
-                        <MudSimpleTable Dense
-                                        Elevation="0"
-                                        Class="flex-grow-1">
-                            <tbody>
+                <MudStack Spacing="3">
+
+                    @* Details Section *@
+                    <MudPaper Elevation="0"
+                              Class="dialog-section">
+                        <MudStack Row
+                                  AlignItems="AlignItems.Start"
+                                  Spacing="4">
+                            <MudImage Src="@_viewModel.Actor.ImageUrl"
+                                      Alt="@_viewModel.Actor.ActorType?.Name"
+                                      Width="120"
+                                      Class="rounded-inner flex-shrink-0" />
+                            <MudGrid Spacing="2"
+                                     Class="flex-grow-1">
+
                                 @foreach (var detail in Details)
                                 {
-                                    <tr>
-                                        <td class="mud-text-secondary">@detail.Label</td>
-                                        <td class="selectable-text">@detail.Value</td>
-                                    </tr>
+                                    <MudItem xs="@(detail.Label == Localizer["Position"].Value ? 12 : 6)">
+                                        <MudStack Spacing="0">
+                                            <MudText Typo="Typo.caption"
+                                                     Class="mud-text-secondary">
+                                                @detail.Label
+                                            </MudText>
+                                            <MudText Typo="Typo.body2"
+                                                     Class="selectable-text">
+                                                @(string.IsNullOrEmpty(detail.Value) ? "-" : detail.Value)
+                                            </MudText>
+                                        </MudStack>
+                                    </MudItem>
                                 }
-                            </tbody>
-                        </MudSimpleTable>
-                    </MudStack>
 
-                    <Header Title="@Localizer["Influences"]"
-                            Info="@Localizer["InfluencesInfo"]">
-                        <InfluencesEditor Influences="_viewModel.Influences"
-                                          CanRemove
-                                          OnChanged="() => _viewModel.ModifyOptions.UpdateInfluences = true" />
-                    </Header>
+                            </MudGrid>
+                        </MudStack>
+                    </MudPaper>
+
+                    @* Influences Section *@
+                    <MudPaper Elevation="0"
+                              Class="dialog-section">
+                        <MudStack Spacing="2">
+                            <MudStack Row
+                                      AlignItems="AlignItems.Center"
+                                      Spacing="1">
+                                <MudText Typo="Typo.subtitle2">@Localizer["Influences"]</MudText>
+                                <InfoButton Text="@Localizer["InfluencesInfo"]" />
+                            </MudStack>
+                            <InfluencesEditor Influences="_viewModel.Influences"
+                                              CanRemove
+                                              OnChanged="() => _viewModel.ModifyOptions.UpdateInfluences = true" />
+                        </MudStack>
+                    </MudPaper>
+
                 </MudStack>
             </MudItem>
 

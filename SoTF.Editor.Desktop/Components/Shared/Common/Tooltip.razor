@@ -1,5 +1,5 @@
 @* Tooltip *@
-@if (!string.IsNullOrEmpty(Text))
+@if (!Disabled && !string.IsNullOrEmpty(Text))
 {
     <MudTooltip Text="@Text"
                 RootClass="@RootClass"

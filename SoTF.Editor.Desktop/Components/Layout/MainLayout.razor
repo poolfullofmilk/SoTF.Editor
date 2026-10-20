@@ -48,6 +48,7 @@
 
                 @* Save *@
                 <Tooltip Text="@($"{Localizer["Save"]} (Ctrl+S)")"
+                         Disabled="@(!HasSavegame)"
                          RootClass="d-flex">
                     <MudButton Variant="Variant.Filled"
                                Color="Color.Info"
@@ -62,6 +63,7 @@
 
                 @* Reload *@
                 <Tooltip Text="@($"{Localizer["ReloadSavegame"]} (F5)")"
+                         Disabled="@(!HasSavegame)"
                          RootClass="d-flex">
                     <MudIconButton Icon="@Icons.Material.Rounded.Refresh"
                                    aria-label="@Localizer["ReloadSavegame"]"
@@ -73,6 +75,7 @@
 
                 @* Backup Menu *@
                 <Tooltip Text="@Localizer["Backups"]"
+                         Disabled="@(!HasSavegame)"
                          RootClass="d-flex">
                     <MudMenu Icon="@Icons.Material.Rounded.Restore"
                              AriaLabel="@Localizer["Backups"]"
@@ -96,6 +99,7 @@
 
                 @* Close Savegame *@
                 <Tooltip Text="@Localizer["CloseSavegame"]"
+                         Disabled="@(!HasSavegame)"
                          RootClass="d-flex">
                     <MudIconButton Icon="@Icons.Material.Rounded.Close"
                                    aria-label="@Localizer["CloseSavegame"]"

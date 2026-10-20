@@ -99,7 +99,8 @@
                         @(IsKelvin ? Localizer["MoveToVirginia"] : Localizer["MoveToKelvin"])
                     </MudButton>
                     @* Revive *@
-                    <Tooltip Text="@(CanRevive ? Localizer["ReviveTooltip"].Value : null)">
+                    <Tooltip Text="@Localizer["ReviveTooltip"]"
+                             Disabled="@(!CanRevive)">
                         <MudButton Variant="Variant.Text"
                                    Size="Size.Small"
                                    StartIcon="@Icons.Material.Rounded.Favorite"

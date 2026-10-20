@@ -103,7 +103,8 @@
                                                          Max="_fillItem?.Max ?? 1000"
                                                          Style="width:110px" />
                                         @* Fill Button *@
-                                        <Tooltip Text="@(_fillItem is null ? null : Localizer["FillFittingSlotsTooltip"].Value)">
+                                        <Tooltip Text="@Localizer["FillFittingSlotsTooltip"]"
+                                                 Disabled="@(_fillItem is null)">
                                             <MudButton Variant="Variant.Filled"
                                                        Color="Color.Info"
                                                        Size="Size.Small"
@@ -129,7 +130,8 @@
                                             @Localizer["ClearAll"]
                                         </MudButton>
                                         @* Apply To Same Type *@
-                                        <Tooltip Text="@(StoragePage.HasSameTypeStorages(selected) ? Localizer["ApplyToSameTypeTooltip"].Value : null)">
+                                        <Tooltip Text="@Localizer["ApplyToSameTypeTooltip"]"
+                                                 Disabled="@(!StoragePage.HasSameTypeStorages(selected))">
                                             <MudButton Variant="Variant.Text"
                                                        Size="Size.Small"
                                                        Disabled="@(!StoragePage.HasSameTypeStorages(selected))"
@@ -179,7 +181,8 @@
                                                        Disabled="@(!storedItem.HasItem())"
                                                        OnClick="storedItem.SetToMax" />
                                             @* Slot Remove *@
-                                            <Tooltip Text="@Localizer["Remove"]">
+                                            <Tooltip Text="@Localizer["Remove"]"
+                                                     Disabled="@(!storedItem.HasItem())">
                                                 <MudIconButton Icon="@Icons.Material.Rounded.Delete"
                                                                Color="Color.Error"
                                                                Size="Size.Small"

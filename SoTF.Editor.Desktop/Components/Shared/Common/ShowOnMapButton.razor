@@ -1,5 +1,6 @@
 @* Show On Map *@
-<Tooltip Text="@($"{Localizer["ShowOnMap"]}\n{Position?.PrintableShort} {Position?.Area.Name}")">
+<Tooltip Text="@($"{Localizer["ShowOnMap"]}\n{Position?.PrintableShort} {Position?.Area.Name}")"
+         Disabled="@(Position is null)">
     <MudIconButton Icon="@Icons.Material.Rounded.Map"
                    Size="Size.Small"
                    Disabled="@(Position is null)"

@@ -26,7 +26,8 @@
     </DialogContent>
     <DialogActions>
         @* Remove Copies *@
-        <Tooltip Text="@Localizer["RemoveAllCopiesTooltip"]">
+        <Tooltip Text="@Localizer["RemoveAllCopiesTooltip"]"
+                 Disabled="@(!_viewModel.HasModifiableWorldItemTypeSelected())">
             <MudButton Color="Color.Error"
                        Disabled="@(!_viewModel.HasModifiableWorldItemTypeSelected())"
                        OnClick="RemoveAllAsync">

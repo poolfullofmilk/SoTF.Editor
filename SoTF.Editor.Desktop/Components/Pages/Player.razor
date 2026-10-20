@@ -141,7 +141,8 @@
                 <TitleContent>
                     <MudSpacer />
                     @* Default Durability *@
-                    <Tooltip Text="@Localizer["SetAllToDefaultTooltip"]">
+                    <Tooltip Text="@Localizer["SetAllToDefaultTooltip"]"
+                             Disabled="@(!ArmorPage.HasArmorPieces())">
                         <MudButton Variant="Variant.Text"
                                    Size="Size.Small"
                                    Disabled="@(!ArmorPage.HasArmorPieces())"
@@ -150,7 +151,8 @@
                         </MudButton>
                     </Tooltip>
                     @* Max Durability *@
-                    <Tooltip Text="@Localizer["SetAllToMaxTooltip"]">
+                    <Tooltip Text="@Localizer["SetAllToMaxTooltip"]"
+                             Disabled="@(!ArmorPage.HasArmorPieces())">
                         <MudButton Variant="Variant.Text"
                                    Size="Size.Small"
                                    Disabled="@(!ArmorPage.HasArmorPieces())"

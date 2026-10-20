@@ -71,8 +71,8 @@
 
 /* A Dialog Group Sits On The Page Colour */
 .dialog-section {
-    padding: 12px 16px;
-    border-radius: var(--radius-inner) !important;
+    padding: 16px 20px;
+    border-radius: var(--radius-panel) !important;
     background-color: var(--mud-palette-background) !important;
 }
 

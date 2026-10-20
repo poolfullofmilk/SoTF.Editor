@@ -144,7 +144,8 @@
                         <MudTd Style="text-align:right">
                             <ShowOnMapButton Position="context.Position" />
                             @* Change Type *@
-                            <Tooltip Text="@Localizer["ChangeType"]">
+                            <Tooltip Text="@Localizer["ChangeType"]"
+                                     Disabled="@(!context.CanChangeType())">
                                 <MudIconButton Icon="@Icons.Material.Rounded.SwapHoriz"
                                                Size="Size.Small"
                                                Disabled="@(!context.CanChangeType())"
