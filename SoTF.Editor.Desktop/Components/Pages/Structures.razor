@@ -50,9 +50,9 @@
         </Header>
 
         <Header Title="@Localizer["Structures"]"
-                Class="fill">
-            <TitleContent>
-                <MudSpacer />
+                Class="fit">
+            <MudPaper Elevation="4"
+                      Class="rounded-panel panel-flush fit fill-column">
                 @* Structure Search *@
                 <MudTextField T="string"
                               Variant="Variant.Outlined"
@@ -61,103 +61,98 @@
                               Placeholder="@Localizer["Filter"]"
                               Adornment="Adornment.Start"
                               AdornmentIcon="@Icons.Material.Rounded.Search"
-                              Clearable
                               Margin="Margin.Dense"
-                              Style="max-width:280px" />
-            </TitleContent>
-            <ChildContent>
-                <MudPaper Elevation="4"
-                          Class="rounded-panel panel-flush fill fill-column">
-                    <MudTable T="ScrewStructureWrapper"
-                              Items="FilteredStructures"
-                              GroupBy="s_groupByName"
-                              Dense
-                              Hover
-                              FixedHeader
-                              Elevation="0"
-                              Class="fill">
+                              Clearable
+                              Class="flex-grow-0 px-4 pt-4 pb-2" />
+                <MudTable T="ScrewStructureWrapper"
+                          Items="FilteredStructures"
+                          GroupBy="s_groupByName"
+                          Dense
+                          Hover
+                          FixedHeader
+                          Elevation="0"
+                          Class="fit">
 
-                        <HeaderContent>
-                            <MudTh>@Localizer["Name"]</MudTh>
-                            <MudTh>@Localizer["Category"]</MudTh>
-                            <MudTh>@Localizer["Added"]</MudTh>
-                            <MudTh>@Localizer["PercentDone"]</MudTh>
-                            <MudTh>@Localizer["Modification"]</MudTh>
-                            <MudTh />
-                        </HeaderContent>
-                        <GroupHeaderTemplate>
-                            <MudTh colspan="6">
-                                <MudText Typo="Typo.subtitle2"
-                                         Class="group-title">
-                                    @($"{context.Key} ({context.Items.Count()})")
+                    <HeaderContent>
+                        <MudTh>@Localizer["Name"]</MudTh>
+                        <MudTh>@Localizer["Category"]</MudTh>
+                        <MudTh>@Localizer["Added"]</MudTh>
+                        <MudTh>@Localizer["PercentDone"]</MudTh>
+                        <MudTh>@Localizer["Modification"]</MudTh>
+                        <MudTh />
+                    </HeaderContent>
+                    <GroupHeaderTemplate>
+                        <MudTh colspan="6">
+                            <MudText Typo="Typo.subtitle2"
+                                     Class="group-title">
+                                @($"{context.Key} ({context.Items.Count()})")
+                            </MudText>
+                        </MudTh>
+                    </GroupHeaderTemplate>
+                    <RowTemplate>
+                        <MudTd>
+                            <ItemLabel Name="@context.Name"
+                                       Detail="@Localizer[context.Origin == ScrewStructureOrigin.Finished ? "FinishedStructures" : "UnfinishedStructures"]"
+                                       ImageUrl="@IconOf(context)" />
+                        </MudTd>
+                        <MudTd>@context.Category</MudTd>
+                        <MudTd>@($"{context.Added} / {context.BuildCost}")</MudTd>
+                        <MudTd>
+                            @* Percent Done, Then What Saving Makes It *@
+                            <MudStack Row
+                                      AlignItems="AlignItems.Center"
+                                      Spacing="1">
+                                <MudText Typo="Typo.body2"
+                                         Color="@(context.NewPctDone is null ? ProgressColor(context) : Color.Success)">
+                                    @context.PctDonePrintable
                                 </MudText>
-                            </MudTh>
-                        </GroupHeaderTemplate>
-                        <RowTemplate>
-                            <MudTd>
-                                <ItemLabel Name="@context.Name"
-                                           Detail="@Localizer[context.Origin == ScrewStructureOrigin.Finished ? "FinishedStructures" : "UnfinishedStructures"]"
-                                           ImageUrl="@IconOf(context)" />
-                            </MudTd>
-                            <MudTd>@context.Category</MudTd>
-                            <MudTd>@($"{context.Added} / {context.BuildCost}")</MudTd>
-                            <MudTd>
-                                @* Percent Done, Then What Saving Makes It *@
-                                <MudStack Row
-                                          AlignItems="AlignItems.Center"
-                                          Spacing="1">
+                                @if (context.NewPctDone is { } newPctDone)
+                                {
+                                    <MudIcon Icon="@Icons.Material.Rounded.ArrowForward"
+                                             Size="Size.Small" />
                                     <MudText Typo="Typo.body2"
-                                             Color="@(context.NewPctDone is null ? ProgressColor(context) : Color.Success)">
-                                        @context.PctDonePrintable
+                                             Color="Color.Warning">
+                                        @ScrewStructureWrapper.Printable(newPctDone)
                                     </MudText>
-                                    @if (context.NewPctDone is { } newPctDone)
+                                }
+                            </MudStack>
+                        </MudTd>
+                        <MudTd>
+                            @* Modification *@
+                            <ChangedBadge When="@context.IsChanged"
+                                          Class="d-block">
+                                <MudSelect T="ScrewStructureModificationMode?"
+                                           Variant="Variant.Outlined"
+                                           @bind-Value="context.ModificationMode"
+                                           ToStringFunc="ModeName"
+                                           Disabled="@(context.ModificationModes.Count <= 1)"
+                                           Dense
+                                           Margin="Margin.Dense"
+                                           Style="min-width:150px">
+                                    @foreach (var mode in context.ModificationModes)
                                     {
-                                        <MudIcon Icon="@Icons.Material.Rounded.ArrowForward"
-                                                 Size="Size.Small" />
-                                        <MudText Typo="Typo.body2"
-                                                 Color="Color.Warning">
-                                            @ScrewStructureWrapper.Printable(newPctDone)
-                                        </MudText>
+                                        <MudSelectItem T="ScrewStructureModificationMode?"
+                                                       Value="mode">
+                                            @ModeName(mode)
+                                        </MudSelectItem>
                                     }
-                                </MudStack>
-                            </MudTd>
-                            <MudTd>
-                                @* Modification *@
-                                <ChangedBadge When="@context.IsChanged"
-                                              Class="d-block">
-                                    <MudSelect T="ScrewStructureModificationMode?"
-                                               Variant="Variant.Outlined"
-                                               @bind-Value="context.ModificationMode"
-                                               ToStringFunc="ModeName"
-                                               Disabled="@(context.ModificationModes.Count <= 1)"
-                                               Dense
-                                               Margin="Margin.Dense"
-                                               Style="min-width:150px">
-                                        @foreach (var mode in context.ModificationModes)
-                                        {
-                                            <MudSelectItem T="ScrewStructureModificationMode?"
-                                                           Value="mode">
-                                                @ModeName(mode)
-                                            </MudSelectItem>
-                                        }
-                                    </MudSelect>
-                                </ChangedBadge>
-                            </MudTd>
-                            <MudTd Style="text-align:right">
-                                <ShowOnMapButton Position="context.Position" />
-                                @* Change Type *@
-                                <Tooltip Text="@Localizer["ChangeType"]">
-                                    <MudIconButton Icon="@Icons.Material.Rounded.SwapHoriz"
-                                                   Size="Size.Small"
-                                                   Disabled="@(!context.CanChangeType())"
-                                                   OnClick="() => ChangeTypeAsync(context)" />
-                                </Tooltip>
-                            </MudTd>
-                        </RowTemplate>
+                                </MudSelect>
+                            </ChangedBadge>
+                        </MudTd>
+                        <MudTd Style="text-align:right">
+                            <ShowOnMapButton Position="context.Position" />
+                            @* Change Type *@
+                            <Tooltip Text="@Localizer["ChangeType"]">
+                                <MudIconButton Icon="@Icons.Material.Rounded.SwapHoriz"
+                                               Size="Size.Small"
+                                               Disabled="@(!context.CanChangeType())"
+                                               OnClick="() => ChangeTypeAsync(context)" />
+                            </Tooltip>
+                        </MudTd>
+                    </RowTemplate>
 
-                    </MudTable>
-                </MudPaper>
-            </ChildContent>
+                </MudTable>
+            </MudPaper>
         </Header>
     </MudStack>
 </RequiresSavegame>

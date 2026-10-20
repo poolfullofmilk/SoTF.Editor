@@ -26,11 +26,11 @@ public partial class MainLayout : IDisposable
         new("/", "Savegames", Icons.Material.Rounded.Folder, false),
         new("Player", "Player", Icons.Material.Rounded.Person, true),
         new("Inventory", "Inventory", Icons.Material.Rounded.Backpack, true),
-        new("Storage", "Storage", Icons.Material.Rounded.Inventory2, true),
-        new("Followers", "Followers", Icons.Material.Rounded.Group, true),
-        new("Game", "Game", Icons.Material.Rounded.SportsEsports, true),
-        new("Npcs", "Npcs", Icons.Material.Rounded.Pets, true),
-        new("Structures", "Structures", Icons.Material.Rounded.Cabin, true),
+        new("Storage", "Storage", Icons.Material.Rounded.Inventory2, true, true),
+        new("Followers", "Followers", Icons.Material.Rounded.Group, true, true),
+        new("Game", "Game", Icons.Material.Rounded.SportsEsports, true, true),
+        new("Npcs", "Npcs", Icons.Material.Rounded.Pets, true, true),
+        new("Structures", "Structures", Icons.Material.Rounded.Cabin, true, true),
         new("Map", "Map", Icons.Material.Rounded.Map, true),
         new("Tools", "Tools", Icons.Material.Rounded.Handyman, true),
     ];
@@ -52,6 +52,13 @@ public partial class MainLayout : IDisposable
     private ReleaseInfo? _availableUpdate;
 
     private bool HasSavegame => MainViewModel.SelectedSavegame != null;
+
+    // A Client Save Holds Only The Player, World Pages Stay Shut
+    private bool IsDisabled(PageLink link)
+    {
+        return (link.NeedsSavegame && !HasSavegame)
+            || (link.NeedsWorld && MainViewModel.SelectedSavegame?.IsMultiPlayerClient() == true);
+    }
 
     // The Dot Leads From Help Down To Check For Updates
     private string? UpdateDotClass => _availableUpdate is null ? null : "update-dot";
@@ -105,7 +112,7 @@ public partial class MainLayout : IDisposable
             savegame.IsMultiPlayer() ? "Multiplayer"
             : savegame.IsMultiPlayerClient() ? "MultiplayerClient"
             : "Singleplayer";
-        return $"{savegame.Title} · {Localizer[mode]} · {Formatter.FormatDateTime(savegame.LastSaveTime)}";
+        return $"{savegame.Name} · {Localizer[mode]} · {Formatter.FormatDateTime(savegame.LastSaveTime)}";
     }
 
     private void RecoverFromError()
@@ -202,6 +209,15 @@ public partial class MainLayout : IDisposable
         if (await DialogService.ConfirmDiscardAsync(Localizer, MainViewModel))
         {
             await RunBusyAsync(MainViewModel.ReloadSavegame);
+        }
+    }
+
+    private async Task CloseAsync()
+    {
+        if (await DialogService.ConfirmDiscardAsync(Localizer, MainViewModel))
+        {
+            MainViewModel.SelectSavegame(null);
+            NavigationManager.NavigateTo("/");
         }
     }
 
@@ -345,5 +361,11 @@ public partial class MainLayout : IDisposable
         GC.SuppressFinalize(this);
     }
 
-    public sealed record PageLink(string Href, string LabelKey, string Icon, bool NeedsSavegame);
+    public sealed record PageLink(
+        string Href,
+        string LabelKey,
+        string Icon,
+        bool NeedsSavegame,
+        bool NeedsWorld = false
+    );
 }

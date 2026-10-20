@@ -450,6 +450,12 @@
   <data name="Spawn" xml:space="preserve">
     <value>Spawnen</value>
   </data>
+  <data name="RemoveCopy" xml:space="preserve">
+    <value>Kopie Verwijderen</value>
+  </data>
+  <data name="RemoveCopyText" xml:space="preserve">
+    <value>Deze gespawnde kopie verdwijnt uit de save met zijn items en gevoelens</value>
+  </data>
   <data name="Equipment" xml:space="preserve">
     <value>Uitrusting</value>
   </data>
@@ -628,10 +634,13 @@
     <value>Spelstatus</value>
   </data>
   <data name="WorldObjectStatesInfo" xml:space="preserve">
-    <value>Waarschijnlijk is 0 gesloten of niet gebeurd, 1 of 3 geopend of gebeurd</value>
+    <value>Waarschijnlijk is 0 gesloten of niet gebeurd, 1 of 3 geopend of gebeurd. Een gewiste waarde verdwijnt uit de save, dus het spel ziet het als nooit aangeraakt</value>
   </data>
   <data name="WorldObjectStates" xml:space="preserve">
     <value>Status Van Wereldobjecten</value>
+  </data>
+  <data name="ClearValue" xml:space="preserve">
+    <value>Waarde Wissen</value>
   </data>
   <data name="InfluencesInfo" xml:space="preserve">
     <value>Veel angst laat vijanden vluchten, veel woede laat ze aanvallen</value>
@@ -813,6 +822,9 @@
   <data name="ReloadSavegame" xml:space="preserve">
     <value>Savegame Herladen</value>
   </data>
+  <data name="CloseSavegame" xml:space="preserve">
+    <value>Savegame Sluiten</value>
+  </data>
   <data name="DownloadLatestVersion" xml:space="preserve">
     <value>Nieuwste Versie Downloaden</value>
   </data>
@@ -888,8 +900,11 @@
   <data name="PoiGroupItems" xml:space="preserve">
     <value>Items</value>
   </data>
-  <data name="AllSlots" xml:space="preserve">
-    <value>Alle Slots Vullen</value>
+  <data name="FillFittingSlots" xml:space="preserve">
+    <value>Passende Slots Vullen</value>
+  </data>
+  <data name="FillFittingSlotsTooltip" xml:space="preserve">
+    <value>Vult elke slot waar dit item in past, de andere slots blijven zoals ze zijn</value>
   </data>
   <data name="ClearAll" xml:space="preserve">
     <value>Alles Leegmaken</value>

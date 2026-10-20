@@ -17,7 +17,7 @@ public partial class Savegame
     {
         SavegameStore = savegameStore;
         FullPath = fullPath;
-        Title = dirName;
+        Id = dirName;
         LastSaveTime = SavegameStore.LastWriteTime;
         GameName = FindGameName();
     }
@@ -26,7 +26,11 @@ public partial class Savegame
 
     public SavegameStore SavegameStore { get; }
 
-    public string Title => !string.IsNullOrWhiteSpace(GameName) ? $"{GameName} ({field})" : field;
+    public string Id { get; }
+
+    public string Name => string.IsNullOrWhiteSpace(GameName) ? Id : GameName;
+
+    public string Title => string.IsNullOrWhiteSpace(GameName) ? Id : $"{GameName} ({Id})";
 
     public string? GameName { get; }
 

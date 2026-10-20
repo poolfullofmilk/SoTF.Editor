@@ -450,6 +450,12 @@
   <data name="Spawn" xml:space="preserve">
     <value>Spawn</value>
   </data>
+  <data name="RemoveCopy" xml:space="preserve">
+    <value>Remove Copy</value>
+  </data>
+  <data name="RemoveCopyText" xml:space="preserve">
+    <value>This spawned copy leaves the save with its items and feelings</value>
+  </data>
   <data name="Equipment" xml:space="preserve">
     <value>Equipment</value>
   </data>
@@ -628,10 +634,13 @@
     <value>Game State</value>
   </data>
   <data name="WorldObjectStatesInfo" xml:space="preserve">
-    <value>Likely 0 means closed or not happened, 1 or 3 means opened or happened</value>
+    <value>Likely 0 means closed or not happened, 1 or 3 means opened or happened. A cleared value leaves the save, so the game treats it as never touched</value>
   </data>
   <data name="WorldObjectStates" xml:space="preserve">
     <value>World Object States</value>
+  </data>
+  <data name="ClearValue" xml:space="preserve">
+    <value>Clear Value</value>
   </data>
   <data name="InfluencesInfo" xml:space="preserve">
     <value>High fear makes enemies flee, high anger makes them attack</value>
@@ -813,6 +822,9 @@
   <data name="ReloadSavegame" xml:space="preserve">
     <value>Reload Savegame</value>
   </data>
+  <data name="CloseSavegame" xml:space="preserve">
+    <value>Close Savegame</value>
+  </data>
   <data name="DownloadLatestVersion" xml:space="preserve">
     <value>Download Latest Version</value>
   </data>
@@ -888,8 +900,11 @@
   <data name="PoiGroupItems" xml:space="preserve">
     <value>Items</value>
   </data>
-  <data name="AllSlots" xml:space="preserve">
-    <value>Fill All Slots</value>
+  <data name="FillFittingSlots" xml:space="preserve">
+    <value>Fill Fitting Slots</value>
+  </data>
+  <data name="FillFittingSlotsTooltip" xml:space="preserve">
+    <value>Fills every slot this item fits in, the other slots stay as they are</value>
   </data>
   <data name="ClearAll" xml:space="preserve">
     <value>Clear All</value>

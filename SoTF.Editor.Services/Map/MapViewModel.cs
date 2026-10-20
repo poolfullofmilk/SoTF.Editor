@@ -33,6 +33,7 @@ public class MapViewModel(
         PoiGroupKeys.Items + "blueprint",
         PoiGroupKeys.Items + "equipment",
         PoiGroupKeys.Items + "key",
+        PoiGroupKeys.Items + "misc",
         PoiGroupKeys.Items + "printed",
         PoiGroupKeys.Items + "tool",
         PoiGroupKeys.Items + "weapon",

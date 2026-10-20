@@ -130,6 +130,21 @@ try
         () => Math.Abs(followers.KelvinState.Health - 77) < 0.01
     );
 
+    var kelvinCount = followers.CopiesOf(Constants.Actors.KelvinTypeId).Count;
+    EditAndCheck(
+        "Follower Spawn",
+        "Followers",
+        () => main.SpawnFollowers(Constants.Actors.KelvinTypeId, 1),
+        () => followers.CopiesOf(Constants.Actors.KelvinTypeId).Count == kelvinCount + 1
+    );
+
+    EditAndCheck(
+        "Follower Remove",
+        "Followers",
+        () => main.RemoveFollower(followers.CopiesOf(Constants.Actors.KelvinTypeId)[^1]),
+        () => followers.CopiesOf(Constants.Actors.KelvinTypeId).Count == kelvinCount
+    );
+
     EditAndCheck(
         "Game Setup",
         "Game",

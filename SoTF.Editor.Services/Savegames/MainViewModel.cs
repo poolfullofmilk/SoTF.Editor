@@ -2,6 +2,7 @@ using Newtonsoft.Json.Linq;
 using NLog;
 using SoTF.Editor.Data.Enums;
 using SoTF.Editor.Data.Helpers;
+using SoTF.Editor.Data.Models.Actors;
 using SoTF.Editor.Data.Models.Map;
 using SoTF.Editor.Data.Resources;
 using SoTF.Editor.Services.Actors;
@@ -413,6 +414,20 @@ public class MainViewModel(
             hasChanges ? "FollowerRevived" : "FollowerAlreadyAlive",
             GameNames.Get(TextKeys.ActorType(typeId))
         );
+    }
+
+    public void RemoveFollower(FollowerState follower)
+    {
+        if (
+            follower.UniqueId is not { } uniqueId
+            || SelectedSavegame?.SavegameStore.LoadJsonRaw(SavegameStore.FileType.SaveData)
+                is not { } saveDataWrapper
+        )
+        {
+            return;
+        }
+
+        ModifyActors(_ => new FollowerModifier(saveDataWrapper).Remove(uniqueId));
     }
 
     public string SpawnFollowers(int typeId, int count)

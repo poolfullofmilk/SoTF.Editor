@@ -32,20 +32,16 @@
             @if (MainViewModel.SelectedSavegame is { } savegame)
             {
                 @* Savegame Chip *@
-                <Tooltip Text="@savegame.FullPath">
-                    <MudChip T="string"
-                             Variant="Variant.Text"
-                             Size="Size.Small"
-                             Icon="@Icons.Material.Rounded.Save"
-                             Href="/">
-                        @SavegameLabel(savegame)
-                    </MudChip>
-                </Tooltip>
+                <MudChip T="string"
+                         Variant="Variant.Text"
+                         Size="Size.Small"
+                         Icon="@Icons.Material.Rounded.Save"
+                         Href="/">
+                    @SavegameLabel(savegame)
+                </MudChip>
             }
 
-            <MudSpacer />
-
-            @* Right *@
+            @* Savegame Actions *@
             <MudStack Row
                       AlignItems="AlignItems.Center"
                       Spacing="1">
@@ -81,9 +77,7 @@
                     <MudMenu Icon="@Icons.Material.Rounded.Restore"
                              AriaLabel="@Localizer["Backups"]"
                              Size="Size.Small"
-                             Disabled="@(!HasSavegame)"
-                             AnchorOrigin="Origin.BottomRight"
-                             TransformOrigin="Origin.TopRight">
+                             Disabled="@(!HasSavegame)">
                         @* Open Folder *@
                         <MudMenuItem Icon="@Icons.Material.Rounded.Folder"
                                      Label="@Localizer["OpenSavegameFolder"]"
@@ -99,6 +93,25 @@
                                      OnClick="RestoreBackupAsync" />
                     </MudMenu>
                 </Tooltip>
+
+                @* Close Savegame *@
+                <Tooltip Text="@Localizer["CloseSavegame"]"
+                         RootClass="d-flex">
+                    <MudIconButton Icon="@Icons.Material.Rounded.Close"
+                                   aria-label="@Localizer["CloseSavegame"]"
+                                   Size="Size.Small"
+                                   Class="mud-text-secondary"
+                                   Disabled="@(!HasSavegame)"
+                                   OnClick="CloseAsync" />
+                </Tooltip>
+            </MudStack>
+
+            <MudSpacer />
+
+            @* Right *@
+            <MudStack Row
+                      AlignItems="AlignItems.Center"
+                      Spacing="1">
 
                 @* Language Menu *@
                 <LanguagePicker />
@@ -165,7 +178,7 @@
                                    Class="justify-start"
                                    Style="@(IsActive(link) ? null : "padding:6px 16px")"
                                    FullWidth
-                                   Disabled="@(link.NeedsSavegame && !HasSavegame)"
+                                   Disabled="@IsDisabled(link)"
                                    Href="@link.Href">
                             @Localizer[link.LabelKey]
                             <ChangedDot When="@MainViewModel.HasChanges(link.Href)" />

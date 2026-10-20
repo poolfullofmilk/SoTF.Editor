@@ -53,7 +53,15 @@ public class FollowerPageViewModel
         return _followers.FirstOrDefault(follower => follower.UniqueId == uniqueId);
     }
 
-    public bool HasChanges => _followers.Concat(_selectedByTypeId.Values).Any(IsChanged);
+    // A Spawned Or Removed Copy Changes The Ids
+    public bool HasChanges =>
+        _loaded.IsChanged(nameof(_followers), FollowerIds())
+        || _followers.Concat(_selectedByTypeId.Values).Any(IsChanged);
+
+    private string FollowerIds()
+    {
+        return string.Join(",", _followers.Select(follower => follower.UniqueId));
+    }
 
     public bool IsChanged(FollowerState follower)
     {
@@ -173,6 +181,7 @@ public class FollowerPageViewModel
         {
             _loadedFrom = selectedSavegame;
             _loaded.Clear();
+            _loaded.Remember(nameof(_followers), FollowerIds());
             foreach (var follower in _followers.Concat(_selectedByTypeId.Values))
             {
                 Remember(follower);

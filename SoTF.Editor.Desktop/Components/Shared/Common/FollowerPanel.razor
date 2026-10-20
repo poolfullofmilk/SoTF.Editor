@@ -54,6 +54,17 @@
                             </MudSelect>
                         </MudElement>
                     }
+                    @if (IsSpawnedCopy)
+                    {
+                        @* Remove Copy *@
+                        <Tooltip Text="@Localizer["RemoveCopy"]"
+                                 RootClass="align-self-start">
+                            <MudIconButton Icon="@Icons.Material.Rounded.Delete"
+                                           aria-label="@Localizer["RemoveCopy"]"
+                                           Color="Color.Error"
+                                           OnClick="RemoveCopyAsync" />
+                        </Tooltip>
+                    }
                 </MudStack>
 
                 <MudStack Row

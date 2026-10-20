@@ -22,16 +22,16 @@
                                       AlignItems="AlignItems.Center"
                                       Spacing="1">
                                 @* Load Preset *@
-                                <MudMenu Label="@Localizer["LoadPreset"]"
-                                         StartIcon="@Icons.Material.Rounded.Tune"
-                                         EndIcon="@Icons.Material.Rounded.ArrowDropDown"
-                                         Size="Size.Small"
-                                         Class="flex-shrink-0">
-                                    @foreach (var mode in Presets)
-                                    {
-                                        <MudMenuItem OnClick="() => LoadPresetAsync(mode.Value)">@Localizer[mode.LabelKey]</MudMenuItem>
-                                    }
-                                </MudMenu>
+                                <Tooltip Text="@Localizer["LoadPreset"]"
+                                         RootClass="d-flex flex-shrink-0">
+                                    <MudMenu Icon="@Icons.Material.Rounded.Tune"
+                                             AriaLabel="@Localizer["LoadPreset"]">
+                                        @foreach (var mode in Presets)
+                                        {
+                                            <MudMenuItem OnClick="() => LoadPresetAsync(mode.Value)">@Localizer[mode.LabelKey]</MudMenuItem>
+                                        }
+                                    </MudMenu>
+                                </Tooltip>
                                 @* Game Mode *@
                                 <ChangedBadge When="ModeChanged"
                                               Class="flex-grow-1">
@@ -197,17 +197,35 @@
                                       FixedHeader
                                       Virtualize
                                       Elevation="0"
-                                      Class="fill">
+                                      Class="fill fixed-columns">
 
+                                <ColGroup>
+                                    <col />
+                                    <col style="width:200px" />
+                                    <col style="width:64px" />
+                                </ColGroup>
                                 <HeaderContent>
                                     <MudTh>@Localizer["Name"]</MudTh>
                                     <MudTh>@Localizer["Value"]</MudTh>
+                                    <MudTh />
                                 </HeaderContent>
                                 <RowTemplate>
                                     <MudTd Class="selectable-text">@context.Name</MudTd>
                                     <MudTd>
                                         <GenericSettingEditor Setting="context"
                                                               Changed="@GameState.IsChanged(context)" />
+                                    </MudTd>
+                                    <MudTd Style="text-align:right">
+                                        @* Clear Value *@
+                                        @if (context.IntValue is not null)
+                                        {
+                                            <Tooltip Text="@Localizer["ClearValue"]">
+                                                <MudIconButton Icon="@Icons.Material.Rounded.Backspace"
+                                                               aria-label="@Localizer["ClearValue"]"
+                                                               Size="Size.Small"
+                                                               OnClick="() => context.IntValue = null" />
+                                            </Tooltip>
+                                        }
                                     </MudTd>
                                 </RowTemplate>
 

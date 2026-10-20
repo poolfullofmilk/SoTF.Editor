@@ -19,7 +19,7 @@ A savegame editor for Sons of the Forest, with a verified backup before every sa
 ## Features
 - Player stats, outfit, armour and one inventory list of every item
 - Every storage filled, maxed or cleared in one click
-- Kelvin and Virginia, spawned copies too: stats, outfit, items, revive or spawn more
+- Kelvin and Virginia, spawned copies too: stats, outfit, items, revive, spawn more or remove the extra ones
 - Game setup, game state, season and weather, NPCs and structures, with info buttons that explain each setting
 - Game presets such as Hard that you can still tweak setting by setting
 - A small yellow dot on every value you changed and on its page in the menu, and a summary of the changed pages before every save

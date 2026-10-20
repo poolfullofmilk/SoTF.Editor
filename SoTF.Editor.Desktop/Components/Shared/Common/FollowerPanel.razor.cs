@@ -33,6 +33,9 @@ public partial class FollowerPanel : EditorPageBase
     // Spawned Copies Get Picked One At A Time
     private List<FollowerState> Copies => FollowerPage.CopiesOf(TypeId);
 
+    // The First Is The Game's Own, Later Ones Were Spawned
+    private bool IsSpawnedCopy => Copies.IndexOf(Follower) > 0;
+
     private bool IsKelvin => TypeId == Constants.Actors.KelvinTypeId;
 
     // Followers Cannot Follow The Player Into Caves
@@ -63,6 +66,14 @@ public partial class FollowerPanel : EditorPageBase
     private void Revive()
     {
         Snackbar.Add(MainViewModel.ReviveFollower(Follower.TypeId), Severity.Info);
+    }
+
+    private async Task RemoveCopyAsync()
+    {
+        if (await ConfirmAsync("RemoveCopy", "RemoveCopyText"))
+        {
+            MainViewModel.RemoveFollower(Follower);
+        }
     }
 
     private async Task SpawnAsync()

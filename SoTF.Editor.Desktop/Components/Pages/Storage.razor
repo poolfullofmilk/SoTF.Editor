@@ -103,13 +103,15 @@
                                                          Max="_fillItem?.Max ?? 1000"
                                                          Style="width:110px" />
                                         @* Fill Button *@
-                                        <MudButton Variant="Variant.Filled"
-                                                   Color="Color.Info"
-                                                   Size="Size.Small"
-                                                   Disabled="@(_fillItem is null)"
-                                                   OnClick="() => StoragePageViewModel.FillAll(selected, _fillItem!, _fillCount)">
-                                            @Localizer["AllSlots"]
-                                        </MudButton>
+                                        <Tooltip Text="@Localizer["FillFittingSlotsTooltip"]">
+                                            <MudButton Variant="Variant.Filled"
+                                                       Color="Color.Info"
+                                                       Size="Size.Small"
+                                                       Disabled="@(_fillItem is null)"
+                                                       OnClick="() => StoragePageViewModel.FillAll(selected, _fillItem!, _fillCount)">
+                                                @Localizer["FillFittingSlots"]
+                                            </MudButton>
+                                        </Tooltip>
                                         <MudSpacer />
                                         @* Set All Max *@
                                         <MudButton Variant="Variant.Text"
