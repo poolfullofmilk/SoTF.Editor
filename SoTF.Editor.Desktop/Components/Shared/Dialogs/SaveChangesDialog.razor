@@ -17,7 +17,13 @@
                           Class="px-3 py-1">
                     <MudIcon Icon="@link.Icon"
                              Size="Size.Small" />
-                    <MudText Typo="Typo.body2">@Localizer[link.LabelKey]</MudText>
+                    <MudStack Spacing="0">
+                        <MudText Typo="Typo.body2">@Localizer[link.LabelKey]</MudText>
+                        <MudText Typo="Typo.caption"
+                                 Class="mud-text-secondary">
+                            @MainViewModel.ChangeSummary(link.Href)
+                        </MudText>
+                    </MudStack>
                 </MudStack>
             }
             <MudText Typo="Typo.caption"

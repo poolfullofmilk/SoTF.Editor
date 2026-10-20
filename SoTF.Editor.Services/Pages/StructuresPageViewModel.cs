@@ -31,6 +31,9 @@ public class StructuresPageViewModel
 
     public bool HasChanges => Structures.Any(structure => structure.IsChanged);
 
+    public IEnumerable<string> ChangedNames =>
+        Structures.Where(structure => structure.IsChanged).Select(structure => structure.Name);
+
     public IReadOnlyList<ScrewStructure> StructureTypes { get; }
 
     public void Load(Savegame? savegame)

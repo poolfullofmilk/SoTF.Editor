@@ -32,6 +32,9 @@ public class ArmorPageViewModel
 
     public bool HasChanges => _loaded.Count != _armour.Count || _armour.Any(IsChanged);
 
+    public int ChangeCount =>
+        Math.Max(Math.Abs(_loaded.Count - _armour.Count), _armour.Count(IsChanged));
+
     public bool IsChanged(ArmourData armourData)
     {
         // A Piece Added Since The Load Was Never Remembered

@@ -31,6 +31,9 @@ public class NpcsPageViewModel
 
     public bool HasChanges => _loadedCount != AllActors.Count || AllActors.Any(IsChanged);
 
+    public int ChangeCount =>
+        Math.Max(Math.Abs(_loadedCount - AllActors.Count), AllActors.Count(IsChanged));
+
     public bool IsChanged(Actor actor)
     {
         return _loaded.IsChanged(LoadedValues.Format(actor.UniqueId), ValueOf(actor));

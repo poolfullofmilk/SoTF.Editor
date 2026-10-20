@@ -26,6 +26,14 @@ public partial class Inventory : EditorPageBase
         }
     }
 
+    private async Task AddAllAsync()
+    {
+        if (await ConfirmAsync("AddAll", "AddAllText"))
+        {
+            InventoryPage.AddAllUnassigned();
+        }
+    }
+
     private void AddCategory()
     {
         if (_category is { } category)

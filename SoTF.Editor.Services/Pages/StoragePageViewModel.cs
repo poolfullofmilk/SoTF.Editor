@@ -34,6 +34,9 @@ public class StoragePageViewModel
 
     public bool HasChanges => _loaded.Keys.Any(IsChanged);
 
+    public IEnumerable<string> ChangedNames =>
+        _loaded.Keys.Where(IsChanged).Select(storage => storage.Description);
+
     public bool IsChanged(IStorage storage)
     {
         return !_loaded.TryGetValue(storage, out var loaded)

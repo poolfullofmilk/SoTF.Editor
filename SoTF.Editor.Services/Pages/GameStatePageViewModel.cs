@@ -45,6 +45,8 @@ public partial class GameStatePageViewModel
 
     public bool HasChanges => AllSettings.Any(IsChanged);
 
+    public int ChangeCount => AllSettings.Count(IsChanged);
+
     public string ValueState =>
         string.Join('\n', AllSettings.Select(setting => LoadedValues.Format(setting.GetValue())));
 

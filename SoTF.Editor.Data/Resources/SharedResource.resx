@@ -651,6 +651,12 @@
   <data name="Sentiment" xml:space="preserve">
     <value>Sentiment</value>
   </data>
+  <data name="Open" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="AddAll" xml:space="preserve">
+    <value>Add All</value>
+  </data>
   <data name="AddAllFromCategory" xml:space="preserve">
     <value>Add All From Category</value>
   </data>
@@ -1094,6 +1100,24 @@
   </data>
   <data name="SaveChangesText" xml:space="preserve">
     <value>These pages have changes</value>
+  </data>
+  <data name="ChangeMore" xml:space="preserve">
+    <value>{0} and {1} more</value>
+  </data>
+  <data name="ChangeSettings" xml:space="preserve">
+    <value>Settings changed: {0}</value>
+  </data>
+  <data name="ChangeNpcs" xml:space="preserve">
+    <value>NPCs changed: {0}</value>
+  </data>
+  <data name="ChangeFollowers" xml:space="preserve">
+    <value>Followers changed: {0}</value>
+  </data>
+  <data name="ChangeArmour" xml:space="preserve">
+    <value>Armour pieces changed: {0}</value>
+  </data>
+  <data name="ChangePlayer" xml:space="preserve">
+    <value>Player stats</value>
   </data>
   <data name="SaveChangesBackup" xml:space="preserve">
     <value>A backup of the whole savegame is made first</value>
@@ -1611,6 +1635,9 @@
   <data name="SetToEndgameText" xml:space="preserve">
     <value>The story counts as finished, as if you chose to stay on the island</value>
   </data>
+  <data name="AddAllText" xml:space="preserve">
+    <value>Every item that is not held is added to the inventory</value>
+  </data>
   <data name="RemoveAllText" xml:space="preserve">
     <value>Every item leaves the inventory</value>
   </data>
@@ -1684,7 +1711,11 @@
     <value>The id the game gives this save. It never changes</value>
   </data>
   <data name="SeasonInfo" xml:space="preserve">
-    <value>The season follows from the day count and the season day offset. Picking one moves the offset by whole seasons</value>
+    <value>The season is worked out from the days played plus the season day offset on the Weather tab.
+Every season lasts the same number of days: 5 by default, 10 for Long and 90 for Realistic.
+The year runs Spring, Summer, Autumn, Winter. Example: day 36 with offset 5 on 5 day seasons is season 8, which is spring.
+Picking a season only moves the offset, by whole seasons, one back or two forward at most.
+Going back to the loaded season restores the loaded offset. The day count never changes</value>
   </data>
   <data name="ConsumableEffectsInfo" xml:space="preserve">
     <value>How much food, drinks and medicine help. Hard gives less</value>

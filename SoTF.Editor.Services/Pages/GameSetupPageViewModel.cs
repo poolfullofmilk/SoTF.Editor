@@ -130,6 +130,20 @@ public class GameSetupPageViewModel
     public bool HasChanges =>
         !SameEntries(_stringSettings, _loadedStrings) || !SameEntries(_boolSettings, _loadedBools);
 
+    public int ChangeCount =>
+        _stringSettings
+            .Keys.Union(_loadedStrings.Keys)
+            .Count(key =>
+                _stringSettings.GetValueOrDefault(key) != _loadedStrings.GetValueOrDefault(key)
+            )
+        + _boolSettings
+            .Keys.Union(_loadedBools.Keys)
+            .Count(key =>
+                _boolSettings.TryGetValue(key, out var current)
+                    != _loadedBools.TryGetValue(key, out var loaded)
+                || current != loaded
+            );
+
     public bool IsChanged(string key, string fallback)
     {
         return GetString(key, fallback) != (_loadedStrings.GetValueOrDefault(key) ?? fallback);

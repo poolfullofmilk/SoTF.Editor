@@ -74,11 +74,12 @@
                             @* Savegame Card *@
                             <MudPaper Elevation="4"
                                       Class="@CardClass(savegame)"
+                                      title="@savegame.FullPath"
                                       @onclick="() => Open(savegame)">
                                 @if (savegame.ThumbnailPath is { } thumbnailPath)
                                 {
                                     <MudImage Src="@LocalFiles.Url(thumbnailPath)"
-                                              Alt="@savegame.Title"
+                                              Alt="@savegame.Name"
                                               Class="savegame-thumb" />
                                 }
                                 else
@@ -92,10 +93,25 @@
                                 }
                                 <MudStack Spacing="0"
                                           Class="pa-3">
-                                    <MudText Typo="Typo.subtitle1"
-                                             Class="text-truncate text-tight">
-                                        @savegame.Title
-                                    </MudText>
+                                    <MudStack Row
+                                              AlignItems="AlignItems.Center"
+                                              Spacing="2">
+                                        <MudText Typo="Typo.subtitle1"
+                                                 Class="text-truncate text-tight">
+                                            @savegame.Name
+                                        </MudText>
+                                        <MudSpacer />
+                                        @if (IsOpen(savegame))
+                                        {
+                                            @* Open Chip *@
+                                            <MudChip T="string"
+                                                     Variant="Variant.Text"
+                                                     Color="Color.Info"
+                                                     Size="Size.Small">
+                                                @Localizer["Open"]
+                                            </MudChip>
+                                        }
+                                    </MudStack>
                                     <MudText Typo="Typo.body2"
                                              Class="mud-text-secondary">
                                         @Formatter.FormatDateTime(savegame.LastSaveTime)

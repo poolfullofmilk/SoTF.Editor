@@ -16,6 +16,8 @@ public class WeatherPageViewModel
 
     public bool HasChanges => AllSettings.Any(IsChanged);
 
+    public int ChangeCount => AllSettings.Count(IsChanged);
+
     public bool IsChanged(GenericSetting setting)
     {
         return _loaded.IsChanged(setting.Name, setting.GetValue());

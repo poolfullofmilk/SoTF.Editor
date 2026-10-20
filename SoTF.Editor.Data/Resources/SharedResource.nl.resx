@@ -651,6 +651,12 @@
   <data name="Sentiment" xml:space="preserve">
     <value>Sentiment</value>
   </data>
+  <data name="Open" xml:space="preserve">
+    <value>Geopend</value>
+  </data>
+  <data name="AddAll" xml:space="preserve">
+    <value>Alles Toevoegen</value>
+  </data>
   <data name="AddAllFromCategory" xml:space="preserve">
     <value>Alles Uit Categorie Toevoegen</value>
   </data>
@@ -1094,6 +1100,24 @@
   </data>
   <data name="SaveChangesText" xml:space="preserve">
     <value>Deze pagina's hebben wijzigingen</value>
+  </data>
+  <data name="ChangeMore" xml:space="preserve">
+    <value>{0} en {1} meer</value>
+  </data>
+  <data name="ChangeSettings" xml:space="preserve">
+    <value>Instellingen gewijzigd: {0}</value>
+  </data>
+  <data name="ChangeNpcs" xml:space="preserve">
+    <value>NPC's gewijzigd: {0}</value>
+  </data>
+  <data name="ChangeFollowers" xml:space="preserve">
+    <value>Volgers gewijzigd: {0}</value>
+  </data>
+  <data name="ChangeArmour" xml:space="preserve">
+    <value>Pantserstukken gewijzigd: {0}</value>
+  </data>
+  <data name="ChangePlayer" xml:space="preserve">
+    <value>Spelerwaarden</value>
   </data>
   <data name="SaveChangesBackup" xml:space="preserve">
     <value>Eerst wordt een back-up van de hele savegame gemaakt</value>
@@ -1611,6 +1635,9 @@
   <data name="SetToEndgameText" xml:space="preserve">
     <value>Het verhaal telt als uitgespeeld, alsof je op het eiland bleef</value>
   </data>
+  <data name="AddAllText" xml:space="preserve">
+    <value>Elk item dat je niet hebt wordt aan de inventaris toegevoegd</value>
+  </data>
   <data name="RemoveAllText" xml:space="preserve">
     <value>Elk item verdwijnt uit de inventaris</value>
   </data>
@@ -1684,7 +1711,11 @@
     <value>Het id dat het spel aan deze save geeft. Het verandert nooit</value>
   </data>
   <data name="SeasonInfo" xml:space="preserve">
-    <value>Het seizoen volgt uit het aantal dagen en de seizoensverschuiving. Een keuze verschuift die met hele seizoenen</value>
+    <value>Het seizoen volgt uit de gespeelde dagen plus de seizoensverschuiving op het tabblad Weer.
+Elk seizoen duurt evenveel dagen: 5 standaard, 10 bij Lang en 90 bij Realistisch.
+Het jaar loopt Lente, Zomer, Herfst, Winter. Voorbeeld: dag 36 met verschuiving 5 en seizoenen van 5 dagen is seizoen 8, dus lente.
+Een keuze verschuift alleen de verschuiving, met hele seizoenen, hooguit een terug of twee vooruit.
+Terug naar het geladen seizoen herstelt de geladen verschuiving. Het aantal dagen verandert nooit</value>
   </data>
   <data name="ConsumableEffectsInfo" xml:space="preserve">
     <value>Hoeveel eten, drinken en medicijnen helpen. Moeilijk geeft minder</value>

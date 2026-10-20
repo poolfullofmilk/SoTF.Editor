@@ -44,13 +44,15 @@ public partial class Home : EditorPageBase
         _savegames = [.. SavegameManager.GetSavegames().Values];
     }
 
+    private bool IsOpen(Savegame savegame)
+    {
+        return MainViewModel.SelectedSavegame?.FullPath == savegame.FullPath;
+    }
+
     private string CardClass(Savegame savegame)
     {
         // The Open Savegame Reads As Selected
-        var selected =
-            MainViewModel.SelectedSavegame?.FullPath == savegame.FullPath
-                ? " list-row-selected"
-                : "";
+        var selected = IsOpen(savegame) ? " list-row-selected" : "";
         return "rounded-panel overflow-hidden hover-card" + selected;
     }
 

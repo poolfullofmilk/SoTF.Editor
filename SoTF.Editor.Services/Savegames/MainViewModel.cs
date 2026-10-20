@@ -153,6 +153,43 @@ public class MainViewModel(
         };
     }
 
+    public string ChangeSummary(string page)
+    {
+        // What Changed In Short, Names When There Are Few
+        return page switch
+        {
+            "Player" => string.Join(
+                ", ",
+                new[]
+                {
+                    playerPage.HasChanges ? AppText.Get("ChangePlayer") : null,
+                    armorPage.HasChanges
+                        ? AppText.Format("ChangeArmour", armorPage.ChangeCount)
+                        : null,
+                }.OfType<string>()
+            ),
+            "Inventory" => Names(inventoryPage.ChangedNames),
+            "Storage" => Names(storagePage.ChangedNames),
+            "Followers" => AppText.Format("ChangeFollowers", followerPage.ChangeCount),
+            "Game" => AppText.Format(
+                "ChangeSettings",
+                gameSetupPage.ChangeCount + gameStatePage.ChangeCount + weatherPage.ChangeCount
+            ),
+            "Npcs" => AppText.Format("ChangeNpcs", npcsPage.ChangeCount),
+            "Structures" => Names(structuresPage.ChangedNames),
+            "Tools" => Names(_changedTools.Select(tool => AppText.Get(tool))),
+            _ => "",
+        };
+    }
+
+    private static string Names(IEnumerable<string> names)
+    {
+        var distinct = names.Distinct().Order().ToList();
+        return distinct.Count <= 3
+            ? string.Join(", ", distinct)
+            : AppText.Format("ChangeMore", string.Join(", ", distinct.Take(3)), distinct.Count - 3);
+    }
+
     public bool HasUnsavedChanges()
     {
         if (SelectedSavegame is not { } selectedSavegame)

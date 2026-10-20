@@ -30,8 +30,6 @@ public partial class Savegame
 
     public string Name => string.IsNullOrWhiteSpace(GameName) ? Id : GameName;
 
-    public string Title => string.IsNullOrWhiteSpace(GameName) ? Id : $"{GameName} ({Id})";
-
     public string? GameName { get; }
 
     public DateTime LastSaveTime { get; }

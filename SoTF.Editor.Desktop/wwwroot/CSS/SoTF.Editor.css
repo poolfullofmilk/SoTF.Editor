@@ -69,6 +69,13 @@
     backdrop-filter: var(--glass-blur);
 }
 
+/* A Dialog Group Sits On The Page Colour */
+.dialog-section {
+    padding: 12px 16px;
+    border-radius: var(--radius-inner) !important;
+    background-color: var(--mud-palette-background) !important;
+}
+
 /* Shared Radii */
 .rounded-panel {
     border-radius: var(--radius-panel) !important;

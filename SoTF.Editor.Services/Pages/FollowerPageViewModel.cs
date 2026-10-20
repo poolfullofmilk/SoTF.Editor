@@ -58,6 +58,12 @@ public class FollowerPageViewModel
         _loaded.IsChanged(nameof(_followers), FollowerIds())
         || _followers.Concat(_selectedByTypeId.Values).Any(IsChanged);
 
+    public int ChangeCount =>
+        Math.Max(
+            _followers.Concat(_selectedByTypeId.Values).Distinct().Count(IsChanged),
+            HasChanges ? 1 : 0
+        );
+
     private string FollowerIds()
     {
         return string.Join(",", _followers.Select(follower => follower.UniqueId));

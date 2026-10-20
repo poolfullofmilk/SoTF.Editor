@@ -7,6 +7,13 @@
                 Class="fill">
             <TitleContent>
                 <MudSpacer />
+                @* Add All *@
+                <MudButton Variant="Variant.Text"
+                           Size="Size.Small"
+                           Disabled="@(!InventoryPage.HasUnassignedItems())"
+                           OnClick="AddAllAsync">
+                    @Localizer["AddAll"]
+                </MudButton>
                 @* Set All Min *@
                 <MudButton Variant="Variant.Text"
                            Size="Size.Small"

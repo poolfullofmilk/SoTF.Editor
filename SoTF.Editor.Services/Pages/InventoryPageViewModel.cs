@@ -88,6 +88,9 @@ public class InventoryPageViewModel
 
     public bool HasChanges => _loadedCounts.Keys.Any(IsChanged);
 
+    public IEnumerable<string> ChangedNames =>
+        _loadedCounts.Keys.Where(IsChanged).Select(item => item.Name);
+
     public bool IsChanged(InventoryItem item)
     {
         return !_loadedCounts.TryGetValue(item, out var loaded) || loaded != CountOf(item);
@@ -275,6 +278,17 @@ public class InventoryPageViewModel
     {
         _unassignedItems.AddRange(_inventory);
         _inventory.Clear();
+    }
+
+    public bool HasUnassignedItems()
+    {
+        return _unassignedItems.Count > 0;
+    }
+
+    public void AddAllUnassigned()
+    {
+        _inventory.AddRange(_unassignedItems);
+        _unassignedItems.Clear();
     }
 
     public bool HasInventoryItems()
