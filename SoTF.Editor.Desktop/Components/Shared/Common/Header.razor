@@ -6,8 +6,14 @@
         <MudStack Row
                   AlignItems="AlignItems.Center"
                   Spacing="1">
+            @if (Icon is not null)
+            {
+                <MudIcon Icon="@Icon"
+                         Color="Color.Tertiary"
+                         Class="ml-2" />
+            }
             <MudText Typo="Typo.h5"
-                     Class="mx-2">
+                     Class="@(Icon is null ? "mx-2" : "mr-2")">
                 @Title
             </MudText>
             @if (Info is not null)

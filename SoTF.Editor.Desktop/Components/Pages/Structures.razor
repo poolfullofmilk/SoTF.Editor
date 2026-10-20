@@ -25,6 +25,7 @@
                     </MudSelect>
                     @foreach (var origin in s_origins)
                     {
+                        var hasTargets = HasBatchTargets(origin.Origin);
                         <MudStack Row
                                   AlignItems="AlignItems.Center"
                                   Wrap="Wrap.Wrap"
@@ -39,6 +40,7 @@
                                 <MudButton Variant="Variant.Text"
                                            Size="Size.Small"
                                            Color="@(batch.Mode == ScrewStructureModificationMode.Remove ? Color.Error : Color.Default)"
+                                           Disabled="@(!hasTargets)"
                                            OnClick="() => SetAllAsync(origin.Origin, batch.Mode)">
                                     @Localizer[batch.LabelKey]
                                 </MudButton>
@@ -98,7 +100,7 @@
                         <MudTd>@context.Category</MudTd>
                         <MudTd>@($"{context.Added} / {context.BuildCost}")</MudTd>
                         <MudTd>
-                            @* Percent Done, Then What Saving Makes It *@
+                            @* Percent Done *@
                             <MudStack Row
                                       AlignItems="AlignItems.Center"
                                       Spacing="1">

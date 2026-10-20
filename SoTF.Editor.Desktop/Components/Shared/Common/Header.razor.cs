@@ -10,6 +10,9 @@ public partial class Header
     public string? Title { get; set; }
 
     [Parameter]
+    public string? Icon { get; set; }
+
+    [Parameter]
     public string? Info { get; set; }
 
     [Parameter]

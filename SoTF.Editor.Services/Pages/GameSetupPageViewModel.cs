@@ -99,6 +99,21 @@ public class GameSetupPageViewModel
         _boolSettings[key] = value;
     }
 
+    public bool HasAny(IEnumerable<string> keys)
+    {
+        return keys.Any(key => _stringSettings.ContainsKey(key) || _boolSettings.ContainsKey(key));
+    }
+
+    public void ResetSettings(IEnumerable<string> keys)
+    {
+        // A Setting The Save Lacks Reads As Its Default
+        foreach (var key in keys)
+        {
+            _stringSettings.Remove(key);
+            _boolSettings.Remove(key);
+        }
+    }
+
     public void ApplyPreset(string mode)
     {
         // A Preset Fills Every Setting, Custom Keeps Them Editable

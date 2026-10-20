@@ -154,9 +154,15 @@
 
 /* Lists Run Edge To Edge, The Panel Clips Them To Its Corners */
 .panel-flush {
-    padding: 0 0 var(--radius-inner) !important;
+    padding: 0 !important;
     overflow: hidden;
 }
+
+    /* Tables Stay Square, The Panel Rounds Their Corners */
+    .panel-flush .mud-table,
+    .panel-flush .mud-table-head .mud-table-cell {
+        border-radius: 0 !important;
+    }
 
 /* A Scrolling List Keeps Scrolling, Auto Clips The Corners Too */
 .panel-flush.overflow-y-auto {

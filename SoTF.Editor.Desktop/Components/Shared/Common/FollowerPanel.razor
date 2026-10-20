@@ -21,7 +21,10 @@
                     <MudImage Src="@ImageUrl"
                               Alt="@Name"
                               Width="96"
-                              Class="rounded-inner" />
+                              Height="120"
+                              ObjectFit="ObjectFit.Cover"
+                              ObjectPosition="ObjectPosition.Top"
+                              Class="rounded-inner flex-shrink-0" />
                     <MudStack Spacing="0">
                         <MudText Typo="Typo.body2"
                                  Class="mud-text-secondary selectable-text">
@@ -100,6 +103,7 @@
                         <MudButton Variant="Variant.Text"
                                    Size="Size.Small"
                                    StartIcon="@Icons.Material.Rounded.Favorite"
+                                   Disabled="@(!CanRevive)"
                                    OnClick="Revive">
                             @Localizer["Revive"]
                         </MudButton>

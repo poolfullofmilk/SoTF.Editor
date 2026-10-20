@@ -77,6 +77,18 @@ public class StoragePageViewModel
         }
     }
 
+    public bool HasSameTypeStorages(IStorage source)
+    {
+        return StorageCollections.Any(collection =>
+            collection.StorageTypeId == source.GetStorageTypeId() && collection.Storages.Count > 1
+        );
+    }
+
+    public static bool HasStoredItems(IStorage storage)
+    {
+        return StoredItemsOf(storage).Any(storedItem => storedItem.HasItem());
+    }
+
     public bool HasStorages()
     {
         return StorageCollections.Any(storageCollection => storageCollection.Storages.Count > 0);

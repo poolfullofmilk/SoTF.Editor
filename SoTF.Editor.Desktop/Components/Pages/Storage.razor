@@ -116,6 +116,7 @@
                                         @* Set All Max *@
                                         <MudButton Variant="Variant.Text"
                                                    Size="Size.Small"
+                                                   Disabled="@(!StoragePageViewModel.HasStoredItems(selected))"
                                                    OnClick="() => StoragePageViewModel.SetAllToMax(selected)">
                                             @Localizer["SetAllToMax"]
                                         </MudButton>
@@ -123,6 +124,7 @@
                                         <MudButton Variant="Variant.Text"
                                                    Color="Color.Error"
                                                    Size="Size.Small"
+                                                   Disabled="@(!StoragePageViewModel.HasStoredItems(selected))"
                                                    OnClick="() => StoragePageViewModel.ClearAll(selected)">
                                             @Localizer["ClearAll"]
                                         </MudButton>
@@ -130,6 +132,7 @@
                                         <Tooltip Text="@Localizer["ApplyToSameTypeTooltip"]">
                                             <MudButton Variant="Variant.Text"
                                                        Size="Size.Small"
+                                                       Disabled="@(!StoragePage.HasSameTypeStorages(selected))"
                                                        OnClick="() => ApplyToSameTypeAsync(selected)">
                                                 @Localizer["ApplyToSameType"]
                                             </MudButton>

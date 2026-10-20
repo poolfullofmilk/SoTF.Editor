@@ -46,6 +46,9 @@ public partial class FollowerPanel : EditorPageBase
     private bool OtherInSave => FollowerPage.OtherOf(Follower).UniqueId != null;
     private bool CanMoveToPlayer => InSave && PlayerOnSurface;
     private bool CanMoveToOther => InSave && OtherInSave;
+
+    // Revive Hits Every Copy, Any Dead One Counts
+    private bool CanRevive => Copies.Exists(copy => copy.State != Constants.Actors.StateAlive);
     private Data.Models.Position? MapPosition => InSave ? Follower.Pos : null;
 
     private bool IsInfluenceChanged(Influence influence, string propertyName)

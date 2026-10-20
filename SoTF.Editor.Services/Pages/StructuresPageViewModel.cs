@@ -252,6 +252,20 @@ public class StructuresPageViewModel
         }
     }
 
+    public IEnumerable<ScrewStructureWrapper> BatchTargets(
+        IEnumerable<ScrewStructureWrapper> rows,
+        ScrewStructureOrigin origin
+    )
+    {
+        return rows.Where(structure =>
+            structure.Origin == origin
+            && (
+                BatchSelectedStructureType == null
+                || structure.ScrewStructure?.Id == BatchSelectedStructureType.Id
+            )
+        );
+    }
+
     public void SetModificationMode(
         IEnumerable<ScrewStructureWrapper> rows,
         ScrewStructureOrigin origin,
@@ -259,15 +273,7 @@ public class StructuresPageViewModel
     )
     {
         // Only The Rows The Search Shows
-        foreach (
-            var wrapper in rows.Where(structure =>
-                structure.Origin == origin
-                && (
-                    BatchSelectedStructureType == null
-                    || structure.ScrewStructure?.Id == BatchSelectedStructureType.Id
-                )
-            )
-        )
+        foreach (var wrapper in BatchTargets(rows, origin))
         {
             wrapper.ModificationMode = mode;
         }

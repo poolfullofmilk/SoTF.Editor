@@ -492,6 +492,9 @@
   <data name="CustomSettings" xml:space="preserve">
     <value>Aangepaste Instellingen</value>
   </data>
+  <data name="CustomHint" xml:space="preserve">
+    <value>Kies de modus Aangepast om losse instellingen te wijzigen, of laad een preset om vanaf een modus te beginnen</value>
+  </data>
   <data name="Default" xml:space="preserve">
     <value>Standaard</value>
   </data>
@@ -695,6 +698,9 @@
   </data>
   <data name="DeleteBothAnchors" xml:space="preserve">
     <value>Beide Ankers Verwijderen</value>
+  </data>
+  <data name="SelectAll" xml:space="preserve">
+    <value>Alles Selecteren</value>
   </data>
   <data name="DeselectAll" xml:space="preserve">
     <value>Alles Deselecteren</value>

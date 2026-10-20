@@ -56,6 +56,11 @@ public partial class Structures : EditorPageBase
             .OrderBy(wrapper => wrapper.Name)
             .ThenBy(wrapper => wrapper.PctDone);
 
+    private bool HasBatchTargets(ScrewStructureOrigin origin)
+    {
+        return StructuresPage.BatchTargets(FilteredStructures, origin).Any();
+    }
+
     private string ModeName(ScrewStructureModificationMode? mode)
     {
         return Localizer[TextKeys.StructureMode(mode ?? ScrewStructureModificationMode.None)];

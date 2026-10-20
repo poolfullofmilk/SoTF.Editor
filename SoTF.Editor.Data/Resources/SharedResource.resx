@@ -492,6 +492,9 @@
   <data name="CustomSettings" xml:space="preserve">
     <value>Custom Settings</value>
   </data>
+  <data name="CustomHint" xml:space="preserve">
+    <value>Pick Custom mode to change single settings, or load a preset to start from a mode</value>
+  </data>
   <data name="Default" xml:space="preserve">
     <value>Default</value>
   </data>
@@ -695,6 +698,9 @@
   </data>
   <data name="DeleteBothAnchors" xml:space="preserve">
     <value>Delete Both Anchors</value>
+  </data>
+  <data name="SelectAll" xml:space="preserve">
+    <value>Select All</value>
   </data>
   <data name="DeselectAll" xml:space="preserve">
     <value>Deselect All</value>

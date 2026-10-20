@@ -27,10 +27,10 @@ public class MapViewModel(
         nameof(PoiGroupType.Villages),
         nameof(PoiGroupType.ZipLines),
         PoiGroupKeys.Actors + "_followers",
-        PoiGroupKeys.WorldItems + "Radio",
         PoiGroupKeys.Items + "armor",
         PoiGroupKeys.Items + "attachment",
         PoiGroupKeys.Items + "blueprint",
+        PoiGroupKeys.Items + "clothes",
         PoiGroupKeys.Items + "equipment",
         PoiGroupKeys.Items + "key",
         PoiGroupKeys.Items + "misc",
@@ -222,6 +222,16 @@ public class MapViewModel(
     {
         return group.GroupType == PoiGroupType.Structures
             || s_defaultGroups.Contains(group.GroupKey);
+    }
+
+    public void SelectAll()
+    {
+        foreach (var poiGrouper in _poiGroups)
+        {
+            poiGrouper.Enabled = true;
+        }
+
+        SaveSettings();
     }
 
     public void DeselectAll()

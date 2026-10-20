@@ -9,7 +9,7 @@
         @* Filter Panel *@
         <MudPaper Elevation="4"
                   Class="rounded-panel pa-4 overflow-y-auto"
-                  Style="width:320px;flex-shrink:0">
+                  Style="width:360px;flex-shrink:0">
             <MudStack Spacing="3">
                 @* Full Text *@
                 <MudTextField T="string"
@@ -57,23 +57,30 @@
                            Color="Color.Info"
                            Label="@Localizer["UncollectedOnly"]" />
 
-                <MudStack Row
-                          AlignItems="AlignItems.Center"
-                          Spacing="2">
+                <MudStack Spacing="2">
                     <MudText Typo="Typo.subtitle2">@Localizer["PointsOfInterest"]</MudText>
-                    <MudSpacer />
-                    @* Reset To Default *@
-                    <MudButton Variant="Variant.Outlined"
-                               Size="Size.Small"
-                               OnClick="MapViewModel.ResetToDefault">
-                        @Localizer["Reset"]
-                    </MudButton>
-                    @* Deselect All *@
-                    <MudButton Variant="Variant.Outlined"
-                               Size="Size.Small"
-                               OnClick="MapViewModel.DeselectAll">
-                        @Localizer["DeselectAll"]
-                    </MudButton>
+                    <MudStack Row
+                              Wrap="Wrap.Wrap"
+                              Spacing="2">
+                        @* Select All *@
+                        <MudButton Variant="Variant.Outlined"
+                                   Size="Size.Small"
+                                   OnClick="MapViewModel.SelectAll">
+                            @Localizer["SelectAll"]
+                        </MudButton>
+                        @* Deselect All *@
+                        <MudButton Variant="Variant.Outlined"
+                                   Size="Size.Small"
+                                   OnClick="MapViewModel.DeselectAll">
+                            @Localizer["DeselectAll"]
+                        </MudButton>
+                        @* Reset To Default *@
+                        <MudButton Variant="Variant.Outlined"
+                                   Size="Size.Small"
+                                   OnClick="MapViewModel.ResetToDefault">
+                            @Localizer["Reset"]
+                        </MudButton>
+                    </MudStack>
                 </MudStack>
 
                 <MudStack Spacing="0">

@@ -78,6 +78,7 @@ public partial class Game : EditorPageBase
     [
         new(
             "CustomSettings",
+            MudBlazor.Icons.Material.Rounded.Tune,
             [
                 new(
                     "ConsumableEffects",
@@ -152,6 +153,7 @@ public partial class Game : EditorPageBase
         ),
         new(
             "Enemies",
+            MudBlazor.Icons.Material.Rounded.Warning,
             [
                 new(
                     "EnemyHealth",
@@ -193,6 +195,7 @@ public partial class Game : EditorPageBase
         ),
         new(
             "Weather",
+            MudBlazor.Icons.Material.Rounded.WbSunny,
             [
                 new(
                     "StartingSeason",
@@ -227,6 +230,7 @@ public partial class Game : EditorPageBase
         ),
         new(
             "Multiplayer",
+            MudBlazor.Icons.Material.Rounded.Group,
             [
                 new(
                     "PvpDamage",
@@ -282,6 +286,13 @@ public partial class Game : EditorPageBase
             : GameState.NamedIntDatas.Where(setting =>
                 setting.Name.Contains(_namedIntFilter, StringComparison.OrdinalIgnoreCase)
             );
+
+    private static IEnumerable<string> KeysOf(SettingGroup group)
+    {
+        return group
+            .Selects.Select(setting => setting.Key)
+            .Concat(group.Toggles.Select(toggle => toggle.Key));
+    }
 
     private string LabelOf(IEnumerable<SettingOption> options, string? value)
     {
@@ -351,6 +362,7 @@ public partial class Game : EditorPageBase
 
     private sealed record SettingGroup(
         string TitleKey,
+        string Icon,
         SelectSetting[] Selects,
         ToggleSetting[] Toggles
     );
