@@ -83,10 +83,8 @@ public class PoiLoader(
             .Select(group =>
             {
                 var pois = group.ToList();
-                var isEnabled = rawPoiCollection.DefaultEnabledGroups.Contains(group.Key);
-                pois.ForEach(poi => poi.Enabled = isEnabled);
                 return new PoiGroup(
-                    isEnabled,
+                    false,
                     pois,
                     AppText.Get(TextKeys.ItemType(group.Key)),
                     PoiGroupKeys.Items + group.Key,
@@ -138,9 +136,8 @@ public class PoiLoader(
                         )
                 )
                 .ToList();
-            pois.ForEach(poi => poi.Enabled = group.AlwaysEnabled);
             yield return new PoiGroup(
-                group.AlwaysEnabled,
+                false,
                 pois,
                 AppText.Get(TextKeys.PoiGroup(group.Type)),
                 group.Type,

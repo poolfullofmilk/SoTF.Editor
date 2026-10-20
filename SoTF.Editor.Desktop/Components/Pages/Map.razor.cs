@@ -138,4 +138,9 @@ public partial class Map : EditorPageBase
     {
         await JavaScript.InvokeVoidAsync("sotfMap.zoomBy", factor);
     }
+
+    private async Task CenterAsync()
+    {
+        await JavaScript.InvokeVoidAsync("sotfMap.reset");
+    }
 }

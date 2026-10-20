@@ -181,12 +181,6 @@ public class StructuresPageViewModel
         return unfinishedChanged || finishedChanged;
     }
 
-    private static int AlmostFinishedAdded(ScrewStructureWrapper wrapper)
-    {
-        // Free Structures Cost Nothing, Never A Negative Count
-        return Math.Max(0, wrapper.BuildCost - 1);
-    }
-
     private static (bool Unfinished, bool Finished) ApplyToUnfinished(
         ScrewStructureWrapper wrapper,
         JArray finishedStructures
@@ -217,7 +211,7 @@ public class StructuresPageViewModel
                 token["Id"] = unfinishedId;
                 token["Added"] =
                     wrapper.ModificationMode == ScrewStructureModificationMode.AlmostFinish
-                        ? AlmostFinishedAdded(wrapper)
+                        ? wrapper.AlmostFinishedAdded
                         : 0;
                 return (true, false);
             default:
@@ -244,7 +238,7 @@ public class StructuresPageViewModel
                     && token["Rot"] is { } rotation:
                 var added =
                     wrapper.ModificationMode == ScrewStructureModificationMode.AlmostFinish
-                        ? AlmostFinishedAdded(wrapper)
+                        ? wrapper.AlmostFinishedAdded
                         : 0;
                 unfinishedStructures.Add(
                     JToken.FromObject(

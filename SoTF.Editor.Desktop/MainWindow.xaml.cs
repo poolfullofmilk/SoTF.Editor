@@ -78,6 +78,10 @@ public partial class MainWindow : Window
         // F5 And Ctrl R Reach The Page, Not A Reload
         browser.Settings.AreBrowserAcceleratorKeysEnabled = false;
 
+        // Ctrl Wheel And Touchpad Pinch Never Resize The Whole App
+        browser.Settings.IsZoomControlEnabled = false;
+        browser.Settings.IsPinchZoomEnabled = false;
+
         browser.AddWebResourceRequestedFilter(
             LocalFiles.Host + "*",
             CoreWebView2WebResourceContext.Image

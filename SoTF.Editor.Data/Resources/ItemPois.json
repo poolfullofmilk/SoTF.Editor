@@ -2,16 +2,6 @@
   "overridingTypeIcons": {
     "weapon": "/images/items/FireAxe_tn.png"
   },
-  "defaultEnabledGroups": [
-    "weapon",
-    "armor",
-    "clothes",
-    "attachments",
-    "equipment",
-    "key",
-    "tool",
-    "weaponMod"
-  ],
   "items": {
     "340": {
       "wiki": "https://sonsoftheforest.wiki.gg/wiki/Guitar",

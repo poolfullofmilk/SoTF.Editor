@@ -102,10 +102,24 @@
                             <MudTd>@context.Category</MudTd>
                             <MudTd>@($"{context.Added} / {context.BuildCost}")</MudTd>
                             <MudTd>
-                                <MudText Typo="Typo.body2"
-                                         Color="@ProgressColor(context)">
-                                    @context.PctDonePrintable
-                                </MudText>
+                                @* Percent Done, Then What Saving Makes It *@
+                                <MudStack Row
+                                          AlignItems="AlignItems.Center"
+                                          Spacing="1">
+                                    <MudText Typo="Typo.body2"
+                                             Color="@(context.NewPctDone is null ? ProgressColor(context) : Color.Success)">
+                                        @context.PctDonePrintable
+                                    </MudText>
+                                    @if (context.NewPctDone is { } newPctDone)
+                                    {
+                                        <MudIcon Icon="@Icons.Material.Rounded.ArrowForward"
+                                                 Size="Size.Small" />
+                                        <MudText Typo="Typo.body2"
+                                                 Color="Color.Warning">
+                                            @ScrewStructureWrapper.Printable(newPctDone)
+                                        </MudText>
+                                    }
+                                </MudStack>
                             </MudTd>
                             <MudTd>
                                 @* Modification *@

@@ -21,6 +21,17 @@
                             <MudStack Row
                                       AlignItems="AlignItems.Center"
                                       Spacing="1">
+                                @* Load Preset *@
+                                <MudMenu Label="@Localizer["LoadPreset"]"
+                                         StartIcon="@Icons.Material.Rounded.Tune"
+                                         EndIcon="@Icons.Material.Rounded.ArrowDropDown"
+                                         Size="Size.Small"
+                                         Class="flex-shrink-0">
+                                    @foreach (var mode in Presets)
+                                    {
+                                        <MudMenuItem OnClick="() => LoadPresetAsync(mode.Value)">@Localizer[mode.LabelKey]</MudMenuItem>
+                                    }
+                                </MudMenu>
                                 @* Game Mode *@
                                 <ChangedBadge When="ModeChanged"
                                               Class="flex-grow-1">
@@ -36,17 +47,6 @@
                                     </MudSelect>
                                 </ChangedBadge>
                                 <InfoButton Text="@Localizer["ModeInfo"]" />
-                                @* Load Preset *@
-                                <MudMenu Label="@Localizer["LoadPreset"]"
-                                         StartIcon="@Icons.Material.Rounded.Tune"
-                                         EndIcon="@Icons.Material.Rounded.ArrowDropDown"
-                                         Size="Size.Small"
-                                         Class="flex-shrink-0">
-                                    @foreach (var mode in Presets)
-                                    {
-                                        <MudMenuItem OnClick="() => LoadPresetAsync(mode.Value)">@Localizer[mode.LabelKey]</MudMenuItem>
-                                    }
-                                </MudMenu>
                             </MudStack>
                         </MudItem>
                         <MudItem xs="12"

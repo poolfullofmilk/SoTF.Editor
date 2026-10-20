@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SoTF.Editor.Data.Helpers;
 
 namespace SoTF.Editor.Services.Savegames;
@@ -36,6 +37,19 @@ public class SaveDataWrapper(JToken parent)
     public bool HasModified()
     {
         return _modified.Any(IsChanged);
+    }
+
+    public string ChangedState()
+    {
+        return string.Concat(
+            _modified
+                .Where(IsChanged)
+                .Select(key =>
+                    (_jsonStringNodes.GetValueOrDefault(key) ?? Parent.SelectToken(key))?.ToString(
+                        Formatting.None
+                    )
+                )
+        );
     }
 
     public void SerializeAllModified()

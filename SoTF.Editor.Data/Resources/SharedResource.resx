@@ -207,6 +207,9 @@
   <data name="ZoomOut" xml:space="preserve">
     <value>Zoom Out</value>
   </data>
+  <data name="CenterMap" xml:space="preserve">
+    <value>Center Map</value>
+  </data>
   <data name="Area" xml:space="preserve">
     <value>Area</value>
   </data>
@@ -686,6 +689,9 @@
   </data>
   <data name="DeselectAll" xml:space="preserve">
     <value>Deselect All</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reset</value>
   </data>
   <data name="ClickNewLocation" xml:space="preserve">
     <value>Click Another Location</value>

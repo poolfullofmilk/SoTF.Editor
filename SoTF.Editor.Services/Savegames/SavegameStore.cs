@@ -107,6 +107,13 @@ public class SavegameStore
         return _rawData.Values.Any(saveDataWrapper => saveDataWrapper?.HasModified() ?? false);
     }
 
+    public string ChangedState()
+    {
+        return string.Concat(
+            _rawData.Values.Select(saveDataWrapper => saveDataWrapper?.ChangedState())
+        );
+    }
+
     public bool SaveAllModified()
     {
         return SaveWrappers(

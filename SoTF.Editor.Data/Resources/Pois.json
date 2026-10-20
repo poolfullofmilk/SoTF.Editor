@@ -1,7 +1,6 @@
 {
   "bunkers": {
     "icon": "bunker.svg",
-    "alwaysEnabled": true,
     "type": "Bunkers",
     "pois": [
       {
@@ -399,7 +398,6 @@
   },
   "caves": {
     "icon": "cave.svg",
-    "alwaysEnabled": "true",
     "type": "Caves",
     "pois": [
       {

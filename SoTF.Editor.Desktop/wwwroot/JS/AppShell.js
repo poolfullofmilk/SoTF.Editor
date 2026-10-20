@@ -46,19 +46,19 @@ window.sotfMap = (() => {
         apply();
     };
 
-    const init = (viewport, canvas) => {
-        const fit = Math.min(viewport.clientWidth, viewport.clientHeight) / mapSize;
-        state = {
-            viewport,
-            canvas,
-            zoom: fit,
-            minZoom: fit / 2,
-            x: (viewport.clientWidth - mapSize * fit) / 2,
-            y: (viewport.clientHeight - mapSize * fit) / 2,
-            drag: null,
-            moved: false,
-        };
+    // The Whole Map Fits, Centred
+    const fit = () => {
+        const { viewport } = state;
+        state.zoom = Math.min(viewport.clientWidth, viewport.clientHeight) / mapSize;
+        state.minZoom = state.zoom / 2;
+        state.x = (viewport.clientWidth - mapSize * state.zoom) / 2;
+        state.y = (viewport.clientHeight - mapSize * state.zoom) / 2;
         apply();
+    };
+
+    const init = (viewport, canvas) => {
+        state = { viewport, canvas, drag: null, moved: false };
+        fit();
 
         viewport.addEventListener(
             "wheel",
@@ -127,5 +127,10 @@ window.sotfMap = (() => {
         zoomAt(state.viewport.clientWidth / 2, state.viewport.clientHeight / 2, state.zoom * factor);
     };
 
-    return { init, centerOn, zoomBy };
+    const reset = () => {
+        if (!state) return;
+        fit();
+    };
+
+    return { init, centerOn, zoomBy, reset };
 })();

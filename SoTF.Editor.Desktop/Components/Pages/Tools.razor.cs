@@ -138,6 +138,7 @@ public partial class Tools : EditorPageBase
             return;
         }
 
+        var stateBefore = MainViewModel.ToolState();
         switch (tool.Kind)
         {
             case ToolKind.RegrowTrees:
@@ -159,6 +160,8 @@ public partial class Tools : EditorPageBase
                 await ConfirmAndRunAsync(tool);
                 break;
         }
+
+        MainViewModel.FinishTool(tool.TitleKey, stateBefore);
     }
 
     private async Task ConfirmAndRunAsync(Tool tool)
@@ -182,8 +185,6 @@ public partial class Tools : EditorPageBase
         {
             Snackbar.Add(message, Severity.Info);
         }
-
-        MainViewModel.FinishTool();
     }
 
     private string SetToEndgame()
@@ -200,7 +201,6 @@ public partial class Tools : EditorPageBase
             new DialogOptions { MaxWidth = MaxWidth.Small, FullWidth = true }
         );
         await dialog.Result;
-        MainViewModel.FinishTool();
     }
 
     private enum ToolKind

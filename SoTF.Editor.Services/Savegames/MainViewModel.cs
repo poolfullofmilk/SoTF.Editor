@@ -33,7 +33,7 @@ public class MainViewModel(
     // Bumped Whenever Actors Or The Savegame Itself Change
     public int Revision { get; private set; }
 
-    private bool _toolsChanged;
+    private readonly HashSet<string> _changedTools = [];
 
     public event Action? Changed;
 
@@ -49,7 +49,7 @@ public class MainViewModel(
     {
         SelectedSavegame = savegame;
         Revision++;
-        _toolsChanged = false;
+        _changedTools.Clear();
 
         playerPage.Load(savegame);
         armorPage.Load(savegame);
@@ -147,7 +147,7 @@ public class MainViewModel(
                 || weatherPage.HasChanges,
             "Npcs" => npcsPage.HasChanges,
             "Structures" => structuresPage.HasChanges,
-            "Tools" => _toolsChanged,
+            "Tools" => _changedTools.Count > 0,
             _ => false,
         };
     }
@@ -210,10 +210,27 @@ public class MainViewModel(
     #endregion
 
     #region Tool Methods
-    public void FinishTool()
+    // Unsaved Files And Game State, A Tool That Moves Them Changed Something
+    public string ToolState()
     {
-        // Ponytail: Unsaved Actor Edits Also Light It, Track Per Tool
-        _toolsChanged |= SelectedSavegame?.SavegameStore.HasModified() == true;
+        return (SelectedSavegame?.SavegameStore.ChangedState() ?? "") + gameStatePage.ValueState;
+    }
+
+    public bool IsToolChanged(string tool)
+    {
+        return _changedTools.Contains(tool);
+    }
+
+    public void FinishTool(string tool, string stateBefore)
+    {
+        if (
+            ToolState() != stateBefore
+            && (SelectedSavegame?.SavegameStore.HasModified() == true || gameStatePage.HasChanges)
+        )
+        {
+            _changedTools.Add(tool);
+        }
+
         NotifyChanged();
     }
 
@@ -423,7 +440,14 @@ public class MainViewModel(
             )
         );
 
-        return hasChanges ? AppText.Format("FollowersCreated", count) : "";
+        if (!hasChanges)
+        {
+            return "";
+        }
+
+        // New Copies Join The End, The Panel Shows The Newest
+        followerPage.Select(followerPage.CopiesOf(typeId)[^1]);
+        return AppText.Format("FollowersCreated", count);
     }
     #endregion
 

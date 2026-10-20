@@ -21,35 +21,38 @@
                                  sm="6"
                                  lg="4">
                             @* Tool Card *@
-                            <MudPaper Elevation="4"
-                                      Class="@CardClass(tool)"
-                                      @onclick="() => RunAsync(tool)">
-                                <MudStack Row
-                                          AlignItems="AlignItems.Start"
-                                          Spacing="3">
-                                    <MudIcon Icon="@tool.Icon"
-                                             Color="Color.Info" />
-                                    <MudStack Spacing="1"
-                                              Style="min-width:0">
-                                        <MudText Typo="Typo.subtitle1"
-                                                 Class="text-tight"
-                                                 Style="font-weight:700">
-                                            @Localizer[tool.TitleKey]
-                                        </MudText>
-                                        <MudText Typo="Typo.body2"
-                                                 Class="mud-text-secondary text-relaxed">
-                                            @Localizer[tool.TextKey]
-                                        </MudText>
-                                        <MudChip T="string"
-                                                 Variant="Variant.Text"
-                                                 Size="Size.Small"
-                                                 Color="@ChipColor(tool)"
-                                                 Class="ml-0 align-self-start">
-                                            @Localizer[ChipKey(tool)]
-                                        </MudChip>
+                            <ChangedBadge When="MainViewModel.IsToolChanged(tool.TitleKey)"
+                                          Class="d-block mud-height-full">
+                                <MudPaper Elevation="4"
+                                          Class="@CardClass(tool)"
+                                          @onclick="() => RunAsync(tool)">
+                                    <MudStack Row
+                                              AlignItems="AlignItems.Start"
+                                              Spacing="3">
+                                        <MudIcon Icon="@tool.Icon"
+                                                 Color="Color.Info" />
+                                        <MudStack Spacing="1"
+                                                  Style="min-width:0">
+                                            <MudText Typo="Typo.subtitle1"
+                                                     Class="text-tight"
+                                                     Style="font-weight:700">
+                                                @Localizer[tool.TitleKey]
+                                            </MudText>
+                                            <MudText Typo="Typo.body2"
+                                                     Class="mud-text-secondary text-relaxed">
+                                                @Localizer[tool.TextKey]
+                                            </MudText>
+                                            <MudChip T="string"
+                                                     Variant="Variant.Text"
+                                                     Size="Size.Small"
+                                                     Color="@ChipColor(tool)"
+                                                     Class="ml-0 align-self-start">
+                                                @Localizer[ChipKey(tool)]
+                                            </MudChip>
+                                        </MudStack>
                                     </MudStack>
-                                </MudStack>
-                            </MudPaper>
+                                </MudPaper>
+                            </ChangedBadge>
                         </MudItem>
                     }
 

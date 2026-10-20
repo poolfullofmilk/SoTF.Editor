@@ -74,14 +74,45 @@ public class ScrewStructureWrapper
     public string Category => ScrewStructure?.CategoryName ?? AppText.Get("Unknown");
     public int BuildCost => ScrewStructure?.BuildCost ?? -1;
 
-    public int PctDone =>
-        ScrewStructure?.BuildCost is { } buildCost
+    // Free Structures Cost Nothing, Never A Negative Count
+    public int AlmostFinishedAdded => Math.Max(0, BuildCost - 1);
+
+    public int PctDone => PctOf(_loadedStructure, _loadedAdded);
+
+    public string PctDonePrintable => Printable(PctDone);
+
+    // What A Save Would Write, Null While It Stays The Same
+    public int? NewPctDone
+    {
+        get
+        {
+            int? newPctDone = _modificationMode switch
+            {
+                ScrewStructureModificationMode.Finish => 100,
+                ScrewStructureModificationMode.AlmostFinish => PctOf(
+                    ScrewStructure,
+                    AlmostFinishedAdded
+                ),
+                ScrewStructureModificationMode.Unfinish => 0,
+                _ => null,
+            };
+            return newPctDone == PctDone ? null : newPctDone;
+        }
+    }
+
+    public static string Printable(int pctDone)
+    {
+        return pctDone == -1 ? "???" : $"{pctDone}%";
+    }
+
+    private static int PctOf(ScrewStructure? screwStructure, int added)
+    {
+        return screwStructure?.BuildCost is { } buildCost
             ? buildCost == 0
                 ? 100
-                : 100 * Added / buildCost
+                : 100 * added / buildCost
             : -1;
-
-    public string PctDonePrintable => PctDone == -1 ? "???" : $"{PctDone}%";
+    }
 
     public int? ChangedTypeId { get; private set; }
 
@@ -141,7 +172,7 @@ public class ScrewStructureWrapper
 
         ModificationMode = ScrewStructureModificationMode.AlmostFinish;
         ScrewStructure = selectedScrewStructure;
-        Added = Math.Max(0, selectedScrewStructure.BuildCost - 1);
+        Added = AlmostFinishedAdded;
         ChangedTypeId = selectedScrewStructure.Id;
     }
 }

@@ -16,6 +16,29 @@ public class MapViewModel(
     GameData gameData
 )
 {
+    // What The Map Shows Before Any Choice, And After Reset
+    private static readonly HashSet<string> s_defaultGroups =
+    [
+        nameof(PoiGroupType.Bunkers),
+        nameof(PoiGroupType.Caves),
+        nameof(PoiGroupType.Doors),
+        nameof(PoiGroupType.Player),
+        nameof(PoiGroupType.Printers),
+        nameof(PoiGroupType.Villages),
+        nameof(PoiGroupType.ZipLines),
+        PoiGroupKeys.Actors + "_followers",
+        PoiGroupKeys.WorldItems + "Radio",
+        PoiGroupKeys.Items + "armor",
+        PoiGroupKeys.Items + "attachment",
+        PoiGroupKeys.Items + "blueprint",
+        PoiGroupKeys.Items + "equipment",
+        PoiGroupKeys.Items + "key",
+        PoiGroupKeys.Items + "printed",
+        PoiGroupKeys.Items + "tool",
+        PoiGroupKeys.Items + "weapon",
+        PoiGroupKeys.Items + "weaponMod",
+    ];
+
     private List<IPoiGrouper> _poiGroups = [];
     private int _builtRevision = -1;
 
@@ -37,9 +60,8 @@ public class MapViewModel(
     public void Build()
     {
         _builtRevision = mainViewModel.Revision;
-        var poiGrouperList = mainViewModel.BuildPoiGroups();
-        LoadSavedSelectedPois(poiGrouperList);
-        _poiGroups = poiGrouperList;
+        _poiGroups = mainViewModel.BuildPoiGroups();
+        LoadSavedSelectedPois();
         SelectedPoi = null;
         ApplyFilterToAllPois();
     }
@@ -185,6 +207,22 @@ public class MapViewModel(
         }
     }
 
+    public void ResetToDefault()
+    {
+        foreach (var group in AllGroups())
+        {
+            group.Enabled = IsDefault(group);
+        }
+
+        SaveSettings();
+    }
+
+    private static bool IsDefault(PoiGroup group)
+    {
+        return group.GroupType == PoiGroupType.Structures
+            || s_defaultGroups.Contains(group.GroupKey);
+    }
+
     public void DeselectAll()
     {
         foreach (var poiGrouper in _poiGroups)
@@ -227,28 +265,12 @@ public class MapViewModel(
         _ = enabled ? selected.Add(groupKey) : selected.Remove(groupKey);
     }
 
-    private static void LoadSavedSelectedPois(List<IPoiGrouper> poiGrouperList)
+    private void LoadSavedSelectedPois()
     {
-        if (UserSettings.Current.SelectedMapGroups is not { } selectedGroups)
+        var selectedGroups = UserSettings.Current.SelectedMapGroups;
+        foreach (var group in AllGroups())
         {
-            return;
-        }
-
-        foreach (var poiGrouper in poiGrouperList)
-        {
-            switch (poiGrouper)
-            {
-                case PoiGroup poiGroup:
-                    poiGroup.Enabled = selectedGroups.Contains(poiGroup.GroupKey);
-                    break;
-                case PoiGroupCollection poiGroupCollection:
-                    foreach (var group in poiGroupCollection.PoiGroups)
-                    {
-                        group.Enabled = selectedGroups.Contains(group.GroupKey);
-                    }
-
-                    break;
-            }
+            group.Enabled = selectedGroups?.Contains(group.GroupKey) ?? IsDefault(group);
         }
     }
 }
