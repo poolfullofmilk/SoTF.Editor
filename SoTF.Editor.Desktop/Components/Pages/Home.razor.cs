@@ -1,4 +1,6 @@
 using Microsoft.Win32;
+using SoTF.Editor.Data.Resources;
+using SoTF.Editor.Data.ViewModels;
 using SoTF.Editor.Desktop.Components.Shared.Common;
 using SoTF.Editor.Services.Savegames;
 using SoTF.Editor.Services.Settings;
@@ -7,7 +9,9 @@ namespace SoTF.Editor.Desktop.Components.Pages;
 
 public partial class Home : EditorPageBase
 {
-    private List<Savegame> _savegames = [];
+    // Empty While The Folder Is Still Being Read
+    private List<Savegame>? _savegames;
+    private int _scan;
 
     private static string SavegamePath => SavegameManager.GetSavePath();
 
@@ -20,31 +24,42 @@ public partial class Home : EditorPageBase
             new SavegameGroup(
                 Localizer["Singleplayer"],
                 [
-                    .. _savegames.Where(savegame =>
+                    .. (_savegames ?? []).Where(savegame =>
                         savegame.IsSinglePlayer() || savegame.HasUnknownParentDir()
                     ),
                 ]
             ),
             new SavegameGroup(
                 Localizer["Multiplayer"],
-                [.. _savegames.Where(savegame => savegame.IsMultiPlayer())]
+                [.. (_savegames ?? []).Where(savegame => savegame.IsMultiPlayer())]
             ),
             new SavegameGroup(
                 Localizer["MultiplayerClient"],
-                [.. _savegames.Where(savegame => savegame.IsMultiPlayerClient())],
+                [.. (_savegames ?? []).Where(savegame => savegame.IsMultiPlayerClient())],
                 Localizer["MultiplayerClientInfo"]
             ),
         }.Where(group => group.Savegames.Count > 0);
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
-        LoadSavegames();
+        await LoadSavegamesAsync();
     }
 
-    private void LoadSavegames()
+    private async Task LoadSavegamesAsync()
     {
-        _savegames = [.. SavegameManager.GetSavegames().Values];
+        // A Slow Disk Never Holds The Window, Newer Scans Win
+        var scan = ++_scan;
+        _savegames = null;
+        var savegames = await Task.Run(() =>
+        {
+            var found = SavegameManager.GetSavegames().Values.ToList();
+            found.ForEach(savegame => _ = savegame.Summary);
+            return found;
+        });
+        if (scan == _scan)
+        {
+            _savegames = savegames;
+        }
     }
 
     private bool IsOpen(Savegame savegame)
@@ -59,12 +74,42 @@ public partial class Home : EditorPageBase
         return "rounded-panel overflow-hidden hover-card" + selected;
     }
 
-    private void Open(Savegame savegame)
+    private string WorldText(SavegameSummary summary)
     {
-        MainViewModel.RequestOpen(savegame);
+        // Day, Mode And Crash Site Tell Worlds Apart
+        return string.Join(
+            " · ",
+            new[]
+            {
+                Localizer["SavegameDay", summary.Days].Value,
+                summary.GameType is { } gameType
+                    ? Localizer[TextKeys.GameMode(gameType)].Value
+                    : null,
+                summary.CrashSite is { } crashSite
+                    ? Localizer[
+                        "SavegameCrashSite",
+                        Localizer[TextKeys.CrashSite(crashSite)].Value
+                    ].Value
+                    : null,
+            }.OfType<string>()
+        );
     }
 
-    private void ChangeFolder()
+    private string PlayerText(SavegameSummary summary)
+    {
+        return $"{Localizer["SavegameStrength", summary.StrengthLevel]} · {Localizer["SavegameItems", summary.ItemCount]}";
+    }
+
+    private void Open(Savegame savegame)
+    {
+        // The Card Was Read When Listed, Opening Reads It Again
+        if (SavegameManager.ReloadSavegame(savegame) is { } fresh)
+        {
+            MainViewModel.RequestOpen(fresh);
+        }
+    }
+
+    private async Task ChangeFolderAsync()
     {
         var dialog = new OpenFolderDialog
         {
@@ -76,15 +121,15 @@ public partial class Home : EditorPageBase
         {
             UserSettings.Current.SavegamePath = dialog.FolderName;
             UserSettings.Current.Save();
-            LoadSavegames();
+            await LoadSavegamesAsync();
         }
     }
 
-    private void SetDefaultFolder()
+    private async Task SetDefaultFolderAsync()
     {
         UserSettings.Current.SavegamePath = "";
         UserSettings.Current.Save();
-        LoadSavegames();
+        await LoadSavegamesAsync();
     }
 
     private sealed record SavegameGroup(

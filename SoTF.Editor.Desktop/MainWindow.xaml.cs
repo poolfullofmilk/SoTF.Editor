@@ -108,7 +108,7 @@ public partial class MainWindow : Window
             ".jpg" or ".jpeg" => "image/jpeg",
             _ => null,
         };
-        if (contentType == null || !File.Exists(path))
+        if (contentType == null || ReadOrNull(path) is not { } bytes)
         {
             eventArgs.Response = browser.Environment.CreateWebResourceResponse(
                 null,
@@ -120,11 +120,24 @@ public partial class MainWindow : Window
         }
 
         eventArgs.Response = browser.Environment.CreateWebResourceResponse(
-            new MemoryStream(File.ReadAllBytes(path)),
+            new MemoryStream(bytes),
             200,
             "OK",
             $"Content-Type: {contentType}"
         );
+    }
+
+    private static byte[]? ReadOrNull(string path)
+    {
+        try
+        {
+            return File.ReadAllBytes(path);
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+        {
+            // A Thumbnail Mid Write Shows The Placeholder
+            return null;
+        }
     }
 
     private void OpenDroppedSavegame(CoreWebView2WebMessageReceivedEventArgs eventArgs)
@@ -139,13 +152,19 @@ public partial class MainWindow : Window
             return;
         }
 
+        // Only A Folder Holding Save Data Opens
         var directory = Directory.Exists(path) ? path : Path.GetDirectoryName(path);
         if (
-            SavegameManager.CreateSaveInfo(
-                directory == null ? null : new DirectoryInfo(directory)
-            ) is
-            { } savegame
+            directory == null
+            || !Directory.Exists(directory)
+            || Directory.GetFiles(directory, "SaveData.*").Length == 0
         )
+        {
+            s_logger.Info($"Ignored Dropped Folder Without Save Data {directory}");
+            return;
+        }
+
+        if (SavegameManager.CreateSaveInfo(new DirectoryInfo(directory)) is { } savegame)
         {
             _mainViewModel.RequestOpen(savegame);
         }

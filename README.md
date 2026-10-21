@@ -20,9 +20,11 @@ A savegame editor for Sons of the Forest, with a verified backup before every sa
 - Game setup, game state, season and weather, NPCs and structures, with info buttons that explain each setting
 - Game presets such as Hard that you can still tweak setting by setting
 - A small yellow dot on every value you changed and on its page in the menu, and a summary of the changed pages before every save
-- A map to teleport the player and followers or spawn actors, with a useful default selection you can reset to
+- A map to teleport the player and followers, spawn actors or move ziplines, with a useful default selection you can reset to
+- Savegame cards show the day, mode and crash site, and joined games also your strength and items
 - Tools on their own page, such as regrow trees, reset fires, traps and containers, and item plating
 - Updates itself from inside the app and shows what changed
+- Every list, card and map point works with the keyboard too
 - English and Dutch
 
 ## Quick start
@@ -34,6 +36,8 @@ A savegame editor for Sons of the Forest, with a verified backup before every sa
 - Start the game and stay in the main menu while you edit, then load the save, so Steam Cloud cannot overwrite your changes
 - Every save first copies the whole savegame to `Documents\SoTF.Editor\Backups`, and any backup can be restored or deleted from the app
 - Past 500 MB of backups the oldest go, but every savegame keeps its first one
+- If a backup or load fails, nothing is overwritten and the error has a button to the backup folder
+- If the game saved while the editor was open, the editor warns before overwriting that progress
 - A multiplayer client save only holds your own player, the world lives in the host's save
 - Windows may warn on the first run because the app is not signed: click More info, then Run anyway
 

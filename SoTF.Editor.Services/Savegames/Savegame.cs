@@ -1,9 +1,11 @@
 using System.Text.RegularExpressions;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NLog;
 using SoTF.Editor.Data.Enums;
 using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
+using SoTF.Editor.Data.ViewModels;
 using SoTF.Editor.Services.Actors;
 using static SoTF.Editor.Data.Helpers.Constants.Actors;
 
@@ -20,7 +22,13 @@ public partial class Savegame
         Id = dirName;
         LastSaveTime = SavegameStore.LastWriteTime;
         GameName = FindGameName();
+        _summary = new Lazy<SavegameSummary?>(ReadSummary);
     }
+
+    private readonly Lazy<SavegameSummary?> _summary;
+
+    // Read Once, On The Thread That Lists The Savegames
+    public SavegameSummary? Summary => _summary.Value;
 
     public string FullPath { get; }
 
@@ -116,6 +124,43 @@ public partial class Savegame
         return followerModifier.Revive(typeId, itemIds, outfit, pos);
     }
 
+    private SavegameSummary? ReadSummary()
+    {
+        // A Store Of Its Own, Opening Reads Everything Fresh
+        var store = new SavegameStore(FullPath);
+        try
+        {
+            var gameState = store
+                .LoadJsonRaw(SavegameStore.FileType.GameStateSaveData)
+                ?.GetJsonBasedToken(Constants.JsonKeys.GameState);
+            var strengthLevel = store
+                .LoadJsonRaw(SavegameStore.FileType.PlayerStateSaveData)
+                ?.GetJsonBasedToken(Constants.JsonKeys.PlayerState)
+                ?["_entries"]?.FirstOrDefault(entry =>
+                    entry["Name"]?.Value<string>() == "StrengthLevel"
+                )
+                ?["IntValue"];
+            var itemBlocks = store
+                .LoadJsonRaw(SavegameStore.FileType.PlayerInventorySaveData)
+                ?.GetJsonBasedToken(Constants.JsonKeys.PlayerInventory)
+                ?["ItemInstanceManagerData"]?["ItemBlocks"];
+            return new SavegameSummary(
+                gameState?["GameDays"]?.Value<int>() ?? 0,
+                gameState?["GameType"]?.Value<string>(),
+                gameState?["CrashSite"]?.Value<string>(),
+                strengthLevel?.Value<int>() ?? 0,
+                itemBlocks?.Count(block => block["TotalCount"]?.Value<int>() > 0) ?? 0
+            );
+        }
+        catch (Exception exception)
+            when (exception is JsonException or IOException or InvalidDataException)
+        {
+            // A Damaged Savegame Still Lists, Opening It Shows The Error
+            s_logger.Warn(exception, $"Failed To Read Summary Of {FullPath}");
+            return null;
+        }
+    }
+
     private string? FindGameName()
     {
         // The Game Renames It Each Save, The Newest One Counts
@@ -157,7 +202,7 @@ public partial class Savegame
         {
             var token = gameState[keyValuePair.Key];
             var valueAsToken = JToken.FromObject(keyValuePair.Value);
-            if (token == null || token.Equals(valueAsToken))
+            if (token == null || JToken.DeepEquals(token, valueAsToken))
             {
                 continue;
             }

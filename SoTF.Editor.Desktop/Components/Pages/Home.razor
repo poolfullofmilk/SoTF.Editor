@@ -22,7 +22,7 @@
                 <MudButton Variant="Variant.Outlined"
                            Size="Size.Small"
                            StartIcon="@Icons.Material.Rounded.Folder"
-                           OnClick="ChangeFolder">
+                           OnClick="ChangeFolderAsync">
                     @Localizer["ChangeFolder"]
                 </MudButton>
 
@@ -31,7 +31,7 @@
                            Size="Size.Small"
                            StartIcon="@Icons.Material.Rounded.SettingsBackupRestore"
                            Disabled="@IsDefaultFolder"
-                           OnClick="SetDefaultFolder">
+                           OnClick="SetDefaultFolderAsync">
                     @Localizer["UseDefaultFolder"]
                 </MudButton>
 
@@ -54,7 +54,41 @@
         </MudPaper>
     </Header>
 
-    @if (_savegames.Count == 0)
+    @if (_savegames is null)
+    {
+        @* Savegame Skeletons *@
+        <MudGrid>
+
+            @for (var index = 0; index < 4; index++)
+            {
+                <MudItem xs="12"
+                         sm="6"
+                         md="4"
+                         lg="3">
+                    <MudPaper Elevation="4"
+                              Class="rounded-panel overflow-hidden">
+                        <MudSkeleton SkeletonType="SkeletonType.Rectangle"
+                                     Animation="Animation.Wave"
+                                     Height="auto"
+                                     Class="savegame-thumb" />
+                        <MudStack Spacing="0"
+                                  Class="pa-3">
+                            <MudText Typo="Typo.subtitle1">
+                                <MudSkeleton Animation="Animation.Wave"
+                                             Width="60%" />
+                            </MudText>
+                            <MudText Typo="Typo.body2">
+                                <MudSkeleton Animation="Animation.Wave"
+                                             Width="40%" />
+                            </MudText>
+                        </MudStack>
+                    </MudPaper>
+                </MudItem>
+            }
+
+        </MudGrid>
+    }
+    else if (_savegames.Count == 0)
     {
         <EmptyState Icon="@Icons.Material.Rounded.FolderOff"
                     Text="@Localizer["NoSavegames"]" />
@@ -77,6 +111,10 @@
                             <MudPaper Elevation="4"
                                       Class="@CardClass(savegame)"
                                       title="@savegame.FullPath"
+                                      role="button"
+                                      tabindex="0"
+                                      aria-label="@savegame.Name"
+                                      data-keyclick
                                       @onclick="() => Open(savegame)">
                                 @if (savegame.ThumbnailPath is { } thumbnailPath)
                                 {
@@ -114,6 +152,20 @@
                                             </MudChip>
                                         }
                                     </MudStack>
+                                    @if (savegame.Summary is { } summary)
+                                    {
+                                        <MudText Typo="Typo.body2"
+                                                 Class="text-truncate">
+                                            @WorldText(summary)
+                                        </MudText>
+                                        @if (savegame.IsMultiPlayerClient())
+                                        {
+                                            <MudText Typo="Typo.body2"
+                                                     Class="text-truncate">
+                                                @PlayerText(summary)
+                                            </MudText>
+                                        }
+                                    }
                                     <MudText Typo="Typo.body2"
                                              Class="mud-text-secondary">
                                         @Formatter.FormatDateTime(savegame.LastSaveTime)

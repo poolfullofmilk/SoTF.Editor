@@ -161,6 +161,8 @@
             <MudElement HtmlTag="div"
                         @bind-Ref="_viewport"
                         Class="map-viewport"
+                        tabindex="0"
+                        aria-label="@Localizer["MapKeyboardHint"]"
                         @onclick="() => MapViewModel.SelectPoi(null)">
                 <MudElement HtmlTag="div"
                             @bind-Ref="_canvas"
@@ -196,6 +198,9 @@
                              alt="@poi.Title"
                              title="@poi.Title"
                              class="@(poi.IsSelected ? "map-poi selected" : "map-poi")"
+                             role="button"
+                             tabindex="-1"
+                             data-keyclick
                              style="@PoiStyle(poi.MapLeft, poi.MapTop, poi.IconSize, poi.IconRotation, poi.IconZIndex)"
                              @onclick="() => MapViewModel.SelectPoi(poi)"
                              @onclick:stopPropagation />

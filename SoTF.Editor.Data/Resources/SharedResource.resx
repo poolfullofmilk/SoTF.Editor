@@ -1078,7 +1078,7 @@
     <value>Changes Saved</value>
   </data>
   <data name="OverwriteExternalChangesText" xml:space="preserve">
-    <value>The game changed this savegame since it was opened</value>
+    <value>The game saved this savegame after you opened it. Saving now can undo that progress, reload first to keep it</value>
   </data>
   <data name="OverwriteExternalChangesTitle" xml:space="preserve">
     <value>Overwrite Changes</value>
@@ -1890,5 +1890,20 @@ Going back to the loaded season restores the loaded offset. The day count never 
   </data>
   <data name="LoadPresetText" xml:space="preserve">
     <value>Every setting takes the values of that mode. The mode becomes Custom, so you can still change each one</value>
+  </data>
+  <data name="SavegameDay" xml:space="preserve">
+    <value>Day {0}</value>
+  </data>
+  <data name="SavegameCrashSite" xml:space="preserve">
+    <value>{0} Crash Site</value>
+  </data>
+  <data name="SavegameStrength" xml:space="preserve">
+    <value>Strength {0}</value>
+  </data>
+  <data name="SavegameItems" xml:space="preserve">
+    <value>{0} Items</value>
+  </data>
+  <data name="MapKeyboardHint" xml:space="preserve">
+    <value>Map, the arrow keys step through the points</value>
   </data>
 </root>

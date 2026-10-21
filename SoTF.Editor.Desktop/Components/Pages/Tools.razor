@@ -25,6 +25,10 @@
                                           Class="d-block mud-height-full">
                                 <MudPaper Elevation="4"
                                           Class="@CardClass(tool)"
+                                          role="button"
+                                          tabindex="@(IsAvailable(tool) ? 0 : -1)"
+                                          aria-disabled="@(IsAvailable(tool) ? "false" : "true")"
+                                          data-keyclick
                                           @onclick="() => RunAsync(tool)">
                                     <MudStack Row
                                               AlignItems="AlignItems.Start"

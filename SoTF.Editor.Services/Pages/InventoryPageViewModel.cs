@@ -218,11 +218,15 @@ public class InventoryPageViewModel
             return false;
         }
 
-        // A Held Blueprint Has Its Page Unlocked
+        // Only A Blueprint Added Or Removed Here Moves Its Page
         var heldItemIds = _inventory.Select(item => item.Id).ToHashSet();
-        var blueprintItemIdsByPage = s_blueprintItemIds.ToDictionary(itemId =>
-            BlueprintPagePrefix + itemId
-        );
+        var heldAtLoad = _loadedCounts
+            .Where(pair => pair.Value != null)
+            .Select(pair => pair.Key.Id)
+            .ToHashSet();
+        var blueprintItemIdsByPage = s_blueprintItemIds
+            .Where(itemId => heldItemIds.Contains(itemId) != heldAtLoad.Contains(itemId))
+            .ToDictionary(itemId => BlueprintPagePrefix + itemId);
         var listedItemIds = new HashSet<int>();
         var hasChanges = false;
         foreach (var pageEntry in entries)
@@ -245,7 +249,7 @@ public class InventoryPageViewModel
         }
 
         foreach (
-            var itemId in s_blueprintItemIds.Where(itemId =>
+            var itemId in blueprintItemIdsByPage.Values.Where(itemId =>
                 heldItemIds.Contains(itemId) && !listedItemIds.Contains(itemId)
             )
         )

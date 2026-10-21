@@ -67,7 +67,7 @@ public class GameSetupPageViewModel
     public string? SelectedMode
     {
         get => GetString(GameSetupKeys.Mode, CustomGameMode);
-        set => SetString(GameSetupKeys.Mode, value);
+        set => SetString(GameSetupKeys.Mode, value, CustomGameMode);
     }
 
     public string Uid => GetString(GameSetupKeys.Uid, "");
@@ -77,16 +77,9 @@ public class GameSetupPageViewModel
         return _stringSettings.GetValueOrDefault(key) ?? fallback;
     }
 
-    public void SetString(string key, string? value)
+    public void SetString(string key, string? value, string fallback)
     {
-        if (value == null)
-        {
-            _stringSettings.Remove(key);
-        }
-        else
-        {
-            _stringSettings[key] = value;
-        }
+        Set(_stringSettings, _loadedStrings, key, value ?? fallback, fallback);
     }
 
     public bool GetBool(string key, bool fallback)
@@ -94,9 +87,28 @@ public class GameSetupPageViewModel
         return _boolSettings.TryGetValue(key, out var value) ? value : fallback;
     }
 
-    public void SetBool(string key, bool value)
+    public void SetBool(string key, bool value, bool fallback)
     {
-        _boolSettings[key] = value;
+        Set(_boolSettings, _loadedBools, key, value, fallback);
+    }
+
+    private static void Set<TValue>(
+        Dictionary<string, TValue> current,
+        Dictionary<string, TValue> loaded,
+        string key,
+        TValue value,
+        TValue fallback
+    )
+    {
+        // A Lacked Setting Back At Its Default Stays Out
+        if (!loaded.ContainsKey(key) && Equals(value, fallback))
+        {
+            current.Remove(key);
+        }
+        else
+        {
+            current[key] = value;
+        }
     }
 
     public bool HasAny(IEnumerable<string> keys)

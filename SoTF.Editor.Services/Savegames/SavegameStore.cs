@@ -116,6 +116,11 @@ public class SavegameStore
         return new DirectoryInfo(_path).Parent;
     }
 
+    public bool HasModified(FileType fileType)
+    {
+        return _rawData.GetValueOrDefault(fileType)?.HasModified() ?? false;
+    }
+
     public bool HasModified()
     {
         return _rawData.Values.Any(saveDataWrapper => saveDataWrapper?.HasModified() ?? false);

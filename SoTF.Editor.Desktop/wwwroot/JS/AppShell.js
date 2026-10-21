@@ -17,6 +17,14 @@ document.addEventListener("keydown", (event) => {
     }
 });
 
+// Rows, Cards And Map Points Marked For It Answer Enter And Space
+document.addEventListener("keydown", (event) => {
+    if ((event.key === "Enter" || event.key === " ") && event.target instanceof HTMLElement && event.target.hasAttribute("data-keyclick")) {
+        event.preventDefault();
+        event.target.click();
+    }
+});
+
 // A Dropped Folder Opens, The Host Reads Its Path
 document.addEventListener("dragover", (event) => event.preventDefault());
 document.addEventListener("drop", (event) => {
@@ -70,6 +78,19 @@ window.sotfMap = (() => {
             { passive: false }
         );
 
+        // Arrow Keys Step Through The Points, One Tab Stop For The Whole Map
+        viewport.addEventListener("keydown", (event) => {
+            const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[event.key];
+            if (!step) return;
+            event.preventDefault();
+            const points = [...canvas.querySelectorAll(".map-poi[data-keyclick]")];
+            if (points.length === 0) return;
+            const current = points.indexOf(document.activeElement);
+            const next = current < 0 ? (step > 0 ? 0 : points.length - 1) : (current + step + points.length) % points.length;
+            points[next].focus({ preventScroll: true });
+            panTo(parseFloat(points[next].style.left), parseFloat(points[next].style.top));
+        });
+
         // Icons Are Images, The Browser Would Drag Them Away
         viewport.addEventListener("dragstart", (event) => event.preventDefault());
 
@@ -122,6 +143,17 @@ window.sotfMap = (() => {
         apply();
     };
 
+    const panTo = (mapX, mapY) => {
+        state.x = state.viewport.clientWidth / 2 - mapX * state.zoom;
+        state.y = state.viewport.clientHeight / 2 - mapY * state.zoom;
+        apply();
+    };
+
+    // Leaving The Map Lets Its Elements Go
+    const dispose = () => {
+        state = null;
+    };
+
     const zoomBy = (factor) => {
         if (!state) return;
         zoomAt(state.viewport.clientWidth / 2, state.viewport.clientHeight / 2, state.zoom * factor);
@@ -132,5 +164,5 @@ window.sotfMap = (() => {
         fit();
     };
 
-    return { init, centerOn, zoomBy, reset };
+    return { init, centerOn, zoomBy, reset, dispose };
 })();

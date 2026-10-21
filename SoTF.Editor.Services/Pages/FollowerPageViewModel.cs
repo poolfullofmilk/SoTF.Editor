@@ -173,6 +173,10 @@ public class FollowerPageViewModel
 
     public void Load(Savegame? selectedSavegame)
     {
+        // An Actor Change Keeps The Copy Each Panel Shows
+        List<int?> shown = ReferenceEquals(selectedSavegame, _loadedFrom)
+            ? [.. _selectedByTypeId.Values.Select(follower => follower.UniqueId)]
+            : [];
         _followers.Clear();
         if (selectedSavegame != null)
         {
@@ -180,6 +184,10 @@ public class FollowerPageViewModel
         }
 
         SelectFirstOfEachType();
+        foreach (var follower in _followers.Where(follower => shown.Contains(follower.UniqueId)))
+        {
+            Select(follower);
+        }
         LoadDeathFlags(selectedSavegame);
 
         // Actor Changes Reload The Same Savegame, Keep The First Load

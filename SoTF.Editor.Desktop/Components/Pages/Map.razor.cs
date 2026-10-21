@@ -8,10 +8,13 @@ using SoTF.Editor.Services.Map;
 
 namespace SoTF.Editor.Desktop.Components.Pages;
 
-public partial class Map : EditorPageBase
+public partial class Map : EditorPageBase, IAsyncDisposable
 {
     // The Map Image Fades Into This At Its Edges
     private const string MapBackground = "#6186be";
+
+    // Camera, Filters And Selection Edit Nothing, Zipline Edits Notify Themselves
+    protected override bool EditsSavegame => false;
 
     [Inject]
     public required MapViewModel MapViewModel { get; set; }
@@ -142,5 +145,22 @@ public partial class Map : EditorPageBase
     private async Task CenterAsync()
     {
         await JavaScript.InvokeVoidAsync("sotfMap.reset");
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        // Points Are Rebuilt On The Next Visit Anyway
+        MapViewModel.Release();
+        base.Dispose();
+        try
+        {
+            await JavaScript.InvokeVoidAsync("sotfMap.dispose");
+        }
+        catch (JSDisconnectedException)
+        {
+            // The Window Closed First, Its Page Is Gone Already
+        }
+
+        GC.SuppressFinalize(this);
     }
 }

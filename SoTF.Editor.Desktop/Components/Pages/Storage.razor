@@ -43,6 +43,10 @@
                                     @* Storage Row *@
                                     <MudElement HtmlTag="div"
                                                 Class="@StorageRowClass(storage)"
+                                                role="button"
+                                                tabindex="0"
+                                                aria-pressed="@((StoragePage.SelectedStorage == storage) ? "true" : "false")"
+                                                data-keyclick
                                                 @onclick="() => SelectStorage(storage)">
                                         <MudText Typo="Typo.body2"
                                                  Class="text-truncate">

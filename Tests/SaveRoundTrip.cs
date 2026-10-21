@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using SoTF.Editor.Data.Enums;
 using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
+using SoTF.Editor.Data.Models.Map;
 using SoTF.Editor.Data.Models.Storage;
 using SoTF.Editor.Data.Resources;
 using SoTF.Editor.Data.ViewModels;
@@ -45,6 +46,7 @@ try
     services.AddSingleton<ActorModifier>();
     services.AddSingleton<MapManager>();
     services.AddSingleton<PoiLoader>();
+    services.AddSingleton<MapViewModel>();
     using var provider = services.BuildServiceProvider();
     var main = provider.GetRequiredService<MainViewModel>();
     var player = provider.GetRequiredService<PlayerPageViewModel>();
@@ -58,6 +60,7 @@ try
     var npcs = provider.GetRequiredService<NpcsPageViewModel>();
     var structures = provider.GetRequiredService<StructuresPageViewModel>();
     var actorModifier = provider.GetRequiredService<ActorModifier>();
+    var map = provider.GetRequiredService<MapViewModel>();
 
     // Nothing Open Shows No Changes, Before And After A Load
     string[] pageRoutes =
@@ -148,7 +151,7 @@ try
     EditAndCheck(
         "Game Setup",
         "Game",
-        () => setup.SetString(Constants.GameSetupKeys.EnemyHealth, "High"),
+        () => setup.SetString(Constants.GameSetupKeys.EnemyHealth, "High", "NORMAL"),
         () => setup.GetString(Constants.GameSetupKeys.EnemyHealth, "") == "High"
     );
 
@@ -217,6 +220,43 @@ try
         "Player",
         () => player.PlayerState.Pos = target,
         () => player.PlayerState.Pos.HasSameCoordinates(target)
+    );
+
+    // A Removed Zipline Lights The Map And Saves
+    map.Build();
+    var ziplineCount = map.AllPois().OfType<ZiplinePoi>().Count();
+    EditAndCheck(
+        "Zipline",
+        "Map",
+        () => map.RemoveZipline(map.AllPois().OfType<ZiplinePoi>().First()),
+        () =>
+        {
+            map.Build();
+            return map.AllPois().OfType<ZiplinePoi>().Count() == ziplineCount - 1;
+        }
+    );
+
+    // A Setting Switched And Switched Back Leaves Nothing To Save
+    var paused = setup.GetBool(Constants.GameSetupKeys.PausedInInventory, false);
+    setup.SetBool(Constants.GameSetupKeys.PausedInInventory, !paused, false);
+    setup.SetBool(Constants.GameSetupKeys.PausedInInventory, paused, false);
+    Check(!main.HasChanges("Game") && !main.SaveChanges(), "Setting Switched Back Saves Nothing");
+
+    // Edits On Several Pages And A Tool Save Together
+    EditAndCheck(
+        "Mixed",
+        "Player",
+        () =>
+        {
+            player.PlayerState.Fullness = 55;
+            followers.KelvinState.Health = 66;
+            setup.SetString(Constants.GameSetupKeys.EnemyDamage, "LOW", "NORMAL");
+            main.ResetCannibalAnger();
+        },
+        () =>
+            Math.Abs(player.PlayerState.Fullness - 55) < 0.01
+            && Math.Abs(followers.KelvinState.Health - 66) < 0.01
+            && setup.GetString(Constants.GameSetupKeys.EnemyDamage, "") == "LOW"
     );
 
     // Restore Oldest Brings Back The Sample Byte For Byte

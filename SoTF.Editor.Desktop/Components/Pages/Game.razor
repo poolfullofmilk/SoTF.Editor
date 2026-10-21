@@ -101,7 +101,7 @@
                                                         <MudSelect T="string"
                                                                    Variant="Variant.Outlined"
                                                                    Value="GameSetup.GetString(setting.Key, setting.Fallback)"
-                                                                   ValueChanged="value => GameSetup.SetString(setting.Key, value)"
+                                                                   ValueChanged="value => GameSetup.SetString(setting.Key, value, setting.Fallback)"
                                                                    Label="@Localizer[setting.LabelKey]"
                                                                    Clearable
                                                                    ToStringFunc="value => LabelOf(setting.Options, value)">
@@ -124,7 +124,7 @@
                                                 @* Setup Switch *@
                                                 <MudSwitch T="bool"
                                                            Value="GameSetup.GetBool(toggle.Key, toggle.Fallback)"
-                                                           ValueChanged="value => GameSetup.SetBool(toggle.Key, value)"
+                                                           ValueChanged="value => GameSetup.SetBool(toggle.Key, value, toggle.Fallback)"
                                                            Color="Color.Info">
                                                     @Localizer[toggle.LabelKey]
                                                     <ChangedDot When="@GameSetup.IsChanged(toggle.Key, toggle.Fallback)" />

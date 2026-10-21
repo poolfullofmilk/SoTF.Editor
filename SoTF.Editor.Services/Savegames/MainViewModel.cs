@@ -162,6 +162,9 @@ public class MainViewModel(
                 || weatherPage.HasChanges,
             "Npcs" => npcsPage.HasChanges,
             "Structures" => structuresPage.HasChanges,
+            "Map" => SelectedSavegame.SavegameStore.HasModified(
+                SavegameStore.FileType.ZipLineManagerSaveData
+            ),
             "Tools" => _changedTools.Count > 0,
             _ => false,
         };
@@ -191,6 +194,7 @@ public class MainViewModel(
             ),
             "Npcs" => AppText.Format("ChangeNpcs", npcsPage.ChangeCount),
             "Structures" => Names(structuresPage.ChangedNames),
+            "Map" => AppText.Get("Ziplines"),
             "Tools" => Names(_changedTools.Select(tool => AppText.Get(tool))),
             _ => "",
         };
@@ -445,7 +449,7 @@ public class MainViewModel(
 
     public string ReviveFollower(int typeId)
     {
-        if (SelectedSavegame is null)
+        if (SelectedSavegame is not { } selectedSavegame)
         {
             return "";
         }
@@ -460,6 +464,7 @@ public class MainViewModel(
                 playerPage.PlayerState.Pos
             )
         );
+        gameStatePage.RefreshDeathFlags(selectedSavegame);
 
         return AppText.Format(
             hasChanges ? "FollowerRevived" : "FollowerAlreadyAlive",

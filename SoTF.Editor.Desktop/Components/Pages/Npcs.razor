@@ -6,7 +6,7 @@
         <MudGrid Class="fill">
 
             <MudItem xs="12"
-                     md="4"
+                     md="3"
                      Class="fill-column">
                 <MudStack Spacing="2"
                           Class="fill">
@@ -43,6 +43,10 @@
                                 @* Collection Row *@
                                 <MudElement HtmlTag="div"
                                             Class="@CollectionRowClass(collection)"
+                                            role="button"
+                                            tabindex="0"
+                                            aria-pressed="@((Selected == collection) ? "true" : "false")"
+                                            data-keyclick
                                             @onclick="() => _selected = collection">
                                     <MudStack Row
                                               AlignItems="AlignItems.Center"
@@ -64,7 +68,7 @@
             </MudItem>
 
             <MudItem xs="12"
-                     md="8"
+                     md="9"
                      Class="fill-column">
                 @if (Selected is not { } selected)
                 {
@@ -85,8 +89,16 @@
                                       Virtualize
                                       OverscanCount="30"
                                       Elevation="0"
-                                      Class="fill">
+                                      Class="fill fixed-columns">
 
+                                <ColGroup>
+                                    <col />
+                                    <col style="width:105px" />
+                                    <col style="width:90px" />
+                                    <col style="width:130px" />
+                                    <col style="width:200px" />
+                                    <col style="width:96px" />
+                                </ColGroup>
                                 <HeaderContent>
                                     <MudTh>@Localizer["Name"]</MudTh>
                                     <MudTh>@Localizer["UniqueId"]</MudTh>
@@ -105,8 +117,14 @@
                                     </MudTd>
                                     <MudTd Class="selectable-text">@context.UniqueId</MudTd>
                                     <MudTd>@context.FamilyId</MudTd>
-                                    <MudTd>@context.StatePrintable</MudTd>
-                                    <MudTd>@context.Position?.Area.Name</MudTd>
+                                    <MudTd Class="text-truncate"
+                                           title="@context.StatePrintable">
+                                        @context.StatePrintable
+                                    </MudTd>
+                                    <MudTd Class="text-truncate"
+                                           title="@context.Position?.Area.Name">
+                                        @context.Position?.Area.Name
+                                    </MudTd>
                                     <MudTd Style="text-align:right">
                                         <ShowOnMapButton Position="context.Position" />
                                         @* Edit Actor *@

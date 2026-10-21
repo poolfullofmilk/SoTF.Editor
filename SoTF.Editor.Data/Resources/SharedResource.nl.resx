@@ -1078,7 +1078,7 @@
     <value>Wijzigingen Opgeslagen</value>
   </data>
   <data name="OverwriteExternalChangesText" xml:space="preserve">
-    <value>De game heeft deze savegame gewijzigd sinds hij werd geopend</value>
+    <value>De game heeft deze savegame opgeslagen nadat je hem opende. Nu opslaan kan die voortgang ongedaan maken, laad eerst opnieuw om die te houden</value>
   </data>
   <data name="OverwriteExternalChangesTitle" xml:space="preserve">
     <value>Wijzigingen Overschrijven</value>
@@ -1890,5 +1890,20 @@ Terug naar het geladen seizoen herstelt de geladen verschuiving. Het aantal dage
   </data>
   <data name="LoadPresetText" xml:space="preserve">
     <value>Elke instelling krijgt de waarden van die modus. De modus wordt Aangepast, zodat je elke instelling nog kan wijzigen</value>
+  </data>
+  <data name="SavegameDay" xml:space="preserve">
+    <value>Dag {0}</value>
+  </data>
+  <data name="SavegameCrashSite" xml:space="preserve">
+    <value>Crashplek {0}</value>
+  </data>
+  <data name="SavegameStrength" xml:space="preserve">
+    <value>Kracht {0}</value>
+  </data>
+  <data name="SavegameItems" xml:space="preserve">
+    <value>{0} Items</value>
+  </data>
+  <data name="MapKeyboardHint" xml:space="preserve">
+    <value>Kaart, de pijltjestoetsen gaan langs de punten</value>
   </data>
 </root>

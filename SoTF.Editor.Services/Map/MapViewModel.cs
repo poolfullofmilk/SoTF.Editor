@@ -67,6 +67,14 @@ public class MapViewModel(
         ApplyFilterToAllPois();
     }
 
+    public void Release()
+    {
+        // Points Hold Savegame JSON, Let Them Go With The Map
+        _poiGroups = [];
+        _builtRevision = -1;
+        SelectedPoi = null;
+    }
+
     private void RebuildIfStale()
     {
         // Points From An Older Load Hold Stale JSON
@@ -146,6 +154,9 @@ public class MapViewModel(
                     AddZipline(newZipline);
                     poi = newZipline.PointB;
                 }
+
+                // A Moved Or New Zipline Lights The Map Menu
+                mainViewModel.NotifyChanged();
             }
         }
 
@@ -184,6 +195,7 @@ public class MapViewModel(
         }
 
         RemovePois([zipline, zipline.PointA, zipline.PointB]);
+        mainViewModel.NotifyChanged();
     }
 
     private void RemovePois(IReadOnlyCollection<IPoi> pois)

@@ -54,6 +54,11 @@ public static class TextKeys
 
     public static string SettingInfo(string name) => Setting(name) + "Info";
 
+    public static string CrashSite(string site) => "CrashSite" + Pascal(site);
+
+    public static string GameMode(string mode) =>
+        mode is "Creative" or "Custom" ? "Mode" + mode : mode;
+
     // Fields That Need A Word Of Explanation
     public static IReadOnlyList<string> SettingsWithInfo { get; } =
     [
@@ -91,6 +96,18 @@ public static class TextKeys
         "_cloudState",
         "_currentRainType",
         "_startingDayOffset",
+    ];
+
+    // Values The Game Writes For These, Checked Like The Rest
+    private static readonly string[] s_crashSites = ["tree", "ocean", "snow"];
+    private static readonly string[] s_gameModes =
+    [
+        "Normal",
+        "Hard",
+        "HardSurvival",
+        "Peaceful",
+        "Creative",
+        "Custom",
     ];
 
     private static string Pascal(string text)
@@ -157,6 +174,8 @@ public static class TextKeys
             .Concat(Enum.GetValues<ElementProfileCategory>().Select(Construction))
             .Concat(SettingNames.Select(Setting))
             .Concat(SettingsWithInfo.Select(SettingInfo))
+            .Concat(s_crashSites.Select(CrashSite))
+            .Concat(s_gameModes.Select(GameMode))
             .Concat(
                 Enum.GetValues<PoiGroupType>()
                     .Where(type => type is >= PoiGroupType.Bunkers and <= PoiGroupType.Lakes)

@@ -111,6 +111,32 @@ public partial class GameStatePageViewModel
         Remember();
     }
 
+    public void RefreshDeathFlags(Savegame savegame)
+    {
+        // Revive Writes These Straight Into The Save, The Rows Follow
+        if (
+            savegame
+                .SavegameStore.LoadJsonRaw(SavegameStore.FileType.GameStateSaveData)
+                ?.GetJsonBasedToken(Constants.JsonKeys.GameState)
+            is not { } gameState
+        )
+        {
+            return;
+        }
+
+        for (var index = 0; index < Settings.Count; index++)
+        {
+            if (
+                Settings[index].Name is "IsRobbyDead" or "IsVirginiaDead"
+                && CreateSetting(Settings[index].Name, gameState[Settings[index].Name])
+                    is { } refreshed
+            )
+            {
+                Settings[index] = refreshed;
+            }
+        }
+    }
+
     private void LoadSettings(Savegame? savegame)
     {
         Settings.Clear();

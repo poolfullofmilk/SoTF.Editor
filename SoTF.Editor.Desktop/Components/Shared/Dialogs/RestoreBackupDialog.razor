@@ -17,6 +17,10 @@
                               AlignItems="AlignItems.Center"
                               Spacing="3"
                               Class="@RowClass(backup)"
+                              role="button"
+                              tabindex="0"
+                              aria-pressed="@((_selected == backup) ? "true" : "false")"
+                              data-keyclick
                               @onclick="() => _selected = backup">
                         <MudText Typo="Typo.body2">@Formatter.FormatDateTimeWithSeconds(backup.TakenAt)</MudText>
                         <MudText Typo="Typo.body2"

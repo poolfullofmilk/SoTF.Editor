@@ -18,6 +18,9 @@ public abstract class EditorPageBase : ComponentBase, IHandleEvent, IDisposable
 
     protected bool HasSavegame => MainViewModel.SelectedSavegame != null;
 
+    // Pages Whose Events Edit Nothing Skip The Menu
+    protected virtual bool EditsSavegame => true;
+
     protected override void OnInitialized()
     {
         MainViewModel.Changed += OnChanged;
@@ -34,7 +37,14 @@ public abstract class EditorPageBase : ComponentBase, IHandleEvent, IDisposable
         var task = callback.InvokeAsync(argument);
         StateHasChanged();
         await task;
-        MainViewModel.NotifyChanged();
+        if (EditsSavegame)
+        {
+            MainViewModel.NotifyChanged();
+        }
+        else
+        {
+            StateHasChanged();
+        }
     }
 
     private void OnChanged()
