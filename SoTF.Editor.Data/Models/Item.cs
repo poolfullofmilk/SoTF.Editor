@@ -20,10 +20,7 @@ public class Item : ICloneable
     public StorageMax? StorageMax { get; set; }
     public HashSet<int>? ModHashes { get; init; }
     public string? Image { get; init; }
-    public string? ThumbnailUrl =>
-        Image == null
-            ? null
-            : $"images/items/{Path.GetFileNameWithoutExtension(Image)}_tn{Path.GetExtension(Image)}";
+    public string? ImageUrl => Image == null ? null : $"images/items/{Image}";
 
     public string NormalizedLowercaseName
     {

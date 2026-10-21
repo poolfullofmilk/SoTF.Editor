@@ -18,5 +18,5 @@ public class ArmourData(ArmourPieceModel armourPieceModel, Item? item)
     public int MaxDurability => item?.Durability?.Max ?? 65535;
     public int DefaultDurability => item?.Durability?.Default ?? 1;
 
-    public string? ImageUrl => item?.ThumbnailUrl;
+    public string? ImageUrl => item?.ImageUrl;
 }

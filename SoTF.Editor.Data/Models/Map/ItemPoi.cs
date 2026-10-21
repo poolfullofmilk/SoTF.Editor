@@ -35,7 +35,7 @@ public class ItemPoi : InformationalPoi
 
     public IEnumerable<ItemInInventoryWrapper>? AltItems => Wrap(_altItems);
 
-    public override string Icon => _item.ThumbnailUrl ?? BaseIcon("treasure.svg");
+    public override string Icon => _item.ImageUrl ?? BaseIcon("treasure.svg");
 
     public override float TeleportationOffset => 0;
 

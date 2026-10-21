@@ -18,7 +18,7 @@ public class InventoryItem(ItemBlockModel itemBlock, Item? item, bool isEquipped
 
     public int Id => Item?.Id ?? ItemBlock.ItemId;
 
-    public string? ImageUrl => Item?.ThumbnailUrl;
+    public string? ImageUrl => Item?.ImageUrl;
 
     public int TotalCount
     {
