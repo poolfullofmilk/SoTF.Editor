@@ -32,8 +32,12 @@ public class ArmorPageViewModel
 
     public bool HasChanges => _loaded.Count != _armour.Count || _armour.Any(IsChanged);
 
-    public int ChangeCount =>
-        Math.Max(Math.Abs(_loaded.Count - _armour.Count), _armour.Count(IsChanged));
+    // Removed, Added And Changed Pieces Alike
+    public IEnumerable<string> ChangedNames =>
+        _loaded
+            .Keys.Where(armourData => !_armour.Contains(armourData))
+            .Concat(_armour.Where(IsChanged))
+            .Select(armourData => armourData.Name);
 
     public bool IsChanged(ArmourData armourData)
     {

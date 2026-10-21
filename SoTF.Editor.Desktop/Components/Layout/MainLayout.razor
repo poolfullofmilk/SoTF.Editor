@@ -23,55 +23,71 @@
         <MudStack Row
                   AlignItems="AlignItems.Center"
                   Class="mud-width-full px-2"
-                  Spacing="4">
+                  Spacing="2">
             <MudText Typo="Typo.h6"
                      Class="text-truncate">
                 @AppInfo.DisplayName
             </MudText>
 
-            @if (MainViewModel.SelectedSavegame is { } savegame)
-            {
-                @* Savegame Chip *@
-                <MudChip T="string"
-                         Variant="Variant.Text"
-                         Size="Size.Small"
-                         Icon="@Icons.Material.Rounded.Save"
-                         Href="/">
-                    @SavegameLabel(savegame)
-                </MudChip>
-            }
+            @* Language Menu *@
+            <LanguagePicker />
+
+            @* Help Menu *@
+            <Tooltip Text="@Localizer["Help"]"
+                     RootClass="d-flex">
+                <MudBadge Dot
+                          Overlap
+                          Color="Color.Error"
+                          Visible="@(_availableUpdate is not null)"
+                          Class="d-flex">
+                    <MudMenu Icon="@Icons.Material.Rounded.Help"
+                             AriaLabel="@Localizer["Help"]"
+                             Size="Size.Small">
+                        @* Project Page *@
+                        <MudMenuItem Icon="@Icons.Custom.Brands.GitHub"
+                                     Label="@Localizer["GitHubProject"]"
+                                     Href="@AppInfo.RepositoryUrl" />
+                        @* Check Updates *@
+                        <MudMenuItem Icon="@Icons.Material.Rounded.SystemUpdateAlt"
+                                     Label="@Localizer["CheckForUpdates"]"
+                                     Class="@UpdateDotClass"
+                                     OnClick="() => CheckForUpdatesAsync(true)" />
+                        <MudDivider />
+                        @* About *@
+                        <MudMenuItem Icon="@Icons.Material.Rounded.Info"
+                                     Label="@Localizer["About"]"
+                                     OnClick="() => ShowDialogAsync<AboutDialog>()" />
+                    </MudMenu>
+                </MudBadge>
+            </Tooltip>
+
+            <MudSpacer />
 
             @* Savegame Actions *@
             <MudStack Row
                       AlignItems="AlignItems.Center"
-                      Spacing="1">
+                      Spacing="2">
 
-                @* Save *@
-                <Tooltip Text="@($"{Localizer["Save"]} (Ctrl+S)")"
-                         Disabled="@(!HasSavegame)"
-                         RootClass="d-flex">
-                    <MudButton Variant="Variant.Filled"
-                               Color="Color.Info"
-                               Size="Size.Small"
-                               StartIcon="@Icons.Material.Rounded.Save"
-                               Disabled="@(!HasSavegame)"
-                               OnClick="SaveAsync"
-                               data-shortcut="save">
-                        @Localizer["Save"]
-                    </MudButton>
-                </Tooltip>
-
-                @* Reload *@
-                <Tooltip Text="@($"{Localizer["ReloadSavegame"]} (F5)")"
-                         Disabled="@(!HasSavegame)"
-                         RootClass="d-flex">
-                    <MudIconButton Icon="@Icons.Material.Rounded.Refresh"
-                                   aria-label="@Localizer["ReloadSavegame"]"
-                                   Size="Size.Small"
-                                   Disabled="@(!HasSavegame)"
-                                   OnClick="ReloadAsync"
-                                   data-shortcut="reload" />
-                </Tooltip>
+                @if (MainViewModel.SelectedSavegame is { } savegame)
+                {
+                    @* Savegame Chip *@
+                    <MudChip T="string"
+                             Variant="Variant.Text"
+                             Size="Size.Small"
+                             Icon="@Icons.Material.Rounded.Save"
+                             Href="/">
+                        @SavegameLabel(savegame)
+                    </MudChip>
+                    @* Close Savegame *@
+                    <Tooltip Text="@Localizer["CloseSavegame"]"
+                             RootClass="d-flex">
+                        <MudIconButton Icon="@Icons.Material.Rounded.Close"
+                                       aria-label="@Localizer["CloseSavegame"]"
+                                       Size="Size.Small"
+                                       Class="mud-text-secondary"
+                                       OnClick="CloseAsync" />
+                    </Tooltip>
+                }
 
                 @* Backup Menu *@
                 <Tooltip Text="@Localizer["Backups"]"
@@ -80,6 +96,8 @@
                     <MudMenu Icon="@Icons.Material.Rounded.Restore"
                              AriaLabel="@Localizer["Backups"]"
                              Size="Size.Small"
+                             AnchorOrigin="Origin.BottomRight"
+                             TransformOrigin="Origin.TopRight"
                              Disabled="@(!HasSavegame)">
                         @* Open Folder *@
                         <MudMenuItem Icon="@Icons.Material.Rounded.Folder"
@@ -97,58 +115,31 @@
                     </MudMenu>
                 </Tooltip>
 
-                @* Close Savegame *@
-                <Tooltip Text="@Localizer["CloseSavegame"]"
+                @* Reload *@
+                <Tooltip Text="@($"{Localizer["ReloadSavegame"]} (F5)")"
                          Disabled="@(!HasSavegame)"
                          RootClass="d-flex">
-                    <MudIconButton Icon="@Icons.Material.Rounded.Close"
-                                   aria-label="@Localizer["CloseSavegame"]"
+                    <MudIconButton Icon="@Icons.Material.Rounded.Refresh"
+                                   aria-label="@Localizer["ReloadSavegame"]"
                                    Size="Size.Small"
-                                   Class="mud-text-secondary"
                                    Disabled="@(!HasSavegame)"
-                                   OnClick="CloseAsync" />
+                                   OnClick="ReloadAsync"
+                                   data-shortcut="reload" />
                 </Tooltip>
-            </MudStack>
 
-            <MudSpacer />
-
-            @* Right *@
-            <MudStack Row
-                      AlignItems="AlignItems.Center"
-                      Spacing="1">
-
-                @* Language Menu *@
-                <LanguagePicker />
-
-                @* Help Menu *@
-                <Tooltip Text="@Localizer["Help"]"
+                @* Save *@
+                <Tooltip Text="@($"{Localizer["Save"]} (Ctrl+S)")"
+                         Disabled="@(!HasSavegame)"
                          RootClass="d-flex">
-                    <MudBadge Dot
-                              Overlap
-                              Color="Color.Error"
-                              Visible="@(_availableUpdate is not null)"
-                              Class="d-flex">
-                        <MudMenu Icon="@Icons.Material.Rounded.Help"
-                                 AriaLabel="@Localizer["Help"]"
-                                 Size="Size.Small"
-                                 AnchorOrigin="Origin.BottomRight"
-                                 TransformOrigin="Origin.TopRight">
-                            @* Project Page *@
-                            <MudMenuItem Icon="@Icons.Custom.Brands.GitHub"
-                                         Label="@Localizer["GitHubProject"]"
-                                         Href="@AppInfo.RepositoryUrl" />
-                            @* Check Updates *@
-                            <MudMenuItem Icon="@Icons.Material.Rounded.SystemUpdateAlt"
-                                         Label="@Localizer["CheckForUpdates"]"
-                                         Class="@UpdateDotClass"
-                                         OnClick="() => CheckForUpdatesAsync(true)" />
-                            <MudDivider />
-                            @* About *@
-                            <MudMenuItem Icon="@Icons.Material.Rounded.Info"
-                                         Label="@Localizer["About"]"
-                                         OnClick="() => ShowDialogAsync<AboutDialog>()" />
-                        </MudMenu>
-                    </MudBadge>
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Info"
+                               Size="Size.Small"
+                               StartIcon="@Icons.Material.Rounded.Save"
+                               Disabled="@(!HasSavegame)"
+                               OnClick="SaveAsync"
+                               data-shortcut="save">
+                        @Localizer["Save"]
+                    </MudButton>
                 </Tooltip>
 
             </MudStack>

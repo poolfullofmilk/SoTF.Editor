@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using NLog;
 using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.ViewModels;
 
@@ -12,6 +13,8 @@ public static class Updater
         AppInfo.RepositoryUrl + "/releases/download/{0}/SoTF.Editor_{0}.exe";
     private const string AfterUpdateArgument = "--after-update";
 
+    private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
+
     private static readonly HttpClient s_httpClient = new() { Timeout = TimeSpan.FromMinutes(5) };
     private static readonly TimeSpan s_previousExitWait = TimeSpan.FromSeconds(15);
 
@@ -19,8 +22,15 @@ public static class Updater
         Path.GetFileName(Environment.ProcessPath)
             ?.StartsWith(ExecutablePrefix, StringComparison.OrdinalIgnoreCase) == true;
 
-    public static async Task<string> DownloadAsync(ReleaseInfo release)
+    public static Task<string> DownloadAsync(ReleaseInfo release)
     {
+        // Off The Window's Thread, So The Window Never Freezes
+        return Task.Run(() => DownloadOnPoolAsync(release));
+    }
+
+    private static async Task<string> DownloadOnPoolAsync(ReleaseInfo release)
+    {
+        var started = Stopwatch.StartNew();
         var targetPath = Path.Combine(
             Path.GetDirectoryName(Environment.ProcessPath)!,
             $"SoTF.Editor_{release.Tag}.exe"
@@ -34,13 +44,25 @@ public static class Updater
                 HttpCompletionOption.ResponseHeadersRead
             );
             response.EnsureSuccessStatusCode();
-            await using (var file = File.Create(partialPath))
+            await using (
+                var file = new FileStream(
+                    partialPath,
+                    FileMode.Create,
+                    FileAccess.Write,
+                    FileShare.None,
+                    81920,
+                    FileOptions.Asynchronous
+                )
+            )
             {
                 await response.Content.CopyToAsync(file);
             }
 
             // Only A Complete Download Gets The Real Name
             File.Move(partialPath, targetPath, overwrite: true);
+            s_logger.Info(
+                $"Downloaded Update {release.Tag} In {started.Elapsed.TotalSeconds:0.0} s To {targetPath}"
+            );
             return targetPath;
         }
         catch
@@ -52,6 +74,7 @@ public static class Updater
 
     public static void Launch(string executablePath)
     {
+        s_logger.Info($"Started Update {executablePath}");
         Process.Start(
             new ProcessStartInfo(executablePath, $"{AfterUpdateArgument} {Environment.ProcessId}")
             {

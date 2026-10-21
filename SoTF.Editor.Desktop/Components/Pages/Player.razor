@@ -59,20 +59,19 @@
                                         Min="1"
                                         Max="100" />
                             @* Max Health *@
-                            <Tooltip Text="@Localizer["MaxHealthFollowsStrength"]"
-                                     RootClass="d-block">
-                                <StatSlider Label="@Localizer["MaxHealth"]"
-                                            Changed="@PlayerPage.IsChanged(nameof(PlayerState.MaxHealth))"
-                                            Value="State.MaxHealth"
-                                            Max="MaxHealthCeiling"
-                                            ReadOnly />
-                            </Tooltip>
+                            <StatSlider Label="@Localizer["MaxHealth"]"
+                                        Changed="@PlayerPage.IsChanged(nameof(PlayerState.MaxHealth))"
+                                        Info="@Localizer["MaxHealthFollowsStrength"]"
+                                        Value="State.MaxHealth"
+                                        Max="MaxHealthCeiling"
+                                        ReadOnly />
                             @* Current Health *@
                             <StatSlider Label="@Localizer["CurrentHealth"]"
                                         Changed="@PlayerPage.IsChanged(nameof(PlayerState.CurrentHealth))"
+                                        Warning="@CurrentHealthWarning"
                                         @bind-Value="State.CurrentHealth"
                                         Min="0.1f"
-                                        Max="MaxHealthCeiling"
+                                        Max="State.MaxHealth"
                                         Step="0.1f" />
                             @* Sickness *@
                             <StatSlider Label="@Localizer["Sickness"]"

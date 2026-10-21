@@ -4,6 +4,7 @@ using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Models.Actors;
 using SoTF.Editor.Data.Models.SaveData.Actor;
+using SoTF.Editor.Data.Resources;
 using SoTF.Editor.Services.Actors;
 using SoTF.Editor.Services.Savegames;
 using static SoTF.Editor.Data.Helpers.Constants.Actors;
@@ -58,11 +59,31 @@ public class FollowerPageViewModel
         _loaded.IsChanged(nameof(_followers), FollowerIds())
         || _followers.Concat(_selectedByTypeId.Values).Any(IsChanged);
 
-    public int ChangeCount =>
-        Math.Max(
-            _followers.Concat(_selectedByTypeId.Values).Distinct().Count(IsChanged),
-            HasChanges ? 1 : 0
-        );
+    public IEnumerable<string> ChangedNames
+    {
+        get
+        {
+            foreach (var typeId in new[] { KelvinTypeId, VirginiaTypeId })
+            {
+                // A Follower Missing From The Save Is Its Stand In
+                var copies = CopiesOf(typeId);
+                var name = GameNames.Get(TextKeys.ActorType(typeId));
+                if (_loaded.IsChanged($"Copies.{typeId}", copies.Count))
+                {
+                    yield return AppText.Format("ChangeCopies", name, copies.Count);
+                }
+
+                var shown = copies.Count == 0 ? [StateOf(typeId)] : copies;
+                for (var index = 0; index < shown.Count; index++)
+                {
+                    if (IsChanged(shown[index]))
+                    {
+                        yield return shown.Count > 1 ? $"{name} {index + 1}" : name;
+                    }
+                }
+            }
+        }
+    }
 
     private string FollowerIds()
     {
@@ -196,6 +217,8 @@ public class FollowerPageViewModel
             _loadedFrom = selectedSavegame;
             _loaded.Clear();
             _loaded.Remember(nameof(_followers), FollowerIds());
+            _loaded.Remember($"Copies.{KelvinTypeId}", CopiesOf(KelvinTypeId).Count);
+            _loaded.Remember($"Copies.{VirginiaTypeId}", CopiesOf(VirginiaTypeId).Count);
             foreach (var follower in _followers.Concat(_selectedByTypeId.Values))
             {
                 Remember(follower);

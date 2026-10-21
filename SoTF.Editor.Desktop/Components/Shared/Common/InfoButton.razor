@@ -1,9 +1,9 @@
 @* Info Button *@
 <Tooltip Text="@Text"
          RootClass="d-inline-flex ml-1">
-    <MudIconButton Icon="@Icons.Material.Rounded.Info"
+    <MudIconButton Icon="@(Warning ? Icons.Material.Rounded.Warning : Icons.Material.Rounded.Info)"
                    aria-label="@Text"
-                   Color="Color.Info"
+                   Color="@(Warning ? Color.Warning : Color.Info)"
                    Size="Size.Small"
                    Class="info-button" />
 </Tooltip>

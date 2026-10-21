@@ -13,13 +13,14 @@
                               Value="@SavegamePath"
                               Label="@Localizer["Location"]"
                               ReadOnly
+                              Disabled
                               Variant="Variant.Outlined"
                               Margin="Margin.Dense"
                               Class="flex-grow-1"
                               Style="min-width:320px" />
 
                 @* Change Folder *@
-                <MudButton Variant="Variant.Outlined"
+                <MudButton Variant="Variant.Filled"
                            Size="Size.Small"
                            StartIcon="@Icons.Material.Rounded.Folder"
                            OnClick="ChangeFolderAsync">
@@ -27,25 +28,13 @@
                 </MudButton>
 
                 @* Default Folder *@
-                <MudButton Variant="Variant.Outlined"
+                <MudButton Variant="Variant.Filled"
                            Size="Size.Small"
                            StartIcon="@Icons.Material.Rounded.SettingsBackupRestore"
                            Disabled="@IsDefaultFolder"
                            OnClick="SetDefaultFolderAsync">
                     @Localizer["UseDefaultFolder"]
                 </MudButton>
-
-                @if (MainViewModel.CanOpenLastSavegame() && !HasSavegame)
-                {
-                    @* Open Last *@
-                    <MudButton Variant="Variant.Filled"
-                               Color="Color.Info"
-                               Size="Size.Small"
-                               StartIcon="@Icons.Material.Rounded.History"
-                               OnClick="MainViewModel.OpenLastSavegame">
-                        @Localizer["OpenLastSavegame"]
-                    </MudButton>
-                }
             </MudStack>
             <MudText Typo="Typo.body2"
                      Class="mud-text-secondary mt-2">

@@ -24,6 +24,10 @@ public partial class Player : EditorPageBase
 
     private float MaxHealthCeiling => Math.Max(DefaultMaxHealthCeiling, State.MaxHealth);
 
+    // At Max Health The Slider Stops, The Warning Says Why
+    private string? CurrentHealthWarning =>
+        State.CurrentHealth >= State.MaxHealth ? Localizer["CurrentHealthAtMax"].Value : null;
+
     private static bool IsInSave(FollowerState follower)
     {
         // A Follower Missing From The Save Sits At Origin

@@ -13,7 +13,6 @@ public class UserSettings
     public static UserSettings Current { get; } = Load();
 
     public string SavegamePath { get; set; } = "";
-    public string LastSavegame { get; set; } = "";
     public string Language { get; set; } = "en";
     public HashSet<string>? SelectedMapGroups { get; set; }
 

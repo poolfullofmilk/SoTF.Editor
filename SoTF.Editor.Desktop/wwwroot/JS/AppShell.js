@@ -115,6 +115,8 @@ window.sotfMap = (() => {
 
     // Registered Once, Every Opened Map Shares Them
     window.addEventListener("pointermove", (event) => {
+        // A Map That Left The Page Lets Its Elements Go
+        if (state && !state.viewport.isConnected) state = null;
         if (!state?.drag) return;
         const deltaX = event.clientX - state.drag.startX;
         const deltaY = event.clientY - state.drag.startY;
@@ -149,11 +151,6 @@ window.sotfMap = (() => {
         apply();
     };
 
-    // Leaving The Map Lets Its Elements Go
-    const dispose = () => {
-        state = null;
-    };
-
     const zoomBy = (factor) => {
         if (!state) return;
         zoomAt(state.viewport.clientWidth / 2, state.viewport.clientHeight / 2, state.zoom * factor);
@@ -164,5 +161,5 @@ window.sotfMap = (() => {
         fit();
     };
 
-    return { init, centerOn, zoomBy, reset, dispose };
+    return { init, centerOn, zoomBy, reset };
 })();

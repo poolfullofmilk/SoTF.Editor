@@ -30,11 +30,11 @@ public partial class Home : EditorPageBase
                 ]
             ),
             new SavegameGroup(
-                Localizer["Multiplayer"],
+                Localizer["HostedMultiplayer"],
                 [.. (_savegames ?? []).Where(savegame => savegame.IsMultiPlayer())]
             ),
             new SavegameGroup(
-                Localizer["MultiplayerClient"],
+                Localizer["JoinedMultiplayer"],
                 [.. (_savegames ?? []).Where(savegame => savegame.IsMultiPlayerClient())],
                 Localizer["MultiplayerClientInfo"]
             ),
@@ -69,8 +69,8 @@ public partial class Home : EditorPageBase
 
     private string CardClass(Savegame savegame)
     {
-        // The Open Savegame Reads As Selected
-        var selected = IsOpen(savegame) ? " list-row-selected" : "";
+        // The Open Savegame Gets The Accent Ring
+        var selected = IsOpen(savegame) ? " card-open" : "";
         return "rounded-panel overflow-hidden hover-card" + selected;
     }
 

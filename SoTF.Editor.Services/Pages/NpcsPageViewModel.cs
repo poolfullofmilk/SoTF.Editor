@@ -26,15 +26,24 @@ public class NpcsPageViewModel
     public List<Actor> AllActors { get; } = [];
 
     private readonly LoadedValues _loaded = new();
-    private int _loadedCount;
+    private readonly HashSet<int> _loadedIds = [];
     private Savegame? _loadedFrom;
 
     // Changed Actors Are Worked Out Once Per Load
     private readonly HashSet<Actor> _changed = new(ReferenceEqualityComparer.Instance);
 
-    public bool HasChanges => _loadedCount != AllActors.Count || _changed.Count > 0;
+    public bool HasChanges => RemovedCount > 0 || _changed.Count > 0;
 
-    public int ChangeCount => Math.Max(Math.Abs(_loadedCount - AllActors.Count), _changed.Count);
+    private int RemovedCount =>
+        _loadedIds.Count - AllActors.Count(actor => _loadedIds.Contains(actor.UniqueId));
+
+    // Changed Actors By Type, Then How Many Are Gone
+    public IEnumerable<string> ChangedNames =>
+        AllActors
+            .Where(_changed.Contains)
+            .GroupBy(actor => actor.ActorType?.Name ?? "???")
+            .Select(group => group.Count() > 1 ? $"{group.Key} ({group.Count()})" : group.Key)
+            .Concat(RemovedCount > 0 ? [AppText.Format("ChangeRemoved", RemovedCount)] : []);
 
     public bool IsChanged(Actor actor)
     {
@@ -89,7 +98,8 @@ public class NpcsPageViewModel
         {
             _loadedFrom = savegame;
             _loaded.Clear();
-            _loadedCount = AllActors.Count;
+            _loadedIds.Clear();
+            _loadedIds.UnionWith(AllActors.Select(actor => actor.UniqueId));
             foreach (var actor in AllActors)
             {
                 _loaded.Remember(LoadedValues.Format(actor.UniqueId), ValueOf(actor));

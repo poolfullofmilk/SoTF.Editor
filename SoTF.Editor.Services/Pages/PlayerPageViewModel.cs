@@ -2,6 +2,7 @@ using Newtonsoft.Json.Linq;
 using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Models.Actors;
+using SoTF.Editor.Data.Resources;
 using SoTF.Editor.Services.Savegames;
 
 namespace SoTF.Editor.Services.Pages;
@@ -65,6 +66,20 @@ public class PlayerPageViewModel
             : _otherWornItemIds;
 
     public bool HasChanges => _loaded.AnyPropertyChanged(nameof(PlayerState), PlayerState);
+
+    public IEnumerable<string> ChangedNames =>
+        _loaded
+            .ChangedProperties(nameof(PlayerState), PlayerState)
+            .Select(name =>
+                AppText.Get(
+                    name switch
+                    {
+                        nameof(PlayerState.SelectedCloth) => "Outfit",
+                        nameof(PlayerState.Pos) => "Position",
+                        _ => name,
+                    }
+                )
+            );
 
     public bool IsChanged(string propertyName)
     {

@@ -43,8 +43,14 @@ public sealed class LoadedValues
 
     public bool AnyPropertyChanged(string scope, object model)
     {
+        return ChangedProperties(scope, model).Any();
+    }
+
+    public IEnumerable<string> ChangedProperties(string scope, object model)
+    {
         return EditableProperties(model.GetType())
-            .Any(property => IsChanged($"{scope}.{property.Name}", property.GetValue(model)));
+            .Where(property => IsChanged($"{scope}.{property.Name}", property.GetValue(model)))
+            .Select(property => property.Name);
     }
 
     private static readonly ConcurrentDictionary<Type, PropertyInfo[]> s_editableProperties = [];

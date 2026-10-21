@@ -6,4 +6,7 @@ public partial class InfoButton
 {
     [Parameter]
     public required string Text { get; set; }
+
+    [Parameter]
+    public bool Warning { get; set; }
 }

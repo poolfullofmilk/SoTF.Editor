@@ -1,4 +1,4 @@
-<MudDialog>
+<MudDialog Class="dialog-page">
 
     <TitleContent>
         <MudText Typo="Typo.h6">@_viewModel.Actor.PrintableTitle</MudText>
@@ -192,11 +192,11 @@
                                            Variant="Variant.Outlined"
                                            @bind-Value="_viewModel.ModifyOptions.ReplaceType"
                                            Label="@Localizer["ReplaceType"]"
-                                           ToStringFunc="actorType => actorType?.Name ?? string.Empty"
+                                           ToStringFunc="ReplaceTypeName"
                                            Dense>
                                     @foreach (var actorType in _viewModel.AllActorTypes)
                                     {
-                                        <MudSelectItem Value="actorType">@(actorType.Id == -1 ? "—" : actorType.Name)</MudSelectItem>
+                                        <MudSelectItem Value="actorType">@ReplaceTypeName(actorType)</MudSelectItem>
                                     }
                                 </MudSelect>
                             </MudStack>

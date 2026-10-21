@@ -8,7 +8,7 @@ using SoTF.Editor.Services.Map;
 
 namespace SoTF.Editor.Desktop.Components.Pages;
 
-public partial class Map : EditorPageBase, IAsyncDisposable
+public partial class Map : EditorPageBase
 {
     // The Map Image Fades Into This At Its Edges
     private const string MapBackground = "#6186be";
@@ -147,20 +147,11 @@ public partial class Map : EditorPageBase, IAsyncDisposable
         await JavaScript.InvokeVoidAsync("sotfMap.reset");
     }
 
-    public async ValueTask DisposeAsync()
+    public override void Dispose()
     {
-        // Points Are Rebuilt On The Next Visit Anyway
+        // No JS Here, A Closing Window Could Hang On It
         MapViewModel.Release();
         base.Dispose();
-        try
-        {
-            await JavaScript.InvokeVoidAsync("sotfMap.dispose");
-        }
-        catch (JSDisconnectedException)
-        {
-            // The Window Closed First, Its Page Is Gone Already
-        }
-
         GC.SuppressFinalize(this);
     }
 }

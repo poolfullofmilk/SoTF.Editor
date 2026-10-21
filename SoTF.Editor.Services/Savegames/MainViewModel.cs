@@ -8,7 +8,6 @@ using SoTF.Editor.Data.Resources;
 using SoTF.Editor.Services.Actors;
 using SoTF.Editor.Services.Map;
 using SoTF.Editor.Services.Pages;
-using SoTF.Editor.Services.Settings;
 
 namespace SoTF.Editor.Services.Savegames;
 
@@ -76,9 +75,6 @@ public class MainViewModel(
         weatherPage.Load(savegame);
         npcsPage.Load(savegame);
         structuresPage.Load(savegame);
-
-        UserSettings.Current.LastSavegame = savegame?.FullPath ?? "";
-        UserSettings.Current.Save();
         NotifyChanged();
     }
 
@@ -92,27 +88,6 @@ public class MainViewModel(
         else
         {
             SelectSavegame(savegame);
-        }
-    }
-
-    public static bool CanOpenLastSavegame()
-    {
-        return !string.IsNullOrEmpty(UserSettings.Current.LastSavegame)
-            && Directory.Exists(UserSettings.Current.LastSavegame);
-    }
-
-    public void OpenLastSavegame()
-    {
-        // A Deleted Last Savegame Opens Nothing Instead Of Crashing
-        if (!CanOpenLastSavegame())
-        {
-            return;
-        }
-
-        var directoryInfo = new DirectoryInfo(UserSettings.Current.LastSavegame);
-        if (SavegameManager.CreateSaveInfo(directoryInfo) is { } savegame)
-        {
-            RequestOpen(savegame);
         }
     }
 
@@ -170,43 +145,7 @@ public class MainViewModel(
         };
     }
 
-    public string ChangeSummary(string page)
-    {
-        // What Changed In Short, Names When There Are Few
-        return page switch
-        {
-            "Player" => string.Join(
-                ", ",
-                new[]
-                {
-                    playerPage.HasChanges ? AppText.Get("ChangePlayer") : null,
-                    armorPage.HasChanges
-                        ? AppText.Format("ChangeArmour", armorPage.ChangeCount)
-                        : null,
-                }.OfType<string>()
-            ),
-            "Inventory" => Names(inventoryPage.ChangedNames),
-            "Storage" => Names(storagePage.ChangedNames),
-            "Followers" => AppText.Format("ChangeFollowers", followerPage.ChangeCount),
-            "Game" => AppText.Format(
-                "ChangeSettings",
-                gameSetupPage.ChangeCount + gameStatePage.ChangeCount + weatherPage.ChangeCount
-            ),
-            "Npcs" => AppText.Format("ChangeNpcs", npcsPage.ChangeCount),
-            "Structures" => Names(structuresPage.ChangedNames),
-            "Map" => AppText.Get("Ziplines"),
-            "Tools" => Names(_changedTools.Select(tool => AppText.Get(tool))),
-            _ => "",
-        };
-    }
-
-    private static string Names(IEnumerable<string> names)
-    {
-        var distinct = names.Distinct().Order().ToList();
-        return distinct.Count <= 3
-            ? string.Join(", ", distinct)
-            : AppText.Format("ChangeMore", string.Join(", ", distinct.Take(3)), distinct.Count - 3);
-    }
+    public IEnumerable<string> ChangedTools => _changedTools;
 
     public bool HasUnsavedChanges()
     {

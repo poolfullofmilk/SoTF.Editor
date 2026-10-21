@@ -14,6 +14,11 @@
         {
             <InfoButton Text="@Info" />
         }
+        @if (Warning is not null)
+        {
+            <InfoButton Text="@Warning"
+                        Warning />
+        }
     </MudStack>
     @if (ReadOnly)
     {

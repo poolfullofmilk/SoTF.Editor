@@ -74,6 +74,16 @@
     background-color: var(--mud-palette-background) !important;
 }
 
+/* A Dialog On The Page Colour Raises Its Sections Like Panels */
+.dialog-page {
+    background-color: var(--mud-palette-background) !important;
+}
+
+    .dialog-page .inset {
+        background-color: var(--mud-palette-surface) !important;
+        box-shadow: var(--mud-elevation-4);
+    }
+
 /* Shared Radii */
 .rounded-panel {
     border-radius: var(--radius-panel) !important;
@@ -203,6 +213,12 @@
     vertical-align: middle;
 }
 
+/* Each Change In The Save Summary Is A Bullet */
+.change-item::before {
+    content: "•";
+    margin-right: 6px;
+}
+
 /* Items Not In The Backpack Stay Grey Until Added */
 .not-held > * {
     opacity: 0.5;
@@ -309,6 +325,11 @@ html, body {
     overflow-x: clip !important;
 }
 
+/* Dialogs Are Panels, So Their Cards Never Out Round Them */
+.mud-dialog {
+    border-radius: var(--radius-panel) !important;
+}
+
 /* Chips Carry The Slightest Theme Shadow */
 .mud-chip {
     box-shadow: var(--mud-elevation-1);
@@ -396,6 +417,12 @@ html, body {
 /* A Tool The Open Savegame Cannot Use Stays Grey */
 .tool-unavailable {
     opacity: 0.5;
+}
+
+/* The Open Savegame Wears The Accent Ring */
+.card-open {
+    outline: 2px solid var(--mud-palette-info);
+    outline-offset: -2px;
 }
 
 /* Savegame Thumbnails Keep The Game's Wide Ratio */

@@ -57,30 +57,26 @@
                            Color="Color.Info"
                            Label="@Localizer["UncollectedOnly"]" />
 
-                <MudStack Spacing="2">
+                <MudStack Row
+                          AlignItems="AlignItems.Center"
+                          Spacing="1">
                     <MudText Typo="Typo.subtitle2">@Localizer["PointsOfInterest"]</MudText>
-                    <MudStack Row
-                              Wrap="Wrap.Wrap"
-                              Spacing="2">
-                        @* Select All *@
-                        <MudButton Variant="Variant.Outlined"
-                                   Size="Size.Small"
-                                   OnClick="MapViewModel.SelectAll">
-                            @Localizer["SelectAll"]
-                        </MudButton>
-                        @* Deselect All *@
-                        <MudButton Variant="Variant.Outlined"
-                                   Size="Size.Small"
-                                   OnClick="MapViewModel.DeselectAll">
-                            @Localizer["DeselectAll"]
-                        </MudButton>
-                        @* Reset To Default *@
-                        <MudButton Variant="Variant.Outlined"
-                                   Size="Size.Small"
-                                   OnClick="MapViewModel.ResetToDefault">
-                            @Localizer["Reset"]
-                        </MudButton>
-                    </MudStack>
+                    @* Points Menu *@
+                    <Tooltip Text="@Localizer["MoreActions"]"
+                             RootClass="d-flex">
+                        <MudMenu Icon="@Icons.Material.Rounded.MoreVert"
+                                 AriaLabel="@Localizer["MoreActions"]"
+                                 Variant="Variant.Filled"
+                                 Size="Size.Small"
+                                 Dense>
+                            <MudMenuItem Label="@Localizer["SelectAll"]"
+                                         OnClick="MapViewModel.SelectAll" />
+                            <MudMenuItem Label="@Localizer["DeselectAll"]"
+                                         OnClick="MapViewModel.DeselectAll" />
+                            <MudMenuItem Label="@Localizer["Reset"]"
+                                         OnClick="MapViewModel.ResetToDefault" />
+                        </MudMenu>
+                    </Tooltip>
                 </MudStack>
 
                 <MudStack Spacing="0">
@@ -212,24 +208,31 @@
             <MudStack Spacing="2"
                       Class="position-absolute ma-4"
                       Style="top:0;left:0">
+                @* Zoom In *@
                 <MudIconButton Icon="@Icons.Material.Rounded.Add"
                                aria-label="@Localizer["ZoomIn"]"
                                Variant="Variant.Filled"
                                Size="Size.Small"
                                Class="map-overlay"
                                OnClick="() => ZoomAsync(1.25)" />
+                @* Zoom Out *@
                 <MudIconButton Icon="@Icons.Material.Rounded.Remove"
                                aria-label="@Localizer["ZoomOut"]"
                                Variant="Variant.Filled"
                                Size="Size.Small"
                                Class="map-overlay"
                                OnClick="() => ZoomAsync(1 / 1.25)" />
-                <MudIconButton Icon="@Icons.Material.Rounded.CenterFocusStrong"
-                               aria-label="@Localizer["CenterMap"]"
-                               Variant="Variant.Filled"
-                               Size="Size.Small"
-                               Class="map-overlay"
-                               OnClick="CenterAsync" />
+                @* Whole Map *@
+                <Tooltip Text="@Localizer["CenterMap"]"
+                         Placement="Placement.Right"
+                         RootClass="d-flex">
+                    <MudIconButton Icon="@Icons.Material.Rounded.FitScreen"
+                                   aria-label="@Localizer["CenterMap"]"
+                                   Variant="Variant.Filled"
+                                   Size="Size.Small"
+                                   Class="map-overlay"
+                                   OnClick="CenterAsync" />
+                </Tooltip>
             </MudStack>
 
             @if (MapViewModel.SelectedPoi is BasePoi selectedPoi)

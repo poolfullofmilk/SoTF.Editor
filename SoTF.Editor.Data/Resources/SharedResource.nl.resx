@@ -205,7 +205,7 @@
     <value>Uitzoomen</value>
   </data>
   <data name="CenterMap" xml:space="preserve">
-    <value>Kaart Centreren</value>
+    <value>Hele Kaart Tonen</value>
   </data>
   <data name="Area" xml:space="preserve">
     <value>Gebied</value>
@@ -822,9 +822,6 @@
   <data name="Ziplines" xml:space="preserve">
     <value>Tokkelbanen</value>
   </data>
-  <data name="OpenLastSavegame" xml:space="preserve">
-    <value>Laatste Savegame Openen</value>
-  </data>
   <data name="OpenSavegameFolder" xml:space="preserve">
     <value>Savegamemap Openen</value>
   </data>
@@ -1095,24 +1092,6 @@
   <data name="SaveChangesText" xml:space="preserve">
     <value>Deze pagina's hebben wijzigingen</value>
   </data>
-  <data name="ChangeMore" xml:space="preserve">
-    <value>{0} en {1} meer</value>
-  </data>
-  <data name="ChangeSettings" xml:space="preserve">
-    <value>Instellingen gewijzigd: {0}</value>
-  </data>
-  <data name="ChangeNpcs" xml:space="preserve">
-    <value>NPC's gewijzigd: {0}</value>
-  </data>
-  <data name="ChangeFollowers" xml:space="preserve">
-    <value>Volgers gewijzigd: {0}</value>
-  </data>
-  <data name="ChangeArmour" xml:space="preserve">
-    <value>Pantserstukken gewijzigd: {0}</value>
-  </data>
-  <data name="ChangePlayer" xml:space="preserve">
-    <value>Spelerwaarden</value>
-  </data>
   <data name="SaveChangesBackup" xml:space="preserve">
     <value>Eerst wordt een back-up van de hele savegame gemaakt</value>
   </data>
@@ -1172,9 +1151,6 @@
   </data>
   <data name="Location" xml:space="preserve">
     <value>Locatie</value>
-  </data>
-  <data name="MultiplayerClient" xml:space="preserve">
-    <value>Multiplayer Client</value>
   </data>
   <data name="Singleplayer" xml:space="preserve">
     <value>Singleplayer</value>
@@ -1905,5 +1881,26 @@ Terug naar het geladen seizoen herstelt de geladen verschuiving. Het aantal dage
   </data>
   <data name="MapKeyboardHint" xml:space="preserve">
     <value>Kaart, de pijltjestoetsen gaan langs de punten</value>
+  </data>
+  <data name="MoreActions" xml:space="preserve">
+    <value>Meer Acties</value>
+  </data>
+  <data name="HostedMultiplayer" xml:space="preserve">
+    <value>Multiplayer Als Host</value>
+  </data>
+  <data name="JoinedMultiplayer" xml:space="preserve">
+    <value>Multiplayer Als Gast</value>
+  </data>
+  <data name="AndMore" xml:space="preserve">
+    <value>En Nog {0}</value>
+  </data>
+  <data name="ChangeCopies" xml:space="preserve">
+    <value>{0}, {1} Kopieën</value>
+  </data>
+  <data name="ChangeRemoved" xml:space="preserve">
+    <value>{0} Verwijderd</value>
+  </data>
+  <data name="CurrentHealthAtMax" xml:space="preserve">
+    <value>De maximale gezondheid is de grens, verhoog het krachtniveau om hoger te gaan</value>
   </data>
 </root>

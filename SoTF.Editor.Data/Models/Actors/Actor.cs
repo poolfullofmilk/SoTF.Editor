@@ -31,6 +31,6 @@ public class Actor
             ? $"images/actors/{image}"
             : ActorType?.IconPath ?? "images/icons/question-mark.svg";
 
-    public string PrintableTitle =>
-        $"{ActorType?.Name ?? "???"} - UniqueId {UniqueId} - TypeId {TypeId} - FamilyId {FamilyId}";
+    // The Map Search Still Finds An Actor By Its Id
+    public string PrintableTitle => $"{ActorType?.Name ?? "???"} · {UniqueId}";
 }

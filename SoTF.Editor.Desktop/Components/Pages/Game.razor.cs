@@ -348,6 +348,20 @@ public partial class Game : EditorPageBase
         );
     }
 
+    public static string SetupLabelKey(string key)
+    {
+        // The Game Page Label, The Mode Has Its Own
+        return s_setupGroups
+                .SelectMany(group =>
+                    group
+                        .Selects.Select(setting => (setting.Key, setting.LabelKey))
+                        .Concat(group.Toggles.Select(toggle => (toggle.Key, toggle.LabelKey)))
+                )
+                .FirstOrDefault(setting => setting.Key == key)
+                .LabelKey
+            ?? (key == GameSetupKeys.Mode ? "Mode" : key);
+    }
+
     private sealed record SettingOption(string Value, string LabelKey);
 
     private sealed record SelectSetting(

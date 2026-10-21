@@ -72,6 +72,12 @@ public partial class EditActorDialog
         _viewModel = new EditActorViewModel(Actor, allActorTypes);
     }
 
+    private static string ReplaceTypeName(ActorType? actorType)
+    {
+        // The Empty Choice Keeps Every Type As It Is
+        return actorType is null or { Id: -1 } ? "—" : actorType.Name;
+    }
+
     private static string SelectionName(short? selection)
     {
         return EditActorViewModel

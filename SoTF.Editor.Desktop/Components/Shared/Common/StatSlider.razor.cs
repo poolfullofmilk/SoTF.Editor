@@ -29,5 +29,8 @@ public partial class StatSlider
     public string? Info { get; set; }
 
     [Parameter]
+    public string? Warning { get; set; }
+
+    [Parameter]
     public bool Changed { get; set; }
 }

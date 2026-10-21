@@ -45,7 +45,12 @@ public partial class GameStatePageViewModel
 
     public bool HasChanges => AllSettings.Any(IsChanged);
 
-    public int ChangeCount => AllSettings.Count(IsChanged);
+    // Known Fields By Label, World Objects By Raw Name
+    public IEnumerable<string> ChangedNames =>
+        Settings
+            .Where(IsChanged)
+            .Select(setting => AppText.Get(TextKeys.Setting(setting.Name)))
+            .Concat(NamedIntDatas.Where(IsChanged).Select(setting => setting.Name));
 
     public string ValueState =>
         string.Join('\n', AllSettings.Select(setting => LoadedValues.Format(setting.GetValue())));

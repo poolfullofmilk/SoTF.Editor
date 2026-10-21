@@ -205,7 +205,7 @@
     <value>Zoom Out</value>
   </data>
   <data name="CenterMap" xml:space="preserve">
-    <value>Center Map</value>
+    <value>Show Whole Map</value>
   </data>
   <data name="Area" xml:space="preserve">
     <value>Area</value>
@@ -822,9 +822,6 @@
   <data name="Ziplines" xml:space="preserve">
     <value>Ziplines</value>
   </data>
-  <data name="OpenLastSavegame" xml:space="preserve">
-    <value>Open Last Savegame</value>
-  </data>
   <data name="OpenSavegameFolder" xml:space="preserve">
     <value>Open Savegame Folder</value>
   </data>
@@ -1095,24 +1092,6 @@
   <data name="SaveChangesText" xml:space="preserve">
     <value>These pages have changes</value>
   </data>
-  <data name="ChangeMore" xml:space="preserve">
-    <value>{0} and {1} more</value>
-  </data>
-  <data name="ChangeSettings" xml:space="preserve">
-    <value>Settings changed: {0}</value>
-  </data>
-  <data name="ChangeNpcs" xml:space="preserve">
-    <value>NPCs changed: {0}</value>
-  </data>
-  <data name="ChangeFollowers" xml:space="preserve">
-    <value>Followers changed: {0}</value>
-  </data>
-  <data name="ChangeArmour" xml:space="preserve">
-    <value>Armour pieces changed: {0}</value>
-  </data>
-  <data name="ChangePlayer" xml:space="preserve">
-    <value>Player stats</value>
-  </data>
   <data name="SaveChangesBackup" xml:space="preserve">
     <value>A backup of the whole savegame is made first</value>
   </data>
@@ -1172,9 +1151,6 @@
   </data>
   <data name="Location" xml:space="preserve">
     <value>Location</value>
-  </data>
-  <data name="MultiplayerClient" xml:space="preserve">
-    <value>Multiplayer Client</value>
   </data>
   <data name="Singleplayer" xml:space="preserve">
     <value>Singleplayer</value>
@@ -1905,5 +1881,26 @@ Going back to the loaded season restores the loaded offset. The day count never 
   </data>
   <data name="MapKeyboardHint" xml:space="preserve">
     <value>Map, the arrow keys step through the points</value>
+  </data>
+  <data name="MoreActions" xml:space="preserve">
+    <value>More Actions</value>
+  </data>
+  <data name="HostedMultiplayer" xml:space="preserve">
+    <value>Hosted Multiplayer</value>
+  </data>
+  <data name="JoinedMultiplayer" xml:space="preserve">
+    <value>Joined Multiplayer</value>
+  </data>
+  <data name="AndMore" xml:space="preserve">
+    <value>And {0} More</value>
+  </data>
+  <data name="ChangeCopies" xml:space="preserve">
+    <value>{0}, {1} Copies</value>
+  </data>
+  <data name="ChangeRemoved" xml:space="preserve">
+    <value>{0} Removed</value>
+  </data>
+  <data name="CurrentHealthAtMax" xml:space="preserve">
+    <value>Max health caps it, raise the strength level to go higher</value>
   </data>
 </root>

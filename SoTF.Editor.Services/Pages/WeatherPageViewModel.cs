@@ -16,7 +16,8 @@ public class WeatherPageViewModel
 
     public bool HasChanges => AllSettings.Any(IsChanged);
 
-    public int ChangeCount => AllSettings.Count(IsChanged);
+    public IEnumerable<string> ChangedNames =>
+        AllSettings.Where(IsChanged).Select(setting => AppText.Get(TextKeys.Setting(setting.Name)));
 
     public bool IsChanged(GenericSetting setting)
     {

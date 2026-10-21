@@ -109,8 +109,8 @@ public partial class MainLayout : IDisposable
     {
         // The Same Names The Savegames Page Groups By
         var mode =
-            savegame.IsMultiPlayer() ? "Multiplayer"
-            : savegame.IsMultiPlayerClient() ? "MultiplayerClient"
+            savegame.IsMultiPlayer() ? "HostedMultiplayer"
+            : savegame.IsMultiPlayerClient() ? "JoinedMultiplayer"
             : "Singleplayer";
         return $"{savegame.Name} · {Localizer[mode]} · {Formatter.FormatDateTime(savegame.LastSaveTime)}";
     }
