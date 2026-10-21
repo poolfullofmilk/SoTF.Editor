@@ -224,6 +224,38 @@ try
     BackupManager.Restore(savegamePath, oldest.Path);
     Check(SameHashes(pristine, HashFiles(savegamePath)), "Restore Oldest Brings Every File Back");
 
+    // A Missing Backup Fails Before Any File Is Touched
+    Check(
+        Throws(() => BackupManager.Restore(savegamePath, Path.Combine(work, "Missing")))
+            && SameHashes(pristine, HashFiles(savegamePath)),
+        "Missing Backup Changes Nothing"
+    );
+
+    // A Failed Copy Leaves No Backup Behind
+    var archivePath = Path.Combine(savegamePath, "SaveData.zip");
+    var backupCount = BackupManager.List(savegamePath).Count;
+    using (File.Open(archivePath, FileMode.Open, FileAccess.Read, FileShare.None))
+    {
+        Check(Throws(() => BackupManager.Create(savegamePath)), "Locked File Fails The Backup");
+    }
+
+    Check(BackupManager.List(savegamePath).Count == backupCount, "Failed Backup Leaves No Folder");
+
+    // A File Rewritten In Place Counts As An Outside Change
+    main.ReloadSavegame();
+    var store = main.SelectedSavegame!.SavegameStore;
+    Check(!store.HasChanged(), "Fresh Load Shows No Outside Change");
+    File.SetLastWriteTimeUtc(archivePath, File.GetLastWriteTimeUtc(archivePath).AddMinutes(1));
+    Check(store.HasChanged(), "Rewritten File Shows As Outside Change");
+
+    // A Missing File Fails The Save And Keeps The Edit
+    player.PlayerState.Fullness = 10;
+    var movedPath = Path.Combine(work, "Moved.zip");
+    File.Move(archivePath, movedPath);
+    Check(Throws(() => main.SaveChanges()), "Missing File Fails The Save");
+    Check(main.HasUnsavedChanges(), "Failed Save Keeps The Edit");
+    File.Move(movedPath, archivePath);
+
     void EditAndCheck(string page, string route, Action edit, Func<bool> readBack)
     {
         edit();
@@ -264,6 +296,19 @@ void Check(bool passed, string name)
     if (!passed)
     {
         failures.Add(name);
+    }
+}
+
+static bool Throws(Action action)
+{
+    try
+    {
+        action();
+        return false;
+    }
+    catch (IOException)
+    {
+        return true;
     }
 }
 

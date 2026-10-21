@@ -113,6 +113,7 @@
                     <MudButton Variant="Variant.Text"
                                Size="Size.Small"
                                StartIcon="@Icons.Material.Rounded.GroupAdd"
+                               Disabled="@(!PlayerOnSurface)"
                                OnClick="SpawnAsync">
                         @Localizer["Spawn"]
                     </MudButton>

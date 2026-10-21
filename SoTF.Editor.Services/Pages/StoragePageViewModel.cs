@@ -40,7 +40,7 @@ public class StoragePageViewModel
     public bool IsChanged(IStorage storage)
     {
         return !_loaded.TryGetValue(storage, out var loaded)
-            || !loaded.SequenceEqual(ValuesOf(storage));
+            || !loaded.SequenceEqual(StoredItemsOf(storage).Select(ValueOf));
     }
 
     public bool IsChanged(IStorage storage, StoredItem storedItem)

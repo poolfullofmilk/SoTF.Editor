@@ -1243,7 +1243,7 @@
     <value>Kan de savegame niet openen, zie het logbestand</value>
   </data>
   <data name="UnableToRestoreBackup" xml:space="preserve">
-    <value>Kan back-up niet terugzetten, sluit eerst de game</value>
+    <value>Kan de back-up niet terugzetten. Sluit eerst de game of zie het logbestand</value>
   </data>
   <data name="Language" xml:space="preserve">
     <value>Taal</value>

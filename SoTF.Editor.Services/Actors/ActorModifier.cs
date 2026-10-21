@@ -42,7 +42,18 @@ public class ActorModifier(PlayerPageViewModel playerPageViewModel)
         if (data.ModificationMode == ActorModificationMode.Remove)
         {
             matchedActors.ForEach(actor => actor.Remove());
-            RemoveInfluenceMemories(vailWorldSim, UniqueIdsOf(matchedActors));
+
+            // Their Feelings And Carried Items Go With Them
+            var uniqueIds = UniqueIdsOf(matchedActors);
+            RemoveWhere(vailWorldSim["InfluenceMemory"], uniqueIds);
+            if (
+                saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.NpcItemInstances) is
+                { } npcItemInstances
+            )
+            {
+                RemoveWhere(npcItemInstances["ActorItems"], uniqueIds);
+                saveDataWrapper.MarkAsModified(Constants.JsonKeys.NpcItemInstances);
+            }
         }
         else
         {
@@ -158,11 +169,6 @@ public class ActorModifier(PlayerPageViewModel playerPageViewModel)
         {
             influenceMemories.Add(JToken.FromObject(new InfluenceMemory(uniqueId, influences)));
         }
-    }
-
-    private static void RemoveInfluenceMemories(JToken vailWorldSim, HashSet<int> uniqueIds)
-    {
-        RemoveWhere(vailWorldSim["InfluenceMemory"], uniqueIds);
     }
 
     private static void RemoveSpawners(JToken vailWorldSim, HashSet<int> spawnerIds)

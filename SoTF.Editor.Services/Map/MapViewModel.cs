@@ -97,9 +97,8 @@ public class MapViewModel(
     public IEnumerable<IPoi> VisiblePois()
     {
         SyncLivePositions();
-        return AllPois()
-            .Where(poi => poi.Visible && poi is not ZiplinePoi)
-            .OrderBy(poi => poi.IconZIndex);
+        // Stacking Comes From Each Icon's Z Index, Not The Order
+        return AllPois().Where(poi => poi.Visible && poi is not ZiplinePoi);
     }
 
     public IEnumerable<ZiplinePoi> VisibleZiplines()

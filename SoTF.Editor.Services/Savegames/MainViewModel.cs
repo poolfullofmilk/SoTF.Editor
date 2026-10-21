@@ -48,6 +48,20 @@ public class MainViewModel(
     #region Savegame Methods
     public void SelectSavegame(Savegame? savegame)
     {
+        try
+        {
+            Load(savegame);
+        }
+        catch when (savegame != null)
+        {
+            // A Half Loaded Savegame Is Closed, Never Left Open
+            Load(null);
+            throw;
+        }
+    }
+
+    private void Load(Savegame? savegame)
+    {
         SelectedSavegame = savegame;
         Revision++;
         _changedTools.Clear();

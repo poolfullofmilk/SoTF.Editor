@@ -11,6 +11,9 @@ public partial class Home : EditorPageBase
 
     private static string SavegamePath => SavegameManager.GetSavePath();
 
+    private static bool IsDefaultFolder =>
+        string.IsNullOrWhiteSpace(UserSettings.Current.SavegamePath);
+
     private IEnumerable<SavegameGroup> SavegameGroups =>
         new[]
         {

@@ -1243,7 +1243,7 @@
     <value>Unable to open the savegame, see the log</value>
   </data>
   <data name="UnableToRestoreBackup" xml:space="preserve">
-    <value>Unable to restore backup, close the game first</value>
+    <value>Unable to restore the backup. Close the game first or see the log</value>
   </data>
   <data name="Language" xml:space="preserve">
     <value>Language</value>

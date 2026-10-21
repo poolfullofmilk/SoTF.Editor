@@ -39,29 +39,54 @@ public static class BackupManager
 
     private static string CopyAll(string savegamePath)
     {
-        var target = NewFolder(FolderOf(savegamePath));
-        foreach (var file in Directory.GetFiles(savegamePath, "*", SearchOption.AllDirectories))
-        {
-            CopyVerified(file, Path.Combine(target, Path.GetRelativePath(savegamePath, file)));
-        }
-
-        s_logger.Info($"Created Backup {target}");
-        return target;
+        return NewBackup(
+            FolderOf(savegamePath),
+            target =>
+            {
+                foreach (
+                    var file in Directory.GetFiles(savegamePath, "*", SearchOption.AllDirectories)
+                )
+                {
+                    CopyVerified(
+                        file,
+                        Path.Combine(target, Path.GetRelativePath(savegamePath, file))
+                    );
+                }
+            }
+        );
     }
 
     public static void CreateForFile(string filePath)
     {
         // Steam Id And File Name, For Files Beside The Savegames
-        var target = NewFolder(
-            Path.Combine(
-                BackupDirectory,
-                Path.GetFileName(Path.GetDirectoryName(filePath)) ?? "",
-                Path.GetFileNameWithoutExtension(filePath)
+        Prune(
+            NewBackup(
+                Path.Combine(
+                    BackupDirectory,
+                    Path.GetFileName(Path.GetDirectoryName(filePath)) ?? "",
+                    Path.GetFileNameWithoutExtension(filePath)
+                ),
+                target => CopyVerified(filePath, Path.Combine(target, Path.GetFileName(filePath)))
             )
         );
-        CopyVerified(filePath, Path.Combine(target, Path.GetFileName(filePath)));
+    }
+
+    private static string NewBackup(string parent, Action<string> copy)
+    {
+        var target = NewFolder(parent);
+        try
+        {
+            copy(target);
+        }
+        catch
+        {
+            // A Failed Copy Never Shows Up As A Backup
+            Directory.Delete(target, true);
+            throw;
+        }
+
         s_logger.Info($"Created Backup {target}");
-        Prune(target);
+        return target;
     }
 
     private static string NewFolder(string parent)
@@ -84,6 +109,13 @@ public static class BackupManager
 
     public static void Restore(string savegamePath, string backup)
     {
+        // A Missing Or Empty Backup Fails Before Anything Is Touched
+        var files = Directory.GetFiles(backup, "*", SearchOption.AllDirectories);
+        if (files.Length == 0)
+        {
+            throw new IOException($"Found No Files In Backup {backup}");
+        }
+
         // The Current State Is Kept, So Restores Can Be Undone
         var safetyCopy = CopyAll(savegamePath);
 
@@ -96,7 +128,7 @@ public static class BackupManager
             }
         }
 
-        foreach (var file in Directory.GetFiles(backup, "*", SearchOption.AllDirectories))
+        foreach (var file in files)
         {
             var target = Path.Combine(savegamePath, Path.GetRelativePath(backup, file));
             Directory.CreateDirectory(Path.GetDirectoryName(target)!);

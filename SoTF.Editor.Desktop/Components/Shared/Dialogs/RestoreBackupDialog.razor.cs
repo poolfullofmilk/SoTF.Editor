@@ -29,10 +29,13 @@ public partial class RestoreBackupDialog
 
     private SavegameBackup? _selected;
 
+    // Measured Once, Every Row Click Renders Again
+    private long _totalSize = BackupManager.TotalSize();
+
     private string UsageText =>
         Localizer[
             "BackupUsage",
-            Formatter.FormatSize(BackupManager.TotalSize()),
+            Formatter.FormatSize(_totalSize),
             Formatter.FormatSize(BackupManager.SizeLimit)
         ];
 
@@ -69,6 +72,7 @@ public partial class RestoreBackupDialog
         {
             BackupManager.Delete(backup.Path);
             Backups.Remove(backup);
+            _totalSize -= backup.Size;
             if (_selected == backup)
             {
                 _selected = null;

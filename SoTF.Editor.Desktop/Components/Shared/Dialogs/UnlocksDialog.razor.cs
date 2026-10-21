@@ -16,36 +16,23 @@ public partial class UnlocksDialog
     [Inject]
     public required ISnackbar Snackbar { get; set; }
 
+    [Inject]
+    public required MainViewModel MainViewModel { get; set; }
+
     private UnlocksViewModel? _viewModel;
 
     protected override void OnInitialized()
     {
-        // The Chosen Saves Folder Counts, Not Only The Default One
-        var savePath = SavegameManager.GetSavePath();
-        if (Directory.Exists(savePath) && GetPathToPlayerProfile(savePath) is { } playerProfilePath)
+        // The Steam Account That Owns The Open Savegame
+        if (
+            MainViewModel.SelectedSavegame?.SavegameStore.GetParentDirectory()?.Parent is
+            { } steamFolder
+        )
         {
-            _viewModel = new UnlocksViewModel(playerProfilePath);
+            _viewModel = new UnlocksViewModel(
+                Path.Combine(steamFolder.FullName, "PlayerProfile.json")
+            );
         }
-    }
-
-    private static string? GetPathToPlayerProfile(string savePath)
-    {
-        string? fallback = null;
-        foreach (var directoryInfo in new DirectoryInfo(savePath).GetDirectories())
-        {
-            var path = Path.Combine(directoryInfo.FullName, "PlayerProfile.json");
-            if (File.Exists(path))
-            {
-                return path;
-            }
-
-            if (fallback == null && directoryInfo.Name.All(char.IsDigit))
-            {
-                fallback = path;
-            }
-        }
-
-        return fallback;
     }
 
     private void Save()

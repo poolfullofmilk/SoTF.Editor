@@ -95,25 +95,35 @@ public class UnlocksViewModel
             { EscapedIslandKey, EscapedIsland },
         };
 
+        var hasChanges = false;
         foreach (var setting in settings)
         {
             if (
                 setting[NameKey]?.Value<string>() is not { } settingName
-                || !settingsToSave.TryGetValue(settingName, out var settingValue)
+                || !settingsToSave.Remove(settingName, out var settingValue)
+                || GetBoolSetting(setting) == settingValue
             )
             {
                 continue;
             }
 
             setting[BoolValueKey] = settingValue;
-            settingsToSave.Remove(settingName);
+            hasChanges = true;
         }
 
-        foreach (var (settingKey, settingValue) in settingsToSave)
+        // Missing Reads As False, Only True Settings Are Added
+        foreach (
+            var settingKey in settingsToSave.Where(pair => pair.Value).Select(pair => pair.Key)
+        )
         {
-            var newSetting = new JObject { [NameKey] = settingKey, [BoolValueKey] = settingValue };
+            settings.Add(new JObject { [NameKey] = settingKey, [BoolValueKey] = true });
+            hasChanges = true;
+        }
 
-            settings.Add(newSetting);
+        // Nothing Toggled Writes Nothing, Not Even A Backup
+        if (!hasChanges)
+        {
+            return;
         }
 
         // A Verified Copy First, Then A Write That Cannot Tear

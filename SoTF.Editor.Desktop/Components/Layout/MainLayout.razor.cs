@@ -197,7 +197,13 @@ public partial class MainLayout : IDisposable
             return;
         }
 
-        if (!await TryBusyAsync(() => MainViewModel.SelectSavegame(savegame), "UnableToOpen"))
+        if (
+            !await TryBusyAsync(
+                savegame,
+                () => MainViewModel.SelectSavegame(savegame),
+                "UnableToOpen"
+            )
+        )
         {
             return;
         }
@@ -210,9 +216,12 @@ public partial class MainLayout : IDisposable
 
     private async Task ReloadAsync()
     {
-        if (await DialogService.ConfirmDiscardAsync(Localizer, MainViewModel))
+        if (
+            MainViewModel.SelectedSavegame is { } savegame
+            && await DialogService.ConfirmDiscardAsync(Localizer, MainViewModel)
+        )
         {
-            await TryBusyAsync(MainViewModel.ReloadSavegame, "UnableToOpen");
+            await TryBusyAsync(savegame, MainViewModel.ReloadSavegame, "UnableToOpen");
         }
     }
 
@@ -225,7 +234,7 @@ public partial class MainLayout : IDisposable
         }
     }
 
-    private async Task<bool> TryBusyAsync(Action work, string failureKey)
+    private async Task<bool> TryBusyAsync(Savegame savegame, Action work, string failureKey)
     {
         try
         {
@@ -234,10 +243,23 @@ public partial class MainLayout : IDisposable
         }
         catch (Exception exception)
         {
-            // A Half Loaded Savegame Is Closed, Never Left Open
+            // A Half Loaded Savegame Is Closed, Its Backups Stay Reachable
             s_logger.Error(exception, "Failed To Load Savegame");
             MainViewModel.SelectSavegame(null);
-            Snackbar.Add(Localizer[failureKey], Severity.Error);
+            Snackbar.Add(
+                Localizer[failureKey],
+                Severity.Error,
+                options =>
+                {
+                    options.RequireInteraction = true;
+                    options.Action = Localizer["OpenBackupFolder"];
+                    options.OnClick = _ =>
+                    {
+                        OpenBackupFolderOf(savegame.FullPath);
+                        return Task.CompletedTask;
+                    };
+                }
+            );
             NavigationManager.NavigateTo("/");
             return false;
         }
@@ -272,10 +294,15 @@ public partial class MainLayout : IDisposable
     {
         if (MainViewModel.SelectedSavegame is { } savegame)
         {
-            var folder = BackupManager.FolderOf(savegame.FullPath);
-            Directory.CreateDirectory(folder);
-            OpenInExplorer(folder);
+            OpenBackupFolderOf(savegame.FullPath);
         }
+    }
+
+    private static void OpenBackupFolderOf(string savegamePath)
+    {
+        var folder = BackupManager.FolderOf(savegamePath);
+        Directory.CreateDirectory(folder);
+        OpenInExplorer(folder);
     }
 
     private static void OpenInExplorer(string folder)
@@ -315,22 +342,22 @@ public partial class MainLayout : IDisposable
             return;
         }
 
-        try
+        if (
+            await TryBusyAsync(
+                savegame,
+                () =>
+                {
+                    BackupManager.Restore(savegame.FullPath, backup.Path);
+                    MainViewModel.ReloadSavegame();
+                },
+                "UnableToRestoreBackup"
+            )
+        )
         {
-            await RunBusyAsync(() =>
-            {
-                BackupManager.Restore(savegame.FullPath, backup.Path);
-                MainViewModel.ReloadSavegame();
-            });
             Snackbar.Add(
                 Localizer["RestoredBackup", Formatter.FormatDateTimeWithSeconds(backup.TakenAt)],
                 Severity.Success
             );
-        }
-        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
-        {
-            s_logger.Error(exception, "Failed To Restore Backup");
-            Snackbar.Add(Localizer["UnableToRestoreBackup"], Severity.Error);
         }
     }
     #endregion

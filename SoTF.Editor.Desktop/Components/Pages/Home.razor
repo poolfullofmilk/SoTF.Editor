@@ -14,11 +14,12 @@
                               Label="@Localizer["Location"]"
                               ReadOnly
                               Variant="Variant.Outlined"
+                              Margin="Margin.Dense"
                               Class="flex-grow-1"
                               Style="min-width:320px" />
 
                 @* Change Folder *@
-                <MudButton Variant="Variant.Filled"
+                <MudButton Variant="Variant.Outlined"
                            Size="Size.Small"
                            StartIcon="@Icons.Material.Rounded.Folder"
                            OnClick="ChangeFolder">
@@ -26,9 +27,10 @@
                 </MudButton>
 
                 @* Default Folder *@
-                <MudButton Variant="Variant.Text"
+                <MudButton Variant="Variant.Outlined"
                            Size="Size.Small"
                            StartIcon="@Icons.Material.Rounded.SettingsBackupRestore"
+                           Disabled="@IsDefaultFolder"
                            OnClick="SetDefaultFolder">
                     @Localizer["UseDefaultFolder"]
                 </MudButton>

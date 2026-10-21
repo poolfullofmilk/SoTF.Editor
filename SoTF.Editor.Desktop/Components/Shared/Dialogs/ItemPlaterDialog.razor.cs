@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using NLog;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Resources;
 using SoTF.Editor.Services.Savegames;
@@ -9,6 +10,8 @@ namespace SoTF.Editor.Desktop.Components.Shared.Dialogs;
 
 public partial class ItemPlaterDialog
 {
+    private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
+
     [Inject]
     public required IStringLocalizer<SharedResource> Localizer { get; set; }
 
@@ -90,16 +93,25 @@ public partial class ItemPlaterDialog
             return;
         }
 
-        MainViewModel.ReloadSavegame();
-        if (MainViewModel.SelectedSavegame is not { } savegame)
+        try
         {
-            return;
-        }
+            MainViewModel.ReloadSavegame();
+            if (MainViewModel.SelectedSavegame is not { } savegame)
+            {
+                return;
+            }
 
-        var result = plate(savegame);
-        MainViewModel.SaveWrappers(result.WrappersToSave);
-        Snackbar.Add(result.Message, Severity.Success);
-        MudDialog.Close(DialogResult.Ok(true));
+            var result = plate(savegame);
+            MainViewModel.SaveWrappers(result.WrappersToSave);
+            Snackbar.Add(result.Message, Severity.Success);
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+        catch (Exception exception)
+        {
+            // Failed Loads Close The Savegame, Failed Writes Keep It
+            s_logger.Error(exception, "Failed To Plate Items");
+            Snackbar.Add(Localizer["UnableToSave", exception.Message], Severity.Error);
+        }
     }
 
     private static Option Toggle<T>(string label, HashSet<T> selected, T value)

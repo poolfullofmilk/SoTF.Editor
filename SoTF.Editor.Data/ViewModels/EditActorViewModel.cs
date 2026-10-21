@@ -18,7 +18,17 @@ public class EditActorViewModel
         ModifyOptions.ActorHealth = Actor.Stats?.GetValueOrDefault("Health", 100f) ?? 100f;
         ModifyOptions.UpdateHealth = !Actor.Stats?.ContainsKey("Health") ?? true;
 
-        Influences = actor.Influences is { } influences ? [.. influences] : [];
+        // Copies, So Closing Without Apply Leaves The Actor Untouched
+        Influences =
+        [
+            .. (actor.Influences ?? []).Select(influence => new Influence
+            {
+                TypeId = influence.TypeId,
+                Anger = influence.Anger,
+                Fear = influence.Fear,
+                Sentiment = influence.Sentiment,
+            }),
+        ];
 
         switch (actor.TypeId)
         {

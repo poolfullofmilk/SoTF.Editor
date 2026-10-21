@@ -36,10 +36,13 @@ public class SavegameStore
 
     private readonly Dictionary<FileType, SaveDataWrapper?> _rawData = [];
 
+    private readonly string _loadedFiles;
+
     public SavegameStore(string path)
     {
         _path = path;
         LastWriteTime = Directory.GetLastWriteTime(_path);
+        _loadedFiles = FileStamps();
     }
 
     public DateTime LastWriteTime { get; }
@@ -88,7 +91,18 @@ public class SavegameStore
 
     public bool HasChanged()
     {
-        return Directory.GetLastWriteTime(_path) != LastWriteTime;
+        return FileStamps() != _loadedFiles;
+    }
+
+    private string FileStamps()
+    {
+        // A File Rewritten In Place Leaves The Folder Time Alone
+        return string.Join(
+            "|",
+            new DirectoryInfo(_path)
+                .EnumerateFiles("*", SearchOption.AllDirectories)
+                .Select(file => $"{file.FullName} {file.Length} {file.LastWriteTimeUtc.Ticks}")
+        );
     }
 
     public string? GetThumbPath()
@@ -134,10 +148,19 @@ public class SavegameStore
             return false;
         }
 
+        // A File Gone Since Loading Fails Before Any Write
+        var archivePath = ResolvePath(FileType.SaveDataArchive.GetFilename());
+        foreach (var fileName in changedWrappers.Keys.Select(fileType => fileType.GetFilename()))
+        {
+            if (!File.Exists(ResolvePath(fileName)) && !File.Exists(archivePath))
+            {
+                throw new IOException($"Found No {fileName} To Write");
+            }
+        }
+
         // Nothing Is Written Until A Verified Copy Exists
         BackupManager.Create(_path);
 
-        var archivePath = ResolvePath(FileType.SaveDataArchive.GetFilename());
         var archiveEntries = new List<(string FileName, string Json)>();
         foreach (var (fileType, saveDataWrapper) in changedWrappers)
         {

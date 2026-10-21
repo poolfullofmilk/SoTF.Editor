@@ -18,6 +18,15 @@ public class PoiLoader(
     private readonly AreaMaskManager _areaMaskManager = gameData.AreaManager;
     private readonly ItemList _items = gameData.Items;
 
+    // Static Points Never Change, Parsed Once Instead Of Every Visit
+    private readonly Dictionary<string, RawPoiGroup> _rawPois =
+        SaveJson.DeserializeFromString<Dictionary<string, RawPoiGroup>>(
+            ResourceFile.Read("Pois.json")
+        ) ?? [];
+    private readonly RawItemPoiCollection _rawItemPois =
+        SaveJson.DeserializeFromString<RawItemPoiCollection>(ResourceFile.Read("ItemPois.json"))
+        ?? throw new InvalidDataException("Found No Item Points");
+
     public IEnumerable<IPoiGrouper> Load()
     {
         var inventoryItems = GetInventoryItems();
@@ -67,11 +76,7 @@ public class PoiLoader(
 
     private PoiGroupCollection LoadItemPois(HashSet<int> inventoryItems)
     {
-        var rawPoiCollection =
-            SaveJson.DeserializeFromString<RawItemPoiCollection>(ResourceFile.Read("ItemPois.json"))
-            ?? throw new InvalidDataException("Found No Item Points");
-
-        var groups = rawPoiCollection
+        var groups = _rawItemPois
             .Items.SelectMany(pair =>
                 pair.Value.Pois.Select(poi =>
                     ItemPoi.Of(pair.Key, pair.Value, poi, _items, inventoryItems, _areaMaskManager)
@@ -89,9 +94,7 @@ public class PoiLoader(
                     AppText.Get(TextKeys.ItemType(group.Key)),
                     PoiGroupKeys.Items + group.Key,
                     PoiGroupType.Items,
-                    rawPoiCollection
-                        .OverridingTypeIcons.GetValueOrDefault(group.Key)
-                        ?.TrimStart('/')
+                    _rawItemPois.OverridingTypeIcons.GetValueOrDefault(group.Key)?.TrimStart('/')
                         ?? pois[0].Icon
                 );
             })
@@ -108,13 +111,8 @@ public class PoiLoader(
 
     private IEnumerable<PoiGroup> LoadRawPois(HashSet<int> inventoryItems)
     {
-        var rawPois =
-            SaveJson.DeserializeFromString<Dictionary<string, RawPoiGroup>>(
-                ResourceFile.Read("Pois.json")
-            ) ?? [];
-
         // Every Group In Pois Json Is A Static Place
-        foreach (var group in rawPois.Values)
+        foreach (var group in _rawPois.Values)
         {
             var isCaveOrBunker = group.Type is PoiGroupType.Bunkers or PoiGroupType.Caves;
             var pois = group
