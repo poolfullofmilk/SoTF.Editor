@@ -11,18 +11,9 @@
                   Class="rounded-panel pa-4 overflow-y-auto"
                   Style="width:360px;flex-shrink:0">
             <MudStack Spacing="3">
-                @* Full Text *@
-                <MudTextField T="string"
-                              Variant="Variant.Outlined"
-                              Value="MapViewModel.MapFilter.FullText"
-                              ValueChanged="SetFullText"
-                              DebounceInterval="500"
-                              Label="@Localizer["Search"]"
-                              Placeholder="@Localizer["SearchPlaceholder"]"
-                              HelperText="@Localizer["SearchTooltip"]"
-                              Adornment="Adornment.Start"
-                              AdornmentIcon="@Icons.Material.Rounded.Search"
-                              Clearable />
+                @* Point Search *@
+                <SearchField Value="@MapViewModel.MapFilter.FullText"
+                             ValueChanged="SetFullText" />
                 @* Area Filter *@
                 <MudSelect T="IAreaFilter"
                            Variant="Variant.Outlined"
@@ -30,7 +21,8 @@
                            ValueChanged="SetAreaFilter"
                            Label="@Localizer["Area"]"
                            ToStringFunc="areaFilter => areaFilter?.Name ?? string.Empty"
-                           Dense>
+                           Dense
+                           Margin="Margin.Dense">
                     @foreach (var areaFilter in MapViewModel.MapFilter.AreaFilterTypeValues)
                     {
                         <MudSelectItem Value="areaFilter">@areaFilter.Name</MudSelectItem>
@@ -44,7 +36,8 @@
                            Label="@Localizer["Requirements"]"
                            HelperText="@Localizer["RequirementsTooltip"]"
                            ToStringFunc="RequirementsName"
-                           Dense>
+                           Dense
+                           Margin="Margin.Dense">
                     @foreach (var requirementsFilter in Enum.GetValues<MapFilter.RequirementsFilterType>())
                     {
                         <MudSelectItem Value="requirementsFilter">@RequirementsName(requirementsFilter)</MudSelectItem>
@@ -66,7 +59,6 @@
                              RootClass="d-flex">
                         <MudMenu Icon="@Icons.Material.Rounded.MoreVert"
                                  AriaLabel="@Localizer["MoreActions"]"
-                                 Variant="Variant.Filled"
                                  Size="Size.Small"
                                  Dense>
                             <MudMenuItem Label="@Localizer["SelectAll"]"

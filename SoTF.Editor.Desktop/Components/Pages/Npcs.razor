@@ -10,16 +10,23 @@
                      Class="fill-column">
                 <MudStack Spacing="2"
                           Class="fill">
-                    @* Grouping Toggle *@
-                    <MudToggleGroup T="bool"
-                                    @bind-Value="_byFamily"
-                                    Color="Color.Secondary"
-                                    Size="Size.Small">
-                        <MudToggleItem Value="false"
-                                       Text="@Localizer["ByType"]" />
-                        <MudToggleItem Value="true"
-                                       Text="@Localizer["ByFamily"]" />
-                    </MudToggleGroup>
+                    <MudStack Row
+                              Spacing="2">
+                        @* By Type *@
+                        <MudButton Variant="@(_byFamily ? Variant.Text : Variant.Filled)"
+                                   Color="Color.Info"
+                                   Size="Size.Small"
+                                   OnClick="() => _byFamily = false">
+                            @Localizer["ByType"]
+                        </MudButton>
+                        @* By Family *@
+                        <MudButton Variant="@(_byFamily ? Variant.Filled : Variant.Text)"
+                                   Color="Color.Info"
+                                   Size="Size.Small"
+                                   OnClick="() => _byFamily = true">
+                            @Localizer["ByFamily"]
+                        </MudButton>
+                    </MudStack>
                     @if (_byFamily)
                     {
                         <MudText Typo="Typo.caption"
@@ -110,13 +117,13 @@
                                 <RowTemplate>
                                     <MudTd>
                                         <ItemLabel Name="@(context.ActorType?.Name ?? "???")"
-                                                   Detail="@($"{context.ActorType?.PrintableClassification} · {context.ActorType?.PrintableGender}")"
+                                                   Detail="@DetailOf(context)"
                                                    ImageUrl="@context.ActorType?.IconPath"
                                                    Changed="@NpcsPage.IsChanged(context)"
                                                    Round />
                                     </MudTd>
                                     <MudTd Class="selectable-text">@context.UniqueId</MudTd>
-                                    <MudTd>@context.FamilyId</MudTd>
+                                    <MudTd>@(context.FamilyId?.ToString() ?? "-")</MudTd>
                                     <MudTd Class="text-truncate"
                                            title="@context.StatePrintable">
                                         @context.StatePrintable

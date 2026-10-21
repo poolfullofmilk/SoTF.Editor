@@ -666,9 +666,6 @@
   <data name="SetAllToMin" xml:space="preserve">
     <value>Set All To Min</value>
   </data>
-  <data name="Filter" xml:space="preserve">
-    <value>Filter</value>
-  </data>
   <data name="ItemsInInventory" xml:space="preserve">
     <value>Items In Inventory</value>
   </data>
@@ -740,12 +737,6 @@
   </data>
   <data name="Search" xml:space="preserve">
     <value>Search</value>
-  </data>
-  <data name="SearchTooltip" xml:space="preserve">
-    <value>Searches titles, descriptions, item names and item types</value>
-  </data>
-  <data name="SearchPlaceholder" xml:space="preserve">
-    <value>Title, Description, Item</value>
   </data>
   <data name="UncollectedOnly" xml:space="preserve">
     <value>Uncollected Items Only</value>
@@ -827,9 +818,6 @@
   </data>
   <data name="ReloadSavegame" xml:space="preserve">
     <value>Reload Savegame</value>
-  </data>
-  <data name="CloseSavegame" xml:space="preserve">
-    <value>Close Savegame</value>
   </data>
   <data name="GitHubProject" xml:space="preserve">
     <value>GitHub Project</value>
@@ -1742,7 +1730,7 @@ Going back to the loaded season restores the loaded offset. The day count never 
     <value>How hard enemies hit</value>
   </data>
   <data name="EnemyArmorInfo" xml:space="preserve">
-    <value>How much damage enemy armour blocks</value>
+    <value>How much damage enemy armor blocks</value>
   </data>
   <data name="EnemyAggressionInfo" xml:space="preserve">
     <value>How quickly enemies attack instead of watching</value>

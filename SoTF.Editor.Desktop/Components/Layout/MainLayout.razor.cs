@@ -105,16 +105,6 @@ public partial class MainLayout : IDisposable
         _ = InvokeAsync(StateHasChanged);
     }
 
-    private string SavegameLabel(Savegame savegame)
-    {
-        // The Same Names The Savegames Page Groups By
-        var mode =
-            savegame.IsMultiPlayer() ? "HostedMultiplayer"
-            : savegame.IsMultiPlayerClient() ? "JoinedMultiplayer"
-            : "Singleplayer";
-        return $"{savegame.Name} · {Localizer[mode]} · {Formatter.FormatDateTime(savegame.LastSaveTime)}";
-    }
-
     private void RecoverFromError()
     {
         _errorBoundary?.Recover();
@@ -222,15 +212,6 @@ public partial class MainLayout : IDisposable
         )
         {
             await TryBusyAsync(savegame, MainViewModel.ReloadSavegame, "UnableToOpen");
-        }
-    }
-
-    private async Task CloseAsync()
-    {
-        if (await DialogService.ConfirmDiscardAsync(Localizer, MainViewModel))
-        {
-            MainViewModel.SelectSavegame(null);
-            NavigationManager.NavigateTo("/");
         }
     }
 

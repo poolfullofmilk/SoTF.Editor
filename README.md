@@ -24,7 +24,7 @@ A savegame editor for Sons of the Forest, with a verified backup before every sa
 - Savegame cards show the day, mode and crash site, and joined games also your strength and items
 - Tools on their own page, such as regrow trees, reset fires, traps and containers, and item plating
 - Updates itself in the background from inside the app and shows what changed
-- Every list, card and map point works with the keyboard too
+- Every list, card and map point works with the keyboard too, and Ctrl F jumps to the search field
 - English and Dutch
 
 ## Quick start

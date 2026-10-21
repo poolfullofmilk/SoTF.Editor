@@ -92,6 +92,7 @@
                                                    ValueChanged="SelectFillItem"
                                                    Label="@Localizer["FillAllWith"]"
                                                    ToStringFunc="item => item?.Name ?? string.Empty"
+                                                   Margin="Margin.Dense"
                                                    Style="min-width:220px">
                                             @foreach (var item in selected.SupportedItems)
                                             {
@@ -105,6 +106,7 @@
                                                          Label="@Localizer["Count"]"
                                                          Min="1"
                                                          Max="_fillItem?.Max ?? 1000"
+                                                         Margin="Margin.Dense"
                                                          Style="width:110px" />
                                         @* Fill Button *@
                                         <Tooltip Text="@Localizer["FillFittingSlotsTooltip"]"

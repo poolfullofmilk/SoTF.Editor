@@ -67,7 +67,9 @@ public partial class UpdateDialog
             return;
         }
 
+        // A Running Update Cannot Be Closed Halfway
         _isInstalling = true;
+        await SetClosableAsync(false);
         try
         {
             Updater.Launch(await Updater.DownloadAsync(Release));
@@ -97,7 +99,19 @@ public partial class UpdateDialog
             s_logger.Error(exception, "Failed To Update");
             Snackbar.Add(Localizer["UpdateFailed"], Severity.Error);
             _isInstalling = false;
+            await SetClosableAsync(true);
         }
+    }
+
+    private Task SetClosableAsync(bool closable)
+    {
+        return MudDialog.SetOptionsAsync(
+            MudDialog.Options with
+            {
+                CloseButton = closable,
+                CloseOnEscapeKey = closable,
+            }
+        );
     }
 
     private void OpenReleasePage()

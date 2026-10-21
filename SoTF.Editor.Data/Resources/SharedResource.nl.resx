@@ -666,9 +666,6 @@
   <data name="SetAllToMin" xml:space="preserve">
     <value>Alles Op Min Zetten</value>
   </data>
-  <data name="Filter" xml:space="preserve">
-    <value>Filteren</value>
-  </data>
   <data name="ItemsInInventory" xml:space="preserve">
     <value>Items In Inventaris</value>
   </data>
@@ -740,12 +737,6 @@
   </data>
   <data name="Search" xml:space="preserve">
     <value>Zoeken</value>
-  </data>
-  <data name="SearchTooltip" xml:space="preserve">
-    <value>Zoekt in titels, beschrijvingen, itemnamen en itemtypes</value>
-  </data>
-  <data name="SearchPlaceholder" xml:space="preserve">
-    <value>Titel, Beschrijving, Item</value>
   </data>
   <data name="UncollectedOnly" xml:space="preserve">
     <value>Alleen Niet Verzamelde Items</value>
@@ -827,9 +818,6 @@
   </data>
   <data name="ReloadSavegame" xml:space="preserve">
     <value>Savegame Herladen</value>
-  </data>
-  <data name="CloseSavegame" xml:space="preserve">
-    <value>Savegame Sluiten</value>
   </data>
   <data name="GitHubProject" xml:space="preserve">
     <value>GitHub Project</value>

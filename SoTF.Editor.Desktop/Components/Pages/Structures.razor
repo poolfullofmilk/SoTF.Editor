@@ -56,16 +56,8 @@
             <MudPaper Elevation="4"
                       Class="rounded-panel panel-flush fit fill-column">
                 @* Structure Search *@
-                <MudTextField T="string"
-                              Variant="Variant.Outlined"
-                              @bind-Value="_filter"
-                              DebounceInterval="300"
-                              Placeholder="@Localizer["Filter"]"
-                              Adornment="Adornment.Start"
-                              AdornmentIcon="@Icons.Material.Rounded.Search"
-                              Margin="Margin.Dense"
-                              Clearable
-                              Class="flex-grow-0 px-4 pt-4 pb-2" />
+                <SearchField @bind-Value="_filter"
+                             Class="flex-grow-0 px-4 pt-4 pb-2" />
                 <MudTable T="ScrewStructureWrapper"
                           Items="FilteredStructures"
                           GroupBy="s_groupByName"

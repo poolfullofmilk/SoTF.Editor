@@ -25,7 +25,7 @@
                   Class="mud-width-full px-2"
                   Spacing="2">
             <MudText Typo="Typo.h6"
-                     Class="text-truncate">
+                     Class="text-truncate mr-4">
                 @AppInfo.DisplayName
             </MudText>
 
@@ -67,27 +67,6 @@
             <MudStack Row
                       AlignItems="AlignItems.Center"
                       Spacing="2">
-
-                @if (MainViewModel.SelectedSavegame is { } savegame)
-                {
-                    @* Savegame Chip *@
-                    <MudChip T="string"
-                             Variant="Variant.Text"
-                             Size="Size.Small"
-                             Icon="@Icons.Material.Rounded.Save"
-                             Href="/">
-                        @SavegameLabel(savegame)
-                    </MudChip>
-                    @* Close Savegame *@
-                    <Tooltip Text="@Localizer["CloseSavegame"]"
-                             RootClass="d-flex">
-                        <MudIconButton Icon="@Icons.Material.Rounded.Close"
-                                       aria-label="@Localizer["CloseSavegame"]"
-                                       Size="Size.Small"
-                                       Class="mud-text-secondary"
-                                       OnClick="CloseAsync" />
-                    </Tooltip>
-                }
 
                 @* Backup Menu *@
                 <Tooltip Text="@Localizer["Backups"]"

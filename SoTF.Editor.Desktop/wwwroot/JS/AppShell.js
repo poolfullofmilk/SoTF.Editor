@@ -1,4 +1,4 @@
-// Ctrl S Saves And F5 Reloads Through The Visible Buttons
+// Ctrl S Saves, F5 Reloads And Ctrl F Searches
 const isTyping = (target) =>
     target instanceof HTMLElement &&
     (target.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName));
@@ -14,6 +14,14 @@ document.addEventListener("keydown", (event) => {
     } else if (event.key === "F5" && !isTyping(event.target)) {
         event.preventDefault();
         clickShortcut("reload");
+    } else if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "f") {
+        // Ctrl F Jumps To The Page's Search Field
+        const search = document.querySelector(".search-field input");
+        if (search) {
+            event.preventDefault();
+            search.focus();
+            search.select();
+        }
     }
 });
 

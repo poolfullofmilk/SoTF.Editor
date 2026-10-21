@@ -36,6 +36,19 @@ public partial class Npcs : EditorPageBase
             ? _selected
             : null;
 
+    private static string DetailOf(Actor actor)
+    {
+        // A Missing Gender Leaves Out Its Part, Not A Dash
+        return string.Join(
+            " · ",
+            new[]
+            {
+                actor.ActorType?.PrintableClassification,
+                actor.ActorType?.PrintableGender,
+            }.Where(part => part is { Length: > 0 } and not "-")
+        );
+    }
+
     private string CollectionRowClass(ActorCollection collection)
     {
         var selected = _selected == collection ? " list-row-selected" : "";
