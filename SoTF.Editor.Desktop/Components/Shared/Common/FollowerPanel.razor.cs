@@ -81,23 +81,21 @@ public partial class FollowerPanel : EditorPageBase
 
     private async Task SpawnAsync()
     {
-        var parameters = new DialogParameters<SpawnFollowersDialog>
+        if (
+            !await DialogService.ConfirmAsync(
+                Localizer,
+                Localizer["SpawnFollower", Name],
+                Localizer["SpawnFollowersWarning"]
+            )
+        )
         {
-            { dialog => dialog.Max, IsKelvin ? 20 : 4 },
-        };
-        var dialog = await DialogService.ShowAsync<SpawnFollowersDialog>(
-            Localizer["SpawnFollowers"],
-            parameters,
-            new DialogOptions { MaxWidth = MaxWidth.ExtraSmall, FullWidth = true }
-        );
+            return;
+        }
 
-        if (await dialog.Result is { Canceled: false, Data: int count } && count > 0)
+        var message = MainViewModel.SpawnFollower(Follower.TypeId);
+        if (!string.IsNullOrEmpty(message))
         {
-            var message = MainViewModel.SpawnFollowers(Follower.TypeId, count);
-            if (!string.IsNullOrEmpty(message))
-            {
-                Snackbar.Add(message, Severity.Success);
-            }
+            Snackbar.Add(message, Severity.Success);
         }
     }
 }

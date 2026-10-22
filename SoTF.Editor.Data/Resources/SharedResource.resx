@@ -400,7 +400,7 @@
     <value>Durability</value>
   </data>
   <data name="EquippedArmor" xml:space="preserve">
-    <value>Equipped Armor, Max 10</value>
+    <value>Armor, Max 10</value>
   </data>
   <data name="Slot" xml:space="preserve">
     <value>Slot</value>
@@ -414,8 +414,8 @@
   <data name="SpawnFollowersWarning" xml:space="preserve">
     <value>Spawn in an open space, many followers can hurt performance</value>
   </data>
-  <data name="SpawnFollowers" xml:space="preserve">
-    <value>Spawn Followers</value>
+  <data name="SpawnFollower" xml:space="preserve">
+    <value>Spawn {0}</value>
   </data>
   <data name="NoFiresFound" xml:space="preserve">
     <value>No Fires Found</value>
@@ -834,8 +834,8 @@
   <data name="RegrowTrees" xml:space="preserve">
     <value>Regrow Trees</value>
   </data>
-  <data name="ResetCannibalAnger" xml:space="preserve">
-    <value>Reset Cannibal Anger</value>
+  <data name="CannibalAnger" xml:space="preserve">
+    <value>Cannibal Anger</value>
   </data>
   <data name="ResetContainers" xml:space="preserve">
     <value>Reset Containers</value>
@@ -1083,8 +1083,8 @@
   <data name="FollowerRevived" xml:space="preserve">
     <value>Revived {0}, save to keep it</value>
   </data>
-  <data name="FollowersCreated" xml:space="preserve">
-    <value>Created {0} followers, save to keep them</value>
+  <data name="FollowerSpawned" xml:space="preserve">
+    <value>Spawned a copy of {0}, save to keep it</value>
   </data>
   <data name="NoChanges" xml:space="preserve">
     <value>No Changes, Nothing Saved</value>
@@ -1578,8 +1578,8 @@
   <data name="ResetStructureDamageText" xml:space="preserve">
     <value>All damage to your structures is repaired</value>
   </data>
-  <data name="ResetCannibalAngerText" xml:space="preserve">
-    <value>Kills, cut trees and village visits go back to zero, so cannibals calm down</value>
+  <data name="CannibalAngerText" xml:space="preserve">
+    <value>0 resets kills, cut trees and village visits so cannibals calm down, a higher level makes each one at least that angry at you</value>
   </data>
   <data name="ResetContainersText" xml:space="preserve">
     <value>Opened crates, cases and supplies in the world are closed and full again</value>
@@ -1880,12 +1880,6 @@
   </data>
   <data name="ResetToDefault" xml:space="preserve">
     <value>Reset To Default</value>
-  </data>
-  <data name="RaiseCannibalAnger" xml:space="preserve">
-    <value>Raise Cannibal Anger</value>
-  </data>
-  <data name="RaiseCannibalAngerText" xml:space="preserve">
-    <value>Every cannibal gets at least the anger you pick toward you, so they attack again</value>
   </data>
   <data name="NothingToChange" xml:space="preserve">
     <value>Nothing To Change</value>

@@ -18,12 +18,16 @@ public partial class CannibalAngerDialog
     [Inject]
     public required ISnackbar Snackbar { get; set; }
 
-    // Full Anger Unless Picked Lower
-    private int _level = 100;
+    // Calm Unless Picked Higher
+    private int _level;
 
-    private void Raise()
+    private void Apply()
     {
-        var message = MainViewModel.RaiseCannibalAnger(_level);
+        // Zero Resets What Angers Them, Higher Raises Their Anger
+        var message =
+            _level == 0
+                ? MainViewModel.ResetCannibalAnger()
+                : MainViewModel.RaiseCannibalAnger(_level);
         if (!string.IsNullOrEmpty(message))
         {
             Snackbar.Add(message, Severity.Info);

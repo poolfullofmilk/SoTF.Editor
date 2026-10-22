@@ -37,37 +37,41 @@
                         </MudText>
                     </MudStack>
                     <MudSpacer />
-                    @if (Copies.Count > 1)
-                    {
-                        @* Copy Select *@
-                        <MudElement HtmlTag="div"
-                                    Class="align-self-start"
-                                    Style="width:160px">
-                            <MudSelect T="FollowerState"
-                                       Value="Follower"
-                                       ValueChanged="FollowerPage.Select"
-                                       ToStringFunc="CopyLabel"
-                                       Variant="Variant.Outlined"
-                                       Margin="Margin.Dense"
-                                       Dense>
-                                @foreach (var copy in Copies)
-                                {
-                                    <MudSelectItem Value="copy">@CopyLabel(copy)</MudSelectItem>
-                                }
-                            </MudSelect>
-                        </MudElement>
-                    }
-                    @if (IsSpawnedCopy)
-                    {
+                    <MudStack Row
+                              AlignItems="AlignItems.Center"
+                              Spacing="2"
+                              Class="align-self-start">
+                        @if (Copies.Count > 1)
+                        {
+                            @* Copy Select *@
+                            <MudElement HtmlTag="div"
+                                        Class="fixed-width"
+                                        Style="width:160px">
+                                <MudSelect T="FollowerState"
+                                           Value="Follower"
+                                           ValueChanged="FollowerPage.Select"
+                                           ToStringFunc="CopyLabel"
+                                           Variant="Variant.Outlined"
+                                           Margin="Margin.Dense"
+                                           Dense>
+                                    @foreach (var copy in Copies)
+                                    {
+                                        <MudSelectItem Value="copy">@CopyLabel(copy)</MudSelectItem>
+                                    }
+                                </MudSelect>
+                            </MudElement>
+                        }
                         @* Remove Copy *@
                         <Tooltip Text="@Localizer["RemoveCopy"]"
-                                 RootClass="align-self-start">
+                                 Disabled="@(!IsSpawnedCopy)">
                             <MudIconButton Icon="@Icons.Material.Rounded.Delete"
                                            aria-label="@Localizer["RemoveCopy"]"
                                            Color="Color.Error"
+                                           Size="Size.Small"
+                                           Disabled="@(!IsSpawnedCopy)"
                                            OnClick="RemoveCopyAsync" />
                         </Tooltip>
-                    }
+                    </MudStack>
                 </MudStack>
 
                 <MudStack Row

@@ -227,29 +227,31 @@
                                       Wrap="Wrap.Wrap"
                                       Spacing="2">
                                 @* New Armor *@
-                                <MudSelect T="Item"
-                                           Variant="Variant.Outlined"
-                                           @bind-Value="ArmorPage.NewArmour.SelectedItem"
-                                           Label="@Localizer["Name"]"
-                                           ToStringFunc="item => item?.Name ?? string.Empty"
-                                           Margin="Margin.Dense"
-                                           Class="flex-grow-1"
-                                           Style="min-width:200px">
-                                    @foreach (var armourType in ArmorPage.ArmourTypes)
-                                    {
-                                        <MudSelectItem Value="armourType">
-                                            <MudStack Row
-                                                      Justify="Justify.SpaceBetween"
-                                                      Spacing="4">
-                                                <MudText Typo="Typo.body2">@armourType.Name</MudText>
-                                                <MudText Typo="Typo.body2"
-                                                         Class="mud-text-secondary">
-                                                    @armourType.Durability?.Default
-                                                </MudText>
-                                            </MudStack>
-                                        </MudSelectItem>
-                                    }
-                                </MudSelect>
+                                <MudElement HtmlTag="div"
+                                            Class="fixed-width"
+                                            Style="width:250px">
+                                    <MudSelect T="Item"
+                                               Variant="Variant.Outlined"
+                                               @bind-Value="ArmorPage.NewArmour.SelectedItem"
+                                               Label="@Localizer["Name"]"
+                                               ToStringFunc="item => item?.Name ?? string.Empty"
+                                               Margin="Margin.Dense">
+                                        @foreach (var armourType in ArmorPage.ArmourTypes)
+                                        {
+                                            <MudSelectItem Value="armourType">
+                                                <MudStack Row
+                                                          Justify="Justify.SpaceBetween"
+                                                          Spacing="4">
+                                                    <MudText Typo="Typo.body2">@armourType.Name</MudText>
+                                                    <MudText Typo="Typo.body2"
+                                                             Class="mud-text-secondary">
+                                                        @armourType.Durability?.Default
+                                                    </MudText>
+                                                </MudStack>
+                                            </MudSelectItem>
+                                        }
+                                    </MudSelect>
+                                </MudElement>
                                 @* New Durability *@
                                 <NumberField T="int"
                                              @bind-Value="ArmorPage.NewArmour.RemainingArmourpoints"

@@ -139,7 +139,7 @@ try
     EditAndCheck(
         "Follower Spawn",
         "Followers",
-        () => main.SpawnFollowers(Constants.Actors.KelvinTypeId, 1),
+        () => main.SpawnFollower(Constants.Actors.KelvinTypeId),
         () => followers.CopiesOf(Constants.Actors.KelvinTypeId).Count == kelvinCount + 1
     );
 

@@ -66,13 +66,11 @@ public partial class MainLayout : IDisposable
 
     private bool IsClientSave => MainViewModel.SelectedSavegame?.IsMultiPlayerClient() == true;
 
-    private PageLink? ActivePage => s_pages.FirstOrDefault(IsActive);
-
     // Only A Page With Unsaved Edits It Can Take Back
-    private bool CanRevertPage =>
-        ActivePage is { } page
-        && MainViewModel.CanRevert(page.Href)
-        && MainViewModel.HasChanges(page.Href);
+    private bool CanRevert(PageLink link)
+    {
+        return MainViewModel.CanRevert(link.Href) && MainViewModel.HasChanges(link.Href);
+    }
 
     // A Client Save Holds Only The Player, World Pages Stay Shut
     private bool IsDisabled(PageLink link)
@@ -229,11 +227,10 @@ public partial class MainLayout : IDisposable
         }
     }
 
-    private async Task RevertPageAsync()
+    private async Task RevertPageAsync(PageLink page)
     {
         if (
-            ActivePage is { } page
-            && await DialogService.ConfirmAsync(
+            await DialogService.ConfirmAsync(
                 Localizer,
                 Localizer["RevertPage"],
                 Localizer["RevertPageText", Localizer[page.LabelKey]]

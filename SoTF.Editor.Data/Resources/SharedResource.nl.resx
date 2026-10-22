@@ -400,7 +400,7 @@
     <value>Duurzaamheid</value>
   </data>
   <data name="EquippedArmor" xml:space="preserve">
-    <value>Gedragen Pantser, Max 10</value>
+    <value>Pantser, Max 10</value>
   </data>
   <data name="Slot" xml:space="preserve">
     <value>Slot</value>
@@ -414,8 +414,8 @@
   <data name="SpawnFollowersWarning" xml:space="preserve">
     <value>Spawn op een open plek, veel volgers kunnen de prestaties schaden</value>
   </data>
-  <data name="SpawnFollowers" xml:space="preserve">
-    <value>Volgers Spawnen</value>
+  <data name="SpawnFollower" xml:space="preserve">
+    <value>{0} Spawnen</value>
   </data>
   <data name="NoFiresFound" xml:space="preserve">
     <value>Geen Vuren Gevonden</value>
@@ -834,8 +834,8 @@
   <data name="RegrowTrees" xml:space="preserve">
     <value>Bomen Laten Teruggroeien</value>
   </data>
-  <data name="ResetCannibalAnger" xml:space="preserve">
-    <value>Woede Kannibalen Resetten</value>
+  <data name="CannibalAnger" xml:space="preserve">
+    <value>Woede Kannibalen</value>
   </data>
   <data name="ResetContainers" xml:space="preserve">
     <value>Containers Resetten</value>
@@ -1083,8 +1083,8 @@
   <data name="FollowerRevived" xml:space="preserve">
     <value>{0} tot leven gewekt, sla op om het te bewaren</value>
   </data>
-  <data name="FollowersCreated" xml:space="preserve">
-    <value>{0} volgers gemaakt, sla op om ze te bewaren</value>
+  <data name="FollowerSpawned" xml:space="preserve">
+    <value>Kopie van {0} gespawnd, sla op om hem te bewaren</value>
   </data>
   <data name="NoChanges" xml:space="preserve">
     <value>Geen Wijzigingen, Niets Opgeslagen</value>
@@ -1578,8 +1578,8 @@
   <data name="ResetStructureDamageText" xml:space="preserve">
     <value>Alle schade aan je constructies wordt hersteld</value>
   </data>
-  <data name="ResetCannibalAngerText" xml:space="preserve">
-    <value>Doden, gekapte bomen en dorpsbezoeken gaan terug naar nul, zodat kannibalen kalmeren</value>
+  <data name="CannibalAngerText" xml:space="preserve">
+    <value>0 zet doden, gekapte bomen en dorpsbezoeken op nul zodat kannibalen kalmeren, een hoger niveau maakt elk minstens zo boos op je</value>
   </data>
   <data name="ResetContainersText" xml:space="preserve">
     <value>Geopende kisten, koffers en voorraden in de wereld zijn weer dicht en vol</value>
@@ -1880,12 +1880,6 @@
   </data>
   <data name="ResetToDefault" xml:space="preserve">
     <value>Standaard Herstellen</value>
-  </data>
-  <data name="RaiseCannibalAnger" xml:space="preserve">
-    <value>Kannibalen Boos Maken</value>
-  </data>
-  <data name="RaiseCannibalAngerText" xml:space="preserve">
-    <value>Elke kannibaal wordt minstens zo boos op je als je kiest, zodat ze weer aanvallen</value>
   </data>
   <data name="NothingToChange" xml:space="preserve">
     <value>Niets Om Te Wijzigen</value>

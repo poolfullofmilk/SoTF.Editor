@@ -212,6 +212,13 @@
     background-color: var(--mud-palette-warning);
 }
 
+/* Badges Lift Off Their Surface Like Chips */
+.mud-badge,
+.update-dot .mud-menu-item-text::after,
+.changed-dot {
+    box-shadow: var(--mud-elevation-1);
+}
+
     .changed-dot.centered {
         align-self: center;
         vertical-align: middle;
@@ -234,7 +241,8 @@
     min-width: 0;
 }
 
-/* Every Search Keeps One Width, Highlights Add No Padding */
+/* Fields And Searches Keep One Width, Highlights Add No Padding */
+.fixed-width,
 .search-field {
     flex: none !important;
     width: 250px;
@@ -286,6 +294,14 @@ mark {
     width: 170px;
 }
 
+/* Revert Sits Inside Its Page Button On The Right */
+.nav-action {
+    position: absolute !important;
+    top: 50%;
+    right: 6px;
+    transform: translateY(-50%);
+}
+
 /* The Navigation Panel Stays Beside The Page While It Scrolls */
 .nav-panel {
     position: sticky;
@@ -293,6 +309,19 @@ mark {
     width: var(--nav-width);
     flex-shrink: 0;
 }
+
+/* Header Actions Keep One Line, Only The Title Gives Way */
+.header-row > * {
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+    .header-row > .header-title {
+        flex-shrink: 1;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
 /* Two Line Heights, Titles Tight And Prose Relaxed */
 .text-tight {
@@ -337,10 +366,8 @@ html, body {
     user-select: text;
 }
 
-/* Tooltips Keep Their Line Breaks, Every Line Starting Left */
+/* Long Tooltips Wrap, Each Line Centred */
 .mud-tooltip {
-    white-space: pre-line;
-    text-align: left;
     max-width: 360px;
 }
 
@@ -418,10 +445,10 @@ html, body {
 }
 
 /* Max Buttons Hug Their Text, The Slot Keeps Rows Lined Up */
-.mud-tooltip-root.max-slot,
 .max-slot {
     display: inline-flex;
     width: 96px;
+    flex-shrink: 0;
     font-variant-numeric: tabular-nums;
 }
 

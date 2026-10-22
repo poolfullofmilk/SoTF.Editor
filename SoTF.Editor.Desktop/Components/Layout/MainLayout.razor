@@ -94,17 +94,6 @@
                     </MudMenu>
                 </Tooltip>
 
-                @* Revert Page *@
-                <Tooltip Text="@Localizer["RevertPage"]"
-                         Disabled="@(!CanRevertPage)"
-                         RootClass="d-flex">
-                    <MudIconButton Icon="@Icons.Material.Rounded.Undo"
-                                   aria-label="@Localizer["RevertPage"]"
-                                   Size="Size.Small"
-                                   Disabled="@(!CanRevertPage)"
-                                   OnClick="RevertPageAsync" />
-                </Tooltip>
-
                 @* Reload *@
                 <Tooltip Text="@Localizer["ReloadSavegame"]"
                          Disabled="@(!HasSavegame)"
@@ -147,18 +136,33 @@
                         }
                         @foreach (var link in group)
                         {
-                            @* Page Button *@
-                            <MudButton StartIcon="@link.Icon"
-                                       Color="@(IsActive(link) ? Color.Secondary : Color.Default)"
-                                       Variant="@(IsActive(link) ? Variant.Filled : Variant.Text)"
-                                       Class="justify-start"
-                                       Style="@(IsActive(link) ? null : "padding:6px 16px")"
-                                       FullWidth
-                                       Disabled="@IsDisabled(link)"
-                                       Href="@link.Href">
-                                @Localizer[link.LabelKey]
-                                <ChangedDot When="@MainViewModel.HasChanges(link.Href)" />
-                            </MudButton>
+                            <MudElement HtmlTag="div"
+                                        Class="position-relative">
+                                @* Page Button *@
+                                <MudButton StartIcon="@link.Icon"
+                                           Color="@(IsActive(link) ? Color.Secondary : Color.Default)"
+                                           Variant="@(IsActive(link) ? Variant.Filled : Variant.Text)"
+                                           Class="justify-start"
+                                           Style="@(IsActive(link) ? null : "padding:6px 16px")"
+                                           FullWidth
+                                           Disabled="@IsDisabled(link)"
+                                           Href="@link.Href">
+                                    @Localizer[link.LabelKey]
+                                    <ChangedDot When="@MainViewModel.HasChanges(link.Href)" />
+                                </MudButton>
+                                @if (CanRevert(link))
+                                {
+                                    @* Revert Page *@
+                                    <Tooltip Text="@Localizer["RevertPage"]"
+                                             RootClass="nav-action">
+                                        <MudIconButton Icon="@Icons.Material.Rounded.Undo"
+                                                       aria-label="@Localizer["RevertPage"]"
+                                                       Color="Color.Inherit"
+                                                       Size="Size.Small"
+                                                       OnClick="() => RevertPageAsync(link)" />
+                                    </Tooltip>
+                                }
+                            </MudElement>
                         }
                     }
                     @if (IsClientSave)

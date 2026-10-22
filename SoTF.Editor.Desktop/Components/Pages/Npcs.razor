@@ -114,8 +114,8 @@
                                 <col />
                                 <col style="width:112px" />
                                 <col style="width:80px" />
+                                <col style="width:100px" />
                                 <col style="width:120px" />
-                                <col style="width:150px" />
                                 <col style="width:96px" />
                             </ColGroup>
                             <HeaderContent>
@@ -127,7 +127,7 @@
                                 <MudTh />
                             </HeaderContent>
                             <RowTemplate>
-                                <MudTd>
+                                <MudTd Class="overflow-hidden">
                                     <ItemLabel Name="@(context.ActorType?.Name ?? "???")"
                                                Detail="@DetailOf(context)"
                                                ImageUrl="@context.ActorType?.IconPath"

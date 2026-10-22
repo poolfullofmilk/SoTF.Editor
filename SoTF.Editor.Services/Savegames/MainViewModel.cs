@@ -544,7 +544,7 @@ public class MainViewModel(
         ModifyActors(_ => new FollowerModifier(saveDataWrapper).Remove(uniqueId));
     }
 
-    public string SpawnFollowers(int typeId, int count)
+    public string SpawnFollower(int typeId)
     {
         if (
             SelectedSavegame?.SavegameStore.LoadJsonRaw(SavegameStore.FileType.SaveData)
@@ -562,7 +562,7 @@ public class MainViewModel(
         ModifyActors(_ =>
             hasChanges = new FollowerModifier(saveDataWrapper).CreateFollowers(
                 typeId,
-                count,
+                1,
                 follower.GetSelectedInventoryItemIds(),
                 follower.Outfit,
                 playerPage.PlayerState.Pos
@@ -576,7 +576,7 @@ public class MainViewModel(
 
         // New Copies Join The End, The Panel Shows The Newest
         followerPage.Select(followerPage.CopiesOf(typeId)[^1]);
-        return AppText.Format("FollowersCreated", count);
+        return AppText.Format("FollowerSpawned", GameNames.Get(TextKeys.ActorType(typeId)));
     }
     #endregion
 

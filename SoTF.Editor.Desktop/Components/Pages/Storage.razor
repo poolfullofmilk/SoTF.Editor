@@ -88,19 +88,22 @@
                                           Wrap="Wrap.Wrap"
                                           Spacing="2">
                                     @* Fill Item *@
-                                    <MudSelect T="ItemWrapper"
-                                               Variant="Variant.Outlined"
-                                               Value="_fillItem"
-                                               ValueChanged="SelectFillItem"
-                                               Label="@Localizer["FillAllWith"]"
-                                               ToStringFunc="item => item?.Name ?? string.Empty"
-                                               Margin="Margin.Dense"
-                                               Style="min-width:220px">
-                                        @foreach (var item in selected.SupportedItems.OrderBy(item => item.Name))
-                                        {
-                                            <MudSelectItem Value="item">@item.Name</MudSelectItem>
-                                        }
-                                    </MudSelect>
+                                    <MudElement HtmlTag="div"
+                                                Class="fixed-width"
+                                                Style="width:220px">
+                                        <MudSelect T="ItemWrapper"
+                                                   Variant="Variant.Outlined"
+                                                   Value="_fillItem"
+                                                   ValueChanged="SelectFillItem"
+                                                   Label="@Localizer["FillAllWith"]"
+                                                   ToStringFunc="item => item?.Name ?? string.Empty"
+                                                   Margin="Margin.Dense">
+                                            @foreach (var item in selected.SupportedItems.OrderBy(item => item.Name))
+                                            {
+                                                <MudSelectItem Value="item">@item.Name</MudSelectItem>
+                                            }
+                                        </MudSelect>
+                                    </MudElement>
                                     @* Fill Count *@
                                     <NumberField T="int"
                                                  @bind-Value="_fillCount"

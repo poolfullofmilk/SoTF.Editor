@@ -1,18 +1,18 @@
 <MudDialog>
 
     <TitleContent>
-        <MudText Typo="Typo.h6">@Localizer["RaiseCannibalAnger"]</MudText>
+        <MudText Typo="Typo.h6">@Localizer["CannibalAnger"]</MudText>
     </TitleContent>
     <DialogContent>
         <MudStack Spacing="2">
             <MudText Typo="Typo.body2"
                      Class="mud-text-secondary">
-                @Localizer["RaiseCannibalAngerText"]
+                @Localizer["CannibalAngerText"]
             </MudText>
             @* Anger Level *@
             <MudSlider T="int"
                        @bind-Value="_level"
-                       Min="10"
+                       Min="0"
                        Max="100"
                        Step="10"
                        Color="Color.Info"
@@ -23,12 +23,11 @@
         </MudStack>
     </DialogContent>
     <DialogActions>
-        @* Raise Button *@
+        @* Apply Button *@
         <MudButton Variant="Variant.Filled"
                    Color="Color.Info"
-                   StartIcon="@Icons.Material.Rounded.SentimentVeryDissatisfied"
-                   OnClick="Raise">
-            @Localizer["RaiseCannibalAnger"]
+                   OnClick="Apply">
+            @Localizer["Apply"]
         </MudButton>
     </DialogActions>
 
