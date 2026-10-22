@@ -702,12 +702,6 @@
   <data name="SelectAll" xml:space="preserve">
     <value>Select All</value>
   </data>
-  <data name="DeselectAll" xml:space="preserve">
-    <value>Deselect All</value>
-  </data>
-  <data name="Reset" xml:space="preserve">
-    <value>Reset</value>
-  </data>
   <data name="ClickNewLocation" xml:space="preserve">
     <value>Click Another Location</value>
   </data>
@@ -1668,13 +1662,6 @@
   <data name="UidInfo" xml:space="preserve">
     <value>The id the game gives this save. It never changes</value>
   </data>
-  <data name="SeasonInfo" xml:space="preserve">
-    <value>The season is worked out from the days played plus the season day offset on the Weather tab.
-Every season lasts the same number of days: 5 by default, 10 for Long and 90 for Realistic.
-The year runs Spring, Summer, Autumn, Winter. Example: day 36 with offset 5 on 5 day seasons is season 8, which is spring.
-Picking a season only moves the offset, by whole seasons, one back or two forward at most.
-Going back to the loaded season restores the loaded offset. The day count never changes</value>
-  </data>
   <data name="ConsumableEffectsInfo" xml:space="preserve">
     <value>How much food, drinks and medicine help. Hard gives less</value>
   </data>
@@ -1796,7 +1783,7 @@ Going back to the loaded season restores the loaded offset. The day count never 
     <value>How heavy the current rain is</value>
   </data>
   <data name="SettingStartingDayOffsetInfo" xml:space="preserve">
-    <value>Shifts where the year stands. Lowering it keeps the current season longer</value>
+    <value>Extra days the game counts when it works out the season. Higher brings the next season sooner, lower keeps this one longer. Picking a season sets it for you</value>
   </data>
   <data name="DeleteBackup" xml:space="preserve">
     <value>Delete Backup</value>
@@ -1870,9 +1857,6 @@ Going back to the loaded season restores the loaded offset. The day count never 
   <data name="MapKeyboardHint" xml:space="preserve">
     <value>Map, the arrow keys step through the points</value>
   </data>
-  <data name="MoreActions" xml:space="preserve">
-    <value>More Actions</value>
-  </data>
   <data name="HostedMultiplayer" xml:space="preserve">
     <value>Hosted Multiplayer</value>
   </data>
@@ -1890,5 +1874,56 @@ Going back to the loaded season restores the loaded offset. The day count never 
   </data>
   <data name="CurrentHealthAtMax" xml:space="preserve">
     <value>Max health caps it, raise the strength level to go higher</value>
+  </data>
+  <data name="SetToMax" xml:space="preserve">
+    <value>Set To Max</value>
+  </data>
+  <data name="ResetToDefault" xml:space="preserve">
+    <value>Reset To Default</value>
+  </data>
+  <data name="RaiseCannibalAnger" xml:space="preserve">
+    <value>Raise Cannibal Anger</value>
+  </data>
+  <data name="RaiseCannibalAngerText" xml:space="preserve">
+    <value>Every cannibal gets at least the anger you pick toward you, so they attack again</value>
+  </data>
+  <data name="NothingToChange" xml:space="preserve">
+    <value>Nothing To Change</value>
+  </data>
+  <data name="UpdateNotVerified" xml:space="preserve">
+    <value>The download could not be verified, so the release page opens to download it yourself</value>
+  </data>
+  <data name="SavedAfterBackup" xml:space="preserve">
+    <value>Saved After This Backup</value>
+  </data>
+  <data name="ChangesNotRecorded" xml:space="preserve">
+    <value>Not recorded for this backup</value>
+  </data>
+  <data name="DiffersFromNow" xml:space="preserve">
+    <value>Differs From Now</value>
+  </data>
+  <data name="Comparing" xml:space="preserve">
+    <value>Comparing with the save now</value>
+  </data>
+  <data name="SameAsNow" xml:space="preserve">
+    <value>Same as the save now</value>
+  </data>
+  <data name="UnableToCompare" xml:space="preserve">
+    <value>Unable to compare, a file is in use</value>
+  </data>
+  <data name="SaveName" xml:space="preserve">
+    <value>Save Name</value>
+  </data>
+  <data name="Thumbnail" xml:space="preserve">
+    <value>Thumbnail</value>
+  </data>
+  <data name="RevertPage" xml:space="preserve">
+    <value>Revert Page</value>
+  </data>
+  <data name="RevertPageText" xml:space="preserve">
+    <value>Every unsaved edit on {0} goes back to how it was loaded</value>
+  </data>
+  <data name="AngerLevel" xml:space="preserve">
+    <value>Anger</value>
   </data>
 </root>

@@ -57,7 +57,7 @@
                       Class="rounded-panel panel-flush fit fill-column">
                 @* Structure Search *@
                 <SearchField @bind-Value="_filter"
-                             Class="flex-grow-0 px-4 pt-4 pb-2" />
+                             Class="mx-4 mt-4 mb-2" />
                 <MudTable T="ScrewStructureWrapper"
                           Items="FilteredStructures"
                           GroupBy="s_groupByName"
@@ -86,11 +86,18 @@
                     <RowTemplate>
                         <MudTd>
                             <ItemLabel Name="@context.Name"
-                                       Detail="@Localizer[context.Origin == ScrewStructureOrigin.Finished ? "FinishedStructures" : "UnfinishedStructures"]"
-                                       ImageUrl="@IconOf(context)" />
+                                       Detail="@OriginName(context)"
+                                       ImageUrl="@IconOf(context)"
+                                       Highlight="@_filter" />
                         </MudTd>
-                        <MudTd>@context.Category</MudTd>
-                        <MudTd>@($"{context.Added} / {context.BuildCost}")</MudTd>
+                        <MudTd>
+                            <MudHighlighter Text="@context.Category"
+                                            HighlightedText="@_filter" />
+                        </MudTd>
+                        <MudTd>
+                            <MudHighlighter Text="@AddedText(context)"
+                                            HighlightedText="@_filter" />
+                        </MudTd>
                         <MudTd>
                             @* Percent Done *@
                             <MudStack Row
@@ -98,7 +105,8 @@
                                       Spacing="1">
                                 <MudText Typo="Typo.body2"
                                          Color="@(context.NewPctDone is null ? ProgressColor(context) : Color.Success)">
-                                    @context.PctDonePrintable
+                                    <MudHighlighter Text="@context.PctDonePrintable"
+                                                    HighlightedText="@_filter" />
                                 </MudText>
                                 @if (context.NewPctDone is { } newPctDone)
                                 {

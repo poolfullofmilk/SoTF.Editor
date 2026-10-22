@@ -1,12 +1,11 @@
 @* Max Button *@
-<Tooltip Text="@Localizer["Max"]"
-         Disabled="Disabled">
+<Tooltip Text="@Localizer["SetToMax"]"
+         Disabled="Disabled"
+         RootClass="max-slot">
     <MudButton Variant="Variant.Text"
                Size="Size.Small"
-               StartIcon="@Icons.Material.Rounded.KeyboardDoubleArrowUp"
                Disabled="Disabled"
-               Class="max-button"
                OnClick="OnClick">
-        @Max
+        @($"{Localizer["Max"]} {Max}")
     </MudButton>
 </Tooltip>

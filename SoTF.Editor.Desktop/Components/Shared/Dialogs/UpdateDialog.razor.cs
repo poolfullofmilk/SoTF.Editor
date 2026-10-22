@@ -81,6 +81,13 @@ public partial class UpdateDialog
                 _ = window.Dispatcher.BeginInvoke(window.Close);
             }
         }
+        catch (InvalidDataException exception)
+        {
+            // An Unverified Download Never Runs, The Release Page Opens Instead
+            s_logger.Error(exception, "Failed To Verify Update");
+            Snackbar.Add(Localizer["UpdateNotVerified"], Severity.Warning);
+            OpenReleasePage();
+        }
         catch (UnauthorizedAccessException exception)
         {
             // A Protected Folder Like Program Files Takes A Manual Download

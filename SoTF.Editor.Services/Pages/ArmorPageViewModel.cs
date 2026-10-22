@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using SoTF.Editor.Data.Enums;
 using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Models.SaveData.Armour;
@@ -21,7 +22,10 @@ public class ArmorPageViewModel
         _itemList = gameData.Items;
         ArmourTypes =
         [
-            .. _itemList.Where(item => item.IsEquippableArmor).OrderBy(item => item.Name),
+            .. _itemList
+                .Where(item => item.IsEquippableArmor)
+                .OrderBy(item => item.Durability?.Default ?? 0)
+                .ThenBy(item => item.Name),
         ];
     }
 
@@ -33,11 +37,18 @@ public class ArmorPageViewModel
     public bool HasChanges => _loaded.Count != _armour.Count || _armour.Any(IsChanged);
 
     // Removed, Added And Changed Pieces Alike
-    public IEnumerable<string> ChangedNames =>
+    public IEnumerable<Change> Changes =>
         _loaded
             .Keys.Where(armourData => !_armour.Contains(armourData))
-            .Concat(_armour.Where(IsChanged))
-            .Select(armourData => armourData.Name);
+            .Select(armourData => new Change(armourData.Name, ChangeKind.Removed))
+            .Concat(
+                _armour
+                    .Where(IsChanged)
+                    .Select(armourData => new Change(
+                        armourData.Name,
+                        _loaded.ContainsKey(armourData) ? ChangeKind.Changed : ChangeKind.Added
+                    ))
+            );
 
     public bool IsChanged(ArmourData armourData)
     {
@@ -110,6 +121,20 @@ public class ArmorPageViewModel
     public bool HasArmorPieces()
     {
         return _armour.Count > 0;
+    }
+
+    public bool CanSetAllToDefault()
+    {
+        return _armour.Any(armourData =>
+            armourData.ArmourPiece.RemainingArmourpoints != armourData.DefaultDurability
+        );
+    }
+
+    public bool CanSetAllToMax()
+    {
+        return _armour.Any(armourData =>
+            armourData.ArmourPiece.RemainingArmourpoints < armourData.MaxDurability
+        );
     }
 
     public void SetAllToDefault()

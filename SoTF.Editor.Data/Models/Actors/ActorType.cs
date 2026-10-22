@@ -20,6 +20,8 @@ public record ActorType(
 
     public string PrintableGender => Gender == null ? "-" : AppText.Get(TextKeys.Gender(Gender));
 
+    public bool IsCannibal => Classification is "cannibal" or "muddyCannibal";
+
     public virtual bool Equals(ActorType? other)
     {
         if (other is null)

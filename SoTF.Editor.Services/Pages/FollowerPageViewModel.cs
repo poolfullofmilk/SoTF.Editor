@@ -1,10 +1,12 @@
 ﻿using Newtonsoft.Json.Linq;
 using NLog;
+using SoTF.Editor.Data.Enums;
 using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Models.Actors;
 using SoTF.Editor.Data.Models.SaveData.Actor;
 using SoTF.Editor.Data.Resources;
+using SoTF.Editor.Data.ViewModels;
 using SoTF.Editor.Services.Actors;
 using SoTF.Editor.Services.Savegames;
 using static SoTF.Editor.Data.Helpers.Constants.Actors;
@@ -22,6 +24,8 @@ public class FollowerPageViewModel
     private readonly List<FollowerState> _followers = [];
     private readonly Dictionary<int, FollowerState> _selectedByTypeId = [];
     private readonly LoadedValues _loaded = new();
+    private readonly Dictionary<int, int> _loadedCopies = [];
+    private readonly HashSet<int> _loadedIds = [];
     private Savegame? _loadedFrom;
 
     public FollowerPageViewModel(GameData gameData)
@@ -59,7 +63,7 @@ public class FollowerPageViewModel
         _loaded.IsChanged(nameof(_followers), FollowerIds())
         || _followers.Concat(_selectedByTypeId.Values).Any(IsChanged);
 
-    public IEnumerable<string> ChangedNames
+    public IEnumerable<Change> Changes
     {
         get
         {
@@ -68,17 +72,24 @@ public class FollowerPageViewModel
                 // A Follower Missing From The Save Is Its Stand In
                 var copies = CopiesOf(typeId);
                 var name = GameNames.Get(TextKeys.ActorType(typeId));
-                if (_loaded.IsChanged($"Copies.{typeId}", copies.Count))
+                var loadedCopies = _loadedCopies.GetValueOrDefault(typeId);
+                if (copies.Count != loadedCopies)
                 {
-                    yield return AppText.Format("ChangeCopies", name, copies.Count);
+                    yield return new Change(
+                        AppText.Format("ChangeCopies", name, copies.Count),
+                        copies.Count > loadedCopies ? ChangeKind.Added : ChangeKind.Removed
+                    );
                 }
 
                 var shown = copies.Count == 0 ? [StateOf(typeId)] : copies;
                 for (var index = 0; index < shown.Count; index++)
                 {
-                    if (IsChanged(shown[index]))
+                    // A Spawned Copy Already Shows In The Copies Line
+                    var isSpawned =
+                        shown[index].UniqueId is { } uniqueId && !_loadedIds.Contains(uniqueId);
+                    if (!isSpawned && IsChanged(shown[index]))
                     {
-                        yield return shown.Count > 1 ? $"{name} {index + 1}" : name;
+                        yield return new Change(shown.Count > 1 ? $"{name} {index + 1}" : name);
                     }
                 }
             }
@@ -217,8 +228,10 @@ public class FollowerPageViewModel
             _loadedFrom = selectedSavegame;
             _loaded.Clear();
             _loaded.Remember(nameof(_followers), FollowerIds());
-            _loaded.Remember($"Copies.{KelvinTypeId}", CopiesOf(KelvinTypeId).Count);
-            _loaded.Remember($"Copies.{VirginiaTypeId}", CopiesOf(VirginiaTypeId).Count);
+            _loadedCopies[KelvinTypeId] = CopiesOf(KelvinTypeId).Count;
+            _loadedCopies[VirginiaTypeId] = CopiesOf(VirginiaTypeId).Count;
+            _loadedIds.Clear();
+            _loadedIds.UnionWith(_followers.Select(follower => follower.UniqueId).OfType<int>());
             foreach (var follower in _followers.Concat(_selectedByTypeId.Values))
             {
                 Remember(follower);

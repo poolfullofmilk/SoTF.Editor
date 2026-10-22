@@ -141,20 +141,20 @@
                     <MudSpacer />
                     @* Default Durability *@
                     <Tooltip Text="@Localizer["SetAllToDefaultTooltip"]"
-                             Disabled="@(!ArmorPage.HasArmorPieces())">
+                             Disabled="@(!ArmorPage.CanSetAllToDefault())">
                         <MudButton Variant="Variant.Text"
                                    Size="Size.Small"
-                                   Disabled="@(!ArmorPage.HasArmorPieces())"
+                                   Disabled="@(!ArmorPage.CanSetAllToDefault())"
                                    OnClick="ArmorPage.SetAllToDefault">
                             @Localizer["SetAllToDefault"]
                         </MudButton>
                     </Tooltip>
                     @* Max Durability *@
                     <Tooltip Text="@Localizer["SetAllToMaxTooltip"]"
-                             Disabled="@(!ArmorPage.HasArmorPieces())">
+                             Disabled="@(!ArmorPage.CanSetAllToMax())">
                         <MudButton Variant="Variant.Text"
                                    Size="Size.Small"
-                                   Disabled="@(!ArmorPage.HasArmorPieces())"
+                                   Disabled="@(!ArmorPage.CanSetAllToMax())"
                                    OnClick="ArmorPage.SetAllToMax">
                             @Localizer["SetAllToMax"]
                         </MudButton>
@@ -187,27 +187,26 @@
                                     </MudStack>
                                     @* Durability *@
                                     <ChangedBadge When="@ArmorPage.IsChanged(armour)">
-                                        <MudNumericField T="float"
-                                                         @bind-Value="armour.ArmourPiece.RemainingArmourpoints"
-                                                         Min="armour.MinDurability"
-                                                         Max="armour.MaxDurability"
-                                                         Variant="Variant.Outlined"
-                                                         Margin="Margin.Dense"
-                                                         Label="@Localizer["Durability"]"
-                                                         Style="width:140px" />
+                                        <NumberField T="float"
+                                                     @bind-Value="armour.ArmourPiece.RemainingArmourpoints"
+                                                     Min="armour.MinDurability"
+                                                     Max="armour.MaxDurability"
+                                                     Margin="Margin.Dense"
+                                                     Label="@Localizer["Durability"]"
+                                                     Style="width:140px" />
                                     </ChangedBadge>
                                     @* Default Button *@
-                                    <Tooltip Text="@Localizer["SetToDefaultDurability"]">
+                                    <Tooltip Text="@Localizer["SetToDefaultDurability"]"
+                                             Disabled="@IsDefault(armour)">
                                         <MudIconButton Icon="@Icons.Material.Rounded.SettingsBackupRestore"
                                                        Size="Size.Small"
+                                                       Disabled="@IsDefault(armour)"
                                                        OnClick="() => armour.ArmourPiece.RemainingArmourpoints = armour.DefaultDurability" />
                                     </Tooltip>
                                     @* Max Button *@
-                                    <Tooltip Text="@Localizer["SetToMaxDurability"]">
-                                        <MudIconButton Icon="@Icons.Material.Rounded.KeyboardDoubleArrowUp"
-                                                       Size="Size.Small"
-                                                       OnClick="() => armour.ArmourPiece.RemainingArmourpoints = armour.MaxDurability" />
-                                    </Tooltip>
+                                    <MaxButton Max="armour.MaxDurability"
+                                               Disabled="@(armour.ArmourPiece.RemainingArmourpoints >= armour.MaxDurability)"
+                                               OnClick="() => armour.ArmourPiece.RemainingArmourpoints = armour.MaxDurability" />
                                     @* Remove Button *@
                                     <Tooltip Text="@Localizer["Remove"]">
                                         <MudIconButton Icon="@Icons.Material.Rounded.Delete"
@@ -238,17 +237,26 @@
                                            Style="min-width:200px">
                                     @foreach (var armourType in ArmorPage.ArmourTypes)
                                     {
-                                        <MudSelectItem Value="armourType">@armourType.Name</MudSelectItem>
+                                        <MudSelectItem Value="armourType">
+                                            <MudStack Row
+                                                      Justify="Justify.SpaceBetween"
+                                                      Spacing="4">
+                                                <MudText Typo="Typo.body2">@armourType.Name</MudText>
+                                                <MudText Typo="Typo.body2"
+                                                         Class="mud-text-secondary">
+                                                    @armourType.Durability?.Default
+                                                </MudText>
+                                            </MudStack>
+                                        </MudSelectItem>
                                     }
                                 </MudSelect>
                                 @* New Durability *@
-                                <MudNumericField T="int"
-                                                 Variant="Variant.Outlined"
-                                                 @bind-Value="ArmorPage.NewArmour.RemainingArmourpoints"
-                                                 Min="1"
-                                                 Label="@Localizer["Durability"]"
-                                                 Margin="Margin.Dense"
-                                                 Style="width:140px" />
+                                <NumberField T="int"
+                                             @bind-Value="ArmorPage.NewArmour.RemainingArmourpoints"
+                                             Min="1"
+                                             Label="@Localizer["Durability"]"
+                                             Margin="Margin.Dense"
+                                             Style="width:140px" />
                                 @* Add Armor *@
                                 <MudButton Variant="Variant.Filled"
                                            Color="Color.Info"

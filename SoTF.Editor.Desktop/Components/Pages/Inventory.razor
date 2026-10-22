@@ -17,14 +17,14 @@
                 @* Set All Min *@
                 <MudButton Variant="Variant.Text"
                            Size="Size.Small"
-                           Disabled="@(!InventoryPage.HasInventoryItems())"
+                           Disabled="@(!InventoryPage.CanSetAllToMin())"
                            OnClick="InventoryPage.SetAllEquippedToMin">
                     @Localizer["SetAllToMin"]
                 </MudButton>
                 @* Set All Max *@
                 <MudButton Variant="Variant.Text"
                            Size="Size.Small"
-                           Disabled="@(!InventoryPage.HasInventoryItems())"
+                           Disabled="@(!InventoryPage.CanSetAllToMax())"
                            OnClick="InventoryPage.SetAllEquippedToMax">
                     @Localizer["SetAllToMax"]
                 </MudButton>
@@ -45,8 +45,7 @@
                               Spacing="4"
                               Class="pa-4 pb-2">
                         @* Item Search *@
-                        <SearchField @bind-Value="_filter"
-                                     Class="flex-grow-1" />
+                        <SearchField @bind-Value="_filter" />
                         @* Category *@
                         <MudSelect T="Category"
                                    Variant="Variant.Outlined"
@@ -57,7 +56,7 @@
                                    Dense
                                    Margin="Margin.Dense"
                                    Style="max-width:200px">
-                            @foreach (var category in InventoryPage.Categories)
+                            @foreach (var category in InventoryPage.Categories.OrderBy(category => category.TypeRendered))
                             {
                                 <MudSelectItem Value="category">@category.TypeRendered</MudSelectItem>
                             }
@@ -101,26 +100,26 @@
                                 <MudTd>
                                     <ItemLabel Name="@context.Name"
                                                Detail="@($"{context.TypeRendered} · {context.Id}")"
-                                               ImageUrl="@context.ImageUrl" />
+                                               ImageUrl="@context.ImageUrl"
+                                               Highlight="@_filter" />
                                 </MudTd>
                                 <MudTd>
                                     @* Count *@
                                     <ChangedBadge When="@InventoryPage.IsChanged(context)"
                                                   Class="d-inline-block">
-                                        <MudNumericField T="int"
-                                                         Variant="Variant.Outlined"
-                                                         @bind-Value="context.TotalCount"
-                                                         Min="1"
-                                                         Max="context.Max"
-                                                         Disabled="context.IsEquipped"
-                                                         Margin="Margin.Dense"
-                                                         Style="width:110px" />
+                                        <NumberField T="int"
+                                                     @bind-Value="context.TotalCount"
+                                                     Min="1"
+                                                     Max="context.Max"
+                                                     Disabled="context.IsEquipped"
+                                                     Margin="Margin.Dense"
+                                                     Style="width:110px" />
                                     </ChangedBadge>
                                 </MudTd>
                                 <MudTd Style="text-align:right">
                                     @* Max Button *@
                                     <MaxButton Max="context.Max"
-                                               Disabled="context.IsEquipped"
+                                               Disabled="@(context.IsEquipped || context.TotalCount >= context.Max)"
                                                OnClick="context.SetToMax" />
                                     @* Remove Button *@
                                     <Tooltip Text="@Localizer["Remove"]">
@@ -136,10 +135,12 @@
                                 <MudTd Class="not-held">
                                     <ItemLabel Name="@context.Name"
                                                Detail="@($"{context.TypeRendered} · {context.Id}")"
-                                               ImageUrl="@context.ImageUrl" />
+                                               ImageUrl="@context.ImageUrl"
+                                               Highlight="@_filter" />
                                 </MudTd>
                                 <MudTd>
-                                    <ChangedDot When="@InventoryPage.IsChanged(context)" />
+                                    <ChangedDot When="@InventoryPage.IsChanged(context)"
+                                                Centered />
                                 </MudTd>
                                 <MudTd Style="text-align:right">
                                     @* Add Button *@

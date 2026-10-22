@@ -21,19 +21,30 @@ public partial class MainLayout : IDisposable
 
     private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
 
-    private static readonly PageLink[] s_pages =
+    // Savegames, Then You, Then The World, Then The Game Itself
+    private static readonly PageLink[][] s_pageGroups =
     [
-        new("/", "Savegames", Icons.Material.Rounded.Folder, false),
-        new("Player", "Player", Icons.Material.Rounded.Person, true),
-        new("Inventory", "Inventory", Icons.Material.Rounded.Backpack, true),
-        new("Storage", "Storage", Icons.Material.Rounded.Inventory2, true, true),
-        new("Followers", "Followers", Icons.Material.Rounded.Group, true, true),
-        new("Game", "Game", Icons.Material.Rounded.SportsEsports, true, true),
-        new("Npcs", "Npcs", Icons.Material.Rounded.Pets, true, true),
-        new("Structures", "Structures", Icons.Material.Rounded.Cabin, true, true),
-        new("Map", "Map", Icons.Material.Rounded.Map, true),
-        new("Tools", "Tools", Icons.Material.Rounded.Handyman, true),
+        [new("/", "Savegames", Icons.Material.Rounded.Folder, false)],
+        [
+            new("Player", "Player", Icons.Material.Rounded.Person, true),
+            new("Inventory", "Inventory", Icons.Material.Rounded.Backpack, true),
+            new("Followers", "Followers", Icons.Material.Rounded.Group, true, true),
+        ],
+        [
+            new("Storage", "Storage", Icons.Material.Rounded.Inventory2, true, true),
+            new("Structures", "Structures", Icons.Material.Rounded.Cabin, true, true),
+            new("Npcs", "Npcs", Icons.Material.Rounded.Pets, true, true),
+            new("Map", "Map", Icons.Material.Rounded.Map, true),
+        ],
+        [
+            new("Game", "Game", Icons.Material.Rounded.SportsEsports, true, true),
+            new("Tools", "Tools", Icons.Material.Rounded.Handyman, true),
+        ],
     ];
+
+    private static readonly PageLink[] s_pages = [.. s_pageGroups.SelectMany(group => group)];
+
+    public static IReadOnlyList<PageLink> Pages => s_pages;
 
     [Inject]
     public required MainViewModel MainViewModel { get; set; }
@@ -52,6 +63,16 @@ public partial class MainLayout : IDisposable
     private ReleaseInfo? _availableUpdate;
 
     private bool HasSavegame => MainViewModel.SelectedSavegame != null;
+
+    private bool IsClientSave => MainViewModel.SelectedSavegame?.IsMultiPlayerClient() == true;
+
+    private PageLink? ActivePage => s_pages.FirstOrDefault(IsActive);
+
+    // Only A Page With Unsaved Edits It Can Take Back
+    private bool CanRevertPage =>
+        ActivePage is { } page
+        && MainViewModel.CanRevert(page.Href)
+        && MainViewModel.HasChanges(page.Href);
 
     // A Client Save Holds Only The Player, World Pages Stay Shut
     private bool IsDisabled(PageLink link)
@@ -130,7 +151,7 @@ public partial class MainLayout : IDisposable
             return;
         }
 
-        if (!await ConfirmSaveAsync())
+        if (await ConfirmSaveAsync() is not { } changes)
         {
             return;
         }
@@ -138,7 +159,7 @@ public partial class MainLayout : IDisposable
         try
         {
             var saved = false;
-            await RunBusyAsync(() => saved = MainViewModel.SaveChanges());
+            await RunBusyAsync(() => saved = MainViewModel.SaveChanges(changes));
             if (saved)
             {
                 Snackbar.Add(Localizer["ChangesSaved"], Severity.Success);
@@ -155,13 +176,13 @@ public partial class MainLayout : IDisposable
         }
     }
 
-    private async Task<bool> ConfirmSaveAsync()
+    private async Task<Dictionary<string, List<Change>>?> ConfirmSaveAsync()
     {
         // No Page Marked Saves Straight Away, The Store Decides
         var changedPages = s_pages.Where(page => MainViewModel.HasChanges(page.Href)).ToList();
         if (changedPages.Count == 0)
         {
-            return true;
+            return [];
         }
 
         var dialog = await DialogService.ShowAsync<SaveChangesDialog>(
@@ -172,7 +193,11 @@ public partial class MainLayout : IDisposable
             },
             new DialogOptions { MaxWidth = MaxWidth.ExtraSmall, FullWidth = true }
         );
-        return await dialog.Result is { Canceled: false };
+        return
+            await dialog.Result
+                is { Canceled: false, Data: Dictionary<string, List<Change>> changes }
+            ? changes
+            : null;
     }
 
     private void OnOpenRequested(Savegame savegame)
@@ -201,6 +226,21 @@ public partial class MainLayout : IDisposable
         if (IsActive(s_pages[0]))
         {
             NavigationManager.NavigateTo("Player");
+        }
+    }
+
+    private async Task RevertPageAsync()
+    {
+        if (
+            ActivePage is { } page
+            && await DialogService.ConfirmAsync(
+                Localizer,
+                Localizer["RevertPage"],
+                Localizer["RevertPageText", Localizer[page.LabelKey]]
+            )
+        )
+        {
+            MainViewModel.RevertPage(page.Href);
         }
     }
 
@@ -312,6 +352,7 @@ public partial class MainLayout : IDisposable
             new DialogParameters<RestoreBackupDialog>
             {
                 { restoreDialog => restoreDialog.Backups, backups },
+                { restoreDialog => restoreDialog.SavegamePath, savegame.FullPath },
             },
             new DialogOptions { MaxWidth = MaxWidth.ExtraSmall, FullWidth = true }
         );

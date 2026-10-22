@@ -29,12 +29,11 @@
                         }
                     </MudSelect>
                     @* Count *@
-                    <MudNumericField T="int"
-                                     Variant="Variant.Outlined"
-                                     @bind-Value="_viewModel.SpawnCount"
-                                     Min="1"
-                                     Max="500"
-                                     Label="@Localizer["Count"]" />
+                    <NumberField T="int"
+                                 @bind-Value="_viewModel.SpawnCount"
+                                 Min="1"
+                                 Max="500"
+                                 Label="@Localizer["Count"]" />
                     @* Family *@
                     <MudSelect T="int?"
                                Variant="Variant.Outlined"
@@ -63,33 +62,29 @@
                         }
                     </MudSelect>
                     @* Space Between *@
-                    <MudNumericField T="int"
-                                     Variant="Variant.Outlined"
-                                     @bind-Value="_viewModel.SpaceBetween"
-                                     Min="0"
-                                     Label="@Localizer["SpaceBetween"]"
-                                     HelperText="@Localizer["SpaceBetweenTooltip"]" />
+                    <NumberField T="int"
+                                 @bind-Value="_viewModel.SpaceBetween"
+                                 Min="0"
+                                 Label="@Localizer["SpaceBetween"]"
+                                 HelperText="@Localizer["SpaceBetweenTooltip"]" />
                     <MudText Typo="Typo.subtitle2">@Localizer["Offset"]</MudText>
                     <MudStack Row
                               Spacing="2">
                         @* Offset X *@
-                        <MudNumericField T="float"
-                                         Variant="Variant.Outlined"
-                                         @bind-Value="_viewModel.XOffset"
-                                         Label="X"
-                                         Step="0.5f" />
+                        <NumberField T="float"
+                                     @bind-Value="_viewModel.XOffset"
+                                     Label="X"
+                                     Step="0.5f" />
                         @* Offset Y *@
-                        <MudNumericField T="float"
-                                         Variant="Variant.Outlined"
-                                         @bind-Value="_viewModel.YOffset"
-                                         Label="Y"
-                                         Step="0.5f" />
+                        <NumberField T="float"
+                                     @bind-Value="_viewModel.YOffset"
+                                     Label="Y"
+                                     Step="0.5f" />
                         @* Offset Z *@
-                        <MudNumericField T="float"
-                                         Variant="Variant.Outlined"
-                                         @bind-Value="_viewModel.ZOffset"
-                                         Label="Z"
-                                         Step="0.5f" />
+                        <NumberField T="float"
+                                     @bind-Value="_viewModel.ZOffset"
+                                     Label="Z"
+                                     Step="0.5f" />
                     </MudStack>
                     @* Area *@
                     <MudSelect T="Area"

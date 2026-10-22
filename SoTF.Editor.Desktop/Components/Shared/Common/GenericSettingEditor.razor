@@ -18,22 +18,20 @@
                        Color="Color.Info" />
             break;
         case GenericSetting.DataType.Integer:
-            <MudNumericField T="int?"
-                             Variant="Variant.Outlined"
-                             @bind-Value="Setting.IntValue"
-                             Min="Setting.MinInt"
-                             Max="Setting.MaxInt"
-                             Margin="Margin.Dense"
-                             Style="max-width:160px" />
+            <NumberField T="int?"
+                         @bind-Value="Setting.IntValue"
+                         Min="Setting.MinInt"
+                         Max="Setting.MaxInt"
+                         Margin="Margin.Dense"
+                         Style="max-width:160px" />
             break;
         case GenericSetting.DataType.Decimal:
-            <MudNumericField T="double?"
-                             Variant="Variant.Outlined"
-                             @bind-Value="Setting.DecimalValue"
-                             Min="Setting.MinInt"
-                             Max="Setting.MaxInt"
-                             Margin="Margin.Dense"
-                             Style="max-width:160px" />
+            <NumberField T="double?"
+                         @bind-Value="Setting.DecimalValue"
+                         Min="Setting.MinInt"
+                         Max="Setting.MaxInt"
+                         Margin="Margin.Dense"
+                         Style="max-width:160px" />
             break;
         case GenericSetting.DataType.Enum:
             <MudSelect T="object"

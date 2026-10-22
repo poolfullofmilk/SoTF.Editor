@@ -2,9 +2,12 @@ using Newtonsoft.Json.Linq;
 using NLog;
 using SoTF.Editor.Data.Enums;
 using SoTF.Editor.Data.Helpers;
+using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Models.Actors;
 using SoTF.Editor.Data.Models.Map;
+using SoTF.Editor.Data.Models.SaveData.Actor;
 using SoTF.Editor.Data.Resources;
+using SoTF.Editor.Data.ViewModels;
 using SoTF.Editor.Services.Actors;
 using SoTF.Editor.Services.Map;
 using SoTF.Editor.Services.Pages;
@@ -23,7 +26,8 @@ public class MainViewModel(
     NpcsPageViewModel npcsPage,
     StructuresPageViewModel structuresPage,
     MapManager mapManager,
-    PoiLoader poiLoader
+    PoiLoader poiLoader,
+    GameData gameData
 )
 {
     private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
@@ -117,6 +121,50 @@ public class MainViewModel(
         NotifyChanged();
     }
 
+    // Only These Pages Keep Their Edits In Memory Until Save
+    public static bool CanRevert(string page)
+    {
+        return page is "Player" or "Inventory" or "Storage" or "Game" or "Structures";
+    }
+
+    public void RevertPage(string page)
+    {
+        if (SelectedSavegame is not { } savegame)
+        {
+            return;
+        }
+
+        switch (page)
+        {
+            case "Player":
+                playerPage.Load(savegame);
+                armorPage.Load(savegame);
+                break;
+            case "Inventory":
+                inventoryPage.Load(savegame);
+                break;
+            case "Storage":
+                storagePage.Revert(savegame);
+                break;
+            case "Game":
+                gameSetupPage.Load(savegame);
+                gameStatePage.Load(savegame);
+                weatherPage.Load(savegame);
+                break;
+            case "Structures":
+                structuresPage.Load(savegame);
+                break;
+        }
+
+        // A Tool Whose Edit Was Reverted Loses Its Dot
+        if (!savegame.SavegameStore.HasModified() && !gameStatePage.HasChanges)
+        {
+            _changedTools.Clear();
+        }
+
+        NotifyChanged();
+    }
+
     public bool HasChanges(string page)
     {
         // Nothing Loaded Means Nothing Changed
@@ -159,7 +207,7 @@ public class MainViewModel(
         return selectedSavegame.SavegameStore.HasModified();
     }
 
-    public bool SaveChanges()
+    public bool SaveChanges(Dictionary<string, List<Change>>? changes = null)
     {
         if (SelectedSavegame is not { } selectedSavegame)
         {
@@ -168,7 +216,7 @@ public class MainViewModel(
 
         // Only Content That Differs From The Load Is Written
         MergePages(selectedSavegame);
-        var hasChanges = selectedSavegame.SavegameStore.SaveAllModified();
+        var hasChanges = selectedSavegame.SavegameStore.SaveAllModified(changes);
 
         if (hasChanges)
         {
@@ -192,14 +240,17 @@ public class MainViewModel(
         structuresPage.Update(selectedSavegame);
     }
 
-    public void SaveWrappers(Dictionary<SavegameStore.FileType, SaveDataWrapper> wrappersToSave)
+    public void SaveWrappers(
+        Dictionary<SavegameStore.FileType, SaveDataWrapper> wrappersToSave,
+        Dictionary<string, List<Change>>? changes = null
+    )
     {
         if (SelectedSavegame is not { } selectedSavegame || wrappersToSave.Count == 0)
         {
             return;
         }
 
-        selectedSavegame.SavegameStore.SaveWrappers(wrappersToSave);
+        selectedSavegame.SavegameStore.SaveWrappers(wrappersToSave, changes);
         ReloadSavegame();
     }
     #endregion
@@ -258,6 +309,74 @@ public class MainViewModel(
         if (!hasChanges)
         {
             return AppText.Get("NothingToReset");
+        }
+
+        saveDataWrapper.MarkAsModified(Constants.JsonKeys.VailWorldSim);
+        return AppText.Get("ChangesAdded");
+    }
+
+    public string RaiseCannibalAnger(float level = Constants.Actors.FullAnger)
+    {
+        // Through ModifyActors So The NPCs Page Shows The New Anger
+        var message = "";
+        ModifyActors(savegame => message = RaiseCannibalAnger(savegame, level));
+        return message;
+    }
+
+    private string RaiseCannibalAnger(Savegame savegame, float level)
+    {
+        if (
+            savegame.SavegameStore.LoadJsonRaw(SavegameStore.FileType.SaveData)
+                is not { } saveDataWrapper
+            || saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.VailWorldSim)
+                is not { } vailWorldSim
+        )
+        {
+            return "";
+        }
+
+        var cannibalTypeIds = gameData
+            .ActorTypes.Where(actorType => actorType.IsCannibal)
+            .Select(actorType => actorType.Id)
+            .ToHashSet();
+        var cannibalIds = (vailWorldSim["Actors"] ?? Enumerable.Empty<JToken>())
+            .Where(actor => cannibalTypeIds.Contains(actor["TypeId"]?.Value<int>() ?? -1))
+            .Select(actor => actor["UniqueId"]?.Value<int>())
+            .ToHashSet();
+
+        // At Least That Anger, At Most Its Negative As Sentiment
+        var hasChanges = false;
+        foreach (var memory in vailWorldSim["InfluenceMemory"] ?? Enumerable.Empty<JToken>())
+        {
+            if (
+                !cannibalIds.Contains(memory["UniqueId"]?.Value<int>())
+                || memory["Influences"]
+                    ?.FirstOrDefault(influence =>
+                        influence["TypeId"]?.ToString() == Influence.Type.Player
+                    )
+                    is not { } playerInfluence
+            )
+            {
+                continue;
+            }
+
+            hasChanges |= JsonModifier.CompareAndModify(
+                playerInfluence,
+                "Anger",
+                value => value < level,
+                level
+            );
+            hasChanges |= JsonModifier.CompareAndModify(
+                playerInfluence,
+                "Sentiment",
+                value => value > -level,
+                -level
+            );
+        }
+
+        if (!hasChanges)
+        {
+            return AppText.Get("NothingToChange");
         }
 
         saveDataWrapper.MarkAsModified(Constants.JsonKeys.VailWorldSim);

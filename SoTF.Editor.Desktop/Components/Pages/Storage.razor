@@ -2,208 +2,206 @@
 @inherits EditorPageBase
 
 <RequiresSavegame NeedsWorld>
-    <MudStack Class="page-fill">
-        <MudGrid Class="fill">
-
-            <MudItem xs="12"
-                     md="4"
-                     Class="fill-column">
-                <Header Title="@Localizer["StorageTypes"]"
-                        Class="fill">
+    <MudStack Row
+              Spacing="6"
+              Class="page-fill">
+        <MudElement HtmlTag="div"
+                    Class="side-panel fill-column">
+            <Header Title="@Localizer["StorageTypes"]"
+                    Class="fill">
+                <TitleContent>
+                    <MudSpacer />
+                    @* Fill All Storages *@
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Info"
+                               Size="Size.Small"
+                               StartIcon="@Icons.Material.Rounded.AllInbox"
+                               Disabled="@(!StoragePage.HasStorages())"
+                               OnClick="FillAllStoragesAsync">
+                        @Localizer["FillAllStorages"]
+                    </MudButton>
+                </TitleContent>
+                <ChildContent>
+                    @* Storage Search *@
+                    <SearchField @bind-Value="_filter"
+                                 FullWidth />
+                    <MudPaper Elevation="4"
+                              Class="rounded-panel panel-flush overflow-y-auto fill">
+                        @if (!FilteredCollections.Any())
+                        {
+                            <MudText Typo="Typo.body2"
+                                     Class="mud-text-secondary pa-4">
+                                @Localizer["NothingFound"]
+                            </MudText>
+                        }
+                        @foreach (var (title, storages) in FilteredCollections)
+                        {
+                            <MudText Typo="Typo.subtitle2"
+                                     Class="group-title px-4 pt-4 pb-1">
+                                <MudHighlighter Text="@title"
+                                                HighlightedText="@_filter" />
+                            </MudText>
+                            @foreach (var storage in storages)
+                            {
+                                @* Storage Row *@
+                                <MudElement HtmlTag="div"
+                                            Class="@StorageRowClass(storage)"
+                                            role="button"
+                                            tabindex="0"
+                                            aria-pressed="@((StoragePage.SelectedStorage == storage) ? "true" : "false")"
+                                            data-keyclick
+                                            @onclick="() => SelectStorage(storage)">
+                                    <MudText Typo="Typo.body2"
+                                             Class="text-truncate">
+                                        <MudHighlighter Text="@storage.Description"
+                                                        HighlightedText="@_filter" />
+                                        <ChangedDot When="@StoragePage.IsChanged(storage)" />
+                                    </MudText>
+                                </MudElement>
+                            }
+                        }
+                    </MudPaper>
+                </ChildContent>
+            </Header>
+        </MudElement>
+        <MudElement HtmlTag="div"
+                    Class="main-panel fill-column">
+            @if (StoragePage.SelectedStorage is not { } selected)
+            {
+                <EmptyState Icon="@Icons.Material.Rounded.Inventory2"
+                            Text="@Localizer["SelectStorage"]" />
+            }
+            else
+            {
+                <Header Title="@selected.Description"
+                        Class="fit">
                     <TitleContent>
                         <MudSpacer />
-                        @* Fill All Storages *@
-                        <MudButton Variant="Variant.Filled"
-                                   Color="Color.Info"
-                                   Size="Size.Small"
-                                   StartIcon="@Icons.Material.Rounded.AllInbox"
-                                   Disabled="@(!StoragePage.HasStorages())"
-                                   OnClick="FillAllStoragesAsync">
-                            @Localizer["FillAllStorages"]
-                        </MudButton>
+                        <ShowOnMapButton Position="selected.Pos" />
                     </TitleContent>
                     <ChildContent>
                         <MudPaper Elevation="4"
-                                  Class="rounded-panel panel-flush overflow-y-auto fill">
-                            @if (StoragePage.StorageCollections.Count == 0)
-                            {
-                                <MudText Typo="Typo.body2"
-                                         Class="mud-text-secondary pa-4">
-                                    @Localizer["NothingFound"]
-                                </MudText>
-                            }
-                            @foreach (var collection in StoragePage.StorageCollections)
-                            {
-                                <MudText Typo="Typo.subtitle2"
-                                         Class="group-title px-4 pt-4 pb-1">
-                                    @($"{collection.Name} ({collection.Storages.Count})")
-                                </MudText>
-                                @foreach (var storage in collection.Storages)
-                                {
-                                    @* Storage Row *@
-                                    <MudElement HtmlTag="div"
-                                                Class="@StorageRowClass(storage)"
-                                                role="button"
-                                                tabindex="0"
-                                                aria-pressed="@((StoragePage.SelectedStorage == storage) ? "true" : "false")"
-                                                data-keyclick
-                                                @onclick="() => SelectStorage(storage)">
-                                        <MudText Typo="Typo.body2"
-                                                 Class="text-truncate">
-                                            @storage.Description
-                                            <ChangedDot When="@StoragePage.IsChanged(storage)" />
-                                        </MudText>
-                                    </MudElement>
-                                }
-                            }
-                        </MudPaper>
-                    </ChildContent>
-                </Header>
-            </MudItem>
+                                  Class="rounded-panel pa-4 overflow-y-auto fit">
+                            <MudStack Spacing="4">
+                                <MudStack Row
+                                          AlignItems="AlignItems.Center"
+                                          Wrap="Wrap.Wrap"
+                                          Spacing="2">
+                                    @* Fill Item *@
+                                    <MudSelect T="ItemWrapper"
+                                               Variant="Variant.Outlined"
+                                               Value="_fillItem"
+                                               ValueChanged="SelectFillItem"
+                                               Label="@Localizer["FillAllWith"]"
+                                               ToStringFunc="item => item?.Name ?? string.Empty"
+                                               Margin="Margin.Dense"
+                                               Style="min-width:220px">
+                                        @foreach (var item in selected.SupportedItems.OrderBy(item => item.Name))
+                                        {
+                                            <MudSelectItem Value="item">@item.Name</MudSelectItem>
+                                        }
+                                    </MudSelect>
+                                    @* Fill Count *@
+                                    <NumberField T="int"
+                                                 @bind-Value="_fillCount"
+                                                 Label="@Localizer["Count"]"
+                                                 Min="1"
+                                                 Max="_fillItem?.Max ?? 1000"
+                                                 Margin="Margin.Dense"
+                                                 Style="width:110px" />
+                                    @* Fill Button *@
+                                    <Tooltip Text="@Localizer["FillFittingSlotsTooltip"]"
+                                             Disabled="@(_fillItem is null)">
+                                        <MudButton Variant="Variant.Filled"
+                                                   Color="Color.Info"
+                                                   Size="Size.Small"
+                                                   Disabled="@(_fillItem is null)"
+                                                   OnClick="() => StoragePageViewModel.FillAll(selected, _fillItem!, _fillCount)">
+                                            @Localizer["FillFittingSlots"]
+                                        </MudButton>
+                                    </Tooltip>
+                                    <MudSpacer />
+                                    @* Set All Max *@
+                                    <MudButton Variant="Variant.Text"
+                                               Size="Size.Small"
+                                               Disabled="@(!StoragePageViewModel.CanSetAllToMax(selected))"
+                                               OnClick="() => StoragePageViewModel.SetAllToMax(selected)">
+                                        @Localizer["SetAllToMax"]
+                                    </MudButton>
+                                    @* Clear All *@
+                                    <MudButton Variant="Variant.Text"
+                                               Color="Color.Error"
+                                               Size="Size.Small"
+                                               Disabled="@(!StoragePageViewModel.HasStoredItems(selected))"
+                                               OnClick="() => StoragePageViewModel.ClearAll(selected)">
+                                        @Localizer["ClearAll"]
+                                    </MudButton>
+                                    @* Apply To Same Type *@
+                                    <Tooltip Text="@Localizer["ApplyToSameTypeTooltip"]"
+                                             Disabled="@(!StoragePage.HasSameTypeStorages(selected))">
+                                        <MudButton Variant="Variant.Text"
+                                                   Size="Size.Small"
+                                                   Disabled="@(!StoragePage.HasSameTypeStorages(selected))"
+                                                   OnClick="() => ApplyToSameTypeAsync(selected)">
+                                            @Localizer["ApplyToSameType"]
+                                        </MudButton>
+                                    </Tooltip>
+                                </MudStack>
 
-            <MudItem xs="12"
-                     md="8"
-                     Class="fill-column">
-                @if (StoragePage.SelectedStorage is not { } selected)
-                {
-                    <EmptyState Icon="@Icons.Material.Rounded.Inventory2"
-                                Text="@Localizer["SelectStorage"]" />
-                }
-                else
-                {
-                    <Header Title="@selected.Description"
-                            Class="fit">
-                        <TitleContent>
-                            <MudSpacer />
-                            <ShowOnMapButton Position="selected.Pos" />
-                        </TitleContent>
-                        <ChildContent>
-                            <MudPaper Elevation="4"
-                                      Class="rounded-panel pa-4 overflow-y-auto fit">
-                                <MudStack Spacing="4">
+                                <MudDivider />
+
+                                @foreach (var storedItem in StoragePageViewModel.StoredItemsOf(selected))
+                                {
                                     <MudStack Row
                                               AlignItems="AlignItems.Center"
-                                              Wrap="Wrap.Wrap"
-                                              Spacing="2">
-                                        @* Fill Item *@
+                                              Spacing="3">
+                                        <MudImage Src="@(storedItem.SelectedItem?.Item.ImageUrl ?? "images/icons/question-mark.svg")"
+                                                  Alt="@storedItem.SelectedItem?.Name"
+                                                  Class="thumb rounded-thumb" />
+                                        @* Slot Item *@
                                         <MudSelect T="ItemWrapper"
-                                                   Variant="Variant.Outlined"
-                                                   Value="_fillItem"
-                                                   ValueChanged="SelectFillItem"
-                                                   Label="@Localizer["FillAllWith"]"
+                                                   @bind-Value="storedItem.SelectedItem"
                                                    ToStringFunc="item => item?.Name ?? string.Empty"
+                                                   Placeholder="—"
+                                                   Dense
                                                    Margin="Margin.Dense"
-                                                   Style="min-width:220px">
-                                            @foreach (var item in selected.SupportedItems)
+                                                   Variant="Variant.Outlined"
+                                                   Class="flex-grow-1">
+                                            @foreach (var item in storedItem.SupportedItems.OrderBy(item => item.Name))
                                             {
                                                 <MudSelectItem Value="item">@item.Name</MudSelectItem>
                                             }
                                         </MudSelect>
-                                        @* Fill Count *@
-                                        <MudNumericField T="int"
-                                                         Variant="Variant.Outlined"
-                                                         @bind-Value="_fillCount"
-                                                         Label="@Localizer["Count"]"
-                                                         Min="1"
-                                                         Max="_fillItem?.Max ?? 1000"
+                                        @* Slot Count *@
+                                        <ChangedBadge When="@StoragePage.IsChanged(selected, storedItem)">
+                                            <NumberField T="int"
+                                                         @bind-Value="storedItem.Count"
+                                                         Min="0"
+                                                         Max="storedItem.Max"
+                                                         Disabled="@(!storedItem.HasItem())"
                                                          Margin="Margin.Dense"
                                                          Style="width:110px" />
-                                        @* Fill Button *@
-                                        <Tooltip Text="@Localizer["FillFittingSlotsTooltip"]"
-                                                 Disabled="@(_fillItem is null)">
-                                            <MudButton Variant="Variant.Filled"
-                                                       Color="Color.Info"
-                                                       Size="Size.Small"
-                                                       Disabled="@(_fillItem is null)"
-                                                       OnClick="() => StoragePageViewModel.FillAll(selected, _fillItem!, _fillCount)">
-                                                @Localizer["FillFittingSlots"]
-                                            </MudButton>
-                                        </Tooltip>
-                                        <MudSpacer />
-                                        @* Set All Max *@
-                                        <MudButton Variant="Variant.Text"
-                                                   Size="Size.Small"
-                                                   Disabled="@(!StoragePageViewModel.HasStoredItems(selected))"
-                                                   OnClick="() => StoragePageViewModel.SetAllToMax(selected)">
-                                            @Localizer["SetAllToMax"]
-                                        </MudButton>
-                                        @* Clear All *@
-                                        <MudButton Variant="Variant.Text"
-                                                   Color="Color.Error"
-                                                   Size="Size.Small"
-                                                   Disabled="@(!StoragePageViewModel.HasStoredItems(selected))"
-                                                   OnClick="() => StoragePageViewModel.ClearAll(selected)">
-                                            @Localizer["ClearAll"]
-                                        </MudButton>
-                                        @* Apply To Same Type *@
-                                        <Tooltip Text="@Localizer["ApplyToSameTypeTooltip"]"
-                                                 Disabled="@(!StoragePage.HasSameTypeStorages(selected))">
-                                            <MudButton Variant="Variant.Text"
-                                                       Size="Size.Small"
-                                                       Disabled="@(!StoragePage.HasSameTypeStorages(selected))"
-                                                       OnClick="() => ApplyToSameTypeAsync(selected)">
-                                                @Localizer["ApplyToSameType"]
-                                            </MudButton>
+                                        </ChangedBadge>
+                                        @* Slot Max *@
+                                        <MaxButton Max="storedItem.Max"
+                                                   Disabled="@(!storedItem.HasItem() || storedItem.Count >= storedItem.Max)"
+                                                   OnClick="storedItem.SetToMax" />
+                                        @* Slot Remove *@
+                                        <Tooltip Text="@Localizer["Remove"]"
+                                                 Disabled="@(!storedItem.HasItem())">
+                                            <MudIconButton Icon="@Icons.Material.Rounded.Delete"
+                                                           Color="Color.Error"
+                                                           Size="Size.Small"
+                                                           Disabled="@(!storedItem.HasItem())"
+                                                           OnClick="storedItem.Clear" />
                                         </Tooltip>
                                     </MudStack>
-
-                                    <MudDivider />
-
-                                    @foreach (var storedItem in StoragePageViewModel.StoredItemsOf(selected))
-                                    {
-                                        <MudStack Row
-                                                  AlignItems="AlignItems.Center"
-                                                  Spacing="3">
-                                            <MudImage Src="@(storedItem.SelectedItem?.Item.ImageUrl ?? "images/icons/question-mark.svg")"
-                                                      Alt="@storedItem.SelectedItem?.Name"
-                                                      Class="thumb rounded-thumb" />
-                                            @* Slot Item *@
-                                            <MudSelect T="ItemWrapper"
-                                                       @bind-Value="storedItem.SelectedItem"
-                                                       ToStringFunc="item => item?.Name ?? string.Empty"
-                                                       Placeholder="—"
-                                                       Dense
-                                                       Margin="Margin.Dense"
-                                                       Variant="Variant.Outlined"
-                                                       Class="flex-grow-1">
-                                                @foreach (var item in storedItem.SupportedItems)
-                                                {
-                                                    <MudSelectItem Value="item">@item.Name</MudSelectItem>
-                                                }
-                                            </MudSelect>
-                                            @* Slot Count *@
-                                            <ChangedBadge When="@StoragePage.IsChanged(selected, storedItem)">
-                                                <MudNumericField T="int"
-                                                                 @bind-Value="storedItem.Count"
-                                                                 Min="0"
-                                                                 Max="storedItem.Max"
-                                                                 Disabled="@(!storedItem.HasItem())"
-                                                                 Variant="Variant.Outlined"
-                                                                 Margin="Margin.Dense"
-                                                                 Style="width:110px" />
-                                            </ChangedBadge>
-                                            @* Slot Max *@
-                                            <MaxButton Max="storedItem.Max"
-                                                       Disabled="@(!storedItem.HasItem())"
-                                                       OnClick="storedItem.SetToMax" />
-                                            @* Slot Remove *@
-                                            <Tooltip Text="@Localizer["Remove"]"
-                                                     Disabled="@(!storedItem.HasItem())">
-                                                <MudIconButton Icon="@Icons.Material.Rounded.Delete"
-                                                               Color="Color.Error"
-                                                               Size="Size.Small"
-                                                               Disabled="@(!storedItem.HasItem())"
-                                                               OnClick="storedItem.Clear" />
-                                            </Tooltip>
-                                        </MudStack>
-                                    }
-                                </MudStack>
-                            </MudPaper>
-                        </ChildContent>
-                    </Header>
-                }
-            </MudItem>
-
-        </MudGrid>
+                                }
+                            </MudStack>
+                        </MudPaper>
+                    </ChildContent>
+                </Header>
+            }
+        </MudElement>
     </MudStack>
 </RequiresSavegame>

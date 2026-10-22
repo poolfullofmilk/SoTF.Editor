@@ -156,7 +156,7 @@
                                @bind-Value="Follower.Outfit"
                                Label="@Localizer["Outfit"]"
                                ToStringFunc="outfit => outfit?.Name ?? string.Empty">
-                        @foreach (var outfit in Follower.Outfits)
+                        @foreach (var outfit in Follower.Outfits.OrderBy(outfit => outfit.Name))
                         {
                             <MudSelectItem Value="outfit">@outfit.Name</MudSelectItem>
                         }
@@ -170,7 +170,7 @@
                 <MudStack Row
                           Wrap="Wrap.Wrap"
                           Spacing="0">
-                    @foreach (var equippableItem in Follower.Inventory)
+                    @foreach (var equippableItem in Follower.Inventory.OrderBy(item => item.Name))
                     {
                         @* Equipment *@
                         <MudCheckBox T="bool"
@@ -188,7 +188,7 @@
                           Spacing="1"
                           Class="mt-2">
                     <MudText Typo="Typo.subtitle2">@Localizer["Influences"]</MudText>
-                    <InfoButton Text="@Localizer["InfluencesInfo"]" />
+                    <InfoIcon Text="@Localizer["InfluencesInfo"]" />
                 </MudStack>
                 <InfluencesEditor Influences="Follower.Influences"
                                   ChangedWhen="IsInfluenceChanged"

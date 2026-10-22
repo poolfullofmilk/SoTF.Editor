@@ -12,7 +12,7 @@
         <DebugType>embedded</DebugType>
         <Description>A Savegame Editor For Sons Of The Forest</Description>
         <Copyright>Copyright (c) 2026 poolfullofmilk</Copyright>
-        <Version>3.0.1</Version>
+        <Version>3.1</Version>
         <AssemblyTitle>SoTF Editor</AssemblyTitle>
         <Product>SoTF Editor</Product>
         <Company>poolfullofmilk</Company>
@@ -53,7 +53,7 @@
     <ItemGroup>
         <PackageReference
             Include="Microsoft.AspNetCore.Components.WebView.Wpf"
-            Version="10.0.110"
+            Version="10.0.120"
         />
         <PackageReference Include="MudBlazor" Version="9.11.0" />
     </ItemGroup>

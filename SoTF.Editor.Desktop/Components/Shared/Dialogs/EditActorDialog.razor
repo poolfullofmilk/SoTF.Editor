@@ -49,7 +49,7 @@
                                   AlignItems="AlignItems.Center"
                                   Spacing="1">
                             <MudText Typo="Typo.subtitle2">@Localizer["Influences"]</MudText>
-                            <InfoButton Text="@Localizer["InfluencesInfo"]" />
+                            <InfoIcon Text="@Localizer["InfluencesInfo"]" />
                         </MudStack>
                         <InfluencesEditor Influences="_viewModel.Influences"
                                           CanRemove
@@ -137,12 +137,11 @@
                                                  Label="@Localizer["Energy"]"
                                                  Style="width:120px" />
                                     @* Energy *@
-                                    <MudNumericField T="float"
-                                                     Variant="Variant.Outlined"
-                                                     @bind-Value="_viewModel.ModifyOptions.ActorEnergy"
-                                                     Min="0"
-                                                     Max="100"
-                                                     Disabled="@(!_viewModel.ModifyOptions.UpdateEnergy)" />
+                                    <NumberField T="float"
+                                                 @bind-Value="_viewModel.ModifyOptions.ActorEnergy"
+                                                 Min="0"
+                                                 Max="100"
+                                                 Disabled="@(!_viewModel.ModifyOptions.UpdateEnergy)" />
                                 </MudStack>
                                 <MudStack Row
                                           AlignItems="AlignItems.Center"
@@ -155,11 +154,10 @@
                                                  Label="@Localizer["Health"]"
                                                  Style="width:120px" />
                                     @* Health *@
-                                    <MudNumericField T="float"
-                                                     Variant="Variant.Outlined"
-                                                     @bind-Value="_viewModel.ModifyOptions.ActorHealth"
-                                                     Min="0"
-                                                     Disabled="@(!_viewModel.ModifyOptions.UpdateHealth)" />
+                                    <NumberField T="float"
+                                                 @bind-Value="_viewModel.ModifyOptions.ActorHealth"
+                                                 Min="0"
+                                                 Disabled="@(!_viewModel.ModifyOptions.UpdateHealth)" />
                                 </MudStack>
                             </MudStack>
                         </MudPaper>

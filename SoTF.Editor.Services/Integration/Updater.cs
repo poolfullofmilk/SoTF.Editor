@@ -1,4 +1,7 @@
 using System.Diagnostics;
+using System.Security.Cryptography;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using NLog;
 using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.ViewModels;
@@ -36,6 +39,7 @@ public static class Updater
             $"SoTF.Editor_{release.Tag}.exe"
         );
         var partialPath = targetPath + ".download";
+        var expectedDigest = await ExpectedDigestAsync(release.Tag);
 
         try
         {
@@ -58,6 +62,16 @@ public static class Updater
                 await response.Content.CopyToAsync(file);
             }
 
+            // A Download That Differs From GitHub's Checksum Never Runs
+            await using (var downloaded = File.OpenRead(partialPath))
+            {
+                var digest = Convert.ToHexStringLower(await SHA256.HashDataAsync(downloaded));
+                if (digest != expectedDigest)
+                {
+                    throw new InvalidDataException($"Checksum Mismatch For {release.Tag}");
+                }
+            }
+
             // Only A Complete Download Gets The Real Name
             File.Move(partialPath, targetPath, overwrite: true);
             s_logger.Info(
@@ -70,6 +84,33 @@ public static class Updater
             File.Delete(partialPath);
             throw;
         }
+    }
+
+    private static async Task<string> ExpectedDigestAsync(string tag)
+    {
+        // GitHub Hashes Every Release Asset, Its API Lists The Hash
+        using var request = new HttpRequestMessage(HttpMethod.Get, AppInfo.ReleaseApiUrl + tag);
+        request.Headers.UserAgent.ParseAdd(AppInfo.DisplayName.Replace(' ', '.'));
+        using var response = await s_httpClient.SendAsync(request);
+        response.EnsureSuccessStatusCode();
+
+        string? digest;
+        try
+        {
+            digest = JObject
+                .Parse(await response.Content.ReadAsStringAsync())["assets"]
+                ?.FirstOrDefault(asset => asset["name"]?.ToString() == $"SoTF.Editor_{tag}.exe")
+                ?["digest"]?.ToString();
+        }
+        catch (JsonReaderException exception)
+        {
+            throw new InvalidDataException($"Unreadable Release Details For {tag}", exception);
+        }
+
+        const string prefix = "sha256:";
+        return digest?.StartsWith(prefix, StringComparison.Ordinal) == true
+            ? digest[prefix.Length..].ToLowerInvariant()
+            : throw new InvalidDataException($"Release {tag} Lists No Checksum");
     }
 
     public static void Launch(string executablePath)

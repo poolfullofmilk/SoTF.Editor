@@ -1,0 +1,54 @@
+<MudStack Row
+          AlignItems="AlignItems.Start"
+          Spacing="3"
+          Class="px-3 py-1">
+    @if (Icon is not null)
+    {
+        <MudIcon Icon="@Icon"
+                 Size="Size.Small" />
+    }
+    <MudStack Spacing="0">
+        @if (Label is not null)
+        {
+            <MudText Typo="Typo.body2">@Label</MudText>
+        }
+        @foreach (var change in Shown)
+        {
+            <MudStack Row
+                      AlignItems="AlignItems.Center"
+                      Spacing="1">
+                <MudElement HtmlTag="span"
+                            Class="change-mark">
+                    @switch (change.Kind)
+                    {
+                        case ChangeKind.Added:
+                            <MudIcon Icon="@Icons.Material.Rounded.Add"
+                                     Color="Color.Success"
+                                     Size="Size.Small" />
+                            break;
+                        case ChangeKind.Removed:
+                            <MudIcon Icon="@Icons.Material.Rounded.Remove"
+                                     Color="Color.Error"
+                                     Size="Size.Small" />
+                            break;
+                        default:
+                            <MudElement HtmlTag="span"
+                                        Class="changed-dot centered" />
+                            break;
+                    }
+                </MudElement>
+                <MudText Typo="Typo.caption"
+                         Class="mud-text-secondary">
+                    @change.Name
+                </MudText>
+            </MudStack>
+        }
+        @if (Hidden > 0)
+        {
+            <MudText Typo="Typo.caption"
+                     Class="mud-text-secondary change-more">
+                @Localizer["AndMore", Hidden]
+            </MudText>
+        }
+    </MudStack>
+</MudStack>

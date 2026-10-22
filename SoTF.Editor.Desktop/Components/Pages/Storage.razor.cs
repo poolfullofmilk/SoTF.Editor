@@ -15,6 +15,28 @@ public partial class Storage : EditorPageBase
     private ItemWrapper? _fillItem;
     private int _fillCount = 1;
 
+    private string? _filter;
+
+    // A Matching Type Shows Whole, Otherwise Only Its Matching Storages
+    private IEnumerable<(string Title, List<IStorage> Storages)> FilteredCollections =>
+        StoragePage
+            .StorageCollections.Select(collection =>
+                (
+                    collection.Name,
+                    Storages: Matches(collection.Name)
+                        ? collection.Storages
+                        : [.. collection.Storages.Where(storage => Matches(storage.Description))]
+                )
+            )
+            .Where(group => group.Storages.Count > 0)
+            .Select(group => ($"{group.Name} ({group.Storages.Count})", group.Storages));
+
+    private bool Matches(string text)
+    {
+        return string.IsNullOrWhiteSpace(_filter)
+            || text.Contains(_filter, StringComparison.OrdinalIgnoreCase);
+    }
+
     private string StorageRowClass(IStorage storage)
     {
         var selected = StoragePage.SelectedStorage == storage ? " list-row-selected" : "";

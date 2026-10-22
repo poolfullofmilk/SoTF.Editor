@@ -3,6 +3,7 @@ using MudBlazor;
 using NLog;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Resources;
+using SoTF.Editor.Data.ViewModels;
 using SoTF.Editor.Services.Savegames;
 using SoTF.Editor.Services.Tools;
 
@@ -102,7 +103,10 @@ public partial class ItemPlaterDialog
             }
 
             var result = plate(savegame);
-            MainViewModel.SaveWrappers(result.WrappersToSave);
+            MainViewModel.SaveWrappers(
+                result.WrappersToSave,
+                new() { ["Tools"] = [new Change(Localizer["ItemPlater"])] }
+            );
             Snackbar.Add(result.Message, Severity.Success);
             MudDialog.Close(DialogResult.Ok(true));
         }

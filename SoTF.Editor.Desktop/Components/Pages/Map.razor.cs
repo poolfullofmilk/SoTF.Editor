@@ -95,15 +95,27 @@ public partial class Map : EditorPageBase
         return IsExpanded(collection) ? collection.PoiGroups.OrderBy(group => group.BaseTitle) : [];
     }
 
-    private static bool? CollectionState(PoiGroupCollection collection)
+    private static bool? StateOf(IEnumerable<PoiGroup> groups)
     {
-        // Mixed Sub Groups Show The Third State
-        if (collection.PoiGroups.All(group => group.Enabled))
+        // Mixed Groups Show The Third State
+        if (groups.All(group => group.Enabled))
         {
             return true;
         }
 
-        return collection.PoiGroups.Any(group => group.Enabled) ? null : false;
+        return groups.Any(group => group.Enabled) ? null : false;
+    }
+
+    private void SetAllEnabled(bool? enabled)
+    {
+        MapViewModel.SetAllEnabled(enabled == true);
+        MapViewModel.ApplyFilterToAllPois();
+    }
+
+    private void ResetToDefault()
+    {
+        MapViewModel.ResetToDefault();
+        MapViewModel.ApplyFilterToAllPois();
     }
 
     private void SetEnabled(IPoiGrouper grouper, bool enabled)

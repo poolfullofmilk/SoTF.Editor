@@ -15,14 +15,40 @@ public partial class Npcs : EditorPageBase
     // Page State
     private bool _byFamily;
     private ActorCollection? _selected;
+    private string? _filter;
 
+    // A Matching Group Shows Whole, Otherwise Only Its Matching Rows
     private IEnumerable<CollectionGroup> Groupings =>
-        _byFamily
-            ? NpcsPage.ActorsByFamily.Select(grouping => new CollectionGroup(
-                grouping.Name,
-                grouping.ActorCollections
-            ))
-            : [new CollectionGroup(null, NpcsPage.ActorsByType)];
+        (
+            _byFamily
+                ? NpcsPage.ActorsByFamily.Select(grouping => new CollectionGroup(
+                    grouping.Name,
+                    grouping.ActorCollections
+                ))
+                : [new CollectionGroup(null, NpcsPage.ActorsByType)]
+        )
+            .Select(group =>
+                group.Title is { } title && Matches(title)
+                    ? group
+                    : group with
+                    {
+                        Collections = [.. group.Collections.Where(Matches)],
+                    }
+            )
+            .Where(group => group.Collections.Count > 0);
+
+    private bool Matches(ActorCollection collection)
+    {
+        // A Family Row Also Matches The Creatures In It
+        return Matches(collection.Name)
+            || collection.Actors.Any(actor => Matches(actor.ActorType?.Name ?? ""));
+    }
+
+    private bool Matches(string text)
+    {
+        return string.IsNullOrWhiteSpace(_filter)
+            || text.Contains(_filter, StringComparison.OrdinalIgnoreCase);
+    }
 
     // A Reload Builds New Collections, An Old Selection Is Gone
     private ActorCollection? Selected =>

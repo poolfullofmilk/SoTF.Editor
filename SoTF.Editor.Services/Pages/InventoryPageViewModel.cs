@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using NLog;
+using SoTF.Editor.Data.Enums;
 using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Models.SaveData.Inventory;
@@ -88,8 +89,19 @@ public class InventoryPageViewModel
 
     public bool HasChanges => _loadedCounts.Keys.Any(IsChanged);
 
-    public IEnumerable<string> ChangedNames =>
-        _loadedCounts.Keys.Where(IsChanged).Select(item => item.Name);
+    public IEnumerable<Change> Changes =>
+        _loadedCounts.Keys.Where(IsChanged).Select(item => new Change(item.Name, KindOf(item)));
+
+    private ChangeKind KindOf(InventoryItem item)
+    {
+        // Newly Held Is Added, No Longer Held Is Removed
+        if (_loadedCounts[item] is null)
+        {
+            return ChangeKind.Added;
+        }
+
+        return IsHeld(item) ? ChangeKind.Changed : ChangeKind.Removed;
+    }
 
     public bool IsChanged(InventoryItem item)
     {
@@ -266,6 +278,16 @@ public class InventoryPageViewModel
         }
 
         return hasChanges;
+    }
+
+    public bool CanSetAllToMin()
+    {
+        return _inventory.Any(inventoryItem => inventoryItem.TotalCount != 1);
+    }
+
+    public bool CanSetAllToMax()
+    {
+        return _inventory.Any(inventoryItem => inventoryItem.TotalCount != inventoryItem.Max);
     }
 
     public void SetAllEquippedToMin()

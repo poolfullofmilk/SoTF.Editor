@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Models.Actors;
+using SoTF.Editor.Data.ViewModels;
 using SoTF.Editor.Desktop.Components.Shared.Common;
 using SoTF.Editor.Services.Pages;
 
@@ -27,6 +28,11 @@ public partial class Player : EditorPageBase
     // At Max Health The Slider Stops, The Warning Says Why
     private string? CurrentHealthWarning =>
         State.CurrentHealth >= State.MaxHealth ? Localizer["CurrentHealthAtMax"].Value : null;
+
+    private static bool IsDefault(ArmourData armour)
+    {
+        return armour.ArmourPiece.RemainingArmourpoints == armour.DefaultDurability;
+    }
 
     private static bool IsInSave(FollowerState follower)
     {

@@ -12,12 +12,12 @@
         </MudText>
         @if (Info is not null)
         {
-            <InfoButton Text="@Info" />
+            <InfoIcon Text="@Info" />
         }
         @if (Warning is not null)
         {
-            <InfoButton Text="@Warning"
-                        Warning />
+            <InfoIcon Text="@Warning"
+                      Warning />
         }
     </MudStack>
     @if (ReadOnly)
@@ -45,17 +45,16 @@
     @* Value Field *@
     <ChangedBadge When="Changed"
                   Class="flex-shrink-0">
-        <MudNumericField T="float"
-                         Value="Value"
-                         ValueChanged="ValueChanged"
-                         Min="Min"
-                         Max="Max"
-                         Step="Step"
-                         ReadOnly="ReadOnly"
-                         Variant="Variant.Outlined"
-                         Margin="Margin.Dense"
-                         HideSpinButtons
-                         Format="0.##"
-                         Style="width:90px" />
+        <NumberField T="float"
+                     Value="Value"
+                     ValueChanged="ValueChanged"
+                     Min="Min"
+                     Max="Max"
+                     Step="Step"
+                     ReadOnly="ReadOnly"
+                     Margin="Margin.Dense"
+                     HideSpinButtons
+                     Format="0.##"
+                     Style="width:90px" />
     </ChangedBadge>
 </MudStack>

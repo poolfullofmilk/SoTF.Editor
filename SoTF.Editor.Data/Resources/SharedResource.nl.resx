@@ -702,12 +702,6 @@
   <data name="SelectAll" xml:space="preserve">
     <value>Alles Selecteren</value>
   </data>
-  <data name="DeselectAll" xml:space="preserve">
-    <value>Alles Deselecteren</value>
-  </data>
-  <data name="Reset" xml:space="preserve">
-    <value>Herstellen</value>
-  </data>
   <data name="ClickNewLocation" xml:space="preserve">
     <value>Klik Op Een Andere Locatie</value>
   </data>
@@ -1668,13 +1662,6 @@
   <data name="UidInfo" xml:space="preserve">
     <value>Het id dat het spel aan deze save geeft. Het verandert nooit</value>
   </data>
-  <data name="SeasonInfo" xml:space="preserve">
-    <value>Het seizoen volgt uit de gespeelde dagen plus de seizoensverschuiving op het tabblad Weer.
-Elk seizoen duurt evenveel dagen: 5 standaard, 10 bij Lang en 90 bij Realistisch.
-Het jaar loopt Lente, Zomer, Herfst, Winter. Voorbeeld: dag 36 met verschuiving 5 en seizoenen van 5 dagen is seizoen 8, dus lente.
-Een keuze verschuift alleen de verschuiving, met hele seizoenen, hooguit een terug of twee vooruit.
-Terug naar het geladen seizoen herstelt de geladen verschuiving. Het aantal dagen verandert nooit</value>
-  </data>
   <data name="ConsumableEffectsInfo" xml:space="preserve">
     <value>Hoeveel eten, drinken en medicijnen helpen. Moeilijk geeft minder</value>
   </data>
@@ -1796,7 +1783,7 @@ Terug naar het geladen seizoen herstelt de geladen verschuiving. Het aantal dage
     <value>Hoe hard het nu regent</value>
   </data>
   <data name="SettingStartingDayOffsetInfo" xml:space="preserve">
-    <value>Verschuift waar het jaar staat. Lager houdt het huidige seizoen langer</value>
+    <value>Extra dagen die het spel meetelt om het seizoen te bepalen. Hoger brengt het volgende seizoen sneller, lager houdt dit seizoen langer. Een seizoen kiezen zet dit voor je</value>
   </data>
   <data name="DeleteBackup" xml:space="preserve">
     <value>Back-up Verwijderen</value>
@@ -1870,9 +1857,6 @@ Terug naar het geladen seizoen herstelt de geladen verschuiving. Het aantal dage
   <data name="MapKeyboardHint" xml:space="preserve">
     <value>Kaart, de pijltjestoetsen gaan langs de punten</value>
   </data>
-  <data name="MoreActions" xml:space="preserve">
-    <value>Meer Acties</value>
-  </data>
   <data name="HostedMultiplayer" xml:space="preserve">
     <value>Multiplayer Als Host</value>
   </data>
@@ -1890,5 +1874,56 @@ Terug naar het geladen seizoen herstelt de geladen verschuiving. Het aantal dage
   </data>
   <data name="CurrentHealthAtMax" xml:space="preserve">
     <value>De maximale gezondheid is de grens, verhoog het krachtniveau om hoger te gaan</value>
+  </data>
+  <data name="SetToMax" xml:space="preserve">
+    <value>Op Max Zetten</value>
+  </data>
+  <data name="ResetToDefault" xml:space="preserve">
+    <value>Standaard Herstellen</value>
+  </data>
+  <data name="RaiseCannibalAnger" xml:space="preserve">
+    <value>Kannibalen Boos Maken</value>
+  </data>
+  <data name="RaiseCannibalAngerText" xml:space="preserve">
+    <value>Elke kannibaal wordt minstens zo boos op je als je kiest, zodat ze weer aanvallen</value>
+  </data>
+  <data name="NothingToChange" xml:space="preserve">
+    <value>Niets Om Te Wijzigen</value>
+  </data>
+  <data name="UpdateNotVerified" xml:space="preserve">
+    <value>De download kon niet gecontroleerd worden, dus de releasepagina opent om hem zelf te downloaden</value>
+  </data>
+  <data name="SavedAfterBackup" xml:space="preserve">
+    <value>Opgeslagen Na Deze Back-up</value>
+  </data>
+  <data name="ChangesNotRecorded" xml:space="preserve">
+    <value>Niet bewaard voor deze back-up</value>
+  </data>
+  <data name="DiffersFromNow" xml:space="preserve">
+    <value>Verschilt Van Nu</value>
+  </data>
+  <data name="Comparing" xml:space="preserve">
+    <value>Vergelijken met de save nu</value>
+  </data>
+  <data name="SameAsNow" xml:space="preserve">
+    <value>Gelijk aan de save nu</value>
+  </data>
+  <data name="UnableToCompare" xml:space="preserve">
+    <value>Vergelijken lukt niet, een bestand is in gebruik</value>
+  </data>
+  <data name="SaveName" xml:space="preserve">
+    <value>Savenaam</value>
+  </data>
+  <data name="Thumbnail" xml:space="preserve">
+    <value>Miniatuur</value>
+  </data>
+  <data name="RevertPage" xml:space="preserve">
+    <value>Pagina Terugzetten</value>
+  </data>
+  <data name="RevertPageText" xml:space="preserve">
+    <value>Elke niet opgeslagen wijziging op {0} gaat terug naar hoe hij geladen was</value>
+  </data>
+  <data name="AngerLevel" xml:space="preserve">
+    <value>Woede</value>
   </data>
 </root>

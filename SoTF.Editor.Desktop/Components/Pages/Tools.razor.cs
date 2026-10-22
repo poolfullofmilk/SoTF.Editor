@@ -57,6 +57,12 @@ public partial class Tools : EditorPageBase
                     ToolKind.ResetCannibalAnger
                 ),
                 new(
+                    "RaiseCannibalAnger",
+                    "RaiseCannibalAngerText",
+                    Icons.Material.Rounded.SentimentVeryDissatisfied,
+                    ToolKind.RaiseCannibalAnger
+                ),
+                new(
                     "SetToEndgame",
                     "SetToEndgameText",
                     Icons.Material.Rounded.Flag,
@@ -144,6 +150,9 @@ public partial class Tools : EditorPageBase
             case ToolKind.RegrowTrees:
                 await ShowDialogAsync<RegrowTreesDialog>();
                 break;
+            case ToolKind.RaiseCannibalAnger:
+                await ShowDialogAsync<CannibalAngerDialog>();
+                break;
             case ToolKind.WorldItemCloner:
                 await ShowDialogAsync<WorldItemClonerDialog>();
                 break;
@@ -212,6 +221,7 @@ public partial class Tools : EditorPageBase
         ResetTraps,
         ResetContainers,
         ResetCannibalAnger,
+        RaiseCannibalAnger,
         SetToEndgame,
         WorldItemCloner,
         ConsumedItems,

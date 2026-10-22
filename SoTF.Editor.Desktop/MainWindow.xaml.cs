@@ -75,7 +75,7 @@ public partial class MainWindow : Window
         // Page Background Before The First Paint, No White Flash
         WebView.WebView.DefaultBackgroundColor = System.Drawing.Color.FromArgb(0x20, 0x20, 0x20);
 
-        // F5 And Ctrl R Reach The Page, Not A Reload
+        // Browser Keys Like F5 And Ctrl P Stay Off
         browser.Settings.AreBrowserAcceleratorKeysEnabled = false;
 
         // Ctrl Wheel And Touchpad Pinch Never Resize The Whole App

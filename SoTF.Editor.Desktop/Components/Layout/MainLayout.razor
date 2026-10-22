@@ -94,32 +94,37 @@
                     </MudMenu>
                 </Tooltip>
 
+                @* Revert Page *@
+                <Tooltip Text="@Localizer["RevertPage"]"
+                         Disabled="@(!CanRevertPage)"
+                         RootClass="d-flex">
+                    <MudIconButton Icon="@Icons.Material.Rounded.Undo"
+                                   aria-label="@Localizer["RevertPage"]"
+                                   Size="Size.Small"
+                                   Disabled="@(!CanRevertPage)"
+                                   OnClick="RevertPageAsync" />
+                </Tooltip>
+
                 @* Reload *@
-                <Tooltip Text="@($"{Localizer["ReloadSavegame"]} (F5)")"
+                <Tooltip Text="@Localizer["ReloadSavegame"]"
                          Disabled="@(!HasSavegame)"
                          RootClass="d-flex">
                     <MudIconButton Icon="@Icons.Material.Rounded.Refresh"
                                    aria-label="@Localizer["ReloadSavegame"]"
                                    Size="Size.Small"
                                    Disabled="@(!HasSavegame)"
-                                   OnClick="ReloadAsync"
-                                   data-shortcut="reload" />
+                                   OnClick="ReloadAsync" />
                 </Tooltip>
 
                 @* Save *@
-                <Tooltip Text="@($"{Localizer["Save"]} (Ctrl+S)")"
-                         Disabled="@(!HasSavegame)"
-                         RootClass="d-flex">
-                    <MudButton Variant="Variant.Filled"
-                               Color="Color.Info"
-                               Size="Size.Small"
-                               StartIcon="@Icons.Material.Rounded.Save"
-                               Disabled="@(!HasSavegame)"
-                               OnClick="SaveAsync"
-                               data-shortcut="save">
-                        @Localizer["Save"]
-                    </MudButton>
-                </Tooltip>
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Info"
+                           Size="Size.Small"
+                           StartIcon="@Icons.Material.Rounded.Save"
+                           Disabled="@(!HasSavegame)"
+                           OnClick="SaveAsync">
+                    @Localizer["Save"]
+                </MudButton>
 
             </MudStack>
         </MudStack>
@@ -134,20 +139,34 @@
             <MudPaper Elevation="4"
                       Class="rounded-panel pa-2 nav-panel">
                 <MudStack Spacing="1">
-                    @foreach (var link in s_pages)
+                    @foreach (var group in s_pageGroups)
                     {
-                        @* Page Button *@
-                        <MudButton StartIcon="@link.Icon"
-                                   Color="@(IsActive(link) ? Color.Secondary : Color.Default)"
-                                   Variant="@(IsActive(link) ? Variant.Filled : Variant.Text)"
-                                   Class="justify-start"
-                                   Style="@(IsActive(link) ? null : "padding:6px 16px")"
-                                   FullWidth
-                                   Disabled="@IsDisabled(link)"
-                                   Href="@link.Href">
-                            @Localizer[link.LabelKey]
-                            <ChangedDot When="@MainViewModel.HasChanges(link.Href)" />
-                        </MudButton>
+                        @if (group != s_pageGroups[0])
+                        {
+                            <MudDivider Class="my-1" />
+                        }
+                        @foreach (var link in group)
+                        {
+                            @* Page Button *@
+                            <MudButton StartIcon="@link.Icon"
+                                       Color="@(IsActive(link) ? Color.Secondary : Color.Default)"
+                                       Variant="@(IsActive(link) ? Variant.Filled : Variant.Text)"
+                                       Class="justify-start"
+                                       Style="@(IsActive(link) ? null : "padding:6px 16px")"
+                                       FullWidth
+                                       Disabled="@IsDisabled(link)"
+                                       Href="@link.Href">
+                                @Localizer[link.LabelKey]
+                                <ChangedDot When="@MainViewModel.HasChanges(link.Href)" />
+                            </MudButton>
+                        }
+                    }
+                    @if (IsClientSave)
+                    {
+                        <MudText Typo="Typo.caption"
+                                 Class="mud-text-secondary text-relaxed px-3 pt-2">
+                            @Localizer["ClientSaveHasNoWorld"]
+                        </MudText>
                     }
                 </MudStack>
             </MudPaper>

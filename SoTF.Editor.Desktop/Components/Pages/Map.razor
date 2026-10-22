@@ -8,12 +8,12 @@
               Class="page-fill">
         @* Filter Panel *@
         <MudPaper Elevation="4"
-                  Class="rounded-panel pa-4 overflow-y-auto"
-                  Style="width:360px;flex-shrink:0">
+                  Class="rounded-panel pa-4 overflow-y-auto side-panel">
             <MudStack Spacing="3">
                 @* Point Search *@
                 <SearchField Value="@MapViewModel.MapFilter.FullText"
-                             ValueChanged="SetFullText" />
+                             ValueChanged="SetFullText"
+                             FullWidth />
                 @* Area Filter *@
                 <MudSelect T="IAreaFilter"
                            Variant="Variant.Outlined"
@@ -54,20 +54,24 @@
                           AlignItems="AlignItems.Center"
                           Spacing="1">
                     <MudText Typo="Typo.subtitle2">@Localizer["PointsOfInterest"]</MudText>
-                    @* Points Menu *@
-                    <Tooltip Text="@Localizer["MoreActions"]"
+                    <MudSpacer />
+                    @* Select All *@
+                    <Tooltip Text="@Localizer["SelectAll"]"
                              RootClass="d-flex">
-                        <MudMenu Icon="@Icons.Material.Rounded.MoreVert"
-                                 AriaLabel="@Localizer["MoreActions"]"
-                                 Size="Size.Small"
-                                 Dense>
-                            <MudMenuItem Label="@Localizer["SelectAll"]"
-                                         OnClick="MapViewModel.SelectAll" />
-                            <MudMenuItem Label="@Localizer["DeselectAll"]"
-                                         OnClick="MapViewModel.DeselectAll" />
-                            <MudMenuItem Label="@Localizer["Reset"]"
-                                         OnClick="MapViewModel.ResetToDefault" />
-                        </MudMenu>
+                        <MudCheckBox T="bool?"
+                                     Value="StateOf(MapViewModel.AllGroups())"
+                                     ValueChanged="SetAllEnabled"
+                                     TriState
+                                     Color="Color.Info"
+                                     Dense />
+                    </Tooltip>
+                    @* Reset Points *@
+                    <Tooltip Text="@Localizer["ResetToDefault"]"
+                             RootClass="d-flex">
+                        <MudIconButton Icon="@Icons.Material.Rounded.RestartAlt"
+                                       aria-label="@Localizer["ResetToDefault"]"
+                                       Size="Size.Small"
+                                       OnClick="ResetToDefault" />
                     </Tooltip>
                 </MudStack>
 
@@ -100,7 +104,7 @@
                                           Spacing="0">
                                     @* Collection Checkbox *@
                                     <MudCheckBox T="bool?"
-                                                 Value="CollectionState(poiGroupCollection)"
+                                                 Value="StateOf(poiGroupCollection.PoiGroups)"
                                                  ValueChanged="value => SetEnabled(poiGroupCollection, value == true)"
                                                  TriState
                                                  Color="Color.Info"

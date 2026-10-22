@@ -87,6 +87,12 @@ public class StoragePageViewModel
         );
     }
 
+    public static bool CanSetAllToMax(IStorage storage)
+    {
+        return StoredItemsOf(storage)
+            .Any(storedItem => storedItem.HasItem() && storedItem.Count < storedItem.Max);
+    }
+
     public static bool HasStoredItems(IStorage storage)
     {
         return StoredItemsOf(storage).Any(storedItem => storedItem.HasItem());
@@ -170,6 +176,19 @@ public class StoragePageViewModel
         {
             _loaded[storage] = ValuesOf(storage);
         }
+    }
+
+    public void Revert(Savegame savegame)
+    {
+        // The Same Storage Stays Picked, Found By Its Place
+        var index = AllStorages().ToList().IndexOf(SelectedStorage!);
+        Load(savegame);
+        SelectedStorage = AllStorages().ElementAtOrDefault(index);
+    }
+
+    private IEnumerable<IStorage> AllStorages()
+    {
+        return StorageCollections.SelectMany(collection => collection.Storages);
     }
 
     private void LoadStorages(Savegame? savegame)

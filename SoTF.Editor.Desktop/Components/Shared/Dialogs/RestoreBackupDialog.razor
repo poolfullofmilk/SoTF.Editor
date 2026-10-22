@@ -21,7 +21,7 @@
                               tabindex="0"
                               aria-pressed="@((_selected == backup) ? "true" : "false")"
                               data-keyclick
-                              @onclick="() => _selected = backup">
+                              @onclick="() => SelectAsync(backup)">
                         <MudText Typo="Typo.body2">@Formatter.FormatDateTimeWithSeconds(backup.TakenAt)</MudText>
                         <MudText Typo="Typo.body2"
                                  Class="mud-text-secondary">
@@ -43,6 +43,42 @@
                     </MudStack>
                 }
             </MudStack>
+            @if (_selected is not null)
+            {
+                <MudStack Spacing="4"
+                          Class="inset rounded-panel pa-4">
+                    <MudStack Spacing="2">
+                        <MudText Typo="Typo.subtitle2">@Localizer["SavedAfterBackup"]</MudText>
+                        @if (_savedChanges.Count == 0)
+                        {
+                            <MudText Typo="Typo.caption"
+                                     Class="mud-text-secondary">
+                                @Localizer["ChangesNotRecorded"]
+                            </MudText>
+                        }
+                        @foreach (var (page, changes) in _savedChanges)
+                        {
+                            <ChangeList Icon="@PageOf(page)?.Icon"
+                                        Label="@LabelOf(page)"
+                                        Changes="changes" />
+                        }
+                    </MudStack>
+                    <MudStack Spacing="2">
+                        <MudText Typo="Typo.subtitle2">@Localizer["DiffersFromNow"]</MudText>
+                        @if (DifferencesText is { } text)
+                        {
+                            <MudText Typo="Typo.caption"
+                                     Class="mud-text-secondary">
+                                @text
+                            </MudText>
+                        }
+                        else
+                        {
+                            <ChangeList Changes="_differences!" />
+                        }
+                    </MudStack>
+                </MudStack>
+            }
             <MudText Typo="Typo.caption"
                      Class="mud-text-secondary text-relaxed">
                 @UsageText

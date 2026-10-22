@@ -17,14 +17,16 @@
               Style="min-width:0">
         <MudText Typo="Typo.body2"
                  Class="text-truncate text-tight">
-            @Name
+            <MudHighlighter Text="@Name"
+                            HighlightedText="@Highlight" />
             <ChangedDot When="Changed" />
         </MudText>
         @if (!string.IsNullOrEmpty(Detail))
         {
             <MudText Typo="Typo.caption"
                      Class="mud-text-secondary text-truncate">
-                @Detail
+                <MudHighlighter Text="@Detail"
+                                HighlightedText="@Highlight" />
             </MudText>
         }
     </MudStack>

@@ -9,6 +9,7 @@ using SoTF.Editor.Data.Enums;
 using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Models.Map;
+using SoTF.Editor.Data.Models.SaveData.Actor;
 using SoTF.Editor.Data.Models.Storage;
 using SoTF.Editor.Data.Resources;
 using SoTF.Editor.Data.ViewModels;
@@ -16,6 +17,7 @@ using SoTF.Editor.Services.Actors;
 using SoTF.Editor.Services.Map;
 using SoTF.Editor.Services.Pages;
 using SoTF.Editor.Services.Savegames;
+using SoTF.Editor.Services.Tools;
 
 // The Sample Save, Copied So The Test Never Touches It
 const string SampleSteamId = "76561190000000000";
@@ -191,6 +193,19 @@ try
             npcs.AllActors.First(candidate => candidate.UniqueId == actorId).Stats?["Health"] == 33
     );
 
+    // Raised Cannibal Anger Lights The NPCs And Reads Back
+    EditAndCheck(
+        "Cannibal Anger",
+        "Npcs",
+        () => main.RaiseCannibalAnger(),
+        () =>
+            npcs
+                .AllActors.Where(npc => npc.ActorType?.IsCannibal == true)
+                .SelectMany(npc => npc.Influences ?? [])
+                .Where(influence => influence.TypeId == Influence.Type.Player)
+                .All(influence => influence.Anger >= Constants.Actors.FullAnger)
+    );
+
     var structureCount = structures.Structures.Count;
     EditAndCheck(
         "Structures",
@@ -259,10 +274,99 @@ try
             && setup.GetString(Constants.GameSetupKeys.EnemyDamage, "") == "LOW"
     );
 
-    // Restore Oldest Brings Back The Sample Byte For Byte
+    // Every Tool Runs Once, Saves, And Leaves Nothing Unsaved
+    ToolCheck("Regrow Trees", () => new RegrowTreesViewModel(main.SelectedSavegame!).Save());
+    ToolCheck("Eternal Fires", main.EternalFires);
+    ToolCheck("Reset Fires", main.ResetFires);
+    ToolCheck("Reset Structure Damage", main.ResetStructureDamage);
+    ToolCheck("Reset Traps", main.ResetTraps);
+    ToolCheck("Reset Containers", gameState.ResetContainers);
+    ToolCheck("Reset Cannibal Anger", main.ResetCannibalAnger);
+    ToolCheck("Raise Cannibal Anger To Half", () => main.RaiseCannibalAnger(50));
+    ToolCheck(
+        "Set To Endgame",
+        () =>
+        {
+            gameState.SetToEndgame();
+            return "";
+        }
+    );
+    ToolCheck(
+        "World Item Cloner",
+        () =>
+            new WorldItemClonerViewModel(main.SelectedSavegame!)
+            {
+                SelectedWorldItemType = WorldItemType.Radio,
+            }.CloneObjectAtPlayerPos(player.PlayerState.Pos)
+    );
+    ToolCheck(
+        "Consumed Items",
+        () =>
+        {
+            new ModifyConsumedItemsViewModel(main.SelectedSavegame!, gameData).RemoveAll();
+            return "";
+        }
+    );
+
+    // The Plater Saves At Once, Then Nothing Is Left
+    var plating = new ItemPlaterViewModel(gameData).AddPlating(main.SelectedSavegame!);
+    main.SaveWrappers(plating.WrappersToSave);
+    Check(
+        main.SelectedSavegame != null && !main.SaveChanges(),
+        "Item Plater Leaves Nothing Unsaved"
+    );
+
+    // Unlocks Write The Profile After Its Own Backup
+    var profilePath = Path.Combine(work, SampleSteamId, "PlayerProfile.json");
+    File.WriteAllText(profilePath, """{ "_settings": [] }""");
+    new UnlocksViewModel(profilePath) { CreativeMode = true }.Save();
+    Check(new UnlocksViewModel(profilePath).CreativeMode, "Unlocks Read Back");
+
+    // Revert Takes One Page Back, Other Pages Keep Their Edits
+    var fullness = player.PlayerState.Fullness;
+    player.PlayerState.Fullness = fullness == 11 ? 12 : 11;
+    followers.KelvinState.Health = 22;
+    main.RevertPage("Player");
+    Check(
+        !main.HasChanges("Player") && Math.Abs(player.PlayerState.Fullness - fullness) < 0.01,
+        "Reverted Player Is Back"
+    );
+    Check(main.HasChanges("Followers"), "Revert Keeps Other Pages");
+    var revertStorage = storage
+        .StorageCollections.SelectMany(collection => collection.Storages)
+        .First(candidate => StoragePageViewModel.HasStoredItems(candidate));
+    storage.SelectedStorage = revertStorage;
+    StoragePageViewModel.ClearAll(revertStorage);
+    main.RevertPage("Storage");
+    Check(
+        !main.HasChanges("Storage")
+            && storage.SelectedStorage != null
+            && StoragePageViewModel.HasStoredItems(storage.SelectedStorage),
+        "Reverted Storage Keeps Its Selection"
+    );
+    Check(main.SaveChanges() && !main.SaveChanges(), "Edits Left After Revert Save");
+
+    // A Save Keeps Its Change List In Its Backup
+    player.PlayerState.Fullness = 44;
+    Check(main.SaveChanges(new() { ["Player"] = [new Change("Fullness")] }), "Listed Change Saves");
+    var newest = BackupManager.List(savegamePath)[0];
+    Check(
+        BackupManager.ChangesOf(newest.Path).GetValueOrDefault("Player") is [{ Name: "Fullness" }],
+        "Backup Keeps Its Change List"
+    );
+    Check(
+        BackupManager.Compare(savegamePath, newest.Path).Count > 0,
+        "Newest Backup Differs From The Save"
+    );
+
+    // Restore Oldest Brings Back The Sample, Without The List
     var oldest = BackupManager.List(savegamePath)[^1];
     BackupManager.Restore(savegamePath, oldest.Path);
     Check(SameHashes(pristine, HashFiles(savegamePath)), "Restore Oldest Brings Every File Back");
+    Check(
+        BackupManager.Compare(savegamePath, oldest.Path).Count == 0,
+        "Restored Backup Matches The Save"
+    );
 
     // A Missing Backup Fails Before Any File Is Touched
     Check(
@@ -295,6 +399,17 @@ try
     Check(Throws(() => main.SaveChanges()), "Missing File Fails The Save");
     Check(main.HasUnsavedChanges(), "Failed Save Keeps The Edit");
     File.Move(movedPath, archivePath);
+
+    void ToolCheck(string tool, Func<string> run)
+    {
+        // A Tool That Finds Nothing Saves Nothing, Nothing Stays
+        run();
+        main.SaveChanges();
+        Check(
+            main.SelectedSavegame != null && !main.SaveChanges(),
+            $"{tool} Leaves Nothing Unsaved"
+        );
+    }
 
     void EditAndCheck(string page, string route, Action edit, Func<bool> readBack)
     {

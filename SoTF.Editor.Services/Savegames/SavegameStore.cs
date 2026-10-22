@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using NLog;
 using SoTF.Editor.Data.Helpers;
+using SoTF.Editor.Data.ViewModels;
 
 namespace SoTF.Editor.Services.Savegames;
 
@@ -133,16 +134,20 @@ public class SavegameStore
         );
     }
 
-    public bool SaveAllModified()
+    public bool SaveAllModified(Dictionary<string, List<Change>>? changes = null)
     {
         return SaveWrappers(
             _rawData
                 .Where(pair => pair.Value != null)
-                .ToDictionary(pair => pair.Key, pair => pair.Value!)
+                .ToDictionary(pair => pair.Key, pair => pair.Value!),
+            changes
         );
     }
 
-    public bool SaveWrappers(Dictionary<FileType, SaveDataWrapper> wrappers)
+    public bool SaveWrappers(
+        Dictionary<FileType, SaveDataWrapper> wrappers,
+        Dictionary<string, List<Change>>? changes = null
+    )
     {
         var changedWrappers = wrappers
             .Where(pair => pair.Value.HasModified())
@@ -164,7 +169,7 @@ public class SavegameStore
         }
 
         // Nothing Is Written Until A Verified Copy Exists
-        BackupManager.Create(_path);
+        BackupManager.Create(_path, changes);
 
         var archiveEntries = new List<(string FileName, string Json)>();
         foreach (var (fileType, saveDataWrapper) in changedWrappers)

@@ -15,4 +15,8 @@ public partial class SearchField
 
     [Parameter]
     public string? Class { get; set; }
+
+    // Beside Full Width Fields The Search Matches Them
+    [Parameter]
+    public bool FullWidth { get; set; }
 }

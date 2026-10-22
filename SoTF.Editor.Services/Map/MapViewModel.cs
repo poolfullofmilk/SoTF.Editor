@@ -84,7 +84,7 @@ public class MapViewModel(
         }
     }
 
-    private IEnumerable<PoiGroup> AllGroups()
+    public IEnumerable<PoiGroup> AllGroups()
     {
         return _poiGroups.SelectMany(grouper =>
             grouper switch
@@ -235,21 +235,11 @@ public class MapViewModel(
             || s_defaultGroups.Contains(group.GroupKey);
     }
 
-    public void SelectAll()
+    public void SetAllEnabled(bool enabled)
     {
         foreach (var poiGrouper in _poiGroups)
         {
-            poiGrouper.Enabled = true;
-        }
-
-        SaveSettings();
-    }
-
-    public void DeselectAll()
-    {
-        foreach (var poiGrouper in _poiGroups)
-        {
-            poiGrouper.Enabled = false;
+            poiGrouper.Enabled = enabled;
         }
 
         SaveSettings();

@@ -7,12 +7,11 @@
                 @Localizer["SpawnFollowersWarning"]
             </MudText>
             @* Count *@
-            <MudNumericField T="int"
-                             Variant="Variant.Outlined"
-                             @bind-Value="_count"
-                             Min="1"
-                             Max="Max"
-                             Label="@Localizer["Count"]" />
+            <NumberField T="int"
+                         @bind-Value="_count"
+                         Min="1"
+                         Max="Max"
+                         Label="@Localizer["Count"]" />
         </MudStack>
     </DialogContent>
     <DialogActions>

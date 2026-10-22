@@ -1,13 +1,27 @@
 using System.Globalization;
+using System.IO.Compression;
+using System.Security.Cryptography;
+using System.Text.RegularExpressions;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using NLog;
+using SoTF.Editor.Data.Enums;
 using SoTF.Editor.Data.Helpers;
+using SoTF.Editor.Data.Resources;
 using SoTF.Editor.Data.ViewModels;
 
 namespace SoTF.Editor.Services.Savegames;
 
-public static class BackupManager
+public static partial class BackupManager
 {
     private const string FolderTimeFormat = "yyyy-MM-dd HH-mm-ss";
+
+    // Kept Beside The Copied Files, Never Restored Into The Savegame
+    public const string ChangesFileName = "SoTF.Editor.Changes.json";
+
+    // The Game Renames Its Name File, So Its Name Counts
+    private const string NameFileKey = ".name";
+    private const string SaveDataSuffix = "SaveData";
 
     // All Backups Together, Past It The Oldest Go
     public const long SizeLimit = 500L * 1024 * 1024;
@@ -32,10 +46,148 @@ public static class BackupManager
         return Path.Combine(BackupDirectory, steamId?.Name ?? "", mode?.Name ?? "", save.Name);
     }
 
-    public static void Create(string savegamePath)
+    public static void Create(string savegamePath, Dictionary<string, List<Change>>? changes = null)
     {
-        Prune(CopyAll(savegamePath));
+        var backup = CopyAll(savegamePath);
+        if (changes is { Count: > 0 })
+        {
+            WriteChanges(backup, changes);
+        }
+
+        Prune(backup);
     }
+
+    private static void WriteChanges(string backup, Dictionary<string, List<Change>> changes)
+    {
+        try
+        {
+            File.WriteAllText(
+                Path.Combine(backup, ChangesFileName),
+                JsonConvert.SerializeObject(changes, Formatting.Indented, new StringEnumConverter())
+            );
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+        {
+            // The List Is Extra, Saving Never Fails Over It
+            s_logger.Warn(exception, $"Failed To Write Changes Of {backup}");
+        }
+    }
+
+    public static Dictionary<string, List<Change>> ChangesOf(string backup)
+    {
+        var path = Path.Combine(backup, ChangesFileName);
+        try
+        {
+            return File.Exists(path)
+                ? JsonConvert.DeserializeObject<Dictionary<string, List<Change>>>(
+                    File.ReadAllText(path)
+                ) ?? []
+                : [];
+        }
+        catch (Exception exception)
+            when (exception is IOException or UnauthorizedAccessException or JsonException)
+        {
+            // A Damaged List Shows As Not Recorded
+            s_logger.Warn(exception, $"Failed To Read Changes Of {backup}");
+            return [];
+        }
+    }
+
+    public static List<Change> Compare(string savegamePath, string backup)
+    {
+        // What Restoring Would Add, Change Or Remove, Entry By Entry
+        var now = ContentsOf(savegamePath);
+        var then = ContentsOf(backup);
+        var differences = new List<Change>();
+        foreach (var key in then.Keys.Union(now.Keys).Order(StringComparer.Ordinal))
+        {
+            var isNow = now.TryGetValue(key, out var current);
+            var isThen = then.TryGetValue(key, out var saved);
+            if (isNow && isThen && current == saved)
+            {
+                continue;
+            }
+
+            differences.Add(
+                new Change(
+                    DisplayNameOf(key),
+                    !isNow ? ChangeKind.Added
+                        : !isThen ? ChangeKind.Removed
+                        : ChangeKind.Changed
+                )
+            );
+        }
+
+        return differences;
+    }
+
+    private static Dictionary<string, string> ContentsOf(string folder)
+    {
+        var contents = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        foreach (var file in Directory.GetFiles(folder, "*", SearchOption.AllDirectories))
+        {
+            var name = Path.GetRelativePath(folder, file);
+            if (name == ChangesFileName)
+            {
+                continue;
+            }
+
+            if (name.EndsWith(NameFileKey, StringComparison.OrdinalIgnoreCase))
+            {
+                contents[NameFileKey] = name;
+            }
+            else if (name.EndsWith(".zip", StringComparison.OrdinalIgnoreCase))
+            {
+                using var archive = ZipFile.OpenRead(file);
+                foreach (var entry in archive.Entries.Where(entry => entry.Name.Length > 0))
+                {
+                    using var stream = entry.Open();
+                    contents[$"{name}/{entry.FullName}"] = Convert.ToHexString(
+                        SHA256.HashData(stream)
+                    );
+                }
+            }
+            else
+            {
+                using var stream = File.OpenRead(file);
+                contents[name] = Convert.ToHexString(SHA256.HashData(stream));
+            }
+        }
+
+        return contents;
+    }
+
+    private static string DisplayNameOf(string key)
+    {
+        if (key == NameFileKey)
+        {
+            return AppText.Get("SaveName");
+        }
+
+        var fileName = Path.GetFileName(key);
+        if (
+            fileName.EndsWith(".png", StringComparison.OrdinalIgnoreCase)
+            || fileName.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase)
+        )
+        {
+            return AppText.Get("Thumbnail");
+        }
+
+        // PlayerInventorySaveData Reads As Player Inventory
+        var name = Path.GetFileNameWithoutExtension(fileName);
+        if (
+            name.Length > SaveDataSuffix.Length
+            && name.EndsWith(SaveDataSuffix, StringComparison.Ordinal)
+        )
+        {
+            name = name[..^SaveDataSuffix.Length];
+        }
+
+        return WordStart().Replace(name.Replace('_', ' '), " ");
+    }
+
+    [GeneratedRegex("(?<=[a-z0-9])(?=[A-Z])")]
+    private static partial Regex WordStart();
 
     private static string CopyAll(string savegamePath)
     {
@@ -110,7 +262,10 @@ public static class BackupManager
     public static void Restore(string savegamePath, string backup)
     {
         // A Missing Or Empty Backup Fails Before Anything Is Touched
-        var files = Directory.GetFiles(backup, "*", SearchOption.AllDirectories);
+        var files = Directory
+            .GetFiles(backup, "*", SearchOption.AllDirectories)
+            .Where(file => Path.GetFileName(file) != ChangesFileName)
+            .ToArray();
         if (files.Length == 0)
         {
             throw new IOException($"Found No Files In Backup {backup}");

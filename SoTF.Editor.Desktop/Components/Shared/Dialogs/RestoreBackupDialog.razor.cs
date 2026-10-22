@@ -3,6 +3,7 @@ using MudBlazor;
 using NLog;
 using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.ViewModels;
+using SoTF.Editor.Desktop.Components.Layout;
 using SoTF.Editor.Services.Savegames;
 
 namespace SoTF.Editor.Desktop.Components.Shared.Dialogs;
@@ -27,7 +28,68 @@ public partial class RestoreBackupDialog
     [Parameter]
     public required List<SavegameBackup> Backups { get; set; }
 
+    [Parameter]
+    public required string SavegamePath { get; set; }
+
+    // The Picked Backup With Its Saved List And Its Differences
     private SavegameBackup? _selected;
+    private Dictionary<string, List<Change>> _savedChanges = [];
+    private List<Change>? _differences;
+    private bool _compareFailed;
+
+    private string? DifferencesText
+    {
+        get
+        {
+            if (_compareFailed)
+            {
+                return Localizer["UnableToCompare"];
+            }
+
+            if (_differences is null)
+            {
+                return Localizer["Comparing"];
+            }
+
+            return _differences.Count == 0 ? Localizer["SameAsNow"].Value : null;
+        }
+    }
+
+    private async Task SelectAsync(SavegameBackup backup)
+    {
+        _selected = backup;
+        _savedChanges = BackupManager.ChangesOf(backup.Path);
+        _differences = null;
+        _compareFailed = false;
+
+        // Reading Both Saves Takes A Moment, Off The Window's Thread
+        try
+        {
+            var differences = await Task.Run(() =>
+                BackupManager.Compare(SavegamePath, backup.Path)
+            );
+            if (_selected == backup)
+            {
+                _differences = differences;
+            }
+        }
+        catch (Exception exception)
+            when (exception is IOException or UnauthorizedAccessException or InvalidDataException)
+        {
+            s_logger.Warn(exception, "Failed To Compare Backup");
+            _compareFailed = _selected == backup;
+        }
+    }
+
+    private static MainLayout.PageLink? PageOf(string href)
+    {
+        return MainLayout.Pages.FirstOrDefault(link => link.Href == href);
+    }
+
+    private string LabelOf(string href)
+    {
+        return PageOf(href) is { } link ? Localizer[link.LabelKey] : href;
+    }
 
     // Measured Once, Every Row Click Renders Again
     private long _totalSize = BackupManager.TotalSize();

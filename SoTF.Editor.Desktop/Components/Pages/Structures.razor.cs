@@ -46,15 +46,36 @@ public partial class Structures : EditorPageBase
 
     private string? _filter;
 
+    // Every Text Column Counts, The Modification Select Does Not
     private IEnumerable<ScrewStructureWrapper> FilteredStructures =>
         StructuresPage
             .Structures.Where(wrapper =>
                 string.IsNullOrWhiteSpace(_filter)
-                || wrapper.Name.Contains(_filter, StringComparison.OrdinalIgnoreCase)
-                || wrapper.Category.Contains(_filter, StringComparison.OrdinalIgnoreCase)
+                || new[]
+                {
+                    wrapper.Name,
+                    OriginName(wrapper),
+                    wrapper.Category,
+                    AddedText(wrapper),
+                    wrapper.PctDonePrintable,
+                }.Any(text => text.Contains(_filter, StringComparison.OrdinalIgnoreCase))
             )
             .OrderBy(wrapper => wrapper.Name)
             .ThenBy(wrapper => wrapper.PctDone);
+
+    private string OriginName(ScrewStructureWrapper wrapper)
+    {
+        return Localizer[
+            wrapper.Origin == ScrewStructureOrigin.Finished
+                ? "FinishedStructures"
+                : "UnfinishedStructures"
+        ];
+    }
+
+    private static string AddedText(ScrewStructureWrapper wrapper)
+    {
+        return $"{wrapper.Added} / {wrapper.BuildCost}";
+    }
 
     private bool HasBatchTargets(ScrewStructureOrigin origin)
     {

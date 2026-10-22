@@ -1,9 +1,11 @@
 using NLog;
+using SoTF.Editor.Data.Enums;
 using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Models.Actors;
 using SoTF.Editor.Data.Models.SaveData.Actor;
 using SoTF.Editor.Data.Resources;
+using SoTF.Editor.Data.ViewModels;
 using SoTF.Editor.Services.Savegames;
 
 namespace SoTF.Editor.Services.Pages;
@@ -37,13 +39,33 @@ public class NpcsPageViewModel
     private int RemovedCount =>
         _loadedIds.Count - AllActors.Count(actor => _loadedIds.Contains(actor.UniqueId));
 
-    // Changed Actors By Type, Then How Many Are Gone
-    public IEnumerable<string> ChangedNames =>
+    // Spawned And Changed Actors By Type, Then The Removed Count
+    public IEnumerable<Change> Changes =>
         AllActors
             .Where(_changed.Contains)
-            .GroupBy(actor => actor.ActorType?.Name ?? "???")
-            .Select(group => group.Count() > 1 ? $"{group.Key} ({group.Count()})" : group.Key)
-            .Concat(RemovedCount > 0 ? [AppText.Format("ChangeRemoved", RemovedCount)] : []);
+            .GroupBy(actor =>
+                (
+                    Name: actor.ActorType?.Name ?? "???",
+                    Kind: _loadedIds.Contains(actor.UniqueId)
+                        ? ChangeKind.Changed
+                        : ChangeKind.Added
+                )
+            )
+            .Select(group => new Change(
+                group.Count() > 1 ? $"{group.Key.Name} ({group.Count()})" : group.Key.Name,
+                group.Key.Kind
+            ))
+            .Concat(
+                RemovedCount > 0
+                    ?
+                    [
+                        new Change(
+                            AppText.Format("ChangeRemoved", RemovedCount),
+                            ChangeKind.Removed
+                        ),
+                    ]
+                    : []
+            );
 
     public bool IsChanged(Actor actor)
     {

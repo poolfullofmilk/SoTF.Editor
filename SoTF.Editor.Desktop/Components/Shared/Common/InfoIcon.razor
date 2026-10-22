@@ -1,0 +1,7 @@
+@* Info Icon *@
+<Tooltip Text="@Text"
+         RootClass="d-inline-flex ml-1 info-icon">
+    <MudIcon Icon="@(Warning ? Icons.Material.Rounded.Warning : Icons.Material.Rounded.Info)"
+             Color="@(Warning ? Color.Warning : Color.Info)"
+             Size="Size.Small" />
+</Tooltip>

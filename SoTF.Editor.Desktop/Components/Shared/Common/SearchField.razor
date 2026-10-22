@@ -4,9 +4,9 @@
               Value="Value"
               ValueChanged="ValueChanged"
               DebounceInterval="300"
-              Placeholder="@($"{Localizer["Search"]} (Ctrl+F)")"
+              Placeholder="@Localizer["Search"]"
               Adornment="Adornment.Start"
               AdornmentIcon="@Icons.Material.Rounded.Search"
               Margin="Margin.Dense"
               Clearable
-              Class="@($"search-field {Class}")" />
+              Class="@($"search-field {(FullWidth ? "full-width" : "")} {Class}")" />

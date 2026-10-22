@@ -19,5 +19,8 @@ public partial class ItemLabel
     [Parameter]
     public bool Changed { get; set; }
 
+    [Parameter]
+    public string? Highlight { get; set; }
+
     private string ImageClass => Round ? "thumb thumb-round" : "thumb rounded-thumb";
 }

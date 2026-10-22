@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using SoTF.Editor.Data.Enums;
+using SoTF.Editor.Data.ViewModels;
 using SoTF.Editor.Desktop.Components.Layout;
 using SoTF.Editor.Desktop.Components.Pages;
 using SoTF.Editor.Services.Pages;
@@ -51,43 +53,55 @@ public partial class SaveChangesDialog
     [Parameter]
     public required List<MainLayout.PageLink> Pages { get; set; }
 
-    // A Long List Ends In A Count
-    private const int ShownChanges = 6;
+    // Worked Out Once, The Backup Keeps The Same List
+    private Dictionary<string, List<Change>> _changes = [];
 
-    private List<string> ChangesOf(string page)
+    protected override void OnInitialized()
     {
-        var distinct = AllChangesOf(page).Distinct().Order().ToList();
-        return distinct.Count <= ShownChanges
-            ? distinct
-            :
-            [
-                .. distinct.Take(ShownChanges - 1),
-                Localizer["AndMore", distinct.Count - ShownChanges + 1],
-            ];
+        _changes = Pages.ToDictionary(link => link.Href, link => ChangesOf(link.Href));
     }
 
-    private IEnumerable<string> AllChangesOf(string page)
+    private List<Change> ChangesOf(string page)
+    {
+        // Added First, Then Changed, Then Removed
+        return
+        [
+            .. AllChangesOf(page)
+                .Distinct()
+                .OrderBy(change => change.Kind)
+                .ThenBy(change => change.Name),
+        ];
+    }
+
+    private IEnumerable<Change> AllChangesOf(string page)
     {
         return page switch
         {
-            "Player" => PlayerPage.ChangedNames.Concat(ArmorPage.ChangedNames),
-            "Inventory" => InventoryPage.ChangedNames,
-            "Storage" => StoragePage.ChangedNames,
-            "Followers" => FollowerPage.ChangedNames,
-            "Game" => GameSetup
-                .ChangedKeys.Select(key => Localizer[Game.SetupLabelKey(key)].Value)
-                .Concat(GameState.ChangedNames)
-                .Concat(Weather.ChangedNames),
-            "Npcs" => NpcsPage.ChangedNames,
-            "Structures" => StructuresPage.ChangedNames,
-            "Map" => [Localizer["Ziplines"].Value],
-            "Tools" => MainViewModel.ChangedTools.Select(tool => Localizer[tool].Value),
+            "Player" => Named(PlayerPage.ChangedNames).Concat(ArmorPage.Changes),
+            "Inventory" => InventoryPage.Changes,
+            "Storage" => Named(StoragePage.ChangedNames),
+            "Followers" => FollowerPage.Changes,
+            "Game" => Named(
+                GameSetup
+                    .ChangedKeys.Select(key => Localizer[Game.SetupLabelKey(key)].Value)
+                    .Concat(GameState.ChangedNames)
+                    .Concat(Weather.ChangedNames)
+            ),
+            "Npcs" => NpcsPage.Changes,
+            "Structures" => Named(StructuresPage.ChangedNames),
+            "Map" => [new Change(Localizer["Ziplines"].Value)],
+            "Tools" => Named(MainViewModel.ChangedTools.Select(tool => Localizer[tool].Value)),
             _ => [],
         };
     }
 
+    private static IEnumerable<Change> Named(IEnumerable<string> names)
+    {
+        return names.Select(name => new Change(name));
+    }
+
     private void Save()
     {
-        MudDialog.Close(DialogResult.Ok(true));
+        MudDialog.Close(DialogResult.Ok(_changes));
     }
 }

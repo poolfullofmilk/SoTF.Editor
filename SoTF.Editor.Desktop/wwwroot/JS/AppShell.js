@@ -1,35 +1,15 @@
-// Ctrl S Saves, F5 Reloads And Ctrl F Searches
-const isTyping = (target) =>
-    target instanceof HTMLElement &&
-    (target.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName));
-
-const clickShortcut = (name) => document.querySelector(`[data-shortcut="${name}"]:not([disabled])`)?.click();
-
-document.addEventListener("keydown", (event) => {
-    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "s") {
-        event.preventDefault();
-        // Fields Commit On Blur, Before The Save Runs
-        document.activeElement?.blur?.();
-        clickShortcut("save");
-    } else if (event.key === "F5" && !isTyping(event.target)) {
-        event.preventDefault();
-        clickShortcut("reload");
-    } else if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "f") {
-        // Ctrl F Jumps To The Page's Search Field
-        const search = document.querySelector(".search-field input");
-        if (search) {
-            event.preventDefault();
-            search.focus();
-            search.select();
-        }
-    }
-});
-
 // Rows, Cards And Map Points Marked For It Answer Enter And Space
 document.addEventListener("keydown", (event) => {
     if ((event.key === "Enter" || event.key === " ") && event.target instanceof HTMLElement && event.target.hasAttribute("data-keyclick")) {
         event.preventDefault();
         event.target.click();
+    }
+});
+
+// An Info Icon Inside A Switch Label Never Toggles The Switch
+document.addEventListener("click", (event) => {
+    if (event.target instanceof Element && event.target.closest(".info-icon")) {
+        event.preventDefault();
     }
 });
 
@@ -47,19 +27,27 @@ window.sotfMap = (() => {
     const mapSize = 4096;
     const maxZoom = 2;
     const dragThreshold = 4;
+    const manyPoints = 1500;
     let state = null;
+    let settle = 0;
 
-    const apply = () => {
+    // Thousands Of Icons Restyle Slowly, So They Catch Up Once A Wheel Zoom Settles
+    const apply = (zooming = false) => {
         state.canvas.style.transform = `translate(${state.x}px, ${state.y}px) scale(${state.zoom})`;
-        state.canvas.style.setProperty("--map-zoom", state.zoom);
+        clearTimeout(settle);
+        if (zooming && state.canvas.childElementCount > manyPoints) {
+            settle = setTimeout(() => state?.canvas.style.setProperty("--map-zoom", state.zoom), 150);
+        } else {
+            state.canvas.style.setProperty("--map-zoom", state.zoom);
+        }
     };
 
-    const zoomAt = (pointX, pointY, newZoom) => {
+    const zoomAt = (pointX, pointY, newZoom, zooming = false) => {
         const zoom = Math.min(Math.max(newZoom, state.minZoom), maxZoom);
         state.x = pointX - ((pointX - state.x) * zoom) / state.zoom;
         state.y = pointY - ((pointY - state.y) * zoom) / state.zoom;
         state.zoom = zoom;
-        apply();
+        apply(zooming);
     };
 
     // The Whole Map Fits, Centred
@@ -81,7 +69,7 @@ window.sotfMap = (() => {
             (event) => {
                 event.preventDefault();
                 const bounds = viewport.getBoundingClientRect();
-                zoomAt(event.clientX - bounds.left, event.clientY - bounds.top, state.zoom * (event.deltaY < 0 ? 1.2 : 1 / 1.2));
+                zoomAt(event.clientX - bounds.left, event.clientY - bounds.top, state.zoom * (event.deltaY < 0 ? 1.2 : 1 / 1.2), true);
             },
             { passive: false }
         );
