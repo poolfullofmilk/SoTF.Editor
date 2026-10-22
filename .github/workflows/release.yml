@@ -32,6 +32,9 @@ jobs:
       - name: Test Save Round Trip
         run: dotnet run Tests/SaveRoundTrip.cs
 
+      - name: Test Item Images
+        run: dotnet run Tests/ItemImages.cs
+
       - name: Publish Exe
         run: dotnet publish SoTF.Editor.Desktop -c Release
 
