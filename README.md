@@ -1,7 +1,5 @@
 # SoTF Editor
 
-A savegame editor for Sons of the Forest, with a verified backup before every save.
-
 ![Overview](Screenshots/Overview.png)
 
 <table>
