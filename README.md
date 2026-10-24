@@ -23,6 +23,7 @@
 - Tools on their own page, such as regrow trees, reset fires, traps and containers, cannibal anger from calm to furious, and item plating
 - Updates itself in the background from inside the app, shows what changed and checks the download against GitHub's checksum
 - Every list, card and map point works with the keyboard too
+- Long lists such as the inventory, structures and NPCs only draw the rows on screen, so they open and filter fast even on big saves
 - English and Dutch
 
 ## Quick start
