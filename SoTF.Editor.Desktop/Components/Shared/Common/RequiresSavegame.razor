@@ -1,20 +1,20 @@
 @if (MainViewModel.SelectedSavegame is null)
 {
     <EmptyState Icon="@Icons.Material.Rounded.Folder"
-                Text="@Localizer["OpenSavegameFirst"]">
+                Text="@AppText.Get("OpenSavegameFirst")">
         @* Savegames Button *@
         <MudButton Variant="Variant.Filled"
                    Color="Color.Info"
                    Size="Size.Small"
                    Href="/">
-            @Localizer["Savegames"]
+            @AppText.Get("Savegames")
         </MudButton>
     </EmptyState>
 }
 else if (MissesWorld)
 {
     <EmptyState Icon="@Icons.Material.Rounded.Public"
-                Text="@Localizer["ClientSaveHasNoWorld"]" />
+                Text="@AppText.Get("ClientSaveHasNoWorld")" />
 }
 else
 {

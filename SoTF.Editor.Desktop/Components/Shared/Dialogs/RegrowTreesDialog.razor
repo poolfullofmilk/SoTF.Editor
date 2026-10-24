@@ -1,7 +1,7 @@
 <MudDialog>
 
     <TitleContent>
-        <MudText Typo="Typo.h6">@Localizer["RegrowTrees"]</MudText>
+        <MudText Typo="Typo.h6">@AppText.Get("RegrowTrees")</MudText>
     </TitleContent>
     <DialogContent>
         <MudStack Spacing="2">
@@ -29,7 +29,7 @@
                        Color="Color.Info"
                        ValueLabel
                        Class="mt-4">
-                @($"{Localizer["RegrowPercent"]}: {_viewModel.PctRegrow}%")
+                @($"{AppText.Get("RegrowPercent")}: {_viewModel.PctRegrow}%")
             </MudSlider>
         </MudStack>
     </DialogContent>
@@ -40,7 +40,7 @@
                    StartIcon="@Icons.Material.Rounded.Forest"
                    Disabled="@(!_viewModel.CanRegrowTrees())"
                    OnClick="Regrow">
-            @Localizer["RegrowTrees"]
+            @AppText.Get("RegrowTrees")
         </MudButton>
     </DialogActions>
 

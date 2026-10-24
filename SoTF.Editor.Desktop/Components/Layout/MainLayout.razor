@@ -33,7 +33,7 @@
             <LanguagePicker />
 
             @* Help Menu *@
-            <Tooltip Text="@Localizer["Help"]"
+            <Tooltip Text="@AppText.Get("Help")"
                      RootClass="d-flex">
                 <MudBadge Dot
                           Overlap
@@ -41,21 +41,21 @@
                           Visible="@(_availableUpdate is not null)"
                           Class="d-flex">
                     <MudMenu Icon="@Icons.Material.Rounded.Help"
-                             AriaLabel="@Localizer["Help"]"
+                             AriaLabel="@AppText.Get("Help")"
                              Size="Size.Small">
                         @* Project Page *@
                         <MudMenuItem Icon="@Icons.Custom.Brands.GitHub"
-                                     Label="@Localizer["GitHubProject"]"
+                                     Label="@AppText.Get("GitHubProject")"
                                      Href="@AppInfo.RepositoryUrl" />
                         @* Check Updates *@
                         <MudMenuItem Icon="@Icons.Material.Rounded.SystemUpdateAlt"
-                                     Label="@Localizer["CheckForUpdates"]"
+                                     Label="@AppText.Get("CheckForUpdates")"
                                      Class="@UpdateDotClass"
                                      OnClick="() => CheckForUpdatesAsync(true)" />
                         <MudDivider />
                         @* About *@
                         <MudMenuItem Icon="@Icons.Material.Rounded.Info"
-                                     Label="@Localizer["About"]"
+                                     Label="@AppText.Get("About")"
                                      OnClick="() => ShowDialogAsync<AboutDialog>()" />
                     </MudMenu>
                 </MudBadge>
@@ -69,37 +69,37 @@
                       Spacing="2">
 
                 @* Backup Menu *@
-                <Tooltip Text="@Localizer["Backups"]"
+                <Tooltip Text="@AppText.Get("Backups")"
                          Disabled="@(!HasSavegame)"
                          RootClass="d-flex">
                     <MudMenu Icon="@Icons.Material.Rounded.Restore"
-                             AriaLabel="@Localizer["Backups"]"
+                             AriaLabel="@AppText.Get("Backups")"
                              Size="Size.Small"
                              AnchorOrigin="Origin.BottomRight"
                              TransformOrigin="Origin.TopRight"
                              Disabled="@(!HasSavegame)">
                         @* Open Folder *@
                         <MudMenuItem Icon="@Icons.Material.Rounded.Folder"
-                                     Label="@Localizer["OpenSavegameFolder"]"
+                                     Label="@AppText.Get("OpenSavegameFolder")"
                                      OnClick="OpenSavegameFolder" />
                         @* Open Backup Folder *@
                         <MudMenuItem Icon="@Icons.Material.Rounded.SnippetFolder"
-                                     Label="@Localizer["OpenBackupFolder"]"
+                                     Label="@AppText.Get("OpenBackupFolder")"
                                      OnClick="OpenBackupFolder" />
                         <MudDivider />
                         @* Restore Backup *@
                         <MudMenuItem Icon="@Icons.Material.Rounded.History"
-                                     Label="@Localizer["RestoreBackupTitle"]"
+                                     Label="@AppText.Get("RestoreBackupTitle")"
                                      OnClick="RestoreBackupAsync" />
                     </MudMenu>
                 </Tooltip>
 
                 @* Reload *@
-                <Tooltip Text="@Localizer["ReloadSavegame"]"
+                <Tooltip Text="@AppText.Get("ReloadSavegame")"
                          Disabled="@(!HasSavegame)"
                          RootClass="d-flex">
                     <MudIconButton Icon="@Icons.Material.Rounded.Refresh"
-                                   aria-label="@Localizer["ReloadSavegame"]"
+                                   aria-label="@AppText.Get("ReloadSavegame")"
                                    Size="Size.Small"
                                    Disabled="@(!HasSavegame)"
                                    OnClick="ReloadAsync" />
@@ -112,7 +112,7 @@
                            StartIcon="@Icons.Material.Rounded.Save"
                            Disabled="@(!HasSavegame)"
                            OnClick="SaveAsync">
-                    @Localizer["Save"]
+                    @AppText.Get("Save")
                 </MudButton>
 
             </MudStack>
@@ -147,16 +147,16 @@
                                            FullWidth
                                            Disabled="@IsDisabled(link)"
                                            Href="@link.Href">
-                                    @Localizer[link.LabelKey]
+                                    @AppText.Get(link.LabelKey)
                                     <ChangedDot When="@MainViewModel.HasChanges(link.Href)" />
                                 </MudButton>
                                 @if (CanRevert(link))
                                 {
                                     @* Revert Page *@
-                                    <Tooltip Text="@Localizer["RevertPage"]"
+                                    <Tooltip Text="@AppText.Get("RevertPage")"
                                              RootClass="nav-action">
                                         <MudIconButton Icon="@Icons.Material.Rounded.Undo"
-                                                       aria-label="@Localizer["RevertPage"]"
+                                                       aria-label="@AppText.Get("RevertPage")"
                                                        Color="Color.Inherit"
                                                        Size="Size.Small"
                                                        OnClick="() => RevertPageAsync(link)" />
@@ -169,7 +169,7 @@
                     {
                         <MudText Typo="Typo.caption"
                                  Class="mud-text-secondary text-relaxed px-3 pt-2">
-                            @Localizer["ClientSaveHasNoWorld"]
+                            @AppText.Get("ClientSaveHasNoWorld")
                         </MudText>
                     }
                 </MudStack>
@@ -192,7 +192,7 @@
                                        Color="Color.Info"
                                        Size="Size.Small"
                                        OnClick="RecoverFromError">
-                                @Localizer["Ok"]
+                                @AppText.Get("Ok")
                             </MudButton>
                         </EmptyState>
                     </ErrorContent>

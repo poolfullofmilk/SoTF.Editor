@@ -9,9 +9,6 @@ namespace SoTF.Editor.Desktop.Components.Shared.Dialogs;
 
 public partial class WorldItemClonerDialog
 {
-    [Inject]
-    public required IStringLocalizer<SharedResource> Localizer { get; set; }
-
     [CascadingParameter]
     public required IMudDialogInstance MudDialog { get; set; }
 
@@ -43,9 +40,8 @@ public partial class WorldItemClonerDialog
     {
         if (
             await DialogService.ConfirmAsync(
-                Localizer,
-                Localizer["RemoveAllCopies"],
-                Localizer["RemoveAllCopiesTooltip"]
+                AppText.Get("RemoveAllCopies"),
+                AppText.Get("RemoveAllCopiesTooltip")
             )
         )
         {

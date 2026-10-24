@@ -61,8 +61,8 @@ public class GameSetupPageViewModel
 
     private readonly Dictionary<string, string> _stringSettings = [];
     private readonly Dictionary<string, bool> _boolSettings = [];
-    private readonly Dictionary<string, string> _loadedStrings = [];
-    private readonly Dictionary<string, bool> _loadedBools = [];
+    private Dictionary<string, string> _loadedStrings = [];
+    private Dictionary<string, bool> _loadedBools = [];
 
     public string? SelectedMode
     {
@@ -183,17 +183,8 @@ public class GameSetupPageViewModel
     public void Load(Savegame? savegame)
     {
         LoadSettings(savegame);
-        _loadedStrings.Clear();
-        _loadedBools.Clear();
-        foreach (var (key, value) in _stringSettings)
-        {
-            _loadedStrings[key] = value;
-        }
-
-        foreach (var (key, value) in _boolSettings)
-        {
-            _loadedBools[key] = value;
-        }
+        _loadedStrings = new(_stringSettings);
+        _loadedBools = new(_boolSettings);
     }
 
     private void LoadSettings(Savegame? savegame)
@@ -219,7 +210,7 @@ public class GameSetupPageViewModel
             switch ((setting[SettingTypeKey] ?? setting["SettingsType"])?.Value<int>() ?? knownType)
             {
                 case SettingTypeString:
-                    if (SettingReader.ReadString(setting) is { } stringValue)
+                    if (SettingEntry.ReadString(setting) is { } stringValue)
                     {
                         _stringSettings[name] = stringValue;
                     }
@@ -227,7 +218,7 @@ public class GameSetupPageViewModel
                     break;
                 case SettingTypeBool:
                     // The Game Leaves Out A False Value
-                    _boolSettings[name] = SettingReader.ReadBool(setting) ?? false;
+                    _boolSettings[name] = SettingEntry.ReadBool(setting) ?? false;
                     break;
             }
         }
@@ -349,11 +340,11 @@ public class GameSetupPageViewModel
             existingSettings.Add(name);
             if (_stringSettings.TryGetValue(name, out var newStringValue))
             {
-                hasChanges |= SettingReader.ReadString(setting) != newStringValue;
+                hasChanges |= SettingEntry.ReadString(setting) != newStringValue;
             }
             else if (_boolSettings.TryGetValue(name, out var newBoolValue))
             {
-                hasChanges |= (SettingReader.ReadBool(setting) ?? false) != newBoolValue;
+                hasChanges |= (SettingEntry.ReadBool(setting) ?? false) != newBoolValue;
             }
             else
             {

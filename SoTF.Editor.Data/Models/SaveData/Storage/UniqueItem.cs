@@ -4,7 +4,7 @@ namespace SoTF.Editor.Data.Models.SaveData.Storage;
 
 public class UniqueItem
 {
-    public List<IStorageModule> Modules { get; init; } = [];
+    public List<BaseStorageModule> Modules { get; init; } = [];
 
     public override bool Equals(object? obj)
     {

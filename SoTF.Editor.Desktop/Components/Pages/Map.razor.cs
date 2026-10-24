@@ -69,9 +69,9 @@ public partial class Map : EditorPageBase
         );
     }
 
-    private string RequirementsName(MapFilter.RequirementsFilterType requirementsFilter)
+    private static string RequirementsName(MapFilter.RequirementsFilterType requirementsFilter)
     {
-        return Localizer[TextKeys.RequirementsFilter(requirementsFilter)];
+        return AppText.Get(TextKeys.RequirementsFilter(requirementsFilter));
     }
 
     // Sub Groups Start Folded, The Checkbox Still Covers All
@@ -131,7 +131,7 @@ public partial class Map : EditorPageBase
         MapViewModel.ApplyFilterToAllPois();
     }
 
-    private void SetAreaFilter(IAreaFilter areaFilter)
+    private void SetAreaFilter(AreaFilter areaFilter)
     {
         MapViewModel.MapFilter.AreaFilter = areaFilter;
         MapViewModel.ApplyFilterToAllPois();

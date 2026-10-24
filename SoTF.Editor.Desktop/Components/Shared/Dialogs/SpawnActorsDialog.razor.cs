@@ -11,9 +11,6 @@ namespace SoTF.Editor.Desktop.Components.Shared.Dialogs;
 
 public partial class SpawnActorsDialog
 {
-    [Inject]
-    public required IStringLocalizer<SharedResource> Localizer { get; set; }
-
     [CascadingParameter]
     public required IMudDialogInstance MudDialog { get; set; }
 
@@ -55,24 +52,24 @@ public partial class SpawnActorsDialog
     {
         if (familyId is null or -1)
         {
-            return "—";
+            return "-";
         }
 
         // The Destination Actor's Own Family Reads As Such
         return familyId == _viewModel.OriginalFamilyId
-            ? $"{familyId} ({Localizer["DestinationFamily"]})"
+            ? $"{familyId} ({AppText.Get("DestinationFamily")})"
             : familyId.ToString()!;
     }
 
-    private string PatternName(SpawnPattern pattern)
+    private static string PatternName(SpawnPattern pattern)
     {
-        return Localizer[TextKeys.SpawnPattern(pattern)];
+        return AppText.Get(TextKeys.SpawnPattern(pattern));
     }
 
     private void Spawn()
     {
         MainViewModel.ModifyActors(savegame => _viewModel.DoSpawn(savegame));
-        Snackbar.Add(Localizer["ChangesAdded"], Severity.Info);
+        Snackbar.Add(AppText.Get("ChangesAdded"), Severity.Info);
         MudDialog.Close(DialogResult.Ok(true));
     }
 }

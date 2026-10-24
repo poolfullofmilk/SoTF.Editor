@@ -6,7 +6,7 @@
 
         <MudItem xs="12"
                  lg="6">
-            <Header Title="@Localizer["Player"]">
+            <Header Title="@AppText.Get("Player")">
                 <TitleContent>
                     <MudSpacer />
                     <ShowOnMapButton Position="State.Pos" />
@@ -24,7 +24,7 @@
                                            Size="Size.Small"
                                            StartIcon="@Icons.Material.Rounded.BatteryChargingFull"
                                            OnClick="PlayerPage.FillAllBars">
-                                    @Localizer["FillAllBars"]
+                                    @AppText.Get("FillAllBars")
                                 </MudButton>
                                 @* Move To Kelvin *@
                                 <MudButton Variant="Variant.Text"
@@ -32,7 +32,7 @@
                                            StartIcon="@Icons.Material.Rounded.NearMe"
                                            Disabled="@(!IsInSave(FollowerPage.KelvinState))"
                                            OnClick="() => PlayerPage.MoveToFollower(FollowerPage.KelvinState)">
-                                    @Localizer["MoveToKelvin"]
+                                    @AppText.Get("MoveToKelvin")
                                 </MudButton>
                                 @* Move To Virginia *@
                                 <MudButton Variant="Variant.Text"
@@ -40,33 +40,33 @@
                                            StartIcon="@Icons.Material.Rounded.NearMe"
                                            Disabled="@(!IsInSave(FollowerPage.VirginiaState))"
                                            OnClick="() => PlayerPage.MoveToFollower(FollowerPage.VirginiaState)">
-                                    @Localizer["MoveToVirginia"]
+                                    @AppText.Get("MoveToVirginia")
                                 </MudButton>
                             </MudStack>
 
                             <MudText Typo="Typo.body2"
                                      Class="mud-text-secondary selectable-text">
-                                @($"{Localizer["Position"]}: {State.Pos.PrintableShort} · {Localizer["Area"]}: {State.Pos.Area.Name}")
+                                @($"{AppText.Get("Position")}: {State.Pos.PrintableShort} · {AppText.Get("Area")}: {State.Pos.Area.Name}")
                                 <ChangedDot When="@PlayerPage.IsChanged(nameof(PlayerState.Pos))" />
                             </MudText>
 
                             @* Strength *@
-                            <StatSlider Label="@Localizer["StrengthLevel"]"
+                            <StatSlider Label="@AppText.Get("StrengthLevel")"
                                         Changed="@PlayerPage.IsChanged(nameof(PlayerState.StrengthLevel))"
                                         Value="State.StrengthLevel"
                                         ValueChanged="value => State.ChangeStrengthLevel((int)value)"
-                                        Info="@Localizer["StrengthLevelInfo"]"
+                                        Info="@AppText.Get("StrengthLevelInfo")"
                                         Min="1"
                                         Max="100" />
                             @* Max Health *@
-                            <StatSlider Label="@Localizer["MaxHealth"]"
+                            <StatSlider Label="@AppText.Get("MaxHealth")"
                                         Changed="@PlayerPage.IsChanged(nameof(PlayerState.MaxHealth))"
-                                        Info="@Localizer["MaxHealthFollowsStrength"]"
+                                        Info="@AppText.Get("MaxHealthFollowsStrength")"
                                         Value="State.MaxHealth"
                                         Max="MaxHealthCeiling"
                                         ReadOnly />
                             @* Current Health *@
-                            <StatSlider Label="@Localizer["CurrentHealth"]"
+                            <StatSlider Label="@AppText.Get("CurrentHealth")"
                                         Changed="@PlayerPage.IsChanged(nameof(PlayerState.CurrentHealth))"
                                         Warning="@CurrentHealthWarning"
                                         @bind-Value="State.CurrentHealth"
@@ -74,41 +74,41 @@
                                         Max="State.MaxHealth"
                                         Step="0.1f" />
                             @* Sickness *@
-                            <StatSlider Label="@Localizer["Sickness"]"
+                            <StatSlider Label="@AppText.Get("Sickness")"
                                         Changed="@PlayerPage.IsChanged(nameof(PlayerState.Sickness))"
                                         @bind-Value="State.Sickness"
                                         Max="State.MaxHealth"
                                         Step="0.1f" />
                             @* Fullness *@
-                            <StatSlider Label="@Localizer["Fullness"]"
+                            <StatSlider Label="@AppText.Get("Fullness")"
                                         Changed="@PlayerPage.IsChanged(nameof(PlayerState.Fullness))"
                                         @bind-Value="State.Fullness" />
                             @* Hydration *@
-                            <StatSlider Label="@Localizer["Hydration"]"
+                            <StatSlider Label="@AppText.Get("Hydration")"
                                         Changed="@PlayerPage.IsChanged(nameof(PlayerState.Hydration))"
                                         @bind-Value="State.Hydration" />
                             @* Rest *@
-                            <StatSlider Label="@Localizer["Rest"]"
+                            <StatSlider Label="@AppText.Get("Rest")"
                                         Changed="@PlayerPage.IsChanged(nameof(PlayerState.Rest))"
                                         @bind-Value="State.Rest" />
                             @* Stamina *@
-                            <StatSlider Label="@Localizer["Stamina"]"
+                            <StatSlider Label="@AppText.Get("Stamina")"
                                         Changed="@PlayerPage.IsChanged(nameof(PlayerState.Stamina))"
                                         @bind-Value="State.Stamina" />
                             @* Fullness Buff *@
-                            <StatSlider Label="@Localizer["FullnessBuff"]"
+                            <StatSlider Label="@AppText.Get("FullnessBuff")"
                                         Changed="@PlayerPage.IsChanged(nameof(PlayerState.FullnessBuff))"
                                         @bind-Value="State.FullnessBuff"
                                         Min="-100"
                                         Max="65535" />
                             @* Hydration Buff *@
-                            <StatSlider Label="@Localizer["HydrationBuff"]"
+                            <StatSlider Label="@AppText.Get("HydrationBuff")"
                                         Changed="@PlayerPage.IsChanged(nameof(PlayerState.HydrationBuff))"
                                         @bind-Value="State.HydrationBuff"
                                         Min="-100"
                                         Max="65535" />
                             @* Rest Buff *@
-                            <StatSlider Label="@Localizer["RestBuff"]"
+                            <StatSlider Label="@AppText.Get("RestBuff")"
                                         Changed="@PlayerPage.IsChanged(nameof(PlayerState.RestBuff))"
                                         @bind-Value="State.RestBuff"
                                         Max="1"
@@ -120,7 +120,7 @@
                                 <MudSelect T="Item"
                                            Variant="Variant.Outlined"
                                            @bind-Value="State.SelectedCloth"
-                                           Label="@Localizer["Outfit"]"
+                                           Label="@AppText.Get("Outfit")"
                                            ToStringFunc="item => item?.Name ?? string.Empty">
                                     @foreach (var cloth in PlayerPage.AvailableClothes)
                                     {
@@ -136,27 +136,27 @@
 
         <MudItem xs="12"
                  lg="6">
-            <Header Title="@Localizer["EquippedArmor"]">
+            <Header Title="@AppText.Get("EquippedArmor")">
                 <TitleContent>
                     <MudSpacer />
                     @* Default Durability *@
-                    <Tooltip Text="@Localizer["SetAllToDefaultTooltip"]"
+                    <Tooltip Text="@AppText.Get("SetAllToDefaultTooltip")"
                              Disabled="@(!ArmorPage.CanSetAllToDefault())">
                         <MudButton Variant="Variant.Text"
                                    Size="Size.Small"
                                    Disabled="@(!ArmorPage.CanSetAllToDefault())"
                                    OnClick="ArmorPage.SetAllToDefault">
-                            @Localizer["SetAllToDefault"]
+                            @AppText.Get("SetAllToDefault")
                         </MudButton>
                     </Tooltip>
                     @* Max Durability *@
-                    <Tooltip Text="@Localizer["SetAllToMaxTooltip"]"
+                    <Tooltip Text="@AppText.Get("SetAllToMaxTooltip")"
                              Disabled="@(!ArmorPage.CanSetAllToMax())">
                         <MudButton Variant="Variant.Text"
                                    Size="Size.Small"
                                    Disabled="@(!ArmorPage.CanSetAllToMax())"
                                    OnClick="ArmorPage.SetAllToMax">
-                            @Localizer["SetAllToMax"]
+                            @AppText.Get("SetAllToMax")
                         </MudButton>
                     </Tooltip>
                 </TitleContent>
@@ -182,7 +182,7 @@
                                         </MudText>
                                         <MudText Typo="Typo.caption"
                                                  Class="mud-text-secondary">
-                                            @($"{Localizer["Slot"]} {armour.Slot}")
+                                            @($"{AppText.Get("Slot")} {armour.Slot}")
                                         </MudText>
                                     </MudStack>
                                     @* Durability *@
@@ -192,28 +192,27 @@
                                                      Min="armour.MinDurability"
                                                      Max="armour.MaxDurability"
                                                      Margin="Margin.Dense"
-                                                     Label="@Localizer["Durability"]"
+                                                     Label="@AppText.Get("Durability")"
                                                      Style="width:140px" />
                                     </ChangedBadge>
                                     @* Default Button *@
-                                    <Tooltip Text="@Localizer["SetToDefaultDurability"]"
-                                             Disabled="@IsDefault(armour)">
-                                        <MudIconButton Icon="@Icons.Material.Rounded.SettingsBackupRestore"
-                                                       Size="Size.Small"
-                                                       Disabled="@IsDefault(armour)"
-                                                       OnClick="() => armour.ArmourPiece.RemainingArmourpoints = armour.DefaultDurability" />
-                                    </Tooltip>
+                                    <MudIconButton Icon="@Icons.Material.Rounded.SettingsBackupRestore"
+                                                   aria-label="@AppText.Get("SetToDefaultDurability")"
+                                                   title="@(IsDefault(armour) ? null : AppText.Get("SetToDefaultDurability"))"
+                                                   Size="Size.Small"
+                                                   Disabled="@IsDefault(armour)"
+                                                   OnClick="() => armour.ArmourPiece.RemainingArmourpoints = armour.DefaultDurability" />
                                     @* Max Button *@
                                     <MaxButton Max="armour.MaxDurability"
                                                Disabled="@(armour.ArmourPiece.RemainingArmourpoints >= armour.MaxDurability)"
                                                OnClick="() => armour.ArmourPiece.RemainingArmourpoints = armour.MaxDurability" />
                                     @* Remove Button *@
-                                    <Tooltip Text="@Localizer["Remove"]">
-                                        <MudIconButton Icon="@Icons.Material.Rounded.Delete"
-                                                       Color="Color.Error"
-                                                       Size="Size.Small"
-                                                       OnClick="() => ArmorPage.RemoveArmour(armour)" />
-                                    </Tooltip>
+                                    <MudIconButton Icon="@Icons.Material.Rounded.Delete"
+                                                   aria-label="@AppText.Get("Remove")"
+                                                   title="@AppText.Get("Remove")"
+                                                   Color="Color.Error"
+                                                   Size="Size.Small"
+                                                   OnClick="() => ArmorPage.RemoveArmour(armour)" />
                                 </MudStack>
                             }
 
@@ -233,7 +232,7 @@
                                     <MudSelect T="Item"
                                                Variant="Variant.Outlined"
                                                @bind-Value="ArmorPage.NewArmour.SelectedItem"
-                                               Label="@Localizer["Name"]"
+                                               Label="@AppText.Get("Name")"
                                                ToStringFunc="item => item?.Name ?? string.Empty"
                                                Margin="Margin.Dense">
                                         @foreach (var armourType in ArmorPage.ArmourTypes)
@@ -256,7 +255,7 @@
                                 <NumberField T="int"
                                              @bind-Value="ArmorPage.NewArmour.RemainingArmourpoints"
                                              Min="1"
-                                             Label="@Localizer["Durability"]"
+                                             Label="@AppText.Get("Durability")"
                                              Margin="Margin.Dense"
                                              Style="width:140px" />
                                 @* Add Armor *@
@@ -266,12 +265,12 @@
                                            StartIcon="@Icons.Material.Rounded.Add"
                                            Disabled="@(!ArmorPage.NewArmour.CanAddArmor())"
                                            OnClick="ArmorPage.NewArmour.AddArmor">
-                                    @Localizer["Add"]
+                                    @AppText.Get("Add")
                                 </MudButton>
                             </MudStack>
                             <MudText Typo="Typo.caption"
                                      Class="mud-text-secondary">
-                                @Localizer["DurabilityTooltip"]
+                                @AppText.Get("DurabilityTooltip")
                             </MudText>
                         </MudStack>
                     </MudPaper>

@@ -10,9 +10,6 @@ namespace SoTF.Editor.Desktop.Components.Shared.Dialogs;
 
 public partial class EditActorDialog
 {
-    [Inject]
-    public required IStringLocalizer<SharedResource> Localizer { get; set; }
-
     [CascadingParameter]
     public required IMudDialogInstance MudDialog { get; set; }
 
@@ -35,20 +32,20 @@ public partial class EditActorDialog
 
     private IEnumerable<ActorDetail> Details =>
         [
-            new(Localizer["Classification"], _viewModel.Actor.ActorType?.PrintableClassification),
-            new(Localizer["Gender"], _viewModel.Actor.ActorType?.PrintableGender),
-            new(Localizer["State"], _viewModel.Actor.StatePrintable),
-            new(Localizer["UniqueId"], _viewModel.Actor.UniqueId.ToString()),
-            new(Localizer["Family"], _viewModel.Actor.FamilyId?.ToString()),
-            new(Localizer["LastVisitTime"], _viewModel.Actor.LastVisitTime?.ToString()),
-            new(Localizer["SpawnedCount"], _viewModel.Actor.Spawner?.Count.ToString()),
-            new(Localizer["LastSpawnTime"], _viewModel.Actor.Spawner?.LastSpawnTime.ToString()),
+            new(AppText.Get("Classification"), _viewModel.Actor.ActorType?.PrintableClassification),
+            new(AppText.Get("Gender"), _viewModel.Actor.ActorType?.PrintableGender),
+            new(AppText.Get("State"), _viewModel.Actor.StatePrintable),
+            new(AppText.Get("UniqueId"), _viewModel.Actor.UniqueId.ToString()),
+            new(AppText.Get("Family"), _viewModel.Actor.FamilyId?.ToString()),
+            new(AppText.Get("LastVisitTime"), _viewModel.Actor.LastVisitTime?.ToString()),
+            new(AppText.Get("SpawnedCount"), _viewModel.Actor.Spawner?.Count.ToString()),
+            new(AppText.Get("LastSpawnTime"), _viewModel.Actor.Spawner?.LastSpawnTime.ToString()),
             new(
-                Localizer["KilledByPlayer"],
+                AppText.Get("KilledByPlayer"),
                 (_viewModel.Actor.KillStats?.PlayerKilled ?? 0).ToString()
             ),
-            new(Localizer["Area"], _viewModel.Actor.Position?.Area.Name),
-            new(Localizer["Position"], _viewModel.Actor.Position?.PrintableShort),
+            new(AppText.Get("Area"), _viewModel.Actor.Position?.Area.Name),
+            new(AppText.Get("Position"), _viewModel.Actor.Position?.PrintableShort),
         ];
 
     public static async Task ShowAsync(IDialogService dialogService, Actor actor)
@@ -66,16 +63,10 @@ public partial class EditActorDialog
 
     protected override void OnInitialized()
     {
-        // Empty First, So Replace Type Starts At No Change
-        var allActorTypes = GameData.ActorTypes.OrderBy(type => type.Name).ToList();
-        allActorTypes.Insert(0, new EmptyActorType());
-        _viewModel = new EditActorViewModel(Actor, allActorTypes);
-    }
-
-    private static string ReplaceTypeName(ActorType? actorType)
-    {
-        // The Empty Choice Keeps Every Type As It Is
-        return actorType is null or { Id: -1 } ? "—" : actorType.Name;
+        _viewModel = new EditActorViewModel(
+            Actor,
+            [.. GameData.ActorTypes.OrderBy(type => type.Name)]
+        );
     }
 
     private static string SelectionName(short? selection)
@@ -89,7 +80,7 @@ public partial class EditActorDialog
     private void Apply()
     {
         MainViewModel.ModifyActors(savegame => ActorModifier.Modify(savegame, _viewModel));
-        Snackbar.Add(Localizer["ChangesAdded"], Severity.Info);
+        Snackbar.Add(AppText.Get("ChangesAdded"), Severity.Info);
         MudDialog.Close(DialogResult.Ok(true));
     }
 

@@ -33,7 +33,6 @@ try
     var gameData = JsonConvert.DeserializeObject<GameData>(ResourceFile.Read("GameData.json"))!;
     var services = new ServiceCollection();
     services.AddSingleton(gameData);
-    services.AddSingleton<StorageFactory>();
     services.AddSingleton<PlayerPageViewModel>();
     services.AddSingleton<ArmorPageViewModel>();
     services.AddSingleton<InventoryPageViewModel>();
@@ -319,13 +318,19 @@ try
     // Unlocks Write The Profile After Its Own Backup
     var profilePath = Path.Combine(work, SampleSteamId, "PlayerProfile.json");
     File.WriteAllText(profilePath, """{ "_settings": [] }""");
-    new UnlocksViewModel(profilePath) { CreativeMode = true }.Save();
-    Check(new UnlocksViewModel(profilePath).CreativeMode, "Unlocks Read Back");
+    var unlocks = new UnlocksViewModel(profilePath);
+    unlocks.Values["Stats.CreativeModeUnlocked"] = true;
+    unlocks.Save();
+    Check(
+        new UnlocksViewModel(profilePath).Values["Stats.CreativeModeUnlocked"],
+        "Unlocks Read Back"
+    );
 
     // Revert Takes One Page Back, Other Pages Keep Their Edits
     var fullness = player.PlayerState.Fullness;
     player.PlayerState.Fullness = fullness == 11 ? 12 : 11;
     followers.KelvinState.Health = 22;
+    Check(main.HasUnsavedChanges(), "Unsaved Edit Is Seen");
     main.RevertPage("Player");
     Check(
         !main.HasChanges("Player") && Math.Abs(player.PlayerState.Fullness - fullness) < 0.01,
@@ -337,6 +342,7 @@ try
         .First(candidate => StoragePageViewModel.HasStoredItems(candidate));
     storage.SelectedStorage = revertStorage;
     StoragePageViewModel.ClearAll(revertStorage);
+    Check(main.HasUnsavedChanges(), "Cleared Storage Is Seen");
     main.RevertPage("Storage");
     Check(
         !main.HasChanges("Storage")
@@ -344,6 +350,19 @@ try
             && StoragePageViewModel.HasStoredItems(storage.SelectedStorage),
         "Reverted Storage Keeps Its Selection"
     );
+
+    // A Food Slot In Another State Counts As Changed
+    var foodSlot = storage
+        .StorageCollections.SelectMany(collection => collection.Storages)
+        .OfType<FoodStorage>()
+        .SelectMany(StoragePageViewModel.StoredItemsOf)
+        .First(storedItem => storedItem.SelectedItem?.FoodSpoilStorageModuleWrapper != null);
+    var food = foodSlot.SelectedItem!;
+    foodSlot.SelectedItem = foodSlot.SupportedItems.First(candidate =>
+        candidate.Item.Id == food.Item.Id && candidate != food
+    );
+    Check(foodSlot.Count == 1 && main.HasChanges("Storage"), "Food State Shows As Changed");
+    main.RevertPage("Storage");
     Check(main.SaveChanges() && !main.SaveChanges(), "Edits Left After Revert Save");
 
     // A Save Keeps Its Change List In Its Backup

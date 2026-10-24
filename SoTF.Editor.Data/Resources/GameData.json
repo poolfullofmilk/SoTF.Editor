@@ -3397,7 +3397,7 @@
       "restrictedItemIds": [
         392
       ],
-      "type": "Sticks"
+      "type": "Resource"
     },
     {
       "id": 31,
@@ -3406,7 +3406,7 @@
       "restrictedItemIds": [
         393
       ],
-      "type": "Stones"
+      "type": "Resource"
     },
     {
       "id": 32,
@@ -3415,7 +3415,7 @@
       "restrictedItemIds": [
         405
       ],
-      "type": "Bones"
+      "type": "Resource"
     },
     {
       "id": 36,
@@ -3437,7 +3437,7 @@
       "restrictedItemIds": [
         78
       ],
-      "type": "Logs"
+      "type": "Resource"
     },
     {
       "id": 39,
@@ -3459,7 +3459,7 @@
       "restrictedItemIds": [
         78
       ],
-      "type": "Logs"
+      "type": "Resource"
     },
     {
       "id": 61,
@@ -3487,7 +3487,7 @@
       "restrictedItemIds": [
         640
       ],
-      "type": "Stones"
+      "type": "Resource"
     },
     {
       "id": 67,
@@ -3496,7 +3496,7 @@
       "restrictedItemIds": [
         78
       ],
-      "type": "Logs"
+      "type": "Resource"
     },
     {
       "id": 82,
@@ -3505,7 +3505,7 @@
       "restrictedItemIds": [
         474
       ],
-      "type": "Spears"
+      "type": "Resource"
     },
     {
       "id": 84,
@@ -3566,7 +3566,7 @@
       "restrictedItemIds": [
         78
       ],
-      "type": "Logs"
+      "type": "Resource"
     },
     {
       "id": 104,
@@ -3663,8 +3663,7 @@
             405
           ]
         }
-      ],
-      "type": "Items"
+      ]
     },
     {
       "id": 106,
@@ -3685,8 +3684,7 @@
             484
           ]
         }
-      ],
-      "type": "Items"
+      ]
     },
     {
       "id": 107,
@@ -3707,8 +3705,7 @@
             484
           ]
         }
-      ],
-      "type": "Items"
+      ]
     }
   ],
   "followers": {

@@ -13,10 +13,69 @@ namespace SoTF.Editor.Services.Map;
 public class MapManager(
     NpcsPageViewModel npcsPageViewModel,
     StructuresPageViewModel structuresPageViewModel,
+    PlayerPageViewModel playerPageViewModel,
+    PoiLoader poiLoader,
     GameData gameData
 )
 {
-    public List<PoiGroup> GetActorPois()
+    public List<IPoiGrouper> BuildPoiGroups(Savegame? savegame)
+    {
+        var poiGroups = new List<IPoiGrouper>
+        {
+            new PoiGroupCollection(
+                false,
+                AppText.Get("Actors"),
+                PoiGroupKeys.Actors,
+                GetActorPois(),
+                PoiGroupType.Actors
+            ),
+            new PoiGroupCollection(
+                false,
+                AppText.Get("Structures"),
+                PoiGroupKeys.Structures,
+                GetStructurePois(),
+                PoiGroupType.Structures
+            ),
+        };
+
+        if (savegame != null)
+        {
+            poiGroups.AddRange(GetWorldItemPois(savegame));
+
+            // Each Line Shows Both Anchors And The Line Between
+            var ziplinePois = GetZiplinePois(savegame);
+            if (ziplinePois.Count > 0)
+            {
+                poiGroups.Add(
+                    new PoiGroup(
+                        false,
+                        ziplinePois.SelectMany(zipline =>
+                            new IPoi[] { zipline.PointA, zipline.PointB, zipline }
+                        ),
+                        AppText.Get("Ziplines"),
+                        PoiGroupType.ZipLines,
+                        "images/icons/" + ZipPointPoi.IconFile
+                    )
+                );
+            }
+        }
+
+        poiGroups.AddRange(poiLoader.Load());
+
+        poiGroups.Add(
+            new PoiGroup(
+                true,
+                [new PlayerPoi(playerPageViewModel.PlayerState.Pos) { Enabled = true }],
+                AppText.Get("Player"),
+                PoiGroupType.Player,
+                "images/icons/" + PlayerPoi.IconFile
+            )
+        );
+
+        return [.. poiGroups.OrderBy(group => group.Title)];
+    }
+
+    private List<PoiGroup> GetActorPois()
     {
         // Followers Show At Start, Other Actors Start Hidden
         var actorPois = npcsPageViewModel
@@ -63,7 +122,7 @@ public class MapManager(
         return result;
     }
 
-    public Dictionary<string, List<StructurePoi>> GetStructurePois()
+    private IEnumerable<PoiGroup> GetStructurePois()
     {
         return structuresPageViewModel
             .Structures.Where(wrapper =>
@@ -72,19 +131,34 @@ public class MapManager(
             .Select(structure => new StructurePoi(structure))
             .GroupBy(poi => poi.ScrewStructureWrapper.Name)
             .OrderBy(group => group.Key)
-            .ToDictionary(group => group.Key, group => group.ToList());
+            .Select(group => new PoiGroup(
+                false,
+                [.. group],
+                group.Key,
+                PoiGroupKeys.Structures
+                    + (group.First().ScrewStructureWrapper.ScrewStructure?.Id.ToString() ?? ""),
+                PoiGroupType.Structures,
+                group.First().Icon
+            ));
     }
 
-    public static Dictionary<string, List<WorldItemPoi>> GetWorldItemPois(Savegame savegame)
+    private static IEnumerable<PoiGroup> GetWorldItemPois(Savegame savegame)
     {
         return WorldItemClonerViewModel
             .Load(savegame)
             .Select(state => new WorldItemPoi(state))
             .GroupBy(poi => poi.State.Group)
-            .ToDictionary(group => group.Key, group => group.ToList());
+            .Select(group => new PoiGroup(
+                false,
+                [.. group],
+                group.Key,
+                PoiGroupKeys.WorldItems + group.Key,
+                PoiGroupType.WorldItems,
+                group.First().Icon
+            ));
     }
 
-    public static List<ZiplinePoi> GetZiplinePois(Savegame savegame)
+    private static List<ZiplinePoi> GetZiplinePois(Savegame savegame)
     {
         if (
             savegame

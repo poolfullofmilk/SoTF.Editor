@@ -11,6 +11,7 @@ namespace SoTF.Editor.Services.Map;
 
 public class MapViewModel(
     MainViewModel mainViewModel,
+    MapManager mapManager,
     PlayerPageViewModel playerPage,
     FollowerPageViewModel followerPage,
     GameData gameData
@@ -61,7 +62,7 @@ public class MapViewModel(
     public void Build()
     {
         _builtRevision = mainViewModel.Revision;
-        _poiGroups = mainViewModel.BuildPoiGroups();
+        _poiGroups = mapManager.BuildPoiGroups(mainViewModel.SelectedSavegame);
         LoadSavedSelectedPois();
         SelectedPoi = null;
         ApplyFilterToAllPois();

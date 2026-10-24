@@ -191,9 +191,7 @@ public class InventoryPageViewModel
         s_logger.Info(
             $"Found Item {item.Id} Count {itemBlock.TotalCount} Above Its Max {storageMax.Inventory}"
         );
-        var raisedItem = (Item)item.Clone();
-        raisedItem.StorageMax = storageMax with { Inventory = itemBlock.TotalCount };
-        return raisedItem;
+        return item with { StorageMax = storageMax with { Inventory = itemBlock.TotalCount } };
     }
 
     public bool Update(Savegame savegame)

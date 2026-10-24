@@ -7,12 +7,12 @@
                   Dense
                   Elevation="4"
                   Class="rounded-panel">
-            @Localizer["ToolsHint"]
+            @AppText.Get("ToolsHint")
         </MudAlert>
 
         @foreach (var section in s_sections)
         {
-            <Header Title="@Localizer[section.TitleKey]">
+            <Header Title="@AppText.Get(section.TitleKey)">
                 <MudGrid>
 
                     @foreach (var tool in section.Tools)
@@ -40,18 +40,18 @@
                                             <MudText Typo="Typo.subtitle1"
                                                      Class="text-tight"
                                                      Style="font-weight:700">
-                                                @Localizer[tool.TitleKey]
+                                                @AppText.Get(tool.TitleKey)
                                             </MudText>
                                             <MudText Typo="Typo.body2"
                                                      Class="mud-text-secondary text-relaxed">
-                                                @Localizer[tool.TextKey]
+                                                @AppText.Get(tool.TextKey)
                                             </MudText>
                                             <MudChip T="string"
                                                      Variant="Variant.Text"
                                                      Size="Size.Small"
                                                      Color="@ChipColor(tool)"
                                                      Class="ml-0 align-self-start">
-                                                @Localizer[ChipKey(tool)]
+                                                @AppText.Get(ChipKey(tool))
                                             </MudChip>
                                         </MudStack>
                                     </MudStack>

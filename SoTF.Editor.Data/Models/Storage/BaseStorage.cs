@@ -13,10 +13,11 @@ public abstract class BaseStorage : IStorage
 
     public Position? Pos { get; set; }
 
-    protected BaseStorage(StorageDefinition definition, int index)
+    protected BaseStorage(StorageDefinition definition, int index, List<ItemWrapper> supportedItems)
     {
         Definition = definition;
         _index = index;
+        SupportedItems = supportedItems;
 
         for (var slotNumber = 0; slotNumber < definition.Slots; slotNumber++)
         {
@@ -26,7 +27,7 @@ public abstract class BaseStorage : IStorage
 
     public List<StorageSlot> Slots { get; } = [];
 
-    public List<ItemWrapper> SupportedItems => GetSupportedItems();
+    public List<ItemWrapper> SupportedItems { get; }
 
     public string Description => $"{Definition.Name} #{_index} ({GetTotalStored()})";
 
@@ -36,7 +37,7 @@ public abstract class BaseStorage : IStorage
 
         Pos = saveData.Pos;
 
-        var supportedItems = GetSupportedItems();
+        var supportedItems = SupportedItems;
 
         foreach (var storageBlock in saveData.Storages)
         {
@@ -126,7 +127,39 @@ public abstract class BaseStorage : IStorage
         }
     }
 
-    public abstract StorageSaveData ToStorageSaveData();
+    public virtual StorageSaveData ToStorageSaveData()
+    {
+        var storageSaveData = new StorageSaveData { Id = Definition.Id, Storages = [] };
+
+        foreach (var slot in Slots)
+        {
+            var storageBlock = new StorageBlock
+            {
+                ItemBlocks = new List<StorageItemBlock>(slot.StoredItems.Count),
+            };
+
+            foreach (var storedItem in slot.StoredItems)
+            {
+                if (storedItem.Count == 0 || storedItem.SelectedItem is not { } item)
+                {
+                    continue;
+                }
+
+                storageBlock.ItemBlocks.Add(
+                    new StorageItemBlock
+                    {
+                        TotalCount = storedItem.Count,
+                        ItemId = item.Item.Id,
+                        UniqueItems = storedItem.UniqueItemsToSave(),
+                    }
+                );
+            }
+
+            storageSaveData.Storages.Add(storageBlock);
+        }
+
+        return storageSaveData;
+    }
 
     public virtual void SetAllToMax()
     {
@@ -151,8 +184,6 @@ public abstract class BaseStorage : IStorage
     {
         return Slots.Sum(slot => slot.GetTotalStored());
     }
-
-    protected abstract List<ItemWrapper> GetSupportedItems();
 
     protected static void AddEffectiveSupportedItem(
         Item item,

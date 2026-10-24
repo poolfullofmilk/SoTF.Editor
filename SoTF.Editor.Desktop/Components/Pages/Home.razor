@@ -2,7 +2,7 @@
 @inherits EditorPageBase
 
 <MudStack Spacing="6">
-    <Header Title="@Localizer["Savegames"]">
+    <Header Title="@AppText.Get("Savegames")">
         <MudPaper Elevation="4"
                   Class="rounded-panel pa-4">
             <MudStack Row
@@ -11,7 +11,7 @@
                       Spacing="4">
                 <MudTextField T="string"
                               Value="@SavegamePath"
-                              Label="@Localizer["Location"]"
+                              Label="@AppText.Get("Location")"
                               ReadOnly
                               Disabled
                               Variant="Variant.Outlined"
@@ -24,7 +24,7 @@
                            Size="Size.Small"
                            StartIcon="@Icons.Material.Rounded.Folder"
                            OnClick="ChangeFolderAsync">
-                    @Localizer["ChangeFolder"]
+                    @AppText.Get("ChangeFolder")
                 </MudButton>
 
                 @* Default Folder *@
@@ -33,12 +33,12 @@
                            StartIcon="@Icons.Material.Rounded.SettingsBackupRestore"
                            Disabled="@IsDefaultFolder"
                            OnClick="SetDefaultFolderAsync">
-                    @Localizer["UseDefaultFolder"]
+                    @AppText.Get("UseDefaultFolder")
                 </MudButton>
             </MudStack>
             <MudText Typo="Typo.body2"
                      Class="mud-text-secondary mt-2">
-                @Localizer["DropHint"]
+                @AppText.Get("DropHint")
             </MudText>
         </MudPaper>
     </Header>
@@ -80,7 +80,7 @@
     else if (_savegames.Count == 0)
     {
         <EmptyState Icon="@Icons.Material.Rounded.FolderOff"
-                    Text="@Localizer["NoSavegames"]" />
+                    Text="@AppText.Get("NoSavegames")" />
     }
     else
     {
@@ -138,7 +138,7 @@
                                                      Variant="Variant.Text"
                                                      Color="Color.Info"
                                                      Size="Size.Small">
-                                                @Localizer["Open"]
+                                                @AppText.Get("Open")
                                             </MudChip>
                                         }
                                     </MudStack>

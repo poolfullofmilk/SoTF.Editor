@@ -1,8 +1,10 @@
+using System.Reflection;
 using Newtonsoft.Json.Linq;
 using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Models.Actors;
 using SoTF.Editor.Data.Resources;
+using SoTF.Editor.Services.Actors;
 using SoTF.Editor.Services.Savegames;
 
 namespace SoTF.Editor.Services.Pages;
@@ -16,32 +18,20 @@ public class PlayerPageViewModel
     private const string CurrentHealthEntry = "CurrentHealth";
     private const string RaftEntry = "player.localToRaftUniqueId";
 
-    // Float Entries The Page Edits, Read And Written Alike
-    private static readonly Dictionary<
-        string,
-        (Func<PlayerState, float> Get, Action<PlayerState, float> Set)
-    > s_floatEntries = new()
+    // Float Entries The Page Edits, Each Named Like Its Property
+    private static readonly Dictionary<string, PropertyInfo> s_floatEntries = new[]
     {
-        ["MaxHealth"] = (state => state.MaxHealth, (state, value) => state.MaxHealth = value),
-        [CurrentHealthEntry] = (
-            state => state.CurrentHealth,
-            (state, value) => state.CurrentHealth = value
-        ),
-        ["Hydration"] = (state => state.Hydration, (state, value) => state.Hydration = value),
-        ["HydrationBuff"] = (
-            state => state.HydrationBuff,
-            (state, value) => state.HydrationBuff = value
-        ),
-        ["Fullness"] = (state => state.Fullness, (state, value) => state.Fullness = value),
-        ["FullnessBuff"] = (
-            state => state.FullnessBuff,
-            (state, value) => state.FullnessBuff = value
-        ),
-        ["Rest"] = (state => state.Rest, (state, value) => state.Rest = value),
-        ["RestBuff"] = (state => state.RestBuff, (state, value) => state.RestBuff = value),
-        ["Stamina"] = (state => state.Stamina, (state, value) => state.Stamina = value),
-        [SicknessEntry] = (state => state.Sickness, (state, value) => state.Sickness = value),
-    };
+        nameof(PlayerState.MaxHealth),
+        nameof(PlayerState.CurrentHealth),
+        nameof(PlayerState.Hydration),
+        nameof(PlayerState.HydrationBuff),
+        nameof(PlayerState.Fullness),
+        nameof(PlayerState.FullnessBuff),
+        nameof(PlayerState.Rest),
+        nameof(PlayerState.RestBuff),
+        nameof(PlayerState.Stamina),
+        nameof(PlayerState.Sickness),
+    }.ToDictionary(name => name, name => typeof(PlayerState).GetProperty(name)!);
 
     private readonly List<Item> _availableClothes = [];
 
@@ -155,7 +145,7 @@ public class PlayerPageViewModel
     {
         // The Player Takes The Spot, The Follower Steps Up Beside
         PlayerState.Pos = followerState.Pos.WithoutOffset();
-        followerState.Pos = Teleporter.MoveToPos(followerState.Pos);
+        followerState.Pos = followerState.Pos.ForTeleport();
     }
 
     public void FillAllBars()
@@ -199,13 +189,13 @@ public class PlayerPageViewModel
                     playerPos = PositionOf(entry) ?? playerPos;
                     break;
                 case PlayerAreaMaskEntry:
-                    areaMask = SettingReader.ReadInt(entry) ?? 0;
+                    areaMask = SettingEntry.ReadInt(entry) ?? 0;
                     break;
                 case StrengthLevelEntry:
-                    PlayerState.StrengthLevel = SettingReader.ReadInt(entry) ?? 0;
+                    PlayerState.StrengthLevel = SettingEntry.ReadInt(entry) ?? 0;
                     break;
-                case { } name when s_floatEntries.TryGetValue(name, out var accessor):
-                    accessor.Set(PlayerState, SettingReader.ReadFloat(entry) ?? 0f);
+                case { } name when s_floatEntries.TryGetValue(name, out var property):
+                    property.SetValue(PlayerState, SettingEntry.ReadFloat(entry) ?? 0f);
                     break;
             }
         }
@@ -267,7 +257,7 @@ public class PlayerPageViewModel
         // Target Health Follows Only A Changed Current Health
         var currentHealthChanged = entries.Any(entry =>
             entry["Name"]?.ToString() == CurrentHealthEntry
-            && Math.Abs((SettingReader.ReadFloat(entry) ?? 0f) - PlayerState.CurrentHealth) >= 0.001
+            && Math.Abs((SettingEntry.ReadFloat(entry) ?? 0f) - PlayerState.CurrentHealth) >= 0.001
         );
         var hasChanges = false;
         var positionChanged = false;
@@ -288,20 +278,28 @@ public class PlayerPageViewModel
                     positionChanged = true;
                     break;
                 case PlayerAreaMaskEntry:
-                    hasChanges |= SettingWriter.WriteInt(entry, PlayerState.Pos.Area.AreaMask);
+                    hasChanges |= SettingEntry.WriteInt(entry, PlayerState.Pos.Area.AreaMask);
                     break;
                 case StrengthLevelEntry:
-                    hasChanges |= SettingWriter.WriteInt(entry, PlayerState.StrengthLevel);
+                    hasChanges |= SettingEntry.WriteInt(entry, PlayerState.StrengthLevel);
                     break;
                 // The Game Leaves Out A Healthy Player's Sickness
                 case SicknessEntry when PlayerState.Sickness == 0:
-                    hasChanges |= SettingWriter.RemoveFloat(entry);
+                    hasChanges |= SettingEntry.RemoveFloat(entry);
                     break;
                 case "TargetHealth" when currentHealthChanged:
-                    hasChanges |= SettingWriter.WriteFloat(entry, PlayerState.CurrentHealth);
+                    hasChanges |= JsonModifier.SetFloat(
+                        entry,
+                        Constants.SettingValueKeys.FloatValue,
+                        PlayerState.CurrentHealth
+                    );
                     break;
-                case { } name when s_floatEntries.TryGetValue(name, out var accessor):
-                    hasChanges |= SettingWriter.WriteFloat(entry, accessor.Get(PlayerState));
+                case { } name when s_floatEntries.TryGetValue(name, out var property):
+                    hasChanges |= JsonModifier.SetFloat(
+                        entry,
+                        Constants.SettingValueKeys.FloatValue,
+                        (float)property.GetValue(PlayerState)!
+                    );
                     break;
             }
         }
@@ -311,7 +309,7 @@ public class PlayerPageViewModel
             positionChanged
             && entries.FirstOrDefault(entry => entry["Name"]?.ToString() == RaftEntry)
                 is JObject raftEntry
-            && SettingReader.ReadString(raftEntry) is { } raftId
+            && SettingEntry.ReadString(raftEntry) is { } raftId
             && raftId != Guid.Empty.ToString()
         )
         {

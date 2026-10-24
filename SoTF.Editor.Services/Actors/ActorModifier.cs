@@ -32,8 +32,8 @@ public class ActorModifier(PlayerPageViewModel playerPageViewModel)
         }
 
         // Spawners Go Only When Asked, Either Way
-        RemoveSpawners(
-            vailWorldSim,
+        RemoveWhere(
+            vailWorldSim["Spawners"],
             data.ModifyOptions.RemoveSpawner
                 ? [.. matchedActors.Select(actor => actor["SpawnerId"]?.Value<int>()).OfType<int>()]
                 : []
@@ -112,14 +112,14 @@ public class ActorModifier(PlayerPageViewModel playerPageViewModel)
                 }
             }
 
-            if (options.ReplaceType is { } replaceType and not EmptyActorType)
+            if (options.ReplaceType is { } replaceType)
             {
                 actor["TypeId"] = replaceType.Id;
             }
 
             if (options.TeleportMode == "NpcToPlayer")
             {
-                var newPos = Teleporter.MoveToPos(playerPageViewModel.PlayerState.Pos);
+                var newPos = playerPageViewModel.PlayerState.Pos.ForTeleport();
                 actor["Position"] = JToken.FromObject(newPos);
                 actor["GraphMask"] = newPos.Area.GraphMask;
             }
@@ -136,7 +136,7 @@ public class ActorModifier(PlayerPageViewModel playerPageViewModel)
             var actorPos = data.Actor.Position!;
             matchedActors
                 .LastOrDefault(actor => actor["UniqueId"]?.Value<int>() == data.Actor.UniqueId)
-                ?["Position"] = JToken.FromObject(Teleporter.MoveToPos(actorPos));
+                ?["Position"] = JToken.FromObject(actorPos.ForTeleport());
             playerPageViewModel.PlayerState.Pos = actorPos.WithoutOffset();
         }
     }
@@ -168,14 +168,6 @@ public class ActorModifier(PlayerPageViewModel playerPageViewModel)
         foreach (var uniqueId in uniqueIds.Where(uniqueId => !handled.Contains(uniqueId)))
         {
             influenceMemories.Add(JToken.FromObject(new InfluenceMemory(uniqueId, influences)));
-        }
-    }
-
-    private static void RemoveSpawners(JToken vailWorldSim, HashSet<int> spawnerIds)
-    {
-        if (spawnerIds.Count > 0)
-        {
-            RemoveWhere(vailWorldSim["Spawners"], spawnerIds);
         }
     }
 

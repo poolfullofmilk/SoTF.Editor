@@ -4,12 +4,10 @@ using SoTF.Editor.Data.Enums;
 using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Models.Actors;
-using SoTF.Editor.Data.Models.Map;
 using SoTF.Editor.Data.Models.SaveData.Actor;
 using SoTF.Editor.Data.Resources;
 using SoTF.Editor.Data.ViewModels;
 using SoTF.Editor.Services.Actors;
-using SoTF.Editor.Services.Map;
 using SoTF.Editor.Services.Pages;
 
 namespace SoTF.Editor.Services.Savegames;
@@ -25,12 +23,24 @@ public class MainViewModel(
     WeatherPageViewModel weatherPage,
     NpcsPageViewModel npcsPage,
     StructuresPageViewModel structuresPage,
-    MapManager mapManager,
-    PoiLoader poiLoader,
     GameData gameData
 )
 {
     private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
+
+    // Every Page Route That Can Hold An Edit
+    private static readonly string[] s_routes =
+    [
+        "Player",
+        "Inventory",
+        "Storage",
+        "Followers",
+        "Game",
+        "Npcs",
+        "Structures",
+        "Map",
+        "Tools",
+    ];
 
     public Savegame? SelectedSavegame { get; private set; }
 
@@ -102,7 +112,7 @@ public class MainViewModel(
             return;
         }
 
-        SelectSavegame(SavegameManager.ReloadSavegame(selectedSavegame));
+        SelectSavegame(SavegameManager.Load(selectedSavegame.FullPath));
     }
 
     public void ModifyActors(Action<Savegame> modify)
@@ -197,14 +207,9 @@ public class MainViewModel(
 
     public bool HasUnsavedChanges()
     {
-        if (SelectedSavegame is not { } selectedSavegame)
-        {
-            return false;
-        }
-
-        // Merging Only Touches The Open Copy, Nothing Reaches The Disk
-        MergePages(selectedSavegame);
-        return selectedSavegame.SavegameStore.HasModified();
+        // Asking Never Merges, Or Revert Would Restore Kept Edits
+        return SelectedSavegame is { } selectedSavegame
+            && (s_routes.Any(HasChanges) || selectedSavegame.SavegameStore.HasModified());
     }
 
     public bool SaveChanges(Dictionary<string, List<Change>>? changes = null)
@@ -462,15 +467,15 @@ public class MainViewModel(
 
     public string EternalFires()
     {
-        return ChangeFires(true, 65535f, 0.00001f);
+        return ChangeFires(65535f, 0.00001f);
     }
 
     public string ResetFires()
     {
-        return ChangeFires(true, 300f, 1.0f);
+        return ChangeFires(300f, 1.0f);
     }
 
-    private string ChangeFires(bool isLit, float fuel, float fuelDrainRate)
+    private string ChangeFires(float fuel, float fuelDrainRate)
     {
         if (
             SelectedSavegame is not { } selectedSavegame
@@ -490,7 +495,7 @@ public class MainViewModel(
                 .SelectMany(fires => fires)
         )
         {
-            fire["IsLit"] = isLit;
+            fire["IsLit"] = true;
             fire["Fuel"] = fuel;
             fire["FuelDrainRate"] = fuelDrainRate;
             countChanged++;
@@ -560,9 +565,8 @@ public class MainViewModel(
 
         // Through ModifyActors So The NPCs Page And Map Show Them
         ModifyActors(_ =>
-            hasChanges = new FollowerModifier(saveDataWrapper).CreateFollowers(
+            hasChanges = new FollowerModifier(saveDataWrapper).CreateFollower(
                 typeId,
-                1,
                 follower.GetSelectedInventoryItemIds(),
                 follower.Outfit,
                 playerPage.PlayerState.Pos
@@ -579,86 +583,4 @@ public class MainViewModel(
         return AppText.Format("FollowerSpawned", GameNames.Get(TextKeys.ActorType(typeId)));
     }
     #endregion
-
-    public List<IPoiGrouper> BuildPoiGroups()
-    {
-        var actorPoiGroups = mapManager.GetActorPois();
-
-        var structurePoiGroups = mapManager
-            .GetStructurePois()
-            .Select(keyValuePair => new PoiGroup(
-                false,
-                keyValuePair.Value,
-                keyValuePair.Key,
-                PoiGroupKeys.Structures
-                    + (
-                        keyValuePair
-                            .Value.FirstOrDefault()
-                            ?.ScrewStructureWrapper.ScrewStructure?.Id.ToString()
-                        ?? ""
-                    ),
-                PoiGroupType.Structures,
-                keyValuePair.Value.First().Icon
-            ))
-            .ToList();
-
-        var poiGroups = new List<IPoiGrouper>
-        {
-            PoiGroupCollection.ForActors(actorPoiGroups),
-            new PoiGroupCollection(
-                false,
-                AppText.Get("Structures"),
-                PoiGroupKeys.Structures,
-                structurePoiGroups,
-                PoiGroupType.Structures
-            ),
-        };
-
-        if (SelectedSavegame is { } selectedSavegame)
-        {
-            poiGroups.AddRange(
-                MapManager
-                    .GetWorldItemPois(selectedSavegame)
-                    .Select(keyValuePair => new PoiGroup(
-                        false,
-                        keyValuePair.Value,
-                        keyValuePair.Key,
-                        PoiGroupKeys.WorldItems + keyValuePair.Key,
-                        PoiGroupType.WorldItems,
-                        keyValuePair.Value.First().Icon
-                    ))
-            );
-
-            // Each Line Shows Both Anchors And The Line Between
-            var ziplinePois = MapManager.GetZiplinePois(selectedSavegame);
-            if (ziplinePois.Count > 0)
-            {
-                poiGroups.Add(
-                    new PoiGroup(
-                        false,
-                        ziplinePois.SelectMany(zipline =>
-                            new IPoi[] { zipline.PointA, zipline.PointB, zipline }
-                        ),
-                        AppText.Get("Ziplines"),
-                        PoiGroupType.ZipLines,
-                        "images/icons/" + ZipPointPoi.IconFile
-                    )
-                );
-            }
-        }
-
-        poiGroups.AddRange(poiLoader.Load());
-
-        poiGroups.Add(
-            new PoiGroup(
-                true,
-                [new PlayerPoi(playerPage.PlayerState.Pos) { Enabled = true }],
-                AppText.Get("Player"),
-                PoiGroupType.Player,
-                "images/icons/" + PlayerPoi.IconFile
-            )
-        );
-
-        return [.. poiGroups.OrderBy(group => group.Title)];
-    }
 }

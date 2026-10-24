@@ -26,20 +26,8 @@ public static class JsonModifier
         return true;
     }
 
-    public static bool CompareAndModify(JToken? token, int expectedValue)
+    public static bool SetFloat(JToken? token, string key, float newValue)
     {
-        if (token == null)
-        {
-            return false;
-        }
-
-        var oldValue = token.Value<int>();
-        if (oldValue == expectedValue)
-        {
-            return false;
-        }
-
-        token.Replace(expectedValue);
-        return true;
+        return CompareAndModify(token, key, value => Math.Abs(value - newValue) >= 0.001, newValue);
     }
 }

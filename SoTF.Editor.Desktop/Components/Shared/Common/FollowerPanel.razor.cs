@@ -39,7 +39,7 @@ public partial class FollowerPanel : EditorPageBase
     private bool IsKelvin => TypeId == Constants.Actors.KelvinTypeId;
 
     // Followers Cannot Follow The Player Into Caves
-    private bool PlayerOnSurface => PlayerPage.PlayerState.Pos.Area.IsSurface();
+    private bool PlayerOnSurface => !PlayerPage.PlayerState.Pos.Area.IsUnderground();
 
     // A Follower Missing From The Save Sits At Origin
     private bool InSave => Follower.UniqueId != null;
@@ -83,9 +83,8 @@ public partial class FollowerPanel : EditorPageBase
     {
         if (
             !await DialogService.ConfirmAsync(
-                Localizer,
-                Localizer["SpawnFollower", Name],
-                Localizer["SpawnFollowersWarning"]
+                AppText.Format("SpawnFollower", Name),
+                AppText.Get("SpawnFollowersWarning")
             )
         )
         {

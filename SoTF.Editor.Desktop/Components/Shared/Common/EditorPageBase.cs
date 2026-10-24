@@ -8,9 +8,6 @@ namespace SoTF.Editor.Desktop.Components.Shared.Common;
 public abstract class EditorPageBase : ComponentBase, IHandleEvent, IDisposable
 {
     [Inject]
-    public required IStringLocalizer<SharedResource> Localizer { get; set; }
-
-    [Inject]
     public required MainViewModel MainViewModel { get; set; }
 
     [Inject]
@@ -28,7 +25,7 @@ public abstract class EditorPageBase : ComponentBase, IHandleEvent, IDisposable
 
     protected Task<bool> ConfirmAsync(string labelKey, string textKey)
     {
-        return DialogService.ConfirmAsync(Localizer, Localizer[labelKey], Localizer[textKey]);
+        return DialogService.ConfirmAsync(AppText.Get(labelKey), AppText.Get(textKey));
     }
 
     async Task IHandleEvent.HandleEventAsync(EventCallbackWorkItem callback, object? argument)

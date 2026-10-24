@@ -18,7 +18,7 @@ public class FoodStorage(StorageDefinition definition, ItemList itemList, int in
 
         Pos = saveData.Pos;
 
-        var supportedItems = base.GetSupportedItems();
+        var supportedItems = SupportedItems;
 
         foreach (
             var itemBlock in saveData.Storages.SelectMany(storageBlock => storageBlock.ItemBlocks)
@@ -106,7 +106,7 @@ public class FoodStorage(StorageDefinition definition, ItemList itemList, int in
         return new StorageSaveData { Id = Definition.Id, Storages = [storageBlock] };
     }
 
-    private static List<IStorageModule> SelectModules(
+    private static List<BaseStorageModule> SelectModules(
         StoredItem storedItem,
         ItemWrapper selectedItem
     )

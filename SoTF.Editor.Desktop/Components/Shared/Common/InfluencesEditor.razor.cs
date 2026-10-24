@@ -5,9 +5,6 @@ namespace SoTF.Editor.Desktop.Components.Shared.Common;
 
 public partial class InfluencesEditor
 {
-    [Inject]
-    public required IStringLocalizer<SharedResource> Localizer { get; set; }
-
     [Parameter]
     public required List<Influence> Influences { get; set; }
 
@@ -31,9 +28,9 @@ public partial class InfluencesEditor
         return ChangedWhen?.Invoke(influence, propertyName) == true;
     }
 
-    private string TypeName(string? type)
+    private static string TypeName(string? type)
     {
-        return type is null ? string.Empty : Localizer[TextKeys.Influence(type)];
+        return type is null ? string.Empty : AppText.Get(TextKeys.Influence(type));
     }
 
     private async Task Change(Action change)

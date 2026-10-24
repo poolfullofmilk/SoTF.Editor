@@ -1,13 +1,13 @@
 <MudDialog>
 
     <TitleContent>
-        <MudText Typo="Typo.h6">@Localizer["ConsumedItems"]</MudText>
+        <MudText Typo="Typo.h6">@AppText.Get("ConsumedItems")</MudText>
     </TitleContent>
     <DialogContent>
         @if (_viewModel.ConsumedItems.Count == 0)
         {
             <EmptyState Icon="@Icons.Material.Rounded.Restaurant"
-                        Text="@Localizer["NothingFound"]" />
+                        Text="@AppText.Get("NothingFound")" />
         }
         else
         {
@@ -20,9 +20,9 @@
                       Elevation="0">
 
                 <HeaderContent>
-                    <MudTh>@Localizer["Name"]</MudTh>
-                    <MudTh>@Localizer["Key"]</MudTh>
-                    <MudTh>@Localizer["Remove"]</MudTh>
+                    <MudTh>@AppText.Get("Name")</MudTh>
+                    <MudTh>@AppText.Get("Key")</MudTh>
+                    <MudTh>@AppText.Get("Remove")</MudTh>
                 </HeaderContent>
                 <RowTemplate>
                     <MudTd>@context.Name</MudTd>
@@ -43,14 +43,14 @@
         <MudButton Color="Color.Error"
                    Disabled="@(_viewModel.ConsumedItems.Count == 0)"
                    OnClick="RemoveAllAsync">
-            @Localizer["RemoveAll"]
+            @AppText.Get("RemoveAll")
         </MudButton>
         <MudSpacer />
         @* Apply Button *@
         <MudButton Variant="Variant.Filled"
                    Color="Color.Info"
                    OnClick="Apply">
-            @Localizer["RemoveSelected"]
+            @AppText.Get("RemoveSelected")
         </MudButton>
     </DialogActions>
 

@@ -46,7 +46,6 @@
         <Delete Files="$(PublishDir)$(AssemblyName).staticwebassets.endpoints.json" />
     </Target>
     <ItemGroup>
-        <Using Include="Microsoft.Extensions.Localization" />
         <Using Include="SoTF.Editor.Data.Resources" />
         <Using Include="System.IO" />
     </ItemGroup>

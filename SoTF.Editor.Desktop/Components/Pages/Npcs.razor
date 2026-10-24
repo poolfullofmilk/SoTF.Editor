@@ -19,21 +19,21 @@
                                Color="@(_byFamily ? Color.Default : Color.Info)"
                                Size="Size.Small"
                                OnClick="() => _byFamily = false">
-                        @Localizer["ByType"]
+                        @AppText.Get("ByType")
                     </MudButton>
                     @* By Family *@
                     <MudButton Variant="Variant.Filled"
                                Color="@(_byFamily ? Color.Info : Color.Default)"
                                Size="Size.Small"
                                OnClick="() => _byFamily = true">
-                        @Localizer["ByFamily"]
+                        @AppText.Get("ByFamily")
                     </MudButton>
                 </MudButtonGroup>
                 @if (_byFamily)
                 {
                     <MudText Typo="Typo.caption"
                              Class="mud-text-secondary px-2">
-                        @Localizer["ByFamilyHint"]
+                        @AppText.Get("ByFamilyHint")
                     </MudText>
                 }
                 @* Npc Search *@
@@ -45,7 +45,7 @@
                     {
                         <MudText Typo="Typo.body2"
                                  Class="mud-text-secondary pa-4">
-                            @Localizer["NothingFound"]
+                            @AppText.Get("NothingFound")
                         </MudText>
                     }
                     @foreach (var grouping in Groupings)
@@ -92,7 +92,7 @@
             @if (Selected is not { } selected)
             {
                 <EmptyState Icon="@Icons.Material.Rounded.Pets"
-                            Text="@Localizer["SelectGroup"]" />
+                            Text="@AppText.Get("SelectGroup")" />
             }
             else
             {
@@ -119,11 +119,11 @@
                                 <col style="width:96px" />
                             </ColGroup>
                             <HeaderContent>
-                                <MudTh>@Localizer["Name"]</MudTh>
-                                <MudTh>@Localizer["UniqueId"]</MudTh>
-                                <MudTh>@Localizer["Family"]</MudTh>
-                                <MudTh>@Localizer["State"]</MudTh>
-                                <MudTh>@Localizer["Area"]</MudTh>
+                                <MudTh>@AppText.Get("Name")</MudTh>
+                                <MudTh>@AppText.Get("UniqueId")</MudTh>
+                                <MudTh>@AppText.Get("Family")</MudTh>
+                                <MudTh>@AppText.Get("State")</MudTh>
+                                <MudTh>@AppText.Get("Area")</MudTh>
                                 <MudTh />
                             </HeaderContent>
                             <RowTemplate>
@@ -148,8 +148,8 @@
                                     <ShowOnMapButton Position="context.Position" />
                                     @* Edit Actor *@
                                     <MudIconButton Icon="@Icons.Material.Rounded.Edit"
-                                                   aria-label="@Localizer["Edit"]"
-                                                   title="@Localizer["Edit"]"
+                                                   aria-label="@AppText.Get("Edit")"
+                                                   title="@AppText.Get("Edit")"
                                                    Size="Size.Small"
                                                    OnClick="() => EditAsync(context)" />
                                 </MudTd>

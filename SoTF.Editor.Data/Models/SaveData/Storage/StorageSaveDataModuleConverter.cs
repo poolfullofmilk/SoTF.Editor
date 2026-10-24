@@ -5,23 +5,23 @@ using SoTF.Editor.Data.Models.Storage;
 
 namespace SoTF.Editor.Data.Models.SaveData.Storage;
 
-public class StorageSaveDataModuleConverter : JsonConverter<IStorageModule>
+public class StorageSaveDataModuleConverter : JsonConverter<BaseStorageModule>
 {
     public override bool CanWrite => false;
 
     public override void WriteJson(
         JsonWriter writer,
-        IStorageModule? value,
+        BaseStorageModule? value,
         JsonSerializer serializer
     )
     {
         throw new NotImplementedException();
     }
 
-    public override IStorageModule? ReadJson(
+    public override BaseStorageModule? ReadJson(
         JsonReader reader,
         Type objectType,
-        IStorageModule? existingValue,
+        BaseStorageModule? existingValue,
         bool hasExistingValue,
         JsonSerializer serializer
     )
@@ -39,7 +39,7 @@ public class StorageSaveDataModuleConverter : JsonConverter<IStorageModule>
         }
 
         // Missing Fields Are Zero, The Game Leaves Them Out
-        IStorageModule instance = moduleId switch
+        BaseStorageModule instance = moduleId switch
         {
             1 => new SourceActorStorageModule(0),
             3 => new FoodSpoilStorageModule(moduleId, 0, 0, false),

@@ -11,7 +11,7 @@ public record FoodSpoilStorageModule(
         bool PauseDecay = true
 ) : BaseStorageModule(ModuleId)
 {
-    public override bool IsEqualTo(IStorageModule? other)
+    public override bool IsEqualTo(BaseStorageModule? other)
     {
         return base.IsEqualTo(other)
             && other is FoodSpoilStorageModule module

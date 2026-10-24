@@ -11,9 +11,6 @@ namespace SoTF.Editor.Desktop.Components.Shared.Dialogs;
 
 public partial class SaveChangesDialog
 {
-    [Inject]
-    public required IStringLocalizer<SharedResource> Localizer { get; set; }
-
     [CascadingParameter]
     public required IMudDialogInstance MudDialog { get; set; }
 
@@ -83,14 +80,14 @@ public partial class SaveChangesDialog
             "Followers" => FollowerPage.Changes,
             "Game" => Named(
                 GameSetup
-                    .ChangedKeys.Select(key => Localizer[Game.SetupLabelKey(key)].Value)
+                    .ChangedKeys.Select(key => AppText.Get(Game.SetupLabelKey(key)))
                     .Concat(GameState.ChangedNames)
                     .Concat(Weather.ChangedNames)
             ),
             "Npcs" => NpcsPage.Changes,
             "Structures" => Named(StructuresPage.ChangedNames),
-            "Map" => [new Change(Localizer["Ziplines"].Value)],
-            "Tools" => Named(MainViewModel.ChangedTools.Select(tool => Localizer[tool].Value)),
+            "Map" => [new Change(AppText.Get("Ziplines"))],
+            "Tools" => Named(MainViewModel.ChangedTools.Select(tool => AppText.Get(tool))),
             _ => [],
         };
     }

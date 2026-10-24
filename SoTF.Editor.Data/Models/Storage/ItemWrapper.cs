@@ -2,32 +2,22 @@
 
 namespace SoTF.Editor.Data.Models.Storage;
 
-public class ItemWrapper
+public class ItemWrapper(
+    Item item,
+    int? maxPerSlot,
+    bool? preferHolder = false,
+    FoodSpoilStorageModuleWrapper? foodSpoilStorageModuleWrapper = null
+)
 {
-    private readonly int? _maxPerSlot;
-    private readonly bool _preferHolder;
-
-    public ItemWrapper(
-        Item item,
-        int? maxPerSlot,
-        bool? preferHolder = false,
-        FoodSpoilStorageModuleWrapper? foodSpoilStorageModuleWrapper = null
-    )
-    {
-        _maxPerSlot = maxPerSlot;
-        _preferHolder = preferHolder ?? false;
-        Item = item;
-        FoodSpoilStorageModuleWrapper = foodSpoilStorageModuleWrapper;
-    }
-
-    public Item Item { get; }
-    public FoodSpoilStorageModuleWrapper? FoodSpoilStorageModuleWrapper { get; }
+    public Item Item { get; } = item;
+    public FoodSpoilStorageModuleWrapper? FoodSpoilStorageModuleWrapper { get; } =
+        foodSpoilStorageModuleWrapper;
 
     public string Name => FoodSpoilStorageModuleWrapper?.Name ?? Item.Name;
 
     public int Max =>
-        _maxPerSlot
-        ?? (_preferHolder ? Item.StorageMax?.Holder : null)
+        maxPerSlot
+        ?? (preferHolder == true ? Item.StorageMax?.Holder : null)
         ?? Item.StorageMax?.Shelf
         ?? 1;
 }

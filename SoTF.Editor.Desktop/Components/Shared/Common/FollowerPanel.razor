@@ -28,11 +28,11 @@
                     <MudStack Spacing="0">
                         <MudText Typo="Typo.body2"
                                  Class="mud-text-secondary selectable-text">
-                            @($"{Localizer["UniqueId"]}: {Follower.UniqueId?.ToString() ?? "-"}")
+                            @($"{AppText.Get("UniqueId")}: {Follower.UniqueId?.ToString() ?? "-"}")
                         </MudText>
                         <MudText Typo="Typo.body2"
                                  Class="mud-text-secondary selectable-text">
-                            @($"{Localizer["Position"]}: {Follower.Pos.PrintableShort}")
+                            @($"{AppText.Get("Position")}: {Follower.Pos.PrintableShort}")
                             <ChangedDot When="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Pos))" />
                         </MudText>
                     </MudStack>
@@ -62,10 +62,10 @@
                             </MudElement>
                         }
                         @* Remove Copy *@
-                        <Tooltip Text="@Localizer["RemoveCopy"]"
+                        <Tooltip Text="@AppText.Get("RemoveCopy")"
                                  Disabled="@(!IsSpawnedCopy)">
                             <MudIconButton Icon="@Icons.Material.Rounded.Delete"
-                                           aria-label="@Localizer["RemoveCopy"]"
+                                           aria-label="@AppText.Get("RemoveCopy")"
                                            Color="Color.Error"
                                            Size="Size.Small"
                                            Disabled="@(!IsSpawnedCopy)"
@@ -84,7 +84,7 @@
                                StartIcon="@Icons.Material.Rounded.BatteryChargingFull"
                                Disabled="@(!InSave)"
                                OnClick="() => FollowerPageViewModel.FillAllBars(Follower)">
-                        @Localizer["FillAllBars"]
+                        @AppText.Get("FillAllBars")
                     </MudButton>
                     @* Move To Player *@
                     <MudButton Variant="Variant.Text"
@@ -92,7 +92,7 @@
                                StartIcon="@Icons.Material.Rounded.NearMe"
                                Disabled="@(!CanMoveToPlayer)"
                                OnClick="() => FollowerPageViewModel.MoveTo(Follower, PlayerPage.PlayerState.Pos)">
-                        @Localizer["MoveToPlayer"]
+                        @AppText.Get("MoveToPlayer")
                     </MudButton>
                     @* Move To Other *@
                     <MudButton Variant="Variant.Text"
@@ -100,17 +100,17 @@
                                StartIcon="@Icons.Material.Rounded.NearMe"
                                Disabled="@(!CanMoveToOther)"
                                OnClick="MoveToOther">
-                        @(IsKelvin ? Localizer["MoveToVirginia"] : Localizer["MoveToKelvin"])
+                        @(IsKelvin ? AppText.Get("MoveToVirginia") : AppText.Get("MoveToKelvin"))
                     </MudButton>
                     @* Revive *@
-                    <Tooltip Text="@Localizer["ReviveTooltip"]"
+                    <Tooltip Text="@AppText.Get("ReviveTooltip")"
                              Disabled="@(!CanRevive)">
                         <MudButton Variant="Variant.Text"
                                    Size="Size.Small"
                                    StartIcon="@Icons.Material.Rounded.Favorite"
                                    Disabled="@(!CanRevive)"
                                    OnClick="Revive">
-                            @Localizer["Revive"]
+                            @AppText.Get("Revive")
                         </MudButton>
                     </Tooltip>
                     @* Spawn *@
@@ -119,36 +119,36 @@
                                StartIcon="@Icons.Material.Rounded.GroupAdd"
                                Disabled="@(!PlayerOnSurface)"
                                OnClick="SpawnAsync">
-                        @Localizer["Spawn"]
+                        @AppText.Get("Spawn")
                     </MudButton>
                 </MudStack>
 
                 @* Health *@
-                <StatSlider Label="@Localizer["Health"]"
+                <StatSlider Label="@AppText.Get("Health")"
                             Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Health))"
                             @bind-Value="Follower.Health" />
                 @* Anger *@
-                <StatSlider Label="@Localizer["Anger"]"
+                <StatSlider Label="@AppText.Get("Anger")"
                             Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Anger))"
                             @bind-Value="Follower.Anger" />
                 @* Fear *@
-                <StatSlider Label="@Localizer["Fear"]"
+                <StatSlider Label="@AppText.Get("Fear")"
                             Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Fear))"
                             @bind-Value="Follower.Fear" />
                 @* Fullness *@
-                <StatSlider Label="@Localizer["Fullness"]"
+                <StatSlider Label="@AppText.Get("Fullness")"
                             Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Fullness))"
                             @bind-Value="Follower.Fullness" />
                 @* Hydration *@
-                <StatSlider Label="@Localizer["Hydration"]"
+                <StatSlider Label="@AppText.Get("Hydration")"
                             Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Hydration))"
                             @bind-Value="Follower.Hydration" />
                 @* Energy *@
-                <StatSlider Label="@Localizer["Energy"]"
+                <StatSlider Label="@AppText.Get("Energy")"
                             Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Energy))"
                             @bind-Value="Follower.Energy" />
                 @* Affection *@
-                <StatSlider Label="@Localizer["Affection"]"
+                <StatSlider Label="@AppText.Get("Affection")"
                             Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Affection))"
                             @bind-Value="Follower.Affection" />
 
@@ -158,7 +158,7 @@
                     <MudSelect T="Outfit"
                                Variant="Variant.Outlined"
                                @bind-Value="Follower.Outfit"
-                               Label="@Localizer["Outfit"]"
+                               Label="@AppText.Get("Outfit")"
                                ToStringFunc="outfit => outfit?.Name ?? string.Empty">
                         @foreach (var outfit in Follower.Outfits.OrderBy(outfit => outfit.Name))
                         {
@@ -169,7 +169,7 @@
 
                 <MudText Typo="Typo.subtitle2"
                          Class="mt-2">
-                    @Localizer["Equipment"]
+                    @AppText.Get("Equipment")
                 </MudText>
                 <MudStack Row
                           Wrap="Wrap.Wrap"
@@ -191,8 +191,8 @@
                           AlignItems="AlignItems.Center"
                           Spacing="1"
                           Class="mt-2">
-                    <MudText Typo="Typo.subtitle2">@Localizer["Influences"]</MudText>
-                    <InfoIcon Text="@Localizer["InfluencesInfo"]" />
+                    <MudText Typo="Typo.subtitle2">@AppText.Get("Influences")</MudText>
+                    <InfoIcon Text="@AppText.Get("InfluencesInfo")" />
                 </MudStack>
                 <InfluencesEditor Influences="Follower.Influences"
                                   ChangedWhen="IsInfluenceChanged"

@@ -9,7 +9,7 @@ public sealed class StorageDefinition(
     bool? preferHolder = null,
     HashSet<int>? restrictedItemIds = null,
     StorageType type = StorageType.Items
-) : IStorageDefinition
+)
 {
     public bool? PreferHolder { get; } = preferHolder;
 
@@ -26,9 +26,5 @@ public enum StorageType
 {
     Items,
     Food,
-    Logs,
-    Sticks,
-    Stones,
-    Spears,
-    Bones,
+    Resource,
 }

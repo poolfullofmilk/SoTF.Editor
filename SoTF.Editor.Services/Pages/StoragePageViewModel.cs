@@ -4,6 +4,7 @@ using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Models.SaveData.Storage;
 using SoTF.Editor.Data.Models.Storage;
+using SoTF.Editor.Data.Resources;
 using SoTF.Editor.Services.Savegames;
 
 namespace SoTF.Editor.Services.Pages;
@@ -14,11 +15,11 @@ public class StoragePageViewModel
 
     private readonly Dictionary<int, AdvancedStorageDefinition> _advancedStorageDefinitions;
     private readonly Dictionary<int, StorageDefinition> _storageDefinitions;
-    private readonly StorageFactory _storageFactory;
+    private readonly ItemList _items;
 
-    public StoragePageViewModel(StorageFactory storageFactory, GameData gameData)
+    public StoragePageViewModel(GameData gameData)
     {
-        _storageFactory = storageFactory;
+        _items = gameData.Items;
         _storageDefinitions = gameData.StorageDefinitions.ToDictionary(definition => definition.Id);
         _advancedStorageDefinitions = gameData.AdvancedStorageDefinitions.ToDictionary(definition =>
             definition.Id
@@ -59,7 +60,10 @@ public class StoragePageViewModel
 
     private static string ValueOf(StoredItem storedItem)
     {
-        return LoadedValues.Format($"{storedItem.SelectedItem?.Item.Id} {storedItem.Count}");
+        // Every Food State Shares An Id, So The State Counts
+        var item = storedItem.SelectedItem;
+        var state = item?.FoodSpoilStorageModuleWrapper?.FoodSpoilStorageModule.CurrentState;
+        return LoadedValues.Format($"{item?.Item.Id} {state} {storedItem.Count}");
     }
 
     public IStorage? SelectedStorage { get; set; }
@@ -154,10 +158,24 @@ public class StoragePageViewModel
         }
     }
 
-    private IStorageDefinition? DefinitionOf(int id)
+    private bool IsStorage(int id)
     {
-        return _storageDefinitions.GetValueOrDefault(id)
-            ?? (IStorageDefinition?)_advancedStorageDefinitions.GetValueOrDefault(id);
+        return _storageDefinitions.ContainsKey(id) || _advancedStorageDefinitions.ContainsKey(id);
+    }
+
+    private IStorage NewStorage(int id, int index)
+    {
+        if (!_storageDefinitions.TryGetValue(id, out var definition))
+        {
+            return new AdvancedItemsStorage(_advancedStorageDefinitions[id], _items, index);
+        }
+
+        return definition.Type switch
+        {
+            StorageType.Food => new FoodStorage(definition, _items, index),
+            StorageType.Resource => new RestrictedStorage(definition, _items, index),
+            _ => new ItemsStorage(definition, _items, index),
+        };
     }
 
     private static JArray? StructuresOf(Savegame savegame)
@@ -206,21 +224,21 @@ public class StoragePageViewModel
             var saveData in structures.Select(structure => structure.ToObject<StorageSaveData>())
         )
         {
-            if (saveData == null || DefinitionOf(saveData.Id) is not { } storageDefinition)
+            if (saveData == null || !IsStorage(saveData.Id))
             {
                 continue;
             }
 
             if (!storageCollectionsById.TryGetValue(saveData.Id, out var storageCollection))
             {
-                storageCollection = new StorageCollection(saveData.Id, storageDefinition.Name);
+                storageCollection = new StorageCollection(
+                    saveData.Id,
+                    GameNames.Get(TextKeys.Structure(saveData.Id))
+                );
                 storageCollectionsById.Add(saveData.Id, storageCollection);
             }
 
-            var storage = _storageFactory.Build(
-                storageDefinition,
-                storageCollection.Storages.Count + 1
-            );
+            var storage = NewStorage(saveData.Id, storageCollection.Storages.Count + 1);
             storage.SetSaveData(saveData);
             storageCollection.Storages.Add(storage);
         }
@@ -250,7 +268,7 @@ public class StoragePageViewModel
         {
             if (
                 structureToken["Id"]?.Value<int>() is not { } structureId
-                || DefinitionOf(structureId) == null
+                || !IsStorage(structureId)
             )
             {
                 continue;

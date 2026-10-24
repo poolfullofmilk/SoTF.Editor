@@ -47,8 +47,3 @@ public record ActorType(
         return Id is Constants.Actors.KelvinTypeId or Constants.Actors.VirginiaTypeId;
     }
 }
-
-public record EmptyActorType() : ActorType(-1, "")
-{
-    public static new string Name => "";
-}

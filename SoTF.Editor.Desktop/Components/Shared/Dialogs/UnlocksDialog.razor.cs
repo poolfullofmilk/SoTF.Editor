@@ -7,9 +7,6 @@ namespace SoTF.Editor.Desktop.Components.Shared.Dialogs;
 
 public partial class UnlocksDialog
 {
-    [Inject]
-    public required IStringLocalizer<SharedResource> Localizer { get; set; }
-
     [CascadingParameter]
     public required IMudDialogInstance MudDialog { get; set; }
 
@@ -40,13 +37,13 @@ public partial class UnlocksDialog
         try
         {
             _viewModel?.Save();
-            Snackbar.Add(Localizer["Saved"], Severity.Success);
+            Snackbar.Add(AppText.Get("Saved"), Severity.Success);
             MudDialog.Close(DialogResult.Ok(true));
         }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
         {
             // The Game Can Hold The Profile Open
-            Snackbar.Add(Localizer["UnableToSave", exception.Message], Severity.Error);
+            Snackbar.Add(AppText.Format("UnableToSave", exception.Message), Severity.Error);
         }
     }
 }

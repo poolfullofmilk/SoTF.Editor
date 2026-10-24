@@ -1,5 +1,4 @@
 using Newtonsoft.Json.Linq;
-using SoTF.Editor.Data.Enums;
 using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Models.Actors;
@@ -26,38 +25,39 @@ public class FollowerModifier(SaveDataWrapper saveDataWrapper)
             .Where(actor =>
                 actor["TypeId"]?.Value<int>() == typeId && actor["UniqueId"]?.Value<int>() != null
             )
+            .DistinctBy(actor => actor["UniqueId"]!.Value<int>())
             .ToDictionary(actor => actor["UniqueId"]!.Value<int>());
 
         var vailWorldSimChanged = false;
         foreach (var (uniqueId, actor) in actorsByUniqueId)
         {
-            vailWorldSimChanged |= JsonModifier.CompareAndModify(actor["State"], StateAlive);
+            if (actor["State"] is { } state && state.Value<int>() != StateAlive)
+            {
+                state.Replace(StateAlive);
+                vailWorldSimChanged = true;
+            }
+
             if (actor["Stats"] is { } stats)
             {
-                vailWorldSimChanged |= JsonModifier.CompareAndModify(
-                    stats,
-                    "Health",
-                    value => value < FullHealth,
-                    FullHealth
-                );
-                vailWorldSimChanged |= JsonModifier.CompareAndModify(
-                    stats,
-                    "Hydration",
-                    value => value < FullHydration,
-                    FullHydration
-                );
-                vailWorldSimChanged |= JsonModifier.CompareAndModify(
-                    stats,
-                    "Energy",
-                    value => value < FullEnergy,
-                    FullEnergy
-                );
-                vailWorldSimChanged |= JsonModifier.CompareAndModify(
-                    stats,
-                    "Affection",
-                    value => value < FullAffection,
-                    FullAffection
-                );
+                // Every Bar Full, No Fear Left
+                foreach (
+                    var (key, full) in new (string, float)[]
+                    {
+                        ("Health", FullHealth),
+                        ("Hydration", FullHydration),
+                        ("Energy", FullEnergy),
+                        ("Affection", FullAffection),
+                    }
+                )
+                {
+                    vailWorldSimChanged |= JsonModifier.CompareAndModify(
+                        stats,
+                        key,
+                        value => value < full,
+                        full
+                    );
+                }
+
                 vailWorldSimChanged |= JsonModifier.CompareAndModify(
                     stats,
                     "Fear",
@@ -428,7 +428,7 @@ public class FollowerModifier(SaveDataWrapper saveDataWrapper)
                 }
             )
             {
-                vailWorldSimChanged |= ModifyStat(stats, key, value);
+                vailWorldSimChanged |= JsonModifier.SetFloat(stats, key, value);
             }
         }
 
@@ -512,61 +512,28 @@ public class FollowerModifier(SaveDataWrapper saveDataWrapper)
         return newInfluencesByType.Count > 0;
     }
 
-    private static bool ModifyStat(JToken stats, string key, float newValue)
+    public bool CreateFollower(int typeId, HashSet<int> itemIds, Outfit? outfit, Position pos)
     {
-        // The Game Leaves Out Zero, Missing Reads As Zero
-        if (Math.Abs((stats[key]?.Value<float>() ?? 0f) - newValue) < 0.001)
-        {
-            return false;
-        }
-
-        stats[key] = newValue;
-        return true;
-    }
-
-    public bool CreateFollowers(
-        int typeId,
-        int count,
-        HashSet<int> itemIds,
-        Outfit? outfit,
-        Position pos
-    )
-    {
+        // A Step Beside The Player And A Little Above
         if (
             saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.VailWorldSim)
                 is not { } vailWorldSim
-            || count <= 0
+            || ActorCreator.CreateFollower(
+                typeId,
+                vailWorldSim,
+                new Position(pos.X + 1, pos.Y + 5, pos.Z + 1)
+            )
+                is not
+                (var newId, var newActor)
         )
         {
             return false;
         }
 
-        var vailWorldSimChanged = false;
-        var npcItemInstancesChanged = false;
-
-        var basePos = new Position(pos.X + 1, pos.Y + 5, pos.Z + 1);
-        foreach (var (newX, newZ) in basePos.DistributeCoordinates(count, 2, SpawnPattern.Grid))
-        {
-            if (
-                ActorCreator.CreateFollower(
-                    typeId,
-                    vailWorldSim,
-                    new Position(newX, basePos.Y, newZ)
-                )
-                is not
-                (var newId, var newActor)
-            )
-            {
-                continue;
-            }
-
-            vailWorldSimChanged = true;
-            AddInfluencesForNewFollower(vailWorldSim, newId);
-            EquipItemsInActor(newActor, itemIds);
-            npcItemInstancesChanged |= EquipItemsInNpcItemInstances(newId, itemIds);
-            EquipOutfit(newActor, outfit);
-        }
-
-        return MarkModified(vailWorldSimChanged, npcItemInstancesChanged);
+        AddInfluencesForNewFollower(vailWorldSim, newId);
+        EquipItemsInActor(newActor, itemIds);
+        var npcItemInstancesChanged = EquipItemsInNpcItemInstances(newId, itemIds);
+        EquipOutfit(newActor, outfit);
+        return MarkModified(true, npcItemInstancesChanged);
     }
 }

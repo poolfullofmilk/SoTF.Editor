@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Globalization;
 using System.Resources;
 
@@ -31,14 +30,5 @@ public static class AppText
     {
         // No Parent Fallback, So A Key Missing In Dutch Counts
         return s_resourceManager.GetResourceSet(culture, true, false)?.GetString(key) != null;
-    }
-
-    public static IEnumerable<(string Key, string Value)> All(bool includeParentCultures)
-    {
-        return s_resourceManager
-                .GetResourceSet(Culture, true, includeParentCultures)
-                ?.Cast<DictionaryEntry>()
-                .Select(entry => ((string)entry.Key, entry.Value as string ?? ""))
-            ?? [];
     }
 }

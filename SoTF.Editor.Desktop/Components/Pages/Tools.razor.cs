@@ -14,78 +14,67 @@ public partial class Tools : EditorPageBase
         new(
             "ToolsWorld",
             [
-                new(
-                    "RegrowTrees",
-                    "RegrowTreesText",
-                    Icons.Material.Rounded.Forest,
-                    ToolKind.RegrowTrees
-                ),
-                new(
+                DialogTool<RegrowTreesDialog>("RegrowTrees", Icons.Material.Rounded.Forest),
+                ConfirmedTool(
                     "EternalFires",
-                    "EternalFiresText",
                     Icons.Material.Rounded.LocalFireDepartment,
-                    ToolKind.EternalFires
+                    page => page.MainViewModel.EternalFires()
                 ),
-                new(
+                ConfirmedTool(
                     "ResetFires",
-                    "ResetFiresText",
                     Icons.Material.Rounded.Fireplace,
-                    ToolKind.ResetFires
+                    page => page.MainViewModel.ResetFires()
                 ),
-                new(
+                ConfirmedTool(
                     "ResetStructureDamage",
-                    "ResetStructureDamageText",
                     Icons.Material.Rounded.HomeRepairService,
-                    ToolKind.ResetStructureDamage
+                    page => page.MainViewModel.ResetStructureDamage()
                 ),
-                new(
+                ConfirmedTool(
                     "ResetTraps",
-                    "ResetTrapsText",
                     Icons.Material.Rounded.PestControl,
-                    ToolKind.ResetTraps
+                    page => page.MainViewModel.ResetTraps()
                 ),
-                new(
+                ConfirmedTool(
                     "ResetContainers",
-                    "ResetContainersText",
                     Icons.Material.Rounded.Inventory2,
-                    ToolKind.ResetContainers
+                    page => page.GameStatePage.ResetContainers()
                 ),
-                new(
+                DialogTool<CannibalAngerDialog>(
                     "CannibalAnger",
-                    "CannibalAngerText",
-                    Icons.Material.Rounded.SentimentVeryDissatisfied,
-                    ToolKind.CannibalAnger
+                    Icons.Material.Rounded.SentimentVeryDissatisfied
                 ),
-                new(
+                ConfirmedTool(
                     "SetToEndgame",
-                    "SetToEndgameText",
                     Icons.Material.Rounded.Flag,
-                    ToolKind.SetToEndgame
+                    page => page.SetToEndgame()
                 ),
-                new(
+                DialogTool<WorldItemClonerDialog>(
                     "WorldItemCloner",
-                    "WorldItemClonerText",
-                    Icons.Material.Rounded.ContentCopy,
-                    ToolKind.WorldItemCloner
+                    Icons.Material.Rounded.ContentCopy
                 ),
             ]
         ),
         new(
             "ToolsPlayer",
             [
-                new(
+                DialogTool<ConsumedItemsDialog>(
                     "ConsumedItems",
-                    "ConsumedItemsText",
-                    Icons.Material.Rounded.Restaurant,
-                    ToolKind.ConsumedItems
-                ),
-                new(
-                    "ItemPlater",
-                    "ItemPlaterText",
-                    Icons.Material.Rounded.AutoAwesome,
-                    ToolKind.ItemPlater
-                ),
-                new("Unlocks", "UnlocksText", Icons.Material.Rounded.LockOpen, ToolKind.Unlocks),
+                    Icons.Material.Rounded.Restaurant
+                ) with
+                {
+                    NeedsWorld = false,
+                },
+                DialogTool<ItemPlaterDialog>("ItemPlater", Icons.Material.Rounded.AutoAwesome) with
+                {
+                    NeedsWorld = false,
+                    SavesAtOnce = true,
+                },
+                DialogTool<UnlocksDialog>("Unlocks", Icons.Material.Rounded.LockOpen) with
+                {
+                    NeedsWorld = false,
+                    SavesAtOnce = true,
+                },
             ]
         ),
     ];
@@ -101,12 +90,7 @@ public partial class Tools : EditorPageBase
 
     private bool IsAvailable(Tool tool)
     {
-        return HasWorld || !IsWorldTool(tool.Kind);
-    }
-
-    private static bool IsWorldTool(ToolKind kind)
-    {
-        return kind is not (ToolKind.ConsumedItems or ToolKind.ItemPlater or ToolKind.Unlocks);
+        return HasWorld || !tool.NeedsWorld;
     }
 
     private string CardClass(Tool tool)
@@ -123,12 +107,12 @@ public partial class Tools : EditorPageBase
             return "HostSaveOnly";
         }
 
-        return tool.Kind is ToolKind.ItemPlater or ToolKind.Unlocks ? "SavesAtOnce" : "NeedsSave";
+        return tool.SavesAtOnce ? "SavesAtOnce" : "NeedsSave";
     }
 
     private Color ChipColor(Tool tool)
     {
-        return ChipKey(tool) == "SavesAtOnce" ? Color.Warning : Color.Default;
+        return IsAvailable(tool) && tool.SavesAtOnce ? Color.Warning : Color.Default;
     }
 
     private async Task RunAsync(Tool tool)
@@ -139,50 +123,18 @@ public partial class Tools : EditorPageBase
         }
 
         var stateBefore = MainViewModel.ToolState();
-        switch (tool.Kind)
-        {
-            case ToolKind.RegrowTrees:
-                await ShowDialogAsync<RegrowTreesDialog>();
-                break;
-            case ToolKind.CannibalAnger:
-                await ShowDialogAsync<CannibalAngerDialog>();
-                break;
-            case ToolKind.WorldItemCloner:
-                await ShowDialogAsync<WorldItemClonerDialog>();
-                break;
-            case ToolKind.ConsumedItems:
-                await ShowDialogAsync<ConsumedItemsDialog>();
-                break;
-            case ToolKind.ItemPlater:
-                await ShowDialogAsync<ItemPlaterDialog>();
-                break;
-            case ToolKind.Unlocks:
-                await ShowDialogAsync<UnlocksDialog>();
-                break;
-            default:
-                await ConfirmAndRunAsync(tool);
-                break;
-        }
-
+        await tool.Run(this);
         MainViewModel.FinishTool(tool.TitleKey, stateBefore);
     }
 
-    private async Task ConfirmAndRunAsync(Tool tool)
+    private async Task ConfirmAndRunAsync(string titleKey, Func<Tools, string> action)
     {
-        if (!await ConfirmAsync(tool.TitleKey, tool.TextKey))
+        if (!await ConfirmAsync(titleKey, titleKey + "Text"))
         {
             return;
         }
 
-        var message = tool.Kind switch
-        {
-            ToolKind.EternalFires => MainViewModel.EternalFires(),
-            ToolKind.ResetFires => MainViewModel.ResetFires(),
-            ToolKind.ResetStructureDamage => MainViewModel.ResetStructureDamage(),
-            ToolKind.ResetTraps => MainViewModel.ResetTraps(),
-            ToolKind.ResetContainers => GameStatePage.ResetContainers(),
-            _ => SetToEndgame(),
-        };
+        var message = action(this);
         if (!string.IsNullOrEmpty(message))
         {
             Snackbar.Add(message, Severity.Info);
@@ -192,7 +144,7 @@ public partial class Tools : EditorPageBase
     private string SetToEndgame()
     {
         GameStatePage.SetToEndgame();
-        return Localizer["ChangesAdded"];
+        return AppText.Get("ChangesAdded");
     }
 
     private async Task ShowDialogAsync<TDialog>()
@@ -205,23 +157,25 @@ public partial class Tools : EditorPageBase
         await dialog.Result;
     }
 
-    private enum ToolKind
+    private static Tool DialogTool<TDialog>(string titleKey, string icon)
+        where TDialog : IComponent
     {
-        RegrowTrees,
-        EternalFires,
-        ResetFires,
-        ResetStructureDamage,
-        ResetTraps,
-        ResetContainers,
-        CannibalAnger,
-        SetToEndgame,
-        WorldItemCloner,
-        ConsumedItems,
-        ItemPlater,
-        Unlocks,
+        return new Tool(titleKey, icon, page => page.ShowDialogAsync<TDialog>());
     }
 
-    private sealed record Tool(string TitleKey, string TextKey, string Icon, ToolKind Kind);
+    private static Tool ConfirmedTool(string titleKey, string icon, Func<Tools, string> action)
+    {
+        return new Tool(titleKey, icon, page => page.ConfirmAndRunAsync(titleKey, action));
+    }
+
+    private sealed record Tool(string TitleKey, string Icon, Func<Tools, Task> Run)
+    {
+        public string TextKey => TitleKey + "Text";
+
+        public bool NeedsWorld { get; init; } = true;
+
+        public bool SavesAtOnce { get; init; }
+    }
 
     private sealed record ToolSection(string TitleKey, Tool[] Tools);
 }

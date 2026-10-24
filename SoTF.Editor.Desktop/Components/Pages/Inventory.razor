@@ -3,7 +3,7 @@
 
 <RequiresSavegame>
     <MudStack Class="page-fill">
-        <Header Title="@Localizer["Items"]"
+        <Header Title="@AppText.Get("Items")"
                 Class="fill">
             <TitleContent>
                 <MudSpacer />
@@ -12,21 +12,21 @@
                            Size="Size.Small"
                            Disabled="@(!InventoryPage.HasUnassignedItems())"
                            OnClick="AddAllAsync">
-                    @Localizer["AddAll"]
+                    @AppText.Get("AddAll")
                 </MudButton>
                 @* Set All Min *@
                 <MudButton Variant="Variant.Text"
                            Size="Size.Small"
                            Disabled="@(!InventoryPage.CanSetAllToMin())"
                            OnClick="InventoryPage.SetAllEquippedToMin">
-                    @Localizer["SetAllToMin"]
+                    @AppText.Get("SetAllToMin")
                 </MudButton>
                 @* Set All Max *@
                 <MudButton Variant="Variant.Text"
                            Size="Size.Small"
                            Disabled="@(!InventoryPage.CanSetAllToMax())"
                            OnClick="InventoryPage.SetAllEquippedToMax">
-                    @Localizer["SetAllToMax"]
+                    @AppText.Get("SetAllToMax")
                 </MudButton>
                 @* Remove All *@
                 <MudButton Variant="Variant.Text"
@@ -34,7 +34,7 @@
                            Size="Size.Small"
                            Disabled="@(!InventoryPage.HasInventoryItems())"
                            OnClick="RemoveAllAsync">
-                    @Localizer["RemoveAll"]
+                    @AppText.Get("RemoveAll")
                 </MudButton>
             </TitleContent>
             <ChildContent>
@@ -50,7 +50,7 @@
                         <MudSelect T="Category"
                                    Variant="Variant.Outlined"
                                    @bind-Value="_category"
-                                   Placeholder="@Localizer["Type"]"
+                                   Placeholder="@AppText.Get("Type")"
                                    ToStringFunc="category => category?.TypeRendered ?? string.Empty"
                                    Clearable
                                    Dense
@@ -67,13 +67,13 @@
                                    Disabled="@(_category is null)"
                                    Class="text-nowrap flex-shrink-0"
                                    OnClick="AddCategory">
-                            @Localizer["AddAllFromCategory"]
+                            @AppText.Get("AddAllFromCategory")
                         </MudButton>
                         @* Held Only *@
                         <MudSwitch T="bool"
                                    @bind-Value="_heldOnly"
                                    Color="Color.Info"
-                                   Label="@Localizer["HeldOnly"]"
+                                   Label="@AppText.Get("HeldOnly")"
                                    Class="flex-shrink-0" />
                     </MudStack>
                     <MudTable T="InventoryItem"
@@ -81,6 +81,10 @@
                               Dense
                               Hover
                               FixedHeader
+                              Virtualize
+                              OverscanCount="20"
+                              ItemSize="AppTheme.ListRowHeight"
+                              RowStyle="@AppTheme.ListRowStyle"
                               Elevation="0"
                               Class="fill fixed-columns">
 
@@ -90,8 +94,8 @@
                             <col class="actions-column" />
                         </ColGroup>
                         <HeaderContent>
-                            <MudTh>@Localizer["Name"]</MudTh>
-                            <MudTh>@Localizer["Count"]</MudTh>
+                            <MudTh>@AppText.Get("Name")</MudTh>
+                            <MudTh>@AppText.Get("Count")</MudTh>
                             <MudTh />
                         </HeaderContent>
                         <RowTemplate>
@@ -122,12 +126,12 @@
                                                Disabled="@(context.IsEquipped || context.TotalCount >= context.Max)"
                                                OnClick="context.SetToMax" />
                                     @* Remove Button *@
-                                    <Tooltip Text="@Localizer["Remove"]">
-                                        <MudIconButton Icon="@Icons.Material.Rounded.Delete"
-                                                       Color="Color.Error"
-                                                       Size="Size.Small"
-                                                       OnClick="() => InventoryPage.RemoveItemFromInventory(context)" />
-                                    </Tooltip>
+                                    <MudIconButton Icon="@Icons.Material.Rounded.Delete"
+                                                   aria-label="@AppText.Get("Remove")"
+                                                   title="@AppText.Get("Remove")"
+                                                   Color="Color.Error"
+                                                   Size="Size.Small"
+                                                   OnClick="() => InventoryPage.RemoveItemFromInventory(context)" />
                                 </MudTd>
                             }
                             else
@@ -144,12 +148,12 @@
                                 </MudTd>
                                 <MudTd Style="text-align:right">
                                     @* Add Button *@
-                                    <Tooltip Text="@Localizer["AddToInventory"]">
-                                        <MudIconButton Icon="@Icons.Material.Rounded.AddCircle"
-                                                       Color="Color.Success"
-                                                       Size="Size.Small"
-                                                       OnClick="() => InventoryPage.AddUnassignedItem(context)" />
-                                    </Tooltip>
+                                    <MudIconButton Icon="@Icons.Material.Rounded.AddCircle"
+                                                   aria-label="@AppText.Get("AddToInventory")"
+                                                   title="@AppText.Get("AddToInventory")"
+                                                   Color="Color.Success"
+                                                   Size="Size.Small"
+                                                   OnClick="() => InventoryPage.AddUnassignedItem(context)" />
                                 </MudTd>
                             }
                         </RowTemplate>

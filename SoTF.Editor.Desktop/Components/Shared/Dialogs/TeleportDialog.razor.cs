@@ -11,9 +11,6 @@ namespace SoTF.Editor.Desktop.Components.Shared.Dialogs;
 
 public partial class TeleportDialog
 {
-    [Inject]
-    public required IStringLocalizer<SharedResource> Localizer { get; set; }
-
     [CascadingParameter]
     public required IMudDialogInstance MudDialog { get; set; }
 
@@ -48,7 +45,7 @@ public partial class TeleportDialog
     private void Teleport()
     {
         _viewModel.DoTeleport(PlayerPage.PlayerState, FollowerPage);
-        Snackbar.Add(Localizer["ChangesAdded"], Severity.Info);
+        Snackbar.Add(AppText.Get("ChangesAdded"), Severity.Info);
         MainViewModel.NotifyChanged();
         MudDialog.Close(DialogResult.Ok(true));
     }

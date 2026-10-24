@@ -1,5 +1,4 @@
 using SoTF.Editor.Data.Enums;
-using SoTF.Editor.Data.Resources;
 
 namespace SoTF.Editor.Data.Models.Map;
 
@@ -32,18 +31,4 @@ public class PoiGroupCollection(
             }
         }
     } = enabled;
-
-    public static PoiGroupCollection ForActors(
-        IEnumerable<PoiGroup> actorPoiGroups,
-        bool enabled = false
-    )
-    {
-        return new PoiGroupCollection(
-            enabled,
-            AppText.Get("Actors"),
-            PoiGroupKeys.Actors,
-            actorPoiGroups,
-            PoiGroupType.Actors
-        );
-    }
 }

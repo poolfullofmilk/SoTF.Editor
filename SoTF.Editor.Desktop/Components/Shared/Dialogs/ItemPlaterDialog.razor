@@ -1,20 +1,20 @@
 <MudDialog>
 
     <TitleContent>
-        <MudText Typo="Typo.h6">@Localizer["ItemPlater"]</MudText>
+        <MudText Typo="Typo.h6">@AppText.Get("ItemPlater")</MudText>
     </TitleContent>
     <DialogContent>
         <MudStack Spacing="4">
             <MudText Typo="Typo.body2"
                      Class="text-relaxed">
-                @Localizer["ItemPlaterText"]
+                @AppText.Get("ItemPlaterText")
             </MudText>
             <MudAlert Severity="Severity.Warning"
                       Dense
                       Elevation="4"
                       Class="rounded-panel"
                       Style="white-space:pre-line">
-                @Localizer["ItemPlaterWarning"]
+                @AppText.Get("ItemPlaterWarning")
             </MudAlert>
             @foreach (var group in OptionGroups)
             {
@@ -42,7 +42,7 @@
         <MudButton Color="Color.Error"
                    Disabled="@(!_viewModel.CanModifyPlating())"
                    OnClick="() => ApplyAsync(_viewModel.RemovePlating)">
-            @Localizer["RemovePlating"]
+            @AppText.Get("RemovePlating")
         </MudButton>
         <MudSpacer />
         @* Add Plating *@
@@ -51,7 +51,7 @@
                    StartIcon="@Icons.Material.Rounded.AutoAwesome"
                    Disabled="@(!_viewModel.CanModifyPlating())"
                    OnClick="() => ApplyAsync(_viewModel.AddPlating)">
-            @Localizer["AddPlating"]
+            @AppText.Get("AddPlating")
         </MudButton>
     </DialogActions>
 

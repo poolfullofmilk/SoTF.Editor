@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
 using SoTF.Editor.Data.Enums;
 using SoTF.Editor.Data.Models;
@@ -10,11 +11,6 @@ namespace SoTF.Editor.Desktop.Components.Pages;
 
 public partial class Structures : EditorPageBase
 {
-    private static readonly TableGroupDefinition<ScrewStructureWrapper> s_groupByName = new()
-    {
-        Selector = wrapper => wrapper.Name,
-    };
-
     // The Batch Buttons Each Origin Offered Before
     private static readonly OriginBatch[] s_origins =
     [
@@ -46,6 +42,10 @@ public partial class Structures : EditorPageBase
 
     private string? _filter;
 
+    // One Menu For Every Row, Row Selects Leaked Popovers
+    private MudMenu? _modeMenu;
+    private ScrewStructureWrapper? _menuStructure;
+
     // Every Text Column Counts, The Modification Select Does Not
     private IEnumerable<ScrewStructureWrapper> FilteredStructures =>
         StructuresPage
@@ -63,13 +63,25 @@ public partial class Structures : EditorPageBase
             .OrderBy(wrapper => wrapper.Name)
             .ThenBy(wrapper => wrapper.PctDone);
 
-    private string OriginName(ScrewStructureWrapper wrapper)
+    // A Title Row Leads Each Name, One Flat List Virtualizes
+    private List<StructureRow> Rows =>
+        [
+            .. FilteredStructures
+                .GroupBy(wrapper => wrapper.Name)
+                .SelectMany(group =>
+                    group
+                        .Select(wrapper => new StructureRow(null, wrapper))
+                        .Prepend(new StructureRow($"{group.Key} ({group.Count()})", null))
+                ),
+        ];
+
+    private static string OriginName(ScrewStructureWrapper wrapper)
     {
-        return Localizer[
+        return AppText.Get(
             wrapper.Origin == ScrewStructureOrigin.Finished
                 ? "FinishedStructures"
                 : "UnfinishedStructures"
-        ];
+        );
     }
 
     private static string AddedText(ScrewStructureWrapper wrapper)
@@ -82,9 +94,9 @@ public partial class Structures : EditorPageBase
         return StructuresPage.BatchTargets(FilteredStructures, origin).Any();
     }
 
-    private string ModeName(ScrewStructureModificationMode? mode)
+    private static string ModeName(ScrewStructureModificationMode? mode)
     {
-        return Localizer[TextKeys.StructureMode(mode ?? ScrewStructureModificationMode.None)];
+        return AppText.Get(TextKeys.StructureMode(mode ?? ScrewStructureModificationMode.None));
     }
 
     public static string StructureName(ScrewStructure? structure)
@@ -122,6 +134,21 @@ public partial class Structures : EditorPageBase
         StructuresPage.SetModificationMode(FilteredStructures, origin, mode);
     }
 
+    private async Task OpenModesAsync(MouseEventArgs args, ScrewStructureWrapper wrapper)
+    {
+        // The Menu Opens Where The Row Was Clicked
+        _menuStructure = wrapper;
+        if (_modeMenu is { } modeMenu)
+        {
+            await modeMenu.OpenMenuAsync(args);
+        }
+    }
+
+    private void SetMode(ScrewStructureModificationMode mode)
+    {
+        _menuStructure?.ModificationMode = mode;
+    }
+
     private async Task ChangeTypeAsync(ScrewStructureWrapper wrapper)
     {
         var parameters = new DialogParameters<ChangeStructureTypeDialog>
@@ -129,7 +156,7 @@ public partial class Structures : EditorPageBase
             { dialog => dialog.Structure, wrapper },
         };
         var dialog = await DialogService.ShowAsync<ChangeStructureTypeDialog>(
-            Localizer["ChangeType"],
+            AppText.Get("ChangeType"),
             parameters,
             new DialogOptions { MaxWidth = MaxWidth.Small, FullWidth = true }
         );
@@ -139,6 +166,8 @@ public partial class Structures : EditorPageBase
             wrapper.Update(selected);
         }
     }
+
+    private sealed record StructureRow(string? Title, ScrewStructureWrapper? Structure);
 
     private sealed record BatchMode(ScrewStructureModificationMode Mode, string LabelKey);
 

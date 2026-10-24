@@ -31,7 +31,7 @@ public class StoredItem
 
     public List<ItemWrapper> SupportedItems { get; }
 
-    public List<IStorageModule>? Modules => _uniqueItems.FirstOrDefault()?.Modules;
+    public List<BaseStorageModule>? Modules => _uniqueItems.FirstOrDefault()?.Modules;
 
     public int Max => _maxPerSlot ?? SelectedItem?.Max ?? 0;
 

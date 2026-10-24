@@ -12,9 +12,6 @@ public partial class LanguagePicker
     private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
 
     [Inject]
-    public required IStringLocalizer<SharedResource> Localizer { get; set; }
-
-    [Inject]
     public required NavigationManager NavigationManager { get; set; }
 
     [Inject]
@@ -27,7 +24,7 @@ public partial class LanguagePicker
     {
         if (
             culture == AppCulture.Current
-            || !await DialogService.ConfirmDiscardAsync(Localizer, MainViewModel)
+            || !await DialogService.ConfirmDiscardAsync(MainViewModel)
         )
         {
             return;

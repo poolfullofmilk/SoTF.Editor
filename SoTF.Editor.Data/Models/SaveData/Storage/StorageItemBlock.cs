@@ -21,7 +21,7 @@ public class StorageItemBlock
         return HashCode.Combine(ItemId, TotalCount, UniqueItems);
     }
 
-    public bool HasModuleEqualTo(IStorageModule storageModule)
+    public bool HasModuleEqualTo(BaseStorageModule storageModule)
     {
         return UniqueItems
             .SelectMany(uniqueItem => uniqueItem.Modules)

@@ -10,14 +10,12 @@ public class WeatherPageViewModel
 {
     public List<GenericSetting> Settings { get; } = [];
 
-    private IEnumerable<GenericSetting> AllSettings => Settings;
-
     private readonly LoadedValues _loaded = new();
 
-    public bool HasChanges => AllSettings.Any(IsChanged);
+    public bool HasChanges => Settings.Any(IsChanged);
 
     public IEnumerable<string> ChangedNames =>
-        AllSettings.Where(IsChanged).Select(setting => AppText.Get(TextKeys.Setting(setting.Name)));
+        Settings.Where(IsChanged).Select(setting => AppText.Get(TextKeys.Setting(setting.Name)));
 
     public bool IsChanged(GenericSetting setting)
     {
@@ -27,7 +25,7 @@ public class WeatherPageViewModel
     private void Remember()
     {
         _loaded.Clear();
-        foreach (var setting in AllSettings)
+        foreach (var setting in Settings)
         {
             _loaded.Remember(setting.Name, setting.GetValue());
         }

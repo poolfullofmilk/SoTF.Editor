@@ -167,7 +167,8 @@ public class NpcsPageViewModel
         var killStatsByType =
             vailWorldSim["KillStatsList"]
                 ?.ToObject<List<KillStat>>()
-                ?.ToDictionary(killStat => killStat.TypeId)
+                ?.GroupBy(killStat => killStat.TypeId)
+                .ToDictionary(group => group.Key, group => group.First())
             ?? [];
 
         AllActors.AddRange(vailWorldSim["Actors"]?.ToObject<List<Actor>>() ?? []);

@@ -4,9 +4,6 @@ namespace SoTF.Editor.Desktop.Components.Shared.Common;
 
 public partial class MaxButton
 {
-    [Inject]
-    public required IStringLocalizer<SharedResource> Localizer { get; set; }
-
     [Parameter]
     public int Max { get; set; }
 

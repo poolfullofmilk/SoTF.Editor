@@ -1,8 +1,11 @@
-﻿namespace SoTF.Editor.Data.Models.SaveData.Storage.Module;
+﻿using Newtonsoft.Json;
 
-public abstract record BaseStorageModule(int ModuleId) : SotfBaseModel, IStorageModule
+namespace SoTF.Editor.Data.Models.SaveData.Storage.Module;
+
+[JsonConverter(typeof(StorageSaveDataModuleConverter))]
+public abstract record BaseStorageModule(int ModuleId) : SotfBaseModel
 {
-    public virtual bool IsEqualTo(IStorageModule? other)
+    public virtual bool IsEqualTo(BaseStorageModule? other)
     {
         return other?.ModuleId == ModuleId;
     }

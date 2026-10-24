@@ -27,7 +27,7 @@ public partial class Player : EditorPageBase
 
     // At Max Health The Slider Stops, The Warning Says Why
     private string? CurrentHealthWarning =>
-        State.CurrentHealth >= State.MaxHealth ? Localizer["CurrentHealthAtMax"].Value : null;
+        State.CurrentHealth >= State.MaxHealth ? AppText.Get("CurrentHealthAtMax") : null;
 
     private static bool IsDefault(ArmourData armour)
     {

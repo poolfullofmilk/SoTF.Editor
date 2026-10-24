@@ -23,13 +23,13 @@ public class MapFilter
 
         AreaFilterTypeValues.AddRange(
             allAreas
-                .Where(area => !area.IsSurface())
+                .Where(area => area.IsUnderground())
                 .OrderBy(area => area.Name)
-                .Select(area => new AreaFilter(area))
+                .Select(Map.AreaFilter.Of)
         );
     }
 
-    public IAreaFilter AreaFilter { get; set; } = Map.AreaFilter.All;
+    public AreaFilter AreaFilter { get; set; } = Map.AreaFilter.All;
 
     public RequirementsFilterType RequirementsFilter { get; set; } = RequirementsFilterType.All;
 
@@ -48,5 +48,5 @@ public class MapFilter
         }
     }
 
-    public List<IAreaFilter> AreaFilterTypeValues { get; }
+    public List<AreaFilter> AreaFilterTypeValues { get; }
 }

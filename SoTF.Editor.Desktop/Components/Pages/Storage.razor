@@ -7,7 +7,7 @@
               Class="page-fill">
         <MudElement HtmlTag="div"
                     Class="side-panel fill-column">
-            <Header Title="@Localizer["StorageTypes"]"
+            <Header Title="@AppText.Get("StorageTypes")"
                     Class="fill">
                 <TitleContent>
                     <MudSpacer />
@@ -18,7 +18,7 @@
                                StartIcon="@Icons.Material.Rounded.AllInbox"
                                Disabled="@(!StoragePage.HasStorages())"
                                OnClick="FillAllStoragesAsync">
-                        @Localizer["FillAllStorages"]
+                        @AppText.Get("FillAllStorages")
                     </MudButton>
                 </TitleContent>
                 <ChildContent>
@@ -31,7 +31,7 @@
                         {
                             <MudText Typo="Typo.body2"
                                      Class="mud-text-secondary pa-4">
-                                @Localizer["NothingFound"]
+                                @AppText.Get("NothingFound")
                             </MudText>
                         }
                         @foreach (var (title, storages) in FilteredCollections)
@@ -69,7 +69,7 @@
             @if (StoragePage.SelectedStorage is not { } selected)
             {
                 <EmptyState Icon="@Icons.Material.Rounded.Inventory2"
-                            Text="@Localizer["SelectStorage"]" />
+                            Text="@AppText.Get("SelectStorage")" />
             }
             else
             {
@@ -95,7 +95,7 @@
                                                    Variant="Variant.Outlined"
                                                    Value="_fillItem"
                                                    ValueChanged="SelectFillItem"
-                                                   Label="@Localizer["FillAllWith"]"
+                                                   Label="@AppText.Get("FillAllWith")"
                                                    ToStringFunc="item => item?.Name ?? string.Empty"
                                                    Margin="Margin.Dense">
                                             @foreach (var item in selected.SupportedItems.OrderBy(item => item.Name))
@@ -107,20 +107,20 @@
                                     @* Fill Count *@
                                     <NumberField T="int"
                                                  @bind-Value="_fillCount"
-                                                 Label="@Localizer["Count"]"
+                                                 Label="@AppText.Get("Count")"
                                                  Min="1"
                                                  Max="_fillItem?.Max ?? 1000"
                                                  Margin="Margin.Dense"
                                                  Style="width:110px" />
                                     @* Fill Button *@
-                                    <Tooltip Text="@Localizer["FillFittingSlotsTooltip"]"
+                                    <Tooltip Text="@AppText.Get("FillFittingSlotsTooltip")"
                                              Disabled="@(_fillItem is null)">
                                         <MudButton Variant="Variant.Filled"
                                                    Color="Color.Info"
                                                    Size="Size.Small"
                                                    Disabled="@(_fillItem is null)"
                                                    OnClick="() => StoragePageViewModel.FillAll(selected, _fillItem!, _fillCount)">
-                                            @Localizer["FillFittingSlots"]
+                                            @AppText.Get("FillFittingSlots")
                                         </MudButton>
                                     </Tooltip>
                                     <MudSpacer />
@@ -129,7 +129,7 @@
                                                Size="Size.Small"
                                                Disabled="@(!StoragePageViewModel.CanSetAllToMax(selected))"
                                                OnClick="() => StoragePageViewModel.SetAllToMax(selected)">
-                                        @Localizer["SetAllToMax"]
+                                        @AppText.Get("SetAllToMax")
                                     </MudButton>
                                     @* Clear All *@
                                     <MudButton Variant="Variant.Text"
@@ -137,16 +137,16 @@
                                                Size="Size.Small"
                                                Disabled="@(!StoragePageViewModel.HasStoredItems(selected))"
                                                OnClick="() => StoragePageViewModel.ClearAll(selected)">
-                                        @Localizer["ClearAll"]
+                                        @AppText.Get("ClearAll")
                                     </MudButton>
                                     @* Apply To Same Type *@
-                                    <Tooltip Text="@Localizer["ApplyToSameTypeTooltip"]"
+                                    <Tooltip Text="@AppText.Get("ApplyToSameTypeTooltip")"
                                              Disabled="@(!StoragePage.HasSameTypeStorages(selected))">
                                         <MudButton Variant="Variant.Text"
                                                    Size="Size.Small"
                                                    Disabled="@(!StoragePage.HasSameTypeStorages(selected))"
                                                    OnClick="() => ApplyToSameTypeAsync(selected)">
-                                            @Localizer["ApplyToSameType"]
+                                            @AppText.Get("ApplyToSameType")
                                         </MudButton>
                                     </Tooltip>
                                 </MudStack>
@@ -165,7 +165,7 @@
                                         <MudSelect T="ItemWrapper"
                                                    @bind-Value="storedItem.SelectedItem"
                                                    ToStringFunc="item => item?.Name ?? string.Empty"
-                                                   Placeholder="—"
+                                                   Placeholder="-"
                                                    Dense
                                                    Margin="Margin.Dense"
                                                    Variant="Variant.Outlined"
@@ -190,14 +190,13 @@
                                                    Disabled="@(!storedItem.HasItem() || storedItem.Count >= storedItem.Max)"
                                                    OnClick="storedItem.SetToMax" />
                                         @* Slot Remove *@
-                                        <Tooltip Text="@Localizer["Remove"]"
-                                                 Disabled="@(!storedItem.HasItem())">
-                                            <MudIconButton Icon="@Icons.Material.Rounded.Delete"
-                                                           Color="Color.Error"
-                                                           Size="Size.Small"
-                                                           Disabled="@(!storedItem.HasItem())"
-                                                           OnClick="storedItem.Clear" />
-                                        </Tooltip>
+                                        <MudIconButton Icon="@Icons.Material.Rounded.Delete"
+                                                       aria-label="@AppText.Get("Remove")"
+                                                       title="@(storedItem.HasItem() ? AppText.Get("Remove") : null)"
+                                                       Color="Color.Error"
+                                                       Size="Size.Small"
+                                                       Disabled="@(!storedItem.HasItem())"
+                                                       OnClick="storedItem.Clear" />
                                     </MudStack>
                                 }
                             </MudStack>

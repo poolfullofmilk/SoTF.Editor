@@ -1,13 +1,11 @@
 @* Max Button *@
 <MudElement HtmlTag="span"
             Class="max-slot">
-    <Tooltip Text="@Localizer["SetToMax"]"
-             Disabled="Disabled">
-        <MudButton Variant="Variant.Text"
-                   Size="Size.Small"
-                   Disabled="Disabled"
-                   OnClick="OnClick">
-            @($"{Localizer["Max"]} {Max}")
-        </MudButton>
-    </Tooltip>
+    <MudButton Variant="Variant.Text"
+               Size="Size.Small"
+               Disabled="Disabled"
+               title="@(Disabled ? null : AppText.Get("SetToMax"))"
+               OnClick="OnClick">
+        @($"{AppText.Get("Max")} {Max}")
+    </MudButton>
 </MudElement>

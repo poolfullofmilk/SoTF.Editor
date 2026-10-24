@@ -22,21 +22,21 @@ public partial class Home : EditorPageBase
         new[]
         {
             new SavegameGroup(
-                Localizer["Singleplayer"],
+                AppText.Get("Singleplayer"),
                 [
                     .. (_savegames ?? []).Where(savegame =>
-                        savegame.IsSinglePlayer() || savegame.HasUnknownParentDir()
+                        !savegame.IsMultiPlayer() && !savegame.IsMultiPlayerClient()
                     ),
                 ]
             ),
             new SavegameGroup(
-                Localizer["HostedMultiplayer"],
+                AppText.Get("HostedMultiplayer"),
                 [.. (_savegames ?? []).Where(savegame => savegame.IsMultiPlayer())]
             ),
             new SavegameGroup(
-                Localizer["JoinedMultiplayer"],
+                AppText.Get("JoinedMultiplayer"),
                 [.. (_savegames ?? []).Where(savegame => savegame.IsMultiPlayerClient())],
-                Localizer["MultiplayerClientInfo"]
+                AppText.Get("MultiplayerClientInfo")
             ),
         }.Where(group => group.Savegames.Count > 0);
 
@@ -52,7 +52,7 @@ public partial class Home : EditorPageBase
         _savegames = null;
         var savegames = await Task.Run(() =>
         {
-            var found = SavegameManager.GetSavegames().Values.ToList();
+            var found = SavegameManager.GetSavegames();
             found.ForEach(savegame => _ = savegame.Summary);
             return found;
         });
@@ -74,36 +74,34 @@ public partial class Home : EditorPageBase
         return "rounded-panel overflow-hidden hover-card" + selected;
     }
 
-    private string WorldText(SavegameSummary summary)
+    private static string WorldText(SavegameSummary summary)
     {
         // Day, Mode And Crash Site Tell Worlds Apart
         return string.Join(
             " · ",
             new[]
             {
-                Localizer["SavegameDay", summary.Days].Value,
-                summary.GameType is { } gameType
-                    ? Localizer[TextKeys.GameMode(gameType)].Value
-                    : null,
+                AppText.Format("SavegameDay", summary.Days),
+                summary.GameType is { } gameType ? AppText.Get(TextKeys.GameMode(gameType)) : null,
                 summary.CrashSite is { } crashSite
-                    ? Localizer[
+                    ? AppText.Format(
                         "SavegameCrashSite",
-                        Localizer[TextKeys.CrashSite(crashSite)].Value
-                    ].Value
+                        AppText.Get(TextKeys.CrashSite(crashSite))
+                    )
                     : null,
             }.OfType<string>()
         );
     }
 
-    private string PlayerText(SavegameSummary summary)
+    private static string PlayerText(SavegameSummary summary)
     {
-        return $"{Localizer["SavegameStrength", summary.StrengthLevel]} · {Localizer["SavegameItems", summary.ItemCount]}";
+        return $"{AppText.Format("SavegameStrength", summary.StrengthLevel)} · {AppText.Format("SavegameItems", summary.ItemCount)}";
     }
 
     private void Open(Savegame savegame)
     {
         // The Card Was Read When Listed, Opening Reads It Again
-        if (SavegameManager.ReloadSavegame(savegame) is { } fresh)
+        if (SavegameManager.Load(savegame.FullPath) is { } fresh)
         {
             MainViewModel.RequestOpen(fresh);
         }
@@ -113,7 +111,7 @@ public partial class Home : EditorPageBase
     {
         var dialog = new OpenFolderDialog
         {
-            Title = Localizer["SelectSavesFolder"],
+            Title = AppText.Get("SelectSavesFolder"),
             InitialDirectory = Directory.Exists(SavegamePath) ? SavegamePath : "",
         };
 

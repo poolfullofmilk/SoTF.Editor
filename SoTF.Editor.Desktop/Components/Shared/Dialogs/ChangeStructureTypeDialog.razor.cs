@@ -7,9 +7,6 @@ namespace SoTF.Editor.Desktop.Components.Shared.Dialogs;
 
 public partial class ChangeStructureTypeDialog
 {
-    [Inject]
-    public required IStringLocalizer<SharedResource> Localizer { get; set; }
-
     [CascadingParameter]
     public required IMudDialogInstance MudDialog { get; set; }
 

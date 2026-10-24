@@ -38,6 +38,10 @@ public static class AppTheme
     private const string SlightShadow = "0 2px 8px rgba(0,0,0, 0.25)";
     private const string PanelShadow = "0 8px 24px -10px rgba(0,0,0, 0.6)";
 
+    // Virtualized Rows Share One Height, Or Scrolling Jumps
+    public const int ListRowHeight = 61;
+    public static readonly string ListRowStyle = $"height:{ListRowHeight}px";
+
     public static readonly MudTheme Custom = new()
     {
         PaletteDark = new PaletteDark

@@ -286,30 +286,20 @@ public partial class GameStatePageViewModel
             return false;
         }
 
-        if (!Merge(gameState, Settings, NamedIntDatas))
-        {
-            return false;
-        }
-
-        saveDataWrapper.MarkAsModified(Constants.JsonKeys.GameState);
-        return true;
-    }
-
-    private static bool Merge(
-        JToken gameState,
-        IEnumerable<GenericSetting> newSettings,
-        IEnumerable<GenericSetting> newNamedIntDatas
-    )
-    {
         var hasChanges = false;
-        foreach (var setting in newSettings)
+        foreach (var setting in Settings)
         {
             hasChanges |= setting.MergeTo(gameState);
         }
 
         if (gameState["NamedIntDatas"] is { } namedIntDataToken)
         {
-            hasChanges |= MergeNamedIntDatas(newNamedIntDatas, namedIntDataToken);
+            hasChanges |= MergeNamedIntDatas(NamedIntDatas, namedIntDataToken);
+        }
+
+        if (hasChanges)
+        {
+            saveDataWrapper.MarkAsModified(Constants.JsonKeys.GameState);
         }
 
         return hasChanges;

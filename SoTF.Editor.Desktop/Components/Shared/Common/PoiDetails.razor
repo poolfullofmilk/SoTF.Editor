@@ -13,7 +13,7 @@
         <MudSpacer />
         @* Close Details *@
         <MudIconButton Icon="@Icons.Material.Rounded.Close"
-                       aria-label="@Localizer["Close"]"
+                       aria-label="@AppText.Get("Close")"
                        Size="Size.Small"
                        OnClick="CloseAsync" />
     </MudStack>
@@ -66,7 +66,7 @@
                    Size="Size.Small"
                    StartIcon="@Icons.Material.Rounded.MenuBook"
                    Href="@wikiLink">
-            @Localizer["Wiki"]
+            @AppText.Get("Wiki")
         </MudButton>
     }
 
@@ -78,7 +78,7 @@
                        Size="Size.Small"
                        StartIcon="@Icons.Material.Rounded.Edit"
                        OnClick="() => EditActorAsync(actorPoi)">
-                @Localizer["Edit"]
+                @AppText.Get("Edit")
             </MudButton>
         }
         @if (Poi is ZipPointPoi zipPointPoi)
@@ -89,27 +89,27 @@
                           Dense
                           Elevation="4"
                           Class="rounded-panel">
-                    @Localizer["ClickNewLocation"]
+                    @AppText.Get("ClickNewLocation")
                 </MudAlert>
             }
             @* Move Anchor *@
-            <Tooltip Text="@Localizer["MoveToClickedTooltip"]">
+            <Tooltip Text="@AppText.Get("MoveToClickedTooltip")">
                 <MudButton Variant="Variant.Filled"
                            Size="Size.Small"
                            FullWidth
                            StartIcon="@Icons.Material.Rounded.OpenWith"
                            OnClick="() => RequestZipMove(zipPointPoi, false)">
-                    @Localizer["MoveToClickedPosition"]
+                    @AppText.Get("MoveToClickedPosition")
                 </MudButton>
             </Tooltip>
             @* New Zipline *@
-            <Tooltip Text="@Localizer["NewZiplineTooltip"]">
+            <Tooltip Text="@AppText.Get("NewZiplineTooltip")">
                 <MudButton Variant="Variant.Filled"
                            Size="Size.Small"
                            FullWidth
                            StartIcon="@Icons.Material.Rounded.Timeline"
                            OnClick="() => RequestZipMove(zipPointPoi, true)">
-                    @Localizer["NewZiplineFromHere"]
+                    @AppText.Get("NewZiplineFromHere")
                 </MudButton>
             </Tooltip>
             @* Delete Zipline *@
@@ -118,13 +118,13 @@
                        Size="Size.Small"
                        StartIcon="@Icons.Material.Rounded.Delete"
                        OnClick="() => RemoveZiplineAsync(zipPointPoi.Parent)">
-                @Localizer["DeleteBothAnchors"]
+                @AppText.Get("DeleteBothAnchors")
             </MudButton>
         }
     </MudStack>
 
     <MudDivider />
-    <MudText Typo="Typo.subtitle2">@Localizer["Teleportation"]</MudText>
+    <MudText Typo="Typo.subtitle2">@AppText.Get("Teleportation")</MudText>
     <MudStack Spacing="1">
         @* Teleport Player *@
         <MudButton Variant="Variant.Filled"
@@ -133,7 +133,7 @@
                    StartIcon="@Icons.Material.Rounded.Person"
                    Disabled="@(!Poi.CanTeleportPlayer())"
                    OnClick="() => TeleportAsync(TeleportTarget.Player)">
-            @Localizer["TeleportPlayerHere"]
+            @AppText.Get("TeleportPlayerHere")
         </MudButton>
         @* Teleport Kelvin *@
         <MudButton Variant="Variant.Text"
@@ -141,7 +141,7 @@
                    StartIcon="@Icons.Material.Rounded.NearMe"
                    Disabled="@(!Poi.CanTeleportKelvin())"
                    OnClick="() => TeleportAsync(TeleportTarget.Kelvin)">
-            @Localizer["TeleportKelvinHere"]
+            @AppText.Get("TeleportKelvinHere")
         </MudButton>
         @* Teleport Virginia *@
         <MudButton Variant="Variant.Text"
@@ -149,7 +149,7 @@
                    StartIcon="@Icons.Material.Rounded.NearMe"
                    Disabled="@(!Poi.CanTeleportVirginia())"
                    OnClick="() => TeleportAsync(TeleportTarget.Virginia)">
-            @Localizer["TeleportVirginiaHere"]
+            @AppText.Get("TeleportVirginiaHere")
         </MudButton>
         @* Spawn Actors *@
         <MudButton Variant="Variant.Text"
@@ -157,7 +157,7 @@
                    StartIcon="@Icons.Material.Rounded.GroupAdd"
                    Disabled="@(Poi.Position is null)"
                    OnClick="SpawnActorsAsync">
-            @Localizer["SpawnActors"]
+            @AppText.Get("SpawnActors")
         </MudButton>
     </MudStack>
 </MudStack>

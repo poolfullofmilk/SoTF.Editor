@@ -9,9 +9,6 @@ namespace SoTF.Editor.Desktop.Components.Shared.Common;
 
 public partial class PoiDetails
 {
-    [Inject]
-    public required IStringLocalizer<SharedResource> Localizer { get; set; }
-
     [Parameter]
     public required BasePoi Poi { get; set; }
 
@@ -30,11 +27,11 @@ public partial class PoiDetails
         {
             var details = new List<PoiDetail>
             {
-                new(Localizer["Coordinates"], Poi.PrintableCoordinates),
-                new(Localizer["Area"], Poi.AreaName ?? "-"),
+                new(AppText.Get("Coordinates"), Poi.PrintableCoordinates),
+                new(AppText.Get("Area"), Poi.AreaName ?? "-"),
                 new(
-                    Localizer["Underground"],
-                    Poi.IsUnderground ? Localizer["Yes"] : Localizer["No"]
+                    AppText.Get("Underground"),
+                    Poi.IsUnderground ? AppText.Get("Yes") : AppText.Get("No")
                 ),
             };
 
@@ -44,23 +41,23 @@ public partial class PoiDetails
                 case ActorPoi actorPoi:
                     details.Add(
                         new(
-                            Localizer["Classification"],
+                            AppText.Get("Classification"),
                             actorPoi.Actor.ActorType?.PrintableClassification ?? "-"
                         )
                     );
-                    details.Add(new(Localizer["UniqueId"], actorPoi.Actor.UniqueId.ToString()));
+                    details.Add(new(AppText.Get("UniqueId"), actorPoi.Actor.UniqueId.ToString()));
                     details.Add(
-                        new(Localizer["Family"], actorPoi.Actor.FamilyId?.ToString() ?? "-")
+                        new(AppText.Get("Family"), actorPoi.Actor.FamilyId?.ToString() ?? "-")
                     );
-                    details.Add(new(Localizer["State"], actorPoi.Actor.StatePrintable));
+                    details.Add(new(AppText.Get("State"), actorPoi.Actor.StatePrintable));
                     break;
                 case StructurePoi structurePoi:
                     details.Add(
-                        new(Localizer["Category"], structurePoi.ScrewStructureWrapper.Category)
+                        new(AppText.Get("Category"), structurePoi.ScrewStructureWrapper.Category)
                     );
                     details.Add(
                         new(
-                            Localizer["PercentDone"],
+                            AppText.Get("PercentDone"),
                             structurePoi.ScrewStructureWrapper.PctDonePrintable
                         )
                     );
@@ -68,22 +65,24 @@ public partial class PoiDetails
                 case WorldItemPoi worldItemPoi:
                     details.Add(
                         new(
-                            Localizer["IsCopy"],
-                            worldItemPoi.State.IsRuntimeCreated ? Localizer["Yes"] : Localizer["No"]
+                            AppText.Get("IsCopy"),
+                            worldItemPoi.State.IsRuntimeCreated
+                                ? AppText.Get("Yes")
+                                : AppText.Get("No")
                         )
                     );
                     break;
                 case ItemPoi itemPoi:
-                    details.Add(new(Localizer["ItemId"], itemPoi.Item.Item.Id.ToString()));
+                    details.Add(new(AppText.Get("ItemId"), itemPoi.Item.Item.Id.ToString()));
                     details.Add(
                         new(
-                            Localizer["Owned"],
-                            itemPoi.Item.HasItem ? Localizer["Yes"] : Localizer["No"]
+                            AppText.Get("Owned"),
+                            itemPoi.Item.HasItem ? AppText.Get("Yes") : AppText.Get("No")
                         )
                     );
                     break;
                 case CaveOrBunkerPoi { Objects: { } objects }:
-                    details.Add(new(Localizer["Objects"], objects));
+                    details.Add(new(AppText.Get("Objects"), objects));
                     break;
             }
 
@@ -98,18 +97,18 @@ public partial class PoiDetails
             var lists = new List<PoiItemList>();
             if (Poi is ItemPoi { AltItems: { } altItems })
             {
-                lists.Add(new PoiItemList(Localizer["AlternativeItems"], altItems));
+                lists.Add(new PoiItemList(AppText.Get("AlternativeItems"), altItems));
             }
 
             if (Poi is CaveOrBunkerPoi { Items: { } items })
             {
-                lists.Add(new PoiItemList(Localizer["Items"], items));
+                lists.Add(new PoiItemList(AppText.Get("Items"), items));
             }
 
             if (Poi is InformationalPoi { HasAnyRequirements: true } informationalPoi)
             {
                 lists.Add(
-                    new PoiItemList(Localizer["Requirements"], informationalPoi.Requirements)
+                    new PoiItemList(AppText.Get("Requirements"), informationalPoi.Requirements)
                 );
             }
 
@@ -148,7 +147,7 @@ public partial class PoiDetails
             { dialog => dialog.Mode, mode },
         };
         var dialog = await DialogService.ShowAsync<TeleportDialog>(
-            Localizer["Teleport"],
+            AppText.Get("Teleport"),
             parameters,
             new DialogOptions { MaxWidth = MaxWidth.Small, FullWidth = true }
         );
@@ -158,7 +157,7 @@ public partial class PoiDetails
     private async Task SpawnActorsAsync()
     {
         var dialog = await DialogService.ShowAsync<SpawnActorsDialog>(
-            Localizer["SpawnActors"],
+            AppText.Get("SpawnActors"),
             new DialogParameters<SpawnActorsDialog>
             {
                 { spawnDialog => spawnDialog.Destination, Poi },

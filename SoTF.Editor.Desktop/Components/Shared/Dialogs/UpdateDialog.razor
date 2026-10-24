@@ -1,17 +1,17 @@
 <MudDialog>
 
     <TitleContent>
-        <MudText Typo="Typo.h6">@Localizer["UpdateAvailable", Release.Tag.TrimStart('v')]</MudText>
+        <MudText Typo="Typo.h6">@AppText.Format("UpdateAvailable", Release.Tag.TrimStart('v'))</MudText>
     </TitleContent>
     <DialogContent>
         <MudStack Spacing="2">
             <MudText Typo="Typo.body2"
                      Class="text-relaxed">
-                @Localizer["UpdateText", AppInfo.VersionText]
+                @AppText.Format("UpdateText", AppInfo.VersionText)
             </MudText>
             @if (_notes.Count > 0)
             {
-                <MudText Typo="Typo.subtitle2">@Localizer["WhatChanged"]</MudText>
+                <MudText Typo="Typo.subtitle2">@AppText.Get("WhatChanged")</MudText>
                 <MudStack Spacing="1">
                     @foreach (var note in _notes)
                     {
@@ -41,7 +41,7 @@
                                      Class="mr-2"
                                      Style="width:16px;height:16px" />
             }
-            @(_isInstalling ? Localizer["Downloading"] : Localizer["UpdateNow"])
+            @(_isInstalling ? AppText.Get("Downloading") : AppText.Get("UpdateNow"))
         </MudButton>
     </DialogActions>
 

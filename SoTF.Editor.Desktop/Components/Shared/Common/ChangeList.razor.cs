@@ -8,9 +8,6 @@ public partial class ChangeList
     // A Long List Ends In A Count
     private const int ShownChanges = 6;
 
-    [Inject]
-    public required IStringLocalizer<SharedResource> Localizer { get; set; }
-
     [Parameter]
     public string? Icon { get; set; }
 

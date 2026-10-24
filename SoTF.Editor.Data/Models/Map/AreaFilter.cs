@@ -1,23 +1,30 @@
+using SoTF.Editor.Data.Resources;
+
 namespace SoTF.Editor.Data.Models.Map;
 
-public class AreaFilter(Area area) : IAreaFilter
+public sealed class AreaFilter(Func<string> name, Predicate<IPoi> predicate)
 {
-    public static readonly IAreaFilter All = new StaticAreaFilter("All", _ => true);
+    public static readonly AreaFilter All = new(() => AppText.Get("All"), _ => true);
 
-    public static readonly IAreaFilter Surface = new StaticAreaFilter(
-        "SurfaceOnly",
+    public static readonly AreaFilter Surface = new(
+        () => AppText.Get("SurfaceOnly"),
         poi => !poi.IsUnderground
     );
 
-    public static readonly IAreaFilter CavesOrBunkers = new StaticAreaFilter(
-        "UndergroundOnly",
+    public static readonly AreaFilter CavesOrBunkers = new(
+        () => AppText.Get("UndergroundOnly"),
         poi => poi.IsUnderground
     );
 
-    public bool ShouldInclude(IPoi poi)
+    public string Name => name();
+
+    public static AreaFilter Of(Area area)
     {
-        return poi.Position?.Area.Equals(area) == true;
+        return new AreaFilter(() => area.Name, poi => poi.Position?.Area.Equals(area) == true);
     }
 
-    public string Name => area.Name;
+    public bool ShouldInclude(IPoi poi)
+    {
+        return predicate(poi);
+    }
 }

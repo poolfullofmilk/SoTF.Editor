@@ -10,36 +10,24 @@ public class UnlocksViewModel
     private const string SettingsKey = "_settings";
     private const string BoolValueKey = "BoolValue";
     private const string NameKey = "Name";
-    private const string CreativeModeItemUnlockedKey = "Stats.CreativeModeItemUnlocked";
-    private const string CoreGameCompletedKey = "Stats.CoreGameCompleted";
-    private const string CreativeModeUnlockedKey = "Stats.CreativeModeUnlocked";
-    private const string EscapedIslandKey = "Stats.EscapedIsland";
     private readonly string _playerProfilePath;
+
+    // Each Profile Setting With Its Label, In Dialog Order
+    public static IReadOnlyList<(string Key, string LabelKey)> Settings { get; } =
+    [
+        ("Stats.CoreGameCompleted", "CoreGameCompleted"),
+        ("Stats.EscapedIsland", "EscapedIsland"),
+        ("Stats.CreativeModeUnlocked", "CreativeMode"),
+        ("Stats.CreativeModeItemUnlocked", "CreativeModeItem"),
+    ];
 
     public UnlocksViewModel(string playerProfilePath)
     {
         _playerProfilePath = playerProfilePath;
-        Load(playerProfilePath);
-    }
-
-    public bool CoreGameCompleted { get; set; }
-
-    public bool CreativeMode { get; set; }
-
-    public bool CreativeModeItem { get; set; }
-
-    public bool EscapedIsland { get; set; }
-
-    private void Load(string playerProfilePath)
-    {
-        if (!File.Exists(playerProfilePath))
-        {
-            return;
-        }
-
         if (
-            SaveJson.DeserializeJObjectFromFile(playerProfilePath)[SettingsKey]
-            is not JArray settings
+            !File.Exists(playerProfilePath)
+            || SaveJson.DeserializeJObjectFromFile(playerProfilePath)[SettingsKey]
+                is not JArray settings
         )
         {
             return;
@@ -47,28 +35,15 @@ public class UnlocksViewModel
 
         foreach (var setting in settings)
         {
-            if (setting[NameKey]?.Value<string>() is not { } propertyName)
+            if (setting[NameKey]?.Value<string>() is { } name && Values.ContainsKey(name))
             {
-                continue;
-            }
-
-            switch (propertyName)
-            {
-                case CreativeModeItemUnlockedKey:
-                    CreativeModeItem = GetBoolSetting(setting);
-                    break;
-                case CreativeModeUnlockedKey:
-                    CreativeMode = GetBoolSetting(setting);
-                    break;
-                case CoreGameCompletedKey:
-                    CoreGameCompleted = GetBoolSetting(setting);
-                    break;
-                case EscapedIslandKey:
-                    EscapedIsland = GetBoolSetting(setting);
-                    break;
+                Values[name] = GetBoolSetting(setting);
             }
         }
     }
+
+    public Dictionary<string, bool> Values { get; } =
+        Settings.ToDictionary(setting => setting.Key, _ => false);
 
     private static bool GetBoolSetting(JToken setting)
     {
@@ -87,13 +62,7 @@ public class UnlocksViewModel
             model[SettingsKey] = settings;
         }
 
-        var settingsToSave = new Dictionary<string, bool>
-        {
-            { CreativeModeItemUnlockedKey, CreativeModeItem },
-            { CreativeModeUnlockedKey, CreativeMode },
-            { CoreGameCompletedKey, CoreGameCompleted },
-            { EscapedIslandKey, EscapedIsland },
-        };
+        var settingsToSave = new Dictionary<string, bool>(Values);
 
         var hasChanges = false;
         foreach (var setting in settings)

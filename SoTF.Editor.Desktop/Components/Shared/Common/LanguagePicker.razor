@@ -1,8 +1,8 @@
 @* Language Menu *@
-<Tooltip Text="@Localizer["Language"]"
+<Tooltip Text="@AppText.Get("Language")"
          RootClass="d-flex">
     <MudMenu Icon="@Icons.Material.Rounded.Public"
-             AriaLabel="@Localizer["Language"]"
+             AriaLabel="@AppText.Get("Language")"
              Size="Size.Small">
         @foreach (var (culture, name) in AppCulture.Languages)
         {

@@ -8,7 +8,7 @@
              Rounded>
 
         @* Setup Tab *@
-        <MudTabPanel ToolTip="@Localizer["GameSetup"].Value"
+        <MudTabPanel ToolTip="@AppText.Get("GameSetup")"
                      Icon="@Icons.Material.Rounded.Tune"
                      IconColor="Color.Tertiary">
             <MudStack Spacing="6">
@@ -22,14 +22,14 @@
                                       AlignItems="AlignItems.Center"
                                       Spacing="1">
                                 @* Load Preset *@
-                                <Tooltip Text="@Localizer["LoadPreset"]"
+                                <Tooltip Text="@AppText.Get("LoadPreset")"
                                          RootClass="d-flex flex-shrink-0">
                                     <MudMenu Icon="@Icons.Material.Rounded.Tune"
-                                             AriaLabel="@Localizer["LoadPreset"]"
+                                             AriaLabel="@AppText.Get("LoadPreset")"
                                              Size="Size.Small">
                                         @foreach (var mode in Presets)
                                         {
-                                            <MudMenuItem OnClick="() => LoadPresetAsync(mode.Value)">@Localizer[mode.LabelKey]</MudMenuItem>
+                                            <MudMenuItem OnClick="() => LoadPresetAsync(mode.Value)">@AppText.Get(mode.LabelKey)</MudMenuItem>
                                         }
                                     </MudMenu>
                                 </Tooltip>
@@ -39,15 +39,15 @@
                                     <MudSelect T="string"
                                                Variant="Variant.Outlined"
                                                @bind-Value="GameSetup.SelectedMode"
-                                               Label="@Localizer["Mode"]"
+                                               Label="@AppText.Get("Mode")"
                                                ToStringFunc="value => LabelOf(s_modes, value)">
                                         @foreach (var mode in s_modes)
                                         {
-                                            <MudSelectItem Value="mode.Value">@Localizer[mode.LabelKey]</MudSelectItem>
+                                            <MudSelectItem Value="mode.Value">@AppText.Get(mode.LabelKey)</MudSelectItem>
                                         }
                                     </MudSelect>
                                 </ChangedBadge>
-                                <InfoIcon Text="@Localizer["ModeInfo"]" />
+                                <InfoIcon Text="@AppText.Get("ModeInfo")" />
                             </MudStack>
                         </MudItem>
                         <MudItem xs="12"
@@ -58,9 +58,9 @@
                                 <MudTextField T="string"
                                               Variant="Variant.Outlined"
                                               Value="GameSetup.Uid"
-                                              Label="@Localizer["Uid"]"
+                                              Label="@AppText.Get("Uid")"
                                               Disabled />
-                                <InfoIcon Text="@Localizer["UidInfo"]" />
+                                <InfoIcon Text="@AppText.Get("UidInfo")" />
                             </MudStack>
                         </MudItem>
 
@@ -71,7 +71,7 @@
                 {
                     @foreach (var group in s_setupGroups)
                     {
-                        <Header Title="@Localizer[group.TitleKey]"
+                        <Header Title="@AppText.Get(group.TitleKey)"
                                 Icon="@group.Icon">
                             <TitleContent>
                                 <MudSpacer />
@@ -80,7 +80,7 @@
                                            Size="Size.Small"
                                            Disabled="@(!GameSetup.HasAny(KeysOf(group)))"
                                            OnClick="() => GameSetup.ResetSettings(KeysOf(group))">
-                                    @Localizer["SetAllToDefault"]
+                                    @AppText.Get("SetAllToDefault")
                                 </MudButton>
                             </TitleContent>
                             <ChildContent>
@@ -103,16 +103,16 @@
                                                                    Variant="Variant.Outlined"
                                                                    Value="GameSetup.GetString(setting.Key, setting.Fallback)"
                                                                    ValueChanged="value => GameSetup.SetString(setting.Key, value, setting.Fallback)"
-                                                                   Label="@Localizer[setting.LabelKey]"
+                                                                   Label="@AppText.Get(setting.LabelKey)"
                                                                    Clearable
                                                                    ToStringFunc="value => LabelOf(setting.Options, value)">
                                                             @foreach (var option in setting.Options)
                                                             {
-                                                                <MudSelectItem Value="option.Value">@Localizer[option.LabelKey]</MudSelectItem>
+                                                                <MudSelectItem Value="option.Value">@AppText.Get(option.LabelKey)</MudSelectItem>
                                                             }
                                                         </MudSelect>
                                                     </ChangedBadge>
-                                                    <InfoIcon Text="@Localizer[setting.InfoKey]" />
+                                                    <InfoIcon Text="@AppText.Get(setting.InfoKey)" />
                                                 </MudStack>
                                             </MudItem>
                                         }
@@ -127,9 +127,9 @@
                                                            Value="GameSetup.GetBool(toggle.Key, toggle.Fallback)"
                                                            ValueChanged="value => GameSetup.SetBool(toggle.Key, value, toggle.Fallback)"
                                                            Color="Color.Info">
-                                                    @Localizer[toggle.LabelKey]
+                                                    @AppText.Get(toggle.LabelKey)
                                                     <ChangedDot When="@GameSetup.IsChanged(toggle.Key, toggle.Fallback)" />
-                                                    <InfoIcon Text="@Localizer[toggle.InfoKey]" />
+                                                    <InfoIcon Text="@AppText.Get(toggle.InfoKey)" />
                                                 </MudSwitch>
                                             </MudItem>
                                         }
@@ -147,14 +147,14 @@
                               Dense
                               Elevation="4"
                               Class="rounded-panel">
-                        @Localizer["CustomHint"]
+                        @AppText.Get("CustomHint")
                     </MudAlert>
                 }
             </MudStack>
         </MudTabPanel>
 
         @* State Tab *@
-        <MudTabPanel ToolTip="@Localizer["GameState"].Value"
+        <MudTabPanel ToolTip="@AppText.Get("GameState")"
                      Icon="@Icons.Material.Rounded.AccessTimeFilled"
                      IconColor="Color.Tertiary">
             <MudGrid Class="fill">
@@ -162,7 +162,7 @@
                 <MudItem xs="12"
                          md="6"
                          Class="fill-column">
-                    <Header Title="@Localizer["GameState"]"
+                    <Header Title="@AppText.Get("GameState")"
                             Class="fit">
                         <MudPaper Elevation="4"
                                   Class="rounded-panel panel-flush overflow-y-auto fit">
@@ -176,7 +176,7 @@
                                     <MudStack Row
                                               AlignItems="AlignItems.Center"
                                               Spacing="1">
-                                        <MudText Typo="Typo.body2">@Localizer[TextKeys.Setting(setting.Name)]</MudText>
+                                        <MudText Typo="Typo.body2">@AppText.Get(TextKeys.Setting(setting.Name))</MudText>
                                         @if (InfoOf(setting.Name) is { } info)
                                         {
                                             <InfoIcon Text="@info" />
@@ -198,8 +198,8 @@
                 <MudItem xs="12"
                          md="6"
                          Class="fill-column">
-                    <Header Title="@Localizer["WorldObjectStates"]"
-                            Info="@Localizer["WorldObjectStatesInfo"]"
+                    <Header Title="@AppText.Get("WorldObjectStates")"
+                            Info="@AppText.Get("WorldObjectStatesInfo")"
                             Class="fill">
                         <MudPaper Elevation="4"
                                   Class="rounded-panel panel-flush fill fill-column">
@@ -221,8 +221,8 @@
                                     <col style="width:64px" />
                                 </ColGroup>
                                 <HeaderContent>
-                                    <MudTh>@Localizer["Name"]</MudTh>
-                                    <MudTh>@Localizer["Value"]</MudTh>
+                                    <MudTh>@AppText.Get("Name")</MudTh>
+                                    <MudTh>@AppText.Get("Value")</MudTh>
                                     <MudTh />
                                 </HeaderContent>
                                 <RowTemplate>
@@ -239,13 +239,12 @@
                                         @* Clear Value *@
                                         @if (context.IntValue is not null)
                                         {
-                                            <Tooltip Text="@Localizer["ClearValue"]">
-                                                <MudIconButton Icon="@Icons.Material.Rounded.Backspace"
-                                                               aria-label="@Localizer["ClearValue"]"
-                                                               Color="Color.Error"
-                                                               Size="Size.Small"
-                                                               OnClick="() => context.IntValue = null" />
-                                            </Tooltip>
+                                            <MudIconButton Icon="@Icons.Material.Rounded.Backspace"
+                                                           title="@AppText.Get("ClearValue")"
+                                                           aria-label="@AppText.Get("ClearValue")"
+                                                           Color="Color.Error"
+                                                           Size="Size.Small"
+                                                           OnClick="() => context.IntValue = null" />
                                         }
                                     </MudTd>
                                 </RowTemplate>
@@ -259,7 +258,7 @@
         </MudTabPanel>
 
         @* Weather Tab *@
-        <MudTabPanel ToolTip="@Localizer["WeatherState"].Value"
+        <MudTabPanel ToolTip="@AppText.Get("WeatherState")"
                      Icon="@Icons.Material.Rounded.WbSunny"
                      IconColor="Color.Tertiary">
             <MudPaper Elevation="4"
@@ -272,7 +271,7 @@
                         {
                             <tr>
                                 <td style="width:40%">
-                                    <MudText Typo="Typo.body2">@Localizer["Season"]</MudText>
+                                    <MudText Typo="Typo.body2">@AppText.Get("Season")</MudText>
                                 </td>
                                 <td>
                                     <ChangedBadge When="SeasonChanged"
@@ -286,7 +285,7 @@
                                                    Margin="Margin.Dense">
                                             @foreach (var option in s_seasons)
                                             {
-                                                <MudSelectItem Value="option.Value">@Localizer[option.LabelKey]</MudSelectItem>
+                                                <MudSelectItem Value="option.Value">@AppText.Get(option.LabelKey)</MudSelectItem>
                                             }
                                         </MudSelect>
                                     </ChangedBadge>
@@ -300,7 +299,7 @@
                                                 <MudStack Row
                                                           AlignItems="AlignItems.Center"
                                                           Spacing="1">
-                                                    <MudText Typo="Typo.body2">@Localizer[TextKeys.Setting(setting.Name)]</MudText>
+                                                    <MudText Typo="Typo.body2">@AppText.Get(TextKeys.Setting(setting.Name))</MudText>
                                                     @if (InfoOf(setting.Name) is { } info)
                                                     {
                                                         <InfoIcon Text="@info" />

@@ -12,7 +12,6 @@ public class EditActorViewModel
     {
         Actor = actor;
         AllActorTypes = allActorTypes;
-        ModifyOptions.ReplaceType = allActorTypes.First();
         ModifyOptions.ActorEnergy = Actor.Stats?.GetValueOrDefault("Energy", 100f) ?? 100f;
         ModifyOptions.UpdateEnergy = !Actor.Stats?.ContainsKey("Energy") ?? true;
         ModifyOptions.ActorHealth = Actor.Stats?.GetValueOrDefault("Health", 100f) ?? 100f;
@@ -79,17 +78,7 @@ public class ModifyOptions
         get;
         set
         {
-            // Back At The Loaded Value Means No Update
-            _originalEnergy ??= value;
-            if (Math.Abs(_originalEnergy.Value - value) < 0.01)
-            {
-                UpdateEnergy = false;
-            }
-            else if (Math.Abs(field - value) > 0.01)
-            {
-                UpdateEnergy = true;
-            }
-
+            UpdateEnergy = ShouldUpdate(ref _originalEnergy, field, value, UpdateEnergy);
             field = value;
         }
     }
@@ -99,18 +88,21 @@ public class ModifyOptions
         get;
         set
         {
-            _originalHealth ??= value;
-            if (Math.Abs(_originalHealth.Value - value) < 0.01)
-            {
-                UpdateHealth = false;
-            }
-            else if (Math.Abs(field - value) > 0.01)
-            {
-                UpdateHealth = true;
-            }
-
+            UpdateHealth = ShouldUpdate(ref _originalHealth, field, value, UpdateHealth);
             field = value;
         }
+    }
+
+    private static bool ShouldUpdate(ref float? original, float current, float value, bool update)
+    {
+        // Back At The Loaded Value Means No Update
+        original ??= value;
+        if (Math.Abs(original.Value - value) < 0.01)
+        {
+            return false;
+        }
+
+        return Math.Abs(current - value) > 0.01 || update;
     }
 
     public bool RemoveSpawner { get; set; }

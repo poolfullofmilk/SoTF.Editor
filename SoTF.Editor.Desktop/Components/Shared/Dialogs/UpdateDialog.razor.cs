@@ -17,9 +17,6 @@ public partial class UpdateDialog
 {
     private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
 
-    [Inject]
-    public required IStringLocalizer<SharedResource> Localizer { get; set; }
-
     [CascadingParameter]
     public required IMudDialogInstance MudDialog { get; set; }
 
@@ -40,7 +37,7 @@ public partial class UpdateDialog
 
     protected override async Task OnInitializedAsync()
     {
-        _notes = await UpdateChecker.NotesAsync(Release.Tag);
+        _notes = await Updater.NotesAsync(Release.Tag);
     }
 
     public static Task ShowAsync(IDialogService dialogService, ReleaseInfo release)
@@ -55,7 +52,7 @@ public partial class UpdateDialog
     private async Task InstallAsync()
     {
         // The Button Stays Blue, So Ignore A Second Click
-        if (_isInstalling || !await DialogService.ConfirmDiscardAsync(Localizer, MainViewModel))
+        if (_isInstalling || !await DialogService.ConfirmDiscardAsync(MainViewModel))
         {
             return;
         }
@@ -85,14 +82,14 @@ public partial class UpdateDialog
         {
             // An Unverified Download Never Runs, The Release Page Opens Instead
             s_logger.Error(exception, "Failed To Verify Update");
-            Snackbar.Add(Localizer["UpdateNotVerified"], Severity.Warning);
+            Snackbar.Add(AppText.Get("UpdateNotVerified"), Severity.Warning);
             OpenReleasePage();
         }
         catch (UnauthorizedAccessException exception)
         {
             // A Protected Folder Like Program Files Takes A Manual Download
             s_logger.Error(exception, "Failed To Update, The App Folder Is Protected");
-            Snackbar.Add(Localizer["UpdateFolderProtected"], Severity.Warning);
+            Snackbar.Add(AppText.Get("UpdateFolderProtected"), Severity.Warning);
             OpenReleasePage();
         }
         catch (Exception exception)
@@ -104,7 +101,7 @@ public partial class UpdateDialog
             )
         {
             s_logger.Error(exception, "Failed To Update");
-            Snackbar.Add(Localizer["UpdateFailed"], Severity.Error);
+            Snackbar.Add(AppText.Get("UpdateFailed"), Severity.Error);
             _isInstalling = false;
             await SetClosableAsync(true);
         }

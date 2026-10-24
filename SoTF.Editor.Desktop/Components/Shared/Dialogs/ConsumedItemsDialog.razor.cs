@@ -8,9 +8,6 @@ namespace SoTF.Editor.Desktop.Components.Shared.Dialogs;
 
 public partial class ConsumedItemsDialog
 {
-    [Inject]
-    public required IStringLocalizer<SharedResource> Localizer { get; set; }
-
     [CascadingParameter]
     public required IMudDialogInstance MudDialog { get; set; }
 
@@ -37,9 +34,8 @@ public partial class ConsumedItemsDialog
     {
         if (
             await DialogService.ConfirmAsync(
-                Localizer,
-                Localizer["RemoveAll"],
-                Localizer["RemoveConsumedItemsText"]
+                AppText.Get("RemoveAll"),
+                AppText.Get("RemoveConsumedItemsText")
             )
         )
         {
@@ -56,7 +52,7 @@ public partial class ConsumedItemsDialog
 
     private void Close()
     {
-        Snackbar.Add(Localizer["ChangesAdded"], Severity.Info);
+        Snackbar.Add(AppText.Get("ChangesAdded"), Severity.Info);
         MudDialog.Close(DialogResult.Ok(true));
     }
 }

@@ -221,11 +221,6 @@ public partial class Savegame
         return true;
     }
 
-    public bool IsSinglePlayer()
-    {
-        return ParentDirIs("singleplayer");
-    }
-
     public bool IsMultiPlayer()
     {
         return ParentDirIs("multiplayer");
@@ -234,11 +229,6 @@ public partial class Savegame
     public bool IsMultiPlayerClient()
     {
         return ParentDirIs("multiplayerclient");
-    }
-
-    public bool HasUnknownParentDir()
-    {
-        return !IsSinglePlayer() && !IsMultiPlayer() && !IsMultiPlayerClient();
     }
 
     private bool ParentDirIs(string value)

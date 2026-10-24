@@ -196,7 +196,7 @@ public record PlayerInventoryModel
         }
         else
         {
-            var modules = new List<IStorageModule>();
+            var modules = new List<BaseStorageModule>();
             if (item.FoodSpoilModuleDefinition is { } foodSpoilModule)
             {
                 modules.Add(foodSpoilModule.BuildNewModuleWithDefaults());

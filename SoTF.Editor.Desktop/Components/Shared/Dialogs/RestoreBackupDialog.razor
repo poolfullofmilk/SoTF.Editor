@@ -1,12 +1,12 @@
 <MudDialog ContentClass="fill-column gap-2">
 
     <TitleContent>
-        <MudText Typo="Typo.h6">@Localizer["RestoreBackupTitle"]</MudText>
+        <MudText Typo="Typo.h6">@AppText.Get("RestoreBackupTitle")</MudText>
     </TitleContent>
     <DialogContent>
         <MudText Typo="Typo.body2"
                  Class="mud-text-secondary">
-            @Localizer["RestoreBackupText"]
+            @AppText.Get("RestoreBackupText")
         </MudText>
         @* Backup List *@
         <MudElement HtmlTag="div"
@@ -34,13 +34,12 @@
                         @AgeLabel(backup)
                     </MudText>
                     @* Delete Backup *@
-                    <Tooltip Text="@Localizer["DeleteBackup"]">
-                        <MudIconButton Icon="@Icons.Material.Rounded.Delete"
-                                       aria-label="@Localizer["DeleteBackup"]"
-                                       Color="Color.Error"
-                                       Size="Size.Small"
-                                       OnClick="() => DeleteAsync(backup)" />
-                    </Tooltip>
+                    <MudIconButton Icon="@Icons.Material.Rounded.Delete"
+                                   title="@AppText.Get("DeleteBackup")"
+                                   aria-label="@AppText.Get("DeleteBackup")"
+                                   Color="Color.Error"
+                                   Size="Size.Small"
+                                   OnClick="() => DeleteAsync(backup)" />
                 </MudStack>
             }
         </MudElement>
@@ -49,12 +48,12 @@
             <MudStack Spacing="4"
                       Class="inset rounded-panel pa-4">
                 <MudStack Spacing="2">
-                    <MudText Typo="Typo.subtitle2">@Localizer["SavedAfterBackup"]</MudText>
+                    <MudText Typo="Typo.subtitle2">@AppText.Get("SavedAfterBackup")</MudText>
                     @if (_savedChanges.Count == 0)
                     {
                         <MudText Typo="Typo.caption"
                                  Class="mud-text-secondary">
-                            @Localizer["ChangesNotRecorded"]
+                            @AppText.Get("ChangesNotRecorded")
                         </MudText>
                     }
                     @foreach (var (page, changes) in _savedChanges)
@@ -65,7 +64,7 @@
                     }
                 </MudStack>
                 <MudStack Spacing="2">
-                    <MudText Typo="Typo.subtitle2">@Localizer["DiffersFromNow"]</MudText>
+                    <MudText Typo="Typo.subtitle2">@AppText.Get("DiffersFromNow")</MudText>
                     @if (DifferencesText is { } text)
                     {
                         <MudText Typo="Typo.caption"
@@ -92,7 +91,7 @@
                    StartIcon="@Icons.Material.Rounded.Restore"
                    Disabled="@(_selected is null)"
                    OnClick="Restore">
-            @Localizer["Restore"]
+            @AppText.Get("Restore")
         </MudButton>
     </DialogActions>
 

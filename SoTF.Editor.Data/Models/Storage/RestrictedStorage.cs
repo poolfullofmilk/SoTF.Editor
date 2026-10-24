@@ -1,16 +1,9 @@
 ﻿namespace SoTF.Editor.Data.Models.Storage;
 
-public abstract class RestrictedStorage : BaseStorage
+public class RestrictedStorage(StorageDefinition definition, ItemList itemList, int index)
+    : BaseStorage(definition, index, SupportedItemsOf(itemList, definition))
 {
-    private readonly List<ItemWrapper> _supportedItems;
-
-    protected RestrictedStorage(StorageDefinition definition, ItemList itemList, int index)
-        : base(definition, index)
-    {
-        _supportedItems = GetSupportedItems(itemList, definition);
-    }
-
-    private List<ItemWrapper> GetSupportedItems(
+    private static List<ItemWrapper> SupportedItemsOf(
         ItemList itemList,
         StorageDefinition storageDefinition
     )
@@ -18,7 +11,7 @@ public abstract class RestrictedStorage : BaseStorage
         var supportedItems = new List<ItemWrapper>();
         foreach (
             var item in itemList.Where(item =>
-                Definition.RestrictedItemIds is not { Count: > 0 } restrictedItemIds
+                storageDefinition.RestrictedItemIds is not { Count: > 0 } restrictedItemIds
                 || restrictedItemIds.Contains(item.Id)
             )
         )
@@ -27,10 +20,5 @@ public abstract class RestrictedStorage : BaseStorage
         }
 
         return supportedItems;
-    }
-
-    protected override List<ItemWrapper> GetSupportedItems()
-    {
-        return _supportedItems;
     }
 }

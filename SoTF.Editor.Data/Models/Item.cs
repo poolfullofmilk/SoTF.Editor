@@ -5,7 +5,7 @@ using SoTF.Editor.Data.Resources;
 
 namespace SoTF.Editor.Data.Models;
 
-public class Item : ICloneable
+public record Item
 {
     public int Id { get; init; }
     public string Name => GameNames.Get(TextKeys.Item(Id));
@@ -17,7 +17,7 @@ public class Item : ICloneable
     public bool IsWearableCloth { get; init; } = false;
     public bool IsPlatable { get; init; } = false;
     public DefaultMinMax? Durability { get; init; }
-    public StorageMax? StorageMax { get; set; }
+    public StorageMax? StorageMax { get; init; }
     public HashSet<int>? ModHashes { get; init; }
     public string? Image { get; init; }
     public string? ImageUrl => Image == null ? null : $"images/items/{Image}";
@@ -32,14 +32,9 @@ public class Item : ICloneable
         get { return field ??= TranslationHelper.Normalize(Type).ToLower(); }
     }
 
-    public object Clone()
+    public virtual bool Equals(Item? other)
     {
-        return MemberwiseClone();
-    }
-
-    public override bool Equals(object? obj)
-    {
-        return obj is Item other && Id == other.Id;
+        return other is not null && Id == other.Id;
     }
 
     public override int GetHashCode()

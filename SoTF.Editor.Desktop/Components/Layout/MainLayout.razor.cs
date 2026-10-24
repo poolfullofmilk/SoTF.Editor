@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
 using NLog;
@@ -16,9 +15,6 @@ namespace SoTF.Editor.Desktop.Components.Layout;
 
 public partial class MainLayout : IDisposable
 {
-    [Inject]
-    public required IStringLocalizer<SharedResource> Localizer { get; set; }
-
     private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
 
     // Savegames, Then You, Then The World, Then The Game Itself
@@ -86,7 +82,6 @@ public partial class MainLayout : IDisposable
     {
         MainViewModel.Changed += OnChanged;
         MainViewModel.OpenRequested += OnOpenRequested;
-        NavigationManager.LocationChanged += OnLocationChanged;
         BackupManager.Pruned += OnBackupsPruned;
     }
 
@@ -94,15 +89,14 @@ public partial class MainLayout : IDisposable
     {
         _ = InvokeAsync(() =>
             Snackbar.Add(
-                Localizer["BackupsPruned", count, Formatter.FormatSize(BackupManager.SizeLimit)],
+                AppText.Format(
+                    "BackupsPruned",
+                    count,
+                    Formatter.FormatSize(BackupManager.SizeLimit)
+                ),
                 Severity.Warning
             )
         );
-    }
-
-    private void OnLocationChanged(object? sender, LocationChangedEventArgs eventArgs)
-    {
-        StateHasChanged();
     }
 
     private bool IsActive(PageLink link)
@@ -140,9 +134,8 @@ public partial class MainLayout : IDisposable
         if (
             savegame.SavegameStore.HasChanged()
             && !await DialogService.ConfirmAsync(
-                Localizer,
-                Localizer["OverwriteExternalChangesTitle"],
-                Localizer["OverwriteExternalChangesText"]
+                AppText.Get("OverwriteExternalChangesTitle"),
+                AppText.Get("OverwriteExternalChangesText")
             )
         )
         {
@@ -160,17 +153,17 @@ public partial class MainLayout : IDisposable
             await RunBusyAsync(() => saved = MainViewModel.SaveChanges(changes));
             if (saved)
             {
-                Snackbar.Add(Localizer["ChangesSaved"], Severity.Success);
+                Snackbar.Add(AppText.Get("ChangesSaved"), Severity.Success);
             }
             else
             {
-                Snackbar.Add(Localizer["NoChanges"], Severity.Info);
+                Snackbar.Add(AppText.Get("NoChanges"), Severity.Info);
             }
         }
         catch (Exception exception)
         {
             s_logger.Error(exception, "Failed To Save");
-            Snackbar.Add(Localizer["UnableToSave", exception.Message], Severity.Error);
+            Snackbar.Add(AppText.Format("UnableToSave", exception.Message), Severity.Error);
         }
     }
 
@@ -205,7 +198,7 @@ public partial class MainLayout : IDisposable
 
     private async Task OpenAsync(Savegame savegame)
     {
-        if (!await DialogService.ConfirmDiscardAsync(Localizer, MainViewModel))
+        if (!await DialogService.ConfirmDiscardAsync(MainViewModel))
         {
             return;
         }
@@ -231,9 +224,8 @@ public partial class MainLayout : IDisposable
     {
         if (
             await DialogService.ConfirmAsync(
-                Localizer,
-                Localizer["RevertPage"],
-                Localizer["RevertPageText", Localizer[page.LabelKey]]
+                AppText.Get("RevertPage"),
+                AppText.Format("RevertPageText", AppText.Get(page.LabelKey))
             )
         )
         {
@@ -245,7 +237,7 @@ public partial class MainLayout : IDisposable
     {
         if (
             MainViewModel.SelectedSavegame is { } savegame
-            && await DialogService.ConfirmDiscardAsync(Localizer, MainViewModel)
+            && await DialogService.ConfirmDiscardAsync(MainViewModel)
         )
         {
             await TryBusyAsync(savegame, MainViewModel.ReloadSavegame, "UnableToOpen");
@@ -265,12 +257,12 @@ public partial class MainLayout : IDisposable
             s_logger.Error(exception, "Failed To Load Savegame");
             MainViewModel.SelectSavegame(null);
             Snackbar.Add(
-                Localizer[failureKey],
+                AppText.Get(failureKey),
                 Severity.Error,
                 options =>
                 {
                     options.RequireInteraction = true;
-                    options.Action = Localizer["OpenBackupFolder"];
+                    options.Action = AppText.Get("OpenBackupFolder");
                     options.OnClick = _ =>
                     {
                         OpenBackupFolderOf(savegame.FullPath);
@@ -340,7 +332,7 @@ public partial class MainLayout : IDisposable
         var backups = BackupManager.List(savegame.FullPath);
         if (backups.Count == 0)
         {
-            Snackbar.Add(Localizer["NoBackupFound"], Severity.Info);
+            Snackbar.Add(AppText.Get("NoBackupFound"), Severity.Info);
             return;
         }
 
@@ -355,7 +347,7 @@ public partial class MainLayout : IDisposable
         );
         if (
             await dialog.Result is not { Canceled: false, Data: SavegameBackup backup }
-            || !await DialogService.ConfirmDiscardAsync(Localizer, MainViewModel)
+            || !await DialogService.ConfirmDiscardAsync(MainViewModel)
         )
         {
             return;
@@ -374,7 +366,10 @@ public partial class MainLayout : IDisposable
         )
         {
             Snackbar.Add(
-                Localizer["RestoredBackup", Formatter.FormatDateTimeWithSeconds(backup.TakenAt)],
+                AppText.Format(
+                    "RestoredBackup",
+                    Formatter.FormatDateTimeWithSeconds(backup.TakenAt)
+                ),
                 Severity.Success
             );
         }
@@ -395,12 +390,12 @@ public partial class MainLayout : IDisposable
 
     private async Task CheckForUpdatesAsync(bool invokedManually)
     {
-        var latest = await UpdateChecker.CheckAsync();
+        var latest = await Updater.CheckAsync();
         if (latest is null)
         {
             if (invokedManually)
             {
-                Snackbar.Add(Localizer["UnableToCheckForUpdates"], Severity.Warning);
+                Snackbar.Add(AppText.Get("UnableToCheckForUpdates"), Severity.Warning);
             }
 
             return;
@@ -415,7 +410,7 @@ public partial class MainLayout : IDisposable
         }
         else if (invokedManually)
         {
-            Snackbar.Add(Localizer["AlreadyLatestVersion"], Severity.Success);
+            Snackbar.Add(AppText.Get("AlreadyLatestVersion"), Severity.Success);
         }
     }
     #endregion
@@ -424,7 +419,6 @@ public partial class MainLayout : IDisposable
     {
         MainViewModel.Changed -= OnChanged;
         MainViewModel.OpenRequested -= OnOpenRequested;
-        NavigationManager.LocationChanged -= OnLocationChanged;
         BackupManager.Pruned -= OnBackupsPruned;
         GC.SuppressFinalize(this);
     }

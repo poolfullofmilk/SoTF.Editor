@@ -13,9 +13,6 @@ public partial class ItemPlaterDialog
 {
     private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
 
-    [Inject]
-    public required IStringLocalizer<SharedResource> Localizer { get; set; }
-
     [CascadingParameter]
     public required IMudDialogInstance MudDialog { get; set; }
 
@@ -36,31 +33,31 @@ public partial class ItemPlaterDialog
     private IEnumerable<OptionGroup> OptionGroups =>
         [
             new(
-                Localizer["Items"],
+                AppText.Get("Items"),
                 [
                     new(
-                        Localizer["ItemsInInventory"],
+                        AppText.Get("ItemsInInventory"),
                         () => _viewModel.ItemsInInventory,
                         value => _viewModel.ItemsInInventory = value
                     ),
                     new(
-                        Localizer["ItemsInWeaponRacks"],
+                        AppText.Get("ItemsInWeaponRacks"),
                         () => _viewModel.ItemsInWeaponRacks,
                         value => _viewModel.ItemsInWeaponRacks = value
                     ),
                     new(
-                        Localizer["FollowerItems"],
+                        AppText.Get("FollowerItems"),
                         () => _viewModel.FollowerItems,
                         value => _viewModel.FollowerItems = value
                     ),
                 ]
             ),
             new(
-                Localizer["Structures"],
+                AppText.Get("Structures"),
                 [
                     .. ItemPlaterViewModel.PlatableStructureCategories.Select(category =>
                         Toggle(
-                            Localizer[TextKeys.StructureCategory(category)],
+                            AppText.Get(TextKeys.StructureCategory(category)),
                             _viewModel.StructureCategories,
                             category
                         )
@@ -68,11 +65,11 @@ public partial class ItemPlaterDialog
                 ]
             ),
             new(
-                Localizer["Constructions"],
+                AppText.Get("Constructions"),
                 [
                     .. ItemPlaterViewModel.PlatableConstructionCategories.Select(category =>
                         Toggle(
-                            Localizer[TextKeys.Construction(category)],
+                            AppText.Get(TextKeys.Construction(category)),
                             _viewModel.ConstructionCategories,
                             category
                         )
@@ -89,7 +86,7 @@ public partial class ItemPlaterDialog
     private async Task ApplyAsync(Func<Savegame, PlatingResult> plate)
     {
         // The Plater Saves At Once, Unsaved Edits Would Vanish
-        if (!await DialogService.ConfirmDiscardAsync(Localizer, MainViewModel))
+        if (!await DialogService.ConfirmDiscardAsync(MainViewModel))
         {
             return;
         }
@@ -105,7 +102,7 @@ public partial class ItemPlaterDialog
             var result = plate(savegame);
             MainViewModel.SaveWrappers(
                 result.WrappersToSave,
-                new() { ["Tools"] = [new Change(Localizer["ItemPlater"])] }
+                new() { ["Tools"] = [new Change(AppText.Get("ItemPlater"))] }
             );
             Snackbar.Add(result.Message, Severity.Success);
             MudDialog.Close(DialogResult.Ok(true));
@@ -114,7 +111,7 @@ public partial class ItemPlaterDialog
         {
             // Failed Loads Close The Savegame, Failed Writes Keep It
             s_logger.Error(exception, "Failed To Plate Items");
-            Snackbar.Add(Localizer["UnableToSave", exception.Message], Severity.Error);
+            Snackbar.Add(AppText.Format("UnableToSave", exception.Message), Severity.Error);
         }
     }
 

@@ -1,23 +1,23 @@
 <MudDialog>
 
     <TitleContent>
-        <MudText Typo="Typo.h6">@Localizer["SaveChangesTitle"]</MudText>
+        <MudText Typo="Typo.h6">@AppText.Get("SaveChangesTitle")</MudText>
     </TitleContent>
     <DialogContent>
         <MudStack Spacing="2">
             <MudText Typo="Typo.body2"
                      Class="mud-text-secondary">
-                @Localizer["SaveChangesText"]
+                @AppText.Get("SaveChangesText")
             </MudText>
             @foreach (var link in Pages)
             {
                 <ChangeList Icon="@link.Icon"
-                            Label="@Localizer[link.LabelKey]"
+                            Label="@AppText.Get(link.LabelKey)"
                             Changes="_changes[link.Href]" />
             }
             <MudText Typo="Typo.caption"
                      Class="mud-text-secondary text-relaxed">
-                @Localizer["SaveChangesBackup"]
+                @AppText.Get("SaveChangesBackup")
             </MudText>
         </MudStack>
     </DialogContent>
@@ -27,7 +27,7 @@
                    Color="Color.Info"
                    StartIcon="@Icons.Material.Rounded.Save"
                    OnClick="Save">
-            @Localizer["Save"]
+            @AppText.Get("Save")
         </MudButton>
     </DialogActions>
 

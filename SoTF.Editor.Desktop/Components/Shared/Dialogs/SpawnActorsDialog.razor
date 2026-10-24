@@ -10,17 +10,17 @@
                               Dense
                               Elevation="4"
                               Class="rounded-panel">
-                        @Localizer["SpawnActorsWarning"]
+                        @AppText.Get("SpawnActorsWarning")
                     </MudAlert>
                     <MudText Typo="Typo.body2"
                              Class="selectable-text">
-                        @($"{Localizer["Destination"]}: {_viewModel.Destination}")
+                        @($"{AppText.Get("Destination")}: {_viewModel.Destination}")
                     </MudText>
                     @* Actor Type *@
                     <MudSelect T="ActorType"
                                Variant="Variant.Outlined"
                                @bind-Value="_viewModel.SelectedActorType"
-                               Label="@Localizer["ActorType"]"
+                               Label="@AppText.Get("ActorType")"
                                ToStringFunc="actorType => actorType?.Name ?? string.Empty"
                                Dense>
                         @foreach (var actorType in _viewModel.AllActorTypes)
@@ -33,12 +33,12 @@
                                  @bind-Value="_viewModel.SpawnCount"
                                  Min="1"
                                  Max="500"
-                                 Label="@Localizer["Count"]" />
+                                 Label="@AppText.Get("Count")" />
                     @* Family *@
                     <MudSelect T="int?"
                                Variant="Variant.Outlined"
                                @bind-Value="_viewModel.FamilyId"
-                               Label="@Localizer["Family"]"
+                               Label="@AppText.Get("Family")"
                                ToStringFunc="FamilyName"
                                Dense>
                         @foreach (var familyId in _viewModel.AllFamilyIds)
@@ -53,7 +53,7 @@
                     <MudSelect T="SpawnPattern"
                                Variant="Variant.Outlined"
                                @bind-Value="_viewModel.SelectedSpawnPattern"
-                               Label="@Localizer["SpawnPattern"]"
+                               Label="@AppText.Get("SpawnPattern")"
                                ToStringFunc="PatternName"
                                Dense>
                         @foreach (var pattern in Enum.GetValues<SpawnPattern>())
@@ -65,9 +65,9 @@
                     <NumberField T="int"
                                  @bind-Value="_viewModel.SpaceBetween"
                                  Min="0"
-                                 Label="@Localizer["SpaceBetween"]"
-                                 HelperText="@Localizer["SpaceBetweenTooltip"]" />
-                    <MudText Typo="Typo.subtitle2">@Localizer["Offset"]</MudText>
+                                 Label="@AppText.Get("SpaceBetween")"
+                                 HelperText="@AppText.Get("SpaceBetweenTooltip")" />
+                    <MudText Typo="Typo.subtitle2">@AppText.Get("Offset")</MudText>
                     <MudStack Row
                               Spacing="2">
                         @* Offset X *@
@@ -90,7 +90,7 @@
                     <MudSelect T="Area"
                                Variant="Variant.Outlined"
                                @bind-Value="_viewModel.SelectedArea"
-                               Label="@Localizer["Area"]"
+                               Label="@AppText.Get("Area")"
                                ToStringFunc="area => area?.Name ?? string.Empty"
                                Dense>
                         @foreach (var area in _viewModel.Areas)
@@ -103,8 +103,8 @@
 
             <MudItem xs="12"
                      md="6">
-                <Header Title="@Localizer["Influences"]"
-                        Info="@Localizer["InfluencesInfo"]">
+                <Header Title="@AppText.Get("Influences")"
+                        Info="@AppText.Get("InfluencesInfo")">
                     <InfluencesEditor Influences="_viewModel.Influences"
                                       CanRemove />
                 </Header>
@@ -119,7 +119,7 @@
                    StartIcon="@Icons.Material.Rounded.GroupAdd"
                    Disabled="@(!_viewModel.CanSpawn())"
                    OnClick="Spawn">
-            @Localizer["CreateActors"]
+            @AppText.Get("CreateActors")
         </MudButton>
     </DialogActions>
 

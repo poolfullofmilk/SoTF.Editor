@@ -9,10 +9,6 @@
         <EmbeddedResource Include="Resources\*.json;Resources\*.txt" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference
-            Include="Microsoft.Extensions.Localization.Abstractions"
-            Version="10.0.13"
-        />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
         <PackageReference Include="NLog" Version="6.2.2" />
     </ItemGroup>

@@ -1,13 +1,13 @@
 <MudDialog>
 
     <TitleContent>
-        <MudText Typo="Typo.h6">@Localizer["CannibalAnger"]</MudText>
+        <MudText Typo="Typo.h6">@AppText.Get("CannibalAnger")</MudText>
     </TitleContent>
     <DialogContent>
         <MudStack Spacing="2">
             <MudText Typo="Typo.body2"
                      Class="mud-text-secondary">
-                @Localizer["CannibalAngerText"]
+                @AppText.Get("CannibalAngerText")
             </MudText>
             @* Anger Level *@
             <MudSlider T="int"
@@ -18,7 +18,7 @@
                        Color="Color.Info"
                        ValueLabel
                        Class="mt-4">
-                @($"{Localizer["AngerLevel"]}: {_level}%")
+                @($"{AppText.Get("AngerLevel")}: {_level}%")
             </MudSlider>
         </MudStack>
     </DialogContent>
@@ -27,7 +27,7 @@
         <MudButton Variant="Variant.Filled"
                    Color="Color.Info"
                    OnClick="Apply">
-            @Localizer["Apply"]
+            @AppText.Get("Apply")
         </MudButton>
     </DialogActions>
 

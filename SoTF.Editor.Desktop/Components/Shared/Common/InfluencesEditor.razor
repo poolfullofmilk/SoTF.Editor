@@ -14,26 +14,26 @@
                     {
                         @* Remove Influence *@
                         <MudIconButton Icon="@Icons.Material.Rounded.Delete"
-                                       aria-label="@Localizer["Remove"]"
+                                       aria-label="@AppText.Get("Remove")"
                                        Color="Color.Error"
                                        Size="Size.Small"
                                        OnClick="() => Remove(influence)" />
                     }
                 </MudStack>
                 @* Sentiment *@
-                <StatSlider Label="@Localizer["Sentiment"]"
+                <StatSlider Label="@AppText.Get("Sentiment")"
                             Changed="@IsChanged(influence, nameof(influence.Sentiment))"
                             Value="influence.Sentiment"
                             ValueChanged="value => Change(() => influence.Sentiment = value)"
                             Min="-100" />
                 @* Anger *@
-                <StatSlider Label="@Localizer["Anger"]"
+                <StatSlider Label="@AppText.Get("Anger")"
                             Changed="@IsChanged(influence, nameof(influence.Anger))"
                             Value="influence.Anger"
                             ValueChanged="value => Change(() => influence.Anger = value)"
                             Min="-100" />
                 @* Fear *@
-                <StatSlider Label="@Localizer["Fear"]"
+                <StatSlider Label="@AppText.Get("Fear")"
                             Changed="@IsChanged(influence, nameof(influence.Fear))"
                             Value="influence.Fear"
                             ValueChanged="value => Change(() => influence.Fear = value)"
@@ -51,7 +51,7 @@
             <MudSelect T="string"
                        Variant="Variant.Outlined"
                        @bind-Value="_newType"
-                       Label="@Localizer["Influences"]"
+                       Label="@AppText.Get("Influences")"
                        ToStringFunc="TypeName"
                        Dense
                        Class="flex-grow-1">
@@ -66,7 +66,7 @@
                        StartIcon="@Icons.Material.Rounded.Add"
                        Disabled="@(_newType is null)"
                        OnClick="Add">
-                @Localizer["Add"]
+                @AppText.Get("Add")
             </MudButton>
         </MudStack>
     }

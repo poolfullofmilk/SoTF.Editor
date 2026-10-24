@@ -28,7 +28,7 @@ public class SaveDataWrapper(JToken parent)
         }
 
         // Nested Json Is Parsed Once, Edits Change That Copy
-        var parsed = SaveJson.DeserializeRaw(token.ToString());
+        var parsed = JToken.Parse(token.ToString());
         _jsonStringNodes.Add(selector, parsed);
         _loadedNodes.Add(selector, parsed.DeepClone());
         return parsed;

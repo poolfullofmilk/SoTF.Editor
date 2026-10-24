@@ -108,15 +108,10 @@ public class AdvancedItemsStorage : IStorage
                 slot.StoredItems.FirstOrDefault()
                     is not { SelectedItem: { } selectedItem } storedItem
                 || storedItem.Count == 0
-                || slotDefinition.SlotOrder.GetIndexForItem(selectedItem.Item.Id)
-                    is not { } slotOrder
+                || !slotDefinition.SlotOrder.TryGetValue(selectedItem.Item.Id, out var slotOrder)
             )
             {
-                for (
-                    var orderIndex = 0;
-                    orderIndex <= slotDefinition.SlotOrder.GetMaxIndex();
-                    orderIndex++
-                )
+                for (var orderIndex = 0; orderIndex < slotDefinition.SlotOrder.Count; orderIndex++)
                 {
                     storageSaveData.Storages.Add(new StorageBlock());
                 }
@@ -124,11 +119,7 @@ public class AdvancedItemsStorage : IStorage
                 continue;
             }
 
-            for (
-                var orderIndex = 0;
-                orderIndex <= slotDefinition.SlotOrder.GetMaxIndex();
-                orderIndex++
-            )
+            for (var orderIndex = 0; orderIndex < slotDefinition.SlotOrder.Count; orderIndex++)
             {
                 var storageBlock = new StorageBlock();
 

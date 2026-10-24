@@ -241,7 +241,7 @@ public class FollowerPageViewModel
 
     public static void MoveTo(FollowerState follower, Position target)
     {
-        follower.Pos = Teleporter.MoveToPos(target);
+        follower.Pos = target.ForTeleport();
     }
 
     private void LoadDeathFlags(Savegame? savegame)

@@ -7,7 +7,6 @@ using Newtonsoft.Json;
 using NLog;
 using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
-using SoTF.Editor.Data.Models.Storage;
 using SoTF.Editor.Services.Actors;
 using SoTF.Editor.Services.Integration;
 using SoTF.Editor.Services.Map;
@@ -103,7 +102,6 @@ public partial class App : Application
 #if DEBUG
         services.AddBlazorWebViewDeveloperTools();
 #endif
-        services.AddSingleton<IStringLocalizer<SharedResource>, AppLocalizer>();
         services.AddMudServices(configuration =>
         {
             // Snackbars Default To Outlined Icons, Every Other Icon Is Rounded
@@ -118,7 +116,6 @@ public partial class App : Application
         });
 
         services.AddSingleton(gameData);
-        services.AddSingleton<StorageFactory>();
         services.AddSingleton<PlayerPageViewModel>();
         services.AddSingleton<ArmorPageViewModel>();
         services.AddSingleton<InventoryPageViewModel>();

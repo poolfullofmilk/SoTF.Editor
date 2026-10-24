@@ -31,11 +31,6 @@ public static class SaveJson
         return JsonConvert.DeserializeObject(json, objectType, s_settings);
     }
 
-    public static JToken DeserializeRaw(string json)
-    {
-        return JToken.Parse(json);
-    }
-
     public static JToken DeserializeJObjectFromFile(string path)
     {
         return JObject.Parse(File.ReadAllText(path, Encoding));

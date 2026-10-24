@@ -20,9 +20,4 @@ public class Area(string name, int areaMask, int graphMask)
     {
         return HashCode.Combine(AreaMask, GraphMask);
     }
-
-    public bool IsSurface()
-    {
-        return !IsUnderground();
-    }
 }

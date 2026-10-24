@@ -6,9 +6,6 @@ namespace SoTF.Editor.Desktop.Components.Shared.Common;
 
 public partial class ShowOnMapButton
 {
-    [Inject]
-    public required IStringLocalizer<SharedResource> Localizer { get; set; }
-
     [Parameter]
     public Position? Position { get; set; }
 
@@ -22,7 +19,7 @@ public partial class ShowOnMapButton
     private string? Title =>
         Position is null
             ? null
-            : $"{Localizer["ShowOnMap"]}\n{Position.PrintableShort} {Position.Area.Name}";
+            : $"{AppText.Get("ShowOnMap")}\n{Position.PrintableShort} {Position.Area.Name}";
 
     private void Show()
     {

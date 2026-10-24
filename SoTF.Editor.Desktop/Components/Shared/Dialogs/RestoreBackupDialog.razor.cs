@@ -13,9 +13,6 @@ public partial class RestoreBackupDialog
     private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
 
     [Inject]
-    public required IStringLocalizer<SharedResource> Localizer { get; set; }
-
-    [Inject]
     public required IDialogService DialogService { get; set; }
 
     [Inject]
@@ -43,15 +40,15 @@ public partial class RestoreBackupDialog
         {
             if (_compareFailed)
             {
-                return Localizer["UnableToCompare"];
+                return AppText.Get("UnableToCompare");
             }
 
             if (_differences is null)
             {
-                return Localizer["Comparing"];
+                return AppText.Get("Comparing");
             }
 
-            return _differences.Count == 0 ? Localizer["SameAsNow"].Value : null;
+            return _differences.Count == 0 ? AppText.Get("SameAsNow") : null;
         }
     }
 
@@ -86,20 +83,20 @@ public partial class RestoreBackupDialog
         return MainLayout.Pages.FirstOrDefault(link => link.Href == href);
     }
 
-    private string LabelOf(string href)
+    private static string LabelOf(string href)
     {
-        return PageOf(href) is { } link ? Localizer[link.LabelKey] : href;
+        return PageOf(href) is { } link ? AppText.Get(link.LabelKey) : href;
     }
 
     // Measured Once, Every Row Click Renders Again
     private long _totalSize = BackupManager.TotalSize();
 
     private string UsageText =>
-        Localizer[
+        AppText.Format(
             "BackupUsage",
             Formatter.FormatSize(_totalSize),
             Formatter.FormatSize(BackupManager.SizeLimit)
-        ];
+        );
 
     private string RowClass(SavegameBackup backup)
     {
@@ -111,19 +108,21 @@ public partial class RestoreBackupDialog
     {
         if (backup == Backups[0])
         {
-            return Localizer["Newest"];
+            return AppText.Get("Newest");
         }
 
-        return backup == Backups[^1] ? Localizer["Oldest"] : "";
+        return backup == Backups[^1] ? AppText.Get("Oldest") : "";
     }
 
     private async Task DeleteAsync(SavegameBackup backup)
     {
         if (
             !await DialogService.ConfirmAsync(
-                Localizer,
-                Localizer["DeleteBackup"],
-                Localizer["DeleteBackupText", Formatter.FormatDateTimeWithSeconds(backup.TakenAt)]
+                AppText.Get("DeleteBackup"),
+                AppText.Format(
+                    "DeleteBackupText",
+                    Formatter.FormatDateTimeWithSeconds(backup.TakenAt)
+                )
             )
         )
         {
@@ -148,7 +147,7 @@ public partial class RestoreBackupDialog
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
         {
             s_logger.Error(exception, "Failed To Delete Backup");
-            Snackbar.Add(Localizer["UnableToDeleteBackup"], Severity.Error);
+            Snackbar.Add(AppText.Get("UnableToDeleteBackup"), Severity.Error);
         }
     }
 

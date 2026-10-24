@@ -15,8 +15,8 @@ public partial class Inventory : EditorPageBase
     private Category? _category;
     private bool _heldOnly;
 
-    private IEnumerable<InventoryItem> Items =>
-        InventoryPage.Filter(_filter, _category?.Type, _heldOnly);
+    private List<InventoryItem> Items =>
+        [.. InventoryPage.Filter(_filter, _category?.Type, _heldOnly)];
 
     private async Task RemoveAllAsync()
     {

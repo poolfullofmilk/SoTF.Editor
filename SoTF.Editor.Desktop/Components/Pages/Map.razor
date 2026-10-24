@@ -15,11 +15,11 @@
                              ValueChanged="SetFullText"
                              FullWidth />
                 @* Area Filter *@
-                <MudSelect T="IAreaFilter"
+                <MudSelect T="AreaFilter"
                            Variant="Variant.Outlined"
                            Value="MapViewModel.MapFilter.AreaFilter"
                            ValueChanged="SetAreaFilter"
-                           Label="@Localizer["Area"]"
+                           Label="@AppText.Get("Area")"
                            ToStringFunc="areaFilter => areaFilter?.Name ?? string.Empty"
                            Dense
                            Margin="Margin.Dense">
@@ -33,8 +33,8 @@
                            Variant="Variant.Outlined"
                            Value="MapViewModel.MapFilter.RequirementsFilter"
                            ValueChanged="SetRequirementsFilter"
-                           Label="@Localizer["Requirements"]"
-                           HelperText="@Localizer["RequirementsTooltip"]"
+                           Label="@AppText.Get("Requirements")"
+                           HelperText="@AppText.Get("RequirementsTooltip")"
                            ToStringFunc="RequirementsName"
                            Dense
                            Margin="Margin.Dense">
@@ -48,15 +48,15 @@
                            Value="MapViewModel.MapFilter.ShowOnlyUncollectedItems"
                            ValueChanged="SetUncollectedOnly"
                            Color="Color.Info"
-                           Label="@Localizer["UncollectedOnly"]" />
+                           Label="@AppText.Get("UncollectedOnly")" />
 
                 <MudStack Row
                           AlignItems="AlignItems.Center"
                           Spacing="1">
-                    <MudText Typo="Typo.subtitle2">@Localizer["PointsOfInterest"]</MudText>
+                    <MudText Typo="Typo.subtitle2">@AppText.Get("PointsOfInterest")</MudText>
                     <MudSpacer />
                     @* Select All *@
-                    <Tooltip Text="@Localizer["SelectAll"]"
+                    <Tooltip Text="@AppText.Get("SelectAll")"
                              RootClass="d-flex">
                         <MudCheckBox T="bool?"
                                      Value="StateOf(MapViewModel.AllGroups())"
@@ -66,10 +66,10 @@
                                      Dense />
                     </Tooltip>
                     @* Reset Points *@
-                    <Tooltip Text="@Localizer["ResetToDefault"]"
+                    <Tooltip Text="@AppText.Get("ResetToDefault")"
                              RootClass="d-flex">
                         <MudIconButton Icon="@Icons.Material.Rounded.RestartAlt"
-                                       aria-label="@Localizer["ResetToDefault"]"
+                                       aria-label="@AppText.Get("ResetToDefault")"
                                        Size="Size.Small"
                                        OnClick="ResetToDefault" />
                     </Tooltip>
@@ -113,7 +113,7 @@
                                     </MudCheckBox>
                                     <MudSpacer />
                                     @* Expand Button *@
-                                    <Tooltip Text="@(IsExpanded(poiGroupCollection) ? Localizer["Collapse"] : Localizer["Expand"])">
+                                    <Tooltip Text="@(IsExpanded(poiGroupCollection) ? AppText.Get("Collapse") : AppText.Get("Expand"))">
                                         <MudIconButton Icon="@(IsExpanded(poiGroupCollection) ? Icons.Material.Rounded.ExpandLess : Icons.Material.Rounded.ExpandMore)"
                                                        Size="Size.Small"
                                                        OnClick="() => ToggleExpanded(poiGroupCollection)" />
@@ -154,14 +154,14 @@
                         @bind-Ref="_viewport"
                         Class="map-viewport"
                         tabindex="0"
-                        aria-label="@Localizer["MapKeyboardHint"]"
+                        aria-label="@AppText.Get("MapKeyboardHint")"
                         @onclick="() => MapViewModel.SelectPoi(null)">
                 <MudElement HtmlTag="div"
                             @bind-Ref="_canvas"
                             Class="map-canvas">
                     @* Map Image *@
                     <img src="images/map/dark.jpg"
-                         alt="@Localizer["Map"]"
+                         alt="@AppText.Get("Map")"
                          class="map-image" />
                     <svg class="map-zipline"
                          viewBox="0 0 4096 4096">
@@ -179,7 +179,7 @@
                     @if (_focusPixel is { } focus)
                     {
                         <img src="images/icons/crosshair.svg"
-                             alt="@Localizer["Position"]"
+                             alt="@AppText.Get("Position")"
                              class="map-poi"
                              style="@PoiStyle(focus.Left, focus.Top, 32, 0, 98)" />
                     }
@@ -206,24 +206,24 @@
                       Style="top:0;left:0">
                 @* Zoom In *@
                 <MudIconButton Icon="@Icons.Material.Rounded.Add"
-                               aria-label="@Localizer["ZoomIn"]"
+                               aria-label="@AppText.Get("ZoomIn")"
                                Variant="Variant.Filled"
                                Size="Size.Small"
                                Class="map-overlay"
                                OnClick="() => ZoomAsync(1.25)" />
                 @* Zoom Out *@
                 <MudIconButton Icon="@Icons.Material.Rounded.Remove"
-                               aria-label="@Localizer["ZoomOut"]"
+                               aria-label="@AppText.Get("ZoomOut")"
                                Variant="Variant.Filled"
                                Size="Size.Small"
                                Class="map-overlay"
                                OnClick="() => ZoomAsync(1 / 1.25)" />
                 @* Whole Map *@
-                <Tooltip Text="@Localizer["CenterMap"]"
+                <Tooltip Text="@AppText.Get("CenterMap")"
                          Placement="Placement.Right"
                          RootClass="d-flex">
                     <MudIconButton Icon="@Icons.Material.Rounded.FitScreen"
-                                   aria-label="@Localizer["CenterMap"]"
+                                   aria-label="@AppText.Get("CenterMap")"
                                    Variant="Variant.Filled"
                                    Size="Size.Small"
                                    Class="map-overlay"

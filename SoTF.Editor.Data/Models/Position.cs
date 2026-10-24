@@ -43,10 +43,11 @@ public class Position(float x, float y, float z)
         return new Position(X, _y, Z) { Area = area };
     }
 
-    public Position WithYOffset(int yOffset)
+    public Position ForTeleport()
     {
+        // Lands A Little Above, Never Inside The Ground
         var newPos = WithoutOffset();
-        newPos.YOffset = yOffset;
+        newPos.YOffset = 3;
         return newPos;
     }
 

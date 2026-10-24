@@ -25,7 +25,7 @@
 
                                 @foreach (var detail in Details)
                                 {
-                                    <MudItem xs="@(detail.Label == Localizer["Position"].Value ? 12 : 6)">
+                                    <MudItem xs="@(detail.Label == AppText.Get("Position") ? 12 : 6)">
                                         <MudStack Spacing="0">
                                             <MudText Typo="Typo.caption"
                                                      Class="mud-text-secondary">
@@ -48,8 +48,8 @@
                         <MudStack Row
                                   AlignItems="AlignItems.Center"
                                   Spacing="1">
-                            <MudText Typo="Typo.subtitle2">@Localizer["Influences"]</MudText>
-                            <InfoIcon Text="@Localizer["InfluencesInfo"]" />
+                            <MudText Typo="Typo.subtitle2">@AppText.Get("Influences")</MudText>
+                            <InfoIcon Text="@AppText.Get("InfluencesInfo")" />
                         </MudStack>
                         <InfluencesEditor Influences="_viewModel.Influences"
                                           CanRemove
@@ -67,17 +67,17 @@
                     <MudPaper Elevation="0"
                               Class="inset rounded-panel pa-4">
                         <MudStack Spacing="2">
-                            <MudText Typo="Typo.subtitle2">@Localizer["Selection"]</MudText>
+                            <MudText Typo="Typo.subtitle2">@AppText.Get("Selection")</MudText>
                             @* Modification Mode *@
                             <MudRadioGroup T="ActorModificationMode"
                                            @bind-Value="_viewModel.ModificationMode">
                                 <MudRadio Value="ActorModificationMode.Modify"
                                           Color="Color.Info">
-                                    @Localizer["Modify"]
+                                    @AppText.Get("Modify")
                                 </MudRadio>
                                 <MudRadio Value="ActorModificationMode.Remove"
                                           Color="Color.Error">
-                                    @Localizer["Remove"]
+                                    @AppText.Get("Remove")
                                 </MudRadio>
                             </MudRadioGroup>
                             @* Actor Selection *@
@@ -102,19 +102,19 @@
                                              @bind-Value="_viewModel.SkipKelvin"
                                              Color="Color.Info"
                                              Dense
-                                             Label="@Localizer["SkipKelvin"]" />
+                                             Label="@AppText.Get("SkipKelvin")" />
                                 @* Skip Virginia *@
                                 <MudCheckBox T="bool"
                                              @bind-Value="_viewModel.SkipVirginia"
                                              Color="Color.Info"
                                              Dense
-                                             Label="@Localizer["SkipVirginia"]" />
+                                             Label="@AppText.Get("SkipVirginia")" />
                                 @* Same Area *@
                                 <MudCheckBox T="bool"
                                              @bind-Value="_viewModel.OnlyInSameAreaAsActor"
                                              Color="Color.Info"
                                              Dense
-                                             Label="@Localizer["OnlySameArea"]" />
+                                             Label="@AppText.Get("OnlySameArea")" />
                             </MudStack>
                         </MudStack>
                     </MudPaper>
@@ -125,7 +125,7 @@
                         <MudPaper Elevation="0"
                                   Class="inset rounded-panel pa-4">
                             <MudStack Spacing="2">
-                                <MudText Typo="Typo.subtitle2">@Localizer["Stats"]</MudText>
+                                <MudText Typo="Typo.subtitle2">@AppText.Get("Stats")</MudText>
                                 <MudStack Row
                                           AlignItems="AlignItems.Center"
                                           Spacing="2">
@@ -134,7 +134,7 @@
                                                  @bind-Value="_viewModel.ModifyOptions.UpdateEnergy"
                                                  Color="Color.Info"
                                                  Dense
-                                                 Label="@Localizer["Energy"]"
+                                                 Label="@AppText.Get("Energy")"
                                                  Style="width:120px" />
                                     @* Energy *@
                                     <NumberField T="float"
@@ -151,7 +151,7 @@
                                                  @bind-Value="_viewModel.ModifyOptions.UpdateHealth"
                                                  Color="Color.Info"
                                                  Dense
-                                                 Label="@Localizer["Health"]"
+                                                 Label="@AppText.Get("Health")"
                                                  Style="width:120px" />
                                     @* Health *@
                                     <NumberField T="float"
@@ -166,35 +166,36 @@
                         <MudPaper Elevation="0"
                                   Class="inset rounded-panel pa-4">
                             <MudStack Spacing="2">
-                                <MudText Typo="Typo.subtitle2">@Localizer["ModificationOptions"]</MudText>
+                                <MudText Typo="Typo.subtitle2">@AppText.Get("ModificationOptions")</MudText>
                                 <MudStack Row
                                           Wrap="Wrap.Wrap"
                                           Spacing="0">
                                     @* Remove Spawner *@
-                                    <Tooltip Text="@Localizer["RemoveSpawnerTooltip"]">
+                                    <Tooltip Text="@AppText.Get("RemoveSpawnerTooltip")">
                                         <MudCheckBox T="bool"
                                                      @bind-Value="_viewModel.ModifyOptions.RemoveSpawner"
                                                      Color="Color.Info"
                                                      Dense
-                                                     Label="@Localizer["RemoveSpawner"]" />
+                                                     Label="@AppText.Get("RemoveSpawner")" />
                                     </Tooltip>
                                     @* Update Influences *@
                                     <MudCheckBox T="bool"
                                                  @bind-Value="_viewModel.ModifyOptions.UpdateInfluences"
                                                  Color="Color.Info"
                                                  Dense
-                                                 Label="@Localizer["UpdateInfluences"]" />
+                                                 Label="@AppText.Get("UpdateInfluences")" />
                                 </MudStack>
                                 @* Replace Type *@
                                 <MudSelect T="ActorType"
                                            Variant="Variant.Outlined"
                                            @bind-Value="_viewModel.ModifyOptions.ReplaceType"
-                                           Label="@Localizer["ReplaceType"]"
-                                           ToStringFunc="ReplaceTypeName"
+                                           Label="@AppText.Get("ReplaceType")"
+                                           ToStringFunc="type => type?.Name"
+                                           Clearable
                                            Dense>
                                     @foreach (var actorType in _viewModel.AllActorTypes)
                                     {
-                                        <MudSelectItem Value="actorType">@ReplaceTypeName(actorType)</MudSelectItem>
+                                        <MudSelectItem Value="actorType">@actorType.Name</MudSelectItem>
                                     }
                                 </MudSelect>
                             </MudStack>
@@ -204,26 +205,26 @@
                         <MudPaper Elevation="0"
                                   Class="inset rounded-panel pa-4">
                             <MudStack Spacing="2">
-                                <MudText Typo="Typo.subtitle2">@Localizer["Teleport"]</MudText>
+                                <MudText Typo="Typo.subtitle2">@AppText.Get("Teleport")</MudText>
                                 @* Teleport Mode *@
                                 <MudRadioGroup T="string"
                                                @bind-Value="_viewModel.ModifyOptions.TeleportMode">
                                     <MudRadio Value="@string.Empty"
                                               Color="Color.Info">
-                                        @Localizer["None"]
+                                        @AppText.Get("None")
                                     </MudRadio>
                                     <MudRadio Value="@("PlayerToNpc")"
                                               Color="Color.Info">
-                                        @Localizer["TeleportPlayerToNpc"]
+                                        @AppText.Get("TeleportPlayerToNpc")
                                     </MudRadio>
                                     <MudRadio Value="@("NpcToPlayer")"
                                               Color="Color.Info">
-                                        @Localizer["TeleportNpcToPlayer"]
+                                        @AppText.Get("TeleportNpcToPlayer")
                                     </MudRadio>
                                 </MudRadioGroup>
                                 <MudText Typo="Typo.caption"
                                          Class="mud-text-secondary">
-                                    @Localizer["TeleportManyWarning"]
+                                    @AppText.Get("TeleportManyWarning")
                                 </MudText>
                             </MudStack>
                         </MudPaper>
@@ -239,7 +240,7 @@
         <MudButton Variant="Variant.Filled"
                    Color="@(_viewModel.ModificationMode == ActorModificationMode.Remove ? Color.Error : Color.Info)"
                    OnClick="Apply">
-            @(_viewModel.ModificationMode == ActorModificationMode.Remove ? Localizer["Remove"] : Localizer["Apply"])
+            @(_viewModel.ModificationMode == ActorModificationMode.Remove ? AppText.Get("Remove") : AppText.Get("Apply"))
         </MudButton>
     </DialogActions>
 

@@ -1,7 +1,7 @@
 <MudDialog>
 
     <TitleContent>
-        <MudText Typo="Typo.h6">@Localizer["About"]</MudText>
+        <MudText Typo="Typo.h6">@AppText.Get("About")</MudText>
     </TitleContent>
     <DialogContent>
         <MudStack Spacing="4">
@@ -9,12 +9,12 @@
                 <MudText Typo="Typo.h5">@AppInfo.DisplayName</MudText>
                 <MudText Typo="Typo.body2"
                          Class="mud-text-secondary">
-                    @($"{Localizer["Version"]} {AppInfo.VersionText} · {AppInfo.Author}")
+                    @($"{AppText.Get("Version")} {AppInfo.VersionText} · {AppInfo.Author}")
                 </MudText>
             </MudStack>
             <MudText Typo="Typo.body1"
                      Class="text-relaxed">
-                @Localizer["AboutText"]
+                @AppText.Get("AboutText")
             </MudText>
             <MudStack Row
                       Wrap="Wrap.Wrap"
@@ -25,19 +25,19 @@
                            Size="Size.Small"
                            StartIcon="@Icons.Custom.Brands.GitHub"
                            Href="@AppInfo.RepositoryUrl">
-                    @Localizer["GitHubProject"]
+                    @AppText.Get("GitHubProject")
                 </MudButton>
             </MudStack>
             <MudStack Spacing="0">
                 <MudText Typo="Typo.caption"
                          Class="mud-text-secondary">
-                    @Localizer["Disclaimer"]
+                    @AppText.Get("Disclaimer")
                 </MudText>
                 @* Notices Link *@
                 <MudLink Typo="Typo.caption"
                          Color="Color.Default"
                          Href="@AppInfo.NoticesUrl">
-                    @Localizer["MapDataNotice"]
+                    @AppText.Get("MapDataNotice")
                 </MudLink>
             </MudStack>
         </MudStack>

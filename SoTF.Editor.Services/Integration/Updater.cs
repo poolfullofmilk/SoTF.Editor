@@ -18,8 +18,73 @@ public static class Updater
 
     private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
 
-    private static readonly HttpClient s_httpClient = new() { Timeout = TimeSpan.FromMinutes(5) };
+    // Checks Read The Redirect Itself, Downloads Follow It
+    private static readonly HttpClient s_checkClient = new(
+        new HttpClientHandler { AllowAutoRedirect = false }
+    )
+    {
+        Timeout = TimeSpan.FromSeconds(10),
+    };
+    private static readonly HttpClient s_downloadClient = new()
+    {
+        Timeout = TimeSpan.FromMinutes(5),
+    };
     private static readonly TimeSpan s_previousExitWait = TimeSpan.FromSeconds(15);
+
+    public static async Task<ReleaseInfo?> CheckAsync()
+    {
+        try
+        {
+            // The Latest Release Url Redirects To The Tagged Release
+            using var response = await s_checkClient.GetAsync(
+                AppInfo.LatestReleaseUrl,
+                HttpCompletionOption.ResponseHeadersRead
+            );
+            var location = response.Headers.Location?.ToString() ?? string.Empty;
+            var tag = location[(location.LastIndexOf('/') + 1)..];
+
+            return Version.TryParse(tag.TrimStart('v', 'V'), out var latest)
+                ? new ReleaseInfo(tag, latest)
+                : null;
+        }
+        catch (Exception exception)
+            when (exception is HttpRequestException or TaskCanceledException)
+        {
+            // Unreachable Means Unknown, Never Up To Date
+            return null;
+        }
+    }
+
+    public static async Task<List<string>> NotesAsync(string tag)
+    {
+        try
+        {
+            // The Release Body Lists Commit Titles Since The Previous Tag
+            var body = (await ReleaseAsync(tag))["body"];
+            return
+            [
+                .. (body?.ToString() ?? "")
+                    .Split('\n')
+                    .Select(line => line.Trim().TrimStart('-', '*').Trim())
+                    .Where(line => line.Length > 0),
+            ];
+        }
+        catch (Exception exception)
+            when (exception is HttpRequestException or TaskCanceledException or JsonReaderException)
+        {
+            // Notes Are Extra, The Update Works Without Them
+            return [];
+        }
+    }
+
+    private static async Task<JObject> ReleaseAsync(string tag)
+    {
+        using var request = new HttpRequestMessage(HttpMethod.Get, AppInfo.ReleaseApiUrl + tag);
+        request.Headers.UserAgent.ParseAdd(AppInfo.DisplayName.Replace(' ', '.'));
+        using var response = await s_checkClient.SendAsync(request);
+        response.EnsureSuccessStatusCode();
+        return JObject.Parse(await response.Content.ReadAsStringAsync());
+    }
 
     public static bool CanInstall =>
         Path.GetFileName(Environment.ProcessPath)
@@ -43,7 +108,7 @@ public static class Updater
 
         try
         {
-            using var response = await s_httpClient.GetAsync(
+            using var response = await s_downloadClient.GetAsync(
                 string.Format(AssetUrlFormat, release.Tag),
                 HttpCompletionOption.ResponseHeadersRead
             );
@@ -89,16 +154,10 @@ public static class Updater
     private static async Task<string> ExpectedDigestAsync(string tag)
     {
         // GitHub Hashes Every Release Asset, Its API Lists The Hash
-        using var request = new HttpRequestMessage(HttpMethod.Get, AppInfo.ReleaseApiUrl + tag);
-        request.Headers.UserAgent.ParseAdd(AppInfo.DisplayName.Replace(' ', '.'));
-        using var response = await s_httpClient.SendAsync(request);
-        response.EnsureSuccessStatusCode();
-
         string? digest;
         try
         {
-            digest = JObject
-                .Parse(await response.Content.ReadAsStringAsync())["assets"]
+            digest = (await ReleaseAsync(tag))["assets"]
                 ?.FirstOrDefault(asset => asset["name"]?.ToString() == $"SoTF.Editor_{tag}.exe")
                 ?["digest"]?.ToString();
         }

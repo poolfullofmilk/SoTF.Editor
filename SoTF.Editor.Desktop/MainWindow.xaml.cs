@@ -164,7 +164,7 @@ public partial class MainWindow : Window
             return;
         }
 
-        if (SavegameManager.CreateSaveInfo(new DirectoryInfo(directory)) is { } savegame)
+        if (SavegameManager.Load(directory) is { } savegame)
         {
             _mainViewModel.RequestOpen(savegame);
         }
