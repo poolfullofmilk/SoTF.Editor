@@ -14,7 +14,7 @@
 ## Features
 - Player stats, outfit, armour and one inventory list of every item
 - Every storage filled, maxed or cleared in one click
-- Kelvin and Virginia, spawned copies too: stats, outfit, items, revive, spawn more or remove the extra ones
+- Kelvin and Virginia, spawned copies too: stats, outfit, items, revive even after the game removed them, spawn more or remove the extra ones
 - Game setup, game state, season and weather, NPCs and structures, with info buttons that explain each setting
 - Game presets such as Hard that you can still tweak setting by setting
 - A small yellow dot on every value you changed and on its page in the menu, a list of every change before you save, a Save button that stays greyed out until there is something to save, and an undo button on a page in the menu to revert just that page
