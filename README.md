@@ -17,10 +17,10 @@
 - Kelvin and Virginia, spawned copies too: stats, outfit, items, revive, spawn more or remove the extra ones
 - Game setup, game state, season and weather, NPCs and structures, with info buttons that explain each setting
 - Game presets such as Hard that you can still tweak setting by setting
-- A small yellow dot on every value you changed and on its page in the menu, a list of every change before you save, and an undo button on a page in the menu to revert just that page
-- A map to teleport the player and followers, spawn actors or move ziplines, with a useful default selection you can reset to
+- A small yellow dot on every value you changed and on its page in the menu, a list of every change before you save, a Save button that stays greyed out until there is something to save, and an undo button on a page in the menu to revert just that page
+- A map to teleport the player and followers, spawn actors or move ziplines, with a useful default selection you can reset to and a button that hides the menus for a bigger map
 - Savegame cards show the day, mode and crash site, and joined games also your strength and items
-- Tools on their own page, such as regrow trees, reset fires, traps and containers, cannibal anger from calm to furious, and item plating
+- Tools on their own page, such as regrow trees, reset fires, traps and containers, cannibal anger set for every cannibal from calm to furious, and item plating
 - Updates itself in the background from inside the app, shows what changed and checks the download against GitHub's checksum
 - Every list, card and map point works with the keyboard too
 - Long lists such as the inventory, structures and NPCs only draw the rows on screen, so they open and filter fast even on big saves
