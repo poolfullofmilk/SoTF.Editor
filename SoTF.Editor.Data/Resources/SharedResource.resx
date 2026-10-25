@@ -460,7 +460,7 @@
     <value>Outfit</value>
   </data>
   <data name="ReviveTooltip" xml:space="preserve">
-    <value>Revive outside buildings, the follower appears at the player with the items and outfit set here</value>
+    <value>Brings the follower back with the items and outfit set here. One the game deleted appears at the player, or beside a follower outside while you are underground</value>
   </data>
   <data name="Alive" xml:space="preserve">
     <value>Alive</value>

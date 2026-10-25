@@ -149,6 +149,33 @@ try
         () => followers.CopiesOf(Constants.Actors.KelvinTypeId).Count == kelvinCount
     );
 
+    // A Follower The Game Deleted Comes Back Through Revive
+    EditAndCheck(
+        "Follower Revive",
+        "Followers",
+        () =>
+        {
+            main.RemoveFollower(followers.CopiesOf(Constants.Actors.VirginiaTypeId)[0]);
+            main.ReviveFollower(Constants.Actors.VirginiaTypeId);
+        },
+        () =>
+            followers.CopiesOf(Constants.Actors.VirginiaTypeId)
+                is [{ State: Constants.Actors.StateAlive }]
+    );
+
+    // Underground, New Followers Appear Beside One On The Surface
+    var surfacePosition = player.PlayerState.Pos;
+    player.PlayerState.Pos = surfacePosition.WithoutOffset(
+        gameData.AreaManager.GetAreaForGraphMask(16)
+    );
+    Check(
+        followers
+            .CopiesOf(Constants.Actors.KelvinTypeId)
+            .Any(kelvin => ReferenceEquals(kelvin.Pos, main.ArrivalPosition())),
+        "Underground Arrival Is Beside A Follower"
+    );
+    player.PlayerState.Pos = surfacePosition;
+
     EditAndCheck(
         "Game Setup",
         "Game",

@@ -96,7 +96,7 @@ public partial class Savegame
             : VegetationState.None;
     }
 
-    public bool ReviveFollower(int typeId, HashSet<int> itemIds, Outfit? outfit, Position pos)
+    public bool ReviveFollower(int typeId, HashSet<int> itemIds, Outfit? outfit, Position? pos)
     {
         var reviveResult = ReviveFollowerInSaveData(typeId, itemIds, outfit, pos);
         var gameStateKey = typeId == KelvinTypeId ? "IsRobbyDead" : "IsVirginiaDead";
@@ -112,7 +112,7 @@ public partial class Savegame
         int typeId,
         HashSet<int> itemIds,
         Outfit? outfit,
-        Position pos
+        Position? pos
     )
     {
         if (SavegameStore.LoadJsonRaw(SavegameStore.FileType.SaveData) is not { } saveDataWrapper)

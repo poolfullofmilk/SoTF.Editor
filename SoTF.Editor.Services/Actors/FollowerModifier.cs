@@ -11,7 +11,7 @@ namespace SoTF.Editor.Services.Actors;
 
 public class FollowerModifier(SaveDataWrapper saveDataWrapper)
 {
-    public bool Revive(int typeId, HashSet<int> itemIds, Outfit? outfit, Position pos)
+    public bool Revive(int typeId, HashSet<int> itemIds, Outfit? outfit, Position? pos)
     {
         if (
             saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.VailWorldSim)
@@ -74,6 +74,7 @@ public class FollowerModifier(SaveDataWrapper saveDataWrapper)
         // A Follower Gone From The Save Is Created Anew
         if (
             actorsByUniqueId.Count == 0
+            && pos is not null
             && ActorCreator.CreateFollower(typeId, vailWorldSim, pos) is (var newId, var newActor)
         )
         {

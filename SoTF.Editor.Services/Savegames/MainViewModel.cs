@@ -577,7 +577,7 @@ public class MainViewModel(
                 typeId,
                 follower.GetSelectedInventoryItemIds(),
                 follower.Outfit,
-                playerPage.PlayerState.Pos
+                ArrivalPosition()
             )
         );
         gameStatePage.RefreshDeathFlags(selectedSavegame);
@@ -602,6 +602,23 @@ public class MainViewModel(
         ModifyActors(_ => new FollowerModifier(saveDataWrapper).Remove(uniqueId));
     }
 
+    public Position? ArrivalPosition()
+    {
+        if (!playerPage.PlayerState.Pos.Area.IsUnderground())
+        {
+            return playerPage.PlayerState.Pos;
+        }
+
+        // Underground, Beside A Follower Still On The Surface
+        return followerPage
+            .CopiesOf(Constants.Actors.KelvinTypeId)
+            .Concat(followerPage.CopiesOf(Constants.Actors.VirginiaTypeId))
+            .FirstOrDefault(follower =>
+                follower.State == Constants.Actors.StateAlive && !follower.Pos.Area.IsUnderground()
+            )
+            ?.Pos;
+    }
+
     public string SpawnFollower(int typeId)
     {
         if (
@@ -610,6 +627,11 @@ public class MainViewModel(
         )
         {
             s_logger.Warn("Failed To Load Save Data");
+            return AppText.Get("UnableToSpawnFollowers");
+        }
+
+        if (ArrivalPosition() is not { } arrival)
+        {
             return AppText.Get("UnableToSpawnFollowers");
         }
 
@@ -622,7 +644,7 @@ public class MainViewModel(
                 typeId,
                 follower.GetSelectedInventoryItemIds(),
                 follower.Outfit,
-                playerPage.PlayerState.Pos
+                arrival
             )
         );
 

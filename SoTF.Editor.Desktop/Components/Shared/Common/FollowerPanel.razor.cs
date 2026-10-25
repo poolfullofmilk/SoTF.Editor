@@ -47,8 +47,14 @@ public partial class FollowerPanel : EditorPageBase
     private bool CanMoveToPlayer => InSave && PlayerOnSurface;
     private bool CanMoveToOther => InSave && OtherInSave;
 
-    // Revive Hits Every Copy, Any Dead One Counts
-    private bool CanRevive => Copies.Exists(copy => copy.State != Constants.Actors.StateAlive);
+    // Somewhere On The Surface For A New Follower To Appear
+    private bool HasArrival => MainViewModel.ArrivalPosition() != null;
+
+    // Revive Hits Every Copy, Or Recreates One The Game Deleted
+    private bool CanRevive =>
+        Copies.Count == 0
+            ? Follower.IsMarkedDead && HasArrival
+            : Copies.Exists(copy => copy.State != Constants.Actors.StateAlive);
     private Data.Models.Position? MapPosition => InSave ? Follower.Pos : null;
 
     private bool IsInfluenceChanged(Influence influence, string propertyName)

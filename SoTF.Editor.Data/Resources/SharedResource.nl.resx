@@ -460,7 +460,7 @@
     <value>Outfit</value>
   </data>
   <data name="ReviveTooltip" xml:space="preserve">
-    <value>Doe dit buiten gebouwen, de volger verschijnt bij de speler met de hier gekozen items en outfit</value>
+    <value>Brengt de volger terug met de hier gekozen items en outfit. Een volger die het spel verwijderde verschijnt bij de speler, of naast een volger buiten als je ondergronds bent</value>
   </data>
   <data name="Alive" xml:space="preserve">
     <value>Levend</value>
