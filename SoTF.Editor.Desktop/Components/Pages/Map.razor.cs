@@ -27,6 +27,9 @@ public partial class Map : EditorPageBase
     private ElementReference _canvas;
     private (float Left, float Top)? _focusPixel;
     private bool _isMapReady;
+    private bool _menusHidden;
+
+    private string MenusText => AppText.Get(_menusHidden ? "ShowMenus" : "HideMenus");
 
     protected override void OnInitialized()
     {

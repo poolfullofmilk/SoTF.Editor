@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using SoTF.Editor.Data.ViewModels;
 using SoTF.Editor.Services.Savegames;
 
 namespace SoTF.Editor.Desktop.Components.Shared.Dialogs;
@@ -15,16 +16,19 @@ public partial class CannibalAngerDialog
     [Inject]
     public required ISnackbar Snackbar { get; set; }
 
-    // Calm Unless Picked Higher
+    private CannibalMood? _mood;
     private int _level;
+
+    protected override void OnInitialized()
+    {
+        // Starts Where They Stand, On The Slider's Steps
+        _mood = MainViewModel.ReadCannibalMood();
+        _level = Math.Clamp((int)Math.Round((_mood?.Average ?? 0) / 10.0) * 10, 0, 100);
+    }
 
     private void Apply()
     {
-        // Zero Resets What Angers Them, Higher Raises Their Anger
-        var message =
-            _level == 0
-                ? MainViewModel.ResetCannibalAnger()
-                : MainViewModel.RaiseCannibalAnger(_level);
+        var message = MainViewModel.SetCannibalAnger(_level);
         if (!string.IsNullOrEmpty(message))
         {
             Snackbar.Add(message, Severity.Info);

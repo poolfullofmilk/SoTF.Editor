@@ -61,8 +61,20 @@ window.sotfMap = (() => {
     };
 
     const init = (viewport, canvas) => {
-        state = { viewport, canvas, drag: null, moved: false };
+        state?.observer.disconnect();
+        state = { viewport, canvas, drag: null, moved: false, width: viewport.clientWidth, height: viewport.clientHeight };
         fit();
+
+        // A Resized Map Keeps Its Middle, Hidden Menus Included
+        state.observer = new ResizeObserver(() => {
+            if (!viewport.isConnected || state?.viewport !== viewport) return;
+            state.x += (viewport.clientWidth - state.width) / 2;
+            state.y += (viewport.clientHeight - state.height) / 2;
+            state.width = viewport.clientWidth;
+            state.height = viewport.clientHeight;
+            apply();
+        });
+        state.observer.observe(viewport);
 
         viewport.addEventListener(
             "wheel",
@@ -112,7 +124,10 @@ window.sotfMap = (() => {
     // Registered Once, Every Opened Map Shares Them
     window.addEventListener("pointermove", (event) => {
         // A Map That Left The Page Lets Its Elements Go
-        if (state && !state.viewport.isConnected) state = null;
+        if (state && !state.viewport.isConnected) {
+            state.observer.disconnect();
+            state = null;
+        }
         if (!state?.drag) return;
         const deltaX = event.clientX - state.drag.startX;
         const deltaY = event.clientY - state.drag.startY;

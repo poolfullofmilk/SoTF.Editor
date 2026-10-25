@@ -90,6 +90,7 @@
                         @* Restore Backup *@
                         <MudMenuItem Icon="@Icons.Material.Rounded.History"
                                      Label="@AppText.Get("RestoreBackupTitle")"
+                                     Disabled="@(!HasBackups)"
                                      OnClick="RestoreBackupAsync" />
                     </MudMenu>
                 </Tooltip>
@@ -110,7 +111,7 @@
                            Color="Color.Info"
                            Size="Size.Small"
                            StartIcon="@Icons.Material.Rounded.Save"
-                           Disabled="@(!HasSavegame)"
+                           Disabled="@(!MainViewModel.HasUnsavedChanges())"
                            OnClick="SaveAsync">
                     @AppText.Get("Save")
                 </MudButton>

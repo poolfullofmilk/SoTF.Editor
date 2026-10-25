@@ -236,6 +236,12 @@
     flex-shrink: 0;
 }
 
+/* The Map Can Take The Width Of Both Menus */
+.menus-hidden > .side-panel,
+body:has(.menus-hidden) .nav-panel {
+    display: none;
+}
+
 .main-panel {
     flex: 1 1 0;
     min-width: 0;
@@ -466,6 +472,18 @@ html, body {
         color: var(--mud-palette-action-disabled) !important;
         pointer-events: none;
     }
+
+/* A Real Size Thumb, A Scaled 2 Px One Rasterizes Lopsided At 125% */
+.mud-slider.mud-slider-small .mud-slider-input::-webkit-slider-thumb {
+    width: 12px;
+    height: 12px;
+    margin-top: -5px;
+    transform: none;
+}
+
+.mud-slider.mud-slider-info .mud-slider-input:is(:active, :focus-visible)::-webkit-slider-thumb {
+    box-shadow: 0 0 0 8px rgba(var(--mud-palette-info-rgb), 0.24);
+}
 
 /* Tabs */
 .mud-tabs .mud-tab-active {

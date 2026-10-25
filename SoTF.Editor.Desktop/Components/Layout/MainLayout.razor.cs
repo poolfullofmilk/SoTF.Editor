@@ -60,6 +60,9 @@ public partial class MainLayout : IDisposable
 
     private bool HasSavegame => MainViewModel.SelectedSavegame != null;
 
+    private bool HasBackups =>
+        MainViewModel.SelectedSavegame is { } savegame && BackupManager.HasAny(savegame.FullPath);
+
     private bool IsClientSave => MainViewModel.SelectedSavegame?.IsMultiPlayerClient() == true;
 
     // Only A Page With Unsaved Edits It Can Take Back
@@ -332,7 +335,6 @@ public partial class MainLayout : IDisposable
         var backups = BackupManager.List(savegame.FullPath);
         if (backups.Count == 0)
         {
-            Snackbar.Add(AppText.Get("NoBackupFound"), Severity.Info);
             return;
         }
 

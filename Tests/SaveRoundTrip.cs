@@ -192,17 +192,30 @@ try
             npcs.AllActors.First(candidate => candidate.UniqueId == actorId).Stats?["Health"] == 33
     );
 
-    // Raised Cannibal Anger Lights The NPCs And Reads Back
+    // Cannibal Anger Reaches Every Living Cannibal And The NPCs Page
     EditAndCheck(
         "Cannibal Anger",
         "Npcs",
-        () => main.RaiseCannibalAnger(),
+        () => main.SetCannibalAnger(70),
         () =>
-            npcs
-                .AllActors.Where(npc => npc.ActorType?.IsCannibal == true)
+            main.ReadCannibalMood() is { AllKnowPlayer: true, Average: 70 } mood
+            && !mood.Changes(70)
+            && mood.Changes(0)
+            && npcs.AllActors.Where(npc => npc.ActorType?.IsCannibal == true)
                 .SelectMany(npc => npc.Influences ?? [])
                 .Where(influence => influence.TypeId == Influence.Type.Player)
-                .All(influence => influence.Anger >= Constants.Actors.FullAnger)
+                .All(influence => influence.Anger == 70 && influence.Sentiment == -70)
+    );
+
+    // Calm Lowers That Anger Again And Forgets Kills
+    EditAndCheck(
+        "Cannibal Calm",
+        "Npcs",
+        () => main.SetCannibalAnger(0),
+        () =>
+            main.ReadCannibalMood()
+                is { AllKnowPlayer: true, Average: 0, HasWorldCounts: false } mood
+            && !mood.Changes(0)
     );
 
     var structureCount = structures.Structures.Count;
@@ -265,7 +278,7 @@ try
             player.PlayerState.Fullness = 55;
             followers.KelvinState.Health = 66;
             setup.SetString(Constants.GameSetupKeys.EnemyDamage, "LOW", "NORMAL");
-            main.ResetCannibalAnger();
+            main.SetCannibalAnger(20);
         },
         () =>
             Math.Abs(player.PlayerState.Fullness - 55) < 0.01
@@ -280,8 +293,12 @@ try
     ToolCheck("Reset Structure Damage", main.ResetStructureDamage);
     ToolCheck("Reset Traps", main.ResetTraps);
     ToolCheck("Reset Containers", gameState.ResetContainers);
-    ToolCheck("Reset Cannibal Anger", main.ResetCannibalAnger);
-    ToolCheck("Raise Cannibal Anger To Half", () => main.RaiseCannibalAnger(50));
+    ToolCheck("Calm Cannibals", () => main.SetCannibalAnger(0));
+    ToolCheck("Cannibal Anger To Half", () => main.SetCannibalAnger(50));
+    Check(
+        main.SetCannibalAnger(50) == AppText.Get("NothingToChange") && !main.HasUnsavedChanges(),
+        "Same Cannibal Anger Changes Nothing"
+    );
     ToolCheck(
         "Set To Endgame",
         () =>

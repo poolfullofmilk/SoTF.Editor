@@ -16,16 +16,23 @@
                        Max="100"
                        Step="10"
                        Color="Color.Info"
-                       ValueLabel
                        Class="mt-4">
                 @($"{AppText.Get("AngerLevel")}: {_level}%")
             </MudSlider>
+            @if (_mood is not null)
+            {
+                <MudText Typo="Typo.caption"
+                         Class="mud-text-secondary">
+                    @AppText.Format("CannibalAngerNow", _mood.Average)
+                </MudText>
+            }
         </MudStack>
     </DialogContent>
     <DialogActions>
         @* Apply Button *@
         <MudButton Variant="Variant.Filled"
                    Color="Color.Info"
+                   Disabled="@(_mood?.Changes(_level) != true)"
                    OnClick="Apply">
             @AppText.Get("Apply")
         </MudButton>

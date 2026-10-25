@@ -1191,9 +1191,6 @@
   <data name="OpenBackupFolder" xml:space="preserve">
     <value>Open Backup Folder</value>
   </data>
-  <data name="NoBackupFound" xml:space="preserve">
-    <value>No Backup Found</value>
-  </data>
   <data name="RestoredBackup" xml:space="preserve">
     <value>Restored Backup From {0}</value>
   </data>
@@ -1579,7 +1576,7 @@
     <value>All damage to your structures is repaired</value>
   </data>
   <data name="CannibalAngerText" xml:space="preserve">
-    <value>0 resets kills, cut trees and village visits so cannibals calm down, a higher level makes each one at least that angry at you</value>
+    <value>Sets how angry every living cannibal is at you, 0 also resets kills, cut trees and village visits so they calm down</value>
   </data>
   <data name="ResetContainersText" xml:space="preserve">
     <value>Opened crates, cases and supplies in the world are closed and full again</value>
@@ -1919,5 +1916,14 @@
   </data>
   <data name="AngerLevel" xml:space="preserve">
     <value>Anger</value>
+  </data>
+  <data name="CannibalAngerNow" xml:space="preserve">
+    <value>Now {0}% on average</value>
+  </data>
+  <data name="HideMenus" xml:space="preserve">
+    <value>Hide Menus</value>
+  </data>
+  <data name="ShowMenus" xml:space="preserve">
+    <value>Show Menus</value>
   </data>
 </root>

@@ -285,98 +285,101 @@ public class MainViewModel(
         NotifyChanged();
     }
 
-    public string ResetCannibalAnger()
+    public CannibalMood? ReadCannibalMood()
     {
         if (
-            SelectedSavegame?.SavegameStore.LoadJsonRaw(SavegameStore.FileType.SaveData)
-                is not { } saveDataWrapper
-            || saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.VailWorldSim)
-                is not { } vailWorldSim
+            SelectedSavegame is not { } savegame
+            || VailWorldSimOf(savegame) is not { } vailWorldSim
         )
         {
-            return "";
+            return null;
         }
 
-        // Kills, Recent Kills Per Day, Cut Trees And Village Sightings
-        var hasChanges = false;
-        foreach (var killStat in vailWorldSim["KillStatsList"] ?? Enumerable.Empty<JToken>())
-        {
-            hasChanges |= ResetToZero(killStat["PlayerKilled"]);
-            if (killStat["KilledOnDay"] is JObject { Count: > 0 } killedOnDay)
-            {
-                killedOnDay.RemoveAll();
-                hasChanges = true;
-            }
-        }
-
-        hasChanges |= ResetToZero(vailWorldSim["PlayerStats"]?["CutTrees"]);
-        hasChanges |= ResetToZero(vailWorldSim["PlayerStats"]?["SeenInVillageCount"]);
-        if (!hasChanges)
-        {
-            return AppText.Get("NothingToReset");
-        }
-
-        saveDataWrapper.MarkAsModified(Constants.JsonKeys.VailWorldSim);
-        return AppText.Get("ChangesAdded");
+        var memories = MemoriesById(vailWorldSim);
+        var playerInfluences = LivingCannibalIds(vailWorldSim)
+            .Select(uniqueId => PlayerInfluenceOf(memories.GetValueOrDefault(uniqueId)))
+            .ToList();
+        return new CannibalMood(
+            playerInfluences.All(influence => influence != null),
+            [
+                .. playerInfluences
+                    .OfType<JToken>()
+                    .Select(influence =>
+                        (
+                            influence["Anger"]?.Value<float>() ?? 0f,
+                            influence["Sentiment"]?.Value<float>() ?? 0f
+                        )
+                    ),
+            ],
+            WorldCountsOf(vailWorldSim).Any(count => !IsZero(count))
+        );
     }
 
-    public string RaiseCannibalAnger(float level = Constants.Actors.FullAnger)
+    public string SetCannibalAnger(int level)
     {
         // Through ModifyActors So The NPCs Page Shows The New Anger
         var message = "";
-        ModifyActors(savegame => message = RaiseCannibalAnger(savegame, level));
+        ModifyActors(savegame => message = SetCannibalAnger(savegame, level));
         return message;
     }
 
-    private string RaiseCannibalAnger(Savegame savegame, float level)
+    private string SetCannibalAnger(Savegame savegame, int level)
     {
         if (
             savegame.SavegameStore.LoadJsonRaw(SavegameStore.FileType.SaveData)
                 is not { } saveDataWrapper
-            || saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.VailWorldSim)
-                is not { } vailWorldSim
+            || VailWorldSimOf(savegame) is not { } vailWorldSim
+            || vailWorldSim["InfluenceMemory"] is not JArray influenceMemories
         )
         {
             return "";
         }
 
-        var cannibalTypeIds = gameData
-            .ActorTypes.Where(actorType => actorType.IsCannibal)
-            .Select(actorType => actorType.Id)
-            .ToHashSet();
-        var cannibalIds = (vailWorldSim["Actors"] ?? Enumerable.Empty<JToken>())
-            .Where(actor => cannibalTypeIds.Contains(actor["TypeId"]?.Value<int>() ?? -1))
-            .Select(actor => actor["UniqueId"]?.Value<int>())
-            .ToHashSet();
-
-        // At Least That Anger, At Most Its Negative As Sentiment
+        // Exactly That Anger And Its Negative As Sentiment, Strangers Included
+        var memories = MemoriesById(vailWorldSim);
         var hasChanges = false;
-        foreach (var memory in vailWorldSim["InfluenceMemory"] ?? Enumerable.Empty<JToken>())
+        foreach (var uniqueId in LivingCannibalIds(vailWorldSim))
         {
-            if (
-                !cannibalIds.Contains(memory["UniqueId"]?.Value<int>())
-                || memory["Influences"]
-                    ?.FirstOrDefault(influence =>
-                        influence["TypeId"]?.ToString() == Influence.Type.Player
-                    )
-                    is not { } playerInfluence
-            )
+            if (!memories.TryGetValue(uniqueId, out var memory))
             {
-                continue;
+                memory = new JObject { ["UniqueId"] = uniqueId };
+                influenceMemories.Add(memory);
+                hasChanges = true;
             }
 
-            hasChanges |= JsonModifier.CompareAndModify(
-                playerInfluence,
-                "Anger",
-                value => value < level,
-                level
-            );
-            hasChanges |= JsonModifier.CompareAndModify(
-                playerInfluence,
-                "Sentiment",
-                value => value > -level,
-                -level
-            );
+            if (PlayerInfluenceOf(memory) is not { } playerInfluence)
+            {
+                if (memory["Influences"] is not JArray influences)
+                {
+                    influences = [];
+                    memory["Influences"] = influences;
+                }
+
+                playerInfluence = new JObject { ["TypeId"] = Influence.Type.Player };
+                influences.Add(playerInfluence);
+                hasChanges = true;
+            }
+
+            hasChanges |= JsonModifier.SetFloat(playerInfluence, "Sentiment", -level);
+            hasChanges |= JsonModifier.SetFloat(playerInfluence, "Anger", level);
+        }
+
+        // Calm Also Forgets Kills, Cut Trees And Village Visits
+        if (level == 0)
+        {
+            foreach (var count in WorldCountsOf(vailWorldSim).Where(count => !IsZero(count)))
+            {
+                if (count is JObject killedOnDay)
+                {
+                    killedOnDay.RemoveAll();
+                }
+                else
+                {
+                    count.Replace(0);
+                }
+
+                hasChanges = true;
+            }
         }
 
         if (!hasChanges)
@@ -388,15 +391,65 @@ public class MainViewModel(
         return AppText.Get("ChangesAdded");
     }
 
-    private static bool ResetToZero(JToken? value)
+    private static JToken? VailWorldSimOf(Savegame savegame)
     {
-        if (value == null || value.Value<double>() == 0)
+        return savegame
+            .SavegameStore.LoadJsonRaw(SavegameStore.FileType.SaveData)
+            ?.GetJsonBasedToken(Constants.JsonKeys.VailWorldSim);
+    }
+
+    private IEnumerable<int> LivingCannibalIds(JToken vailWorldSim)
+    {
+        var cannibalTypeIds = gameData
+            .ActorTypes.Where(actorType => actorType.IsCannibal)
+            .Select(actorType => actorType.Id)
+            .ToHashSet();
+        return (vailWorldSim["Actors"] ?? Enumerable.Empty<JToken>())
+            .Where(actor =>
+                cannibalTypeIds.Contains(actor["TypeId"]?.Value<int>() ?? -1)
+                && actor["State"]?.Value<int>() != Constants.Actors.StateDead
+            )
+            .Select(actor => actor["UniqueId"]?.Value<int>())
+            .OfType<int>();
+    }
+
+    private static Dictionary<int, JToken> MemoriesById(JToken vailWorldSim)
+    {
+        var memories = new Dictionary<int, JToken>();
+        foreach (var memory in vailWorldSim["InfluenceMemory"] ?? Enumerable.Empty<JToken>())
         {
-            return false;
+            if (memory["UniqueId"]?.Value<int>() is { } uniqueId)
+            {
+                memories.TryAdd(uniqueId, memory);
+            }
         }
 
-        value.Replace(0);
-        return true;
+        return memories;
+    }
+
+    private static JToken? PlayerInfluenceOf(JToken? memory)
+    {
+        return memory?["Influences"]?.FirstOrDefault(influence =>
+            influence["TypeId"]?.ToString() == Influence.Type.Player
+        );
+    }
+
+    private static IEnumerable<JToken> WorldCountsOf(JToken vailWorldSim)
+    {
+        // Kills, Kills Per Day, Cut Trees And Village Sightings
+        var playerStats = vailWorldSim["PlayerStats"];
+        return new[] { playerStats?["CutTrees"], playerStats?["SeenInVillageCount"] }
+            .Concat(
+                (vailWorldSim["KillStatsList"] ?? Enumerable.Empty<JToken>()).SelectMany(killStat =>
+                    new[] { killStat["PlayerKilled"], killStat["KilledOnDay"] }
+                )
+            )
+            .OfType<JToken>();
+    }
+
+    private static bool IsZero(JToken count)
+    {
+        return count is JObject killedOnDay ? killedOnDay.Count == 0 : count.Value<double>() == 0;
     }
 
     public string ResetTraps()

@@ -1191,9 +1191,6 @@
   <data name="OpenBackupFolder" xml:space="preserve">
     <value>Back-upmap Openen</value>
   </data>
-  <data name="NoBackupFound" xml:space="preserve">
-    <value>Geen Back-up Gevonden</value>
-  </data>
   <data name="RestoredBackup" xml:space="preserve">
     <value>Back-up Van {0} Teruggezet</value>
   </data>
@@ -1579,7 +1576,7 @@
     <value>Alle schade aan je constructies wordt hersteld</value>
   </data>
   <data name="CannibalAngerText" xml:space="preserve">
-    <value>0 zet doden, gekapte bomen en dorpsbezoeken op nul zodat kannibalen kalmeren, een hoger niveau maakt elk minstens zo boos op je</value>
+    <value>Bepaalt hoe boos elke levende kannibaal op je is, 0 zet ook doden, gekapte bomen en dorpsbezoeken op nul zodat ze kalmeren</value>
   </data>
   <data name="ResetContainersText" xml:space="preserve">
     <value>Geopende kisten, koffers en voorraden in de wereld zijn weer dicht en vol</value>
@@ -1919,5 +1916,14 @@
   </data>
   <data name="AngerLevel" xml:space="preserve">
     <value>Woede</value>
+  </data>
+  <data name="CannibalAngerNow" xml:space="preserve">
+    <value>Nu gemiddeld {0}%</value>
+  </data>
+  <data name="HideMenus" xml:space="preserve">
+    <value>Menu's Verbergen</value>
+  </data>
+  <data name="ShowMenus" xml:space="preserve">
+    <value>Menu's Tonen</value>
   </data>
 </root>

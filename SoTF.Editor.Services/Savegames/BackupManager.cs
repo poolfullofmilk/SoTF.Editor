@@ -313,6 +313,12 @@ public static partial class BackupManager
             : [];
     }
 
+    public static bool HasAny(string savegamePath)
+    {
+        var folder = FolderOf(savegamePath);
+        return Directory.Exists(folder) && Directory.EnumerateDirectories(folder).Any();
+    }
+
     public static long TotalSize()
     {
         return Directory.Exists(BackupDirectory) ? SizeOf(BackupDirectory) : 0;

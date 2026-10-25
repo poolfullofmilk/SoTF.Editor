@@ -5,7 +5,7 @@
     <MudStack Row
               AlignItems="AlignItems.Stretch"
               Spacing="6"
-              Class="page-fill">
+              Class="@(_menusHidden ? "page-fill menus-hidden" : "page-fill")">
         @* Filter Panel *@
         <MudPaper Elevation="4"
                   Class="rounded-panel pa-4 overflow-y-auto side-panel">
@@ -228,6 +228,17 @@
                                    Size="Size.Small"
                                    Class="map-overlay"
                                    OnClick="CenterAsync" />
+                </Tooltip>
+                @* Menus Toggle *@
+                <Tooltip Text="@MenusText"
+                         Placement="Placement.Right"
+                         RootClass="d-flex">
+                    <MudIconButton Icon="@(_menusHidden ? Icons.Material.Rounded.FullscreenExit : Icons.Material.Rounded.Fullscreen)"
+                                   aria-label="@MenusText"
+                                   Variant="Variant.Filled"
+                                   Size="Size.Small"
+                                   Class="map-overlay"
+                                   OnClick="() => _menusHidden = !_menusHidden" />
                 </Tooltip>
             </MudStack>
 
