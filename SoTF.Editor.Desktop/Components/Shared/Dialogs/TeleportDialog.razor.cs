@@ -37,6 +37,17 @@ public partial class TeleportDialog
 
     private MapTeleportWindowViewModel _viewModel = null!;
 
+    // Who Goes Where, As Caption And Value Pairs
+    private IEnumerable<(string Label, string Value)> Details =>
+        [
+            (AppText.Get("ToTeleport"), _viewModel.Target),
+            (AppText.Get("Destination"), _viewModel.Destination),
+            (
+                AppText.Get("Position"),
+                $"X: {_viewModel.X:F2}, Y: {_viewModel.Y:F2}, Z: {_viewModel.Z:F2}"
+            ),
+        ];
+
     protected override void OnInitialized()
     {
         _viewModel = new MapTeleportWindowViewModel(

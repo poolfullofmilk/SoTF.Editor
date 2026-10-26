@@ -142,11 +142,20 @@ public class MainViewModel(
         switch (page)
         {
             case "Player":
-                playerPage.Load(savegame);
-                armorPage.Load(savegame);
-                break;
             case "Inventory":
-                inventoryPage.Load(savegame);
+                // Armour Moved Through The Backpack Goes Back On Both Pages
+                var moved = armorPage.MovedThroughInventory;
+                if (page == "Player" || moved)
+                {
+                    playerPage.Load(savegame);
+                    armorPage.Load(savegame);
+                }
+
+                if (page == "Inventory" || moved)
+                {
+                    inventoryPage.Load(savegame);
+                }
+
                 break;
             case "Storage":
                 storagePage.Revert(savegame);

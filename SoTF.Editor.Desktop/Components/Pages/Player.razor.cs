@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
+using MudBlazor;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Models.Actors;
 using SoTF.Editor.Data.ViewModels;
@@ -23,6 +25,10 @@ public partial class Player : EditorPageBase
 
     private PlayerState State => PlayerPage.PlayerState;
 
+    // One Slot Menu For Every Piece
+    private MudMenu? _slotMenu;
+    private ArmourData? _slotArmour;
+
     private float MaxHealthCeiling => Math.Max(DefaultMaxHealthCeiling, State.MaxHealth);
 
     // At Max Health The Slider Stops, The Warning Says Why
@@ -32,6 +38,31 @@ public partial class Player : EditorPageBase
     private static bool IsDefault(ArmourData armour)
     {
         return armour.ArmourPiece.RemainingArmourpoints == armour.DefaultDurability;
+    }
+
+    private async Task OpenSlotsAsync(MouseEventArgs args, ArmourData armour)
+    {
+        _slotArmour = armour;
+        if (_slotMenu is { } slotMenu)
+        {
+            await slotMenu.OpenMenuAsync(args);
+        }
+    }
+
+    private void MoveToSlot(int slot)
+    {
+        if (_slotArmour is { } armour)
+        {
+            ArmorPage.MoveToSlot(armour, slot);
+        }
+    }
+
+    private async Task MoveToInventoryAsync(ArmourData armour)
+    {
+        if (await ConfirmAsync("MoveToInventory", "MoveToInventoryText"))
+        {
+            ArmorPage.MoveToInventory(armour);
+        }
     }
 
     private static bool IsInSave(FollowerState follower)

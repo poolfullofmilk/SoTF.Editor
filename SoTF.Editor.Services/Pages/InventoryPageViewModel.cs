@@ -64,6 +64,11 @@ public class InventoryPageViewModel
 
     public IReadOnlyList<InventoryItem> Inventory => _inventory;
 
+    public InventoryItem? ItemOf(int itemId)
+    {
+        return _inventory.Concat(_unassignedItems).FirstOrDefault(item => item.Id == itemId);
+    }
+
     public bool IsHeld(InventoryItem item)
     {
         return _inventory.Contains(item);

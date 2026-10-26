@@ -44,12 +44,21 @@
     --page-top: 80px;
     --page-bottom: 28px;
     --nav-width: 240px;
+    --side-width: clamp(280px, 24vw, 400px);
     --glass-opacity: 66%;
     --glass-blur: blur(12px);
     --row-hover-amount: 12%;
     --row-hover: color-mix(in srgb, var(--mud-palette-black) var(--row-hover-amount), transparent);
     --row-selected: color-mix(in srgb, var(--mud-palette-black) 18%, transparent);
     --thumb-size: 32px;
+}
+
+/* A 1080p Screen At 125 Or 150 Percent Gets A Slimmer Frame */
+@media (max-width: 1440px) {
+    :root {
+        --nav-width: 200px;
+        --page-gutter: 20px;
+    }
 }
 
 /* App Bar Glass On Menus, Selects And Dropdowns */
@@ -165,6 +174,7 @@
         flex: 1 1 auto;
         min-height: 0;
         overflow-y: auto;
+        overflow-x: auto;
     }
 
 /* Lists Run Edge To Edge, The Panel Clips Them To Its Corners */
@@ -232,7 +242,7 @@
 
 /* List Pages Keep One Fixed List Width Beside The Main Panel */
 .side-panel {
-    width: 400px;
+    width: var(--side-width);
     flex-shrink: 0;
 }
 
@@ -301,6 +311,7 @@ mark {
 /* Fixed Columns Keep Their Width While Rows Scroll */
 .fixed-columns .mud-table-root {
     table-layout: fixed;
+    min-width: var(--table-min-width, 0);
 }
 
 .count-column {
@@ -325,6 +336,11 @@ mark {
     top: var(--page-top);
     width: var(--nav-width);
     flex-shrink: 0;
+}
+
+/* Both Follower Headers Match, A Copy Picker Makes One Taller */
+.follower-header .header-row {
+    min-height: 40px;
 }
 
 /* Header Actions Keep One Line, Only The Title Gives Way */

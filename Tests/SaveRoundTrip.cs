@@ -505,6 +505,27 @@ try
     main.RevertPage("Followers");
     Check(!main.HasUnsavedChanges(), "Reverted Repeat Leaves Nothing Unsaved");
 
+    // Armour Moves Through The Backpack, Revert Takes Both Back
+    var armourCount = armor.Armour.Count();
+    var movable = armor.Armour.FirstOrDefault(armor.CanMoveToInventory);
+    Check(movable != null, "Sample Has Armour To Move");
+    if (movable != null)
+    {
+        armor.MoveToInventory(movable);
+        var stored = armor.InventoryArmour.FirstOrDefault(item => item.Id == movable.Id);
+        Check(
+            armor.Armour.Count() == armourCount - 1
+                && stored != null
+                && main.HasChanges("Inventory")
+                && main.HasChanges("Player"),
+            "Armour Moves To The Inventory"
+        );
+        armor.Wear(stored!);
+        Check(armor.Armour.Count() == armourCount, "Armour Is Worn Again");
+        main.RevertPage("Player");
+        Check(!main.HasUnsavedChanges(), "Reverted Armour Move Leaves Nothing Unsaved");
+    }
+
     // A Save Keeps Its Change List In Its Backup
     player.PlayerState.Fullness = 44;
     Check(main.SaveChanges(new() { ["Player"] = [new Change("Fullness")] }), "Listed Change Saves");
@@ -516,6 +537,13 @@ try
     Check(
         BackupManager.Compare(savegamePath, newest.Path).Count > 0,
         "Newest Backup Differs From The Save"
+    );
+    Check(
+        BackupDiff
+            .Describe(savegamePath, newest.Path, gameData, key => key)
+            .GetValueOrDefault("Player")
+            ?.Exists(change => change.Name.Contains(AppText.Get("Fullness"))) == true,
+        "Backup Difference Names The Setting"
     );
 
     // Restore Oldest Brings Back The Sample, Without The List
@@ -558,6 +586,16 @@ try
     Check(Throws(() => main.SaveChanges()), "Missing File Fails The Save");
     Check(main.HasUnsavedChanges(), "Failed Save Keeps The Edit");
     File.Move(movedPath, archivePath);
+
+    // Deleting Older Backups Keeps The Newest, Nothing Else Goes
+    var newestKept = BackupManager.List(savegamePath)[0].Path;
+    Check(
+        BackupManager.List(savegamePath).Count > 1
+            && BackupManager.DeleteAllButNewest(savegamePath) == 0
+            && BackupManager.List(savegamePath) is [{ Path: var keptPath }]
+            && keptPath == newestKept,
+        "Delete All But Newest Keeps The Newest"
+    );
 
     void ToolCheck(string tool, Func<string> run)
     {

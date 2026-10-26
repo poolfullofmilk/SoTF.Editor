@@ -52,7 +52,7 @@ public partial class SpawnActorsDialog
     {
         if (familyId is null or -1)
         {
-            return "-";
+            return AppText.Get("None");
         }
 
         // The Destination Actor's Own Family Reads As Such
@@ -60,6 +60,14 @@ public partial class SpawnActorsDialog
             ? $"{familyId} ({AppText.Get("DestinationFamily")})"
             : familyId.ToString()!;
     }
+
+    // Spawn One Or Spawn 5 Cannibal, Never A Bare Create
+    private string SpawnLabel =>
+        AppText.Format(
+            "SpawnCount",
+            _viewModel.SpawnCount,
+            _viewModel.SelectedActorType?.Name ?? AppText.Get("ActorType")
+        );
 
     private static string PatternName(SpawnPattern pattern)
     {

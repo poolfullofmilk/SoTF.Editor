@@ -736,7 +736,7 @@
     <value>Create Actors</value>
   </data>
   <data name="DestinationFamily" xml:space="preserve">
-    <value>Family Of The Destination Actor</value>
+    <value>Same As Destination</value>
   </data>
   <data name="SpaceBetween" xml:space="preserve">
     <value>Space Between</value>
@@ -1958,5 +1958,44 @@
   </data>
   <data name="JoinedGameName" xml:space="preserve">
     <value>{0} {1} Days</value>
+  </data>
+  <data name="DeleteAllButNewest" xml:space="preserve">
+    <value>Delete All But Newest</value>
+  </data>
+  <data name="DeleteAllButNewestText" xml:space="preserve">
+    <value>{0} older backups of this savegame are deleted for good. The newest stays, so the last save can still be undone</value>
+  </data>
+  <data name="Files" xml:space="preserve">
+    <value>Other Files</value>
+  </data>
+  <data name="BringToPlayer" xml:space="preserve">
+    <value>Bring To Player</value>
+  </data>
+  <data name="SpawnWhat" xml:space="preserve">
+    <value>What To Spawn</value>
+  </data>
+  <data name="SpawnWhere" xml:space="preserve">
+    <value>Where</value>
+  </data>
+  <data name="SpawnOffsetInfo" xml:space="preserve">
+    <value>Added to the destination, in meters. A little up keeps them out of the ground</value>
+  </data>
+  <data name="SpawnCount" xml:space="preserve">
+    <value>Spawn {0} {1}</value>
+  </data>
+  <data name="MoveToInventory" xml:space="preserve">
+    <value>Move To Inventory</value>
+  </data>
+  <data name="MoveToInventoryText" xml:space="preserve">
+    <value>The piece goes back into the backpack. Worn again, it starts at its default durability</value>
+  </data>
+  <data name="ArmourInInventory" xml:space="preserve">
+    <value>In Inventory</value>
+  </data>
+  <data name="InInventoryCount" xml:space="preserve">
+    <value>{0} In Inventory</value>
+  </data>
+  <data name="WearArmour" xml:space="preserve">
+    <value>Wear</value>
   </data>
 </root>

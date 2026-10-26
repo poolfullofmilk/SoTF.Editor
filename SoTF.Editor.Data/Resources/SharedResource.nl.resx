@@ -736,7 +736,7 @@
     <value>Actoren Maken</value>
   </data>
   <data name="DestinationFamily" xml:space="preserve">
-    <value>Familie Van De Doelactor</value>
+    <value>Zelfde Als Bestemming</value>
   </data>
   <data name="SpaceBetween" xml:space="preserve">
     <value>Tussenruimte</value>
@@ -1958,5 +1958,44 @@
   </data>
   <data name="JoinedGameName" xml:space="preserve">
     <value>{0} {1} Dagen</value>
+  </data>
+  <data name="DeleteAllButNewest" xml:space="preserve">
+    <value>Alles Behalve Nieuwste Verwijderen</value>
+  </data>
+  <data name="DeleteAllButNewestText" xml:space="preserve">
+    <value>{0} oudere back-ups van deze savegame worden definitief verwijderd. De nieuwste blijft, zodat de laatste opslag nog ongedaan kan worden</value>
+  </data>
+  <data name="Files" xml:space="preserve">
+    <value>Andere Bestanden</value>
+  </data>
+  <data name="BringToPlayer" xml:space="preserve">
+    <value>Naar Speler Halen</value>
+  </data>
+  <data name="SpawnWhat" xml:space="preserve">
+    <value>Wat Je Spawnt</value>
+  </data>
+  <data name="SpawnWhere" xml:space="preserve">
+    <value>Waar</value>
+  </data>
+  <data name="SpawnOffsetInfo" xml:space="preserve">
+    <value>Opgeteld bij de bestemming, in meters. Iets omhoog houdt ze uit de grond</value>
+  </data>
+  <data name="SpawnCount" xml:space="preserve">
+    <value>{0} {1} Spawnen</value>
+  </data>
+  <data name="MoveToInventory" xml:space="preserve">
+    <value>Naar Inventaris Verplaatsen</value>
+  </data>
+  <data name="MoveToInventoryText" xml:space="preserve">
+    <value>Het stuk gaat terug in de rugzak. Opnieuw gedragen begint het met zijn standaard duurzaamheid</value>
+  </data>
+  <data name="ArmourInInventory" xml:space="preserve">
+    <value>In Inventaris</value>
+  </data>
+  <data name="InInventoryCount" xml:space="preserve">
+    <value>{0} In Inventaris</value>
+  </data>
+  <data name="WearArmour" xml:space="preserve">
+    <value>Dragen</value>
   </data>
 </root>

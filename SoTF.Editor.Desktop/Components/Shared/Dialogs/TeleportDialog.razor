@@ -1,4 +1,4 @@
-<MudDialog>
+<MudDialog Class="dialog-page">
 
     <DialogContent>
         <MudStack Spacing="4">
@@ -6,57 +6,77 @@
                      Class="text-relaxed">
                 @AppText.Get("TeleportHint")
             </MudText>
-            <MudSimpleTable Dense
-                            Elevation="0">
-                <tbody>
-                    <tr>
-                        <td class="mud-text-secondary">@AppText.Get("ToTeleport")</td>
-                        <td>@_viewModel.Target</td>
-                    </tr>
-                    <tr>
-                        <td class="mud-text-secondary">@AppText.Get("Destination")</td>
-                        <td>@_viewModel.Destination</td>
-                    </tr>
-                    <tr>
-                        <td class="mud-text-secondary">@AppText.Get("Position")</td>
-                        <td class="selectable-text">@($"X: {_viewModel.X:F2}, Y: {_viewModel.Y:F2}, Z: {_viewModel.Z:F2}")</td>
-                    </tr>
-                </tbody>
-            </MudSimpleTable>
-            <MudText Typo="Typo.subtitle2">@AppText.Get("Offset")</MudText>
-            <MudStack Row
-                      Spacing="2">
-                @* Offset X *@
-                <NumberField T="float"
-                             @bind-Value="_viewModel.XOffset"
-                             Label="X"
-                             Step="0.5f" />
-                @* Offset Y *@
-                <NumberField T="float"
-                             @bind-Value="_viewModel.YOffset"
-                             Label="Y"
-                             Step="0.5f" />
-                @* Offset Z *@
-                <NumberField T="float"
-                             @bind-Value="_viewModel.ZOffset"
-                             Label="Z"
-                             Step="0.5f" />
-            </MudStack>
-            @* Area *@
-            <MudSelect T="Area"
-                       Variant="Variant.Outlined"
-                       @bind-Value="_viewModel.SelectedArea"
-                       Label="@AppText.Get("Area")"
-                       ToStringFunc="area => area?.Name ?? string.Empty"
-                       Dense>
-                @foreach (var area in _viewModel.Areas)
-                {
-                    <MudSelectItem Value="area">@area.Name</MudSelectItem>
-                }
-            </MudSelect>
+
+            @* Teleport Section *@
+            <MudPaper Elevation="0"
+                      Class="inset rounded-panel pa-4">
+                <MudGrid Spacing="2">
+
+                    @foreach (var (label, value) in Details)
+                    {
+                        <MudItem xs="@(label == AppText.Get("Position") ? 12 : 6)">
+                            <MudStack Spacing="0">
+                                <MudText Typo="Typo.caption"
+                                         Class="mud-text-secondary">
+                                    @label
+                                </MudText>
+                                <MudText Typo="Typo.body2"
+                                         Class="selectable-text">
+                                    @value
+                                </MudText>
+                            </MudStack>
+                        </MudItem>
+                    }
+
+                </MudGrid>
+            </MudPaper>
+
+            @* Landing Section *@
+            <MudPaper Elevation="0"
+                      Class="inset rounded-panel pa-4">
+                <MudStack Spacing="3">
+                    <MudStack Row
+                              AlignItems="AlignItems.Center"
+                              Spacing="1">
+                        <MudText Typo="Typo.subtitle2">@AppText.Get("Offset")</MudText>
+                        <InfoIcon Text="@AppText.Get("SpawnOffsetInfo")" />
+                    </MudStack>
+                    <MudStack Row
+                              Spacing="2">
+                        @* Offset X *@
+                        <NumberField T="float"
+                                     @bind-Value="_viewModel.XOffset"
+                                     Label="X"
+                                     Step="0.5f" />
+                        @* Offset Y *@
+                        <NumberField T="float"
+                                     @bind-Value="_viewModel.YOffset"
+                                     Label="Y"
+                                     Step="0.5f" />
+                        @* Offset Z *@
+                        <NumberField T="float"
+                                     @bind-Value="_viewModel.ZOffset"
+                                     Label="Z"
+                                     Step="0.5f" />
+                    </MudStack>
+                    @* Area *@
+                    <MudSelect T="Area"
+                               Variant="Variant.Outlined"
+                               @bind-Value="_viewModel.SelectedArea"
+                               Label="@AppText.Get("Area")"
+                               ToStringFunc="area => area?.Name ?? string.Empty"
+                               Dense>
+                        @foreach (var area in _viewModel.Areas)
+                        {
+                            <MudSelectItem Value="area">@area.Name</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudStack>
+            </MudPaper>
         </MudStack>
     </DialogContent>
     <DialogActions>
+        <MudSpacer />
         @* Teleport Button *@
         <MudButton Variant="Variant.Filled"
                    Color="Color.Info"

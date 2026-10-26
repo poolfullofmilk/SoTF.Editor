@@ -15,9 +15,11 @@ public class ArmorPageViewModel
         ReferenceEqualityComparer.Instance
     );
     private readonly ItemList _itemList;
+    private readonly InventoryPageViewModel _inventoryPage;
 
-    public ArmorPageViewModel(GameData gameData)
+    public ArmorPageViewModel(GameData gameData, InventoryPageViewModel inventoryPage)
     {
+        _inventoryPage = inventoryPage;
         NewArmour = new NewArmourPiece(_armour);
         _itemList = gameData.Items;
         ArmourTypes =
@@ -30,6 +32,9 @@ public class ArmorPageViewModel
     }
 
     public IEnumerable<ArmourData> Armour => _armour.OrderBy(armourData => armourData.Slot);
+
+    // A Move Through The Backpack Ties This To The Inventory
+    public bool MovedThroughInventory { get; private set; }
     public List<Item> ArmourTypes { get; }
 
     public NewArmourPiece NewArmour { get; }
@@ -58,7 +63,86 @@ public class ArmorPageViewModel
 
     private static string ValueOf(ArmourData armourData)
     {
-        return $"{armourData.Id} {armourData.ArmourPiece.RemainingArmourpoints}";
+        return $"{armourData.Id} {armourData.ArmourPiece.RemainingArmourpoints} {armourData.Slot}";
+    }
+
+    // Empty Slots, In The Order The Game Fills Them
+    public IEnumerable<int> FreeSlots =>
+        PlayerArmourSystemModel.ArmorSlots.Where(slot =>
+            _armour.TrueForAll(armourData => armourData.Slot != slot)
+        );
+
+    public void MoveToSlot(ArmourData armourData, int slot)
+    {
+        if (FreeSlots.Contains(slot))
+        {
+            armourData.ArmourPiece.Slot = slot;
+        }
+    }
+
+    // Armour In The Backpack That Could Be Worn
+    public IEnumerable<InventoryItem> InventoryArmour =>
+        _inventoryPage
+            .Inventory.Where(item => item.Item?.IsEquippableArmor == true && item.TotalCount > 0)
+            .OrderBy(item => item.Name);
+
+    public void Wear(InventoryItem item)
+    {
+        if (item.Item is not { } armour || !FreeSlots.Any() || !_inventoryPage.IsHeld(item))
+        {
+            return;
+        }
+
+        // A Piece From The Backpack Starts At Default Durability
+        _armour.Add(
+            new ArmourData(
+                new ArmourPieceModel
+                {
+                    ItemId = armour.Id,
+                    RemainingArmourpoints = armour.Durability?.Default ?? 1,
+                    Slot = FreeSlots.First(),
+                },
+                armour
+            )
+        );
+        if (item.TotalCount > 1)
+        {
+            item.TotalCount--;
+        }
+        else
+        {
+            _inventoryPage.RemoveItemFromInventory(item);
+        }
+
+        MovedThroughInventory = true;
+    }
+
+    public bool CanMoveToInventory(ArmourData armourData)
+    {
+        // The Backpack Needs Room For One More
+        return _inventoryPage.ItemOf(armourData.Id) is { } item
+            && (!_inventoryPage.IsHeld(item) || item.TotalCount < item.Max);
+    }
+
+    public void MoveToInventory(ArmourData armourData)
+    {
+        if (!CanMoveToInventory(armourData) || _inventoryPage.ItemOf(armourData.Id) is not { } item)
+        {
+            return;
+        }
+
+        if (_inventoryPage.IsHeld(item))
+        {
+            item.TotalCount++;
+        }
+        else
+        {
+            _inventoryPage.AddUnassignedItem(item);
+            item.TotalCount = 1;
+        }
+
+        _armour.Remove(armourData);
+        MovedThroughInventory = true;
     }
 
     public void RemoveArmour(ArmourData armourData)
@@ -68,6 +152,7 @@ public class ArmorPageViewModel
 
     public void Load(Savegame? savegame)
     {
+        MovedThroughInventory = false;
         _armour.Clear();
         var armourPieces =
             savegame

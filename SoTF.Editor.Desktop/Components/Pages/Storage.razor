@@ -77,6 +77,31 @@
                         Class="fit">
                     <TitleContent>
                         <MudSpacer />
+                        @* Set All Max *@
+                        <MudButton Variant="Variant.Text"
+                                   Size="Size.Small"
+                                   Disabled="@(!StoragePageViewModel.CanSetAllToMax(selected))"
+                                   OnClick="() => StoragePageViewModel.SetAllToMax(selected)">
+                            @AppText.Get("SetAllToMax")
+                        </MudButton>
+                        @* Apply To Same Type *@
+                        <Tooltip Text="@AppText.Get("ApplyToSameTypeTooltip")"
+                                 Disabled="@(!StoragePage.HasSameTypeStorages(selected))">
+                            <MudButton Variant="Variant.Text"
+                                       Size="Size.Small"
+                                       Disabled="@(!StoragePage.HasSameTypeStorages(selected))"
+                                       OnClick="() => ApplyToSameTypeAsync(selected)">
+                                @AppText.Get("ApplyToSameType")
+                            </MudButton>
+                        </Tooltip>
+                        @* Clear All *@
+                        <MudButton Variant="Variant.Text"
+                                   Color="Color.Error"
+                                   Size="Size.Small"
+                                   Disabled="@(!StoragePageViewModel.HasStoredItems(selected))"
+                                   OnClick="() => StoragePageViewModel.ClearAll(selected)">
+                            @AppText.Get("ClearAll")
+                        </MudButton>
                         <ShowOnMapButton Position="selected.Pos" />
                     </TitleContent>
                     <ChildContent>
@@ -121,32 +146,6 @@
                                                    Disabled="@(_fillItem is null)"
                                                    OnClick="() => StoragePageViewModel.FillAll(selected, _fillItem!, _fillCount)">
                                             @AppText.Get("FillFittingSlots")
-                                        </MudButton>
-                                    </Tooltip>
-                                    <MudSpacer />
-                                    @* Set All Max *@
-                                    <MudButton Variant="Variant.Text"
-                                               Size="Size.Small"
-                                               Disabled="@(!StoragePageViewModel.CanSetAllToMax(selected))"
-                                               OnClick="() => StoragePageViewModel.SetAllToMax(selected)">
-                                        @AppText.Get("SetAllToMax")
-                                    </MudButton>
-                                    @* Clear All *@
-                                    <MudButton Variant="Variant.Text"
-                                               Color="Color.Error"
-                                               Size="Size.Small"
-                                               Disabled="@(!StoragePageViewModel.HasStoredItems(selected))"
-                                               OnClick="() => StoragePageViewModel.ClearAll(selected)">
-                                        @AppText.Get("ClearAll")
-                                    </MudButton>
-                                    @* Apply To Same Type *@
-                                    <Tooltip Text="@AppText.Get("ApplyToSameTypeTooltip")"
-                                             Disabled="@(!StoragePage.HasSameTypeStorages(selected))">
-                                        <MudButton Variant="Variant.Text"
-                                                   Size="Size.Small"
-                                                   Disabled="@(!StoragePage.HasSameTypeStorages(selected))"
-                                                   OnClick="() => ApplyToSameTypeAsync(selected)">
-                                            @AppText.Get("ApplyToSameType")
                                         </MudButton>
                                     </Tooltip>
                                 </MudStack>

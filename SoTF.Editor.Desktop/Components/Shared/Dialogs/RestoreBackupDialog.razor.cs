@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using NLog;
 using SoTF.Editor.Data.Helpers;
+using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.ViewModels;
 using SoTF.Editor.Desktop.Components.Layout;
 using SoTF.Editor.Services.Savegames;
@@ -18,6 +19,9 @@ public partial class RestoreBackupDialog
     [Inject]
     public required ISnackbar Snackbar { get; set; }
 
+    [Inject]
+    public required GameData GameData { get; set; }
+
     [CascadingParameter]
     public required IMudDialogInstance MudDialog { get; set; }
 
@@ -31,7 +35,13 @@ public partial class RestoreBackupDialog
     // The Picked Backup With Its Saved List And Its Differences
     private SavegameBackup? _selected;
     private Dictionary<string, List<Change>> _savedChanges = [];
-    private List<Change>? _differences;
+    private Dictionary<string, List<Change>>? _differences;
+
+    // Pages In Menu Order, Other Files Last
+    private IEnumerable<KeyValuePair<string, List<Change>>> OrderedDifferences =>
+        (_differences ?? []).OrderBy(pair =>
+            PageOf(pair.Key) is { } link ? MainLayout.Pages.ToList().IndexOf(link) : int.MaxValue
+        );
     private bool _compareFailed;
 
     private string? DifferencesText
@@ -63,7 +73,12 @@ public partial class RestoreBackupDialog
         try
         {
             var differences = await Task.Run(() =>
-                BackupManager.Compare(SavegamePath, backup.Path)
+                BackupDiff.Describe(
+                    SavegamePath,
+                    backup.Path,
+                    GameData,
+                    key => AppText.Get(Pages.Game.SetupLabelKey(key), BackupDiff.Words(key))
+                )
             );
             if (_selected == backup)
             {
@@ -88,12 +103,15 @@ public partial class RestoreBackupDialog
         return PageOf(href) is { } link ? AppText.Get(link.LabelKey) : AppText.Get(href, href);
     }
 
-    // A Restore Is No Page, It Gets The Restore Icon
+    // Restores And Other Files Are No Page, Own Icons
     private static string? IconOf(string href)
     {
-        return href == BackupManager.RestoreKey
-            ? Icons.Material.Rounded.Restore
-            : PageOf(href)?.Icon;
+        return href switch
+        {
+            BackupManager.RestoreKey => Icons.Material.Rounded.Restore,
+            BackupDiff.FilesKey => Icons.Material.Rounded.Description,
+            _ => PageOf(href)?.Icon,
+        };
     }
 
     // Measured Once, Every Row Click Renders Again
@@ -155,6 +173,32 @@ public partial class RestoreBackupDialog
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
         {
             s_logger.Error(exception, "Failed To Delete Backup");
+            Snackbar.Add(AppText.Get("UnableToDeleteBackup"), Severity.Error);
+        }
+    }
+
+    private async Task DeleteAllButNewestAsync()
+    {
+        if (
+            !await DialogService.ConfirmAsync(
+                AppText.Get("DeleteAllButNewest"),
+                AppText.Format("DeleteAllButNewestText", Backups.Count - 1)
+            )
+        )
+        {
+            return;
+        }
+
+        var failed = BackupManager.DeleteAllButNewest(SavegamePath);
+        Backups = BackupManager.List(SavegamePath);
+        _totalSize = BackupManager.TotalSize();
+        if (_selected is { } selected && !Backups.Exists(backup => backup.Path == selected.Path))
+        {
+            _selected = null;
+        }
+
+        if (failed > 0)
+        {
             Snackbar.Add(AppText.Get("UnableToDeleteBackup"), Severity.Error);
         }
     }

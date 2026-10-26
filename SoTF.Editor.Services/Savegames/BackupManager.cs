@@ -98,10 +98,22 @@ public static partial class BackupManager
 
     public static List<Change> Compare(string savegamePath, string backup)
     {
+        return
+        [
+            .. DifferingFiles(savegamePath, backup)
+                .Select(file => new Change(DisplayNameOf(file.Key), file.Kind)),
+        ];
+    }
+
+    internal static List<(string Key, ChangeKind Kind)> DifferingFiles(
+        string savegamePath,
+        string backup
+    )
+    {
         // What Restoring Would Add, Change Or Remove, Entry By Entry
         var now = ContentsOf(savegamePath);
         var then = ContentsOf(backup);
-        var differences = new List<Change>();
+        var differences = new List<(string Key, ChangeKind Kind)>();
         foreach (var key in then.Keys.Union(now.Keys).Order(StringComparer.Ordinal))
         {
             var isNow = now.TryGetValue(key, out var current);
@@ -112,11 +124,11 @@ public static partial class BackupManager
             }
 
             differences.Add(
-                new Change(
-                    DisplayNameOf(key),
+                (
+                    key,
                     !isNow ? ChangeKind.Added
-                        : !isThen ? ChangeKind.Removed
-                        : ChangeKind.Changed
+                    : !isThen ? ChangeKind.Removed
+                    : ChangeKind.Changed
                 )
             );
         }
@@ -160,7 +172,7 @@ public static partial class BackupManager
         return contents;
     }
 
-    private static string DisplayNameOf(string key)
+    internal static string DisplayNameOf(string key)
     {
         if (key == NameFileKey)
         {
@@ -329,6 +341,28 @@ public static partial class BackupManager
                     .Select(path => new SavegameBackup(path, TakenAt(path), SizeOf(path))),
             ]
             : [];
+    }
+
+    public static int DeleteAllButNewest(string savegamePath)
+    {
+        // The Newest Stays, So The Last Save Can Be Undone
+        var failed = 0;
+        foreach (var backup in List(savegamePath).Skip(1))
+        {
+            try
+            {
+                Delete(backup.Path);
+            }
+            catch (Exception exception)
+                when (exception is IOException or UnauthorizedAccessException or ArgumentException)
+            {
+                // One Locked Or Foreign Folder Never Stops The Rest
+                s_logger.Warn(exception, $"Failed To Delete Backup {backup.Path}");
+                failed++;
+            }
+        }
+
+        return failed;
     }
 
     public static bool HasAny(string savegamePath)

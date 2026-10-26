@@ -2,10 +2,14 @@ using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using SoTF.Editor.Data.Enums;
 using SoTF.Editor.Data.Helpers;
+using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Models.Map;
+using SoTF.Editor.Data.ViewModels;
 using SoTF.Editor.Desktop.Components.Shared.Dialogs;
+using SoTF.Editor.Services.Actors;
 using SoTF.Editor.Services.Map;
 using SoTF.Editor.Services.Pages;
+using SoTF.Editor.Services.Savegames;
 
 namespace SoTF.Editor.Desktop.Components.Shared.Common;
 
@@ -25,6 +29,18 @@ public partial class PoiDetails
 
     [Inject]
     public required FollowerPageViewModel FollowerPage { get; set; }
+
+    [Inject]
+    public required PlayerPageViewModel PlayerPage { get; set; }
+
+    [Inject]
+    public required MainViewModel MainViewModel { get; set; }
+
+    [Inject]
+    public required ActorModifier ActorModifier { get; set; }
+
+    [Inject]
+    public required GameData GameData { get; set; }
 
     // A Follower Missing From The Save Has Nothing To Move
     private bool CanTeleportKelvin =>
@@ -145,6 +161,31 @@ public partial class PoiDetails
     {
         zipPointPoi.IsMoveRequested = true;
         zipPointPoi.IsZiplineCreationRequested = createZipline;
+    }
+
+    // Followers Cannot Follow Into Caves, Other Actors Can
+    private bool CanBringToPlayer(ActorPoi actorPoi)
+    {
+        return !actorPoi.IsFollower || !PlayerPage.PlayerState.Pos.Area.IsUnderground();
+    }
+
+    private async Task BringToPlayerAsync(ActorPoi actorPoi)
+    {
+        if (FollowerPage.StateOfActor(actorPoi.Actor.UniqueId) is { } follower)
+        {
+            FollowerPageViewModel.MoveTo(follower, PlayerPage.PlayerState.Pos);
+            MainViewModel.NotifyChanged();
+        }
+        else
+        {
+            // One Actor, Through The Same Change The NPC Dialog Makes
+            var edit = new EditActorViewModel(actorPoi.Actor, GameData.ActorTypes);
+            edit.ModifyOptions.TeleportMode = "NpcToPlayer";
+            MainViewModel.ModifyActors(savegame => ActorModifier.Modify(savegame, edit));
+            MapViewModel.SelectPoi(null);
+        }
+
+        await OnMapChanged.InvokeAsync();
     }
 
     private async Task EditActorAsync(ActorPoi actorPoi)

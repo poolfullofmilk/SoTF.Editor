@@ -1,7 +1,8 @@
 @inherits EditorPageBase
 
 @* Follower Panel *@
-<Header Title="@Name">
+<Header Title="@Name"
+        Class="follower-header">
     <TitleContent>
         <MudChip T="string"
                  Variant="Variant.Text"
@@ -9,6 +10,36 @@
             @Follower.Status
         </MudChip>
         <MudSpacer />
+        @if (Copies.Count > 1)
+        {
+            @* Copy Select *@
+            <MudElement HtmlTag="div"
+                        Class="fixed-width"
+                        Style="width:140px">
+                <MudSelect T="FollowerState"
+                           Value="Follower"
+                           ValueChanged="FollowerPage.Select"
+                           ToStringFunc="CopyLabel"
+                           Variant="Variant.Outlined"
+                           Margin="Margin.Dense"
+                           Dense>
+                    @foreach (var copy in Copies)
+                    {
+                        <MudSelectItem Value="copy">@CopyLabel(copy)</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudElement>
+        }
+        @* Remove Copy *@
+        <Tooltip Text="@AppText.Get("RemoveCopy")"
+                 Disabled="@(!IsSpawnedCopy)">
+            <MudIconButton Icon="@Icons.Material.Rounded.Delete"
+                           aria-label="@AppText.Get("RemoveCopy")"
+                           Color="Color.Error"
+                           Size="Size.Small"
+                           Disabled="@(!IsSpawnedCopy)"
+                           OnClick="RemoveCopyAsync" />
+        </Tooltip>
         <ShowOnMapButton Position="MapPosition" />
     </TitleContent>
     <ChildContent>
@@ -35,42 +66,6 @@
                             @($"{AppText.Get("Position")}: {Follower.Pos.PrintableShort}")
                             <ChangedDot When="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Pos))" />
                         </MudText>
-                    </MudStack>
-                    <MudSpacer />
-                    <MudStack Row
-                              AlignItems="AlignItems.Center"
-                              Spacing="2"
-                              Class="align-self-start">
-                        @if (Copies.Count > 1)
-                        {
-                            @* Copy Select *@
-                            <MudElement HtmlTag="div"
-                                        Class="fixed-width"
-                                        Style="width:160px">
-                                <MudSelect T="FollowerState"
-                                           Value="Follower"
-                                           ValueChanged="FollowerPage.Select"
-                                           ToStringFunc="CopyLabel"
-                                           Variant="Variant.Outlined"
-                                           Margin="Margin.Dense"
-                                           Dense>
-                                    @foreach (var copy in Copies)
-                                    {
-                                        <MudSelectItem Value="copy">@CopyLabel(copy)</MudSelectItem>
-                                    }
-                                </MudSelect>
-                            </MudElement>
-                        }
-                        @* Remove Copy *@
-                        <Tooltip Text="@AppText.Get("RemoveCopy")"
-                                 Disabled="@(!IsSpawnedCopy)">
-                            <MudIconButton Icon="@Icons.Material.Rounded.Delete"
-                                           aria-label="@AppText.Get("RemoveCopy")"
-                                           Color="Color.Error"
-                                           Size="Size.Small"
-                                           Disabled="@(!IsSpawnedCopy)"
-                                           OnClick="RemoveCopyAsync" />
-                        </Tooltip>
                     </MudStack>
                 </MudStack>
 

@@ -5,121 +5,183 @@
 
             <MudItem xs="12"
                      md="6">
-                <MudStack Spacing="3">
-                    <MudAlert Severity="Severity.Warning"
-                              Dense
-                              Elevation="4"
-                              Class="rounded-panel">
-                        @AppText.Get("SpawnActorsWarning")
-                    </MudAlert>
-                    <MudText Typo="Typo.body2"
-                             Class="selectable-text">
-                        @($"{AppText.Get("Destination")}: {_viewModel.Destination}")
-                    </MudText>
-                    @* Actor Type *@
-                    <MudSelect T="ActorType"
-                               Variant="Variant.Outlined"
-                               @bind-Value="_viewModel.SelectedActorType"
-                               Label="@AppText.Get("ActorType")"
-                               ToStringFunc="actorType => actorType?.Name ?? string.Empty"
-                               Dense>
-                        @foreach (var actorType in _viewModel.AllActorTypes)
-                        {
-                            <MudSelectItem Value="actorType">@actorType.Name</MudSelectItem>
-                        }
-                    </MudSelect>
-                    @* Count *@
-                    <NumberField T="int"
-                                 @bind-Value="_viewModel.SpawnCount"
-                                 Min="1"
-                                 Max="500"
-                                 Label="@AppText.Get("Count")" />
-                    @* Family *@
-                    <MudSelect T="int?"
-                               Variant="Variant.Outlined"
-                               @bind-Value="_viewModel.FamilyId"
-                               Label="@AppText.Get("Family")"
-                               ToStringFunc="FamilyName"
-                               Dense>
-                        @foreach (var familyId in _viewModel.AllFamilyIds)
-                        {
-                            <MudSelectItem T="int?"
-                                           Value="familyId">
-                                @FamilyName(familyId)
-                            </MudSelectItem>
-                        }
-                    </MudSelect>
-                    @* Spawn Pattern *@
-                    <MudSelect T="SpawnPattern"
-                               Variant="Variant.Outlined"
-                               @bind-Value="_viewModel.SelectedSpawnPattern"
-                               Label="@AppText.Get("SpawnPattern")"
-                               ToStringFunc="PatternName"
-                               Dense>
-                        @foreach (var pattern in Enum.GetValues<SpawnPattern>())
-                        {
-                            <MudSelectItem Value="pattern">@PatternName(pattern)</MudSelectItem>
-                        }
-                    </MudSelect>
-                    @* Space Between *@
-                    <NumberField T="int"
-                                 @bind-Value="_viewModel.SpaceBetween"
-                                 Min="0"
-                                 Label="@AppText.Get("SpaceBetween")"
-                                 HelperText="@AppText.Get("SpaceBetweenTooltip")" />
-                    <MudText Typo="Typo.subtitle2">@AppText.Get("Offset")</MudText>
-                    <MudStack Row
-                              Spacing="2">
-                        @* Offset X *@
-                        <NumberField T="float"
-                                     @bind-Value="_viewModel.XOffset"
-                                     Label="X"
-                                     Step="0.5f" />
-                        @* Offset Y *@
-                        <NumberField T="float"
-                                     @bind-Value="_viewModel.YOffset"
-                                     Label="Y"
-                                     Step="0.5f" />
-                        @* Offset Z *@
-                        <NumberField T="float"
-                                     @bind-Value="_viewModel.ZOffset"
-                                     Label="Z"
-                                     Step="0.5f" />
-                    </MudStack>
-                    @* Area *@
-                    <MudSelect T="Area"
-                               Variant="Variant.Outlined"
-                               @bind-Value="_viewModel.SelectedArea"
-                               Label="@AppText.Get("Area")"
-                               ToStringFunc="area => area?.Name ?? string.Empty"
-                               Dense>
-                        @foreach (var area in _viewModel.Areas)
-                        {
-                            <MudSelectItem Value="area">@area.Name</MudSelectItem>
-                        }
-                    </MudSelect>
+                <MudStack Spacing="4">
+
+                    @* What Section *@
+                    <MudPaper Elevation="0"
+                              Class="inset rounded-panel pa-4">
+                        <MudStack Spacing="3">
+                            <MudText Typo="Typo.subtitle2">@AppText.Get("SpawnWhat")</MudText>
+                            @* Actor Type *@
+                            <MudSelect T="ActorType"
+                                       Variant="Variant.Outlined"
+                                       @bind-Value="_viewModel.SelectedActorType"
+                                       Label="@AppText.Get("ActorType")"
+                                       ToStringFunc="actorType => actorType?.Name ?? string.Empty"
+                                       Dense>
+                                @foreach (var actorType in _viewModel.AllActorTypes)
+                                {
+                                    <MudSelectItem Value="actorType">
+                                        <ItemLabel Name="@actorType.Name"
+                                                   ImageUrl="@actorType.IconPath"
+                                                   Round />
+                                    </MudSelectItem>
+                                }
+                            </MudSelect>
+                            <MudStack Row
+                                      Spacing="2">
+                                @* Count *@
+                                <NumberField T="int"
+                                             @bind-Value="_viewModel.SpawnCount"
+                                             Min="1"
+                                             Max="500"
+                                             Label="@AppText.Get("Count")"
+                                             Style="width:110px" />
+                                @* Family *@
+                                <MudSelect T="int?"
+                                           Variant="Variant.Outlined"
+                                           @bind-Value="_viewModel.FamilyId"
+                                           Label="@AppText.Get("Family")"
+                                           ToStringFunc="FamilyName"
+                                           Dense>
+                                    @foreach (var familyId in _viewModel.AllFamilyIds)
+                                    {
+                                        <MudSelectItem T="int?"
+                                                       Value="familyId">
+                                            @FamilyName(familyId)
+                                        </MudSelectItem>
+                                    }
+                                </MudSelect>
+                            </MudStack>
+                        </MudStack>
+                    </MudPaper>
+
+                    @* Where Section *@
+                    <MudPaper Elevation="0"
+                              Class="inset rounded-panel pa-4">
+                        <MudStack Spacing="3">
+                            <MudText Typo="Typo.subtitle2">@AppText.Get("SpawnWhere")</MudText>
+                            <MudStack Spacing="0">
+                                <MudText Typo="Typo.caption"
+                                         Class="mud-text-secondary">
+                                    @AppText.Get("Destination")
+                                </MudText>
+                                <MudText Typo="Typo.body2"
+                                         Class="selectable-text">
+                                    @_viewModel.Destination
+                                </MudText>
+                            </MudStack>
+                            @* Area *@
+                            <MudSelect T="Area"
+                                       Variant="Variant.Outlined"
+                                       @bind-Value="_viewModel.SelectedArea"
+                                       Label="@AppText.Get("Area")"
+                                       ToStringFunc="area => area?.Name ?? string.Empty"
+                                       Dense>
+                                @foreach (var area in _viewModel.Areas)
+                                {
+                                    <MudSelectItem Value="area">@area.Name</MudSelectItem>
+                                }
+                            </MudSelect>
+                            <MudStack Row
+                                      AlignItems="AlignItems.Center"
+                                      Spacing="1">
+                                <MudText Typo="Typo.caption"
+                                         Class="mud-text-secondary">
+                                    @AppText.Get("Offset")
+                                </MudText>
+                                <InfoIcon Text="@AppText.Get("SpawnOffsetInfo")" />
+                            </MudStack>
+                            <MudStack Row
+                                      Spacing="2">
+                                @* Offset X *@
+                                <NumberField T="float"
+                                             @bind-Value="_viewModel.XOffset"
+                                             Label="X"
+                                             Step="0.5f" />
+                                @* Offset Y *@
+                                <NumberField T="float"
+                                             @bind-Value="_viewModel.YOffset"
+                                             Label="Y"
+                                             Step="0.5f" />
+                                @* Offset Z *@
+                                <NumberField T="float"
+                                             @bind-Value="_viewModel.ZOffset"
+                                             Label="Z"
+                                             Step="0.5f" />
+                            </MudStack>
+                        </MudStack>
+                    </MudPaper>
+
+                    @if (_viewModel.SpawnCount > 1)
+                    {
+                        @* Spread Section *@
+                        <MudPaper Elevation="0"
+                                  Class="inset rounded-panel pa-4">
+                            <MudStack Spacing="3">
+                                <MudText Typo="Typo.subtitle2">@AppText.Get("SpawnPattern")</MudText>
+                                <MudStack Row
+                                          Spacing="2">
+                                    @* Spawn Pattern *@
+                                    <MudSelect T="SpawnPattern"
+                                               Variant="Variant.Outlined"
+                                               @bind-Value="_viewModel.SelectedSpawnPattern"
+                                               Label="@AppText.Get("SpawnPattern")"
+                                               ToStringFunc="PatternName"
+                                               Dense>
+                                        @foreach (var pattern in Enum.GetValues<SpawnPattern>())
+                                        {
+                                            <MudSelectItem Value="pattern">@PatternName(pattern)</MudSelectItem>
+                                        }
+                                    </MudSelect>
+                                    @* Space Between *@
+                                    <NumberField T="int"
+                                                 @bind-Value="_viewModel.SpaceBetween"
+                                                 Min="0"
+                                                 Label="@AppText.Get("SpaceBetween")" />
+                                </MudStack>
+                                <MudText Typo="Typo.caption"
+                                         Class="mud-text-secondary">
+                                    @AppText.Get("SpaceBetweenTooltip")
+                                </MudText>
+                            </MudStack>
+                        </MudPaper>
+                    }
+
                 </MudStack>
             </MudItem>
 
             <MudItem xs="12"
                      md="6">
-                <Header Title="@AppText.Get("Influences")"
-                        Info="@AppText.Get("InfluencesInfo")">
+                @* Influences *@
+                <MudStack Spacing="2">
+                    <MudStack Row
+                              AlignItems="AlignItems.Center"
+                              Spacing="1">
+                        <MudText Typo="Typo.subtitle2">@AppText.Get("Influences")</MudText>
+                        <InfoIcon Text="@AppText.Get("InfluencesInfo")" />
+                    </MudStack>
                     <InfluencesEditor Influences="_viewModel.Influences"
                                       CanRemove />
-                </Header>
+                </MudStack>
             </MudItem>
 
         </MudGrid>
     </DialogContent>
     <DialogActions>
+        <MudText Typo="Typo.caption"
+                 Color="Color.Warning"
+                 Class="px-2">
+            @AppText.Get("SpawnActorsWarning")
+        </MudText>
+        <MudSpacer />
         @* Spawn Button *@
         <MudButton Variant="Variant.Filled"
                    Color="Color.Info"
                    StartIcon="@Icons.Material.Rounded.GroupAdd"
                    Disabled="@(!_viewModel.CanSpawn())"
                    OnClick="Spawn">
-            @AppText.Get("CreateActors")
+            @SpawnLabel
         </MudButton>
     </DialogActions>
 

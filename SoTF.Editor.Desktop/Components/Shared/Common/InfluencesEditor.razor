@@ -7,7 +7,9 @@
             <MudStack Spacing="1">
                 <MudStack Row
                           AlignItems="AlignItems.Center"
-                          Spacing="2">
+                          Wrap="Wrap.Wrap"
+                          Spacing="2"
+                          Class="mb-1">
                     <MudText Typo="Typo.subtitle2">@influence.PrintableTypeId</MudText>
                     <MudChip T="string"
                              Variant="Variant.Text"
@@ -16,6 +18,21 @@
                         @AppText.Get(MoodOf(influence).LabelKey)
                     </MudChip>
                     <MudSpacer />
+                    @* Mood Buttons *@
+                    <MudButtonGroup Variant="Variant.Filled"
+                                    Size="Size.Small"
+                                    OverrideStyles="false">
+                        @foreach (var mood in s_moods)
+                        {
+                            @* Mood Button *@
+                            <MudButton Variant="Variant.Filled"
+                                       Color="@(mood.IsExactly(influence) ? Color.Info : Color.Default)"
+                                       Size="Size.Small"
+                                       OnClick="() => Change(() => mood.ApplyTo(influence))">
+                                @AppText.Get(mood.LabelKey)
+                            </MudButton>
+                        }
+                    </MudButtonGroup>
                     @if (CanRemove)
                     {
                         @* Remove Influence *@
@@ -26,22 +43,6 @@
                                        OnClick="() => Remove(influence)" />
                     }
                 </MudStack>
-                @* Mood Buttons *@
-                <MudButtonGroup Variant="Variant.Filled"
-                                Size="Size.Small"
-                                OverrideStyles="false"
-                                Class="align-self-start mb-1">
-                    @foreach (var mood in s_moods)
-                    {
-                        @* Mood Button *@
-                        <MudButton Variant="Variant.Filled"
-                                   Color="@(mood.IsExactly(influence) ? Color.Info : Color.Default)"
-                                   Size="Size.Small"
-                                   OnClick="() => Change(() => mood.ApplyTo(influence))">
-                            @AppText.Get(mood.LabelKey)
-                        </MudButton>
-                    }
-                </MudButtonGroup>
                 @* Sentiment *@
                 <StatSlider Label="@AppText.Get("Sentiment")"
                             Info="@AppText.Get("SentimentInfo")"

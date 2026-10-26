@@ -10,7 +10,8 @@
         </MudText>
         @* Backup List *@
         <MudElement HtmlTag="div"
-                    Class="fit overflow-y-auto">
+                    Class="fit overflow-y-auto"
+                    Style="min-height:132px">
             @foreach (var backup in Backups)
             {
                 @* Backup Row *@
@@ -46,7 +47,7 @@
         @if (_selected is not null)
         {
             <MudStack Spacing="4"
-                      Class="inset rounded-panel pa-4">
+                      Class="inset rounded-panel pa-4 fit overflow-y-auto">
                 <MudStack Spacing="2">
                     <MudText Typo="Typo.subtitle2">@AppText.Get("SavedAfterBackup")</MudText>
                     @if (_savedChanges.Count == 0)
@@ -72,9 +73,11 @@
                             @text
                         </MudText>
                     }
-                    else
+                    @foreach (var (page, changes) in OrderedDifferences)
                     {
-                        <ChangeList Changes="_differences!" />
+                        <ChangeList Icon="@IconOf(page)"
+                                    Label="@LabelOf(page)"
+                                    Changes="changes" />
                     }
                 </MudStack>
             </MudStack>
@@ -85,6 +88,15 @@
         </MudText>
     </DialogContent>
     <DialogActions>
+        @* Delete Older Button *@
+        <MudButton Variant="Variant.Text"
+                   Color="Color.Error"
+                   StartIcon="@Icons.Material.Rounded.DeleteSweep"
+                   Disabled="@(Backups.Count <= 1)"
+                   OnClick="DeleteAllButNewestAsync">
+            @AppText.Get("DeleteAllButNewest")
+        </MudButton>
+        <MudSpacer />
         @* Restore Button *@
         <MudButton Variant="Variant.Filled"
                    Color="Color.Info"
