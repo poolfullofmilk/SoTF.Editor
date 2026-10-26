@@ -13,7 +13,7 @@
 
 ## Features
 - Player stats, outfit, armour and one inventory list of every item
-- Armour moved to another slot, worn straight from the backpack or put back in it
+- Armour worn straight from the inventory or put back in it, with the reason shown when it cannot
 - Every storage filled to the max in one click, empty slots included, or maxed and cleared one by one
 - Kelvin and Virginia, spawned copies too: stats, outfit, items and feelings with one-click moods, revive even after the game removed them, spawn more or remove the extra ones
 - Game setup, game state and weather, with info buttons that explain each setting
@@ -38,7 +38,7 @@
 
 ## ⚠️ Important
 - Start the game and stay in the main menu while you edit, then load the save, so Steam Cloud cannot overwrite your changes
-- Every save first copies the whole savegame to `Documents\SoTF.Editor\Backups`, and any backup can be restored or deleted from the app, which lists page by page and setting by setting what that save changed and how the backup differs from now, and older backups go in one click while the newest stays
+- Every save first copies the whole savegame to `Documents\SoTF.Editor\Backups`, and any backup can be restored or deleted from the app, which lists page by page and setting by setting what that save changed and how the backup differs from now, and older backups can be picked and deleted while the newest always stays
 - Past 500 MB of backups the oldest go, but every savegame keeps its first one
 - If a backup or load fails, nothing is overwritten and the error has a button to the backup folder
 - If the game saved while the editor was open, the editor warns before overwriting that progress
