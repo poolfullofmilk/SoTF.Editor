@@ -33,12 +33,4 @@ public partial class Inventory : EditorPageBase
             InventoryPage.AddAllUnassigned();
         }
     }
-
-    private void AddCategory()
-    {
-        if (_category is { } category)
-        {
-            InventoryPage.AddAllFromCategory(category);
-        }
-    }
 }

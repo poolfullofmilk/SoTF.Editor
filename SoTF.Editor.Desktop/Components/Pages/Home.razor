@@ -102,13 +102,13 @@
                                       title="@savegame.FullPath"
                                       role="button"
                                       tabindex="0"
-                                      aria-label="@TitleOf(savegame)"
+                                      aria-label="@savegame.Name"
                                       data-keyclick
                                       @onclick="() => Open(savegame)">
                                 @if (savegame.ThumbnailPath is { } thumbnailPath)
                                 {
                                     <MudImage Src="@LocalFiles.Url(thumbnailPath)"
-                                              Alt="@TitleOf(savegame)"
+                                              Alt="@savegame.Name"
                                               Class="savegame-thumb" />
                                 }
                                 else
@@ -128,7 +128,7 @@
                                         <MudText Typo="Typo.subtitle1"
                                                  Class="text-truncate text-tight"
                                                  Style="font-weight:700">
-                                            @TitleOf(savegame)
+                                            @savegame.Name
                                         </MudText>
                                         <MudSpacer />
                                         @if (IsOpen(savegame))

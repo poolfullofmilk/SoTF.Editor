@@ -5,6 +5,7 @@ using NLog;
 using SoTF.Editor.Data.Enums;
 using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
+using SoTF.Editor.Data.Resources;
 using SoTF.Editor.Data.ViewModels;
 using SoTF.Editor.Services.Actors;
 using static SoTF.Editor.Data.Helpers.Constants.Actors;
@@ -36,7 +37,17 @@ public partial class Savegame
 
     public string Id { get; }
 
-    public string Name => string.IsNullOrWhiteSpace(GameName) ? Id : GameName;
+    public string Name => string.IsNullOrWhiteSpace(GameName) ? JoinedGameName ?? Id : GameName;
+
+    // A Joined Game Has No Name File, Named Like Hosted Ones
+    private string? JoinedGameName =>
+        IsMultiPlayerClient() && Summary is { GameType: { } gameType } summary
+            ? AppText.Format(
+                "JoinedGameName",
+                AppText.Get(TextKeys.GameMode(gameType)),
+                summary.Days
+            )
+            : null;
 
     public string? GameName { get; }
 

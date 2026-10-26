@@ -42,6 +42,9 @@ public partial class PoiDetails
     [Inject]
     public required GameData GameData { get; set; }
 
+    [Inject]
+    public required ISnackbar Snackbar { get; set; }
+
     // A Follower Missing From The Save Has Nothing To Move
     private bool CanTeleportKelvin =>
         Poi.CanTeleportKelvin() && FollowerPage.CopiesOf(Constants.Actors.KelvinTypeId).Count > 0;
@@ -163,14 +166,15 @@ public partial class PoiDetails
         zipPointPoi.IsZiplineCreationRequested = createZipline;
     }
 
-    // Followers Cannot Follow Into Caves, Other Actors Can
-    private bool CanBringToPlayer(ActorPoi actorPoi)
-    {
-        return !actorPoi.IsFollower || !PlayerPage.PlayerState.Pos.Area.IsUnderground();
-    }
-
     private async Task BringToPlayerAsync(ActorPoi actorPoi)
     {
+        // Followers Cannot Follow Into Caves, Other Actors Can
+        if (actorPoi.IsFollower && PlayerPage.PlayerState.Pos.Area.IsUnderground())
+        {
+            Snackbar.Add(AppText.Get("FollowersStayOutside"), Severity.Warning);
+            return;
+        }
+
         if (FollowerPage.StateOfActor(actorPoi.Actor.UniqueId) is { } follower)
         {
             FollowerPageViewModel.MoveTo(follower, PlayerPage.PlayerState.Pos);

@@ -49,4 +49,18 @@ public class MapFilter
     }
 
     public List<AreaFilter> AreaFilterTypeValues { get; }
+
+    public bool IsSet =>
+        AreaFilter != Map.AreaFilter.All
+        || RequirementsFilter != RequirementsFilterType.All
+        || ShowOnlyUncollectedItems
+        || !string.IsNullOrWhiteSpace(FullText);
+
+    public void Reset()
+    {
+        AreaFilter = Map.AreaFilter.All;
+        RequirementsFilter = RequirementsFilterType.All;
+        ShowOnlyUncollectedItems = false;
+        FullText = null;
+    }
 }

@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-using MudBlazor;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Models.Actors;
 using SoTF.Editor.Data.ViewModels;
@@ -23,11 +21,10 @@ public partial class Player : EditorPageBase
     [Inject]
     public required FollowerPageViewModel FollowerPage { get; set; }
 
-    private PlayerState State => PlayerPage.PlayerState;
+    [Inject]
+    public required InventoryPageViewModel InventoryPage { get; set; }
 
-    // One Slot Menu For Every Piece
-    private MudMenu? _slotMenu;
-    private ArmourData? _slotArmour;
+    private PlayerState State => PlayerPage.PlayerState;
 
     private float MaxHealthCeiling => Math.Max(DefaultMaxHealthCeiling, State.MaxHealth);
 
@@ -40,28 +37,34 @@ public partial class Player : EditorPageBase
         return armour.ArmourPiece.RemainingArmourpoints == armour.DefaultDurability;
     }
 
-    private async Task OpenSlotsAsync(MouseEventArgs args, ArmourData armour)
+    // What The Button Does, Or Why It Cannot
+    private string UnequipText(ArmourData armour)
     {
-        _slotArmour = armour;
-        if (_slotMenu is { } slotMenu)
+        if (ArmorPage.CanMoveToInventory(armour))
         {
-            await slotMenu.OpenMenuAsync(args);
+            return AppText.Get("UnequipText");
         }
+
+        return InventoryPage.ItemOf(armour.Id) is { } item
+            ? AppText.Format("UnequipFull", item.Max)
+            : AppText.Get("UnequipUnknown");
     }
 
-    private void MoveToSlot(int slot)
+    private string WearText(InventoryItem item)
     {
-        if (_slotArmour is { } armour)
+        if (!InventoryPage.IsHeld(item))
         {
-            ArmorPage.MoveToSlot(armour, slot);
+            return AppText.Get("WearNoneLeft");
         }
+
+        return ArmorPage.FreeSlots.Any() ? AppText.Get("WearText") : AppText.Get("WearAllWorn");
     }
 
-    private async Task MoveToInventoryAsync(ArmourData armour)
+    private async Task DeleteArmourAsync(ArmourData armour)
     {
-        if (await ConfirmAsync("MoveToInventory", "MoveToInventoryText"))
+        if (await ConfirmAsync("DeleteArmour", "DeleteArmourText"))
         {
-            ArmorPage.MoveToInventory(armour);
+            ArmorPage.RemoveArmour(armour);
         }
     }
 

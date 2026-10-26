@@ -587,16 +587,6 @@ try
     Check(main.HasUnsavedChanges(), "Failed Save Keeps The Edit");
     File.Move(movedPath, archivePath);
 
-    // Deleting Older Backups Keeps The Newest, Nothing Else Goes
-    var newestKept = BackupManager.List(savegamePath)[0].Path;
-    Check(
-        BackupManager.List(savegamePath).Count > 1
-            && BackupManager.DeleteAllButNewest(savegamePath) == 0
-            && BackupManager.List(savegamePath) is [{ Path: var keptPath }]
-            && keptPath == newestKept,
-        "Delete All But Newest Keeps The Newest"
-    );
-
     void ToolCheck(string tool, Func<string> run)
     {
         // A Tool That Finds Nothing Saves Nothing, Nothing Stays

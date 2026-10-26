@@ -124,72 +124,116 @@ public partial class RestoreBackupDialog
             Formatter.FormatSize(BackupManager.SizeLimit)
         );
 
+    // Picking Backups To Delete, The Newest Never Among Them
+    private bool _deleting;
+    private readonly HashSet<SavegameBackup> _marked = [];
+
+    private bool IsPicked(SavegameBackup backup)
+    {
+        return _deleting ? _marked.Contains(backup) : backup == _selected;
+    }
+
     private string RowClass(SavegameBackup backup)
     {
-        var selected = backup == _selected ? " list-row-selected" : "";
-        return "list-row rounded-inner px-3 py-1" + selected;
+        var picked = IsPicked(backup) ? " list-row-selected" : "";
+        var locked = _deleting && backup == Backups[0] ? " not-held" : "";
+        return "list-row px-4 py-2" + picked + locked;
     }
 
-    private string AgeLabel(SavegameBackup backup)
+    private string RowIcon(SavegameBackup backup)
     {
+        if (!_deleting)
+        {
+            return Icons.Material.Rounded.History;
+        }
+
         if (backup == Backups[0])
         {
-            return AppText.Get("Newest");
+            return Icons.Material.Rounded.Lock;
         }
 
-        return backup == Backups[^1] ? AppText.Get("Oldest") : "";
+        return _marked.Contains(backup)
+            ? Icons.Material.Rounded.CheckBox
+            : Icons.Material.Rounded.CheckBoxOutlineBlank;
     }
 
-    private async Task DeleteAsync(SavegameBackup backup)
+    private string DetailOf(SavegameBackup backup)
     {
-        if (
-            !await DialogService.ConfirmAsync(
-                AppText.Get("DeleteBackup"),
-                AppText.Format(
-                    "DeleteBackupText",
-                    Formatter.FormatDateTimeWithSeconds(backup.TakenAt)
-                )
-            )
-        )
-        {
-            return;
-        }
+        // Size, Then Newest Or Oldest Where It Is One
+        var age =
+            backup == Backups[0] ? AppText.Get("Newest")
+            : backup == Backups[^1] ? AppText.Get("Oldest")
+            : null;
+        var size = Formatter.FormatSize(backup.Size);
+        return age is null ? size : $"{size} · {age}";
+    }
 
-        try
+    private async Task ClickAsync(SavegameBackup backup)
+    {
+        if (!_deleting)
         {
-            BackupManager.Delete(backup.Path);
-            Backups.Remove(backup);
-            _totalSize -= backup.Size;
-            if (_selected == backup)
+            // A Second Click Lets The Backup Go Again
+            if (backup == _selected)
             {
                 _selected = null;
+                return;
             }
 
-            if (Backups.Count == 0)
-            {
-                MudDialog.Cancel();
-            }
+            await SelectAsync(backup);
+            return;
         }
-        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+
+        if (backup != Backups[0] && !_marked.Remove(backup))
         {
-            s_logger.Error(exception, "Failed To Delete Backup");
-            Snackbar.Add(AppText.Get("UnableToDeleteBackup"), Severity.Error);
+            _marked.Add(backup);
         }
     }
 
-    private async Task DeleteAllButNewestAsync()
+    private void StartDeleting()
+    {
+        _deleting = true;
+        _marked.Clear();
+    }
+
+    private void StopDeleting()
+    {
+        _deleting = false;
+        _marked.Clear();
+    }
+
+    private void MarkAllButNewest()
+    {
+        _marked.UnionWith(Backups.Skip(1));
+    }
+
+    private async Task DeleteMarkedAsync()
     {
         if (
             !await DialogService.ConfirmAsync(
-                AppText.Get("DeleteAllButNewest"),
-                AppText.Format("DeleteAllButNewestText", Backups.Count - 1)
+                AppText.Format("DeleteCount", _marked.Count),
+                AppText.Format("DeleteBackupsConfirm", _marked.Count)
             )
         )
         {
             return;
         }
 
-        var failed = BackupManager.DeleteAllButNewest(SavegamePath);
+        // The Newest Stays Whatever Was Marked, One Locked Folder Never Stops The Rest
+        var failed = 0;
+        foreach (var backup in _marked.Where(backup => backup != Backups[0]))
+        {
+            try
+            {
+                BackupManager.Delete(backup.Path);
+            }
+            catch (Exception exception)
+                when (exception is IOException or UnauthorizedAccessException or ArgumentException)
+            {
+                s_logger.Error(exception, "Failed To Delete Backup");
+                failed++;
+            }
+        }
+
         Backups = BackupManager.List(SavegamePath);
         _totalSize = BackupManager.TotalSize();
         if (_selected is { } selected && !Backups.Exists(backup => backup.Path == selected.Path))
@@ -197,6 +241,7 @@ public partial class RestoreBackupDialog
             _selected = null;
         }
 
+        StopDeleting();
         if (failed > 0)
         {
             Snackbar.Add(AppText.Get("UnableToDeleteBackup"), Severity.Error);

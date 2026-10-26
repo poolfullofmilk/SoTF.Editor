@@ -1,6 +1,7 @@
 using System.Globalization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using MudBlazor;
 using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models.Map;
 using SoTF.Editor.Desktop.Components.Shared.Common;
@@ -26,14 +27,32 @@ public partial class Map : EditorPageBase
     private ElementReference _viewport;
     private ElementReference _canvas;
     private (float Left, float Top)? _focusPixel;
+
+    // Only When No Point Sits Where The Map Was Asked To Look
+    private (float Left, float Top)? _crosshair;
     private bool _isMapReady;
     private bool _menusHidden;
-    private bool _filtersOpen;
 
     private bool HasFilters =>
         MapViewModel.MapFilter.AreaFilter != AreaFilter.All
         || MapViewModel.MapFilter.RequirementsFilter != MapFilter.RequirementsFilterType.All
         || MapViewModel.MapFilter.ShowOnlyUncollectedItems;
+
+    private static string? CheckOf(bool selected)
+    {
+        return selected ? Icons.Material.Rounded.Check : null;
+    }
+
+    // Groups The Search Or Filters Leave Empty Go Grey
+    private static string? MatchClass(PoiGroup group)
+    {
+        return MapViewModel.HasMatches(group) ? null : "not-held";
+    }
+
+    private static string? MatchClass(IEnumerable<PoiGroup> groups)
+    {
+        return groups.Any(MapViewModel.HasMatches) ? null : "not-held";
+    }
 
     private string MenusText => AppText.Get(_menusHidden ? "ShowMenus" : "HideMenus");
 
@@ -42,9 +61,16 @@ public partial class Map : EditorPageBase
         base.OnInitialized();
         MapViewModel.Build();
 
-        if (MapViewModel.FocusPosition is { } focusPosition)
+        // The Point Itself When One Sits There, A Crosshair Otherwise
+        if (MapViewModel.TakeFocus() is { } focused)
         {
+            _focusPixel = (focused.MapLeft, focused.MapTop);
+        }
+        else if (MapViewModel.FocusPosition is { } focusPosition)
+        {
+            MapViewModel.FocusPosition = null;
             _focusPixel = CoordinateConverter.IngameToPixel(focusPosition.X, focusPosition.Z);
+            _crosshair = _focusPixel;
         }
     }
 
@@ -64,7 +90,6 @@ public partial class Map : EditorPageBase
             // Show On Map Lands Centred On Its Position
             if (_focusPixel is { } focus)
             {
-                MapViewModel.FocusPosition = null;
                 await JavaScript.InvokeVoidAsync("sotfMap.centerOn", focus.Left, focus.Top);
             }
         }
@@ -160,9 +185,10 @@ public partial class Map : EditorPageBase
 
     private void ResetFilters()
     {
-        MapViewModel.MapFilter.AreaFilter = AreaFilter.All;
-        MapViewModel.MapFilter.RequirementsFilter = MapFilter.RequirementsFilterType.All;
-        MapViewModel.MapFilter.ShowOnlyUncollectedItems = false;
+        // The Search Stays, It Has Its Own Clear
+        var search = MapViewModel.MapFilter.FullText;
+        MapViewModel.MapFilter.Reset();
+        MapViewModel.MapFilter.FullText = search;
         MapViewModel.ApplyFilterToAllPois();
     }
 

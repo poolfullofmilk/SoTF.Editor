@@ -1,11 +1,7 @@
 @* Max Button *@
-<MudElement HtmlTag="span"
-            Class="max-slot">
-    <MudButton Variant="Variant.Text"
+<MudIconButton Icon="@Icons.Material.Rounded.KeyboardDoubleArrowUp"
+               aria-label="@AppText.Format("SetToMaxOf", Max)"
+               title="@(Disabled ? null : AppText.Format("SetToMaxOf", Max))"
                Size="Size.Small"
                Disabled="Disabled"
-               title="@(Disabled ? null : AppText.Get("SetToMax"))"
-               OnClick="OnClick">
-        @($"{AppText.Get("Max")} {Max}")
-    </MudButton>
-</MudElement>
+               OnClick="OnClick" />

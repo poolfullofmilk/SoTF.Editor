@@ -1,13 +1,13 @@
 <MudDialog>
 
     <TitleContent>
-        <MudText Typo="Typo.h6">@AppText.Get("SaveChangesTitle")</MudText>
+        <MudText Typo="Typo.h6">@AppText.Get(Revert ? "RevertPage" : "SaveChangesTitle")</MudText>
     </TitleContent>
     <DialogContent>
         <MudStack Spacing="2">
             <MudText Typo="Typo.body2"
                      Class="mud-text-secondary">
-                @AppText.Get("SaveChangesText")
+                @(Revert ? AppText.Format("RevertPageText", AppText.Get(Pages[0].LabelKey)) : AppText.Get("SaveChangesText"))
             </MudText>
             @foreach (var link in Pages)
             {
@@ -15,19 +15,22 @@
                             Label="@AppText.Get(link.LabelKey)"
                             Changes="_changes[link.Href]" />
             }
-            <MudText Typo="Typo.caption"
-                     Class="mud-text-secondary text-relaxed">
-                @AppText.Get("SaveChangesBackup")
-            </MudText>
+            @if (!Revert)
+            {
+                <MudText Typo="Typo.caption"
+                         Class="mud-text-secondary text-relaxed">
+                    @AppText.Get("SaveChangesBackup")
+                </MudText>
+            }
         </MudStack>
     </DialogContent>
     <DialogActions>
-        @* Save Button *@
+        @* Save Or Revert Button *@
         <MudButton Variant="Variant.Filled"
-                   Color="Color.Info"
-                   StartIcon="@Icons.Material.Rounded.Save"
+                   Color="@(Revert ? Color.Error : Color.Info)"
+                   StartIcon="@(Revert ? Icons.Material.Rounded.Undo : Icons.Material.Rounded.Save)"
                    OnClick="Save">
-            @AppText.Get("Save")
+            @AppText.Get(Revert ? "Revert" : "Save")
         </MudButton>
     </DialogActions>
 

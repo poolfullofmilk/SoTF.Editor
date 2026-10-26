@@ -72,23 +72,23 @@ public class ArmorPageViewModel
             _armour.TrueForAll(armourData => armourData.Slot != slot)
         );
 
-    public void MoveToSlot(ArmourData armourData, int slot)
-    {
-        if (FreeSlots.Contains(slot))
-        {
-            armourData.ArmourPiece.Slot = slot;
-        }
-    }
-
-    // Armour In The Backpack That Could Be Worn
+    // Armour In The Backpack, And Armour Worn From It Since The Load
     public IEnumerable<InventoryItem> InventoryArmour =>
         _inventoryPage
-            .Inventory.Where(item => item.Item?.IsEquippableArmor == true && item.TotalCount > 0)
-            .OrderBy(item => item.Name);
+            .Filter(null, null, false)
+            .Where(item =>
+                item.Item?.IsEquippableArmor == true
+                && (_inventoryPage.IsHeld(item) || _inventoryPage.IsChanged(item))
+            );
+
+    public bool CanWear(InventoryItem item)
+    {
+        return item.Item != null && FreeSlots.Any() && _inventoryPage.IsHeld(item);
+    }
 
     public void Wear(InventoryItem item)
     {
-        if (item.Item is not { } armour || !FreeSlots.Any() || !_inventoryPage.IsHeld(item))
+        if (!CanWear(item) || item.Item is not { } armour)
         {
             return;
         }

@@ -127,6 +127,50 @@ public class MapViewModel(
         }
     }
 
+    public IPoi? TakeFocus()
+    {
+        // Show On Map Picks The Point Itself, Its Group Turned On And Filters Cleared
+        if (FocusPosition is not { } position)
+        {
+            return null;
+        }
+
+        SyncLivePositions();
+        if (
+            AllPois()
+                .OfType<BasePoi>()
+                .Where(poi => poi.Position?.HasSameCoordinates(position) == true)
+                .OrderBy(poi => poi is PlayerPoi or ActorPoi ? 0 : 1)
+                .FirstOrDefault()
+            is not { } focused
+        )
+        {
+            return null;
+        }
+
+        FocusPosition = null;
+        foreach (var group in AllGroups().Where(group => group.Pois.Contains(focused)))
+        {
+            group.Enabled = true;
+        }
+
+        SaveSettings();
+        if (focused.Filtered)
+        {
+            MapFilter.Reset();
+        }
+
+        ApplyFilterToAllPois();
+        SelectPoi(focused);
+        return focused;
+    }
+
+    // A Group With Nothing Left After The Search And Filters
+    public static bool HasMatches(PoiGroup group)
+    {
+        return group.Pois.OfType<BasePoi>().Any(poi => !poi.Filtered);
+    }
+
     public void SelectPoi(IPoi? poi)
     {
         if (SelectedPoi is { } selectedPoi)

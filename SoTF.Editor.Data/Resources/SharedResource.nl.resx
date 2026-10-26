@@ -366,12 +366,6 @@
   <data name="Durability" xml:space="preserve">
     <value>Duurzaamheid</value>
   </data>
-  <data name="EquippedArmor" xml:space="preserve">
-    <value>Pantser, Max 10</value>
-  </data>
-  <data name="Slot" xml:space="preserve">
-    <value>Slot</value>
-  </data>
   <data name="UnknownItem" xml:space="preserve">
     <value>Onbekend Item</value>
   </data>
@@ -722,9 +716,6 @@
   </data>
   <data name="Requirements" xml:space="preserve">
     <value>Vereisten</value>
-  </data>
-  <data name="RequirementsTooltip" xml:space="preserve">
-    <value>Filtert op of je hebt wat een plek nodig heeft, zoals een schop of sleutelkaart</value>
   </data>
   <data name="ActorType" xml:space="preserve">
     <value>Actortype</value>
@@ -1510,7 +1501,7 @@
     <value>Alle schade aan je constructies wordt hersteld</value>
   </data>
   <data name="CannibalAngerText" xml:space="preserve">
-    <value>Bepaalt hoe boos elke levende kannibaal op je is, 0 zet ook doden, gekapte bomen en dorpsbezoeken op nul zodat ze kalmeren</value>
+    <value>Hoe boos elke levende kannibaal op je is</value>
   </data>
   <data name="ResetContainersText" xml:space="preserve">
     <value>Geopende kisten, koffers en voorraden in de wereld zijn weer dicht en vol</value>
@@ -1716,12 +1707,6 @@
   <data name="SettingStartingDayOffsetInfo" xml:space="preserve">
     <value>Extra dagen die het spel meetelt om het seizoen te bepalen. Hoger brengt het volgende seizoen sneller, lager houdt dit seizoen langer. Een seizoen kiezen zet dit voor je</value>
   </data>
-  <data name="DeleteBackup" xml:space="preserve">
-    <value>Back-up Verwijderen</value>
-  </data>
-  <data name="DeleteBackupText" xml:space="preserve">
-    <value>De back-up van {0} wordt voorgoed verwijderd</value>
-  </data>
   <data name="UnableToDeleteBackup" xml:space="preserve">
     <value>Kan de back-up niet verwijderen</value>
   </data>
@@ -1866,9 +1851,6 @@
   <data name="Filters" xml:space="preserve">
     <value>Filters</value>
   </data>
-  <data name="Reset" xml:space="preserve">
-    <value>Herstellen</value>
-  </data>
   <data name="Changes" xml:space="preserve">
     <value>Wijzigingen</value>
   </data>
@@ -1950,20 +1932,8 @@
   <data name="DaysUntilSeason" xml:space="preserve">
     <value>Dagen Tot {0}</value>
   </data>
-  <data name="SeasonSummary" xml:space="preserve">
-    <value>{0}, dag {1} van {2}. {3} begint over {4} dagen</value>
-  </data>
-  <data name="SeasonLastDay" xml:space="preserve">
-    <value>{0}, dag {1} van {1}. {2} begint morgen</value>
-  </data>
   <data name="JoinedGameName" xml:space="preserve">
     <value>{0} {1} Dagen</value>
-  </data>
-  <data name="DeleteAllButNewest" xml:space="preserve">
-    <value>Alles Behalve Nieuwste Verwijderen</value>
-  </data>
-  <data name="DeleteAllButNewestText" xml:space="preserve">
-    <value>{0} oudere back-ups van deze savegame worden definitief verwijderd. De nieuwste blijft, zodat de laatste opslag nog ongedaan kan worden</value>
   </data>
   <data name="Files" xml:space="preserve">
     <value>Andere Bestanden</value>
@@ -1983,12 +1953,6 @@
   <data name="SpawnCount" xml:space="preserve">
     <value>{0} {1} Spawnen</value>
   </data>
-  <data name="MoveToInventory" xml:space="preserve">
-    <value>Naar Inventaris Verplaatsen</value>
-  </data>
-  <data name="MoveToInventoryText" xml:space="preserve">
-    <value>Het stuk gaat terug in de rugzak. Opnieuw gedragen begint het met zijn standaard duurzaamheid</value>
-  </data>
   <data name="ArmourInInventory" xml:space="preserve">
     <value>In Inventaris</value>
   </data>
@@ -1997,5 +1961,80 @@
   </data>
   <data name="WearArmour" xml:space="preserve">
     <value>Dragen</value>
+  </data>
+  <data name="Revert" xml:space="preserve">
+    <value>Terugzetten</value>
+  </data>
+  <data name="ArmorCount" xml:space="preserve">
+    <value>Pantser, {0} Van 10</value>
+  </data>
+  <data name="ArmorInfo" xml:space="preserve">
+    <value>Het spel plaatst elk gedragen stuk zelf op het lichaam, tot 10, dus er is geen lichaamsdeel te kiezen. Uittrekken legt een stuk terug in de inventaris, verwijderen haalt het voorgoed weg</value>
+  </data>
+  <data name="SetToDefaultDurabilityOf" xml:space="preserve">
+    <value>Standaard Duurzaamheid ({0})</value>
+  </data>
+  <data name="SetToMaxOf" xml:space="preserve">
+    <value>Op Max Zetten ({0})</value>
+  </data>
+  <data name="Unequip" xml:space="preserve">
+    <value>Uittrekken</value>
+  </data>
+  <data name="UnequipText" xml:space="preserve">
+    <value>Uittrekken Naar Inventaris</value>
+  </data>
+  <data name="UnequipFull" xml:space="preserve">
+    <value>De inventaris bevat al het maximum ({0})</value>
+  </data>
+  <data name="UnequipUnknown" xml:space="preserve">
+    <value>Dit stuk heeft geen inventarisitem</value>
+  </data>
+  <data name="WearText" xml:space="preserve">
+    <value>Eén Uit De Inventaris Dragen</value>
+  </data>
+  <data name="WearNoneLeft" xml:space="preserve">
+    <value>Niets meer in de inventaris</value>
+  </data>
+  <data name="WearAllWorn" xml:space="preserve">
+    <value>Alle 10 stukken worden al gedragen</value>
+  </data>
+  <data name="DeleteArmour" xml:space="preserve">
+    <value>Stuk Verwijderen</value>
+  </data>
+  <data name="DeleteArmourText" xml:space="preserve">
+    <value>Het stuk verdwijnt voorgoed, het gaat niet terug naar de inventaris</value>
+  </data>
+  <data name="NewArmour" xml:space="preserve">
+    <value>Nieuw Stuk</value>
+  </data>
+  <data name="DeleteBackups" xml:space="preserve">
+    <value>Back-ups Verwijderen</value>
+  </data>
+  <data name="DeleteBackupsText" xml:space="preserve">
+    <value>Kies de back-ups om te verwijderen. De nieuwste blijft altijd</value>
+  </data>
+  <data name="AllButNewest" xml:space="preserve">
+    <value>Alles Behalve Nieuwste</value>
+  </data>
+  <data name="DeleteCount" xml:space="preserve">
+    <value>{0} Verwijderen</value>
+  </data>
+  <data name="DeleteBackupsConfirm" xml:space="preserve">
+    <value>{0} back-ups worden definitief verwijderd</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Terug</value>
+  </data>
+  <data name="CannibalAngerDialogText" xml:space="preserve">
+    <value>Elke levende kannibaal krijgt deze boosheid op jou en heeft evenveel afkeer. Op 0 vergeten ze ook je doden, gekapte bomen en dorpsbezoeken, zodat ze echt kalmeren</value>
+  </data>
+  <data name="FollowersStayOutside" xml:space="preserve">
+    <value>Volgers kunnen niet mee een grot in, verlaat eerst de grot</value>
+  </data>
+  <data name="NoArrival" xml:space="preserve">
+    <value>Nergens om te spawnen: je bent in een grot en geen volger is buiten</value>
+  </data>
+  <data name="ResetFilters" xml:space="preserve">
+    <value>Filters Herstellen</value>
   </data>
 </root>

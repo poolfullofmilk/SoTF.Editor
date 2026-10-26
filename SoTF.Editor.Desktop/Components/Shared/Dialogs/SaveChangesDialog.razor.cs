@@ -50,6 +50,10 @@ public partial class SaveChangesDialog
     [Parameter]
     public required List<MainLayout.PageLink> Pages { get; set; }
 
+    // Revert Shows What Goes Back Instead Of What Gets Saved
+    [Parameter]
+    public bool Revert { get; set; }
+
     // Worked Out Once, The Backup Keeps The Same List
     private Dictionary<string, List<Change>> _changes = [];
 

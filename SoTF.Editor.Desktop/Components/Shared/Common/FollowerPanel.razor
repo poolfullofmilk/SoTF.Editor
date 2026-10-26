@@ -85,8 +85,8 @@
                     <MudButton Variant="Variant.Text"
                                Size="Size.Small"
                                StartIcon="@Icons.Material.Rounded.NearMe"
-                               Disabled="@(!CanMoveToPlayer)"
-                               OnClick="() => FollowerPageViewModel.MoveTo(Follower, PlayerPage.PlayerState.Pos)">
+                               Disabled="@(!InSave)"
+                               OnClick="MoveToPlayer">
                         @AppText.Get("MoveToPlayer")
                     </MudButton>
                     @* Revive *@
@@ -104,7 +104,6 @@
                     <MudButton Variant="Variant.Text"
                                Size="Size.Small"
                                StartIcon="@Icons.Material.Rounded.GroupAdd"
-                               Disabled="@(!HasArrival)"
                                OnClick="SpawnAsync">
                         @AppText.Get("Spawn")
                     </MudButton>

@@ -343,28 +343,6 @@ public static partial class BackupManager
             : [];
     }
 
-    public static int DeleteAllButNewest(string savegamePath)
-    {
-        // The Newest Stays, So The Last Save Can Be Undone
-        var failed = 0;
-        foreach (var backup in List(savegamePath).Skip(1))
-        {
-            try
-            {
-                Delete(backup.Path);
-            }
-            catch (Exception exception)
-                when (exception is IOException or UnauthorizedAccessException or ArgumentException)
-            {
-                // One Locked Or Foreign Folder Never Stops The Rest
-                s_logger.Warn(exception, $"Failed To Delete Backup {backup.Path}");
-                failed++;
-            }
-        }
-
-        return failed;
-    }
-
     public static bool HasAny(string savegamePath)
     {
         var folder = FolderOf(savegamePath);

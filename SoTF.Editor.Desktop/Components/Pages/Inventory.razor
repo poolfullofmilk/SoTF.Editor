@@ -14,6 +14,19 @@
                            OnClick="AddAllAsync">
                     @AppText.Get("AddAll")
                 </MudButton>
+                @* Add Category Menu *@
+                <MudMenu Label="@AppText.Get("AddAllFromCategory")"
+                         EndIcon="@Icons.Material.Rounded.ArrowDropDown"
+                         Variant="Variant.Text"
+                         Size="Size.Small"
+                         MaxHeight="400"
+                         AnchorOrigin="Origin.BottomRight"
+                         TransformOrigin="Origin.TopRight">
+                    @foreach (var category in InventoryPage.Categories.OrderBy(category => category.TypeRendered))
+                    {
+                        <MudMenuItem OnClick="() => InventoryPage.AddAllFromCategory(category)">@category.TypeRendered</MudMenuItem>
+                    }
+                </MudMenu>
                 @* Set All Min *@
                 <MudButton Variant="Variant.Text"
                            Size="Size.Small"
@@ -61,14 +74,6 @@
                                 <MudSelectItem Value="category">@category.TypeRendered</MudSelectItem>
                             }
                         </MudSelect>
-                        @* Add Category *@
-                        <MudButton Variant="Variant.Text"
-                                   Size="Size.Small"
-                                   Disabled="@(_category is null)"
-                                   Class="text-nowrap flex-shrink-0"
-                                   OnClick="AddCategory">
-                            @AppText.Get("AddAllFromCategory")
-                        </MudButton>
                         @* Held Only *@
                         <MudSwitch T="bool"
                                    @bind-Value="_heldOnly"

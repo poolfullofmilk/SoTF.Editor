@@ -338,6 +338,18 @@ mark {
     flex-shrink: 0;
 }
 
+/* One Cell Per Season Day, Filled Up To Today */
+.season-day {
+    flex: 1 1 0;
+    height: 8px;
+    border-radius: 4px;
+    background-color: var(--mud-palette-lines-default);
+}
+
+    .season-day.done {
+        background-color: var(--mud-palette-info);
+    }
+
 /* Both Follower Headers Match, A Copy Picker Makes One Taller */
 .follower-header .header-row {
     min-height: 40px;
@@ -471,18 +483,6 @@ html, body {
     text-decoration-thickness: 2px;
     text-underline-offset: 5px;
 }
-
-/* Max Buttons Hug Their Text, The Slot Keeps Rows Lined Up */
-.max-slot {
-    display: inline-flex;
-    width: 96px;
-    flex-shrink: 0;
-    font-variant-numeric: tabular-nums;
-}
-
-    .max-slot .mud-button-root {
-        min-width: 0;
-    }
 
 /* A Number At Its Limit Greys Out That Spin Button */
 .number-field {

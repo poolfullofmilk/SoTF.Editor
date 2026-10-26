@@ -41,7 +41,6 @@ public partial class FollowerPanel : EditorPageBase
 
     // A Follower Missing From The Save Sits At Origin
     private bool InSave => Follower.UniqueId != null;
-    private bool CanMoveToPlayer => InSave && PlayerOnSurface;
 
     private bool CanFillBars =>
         InSave
@@ -74,6 +73,18 @@ public partial class FollowerPanel : EditorPageBase
         return $"{Name} {Copies.IndexOf(copy) + 1}";
     }
 
+    private void MoveToPlayer()
+    {
+        // A Cave Blocks It, The Button Says So Rather Than Going Grey
+        if (!PlayerOnSurface)
+        {
+            Snackbar.Add(AppText.Get("FollowersStayOutside"), Severity.Warning);
+            return;
+        }
+
+        FollowerPageViewModel.MoveTo(Follower, PlayerPage.PlayerState.Pos);
+    }
+
     private void Revive()
     {
         Snackbar.Add(MainViewModel.ReviveFollower(Follower.TypeId), Severity.Info);
@@ -89,6 +100,12 @@ public partial class FollowerPanel : EditorPageBase
 
     private async Task SpawnAsync()
     {
+        if (!HasArrival)
+        {
+            Snackbar.Add(AppText.Get("NoArrival"), Severity.Warning);
+            return;
+        }
+
         if (
             !await DialogService.ConfirmAsync(
                 AppText.Format("SpawnFollower", Name),

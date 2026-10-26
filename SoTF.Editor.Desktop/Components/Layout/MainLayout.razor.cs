@@ -225,12 +225,17 @@ public partial class MainLayout : IDisposable
 
     private async Task RevertPageAsync(PageLink page)
     {
-        if (
-            await DialogService.ConfirmAsync(
-                AppText.Get("RevertPage"),
-                AppText.Format("RevertPageText", AppText.Get(page.LabelKey))
-            )
-        )
+        // The Same List The Save Dialog Shows, For That Page Only
+        var dialog = await DialogService.ShowAsync<SaveChangesDialog>(
+            (string?)null,
+            new DialogParameters<SaveChangesDialog>
+            {
+                { revertDialog => revertDialog.Pages, [page] },
+                { revertDialog => revertDialog.Revert, true },
+            },
+            new DialogOptions { MaxWidth = MaxWidth.ExtraSmall, FullWidth = true }
+        );
+        if (await dialog.Result is { Canceled: false })
         {
             MainViewModel.RevertPage(page.Href);
         }

@@ -257,21 +257,8 @@ public partial class Game : EditorPageBase
         );
     }
 
-    private static string SeasonSummary(SeasonState calendar)
-    {
-        var season = AppText.Get(s_seasons[calendar.Season].LabelKey);
-        var next = AppText.Get(s_seasons[calendar.NextSeason].LabelKey);
-        return calendar.DaysLeft == 1
-            ? AppText.Format("SeasonLastDay", season, calendar.Length, next)
-            : AppText.Format(
-                "SeasonSummary",
-                season,
-                calendar.Day,
-                calendar.Length,
-                next,
-                calendar.DaysLeft
-            );
-    }
+    // Past Long Seasons A Cell Per Day Gets Too Thin, A Bar Fills Instead
+    private const int MaxDayCells = 15;
 
     private static string? InfoOf(string settingName)
     {
@@ -337,6 +324,11 @@ public partial class Game : EditorPageBase
         public int NextSeason => (Season + 1) % 4;
 
         public int Day => Length - DaysLeft + 1;
+
+        public bool IsDone(int season, int day)
+        {
+            return season < Season || (season == Season && day <= Day);
+        }
 
         // Past Seasons Are Full, This One Shows Its Progress
         public double FillOf(int season)

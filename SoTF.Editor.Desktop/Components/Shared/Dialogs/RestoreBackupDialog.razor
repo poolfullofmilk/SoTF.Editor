@@ -6,45 +6,41 @@
     <DialogContent>
         <MudText Typo="Typo.body2"
                  Class="mud-text-secondary">
-            @AppText.Get("RestoreBackupText")
+            @AppText.Get(_deleting ? "DeleteBackupsText" : "RestoreBackupText")
         </MudText>
         @* Backup List *@
-        <MudElement HtmlTag="div"
-                    Class="fit overflow-y-auto"
-                    Style="min-height:132px">
+        <MudPaper Elevation="0"
+                  Class="inset rounded-panel panel-flush overflow-y-auto fit"
+                  Style="min-height:132px">
             @foreach (var backup in Backups)
             {
                 @* Backup Row *@
-                <MudStack Row
-                          AlignItems="AlignItems.Center"
-                          Spacing="3"
-                          Class="@RowClass(backup)"
-                          role="button"
-                          tabindex="0"
-                          aria-pressed="@((_selected == backup) ? "true" : "false")"
-                          data-keyclick
-                          @onclick="() => SelectAsync(backup)">
-                    <MudText Typo="Typo.body2">@Formatter.FormatDateTimeWithSeconds(backup.TakenAt)</MudText>
-                    <MudText Typo="Typo.body2"
-                             Class="mud-text-secondary">
-                        @Formatter.FormatSize(backup.Size)
-                    </MudText>
-                    <MudSpacer />
-                    <MudText Typo="Typo.body2"
-                             Class="mud-text-secondary">
-                        @AgeLabel(backup)
-                    </MudText>
-                    @* Delete Backup *@
-                    <MudIconButton Icon="@Icons.Material.Rounded.Delete"
-                                   title="@AppText.Get("DeleteBackup")"
-                                   aria-label="@AppText.Get("DeleteBackup")"
-                                   Color="Color.Error"
-                                   Size="Size.Small"
-                                   OnClick="() => DeleteAsync(backup)" />
-                </MudStack>
+                <MudElement HtmlTag="div"
+                            Class="@RowClass(backup)"
+                            role="button"
+                            tabindex="0"
+                            aria-pressed="@(IsPicked(backup) ? "true" : "false")"
+                            data-keyclick
+                            @onclick="() => ClickAsync(backup)">
+                    <MudStack Row
+                              AlignItems="AlignItems.Center"
+                              Spacing="3">
+                        <MudIcon Icon="@RowIcon(backup)"
+                                 Color="@(_marked.Contains(backup) ? Color.Error : Color.Default)"
+                                 Size="Size.Small" />
+                        <MudStack Spacing="0"
+                                  Class="flex-grow-1">
+                            <MudText Typo="Typo.body2">@Formatter.FormatDateTimeWithSeconds(backup.TakenAt)</MudText>
+                            <MudText Typo="Typo.caption"
+                                     Class="mud-text-secondary">
+                                @DetailOf(backup)
+                            </MudText>
+                        </MudStack>
+                    </MudStack>
+                </MudElement>
             }
-        </MudElement>
-        @if (_selected is not null)
+        </MudPaper>
+        @if (_selected is not null && !_deleting)
         {
             <MudStack Spacing="4"
                       Class="inset rounded-panel pa-4 fit overflow-y-auto">
@@ -88,23 +84,50 @@
         </MudText>
     </DialogContent>
     <DialogActions>
-        @* Delete Older Button *@
-        <MudButton Variant="Variant.Text"
-                   Color="Color.Error"
-                   StartIcon="@Icons.Material.Rounded.DeleteSweep"
-                   Disabled="@(Backups.Count <= 1)"
-                   OnClick="DeleteAllButNewestAsync">
-            @AppText.Get("DeleteAllButNewest")
-        </MudButton>
-        <MudSpacer />
-        @* Restore Button *@
-        <MudButton Variant="Variant.Filled"
-                   Color="Color.Info"
-                   StartIcon="@Icons.Material.Rounded.Restore"
-                   Disabled="@(_selected is null || _differences is { Count: 0 })"
-                   OnClick="Restore">
-            @AppText.Get("Restore")
-        </MudButton>
+        @if (_deleting)
+        {
+            @* Back Button *@
+            <MudButton Variant="Variant.Text"
+                       StartIcon="@Icons.Material.Rounded.ArrowBack"
+                       OnClick="StopDeleting">
+                @AppText.Get("Back")
+            </MudButton>
+            @* All But Newest Button *@
+            <MudButton Variant="Variant.Text"
+                       Disabled="@(_marked.Count == Backups.Count - 1)"
+                       OnClick="MarkAllButNewest">
+                @AppText.Get("AllButNewest")
+            </MudButton>
+            <MudSpacer />
+            @* Delete Marked Button *@
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Error"
+                       StartIcon="@Icons.Material.Rounded.Delete"
+                       Disabled="@(_marked.Count == 0)"
+                       OnClick="DeleteMarkedAsync">
+                @AppText.Format("DeleteCount", _marked.Count)
+            </MudButton>
+        }
+        else
+        {
+            @* Delete Backups Button *@
+            <MudButton Variant="Variant.Text"
+                       Color="Color.Error"
+                       StartIcon="@Icons.Material.Rounded.DeleteSweep"
+                       Disabled="@(Backups.Count <= 1)"
+                       OnClick="StartDeleting">
+                @AppText.Get("DeleteBackups")
+            </MudButton>
+            <MudSpacer />
+            @* Restore Button *@
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Info"
+                       StartIcon="@Icons.Material.Rounded.Restore"
+                       Disabled="@(_selected is null || _differences is { Count: 0 })"
+                       OnClick="Restore">
+                @AppText.Get("Restore")
+            </MudButton>
+        }
     </DialogActions>
 
 </MudDialog>

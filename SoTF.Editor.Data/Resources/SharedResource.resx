@@ -366,12 +366,6 @@
   <data name="Durability" xml:space="preserve">
     <value>Durability</value>
   </data>
-  <data name="EquippedArmor" xml:space="preserve">
-    <value>Armor, Max 10</value>
-  </data>
-  <data name="Slot" xml:space="preserve">
-    <value>Slot</value>
-  </data>
   <data name="UnknownItem" xml:space="preserve">
     <value>Unknown Item</value>
   </data>
@@ -722,9 +716,6 @@
   </data>
   <data name="Requirements" xml:space="preserve">
     <value>Requirements</value>
-  </data>
-  <data name="RequirementsTooltip" xml:space="preserve">
-    <value>Filters by whether you own what a place needs, like a shovel or key card</value>
   </data>
   <data name="ActorType" xml:space="preserve">
     <value>Actor Type</value>
@@ -1510,7 +1501,7 @@
     <value>All damage to your structures is repaired</value>
   </data>
   <data name="CannibalAngerText" xml:space="preserve">
-    <value>Sets how angry every living cannibal is at you, 0 also resets kills, cut trees and village visits so they calm down</value>
+    <value>How angry every living cannibal is at you</value>
   </data>
   <data name="ResetContainersText" xml:space="preserve">
     <value>Opened crates, cases and supplies in the world are closed and full again</value>
@@ -1716,12 +1707,6 @@
   <data name="SettingStartingDayOffsetInfo" xml:space="preserve">
     <value>Extra days the game counts when it works out the season. Higher brings the next season sooner, lower keeps this one longer. Picking a season sets it for you</value>
   </data>
-  <data name="DeleteBackup" xml:space="preserve">
-    <value>Delete Backup</value>
-  </data>
-  <data name="DeleteBackupText" xml:space="preserve">
-    <value>The backup from {0} is deleted for good</value>
-  </data>
   <data name="UnableToDeleteBackup" xml:space="preserve">
     <value>Unable to delete the backup</value>
   </data>
@@ -1866,9 +1851,6 @@
   <data name="Filters" xml:space="preserve">
     <value>Filters</value>
   </data>
-  <data name="Reset" xml:space="preserve">
-    <value>Reset</value>
-  </data>
   <data name="Changes" xml:space="preserve">
     <value>Changes</value>
   </data>
@@ -1950,20 +1932,8 @@
   <data name="DaysUntilSeason" xml:space="preserve">
     <value>Days Until {0}</value>
   </data>
-  <data name="SeasonSummary" xml:space="preserve">
-    <value>{0}, day {1} of {2}. {3} starts in {4} days</value>
-  </data>
-  <data name="SeasonLastDay" xml:space="preserve">
-    <value>{0}, day {1} of {1}. {2} starts tomorrow</value>
-  </data>
   <data name="JoinedGameName" xml:space="preserve">
     <value>{0} {1} Days</value>
-  </data>
-  <data name="DeleteAllButNewest" xml:space="preserve">
-    <value>Delete All But Newest</value>
-  </data>
-  <data name="DeleteAllButNewestText" xml:space="preserve">
-    <value>{0} older backups of this savegame are deleted for good. The newest stays, so the last save can still be undone</value>
   </data>
   <data name="Files" xml:space="preserve">
     <value>Other Files</value>
@@ -1983,12 +1953,6 @@
   <data name="SpawnCount" xml:space="preserve">
     <value>Spawn {0} {1}</value>
   </data>
-  <data name="MoveToInventory" xml:space="preserve">
-    <value>Move To Inventory</value>
-  </data>
-  <data name="MoveToInventoryText" xml:space="preserve">
-    <value>The piece goes back into the backpack. Worn again, it starts at its default durability</value>
-  </data>
   <data name="ArmourInInventory" xml:space="preserve">
     <value>In Inventory</value>
   </data>
@@ -1997,5 +1961,80 @@
   </data>
   <data name="WearArmour" xml:space="preserve">
     <value>Wear</value>
+  </data>
+  <data name="Revert" xml:space="preserve">
+    <value>Revert</value>
+  </data>
+  <data name="ArmorCount" xml:space="preserve">
+    <value>Armor, {0} Of 10</value>
+  </data>
+  <data name="ArmorInfo" xml:space="preserve">
+    <value>The game places each worn piece on the body by itself, up to 10, so there is no body part to pick. Unequip puts a piece back in the inventory, delete removes it for good</value>
+  </data>
+  <data name="SetToDefaultDurabilityOf" xml:space="preserve">
+    <value>Set To Default Durability ({0})</value>
+  </data>
+  <data name="SetToMaxOf" xml:space="preserve">
+    <value>Set To Max ({0})</value>
+  </data>
+  <data name="Unequip" xml:space="preserve">
+    <value>Unequip</value>
+  </data>
+  <data name="UnequipText" xml:space="preserve">
+    <value>Unequip To Inventory</value>
+  </data>
+  <data name="UnequipFull" xml:space="preserve">
+    <value>The inventory already holds the most it can ({0})</value>
+  </data>
+  <data name="UnequipUnknown" xml:space="preserve">
+    <value>This piece has no inventory item</value>
+  </data>
+  <data name="WearText" xml:space="preserve">
+    <value>Wear One From The Inventory</value>
+  </data>
+  <data name="WearNoneLeft" xml:space="preserve">
+    <value>None left in the inventory</value>
+  </data>
+  <data name="WearAllWorn" xml:space="preserve">
+    <value>All 10 pieces are already worn</value>
+  </data>
+  <data name="DeleteArmour" xml:space="preserve">
+    <value>Delete Piece</value>
+  </data>
+  <data name="DeleteArmourText" xml:space="preserve">
+    <value>The piece is gone for good, it does not go back to the inventory</value>
+  </data>
+  <data name="NewArmour" xml:space="preserve">
+    <value>New Piece</value>
+  </data>
+  <data name="DeleteBackups" xml:space="preserve">
+    <value>Delete Backups</value>
+  </data>
+  <data name="DeleteBackupsText" xml:space="preserve">
+    <value>Pick the backups to delete. The newest always stays</value>
+  </data>
+  <data name="AllButNewest" xml:space="preserve">
+    <value>All But Newest</value>
+  </data>
+  <data name="DeleteCount" xml:space="preserve">
+    <value>Delete {0}</value>
+  </data>
+  <data name="DeleteBackupsConfirm" xml:space="preserve">
+    <value>{0} backups are deleted for good</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="CannibalAngerDialogText" xml:space="preserve">
+    <value>Every living cannibal gets this anger towards you and dislikes you just as much. At 0 they also forget your kills, the trees you cut and your village visits, so they really calm down</value>
+  </data>
+  <data name="FollowersStayOutside" xml:space="preserve">
+    <value>Followers can't follow you into caves, leave the cave first</value>
+  </data>
+  <data name="NoArrival" xml:space="preserve">
+    <value>Nowhere to spawn: you are in a cave and no follower is outside</value>
+  </data>
+  <data name="ResetFilters" xml:space="preserve">
+    <value>Reset Filters</value>
   </data>
 </root>
