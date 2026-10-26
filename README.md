@@ -13,6 +13,7 @@
 
 ## Features
 - Player stats, outfit, armour and one inventory list of every item
+- Armour moved to another slot, worn straight from the backpack or put back in it
 - Every storage filled to the max in one click, empty slots included, or maxed and cleared one by one
 - Kelvin and Virginia, spawned copies too: stats, outfit, items and feelings with one-click moods, revive even after the game removed them, spawn more or remove the extra ones
 - Game setup, game state and weather, with info buttons that explain each setting
@@ -21,12 +22,13 @@
 - Structures listed per type, with one menu to finish, unfinish or remove what the list shows
 - Game presets such as Hard that you can still tweak setting by setting
 - A small yellow dot on every value you changed and on its page in the menu, a list of every change before you save, a Save button that stays greyed out until there is something to save, and an undo button on every changed page in the menu to revert just that page
-- A map to teleport the player and every Kelvin or Virginia, spawn actors or move ziplines, with filters in one menu, a useful default selection you can reset to and a button that slides the menus away for a bigger map
+- A map to teleport the player and every Kelvin or Virginia, bring any follower or NPC to you, spawn actors or move ziplines, with filters in one menu, a useful default selection you can reset to and a button that slides the menus away for a bigger map
 - Savegame cards show the day, mode and crash site, and joined games, which hold no name or picture, are named by mode and day and show your strength and items
 - Tools on their own page, such as regrow trees, reset fires, traps and containers, cannibal anger set for every cannibal from calm to furious to the percent, and item plating
 - Updates itself in the background from inside the app, shows what changed and checks the download against GitHub's checksum
 - Every list, card and map point works with the keyboard too
 - Long lists such as the inventory, structures and NPCs only draw the rows on screen, so they open and filter fast even on big saves
+- Fits a 1080p screen at 125 or 150% scaling
 - English and Dutch
 
 ## Quick start
@@ -36,7 +38,7 @@
 
 ## ⚠️ Important
 - Start the game and stay in the main menu while you edit, then load the save, so Steam Cloud cannot overwrite your changes
-- Every save first copies the whole savegame to `Documents\SoTF.Editor\Backups`, and any backup can be restored or deleted from the app, which lists everything that save changed and how the backup differs from now
+- Every save first copies the whole savegame to `Documents\SoTF.Editor\Backups`, and any backup can be restored or deleted from the app, which lists page by page and setting by setting what that save changed and how the backup differs from now, and older backups go in one click while the newest stays
 - Past 500 MB of backups the oldest go, but every savegame keeps its first one
 - If a backup or load fails, nothing is overwritten and the error has a button to the backup folder
 - If the game saved while the editor was open, the editor warns before overwriting that progress
