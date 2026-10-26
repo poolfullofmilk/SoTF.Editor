@@ -18,14 +18,14 @@
                     <MudButton Variant="Variant.Filled"
                                Color="@(_byFamily ? Color.Default : Color.Info)"
                                Size="Size.Small"
-                               OnClick="() => _byFamily = false">
+                               OnClick="() => SetByFamily(false)">
                         @AppText.Get("ByType")
                     </MudButton>
                     @* By Family *@
                     <MudButton Variant="Variant.Filled"
                                Color="@(_byFamily ? Color.Info : Color.Default)"
                                Size="Size.Small"
-                               OnClick="() => _byFamily = true">
+                               OnClick="() => SetByFamily(true)">
                         @AppText.Get("ByFamily")
                     </MudButton>
                 </MudButtonGroup>
@@ -40,7 +40,7 @@
                 <SearchField @bind-Value="_filter"
                              FullWidth />
                 <MudPaper Elevation="4"
-                          Class="rounded-panel panel-flush overflow-y-auto fill">
+                          Class="rounded-panel panel-flush overflow-y-auto fit">
                     @if (!Groupings.Any())
                     {
                         <MudText Typo="Typo.body2"
@@ -97,9 +97,9 @@
             else
             {
                 <Header Title="@selected.Name"
-                        Class="fill">
+                        Class="fit">
                     <MudPaper Elevation="4"
-                              Class="rounded-panel panel-flush fill fill-column">
+                              Class="rounded-panel panel-flush fit fill-column">
                         <MudTable T="Actor"
                                   Items="selected.Actors"
                                   Dense
@@ -108,7 +108,7 @@
                                   Virtualize
                                   OverscanCount="30"
                                   Elevation="0"
-                                  Class="fill fixed-columns">
+                                  Class="fit fixed-columns">
 
                             <ColGroup>
                                 <col />
@@ -154,6 +154,12 @@
                                                    OnClick="() => EditAsync(context)" />
                                 </MudTd>
                             </RowTemplate>
+                            <NoRecordsContent>
+                                <MudText Typo="Typo.body2"
+                                         Class="mud-text-secondary">
+                                    @AppText.Get("NothingFound")
+                                </MudText>
+                            </NoRecordsContent>
 
                         </MudTable>
                     </MudPaper>

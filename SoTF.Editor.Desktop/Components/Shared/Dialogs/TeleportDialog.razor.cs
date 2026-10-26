@@ -39,12 +39,17 @@ public partial class TeleportDialog
 
     protected override void OnInitialized()
     {
-        _viewModel = new MapTeleportWindowViewModel(Destination, Mode, GameData.AreaManager);
+        _viewModel = new MapTeleportWindowViewModel(
+            Destination,
+            Mode,
+            GameData.AreaManager,
+            FollowerPage
+        );
     }
 
     private void Teleport()
     {
-        _viewModel.DoTeleport(PlayerPage.PlayerState, FollowerPage);
+        _viewModel.DoTeleport(PlayerPage.PlayerState);
         Snackbar.Add(AppText.Get("ChangesAdded"), Severity.Info);
         MainViewModel.NotifyChanged();
         MudDialog.Close(DialogResult.Ok(true));

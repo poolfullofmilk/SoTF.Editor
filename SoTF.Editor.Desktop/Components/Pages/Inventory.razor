@@ -4,7 +4,7 @@
 <RequiresSavegame>
     <MudStack Class="page-fill">
         <Header Title="@AppText.Get("Items")"
-                Class="fill">
+                Class="fit">
             <TitleContent>
                 <MudSpacer />
                 @* Add All *@
@@ -39,7 +39,7 @@
             </TitleContent>
             <ChildContent>
                 <MudPaper Elevation="4"
-                          Class="rounded-panel panel-flush fill fill-column">
+                          Class="rounded-panel panel-flush fit fill-column">
                     <MudStack Row
                               AlignItems="AlignItems.Center"
                               Spacing="4"
@@ -86,7 +86,7 @@
                               ItemSize="AppTheme.ListRowHeight"
                               RowStyle="@AppTheme.ListRowStyle"
                               Elevation="0"
-                              Class="fill fixed-columns">
+                              Class="fit fixed-columns">
 
                         <ColGroup>
                             <col />
@@ -157,6 +157,12 @@
                                 </MudTd>
                             }
                         </RowTemplate>
+                        <NoRecordsContent>
+                            <MudText Typo="Typo.body2"
+                                     Class="mud-text-secondary">
+                                @AppText.Get("NothingFound")
+                            </MudText>
+                        </NoRecordsContent>
 
                     </MudTable>
                 </MudPaper>

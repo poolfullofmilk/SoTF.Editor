@@ -21,9 +21,9 @@ public partial class CannibalAngerDialog
 
     protected override void OnInitialized()
     {
-        // Starts Where They Stand, On The Slider's Steps
+        // Starts Where They Stand
         _mood = MainViewModel.ReadCannibalMood();
-        _level = Math.Clamp((int)Math.Round((_mood?.Average ?? 0) / 10.0) * 10, 0, 100);
+        _level = Math.Clamp(_mood?.Average ?? 0, 0, 100);
     }
 
     private void Apply()

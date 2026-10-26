@@ -82,7 +82,7 @@
                                Color="Color.Info"
                                Size="Size.Small"
                                StartIcon="@Icons.Material.Rounded.BatteryChargingFull"
-                               Disabled="@(!InSave)"
+                               Disabled="@(!CanFillBars)"
                                OnClick="() => FollowerPageViewModel.FillAllBars(Follower)">
                         @AppText.Get("FillAllBars")
                     </MudButton>
@@ -93,14 +93,6 @@
                                Disabled="@(!CanMoveToPlayer)"
                                OnClick="() => FollowerPageViewModel.MoveTo(Follower, PlayerPage.PlayerState.Pos)">
                         @AppText.Get("MoveToPlayer")
-                    </MudButton>
-                    @* Move To Other *@
-                    <MudButton Variant="Variant.Text"
-                               Size="Size.Small"
-                               StartIcon="@Icons.Material.Rounded.NearMe"
-                               Disabled="@(!CanMoveToOther)"
-                               OnClick="MoveToOther">
-                        @(IsKelvin ? AppText.Get("MoveToVirginia") : AppText.Get("MoveToKelvin"))
                     </MudButton>
                     @* Revive *@
                     <Tooltip Text="@AppText.Get("ReviveTooltip")"

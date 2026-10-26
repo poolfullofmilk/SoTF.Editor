@@ -43,6 +43,135 @@
                         </MudStack>
                     </MudPaper>
 
+                    @* Apply To Section *@
+                    <MudPaper Elevation="0"
+                              Class="inset rounded-panel pa-4">
+                        <MudStack Spacing="2">
+                            <MudText Typo="Typo.subtitle2">@AppText.Get("ApplyTo")</MudText>
+                            @* Apply To Buttons *@
+                            <MudButtonGroup Variant="Variant.Filled"
+                                            Size="Size.Small"
+                                            OverrideStyles="false"
+                                            Class="align-self-start">
+                                @foreach (var selection in s_selections)
+                                {
+                                    @* Apply To Button *@
+                                    <MudButton Variant="Variant.Filled"
+                                               Color="@(_viewModel.ActorSelection == selection.Value ? Color.Info : Color.Default)"
+                                               Size="Size.Small"
+                                               Disabled="@(selection.Value == 1 && !_viewModel.HasFamily)"
+                                               OnClick="() => _viewModel.ActorSelection = selection.Value">
+                                        @SelectionLabel(selection)
+                                    </MudButton>
+                                }
+                            </MudButtonGroup>
+                            <MudStack Row
+                                      Wrap="Wrap.Wrap"
+                                      Spacing="0">
+                                @* Same Area *@
+                                <MudCheckBox T="bool"
+                                             @bind-Value="_viewModel.OnlyInSameAreaAsActor"
+                                             Color="Color.Info"
+                                             Dense
+                                             Disabled="@IsSingle"
+                                             Label="@AppText.Get("OnlySameArea")" />
+                                @* Skip Followers *@
+                                <MudCheckBox T="bool"
+                                             @bind-Value="_viewModel.SkipFollowers"
+                                             Color="Color.Info"
+                                             Dense
+                                             Disabled="@IsSingle"
+                                             Label="@AppText.Get("SkipFollowers")" />
+                            </MudStack>
+                        </MudStack>
+                    </MudPaper>
+
+                </MudStack>
+            </MudItem>
+
+            <MudItem xs="12"
+                     md="6">
+                <MudStack Spacing="4">
+
+                    @* Changes Section *@
+                    <MudPaper Elevation="0"
+                              Class="inset rounded-panel pa-4">
+                        <MudStack Spacing="3">
+                            <MudText Typo="Typo.subtitle2">@AppText.Get("Changes")</MudText>
+                            <MudStack Row
+                                      Spacing="2">
+                                @* Health *@
+                                <ChangedBadge When="@_viewModel.ModifyOptions.UpdateHealth"
+                                              Class="flex-grow-1">
+                                    <NumberField T="float"
+                                                 @bind-Value="_viewModel.ModifyOptions.ActorHealth"
+                                                 Label="@AppText.Get("Health")"
+                                                 Min="0" />
+                                </ChangedBadge>
+                                @* Energy *@
+                                <ChangedBadge When="@_viewModel.ModifyOptions.UpdateEnergy"
+                                              Class="flex-grow-1">
+                                    <NumberField T="float"
+                                                 @bind-Value="_viewModel.ModifyOptions.ActorEnergy"
+                                                 Label="@AppText.Get("Energy")"
+                                                 Min="0"
+                                                 Max="100" />
+                                </ChangedBadge>
+                            </MudStack>
+                            @* Replace Type *@
+                            <MudSelect T="ActorType"
+                                       Variant="Variant.Outlined"
+                                       @bind-Value="_viewModel.ModifyOptions.ReplaceType"
+                                       Label="@AppText.Get("ReplaceType")"
+                                       ToStringFunc="type => type?.Name"
+                                       Clearable
+                                       Dense>
+                                @foreach (var actorType in _viewModel.AllActorTypes)
+                                {
+                                    <MudSelectItem Value="actorType">@actorType.Name</MudSelectItem>
+                                }
+                            </MudSelect>
+                            @* Remove Spawner *@
+                            <MudSwitch T="bool"
+                                       @bind-Value="_viewModel.ModifyOptions.RemoveSpawner"
+                                       Color="Color.Info">
+                                @AppText.Get("RemoveSpawner")
+                                <InfoIcon Text="@AppText.Get("RemoveSpawnerTooltip")" />
+                            </MudSwitch>
+                        </MudStack>
+                    </MudPaper>
+
+                    @* Teleport Section *@
+                    <MudPaper Elevation="0"
+                              Class="inset rounded-panel pa-4">
+                        <MudStack Spacing="2">
+                            <MudText Typo="Typo.subtitle2">@AppText.Get("Teleport")</MudText>
+                            @* Teleport Buttons *@
+                            <MudButtonGroup Variant="Variant.Filled"
+                                            Size="Size.Small"
+                                            OverrideStyles="false"
+                                            Class="align-self-start">
+                                @foreach (var teleport in s_teleports)
+                                {
+                                    @* Teleport Button *@
+                                    <MudButton Variant="Variant.Filled"
+                                               Color="@(_viewModel.ModifyOptions.TeleportMode == teleport.Mode ? Color.Info : Color.Default)"
+                                               Size="Size.Small"
+                                               OnClick="() => _viewModel.ModifyOptions.TeleportMode = teleport.Mode">
+                                        @AppText.Get(teleport.LabelKey)
+                                    </MudButton>
+                                }
+                            </MudButtonGroup>
+                            @if (_viewModel.ModifyOptions.TeleportMode == "NpcToPlayer" && MatchCount > 1)
+                            {
+                                <MudText Typo="Typo.caption"
+                                         Color="Color.Warning">
+                                    @AppText.Get("TeleportManyWarning")
+                                </MudText>
+                            }
+                        </MudStack>
+                    </MudPaper>
+
                     @* Influences *@
                     <MudStack Spacing="2">
                         <MudStack Row
@@ -50,6 +179,7 @@
                                   Spacing="1">
                             <MudText Typo="Typo.subtitle2">@AppText.Get("Influences")</MudText>
                             <InfoIcon Text="@AppText.Get("InfluencesInfo")" />
+                            <ChangedDot When="@_viewModel.ModifyOptions.UpdateInfluences" />
                         </MudStack>
                         <InfluencesEditor Influences="_viewModel.Influences"
                                           CanRemove
@@ -59,188 +189,24 @@
                 </MudStack>
             </MudItem>
 
-            <MudItem xs="12"
-                     md="6">
-                <MudStack Spacing="4">
-
-                    @* Selection Section *@
-                    <MudPaper Elevation="0"
-                              Class="inset rounded-panel pa-4">
-                        <MudStack Spacing="2">
-                            <MudText Typo="Typo.subtitle2">@AppText.Get("Selection")</MudText>
-                            @* Modification Mode *@
-                            <MudRadioGroup T="ActorModificationMode"
-                                           @bind-Value="_viewModel.ModificationMode">
-                                <MudRadio Value="ActorModificationMode.Modify"
-                                          Color="Color.Info">
-                                    @AppText.Get("Modify")
-                                </MudRadio>
-                                <MudRadio Value="ActorModificationMode.Remove"
-                                          Color="Color.Error">
-                                    @AppText.Get("Remove")
-                                </MudRadio>
-                            </MudRadioGroup>
-                            @* Actor Selection *@
-                            <MudSelect T="short?"
-                                       Variant="Variant.Outlined"
-                                       @bind-Value="_viewModel.ActorSelection"
-                                       ToStringFunc="SelectionName"
-                                       Dense>
-                                @foreach (var selection in EditActorViewModel.AllActorSelections)
-                                {
-                                    <MudSelectItem T="short?"
-                                                   Value="selection.Key">
-                                        @selection.Value
-                                    </MudSelectItem>
-                                }
-                            </MudSelect>
-                            <MudStack Row
-                                      Wrap="Wrap.Wrap"
-                                      Spacing="0">
-                                @* Skip Kelvin *@
-                                <MudCheckBox T="bool"
-                                             @bind-Value="_viewModel.SkipKelvin"
-                                             Color="Color.Info"
-                                             Dense
-                                             Label="@AppText.Get("SkipKelvin")" />
-                                @* Skip Virginia *@
-                                <MudCheckBox T="bool"
-                                             @bind-Value="_viewModel.SkipVirginia"
-                                             Color="Color.Info"
-                                             Dense
-                                             Label="@AppText.Get("SkipVirginia")" />
-                                @* Same Area *@
-                                <MudCheckBox T="bool"
-                                             @bind-Value="_viewModel.OnlyInSameAreaAsActor"
-                                             Color="Color.Info"
-                                             Dense
-                                             Label="@AppText.Get("OnlySameArea")" />
-                            </MudStack>
-                        </MudStack>
-                    </MudPaper>
-
-                    @if (_viewModel.ModificationMode == ActorModificationMode.Modify)
-                    {
-                        @* Stats Section *@
-                        <MudPaper Elevation="0"
-                                  Class="inset rounded-panel pa-4">
-                            <MudStack Spacing="2">
-                                <MudText Typo="Typo.subtitle2">@AppText.Get("Stats")</MudText>
-                                <MudStack Row
-                                          AlignItems="AlignItems.Center"
-                                          Spacing="2">
-                                    @* Update Energy *@
-                                    <MudCheckBox T="bool"
-                                                 @bind-Value="_viewModel.ModifyOptions.UpdateEnergy"
-                                                 Color="Color.Info"
-                                                 Dense
-                                                 Label="@AppText.Get("Energy")"
-                                                 Style="width:120px" />
-                                    @* Energy *@
-                                    <NumberField T="float"
-                                                 @bind-Value="_viewModel.ModifyOptions.ActorEnergy"
-                                                 Min="0"
-                                                 Max="100"
-                                                 Disabled="@(!_viewModel.ModifyOptions.UpdateEnergy)" />
-                                </MudStack>
-                                <MudStack Row
-                                          AlignItems="AlignItems.Center"
-                                          Spacing="2">
-                                    @* Update Health *@
-                                    <MudCheckBox T="bool"
-                                                 @bind-Value="_viewModel.ModifyOptions.UpdateHealth"
-                                                 Color="Color.Info"
-                                                 Dense
-                                                 Label="@AppText.Get("Health")"
-                                                 Style="width:120px" />
-                                    @* Health *@
-                                    <NumberField T="float"
-                                                 @bind-Value="_viewModel.ModifyOptions.ActorHealth"
-                                                 Min="0"
-                                                 Disabled="@(!_viewModel.ModifyOptions.UpdateHealth)" />
-                                </MudStack>
-                            </MudStack>
-                        </MudPaper>
-
-                        @* Options Section *@
-                        <MudPaper Elevation="0"
-                                  Class="inset rounded-panel pa-4">
-                            <MudStack Spacing="2">
-                                <MudText Typo="Typo.subtitle2">@AppText.Get("ModificationOptions")</MudText>
-                                <MudStack Row
-                                          Wrap="Wrap.Wrap"
-                                          Spacing="0">
-                                    @* Remove Spawner *@
-                                    <Tooltip Text="@AppText.Get("RemoveSpawnerTooltip")">
-                                        <MudCheckBox T="bool"
-                                                     @bind-Value="_viewModel.ModifyOptions.RemoveSpawner"
-                                                     Color="Color.Info"
-                                                     Dense
-                                                     Label="@AppText.Get("RemoveSpawner")" />
-                                    </Tooltip>
-                                    @* Update Influences *@
-                                    <MudCheckBox T="bool"
-                                                 @bind-Value="_viewModel.ModifyOptions.UpdateInfluences"
-                                                 Color="Color.Info"
-                                                 Dense
-                                                 Label="@AppText.Get("UpdateInfluences")" />
-                                </MudStack>
-                                @* Replace Type *@
-                                <MudSelect T="ActorType"
-                                           Variant="Variant.Outlined"
-                                           @bind-Value="_viewModel.ModifyOptions.ReplaceType"
-                                           Label="@AppText.Get("ReplaceType")"
-                                           ToStringFunc="type => type?.Name"
-                                           Clearable
-                                           Dense>
-                                    @foreach (var actorType in _viewModel.AllActorTypes)
-                                    {
-                                        <MudSelectItem Value="actorType">@actorType.Name</MudSelectItem>
-                                    }
-                                </MudSelect>
-                            </MudStack>
-                        </MudPaper>
-
-                        @* Teleport Section *@
-                        <MudPaper Elevation="0"
-                                  Class="inset rounded-panel pa-4">
-                            <MudStack Spacing="2">
-                                <MudText Typo="Typo.subtitle2">@AppText.Get("Teleport")</MudText>
-                                @* Teleport Mode *@
-                                <MudRadioGroup T="string"
-                                               @bind-Value="_viewModel.ModifyOptions.TeleportMode">
-                                    <MudRadio Value="@string.Empty"
-                                              Color="Color.Info">
-                                        @AppText.Get("None")
-                                    </MudRadio>
-                                    <MudRadio Value="@("PlayerToNpc")"
-                                              Color="Color.Info">
-                                        @AppText.Get("TeleportPlayerToNpc")
-                                    </MudRadio>
-                                    <MudRadio Value="@("NpcToPlayer")"
-                                              Color="Color.Info">
-                                        @AppText.Get("TeleportNpcToPlayer")
-                                    </MudRadio>
-                                </MudRadioGroup>
-                                <MudText Typo="Typo.caption"
-                                         Class="mud-text-secondary">
-                                    @AppText.Get("TeleportManyWarning")
-                                </MudText>
-                            </MudStack>
-                        </MudPaper>
-                    }
-
-                </MudStack>
-            </MudItem>
-
         </MudGrid>
     </DialogContent>
     <DialogActions>
+        @* Remove Button *@
+        <MudButton Variant="Variant.Text"
+                   Color="Color.Error"
+                   StartIcon="@Icons.Material.Rounded.Delete"
+                   Disabled="@(MatchCount == 0)"
+                   OnClick="RemoveAsync">
+            @CountLabel("Remove")
+        </MudButton>
+        <MudSpacer />
         @* Apply Button *@
         <MudButton Variant="Variant.Filled"
-                   Color="@(_viewModel.ModificationMode == ActorModificationMode.Remove ? Color.Error : Color.Info)"
+                   Color="Color.Info"
+                   Disabled="@(MatchCount == 0 || !_viewModel.ModifyOptions.HasChanges)"
                    OnClick="Apply">
-            @(_viewModel.ModificationMode == ActorModificationMode.Remove ? AppText.Get("Remove") : AppText.Get("Apply"))
+            @CountLabel("Apply")
         </MudButton>
     </DialogActions>
 

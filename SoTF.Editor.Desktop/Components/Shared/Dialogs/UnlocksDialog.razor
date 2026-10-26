@@ -27,7 +27,7 @@
         @* Save Button *@
         <MudButton Variant="Variant.Filled"
                    Color="Color.Info"
-                   Disabled="@(_viewModel is null)"
+                   Disabled="@(_viewModel?.HasChanges != true)"
                    OnClick="Save">
             @AppText.Get("Save")
         </MudButton>

@@ -162,7 +162,7 @@ public class NpcsPageViewModel
             vailWorldSim["InfluenceMemory"]
                 ?.ToObject<List<InfluenceMemory>>()
                 ?.GroupBy(memory => memory.UniqueId)
-                .ToDictionary(group => group.Key, group => group.ToList())
+                .ToDictionary(group => group.Key, group => group.Last())
             ?? [];
         var killStatsByType =
             vailWorldSim["KillStatsList"]
@@ -186,9 +186,13 @@ public class NpcsPageViewModel
                 actor.Spawner = spawnersBySpawnerUniqueId.GetValueOrDefault(spawnerId);
             }
 
+            // The Newest Memory Wins, A Repeated Type Counts Once
             if (influenceMemoryByUniqueId.GetValueOrDefault(actor.UniqueId) is { } influenceMemory)
             {
-                actor.Influences = [.. influenceMemory.SelectMany(memory => memory.Influences)];
+                actor.Influences =
+                [
+                    .. influenceMemory.Influences.DistinctBy(influence => influence.TypeId),
+                ];
             }
 
             actor.KillStats = killStatsByType.GetValueOrDefault(actor.TypeId);

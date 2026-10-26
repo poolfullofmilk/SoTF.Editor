@@ -8,7 +8,7 @@
         <MudElement HtmlTag="div"
                     Class="side-panel fill-column">
             <Header Title="@AppText.Get("StorageTypes")"
-                    Class="fill">
+                    Class="fit">
                 <TitleContent>
                     <MudSpacer />
                     @* Fill All Storages *@
@@ -16,7 +16,7 @@
                                Color="Color.Info"
                                Size="Size.Small"
                                StartIcon="@Icons.Material.Rounded.AllInbox"
-                               Disabled="@(!StoragePage.HasStorages())"
+                               Disabled="@(!StoragePage.CanFillAllStorages())"
                                OnClick="FillAllStoragesAsync">
                         @AppText.Get("FillAllStorages")
                     </MudButton>
@@ -26,7 +26,7 @@
                     <SearchField @bind-Value="_filter"
                                  FullWidth />
                     <MudPaper Elevation="4"
-                              Class="rounded-panel panel-flush overflow-y-auto fill">
+                              Class="rounded-panel panel-flush overflow-y-auto fit">
                         @if (!FilteredCollections.Any())
                         {
                             <MudText Typo="Typo.body2"
@@ -66,7 +66,7 @@
         </MudElement>
         <MudElement HtmlTag="div"
                     Class="main-panel fill-column">
-            @if (StoragePage.SelectedStorage is not { } selected)
+            @if (Selected is not { } selected)
             {
                 <EmptyState Icon="@Icons.Material.Rounded.Inventory2"
                             Text="@AppText.Get("SelectStorage")" />

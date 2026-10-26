@@ -1,15 +1,33 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using SoTF.Editor.Data.Enums;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Models.Actors;
 using SoTF.Editor.Data.ViewModels;
 using SoTF.Editor.Services.Actors;
+using SoTF.Editor.Services.Pages;
 using SoTF.Editor.Services.Savegames;
 
 namespace SoTF.Editor.Desktop.Components.Shared.Dialogs;
 
 public partial class EditActorDialog
 {
+    // Who It Reaches, Widest Last
+    private static readonly Selection[] s_selections =
+    [
+        new(0, "ApplyToThis"),
+        new(1, "ApplyToFamily"),
+        new(2, "ApplyToType"),
+        new(3, "ApplyToEveryone"),
+    ];
+
+    private static readonly TeleportOption[] s_teleports =
+    [
+        new("", "None"),
+        new("NpcToPlayer", "TeleportNpcToPlayer"),
+        new("PlayerToNpc", "TeleportPlayerToNpc"),
+    ];
+
     [CascadingParameter]
     public required IMudDialogInstance MudDialog { get; set; }
 
@@ -26,9 +44,19 @@ public partial class EditActorDialog
     public required MainViewModel MainViewModel { get; set; }
 
     [Inject]
+    public required NpcsPageViewModel NpcsPage { get; set; }
+
+    [Inject]
+    public required IDialogService DialogService { get; set; }
+
+    [Inject]
     public required ISnackbar Snackbar { get; set; }
 
     private EditActorViewModel _viewModel = null!;
+
+    private bool IsSingle => _viewModel.ActorSelection == 0;
+
+    private int MatchCount => CountFor(_viewModel.ActorSelection);
 
     private IEnumerable<ActorDetail> Details =>
         [
@@ -69,12 +97,45 @@ public partial class EditActorDialog
         );
     }
 
-    private static string SelectionName(short? selection)
+    private int CountFor(short selection)
     {
-        return EditActorViewModel
-                .AllActorSelections.FirstOrDefault(pair => pair.Key == selection)
-                .Value
-            ?? "";
+        // The Change's Own Rule, Counted On Loaded Actors
+        return NpcsPage.AllActors.Count(actor =>
+            _viewModel.Matches(
+                actor.TypeId,
+                actor.FamilyId,
+                actor.GraphMask,
+                actor.UniqueId,
+                selection
+            )
+        );
+    }
+
+    private string SelectionLabel(Selection selection)
+    {
+        return selection.Value == 0
+            ? AppText.Get(selection.LabelKey)
+            : AppText.Format(selection.LabelKey, CountFor(selection.Value));
+    }
+
+    private string CountLabel(string labelKey)
+    {
+        return MatchCount > 1
+            ? AppText.Format(labelKey + "Count", MatchCount)
+            : AppText.Get(labelKey);
+    }
+
+    private async Task RemoveAsync()
+    {
+        if (
+            !await DialogService.ConfirmAsync(CountLabel("Remove"), AppText.Get("RemoveActorsText"))
+        )
+        {
+            return;
+        }
+
+        _viewModel.ModificationMode = ActorModificationMode.Remove;
+        Apply();
     }
 
     private void Apply()
@@ -85,4 +146,8 @@ public partial class EditActorDialog
     }
 
     private sealed record ActorDetail(string Label, string? Value);
+
+    private sealed record Selection(short Value, string LabelKey);
+
+    private sealed record TeleportOption(string Mode, string LabelKey);
 }

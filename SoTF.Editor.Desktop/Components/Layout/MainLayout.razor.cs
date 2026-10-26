@@ -68,7 +68,7 @@ public partial class MainLayout : IDisposable
     // Only A Page With Unsaved Edits It Can Take Back
     private bool CanRevert(PageLink link)
     {
-        return MainViewModel.CanRevert(link.Href) && MainViewModel.HasChanges(link.Href);
+        return MainViewModel.HasChanges(link.Href);
     }
 
     // A Client Save Holds Only The Player, World Pages Stay Shut

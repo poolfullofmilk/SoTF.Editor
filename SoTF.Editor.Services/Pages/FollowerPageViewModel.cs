@@ -43,11 +43,6 @@ public class FollowerPageViewModel
         return typeId == KelvinTypeId ? KelvinState : VirginiaState;
     }
 
-    public FollowerState OtherOf(FollowerState follower)
-    {
-        return follower.TypeId == KelvinTypeId ? VirginiaState : KelvinState;
-    }
-
     public List<FollowerState> CopiesOf(int typeId)
     {
         return [.. _followers.Where(follower => follower.TypeId == typeId)];
@@ -346,12 +341,19 @@ public class FollowerPageViewModel
             var influenceMemory in vailWorldSim["InfluenceMemory"] ?? Enumerable.Empty<JToken>()
         )
         {
-            var followerState = influenceMemory["UniqueId"]?.Value<int>() is { } uniqueId
-                ? StateOfActor(uniqueId)
-                : null;
-            followerState?.Influences.AddRange(
-                influenceMemory["Influences"]?.ToObject<List<Influence>>() ?? []
-            );
+            // A Repeated Memory Or Type Counts Once, Newest Memory Wins
+            if (
+                influenceMemory["UniqueId"]?.Value<int>() is { } uniqueId
+                && StateOfActor(uniqueId) is { } followerState
+            )
+            {
+                followerState.Influences.Clear();
+                followerState.Influences.AddRange(
+                    (influenceMemory["Influences"]?.ToObject<List<Influence>>() ?? []).DistinctBy(
+                        influence => influence.TypeId
+                    )
+                );
+            }
         }
     }
 

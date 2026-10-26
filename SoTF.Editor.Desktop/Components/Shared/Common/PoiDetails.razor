@@ -139,7 +139,7 @@
         <MudButton Variant="Variant.Text"
                    Size="Size.Small"
                    StartIcon="@Icons.Material.Rounded.NearMe"
-                   Disabled="@(!Poi.CanTeleportKelvin())"
+                   Disabled="@(!CanTeleportKelvin)"
                    OnClick="() => TeleportAsync(TeleportTarget.Kelvin)">
             @AppText.Get("TeleportKelvinHere")
         </MudButton>
@@ -147,7 +147,7 @@
         <MudButton Variant="Variant.Text"
                    Size="Size.Small"
                    StartIcon="@Icons.Material.Rounded.NearMe"
-                   Disabled="@(!Poi.CanTeleportVirginia())"
+                   Disabled="@(!CanTeleportVirginia)"
                    OnClick="() => TeleportAsync(TeleportTarget.Virginia)">
             @AppText.Get("TeleportVirginiaHere")
         </MudButton>

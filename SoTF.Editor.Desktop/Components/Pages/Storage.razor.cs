@@ -31,6 +31,12 @@ public partial class Storage : EditorPageBase
             .Where(group => group.Storages.Count > 0)
             .Select(group => ($"{group.Name} ({group.Storages.Count})", group.Storages));
 
+    // Only A Shown Storage, A Search Can Hide It
+    private IStorage? Selected =>
+        FilteredCollections.Any(group => group.Storages.Contains(StoragePage.SelectedStorage!))
+            ? StoragePage.SelectedStorage
+            : null;
+
     private bool Matches(string text)
     {
         return string.IsNullOrWhiteSpace(_filter)

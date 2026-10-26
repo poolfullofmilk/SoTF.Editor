@@ -8,7 +8,7 @@ namespace SoTF.Editor.Services.Map;
 
 public static class ZiplineManager
 {
-    private const int ZiplineTypeId = 55;
+    public const int ZiplineTypeId = 55;
 
     public static ZiplinePoi? AcceptNewPosition(
         ZipPointPoi point,

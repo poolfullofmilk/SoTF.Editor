@@ -16,8 +16,9 @@
                       Dense
                       Hover
                       FixedHeader
-                      Height="50vh"
-                      Elevation="0">
+                      Elevation="0"
+                      Class="fit"
+                      Style="max-height:50vh">
 
                 <HeaderContent>
                     <MudTh>@AppText.Get("Name")</MudTh>
@@ -49,6 +50,7 @@
         @* Apply Button *@
         <MudButton Variant="Variant.Filled"
                    Color="Color.Info"
+                   Disabled="@(!_viewModel.ConsumedItems.Exists(item => item.Remove))"
                    OnClick="Apply">
             @AppText.Get("RemoveSelected")
         </MudButton>

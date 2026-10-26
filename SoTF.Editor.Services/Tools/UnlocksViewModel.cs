@@ -40,10 +40,16 @@ public class UnlocksViewModel
                 Values[name] = GetBoolSetting(setting);
             }
         }
+
+        _loaded = new Dictionary<string, bool>(Values);
     }
 
     public Dictionary<string, bool> Values { get; } =
         Settings.ToDictionary(setting => setting.Key, _ => false);
+
+    private readonly Dictionary<string, bool> _loaded = [];
+
+    public bool HasChanges => Values.Any(pair => _loaded.GetValueOrDefault(pair.Key) != pair.Value);
 
     private static bool GetBoolSetting(JToken setting)
     {

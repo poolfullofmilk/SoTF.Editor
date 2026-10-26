@@ -40,6 +40,25 @@ public static class SeasonCalendar
         return offset + (seasonsAhead * daysPerSeason);
     }
 
+    public static int DaysLeft(int days, double offset, double daysPerSeason)
+    {
+        // Today Counts, So A Last Day Has One Left
+        var intoSeason = ((days + offset) % daysPerSeason + daysPerSeason) % daysPerSeason;
+        return (int)Math.Ceiling(daysPerSeason - intoSeason);
+    }
+
+    public static double OffsetForDaysLeft(
+        int daysLeft,
+        int days,
+        double offset,
+        double daysPerSeason
+    )
+    {
+        // The Same Season, Ending After That Many Days
+        var seasonEnd = (Math.Floor((days + offset) / daysPerSeason) + 1) * daysPerSeason;
+        return seasonEnd - daysLeft - days;
+    }
+
     private static bool SelfTestPasses()
     {
         // Tested In Game: Day 36 Offset 5 Spring, 15 Autumn
@@ -48,6 +67,12 @@ public static class SeasonCalendar
             && OffsetFor(3, 36.4, 5, 5) == 0
             && OffsetFor(0, 36.4, OffsetFor(1, 36.4, 5, 5), 5) == 5
             && SeasonAt(36.4, OffsetFor(1, 36.4, 15, 5), 5) == 1
-            && SeasonAt(2, -8, 5) == 2;
+            && SeasonAt(2, -8, 5) == 2
+            && DaysLeft(36, 5, 5) == 4
+            && DaysLeft(39, 5, 5) == 1
+            && OffsetForDaysLeft(1, 36, 5, 5) == 8
+            && SeasonAt(36, OffsetForDaysLeft(5, 36, 5, 5), 5) == SeasonAt(36, 5, 5)
+            && DaysLeft(36, OffsetForDaysLeft(5, 36, 5, 5), 5) == 5
+            && DaysLeft(2, -8, 5) == 1;
     }
 }

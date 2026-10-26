@@ -31,28 +31,43 @@
                                           data-keyclick
                                           @onclick="() => RunAsync(tool)">
                                     <MudStack Row
-                                              AlignItems="AlignItems.Start"
-                                              Spacing="3">
+                                              AlignItems="AlignItems.Stretch"
+                                              Spacing="3"
+                                              Class="mud-height-full">
                                         <MudIcon Icon="@tool.Icon"
                                                  Color="Color.Info" />
                                         <MudStack Spacing="1"
+                                                  Class="flex-grow-1"
                                                   Style="min-width:0">
-                                            <MudText Typo="Typo.subtitle1"
-                                                     Class="text-tight"
-                                                     Style="font-weight:700">
-                                                @AppText.Get(tool.TitleKey)
-                                            </MudText>
+                                            <MudStack Row
+                                                      AlignItems="AlignItems.Start"
+                                                      Spacing="2">
+                                                <MudText Typo="Typo.subtitle1"
+                                                         Class="text-tight flex-grow-1"
+                                                         Style="font-weight:700">
+                                                    @AppText.Get(tool.TitleKey)
+                                                </MudText>
+                                                <MudChip T="string"
+                                                         Variant="Variant.Text"
+                                                         Size="Size.Small"
+                                                         Color="@ChipColor(tool)"
+                                                         Class="ma-0 flex-shrink-0"
+                                                         Style="margin-top:2px !important">
+                                                    @AppText.Get(ChipKey(tool))
+                                                </MudChip>
+                                            </MudStack>
                                             <MudText Typo="Typo.body2"
                                                      Class="mud-text-secondary text-relaxed">
                                                 @AppText.Get(tool.TextKey)
                                             </MudText>
-                                            <MudChip T="string"
-                                                     Variant="Variant.Text"
-                                                     Size="Size.Small"
-                                                     Color="@ChipColor(tool)"
-                                                     Class="ml-0 align-self-start">
-                                                @AppText.Get(ChipKey(tool))
-                                            </MudChip>
+                                            @if (ValueOf(tool) is { } value)
+                                            {
+                                                <MudText Typo="Typo.body2"
+                                                         Color="Color.Info"
+                                                         Class="mt-auto pt-1">
+                                                    @value
+                                                </MudText>
+                                            }
                                         </MudStack>
                                     </MudStack>
                                 </MudPaper>

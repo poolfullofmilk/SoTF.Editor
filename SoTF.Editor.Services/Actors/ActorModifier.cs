@@ -25,7 +25,17 @@ public class ActorModifier(PlayerPageViewModel playerPageViewModel)
             return;
         }
 
-        List<JToken> matchedActors = [.. actors.Where(actor => ActorMatches(actor, data))];
+        List<JToken> matchedActors =
+        [
+            .. actors.Where(actor =>
+                data.Matches(
+                    actor["TypeId"]?.Value<int>(),
+                    actor["FamilyId"]?.Value<int>(),
+                    actor["GraphMask"]?.Value<int>(),
+                    actor["UniqueId"]?.Value<int>()
+                )
+            ),
+        ];
         if (matchedActors.Count == 0)
         {
             return;
@@ -66,32 +76,6 @@ public class ActorModifier(PlayerPageViewModel playerPageViewModel)
     private static HashSet<int> UniqueIdsOf(IEnumerable<JToken> actors)
     {
         return [.. actors.Select(actor => actor["UniqueId"]?.Value<int>()).OfType<int>()];
-    }
-
-    private static bool ActorMatches(JToken actor, EditActorViewModel data)
-    {
-        var typeId = actor["TypeId"]?.Value<int>();
-        if (
-            (data.SkipKelvin && typeId == Constants.Actors.KelvinTypeId)
-            || (
-                data.OnlyInSameAreaAsActor
-                && actor["GraphMask"]?.Value<int>() != data.Actor.GraphMask
-            )
-            || (data.SkipVirginia && typeId == Constants.Actors.VirginiaTypeId)
-        )
-        {
-            return false;
-        }
-
-        // This Actor, Its Family, Its Type Or Everyone
-        return data.ActorSelection switch
-        {
-            3 => true,
-            2 => typeId == data.Actor.TypeId,
-            1 => actor["FamilyId"]?.Value<int>() == data.Actor.FamilyId,
-            0 => actor["UniqueId"]?.Value<int>() == data.Actor.UniqueId,
-            _ => false,
-        };
     }
 
     private void Modify(JToken vailWorldSim, List<JToken> matchedActors, EditActorViewModel data)
@@ -152,16 +136,25 @@ public class ActorModifier(PlayerPageViewModel playerPageViewModel)
             return;
         }
 
+        // One Memory Per Actor, Repeats Go
         var handled = new HashSet<int>();
-        foreach (var influenceMemory in influenceMemories)
+        foreach (var influenceMemory in influenceMemories.ToList())
         {
             if (
-                influenceMemory["UniqueId"]?.Value<int>() is { } uniqueId
-                && uniqueIds.Contains(uniqueId)
+                influenceMemory["UniqueId"]?.Value<int>() is not { } uniqueId
+                || !uniqueIds.Contains(uniqueId)
             )
             {
+                continue;
+            }
+
+            if (handled.Add(uniqueId))
+            {
                 influenceMemory["Influences"] = JToken.FromObject(influences);
-                handled.Add(uniqueId);
+            }
+            else
+            {
+                influenceMemory.Remove();
             }
         }
 

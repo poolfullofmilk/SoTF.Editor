@@ -65,14 +65,18 @@ window.sotfMap = (() => {
         state = { viewport, canvas, drag: null, moved: false, width: viewport.clientWidth, height: viewport.clientHeight };
         fit();
 
-        // A Resized Map Keeps Its Middle, Hidden Menus Included
+        // A Resized Map Keeps Its Middle, While The Menus Slide It Refits
         state.observer = new ResizeObserver(() => {
             if (!viewport.isConnected || state?.viewport !== viewport) return;
-            state.x += (viewport.clientWidth - state.width) / 2;
-            state.y += (viewport.clientHeight - state.height) / 2;
+            if (performance.now() < state.fitUntil) {
+                fit();
+            } else {
+                state.x += (viewport.clientWidth - state.width) / 2;
+                state.y += (viewport.clientHeight - state.height) / 2;
+                apply();
+            }
             state.width = viewport.clientWidth;
             state.height = viewport.clientHeight;
-            apply();
         });
         state.observer.observe(viewport);
 
@@ -172,5 +176,12 @@ window.sotfMap = (() => {
         fit();
     };
 
-    return { init, centerOn, zoomBy, reset };
+    // The Menus Slide For A Quarter Second, The Map Follows And Lands Whole
+    const fitWhileResizing = () => {
+        if (!state) return;
+        state.fitUntil = performance.now() + 400;
+        setTimeout(() => state && fit(), 400);
+    };
+
+    return { init, centerOn, zoomBy, reset, fitWhileResizing };
 })();

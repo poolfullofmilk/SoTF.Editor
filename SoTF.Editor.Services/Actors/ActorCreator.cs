@@ -58,11 +58,12 @@ internal static class ActorCreator
 
     private static HashSet<int> UniqueIdsOf(JToken vailWorldSim)
     {
+        // Deleted Actors Leave Memories, New Ones Never Reuse Their Ids
         return
         [
-            .. (vailWorldSim["Actors"] ?? Enumerable.Empty<JToken>()).Select(actor =>
-                actor["UniqueId"]?.Value<int>() ?? 0
-            ),
+            .. (vailWorldSim["Actors"] ?? Enumerable.Empty<JToken>())
+                .Concat(vailWorldSim["InfluenceMemory"] ?? Enumerable.Empty<JToken>())
+                .Select(entry => entry["UniqueId"]?.Value<int>() ?? 0),
         ];
     }
 

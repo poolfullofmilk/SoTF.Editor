@@ -50,17 +50,21 @@ public partial class Npcs : EditorPageBase
             || text.Contains(_filter, StringComparison.OrdinalIgnoreCase);
     }
 
-    // A Reload Builds New Collections, An Old Selection Is Gone
+    // Only A Shown Row, A Reload Or Search Hides It
     private ActorCollection? Selected =>
-        _selected != null
-        && (
-            NpcsPage.ActorsByType.Contains(_selected)
-            || NpcsPage.ActorsByFamily.Any(grouping =>
-                grouping.ActorCollections.Contains(_selected)
-            )
-        )
+        _selected != null && Groupings.Any(group => group.Collections.Contains(_selected))
             ? _selected
             : null;
+
+    private void SetByFamily(bool byFamily)
+    {
+        // The Other Grouping Has Other Rows, Nothing Stays Picked
+        if (_byFamily != byFamily)
+        {
+            _byFamily = byFamily;
+            _selected = null;
+        }
+    }
 
     private static string DetailOf(Actor actor)
     {

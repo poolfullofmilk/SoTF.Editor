@@ -273,30 +273,6 @@
   <data name="Influences" xml:space="preserve">
     <value>Influences</value>
   </data>
-  <data name="ModificationOptions" xml:space="preserve">
-    <value>Modification Options</value>
-  </data>
-  <data name="Selection" xml:space="preserve">
-    <value>Selection</value>
-  </data>
-  <data name="Stats" xml:space="preserve">
-    <value>Stats</value>
-  </data>
-  <data name="Modify" xml:space="preserve">
-    <value>Modify</value>
-  </data>
-  <data name="AllActors" xml:space="preserve">
-    <value>All Actors</value>
-  </data>
-  <data name="AllActorsOfFamily" xml:space="preserve">
-    <value>All Actors Of The Same Family</value>
-  </data>
-  <data name="AllActorsOfType" xml:space="preserve">
-    <value>All Actors Of The Same Type</value>
-  </data>
-  <data name="ThisActor" xml:space="preserve">
-    <value>This Actor</value>
-  </data>
   <data name="OnlySameArea" xml:space="preserve">
     <value>Only In The Same Area</value>
   </data>
@@ -308,12 +284,6 @@
   </data>
   <data name="ReplaceType" xml:space="preserve">
     <value>Replace Type</value>
-  </data>
-  <data name="SkipKelvin" xml:space="preserve">
-    <value>Skip Kelvin</value>
-  </data>
-  <data name="SkipVirginia" xml:space="preserve">
-    <value>Skip Virginia</value>
   </data>
   <data name="TeleportManyWarning" xml:space="preserve">
     <value>Teleporting many actors to one spot can crash the game</value>
@@ -329,9 +299,6 @@
   </data>
   <data name="Teleport" xml:space="preserve">
     <value>Teleport</value>
-  </data>
-  <data name="UpdateInfluences" xml:space="preserve">
-    <value>Update Influences</value>
   </data>
   <data name="Affection" xml:space="preserve">
     <value>Affection</value>
@@ -909,9 +876,6 @@
   <data name="Storage" xml:space="preserve">
     <value>Storage</value>
   </data>
-  <data name="Added" xml:space="preserve">
-    <value>Added</value>
-  </data>
   <data name="ApplyToSameType" xml:space="preserve">
     <value>Apply To All Of Same Type</value>
   </data>
@@ -921,20 +885,8 @@
   <data name="ChangeType" xml:space="preserve">
     <value>Change Type</value>
   </data>
-  <data name="SetAllToAlmostFinish" xml:space="preserve">
-    <value>Set All To Almost Finish</value>
-  </data>
-  <data name="SetAllToFinish" xml:space="preserve">
-    <value>Set All To Finish</value>
-  </data>
   <data name="SetAllToRemove" xml:space="preserve">
     <value>Set All To Remove</value>
-  </data>
-  <data name="SetAllToUnfinish" xml:space="preserve">
-    <value>Set All To Unfinish</value>
-  </data>
-  <data name="ResetAll" xml:space="preserve">
-    <value>Reset All</value>
   </data>
   <data name="StructureCategoryFurniture" xml:space="preserve">
     <value>Furniture</value>
@@ -966,20 +918,11 @@
   <data name="Category" xml:space="preserve">
     <value>Category</value>
   </data>
-  <data name="FinishedStructures" xml:space="preserve">
-    <value>Finished Structures</value>
-  </data>
-  <data name="UnfinishedStructures" xml:space="preserve">
-    <value>Unfinished Structures</value>
-  </data>
-  <data name="Modification" xml:space="preserve">
-    <value>Modification</value>
-  </data>
   <data name="PercentDone" xml:space="preserve">
     <value>Percent Done</value>
   </data>
   <data name="StructureModeNone" xml:space="preserve">
-    <value>None</value>
+    <value>Keep</value>
   </data>
   <data name="StructureModeRemove" xml:space="preserve">
     <value>Remove</value>
@@ -1186,7 +1129,7 @@
     <value>Discard Unsaved Changes</value>
   </data>
   <data name="DiscardChangesText" xml:space="preserve">
-    <value>Edits not saved yet will be lost</value>
+    <value>Some edits are not saved yet. Yes throws them away. No keeps them so you can save first</value>
   </data>
   <data name="OpenBackupFolder" xml:space="preserve">
     <value>Open Backup Folder</value>
@@ -1542,17 +1485,8 @@
   <data name="RainHeavy" xml:space="preserve">
     <value>Heavy</value>
   </data>
-  <data name="Batch" xml:space="preserve">
-    <value>Change Many At Once</value>
-  </data>
-  <data name="AllTypesHint" xml:space="preserve">
-    <value>Leave empty to change every type</value>
-  </data>
   <data name="StructureType" xml:space="preserve">
     <value>Structure Type</value>
-  </data>
-  <data name="BatchHint" xml:space="preserve">
-    <value>Sets every structure the list below shows, written on save</value>
   </data>
   <data name="Restore" xml:space="preserve">
     <value>Restore</value>
@@ -1925,5 +1859,104 @@
   </data>
   <data name="ShowMenus" xml:space="preserve">
     <value>Show Menus</value>
+  </data>
+  <data name="TeleportCopies" xml:space="preserve">
+    <value>{0} ({1} Copies)</value>
+  </data>
+  <data name="Filters" xml:space="preserve">
+    <value>Filters</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="Changes" xml:space="preserve">
+    <value>Changes</value>
+  </data>
+  <data name="ApplyTo" xml:space="preserve">
+    <value>Apply To</value>
+  </data>
+  <data name="ApplyToThis" xml:space="preserve">
+    <value>This One</value>
+  </data>
+  <data name="ApplyToFamily" xml:space="preserve">
+    <value>Family ({0})</value>
+  </data>
+  <data name="ApplyToType" xml:space="preserve">
+    <value>Same Type ({0})</value>
+  </data>
+  <data name="ApplyToEveryone" xml:space="preserve">
+    <value>Everyone ({0})</value>
+  </data>
+  <data name="SkipFollowers" xml:space="preserve">
+    <value>Leave Kelvin And Virginia Alone</value>
+  </data>
+  <data name="ApplyCount" xml:space="preserve">
+    <value>Apply To {0}</value>
+  </data>
+  <data name="RemoveCount" xml:space="preserve">
+    <value>Remove {0}</value>
+  </data>
+  <data name="RemoveActorsText" xml:space="preserve">
+    <value>They leave the save with their memories and the items they carry</value>
+  </data>
+  <data name="CloseUnsavedTitle" xml:space="preserve">
+    <value>Close Without Saving</value>
+  </data>
+  <data name="CloseUnsavedText" xml:space="preserve">
+    <value>Some edits are not saved yet. Yes closes the editor and throws them away. No keeps the editor open so you can save first</value>
+  </data>
+  <data name="AllStructures" xml:space="preserve">
+    <value>All Structures</value>
+  </data>
+  <data name="SelectStructure" xml:space="preserve">
+    <value>Select A Structure Type</value>
+  </data>
+  <data name="StructuresInfo" xml:space="preserve">
+    <value>Pick what saving does with each structure. Keep leaves it as it is</value>
+  </data>
+  <data name="SetAllTo" xml:space="preserve">
+    <value>Set All To</value>
+  </data>
+  <data name="StructureCounts" xml:space="preserve">
+    <value>{0} Built · {1} Unfinished</value>
+  </data>
+  <data name="Built" xml:space="preserve">
+    <value>Built</value>
+  </data>
+  <data name="UnfinishedState" xml:space="preserve">
+    <value>{0} · {1} / {2}</value>
+  </data>
+  <data name="OnSave" xml:space="preserve">
+    <value>On Save</value>
+  </data>
+  <data name="MoodFriendly" xml:space="preserve">
+    <value>Friendly</value>
+  </data>
+  <data name="MoodNeutral" xml:space="preserve">
+    <value>Neutral</value>
+  </data>
+  <data name="MoodHostile" xml:space="preserve">
+    <value>Hostile</value>
+  </data>
+  <data name="MoodAfraid" xml:space="preserve">
+    <value>Afraid</value>
+  </data>
+  <data name="SentimentInfo" xml:space="preserve">
+    <value>How much they like them, from -100 hate to 100 love</value>
+  </data>
+  <data name="SeasonInfo" xml:space="preserve">
+    <value>Every season lasts as many days as Season Length on the setup tab says, so one season cannot last longer than another. Pick the season and the days left, the editor works out the offset</value>
+  </data>
+  <data name="DaysUntilSeason" xml:space="preserve">
+    <value>Days Until {0}</value>
+  </data>
+  <data name="SeasonSummary" xml:space="preserve">
+    <value>{0}, day {1} of {2}. {3} starts in {4} days</value>
+  </data>
+  <data name="SeasonLastDay" xml:space="preserve">
+    <value>{0}, day {1} of {1}. {2} starts tomorrow</value>
+  </data>
+  <data name="JoinedGameName" xml:space="preserve">
+    <value>{0} {1} Days</value>
   </data>
 </root>

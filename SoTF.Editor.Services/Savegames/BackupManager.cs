@@ -19,6 +19,9 @@ public static partial class BackupManager
     // Kept Beside The Copied Files, Never Restored Into The Savegame
     public const string ChangesFileName = "SoTF.Editor.Changes.json";
 
+    // A Restore's Change List Key, Beside The Page Routes
+    public const string RestoreKey = "Backups";
+
     // The Game Renames Its Name File, So Its Name Counts
     private const string NameFileKey = ".name";
     private const string SaveDataSuffix = "SaveData";
@@ -271,8 +274,23 @@ public static partial class BackupManager
             throw new IOException($"Found No Files In Backup {backup}");
         }
 
-        // The Current State Is Kept, So Restores Can Be Undone
+        // Kept So Restores Can Be Undone, Noting What Came After
         var safetyCopy = CopyAll(savegamePath);
+        WriteChanges(
+            safetyCopy,
+            new()
+            {
+                [RestoreKey] =
+                [
+                    new Change(
+                        AppText.Format(
+                            "RestoredBackup",
+                            Formatter.FormatDateTimeWithSeconds(TakenAt(backup))
+                        )
+                    ),
+                ],
+            }
+        );
 
         // Files The Backup Lacks Stay In That Safety Copy
         foreach (var current in Directory.GetFiles(savegamePath))

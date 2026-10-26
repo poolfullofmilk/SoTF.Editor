@@ -8,6 +8,7 @@ using SoTF.Editor.Data.Models.SaveData.Actor;
 using SoTF.Editor.Data.Resources;
 using SoTF.Editor.Data.ViewModels;
 using SoTF.Editor.Services.Actors;
+using SoTF.Editor.Services.Map;
 using SoTF.Editor.Services.Pages;
 
 namespace SoTF.Editor.Services.Savegames;
@@ -131,12 +132,6 @@ public class MainViewModel(
         NotifyChanged();
     }
 
-    // Only These Pages Keep Their Edits In Memory Until Save
-    public static bool CanRevert(string page)
-    {
-        return page is "Player" or "Inventory" or "Storage" or "Game" or "Structures";
-    }
-
     public void RevertPage(string page)
     {
         if (SelectedSavegame is not { } savegame)
@@ -164,6 +159,20 @@ public class MainViewModel(
             case "Structures":
                 structuresPage.Load(savegame);
                 break;
+            case "Followers":
+                ModifyActors(_ => RevertActors(savegame, true));
+                gameStatePage.RefreshDeathFlags(savegame);
+                break;
+            case "Npcs":
+                ModifyActors(_ => RevertActors(savegame, false));
+                break;
+            case "Map":
+                RevertZiplines(savegame);
+                Revision++;
+                break;
+            case "Tools":
+                RevertTools(savegame);
+                break;
         }
 
         // A Tool Whose Edit Was Reverted Loses Its Dot
@@ -173,6 +182,195 @@ public class MainViewModel(
         }
 
         NotifyChanged();
+    }
+
+    private static void RevertActors(Savegame savegame, bool followers)
+    {
+        if (
+            savegame.SavegameStore.LoadJsonRaw(SavegameStore.FileType.SaveData)
+                is not { } saveDataWrapper
+            || saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.VailWorldSim)
+                is not { } vailWorldSim
+            || saveDataWrapper.LoadedCopy(Constants.JsonKeys.VailWorldSim) is not { } loaded
+        )
+        {
+            return;
+        }
+
+        // Followers By Loaded Type, Spawned Ones By Their Type Now
+        var loadedIds = IdsOf(loaded["Actors"], _ => true);
+        var followerIds = IdsOf(loaded["Actors"], IsFollower)
+            .Concat(IdsOf(vailWorldSim["Actors"], IsFollower).Except(loadedIds))
+            .ToHashSet();
+        bool IsOwned(JToken entry)
+        {
+            return JsonModifier.UniqueIdOf(entry) is { } uniqueId
+                && followerIds.Contains(uniqueId) == followers;
+        }
+
+        foreach (var key in new[] { "Actors", "InfluenceMemory" })
+        {
+            JsonModifier.RestoreEntries(
+                vailWorldSim[key],
+                loaded[key],
+                IsOwned,
+                JsonModifier.UniqueIdOf
+            );
+        }
+
+        JsonModifier.RestoreEntries(
+            saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.NpcItemInstances)?["ActorItems"],
+            saveDataWrapper.LoadedCopy(Constants.JsonKeys.NpcItemInstances)?["ActorItems"],
+            IsOwned,
+            JsonModifier.UniqueIdOf
+        );
+
+        if (!followers)
+        {
+            JsonModifier.RestoreEntries(
+                vailWorldSim["Spawners"],
+                loaded["Spawners"],
+                _ => true,
+                JsonModifier.UniqueIdOf
+            );
+            return;
+        }
+
+        // Revive Also Cleared Kills And The Death Flags
+        JsonModifier.RestoreEntries(
+            vailWorldSim["KillStatsList"],
+            loaded["KillStatsList"],
+            IsFollower,
+            killStat => killStat["TypeId"]?.Value<int>()
+        );
+        var gameStateWrapper = savegame.SavegameStore.LoadJsonRaw(
+            SavegameStore.FileType.GameStateSaveData
+        );
+        var gameState = gameStateWrapper?.GetJsonBasedToken(Constants.JsonKeys.GameState);
+        var loadedGameState = gameStateWrapper?.LoadedCopy(Constants.JsonKeys.GameState);
+        foreach (var flag in new[] { "IsRobbyDead", "IsVirginiaDead" })
+        {
+            if (gameState?[flag] is { } current && loadedGameState?[flag] is { } loadedFlag)
+            {
+                current.Replace(loadedFlag);
+            }
+        }
+    }
+
+    private static bool IsFollower(JToken entry)
+    {
+        return entry["TypeId"]?.Value<int>()
+            is Constants.Actors.KelvinTypeId
+                or Constants.Actors.VirginiaTypeId;
+    }
+
+    private static HashSet<int> IdsOf(JToken? actors, Func<JToken, bool> include)
+    {
+        return
+        [
+            .. (actors ?? Enumerable.Empty<JToken>())
+                .Where(include)
+                .Select(JsonModifier.UniqueIdOf)
+                .OfType<int>(),
+        ];
+    }
+
+    private static void RevertZiplines(Savegame savegame)
+    {
+        // Lines And Their Midpoint Structures, Other Structures Keep Rows
+        savegame
+            .SavegameStore.LoadJsonRaw(SavegameStore.FileType.ZipLineManagerSaveData)
+            ?.Revert(Constants.JsonKeys.ZipLineManager);
+        var structuresWrapper = savegame.SavegameStore.LoadJsonRaw(
+            SavegameStore.FileType.ScrewStructureInstancesSaveData
+        );
+        JsonModifier.RestoreEntries(
+            structuresWrapper
+                ?.GetJsonBasedToken(Constants.JsonKeys.ScrewStructureInstances)
+                ?["_structures"],
+            structuresWrapper
+                ?.LoadedCopy(Constants.JsonKeys.ScrewStructureInstances)
+                ?["_structures"],
+            structure => structure["Id"]?.Value<int>() == ZiplineManager.ZiplineTypeId
+        );
+    }
+
+    private void RevertTools(Savegame savegame)
+    {
+        // Documents Only Tools Change Before A Save
+        foreach (
+            var (fileType, jsonKey) in new[]
+            {
+                (SavegameStore.FileType.FiresSaveData, Constants.JsonKeys.Fires),
+                (SavegameStore.FileType.ScrewTrapsSaveData, Constants.JsonKeys.ScrewTraps),
+                (
+                    SavegameStore.FileType.StructureDestructionSaveData,
+                    Constants.JsonKeys.StructureDestruction
+                ),
+                (
+                    SavegameStore.FileType.WorldItemManagerSaveData,
+                    Constants.JsonKeys.WorldItemManager
+                ),
+                (
+                    SavegameStore.FileType.WorldObjectLocatorManagerSaveData,
+                    Constants.JsonKeys.WorldObjectLocatorManager
+                ),
+                (SavegameStore.FileType.PlayerStateSaveData, Constants.JsonKeys.PlayerState),
+            }
+        )
+        {
+            savegame.SavegameStore.LoadJsonRaw(fileType)?.Revert(jsonKey);
+        }
+
+        // Anger And Game State Tools Share Data, Only When Run
+        if (_changedTools.Contains("CannibalAnger"))
+        {
+            ModifyActors(_ => RevertCannibalAnger(savegame));
+        }
+
+        if (_changedTools.Contains("ResetContainers") || _changedTools.Contains("SetToEndgame"))
+        {
+            gameStatePage.Load(savegame);
+        }
+
+        _changedTools.Clear();
+        Revision++;
+    }
+
+    private void RevertCannibalAnger(Savegame savegame)
+    {
+        if (
+            savegame.SavegameStore.LoadJsonRaw(SavegameStore.FileType.SaveData)
+                is not { } saveDataWrapper
+            || saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.VailWorldSim)
+                is not JObject vailWorldSim
+            || saveDataWrapper.LoadedCopy(Constants.JsonKeys.VailWorldSim) is not { } loaded
+        )
+        {
+            return;
+        }
+
+        // Kills, World Counts And Cannibal Memories
+        var cannibalIds = LivingCannibalIds(vailWorldSim)
+            .Concat(LivingCannibalIds(loaded))
+            .ToHashSet();
+        JsonModifier.RestoreEntries(
+            vailWorldSim["InfluenceMemory"],
+            loaded["InfluenceMemory"],
+            memory =>
+                JsonModifier.UniqueIdOf(memory) is { } uniqueId && cannibalIds.Contains(uniqueId),
+            JsonModifier.UniqueIdOf
+        );
+        JsonModifier.RestoreEntries(
+            vailWorldSim["KillStatsList"],
+            loaded["KillStatsList"],
+            _ => true,
+            killStat => killStat["TypeId"]?.Value<int>()
+        );
+        if (loaded["PlayerStats"] is { } playerStats)
+        {
+            vailWorldSim["PlayerStats"] = playerStats;
+        }
     }
 
     public bool HasChanges(string page)
@@ -418,9 +616,10 @@ public class MainViewModel(
         var memories = new Dictionary<int, JToken>();
         foreach (var memory in vailWorldSim["InfluenceMemory"] ?? Enumerable.Empty<JToken>())
         {
+            // The Newest Repeated Memory Wins, As Pages Read It
             if (memory["UniqueId"]?.Value<int>() is { } uniqueId)
             {
-                memories.TryAdd(uniqueId, memory);
+                memories[uniqueId] = memory;
             }
         }
 

@@ -85,7 +85,15 @@ public partial class RestoreBackupDialog
 
     private static string LabelOf(string href)
     {
-        return PageOf(href) is { } link ? AppText.Get(link.LabelKey) : href;
+        return PageOf(href) is { } link ? AppText.Get(link.LabelKey) : AppText.Get(href, href);
+    }
+
+    // A Restore Is No Page, It Gets The Restore Icon
+    private static string? IconOf(string href)
+    {
+        return href == BackupManager.RestoreKey
+            ? Icons.Material.Rounded.Restore
+            : PageOf(href)?.Icon;
     }
 
     // Measured Once, Every Row Click Renders Again

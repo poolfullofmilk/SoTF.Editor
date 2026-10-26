@@ -31,7 +31,7 @@ public partial class ChangeStructureTypeDialog
 
     private static string StructureName(ScrewStructure? structure)
     {
-        return Pages.Structures.StructureName(structure);
+        return structure is null ? string.Empty : $"{structure.CategoryName} · {structure.Name}";
     }
 
     private void Ok()

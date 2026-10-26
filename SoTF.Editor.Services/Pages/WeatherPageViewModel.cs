@@ -12,6 +12,9 @@ public class WeatherPageViewModel
 
     private readonly LoadedValues _loaded = new();
 
+    // Where The Year Stood When Loaded
+    public double LoadedOffset { get; private set; }
+
     public bool HasChanges => Settings.Any(IsChanged);
 
     public IEnumerable<string> ChangedNames =>
@@ -35,7 +38,11 @@ public class WeatherPageViewModel
     {
         LoadSettings(savegame);
         Remember();
+        LoadedOffset = Offset?.DecimalValue ?? 0;
     }
+
+    public GenericSetting? Offset =>
+        Settings.FirstOrDefault(setting => setting.Name == "_startingDayOffset");
 
     private void LoadSettings(Savegame? savegame)
     {

@@ -1,5 +1,7 @@
 using SoTF.Editor.Data.Enums;
+using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
+using SoTF.Editor.Data.Models.Actors;
 using SoTF.Editor.Data.Models.Map;
 using SoTF.Editor.Data.Resources;
 using SoTF.Editor.Services.Pages;
@@ -9,9 +11,18 @@ namespace SoTF.Editor.Services.Map;
 public class MapTeleportWindowViewModel(
     BasePoi destination,
     TeleportTarget teleportTarget,
-    AreaMaskManager areaMaskManager
+    AreaMaskManager areaMaskManager,
+    FollowerPageViewModel followers
 )
 {
+    // Every Copy Of A Follower Goes, Spawned Ones Too
+    private readonly List<FollowerState> _copies = teleportTarget switch
+    {
+        TeleportTarget.Kelvin => followers.CopiesOf(Constants.Actors.KelvinTypeId),
+        TeleportTarget.Virginia => followers.CopiesOf(Constants.Actors.VirginiaTypeId),
+        _ => [],
+    };
+
     public Area SelectedArea { get; set; } = destination.Position?.Area ?? AreaMaskManager.Surface;
 
     public float XOffset { get; set; } = destination.TeleportationOffset;
@@ -27,27 +38,34 @@ public class MapTeleportWindowViewModel(
     public float Y { get; } = destination.Position?.Y ?? 0;
     public float Z { get; } = destination.Position?.Z ?? destination.Z;
 
-    public string Target => AppText.Get(TextKeys.TeleportTarget(teleportTarget));
+    public string Target =>
+        _copies.Count > 1
+            ? AppText.Format(
+                "TeleportCopies",
+                AppText.Get(TextKeys.TeleportTarget(teleportTarget)),
+                _copies.Count
+            )
+            : AppText.Get(TextKeys.TeleportTarget(teleportTarget));
     public string Destination => destination.Title;
 
-    public void DoTeleport(PlayerState playerState, FollowerPageViewModel followers)
+    public void DoTeleport(PlayerState playerState)
     {
-        var newPosition = new Position(X + XOffset, Y + YOffset, Z + ZOffset)
+        if (teleportTarget == TeleportTarget.Player)
         {
-            Area = SelectedArea,
-        };
+            playerState.Pos = new Position(X + XOffset, Y + YOffset, Z + ZOffset)
+            {
+                Area = SelectedArea,
+            };
+            return;
+        }
 
-        switch (teleportTarget)
+        // Copies Land A Step Apart, Not Inside Each Other
+        foreach (var (index, copy) in _copies.Index())
         {
-            case TeleportTarget.Kelvin:
-                followers.KelvinState.Pos = newPosition;
-                break;
-            case TeleportTarget.Virginia:
-                followers.VirginiaState.Pos = newPosition;
-                break;
-            default:
-                playerState.Pos = newPosition;
-                break;
+            copy.Pos = new Position(X + XOffset + index, Y + YOffset, Z + ZOffset + index)
+            {
+                Area = SelectedArea,
+            };
         }
     }
 }

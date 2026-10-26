@@ -28,6 +28,12 @@ public partial class Map : EditorPageBase
     private (float Left, float Top)? _focusPixel;
     private bool _isMapReady;
     private bool _menusHidden;
+    private bool _filtersOpen;
+
+    private bool HasFilters =>
+        MapViewModel.MapFilter.AreaFilter != AreaFilter.All
+        || MapViewModel.MapFilter.RequirementsFilter != MapFilter.RequirementsFilterType.All
+        || MapViewModel.MapFilter.ShowOnlyUncollectedItems;
 
     private string MenusText => AppText.Get(_menusHidden ? "ShowMenus" : "HideMenus");
 
@@ -150,6 +156,21 @@ public partial class Map : EditorPageBase
     {
         MapViewModel.MapFilter.ShowOnlyUncollectedItems = showOnlyUncollectedItems;
         MapViewModel.ApplyFilterToAllPois();
+    }
+
+    private void ResetFilters()
+    {
+        MapViewModel.MapFilter.AreaFilter = AreaFilter.All;
+        MapViewModel.MapFilter.RequirementsFilter = MapFilter.RequirementsFilterType.All;
+        MapViewModel.MapFilter.ShowOnlyUncollectedItems = false;
+        MapViewModel.ApplyFilterToAllPois();
+    }
+
+    private async Task ToggleMenusAsync()
+    {
+        // The Map Refits While The Menus Slide Away Or Back
+        _menusHidden = !_menusHidden;
+        await JavaScript.InvokeVoidAsync("sotfMap.fitWhileResizing");
     }
 
     private async Task ZoomAsync(double factor)

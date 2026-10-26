@@ -58,7 +58,7 @@
                     }
                     @foreach (var (page, changes) in _savedChanges)
                     {
-                        <ChangeList Icon="@PageOf(page)?.Icon"
+                        <ChangeList Icon="@IconOf(page)"
                                     Label="@LabelOf(page)"
                                     Changes="changes" />
                     }
@@ -89,7 +89,7 @@
         <MudButton Variant="Variant.Filled"
                    Color="Color.Info"
                    StartIcon="@Icons.Material.Rounded.Restore"
-                   Disabled="@(_selected is null)"
+                   Disabled="@(_selected is null || _differences is { Count: 0 })"
                    OnClick="Restore">
             @AppText.Get("Restore")
         </MudButton>

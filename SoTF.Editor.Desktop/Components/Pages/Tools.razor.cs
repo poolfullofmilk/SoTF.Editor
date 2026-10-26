@@ -115,6 +115,17 @@ public partial class Tools : EditorPageBase
         return IsAvailable(tool) && tool.SavesAtOnce ? Color.Warning : Color.Default;
     }
 
+    // A Tool Setting A Level Shows Where It Stands Now
+    private string? ValueOf(Tool tool)
+    {
+        return
+            tool.TitleKey == "CannibalAnger"
+            && IsAvailable(tool)
+            && MainViewModel.ReadCannibalMood() is { } mood
+            ? AppText.Format("CannibalAngerNow", mood.Average)
+            : null;
+    }
+
     private async Task RunAsync(Tool tool)
     {
         if (!IsAvailable(tool))

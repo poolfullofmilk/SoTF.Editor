@@ -45,10 +45,14 @@
         }
         @if (Hidden > 0)
         {
-            <MudText Typo="Typo.caption"
-                     Class="mud-text-secondary change-more">
+            @* Show All Changes *@
+            <MudLink Typo="Typo.caption"
+                     Color="Color.Info"
+                     Underline="Underline.Always"
+                     Class="change-more align-self-start"
+                     OnClick="ShowAllAsync">
                 @AppText.Format("AndMore", Hidden)
-            </MudText>
+            </MudLink>
         }
     </MudStack>
 </MudStack>

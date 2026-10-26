@@ -189,9 +189,6 @@ public partial class Game : EditorPageBase
 
     private bool ModeChanged => GameSetup.IsChanged(GameSetupKeys.Mode, CustomGameMode);
 
-    // Season Changes With The Offset, Picking One Moves It
-    private bool SeasonChanged => OffsetSetting is { } offset && Weather.IsChanged(offset);
-
     private static IEnumerable<SettingOption> Presets =>
         s_modes.Where(mode => mode.Value != CustomGameMode);
 
@@ -226,10 +223,6 @@ public partial class Game : EditorPageBase
             : value ?? string.Empty;
     }
 
-    // The Season Follows Days Plus Offset, Picking Moves The Offset
-    private GenericSetting? OffsetSetting =>
-        Weather.Settings.FirstOrDefault(setting => setting.Name == "_startingDayOffset");
-
     private double? DaysPerSeason =>
         SeasonCalendar.DaysPerSeason(
             GameSetup.GetString(GameSetupKeys.SeasonLength, SettingValueDefault)
@@ -238,12 +231,47 @@ public partial class Game : EditorPageBase
     private double DaysPlayed =>
         (GameStateValue("GameDays") ?? 0) + ((GameStateValue("GameHours") ?? 0) / 24.0);
 
-    private string? CurrentSeason =>
-        DaysPerSeason is { } daysPerSeason && OffsetSetting is { } offset
-            ? s_seasons[
-                SeasonCalendar.SeasonAt(DaysPlayed, offset.DecimalValue ?? 0, daysPerSeason)
-            ].Value
-            : null;
+    // Season Follows Days Plus Offset, The Panel Moves It
+    private SeasonState? Calendar => CalendarAt(Weather.Offset?.DecimalValue);
+
+    private SeasonState? LoadedCalendar => CalendarAt(Weather.LoadedOffset);
+
+    // A Known Season Length Shows The Panel, Not The Offset
+    private IEnumerable<GenericSetting> WeatherRows =>
+        Calendar is null
+            ? Weather.Settings
+            : Weather.Settings.Where(setting => setting != Weather.Offset);
+
+    private SeasonState? CalendarAt(double? offset)
+    {
+        if (DaysPerSeason is not { } daysPerSeason || offset is not { } dayOffset)
+        {
+            return null;
+        }
+
+        var days = GameStateValue("GameDays") ?? 0;
+        return new SeasonState(
+            SeasonCalendar.SeasonAt(DaysPlayed, dayOffset, daysPerSeason),
+            SeasonCalendar.DaysLeft(days, dayOffset, daysPerSeason),
+            (int)daysPerSeason
+        );
+    }
+
+    private static string SeasonSummary(SeasonState calendar)
+    {
+        var season = AppText.Get(s_seasons[calendar.Season].LabelKey);
+        var next = AppText.Get(s_seasons[calendar.NextSeason].LabelKey);
+        return calendar.DaysLeft == 1
+            ? AppText.Format("SeasonLastDay", season, calendar.Length, next)
+            : AppText.Format(
+                "SeasonSummary",
+                season,
+                calendar.Day,
+                calendar.Length,
+                next,
+                calendar.DaysLeft
+            );
+    }
 
     private static string? InfoOf(string settingName)
     {
@@ -257,10 +285,25 @@ public partial class Game : EditorPageBase
         return GameState.Settings.FirstOrDefault(setting => setting.Name == name)?.IntValue;
     }
 
+    private void ChangeDaysLeft(int daysLeft)
+    {
+        if (DaysPerSeason is not { } daysPerSeason || Weather.Offset is not { } offset)
+        {
+            return;
+        }
+
+        offset.DecimalValue = SeasonCalendar.OffsetForDaysLeft(
+            Math.Clamp(daysLeft, 1, (int)daysPerSeason),
+            GameStateValue("GameDays") ?? 0,
+            offset.DecimalValue ?? 0,
+            daysPerSeason
+        );
+    }
+
     private void ChangeSeason(string? season)
     {
         var index = Array.FindIndex(s_seasons, option => option.Value == season);
-        if (index < 0 || DaysPerSeason is not { } daysPerSeason || OffsetSetting is not { } offset)
+        if (index < 0 || DaysPerSeason is not { } daysPerSeason || Weather.Offset is not { } offset)
         {
             return;
         }
@@ -288,6 +331,24 @@ public partial class Game : EditorPageBase
     }
 
     private sealed record SettingOption(string Value, string LabelKey);
+
+    private sealed record SeasonState(int Season, int DaysLeft, int Length)
+    {
+        public int NextSeason => (Season + 1) % 4;
+
+        public int Day => Length - DaysLeft + 1;
+
+        // Past Seasons Are Full, This One Shows Its Progress
+        public double FillOf(int season)
+        {
+            if (season == Season)
+            {
+                return 100.0 * Day / Length;
+            }
+
+            return season < Season ? 100 : 0;
+        }
+    }
 
     private sealed record SelectSetting(
         string LabelKey,

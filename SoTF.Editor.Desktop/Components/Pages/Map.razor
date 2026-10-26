@@ -10,45 +10,93 @@
         <MudPaper Elevation="4"
                   Class="rounded-panel pa-4 overflow-y-auto side-panel">
             <MudStack Spacing="3">
-                @* Point Search *@
-                <SearchField Value="@MapViewModel.MapFilter.FullText"
-                             ValueChanged="SetFullText"
-                             FullWidth />
-                @* Area Filter *@
-                <MudSelect T="AreaFilter"
-                           Variant="Variant.Outlined"
-                           Value="MapViewModel.MapFilter.AreaFilter"
-                           ValueChanged="SetAreaFilter"
-                           Label="@AppText.Get("Area")"
-                           ToStringFunc="areaFilter => areaFilter?.Name ?? string.Empty"
-                           Dense
-                           Margin="Margin.Dense">
-                    @foreach (var areaFilter in MapViewModel.MapFilter.AreaFilterTypeValues)
-                    {
-                        <MudSelectItem Value="areaFilter">@areaFilter.Name</MudSelectItem>
-                    }
-                </MudSelect>
-                @* Requirements Filter *@
-                <MudSelect T="MapFilter.RequirementsFilterType"
-                           Variant="Variant.Outlined"
-                           Value="MapViewModel.MapFilter.RequirementsFilter"
-                           ValueChanged="SetRequirementsFilter"
-                           Label="@AppText.Get("Requirements")"
-                           HelperText="@AppText.Get("RequirementsTooltip")"
-                           ToStringFunc="RequirementsName"
-                           Dense
-                           Margin="Margin.Dense">
-                    @foreach (var requirementsFilter in Enum.GetValues<MapFilter.RequirementsFilterType>())
-                    {
-                        <MudSelectItem Value="requirementsFilter">@RequirementsName(requirementsFilter)</MudSelectItem>
-                    }
-                </MudSelect>
-                @* Uncollected Only *@
-                <MudSwitch T="bool"
-                           Value="MapViewModel.MapFilter.ShowOnlyUncollectedItems"
-                           ValueChanged="SetUncollectedOnly"
-                           Color="Color.Info"
-                           Label="@AppText.Get("UncollectedOnly")" />
+                <MudStack Row
+                          AlignItems="AlignItems.Center"
+                          Spacing="1">
+                    <MudElement HtmlTag="div"
+                                Class="flex-grow-1"
+                                Style="min-width:0">
+                        @* Point Search *@
+                        <SearchField Value="@MapViewModel.MapFilter.FullText"
+                                     ValueChanged="SetFullText"
+                                     FullWidth />
+                    </MudElement>
+                    <MudElement HtmlTag="div">
+                        @* Filter Button *@
+                        <Tooltip Text="@AppText.Get("Filters")"
+                                 RootClass="d-flex">
+                            <MudBadge Dot
+                                      Overlap
+                                      Color="Color.Info"
+                                      Visible="@HasFilters"
+                                      Class="d-flex">
+                                <MudIconButton Icon="@Icons.Material.Rounded.FilterList"
+                                               aria-label="@AppText.Get("Filters")"
+                                               Size="Size.Small"
+                                               OnClick="() => _filtersOpen = true" />
+                            </MudBadge>
+                        </Tooltip>
+                        @* Filter Popover *@
+                        <MudPopover Open="_filtersOpen"
+                                    AnchorOrigin="Origin.BottomRight"
+                                    TransformOrigin="Origin.TopRight"
+                                    Class="overflow-hidden"
+                                    Style="width:320px">
+                            <MudStack Spacing="3"
+                                      Class="pa-4">
+                                @* Area Filter *@
+                                <MudSelect T="AreaFilter"
+                                           Variant="Variant.Outlined"
+                                           Value="MapViewModel.MapFilter.AreaFilter"
+                                           ValueChanged="SetAreaFilter"
+                                           Label="@AppText.Get("Area")"
+                                           ToStringFunc="areaFilter => areaFilter?.Name ?? string.Empty"
+                                           Dense
+                                           Margin="Margin.Dense">
+                                    @foreach (var areaFilter in MapViewModel.MapFilter.AreaFilterTypeValues)
+                                    {
+                                        <MudSelectItem Value="areaFilter">@areaFilter.Name</MudSelectItem>
+                                    }
+                                </MudSelect>
+                                @* Requirements Filter *@
+                                <MudSelect T="MapFilter.RequirementsFilterType"
+                                           Variant="Variant.Outlined"
+                                           Value="MapViewModel.MapFilter.RequirementsFilter"
+                                           ValueChanged="SetRequirementsFilter"
+                                           Label="@AppText.Get("Requirements")"
+                                           HelperText="@AppText.Get("RequirementsTooltip")"
+                                           ToStringFunc="RequirementsName"
+                                           Dense
+                                           Margin="Margin.Dense">
+                                    @foreach (var requirementsFilter in Enum.GetValues<MapFilter.RequirementsFilterType>())
+                                    {
+                                        <MudSelectItem Value="requirementsFilter">@RequirementsName(requirementsFilter)</MudSelectItem>
+                                    }
+                                </MudSelect>
+                                @* Uncollected Only *@
+                                <MudSwitch T="bool"
+                                           Value="MapViewModel.MapFilter.ShowOnlyUncollectedItems"
+                                           ValueChanged="SetUncollectedOnly"
+                                           Color="Color.Info"
+                                           Label="@AppText.Get("UncollectedOnly")" />
+                            </MudStack>
+                            <MudStack Row
+                                      AlignItems="AlignItems.Center"
+                                      Spacing="4"
+                                      Class="px-3 py-2"
+                                      Style="border-top:1px solid var(--mud-palette-lines-default)">
+                                @* Reset Filters *@
+                                <MudButton Variant="Variant.Text"
+                                           Color="Color.Error"
+                                           Size="Size.Small"
+                                           Disabled="@(!HasFilters)"
+                                           OnClick="ResetFilters">
+                                    @AppText.Get("Reset")
+                                </MudButton>
+                            </MudStack>
+                        </MudPopover>
+                    </MudElement>
+                </MudStack>
 
                 <MudStack Row
                           AlignItems="AlignItems.Center"
@@ -67,10 +115,12 @@
                     </Tooltip>
                     @* Reset Points *@
                     <Tooltip Text="@AppText.Get("ResetToDefault")"
+                             Disabled="@MapViewModel.IsAtDefault()"
                              RootClass="d-flex">
                         <MudIconButton Icon="@Icons.Material.Rounded.RestartAlt"
                                        aria-label="@AppText.Get("ResetToDefault")"
                                        Size="Size.Small"
+                                       Disabled="@MapViewModel.IsAtDefault()"
                                        OnClick="ResetToDefault" />
                     </Tooltip>
                 </MudStack>
@@ -222,7 +272,7 @@
                 <Tooltip Text="@AppText.Get("CenterMap")"
                          Placement="Placement.Right"
                          RootClass="d-flex">
-                    <MudIconButton Icon="@Icons.Material.Rounded.FitScreen"
+                    <MudIconButton Icon="@Icons.Material.Rounded.ZoomOutMap"
                                    aria-label="@AppText.Get("CenterMap")"
                                    Variant="Variant.Filled"
                                    Size="Size.Small"
@@ -233,12 +283,12 @@
                 <Tooltip Text="@MenusText"
                          Placement="Placement.Right"
                          RootClass="d-flex">
-                    <MudIconButton Icon="@(_menusHidden ? Icons.Material.Rounded.FullscreenExit : Icons.Material.Rounded.Fullscreen)"
+                    <MudIconButton Icon="@(_menusHidden ? Icons.Material.Rounded.Menu : Icons.Material.Rounded.MenuOpen)"
                                    aria-label="@MenusText"
                                    Variant="Variant.Filled"
                                    Size="Size.Small"
                                    Class="map-overlay"
-                                   OnClick="() => _menusHidden = !_menusHidden" />
+                                   OnClick="ToggleMenusAsync" />
                 </Tooltip>
             </MudStack>
 
@@ -253,4 +303,8 @@
             }
         </MudPaper>
     </MudStack>
+
+    @* Filter Overlay *@
+    <MudOverlay Visible="_filtersOpen"
+                OnClick="() => _filtersOpen = false" />
 </RequiresSavegame>

@@ -74,6 +74,25 @@ public partial class Home : EditorPageBase
         return "rounded-panel overflow-hidden hover-card" + selected;
     }
 
+    private static string TitleOf(Savegame savegame)
+    {
+        // Joined Games Lack A Name File, Named Like Hosted Ones
+        if (
+            savegame.GameName is null
+            && savegame.IsMultiPlayerClient()
+            && savegame.Summary is { GameType: { } gameType } summary
+        )
+        {
+            return AppText.Format(
+                "JoinedGameName",
+                AppText.Get(TextKeys.GameMode(gameType)),
+                summary.Days
+            );
+        }
+
+        return savegame.Name;
+    }
+
     private static string WorldText(SavegameSummary summary)
     {
         // Day, Mode And Crash Site Tell Worlds Apart

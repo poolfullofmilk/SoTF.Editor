@@ -102,9 +102,13 @@ public class StoragePageViewModel
         return StoredItemsOf(storage).Any(storedItem => storedItem.HasItem());
     }
 
-    public bool HasStorages()
+    // Some Slot Still Empty Or Below Its Max
+    public bool CanFillAllStorages()
     {
-        return StorageCollections.Any(storageCollection => storageCollection.Storages.Count > 0);
+        return StorageCollections
+            .SelectMany(collection => collection.Storages)
+            .SelectMany(StoredItemsOf)
+            .Any(storedItem => storedItem.CanFill());
     }
 
     public void FillAllStorages()

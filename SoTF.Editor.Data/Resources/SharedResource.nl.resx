@@ -273,30 +273,6 @@
   <data name="Influences" xml:space="preserve">
     <value>Invloeden</value>
   </data>
-  <data name="ModificationOptions" xml:space="preserve">
-    <value>Wijzigingsopties</value>
-  </data>
-  <data name="Selection" xml:space="preserve">
-    <value>Selectie</value>
-  </data>
-  <data name="Stats" xml:space="preserve">
-    <value>Statistieken</value>
-  </data>
-  <data name="Modify" xml:space="preserve">
-    <value>Wijzigen</value>
-  </data>
-  <data name="AllActors" xml:space="preserve">
-    <value>Alle Actoren</value>
-  </data>
-  <data name="AllActorsOfFamily" xml:space="preserve">
-    <value>Alle Actoren Van Dezelfde Familie</value>
-  </data>
-  <data name="AllActorsOfType" xml:space="preserve">
-    <value>Alle Actoren Van Hetzelfde Type</value>
-  </data>
-  <data name="ThisActor" xml:space="preserve">
-    <value>Deze Actor</value>
-  </data>
   <data name="OnlySameArea" xml:space="preserve">
     <value>Alleen In Hetzelfde Gebied</value>
   </data>
@@ -308,12 +284,6 @@
   </data>
   <data name="ReplaceType" xml:space="preserve">
     <value>Type Vervangen</value>
-  </data>
-  <data name="SkipKelvin" xml:space="preserve">
-    <value>Kelvin Overslaan</value>
-  </data>
-  <data name="SkipVirginia" xml:space="preserve">
-    <value>Virginia Overslaan</value>
   </data>
   <data name="TeleportManyWarning" xml:space="preserve">
     <value>Veel actoren naar één plek teleporteren kan de game laten crashen</value>
@@ -329,9 +299,6 @@
   </data>
   <data name="Teleport" xml:space="preserve">
     <value>Teleporteren</value>
-  </data>
-  <data name="UpdateInfluences" xml:space="preserve">
-    <value>Invloeden Bijwerken</value>
   </data>
   <data name="Affection" xml:space="preserve">
     <value>Genegenheid</value>
@@ -909,9 +876,6 @@
   <data name="Storage" xml:space="preserve">
     <value>Opslag</value>
   </data>
-  <data name="Added" xml:space="preserve">
-    <value>Toegevoegd</value>
-  </data>
   <data name="ApplyToSameType" xml:space="preserve">
     <value>Toepassen Op Alle Van Hetzelfde Type</value>
   </data>
@@ -921,20 +885,8 @@
   <data name="ChangeType" xml:space="preserve">
     <value>Type Wijzigen</value>
   </data>
-  <data name="SetAllToAlmostFinish" xml:space="preserve">
-    <value>Alles Op Bijna Klaar Zetten</value>
-  </data>
-  <data name="SetAllToFinish" xml:space="preserve">
-    <value>Alles Op Afwerken Zetten</value>
-  </data>
   <data name="SetAllToRemove" xml:space="preserve">
     <value>Alles Op Verwijderen Zetten</value>
-  </data>
-  <data name="SetAllToUnfinish" xml:space="preserve">
-    <value>Alles Op Onafgewerkt Zetten</value>
-  </data>
-  <data name="ResetAll" xml:space="preserve">
-    <value>Alles Herstellen</value>
   </data>
   <data name="StructureCategoryFurniture" xml:space="preserve">
     <value>Meubels</value>
@@ -966,20 +918,11 @@
   <data name="Category" xml:space="preserve">
     <value>Categorie</value>
   </data>
-  <data name="FinishedStructures" xml:space="preserve">
-    <value>Afgewerkte Constructies</value>
-  </data>
-  <data name="UnfinishedStructures" xml:space="preserve">
-    <value>Onafgewerkte Constructies</value>
-  </data>
-  <data name="Modification" xml:space="preserve">
-    <value>Wijziging</value>
-  </data>
   <data name="PercentDone" xml:space="preserve">
     <value>Percentage Klaar</value>
   </data>
   <data name="StructureModeNone" xml:space="preserve">
-    <value>Geen</value>
+    <value>Behouden</value>
   </data>
   <data name="StructureModeRemove" xml:space="preserve">
     <value>Verwijderen</value>
@@ -1186,7 +1129,7 @@
     <value>Niet Opgeslagen Wijzigingen Verwerpen</value>
   </data>
   <data name="DiscardChangesText" xml:space="preserve">
-    <value>Wijzigingen die nog niet zijn opgeslagen gaan verloren</value>
+    <value>Sommige wijzigingen zijn nog niet opgeslagen. Ja gooit ze weg. Nee houdt ze zodat je eerst kunt opslaan</value>
   </data>
   <data name="OpenBackupFolder" xml:space="preserve">
     <value>Back-upmap Openen</value>
@@ -1542,17 +1485,8 @@
   <data name="RainHeavy" xml:space="preserve">
     <value>Zwaar</value>
   </data>
-  <data name="Batch" xml:space="preserve">
-    <value>Veel Tegelijk Wijzigen</value>
-  </data>
-  <data name="AllTypesHint" xml:space="preserve">
-    <value>Leeg laten om elk type te wijzigen</value>
-  </data>
   <data name="StructureType" xml:space="preserve">
     <value>Constructietype</value>
-  </data>
-  <data name="BatchHint" xml:space="preserve">
-    <value>Zet elke constructie die de lijst hieronder toont, geschreven bij opslaan</value>
   </data>
   <data name="Restore" xml:space="preserve">
     <value>Terugzetten</value>
@@ -1925,5 +1859,104 @@
   </data>
   <data name="ShowMenus" xml:space="preserve">
     <value>Menu's Tonen</value>
+  </data>
+  <data name="TeleportCopies" xml:space="preserve">
+    <value>{0} ({1} Kopieën)</value>
+  </data>
+  <data name="Filters" xml:space="preserve">
+    <value>Filters</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Herstellen</value>
+  </data>
+  <data name="Changes" xml:space="preserve">
+    <value>Wijzigingen</value>
+  </data>
+  <data name="ApplyTo" xml:space="preserve">
+    <value>Toepassen Op</value>
+  </data>
+  <data name="ApplyToThis" xml:space="preserve">
+    <value>Deze</value>
+  </data>
+  <data name="ApplyToFamily" xml:space="preserve">
+    <value>Familie ({0})</value>
+  </data>
+  <data name="ApplyToType" xml:space="preserve">
+    <value>Zelfde Soort ({0})</value>
+  </data>
+  <data name="ApplyToEveryone" xml:space="preserve">
+    <value>Iedereen ({0})</value>
+  </data>
+  <data name="SkipFollowers" xml:space="preserve">
+    <value>Kelvin En Virginia Overslaan</value>
+  </data>
+  <data name="ApplyCount" xml:space="preserve">
+    <value>Toepassen Op {0}</value>
+  </data>
+  <data name="RemoveCount" xml:space="preserve">
+    <value>{0} Verwijderen</value>
+  </data>
+  <data name="RemoveActorsText" xml:space="preserve">
+    <value>Ze verdwijnen uit de save met hun herinneringen en wat ze dragen</value>
+  </data>
+  <data name="CloseUnsavedTitle" xml:space="preserve">
+    <value>Sluiten Zonder Opslaan</value>
+  </data>
+  <data name="CloseUnsavedText" xml:space="preserve">
+    <value>Sommige wijzigingen zijn nog niet opgeslagen. Ja sluit de editor en gooit ze weg. Nee houdt de editor open zodat je eerst kunt opslaan</value>
+  </data>
+  <data name="AllStructures" xml:space="preserve">
+    <value>Alle Constructies</value>
+  </data>
+  <data name="SelectStructure" xml:space="preserve">
+    <value>Kies Een Soort Constructie</value>
+  </data>
+  <data name="StructuresInfo" xml:space="preserve">
+    <value>Kies wat opslaan met elke constructie doet. Behouden laat hem zoals hij is</value>
+  </data>
+  <data name="SetAllTo" xml:space="preserve">
+    <value>Alles Op</value>
+  </data>
+  <data name="StructureCounts" xml:space="preserve">
+    <value>{0} Gebouwd · {1} Onaf</value>
+  </data>
+  <data name="Built" xml:space="preserve">
+    <value>Gebouwd</value>
+  </data>
+  <data name="UnfinishedState" xml:space="preserve">
+    <value>{0} · {1} / {2}</value>
+  </data>
+  <data name="OnSave" xml:space="preserve">
+    <value>Bij Opslaan</value>
+  </data>
+  <data name="MoodFriendly" xml:space="preserve">
+    <value>Vriendelijk</value>
+  </data>
+  <data name="MoodNeutral" xml:space="preserve">
+    <value>Neutraal</value>
+  </data>
+  <data name="MoodHostile" xml:space="preserve">
+    <value>Vijandig</value>
+  </data>
+  <data name="MoodAfraid" xml:space="preserve">
+    <value>Bang</value>
+  </data>
+  <data name="SentimentInfo" xml:space="preserve">
+    <value>Hoeveel ze hen mogen, van -100 haat tot 100 liefde</value>
+  </data>
+  <data name="SeasonInfo" xml:space="preserve">
+    <value>Elk seizoen duurt zoveel dagen als Seizoenslengte op het instellingentabblad zegt, dus het ene seizoen kan niet langer duren dan het andere. Kies het seizoen en de resterende dagen, de editor rekent de verschuiving uit</value>
+  </data>
+  <data name="DaysUntilSeason" xml:space="preserve">
+    <value>Dagen Tot {0}</value>
+  </data>
+  <data name="SeasonSummary" xml:space="preserve">
+    <value>{0}, dag {1} van {2}. {3} begint over {4} dagen</value>
+  </data>
+  <data name="SeasonLastDay" xml:space="preserve">
+    <value>{0}, dag {1} van {1}. {2} begint morgen</value>
+  </data>
+  <data name="JoinedGameName" xml:space="preserve">
+    <value>{0} {1} Dagen</value>
   </data>
 </root>

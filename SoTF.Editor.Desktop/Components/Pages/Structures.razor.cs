@@ -11,100 +11,99 @@ namespace SoTF.Editor.Desktop.Components.Pages;
 
 public partial class Structures : EditorPageBase
 {
-    // The Batch Buttons Each Origin Offered Before
-    private static readonly OriginBatch[] s_origins =
+    // Keep First, Then From Most Built To Gone
+    private static readonly ScrewStructureModificationMode[] s_modes =
     [
-        new(
-            ScrewStructureOrigin.Unfinished,
-            "UnfinishedStructures",
-            [
-                new(ScrewStructureModificationMode.None, "ResetAll"),
-                new(ScrewStructureModificationMode.Remove, "SetAllToRemove"),
-                new(ScrewStructureModificationMode.AlmostFinish, "SetAllToAlmostFinish"),
-                new(ScrewStructureModificationMode.Finish, "SetAllToFinish"),
-                new(ScrewStructureModificationMode.Unfinish, "SetAllToUnfinish"),
-            ]
-        ),
-        new(
-            ScrewStructureOrigin.Finished,
-            "FinishedStructures",
-            [
-                new(ScrewStructureModificationMode.None, "ResetAll"),
-                new(ScrewStructureModificationMode.Remove, "SetAllToRemove"),
-                new(ScrewStructureModificationMode.AlmostFinish, "SetAllToAlmostFinish"),
-                new(ScrewStructureModificationMode.Unfinish, "SetAllToUnfinish"),
-            ]
-        ),
+        ScrewStructureModificationMode.None,
+        ScrewStructureModificationMode.Finish,
+        ScrewStructureModificationMode.AlmostFinish,
+        ScrewStructureModificationMode.Unfinish,
+        ScrewStructureModificationMode.Remove,
     ];
 
     [Inject]
     public required StructuresPageViewModel StructuresPage { get; set; }
 
+    // Page State
     private string? _filter;
+    private string? _selectedName;
+    private bool _showAll;
 
     // One Menu For Every Row, Row Selects Leaked Popovers
     private MudMenu? _modeMenu;
     private ScrewStructureWrapper? _menuStructure;
 
-    // Every Text Column Counts, The Modification Select Does Not
-    private IEnumerable<ScrewStructureWrapper> FilteredStructures =>
+    // One Row Per Structure Type, By Category Then Name
+    private IEnumerable<StructureType> FilteredTypes =>
         StructuresPage
-            .Structures.Where(wrapper =>
-                string.IsNullOrWhiteSpace(_filter)
-                || new[]
-                {
-                    wrapper.Name,
-                    OriginName(wrapper),
-                    wrapper.Category,
-                    AddedText(wrapper),
-                    wrapper.PctDonePrintable,
-                }.Any(text => text.Contains(_filter, StringComparison.OrdinalIgnoreCase))
-            )
-            .OrderBy(wrapper => wrapper.Name)
-            .ThenBy(wrapper => wrapper.PctDone);
+            .Structures.GroupBy(wrapper => wrapper.Name)
+            .Select(group => new StructureType(
+                group.Key,
+                group.First().Category,
+                IconOf(group.First()),
+                [.. group.OrderBy(wrapper => wrapper.Origin).ThenBy(wrapper => wrapper.PctDone)]
+            ))
+            .Where(type => Matches(type.Name) || Matches(type.Category))
+            .OrderBy(type => type.Category)
+            .ThenBy(type => type.Name);
 
-    // A Title Row Leads Each Name, One Flat List Virtualizes
-    private List<StructureRow> Rows =>
-        [
-            .. FilteredStructures
-                .GroupBy(wrapper => wrapper.Name)
-                .SelectMany(group =>
-                    group
-                        .Select(wrapper => new StructureRow(null, wrapper))
-                        .Prepend(new StructureRow($"{group.Key} ({group.Count()})", null))
-                ),
-        ];
+    // Only A Shown Type, A Search Can Hide It
+    private List<ScrewStructureWrapper>? ShownStructures =>
+        _showAll
+            ? [.. FilteredTypes.SelectMany(type => type.Structures)]
+            : FilteredTypes.FirstOrDefault(type => type.Name == _selectedName)?.Structures;
 
-    private static string OriginName(ScrewStructureWrapper wrapper)
+    private string ShownTitle => _showAll ? AppText.Get("AllStructures") : _selectedName ?? "";
+
+    private bool Matches(string text)
     {
-        return AppText.Get(
-            wrapper.Origin == ScrewStructureOrigin.Finished
-                ? "FinishedStructures"
-                : "UnfinishedStructures"
-        );
+        return string.IsNullOrWhiteSpace(_filter)
+            || text.Contains(_filter, StringComparison.OrdinalIgnoreCase);
     }
 
-    private static string AddedText(ScrewStructureWrapper wrapper)
+    private static string RowClass(bool selected)
     {
-        return $"{wrapper.Added} / {wrapper.BuildCost}";
+        return "list-row px-4 py-2" + (selected ? " list-row-selected" : "");
     }
 
-    private bool HasBatchTargets(ScrewStructureOrigin origin)
+    private void SelectAll()
     {
-        return StructuresPage.BatchTargets(FilteredStructures, origin).Any();
+        _showAll = true;
+        _selectedName = null;
     }
 
-    private static string ModeName(ScrewStructureModificationMode? mode)
+    private void Select(StructureType type)
     {
-        return AppText.Get(TextKeys.StructureMode(mode ?? ScrewStructureModificationMode.None));
+        _showAll = false;
+        _selectedName = type.Name;
     }
 
-    public static string StructureName(ScrewStructure? structure)
+    private static string CountsOf(IEnumerable<ScrewStructureWrapper> structures)
     {
-        return structure is null ? string.Empty : $"{structure.CategoryName} · {structure.Name}";
+        var built = 0;
+        var unfinished = 0;
+        foreach (var structure in structures)
+        {
+            _ = structure.Origin == ScrewStructureOrigin.Finished ? built++ : unfinished++;
+        }
+
+        return AppText.Format("StructureCounts", built, unfinished);
     }
 
-    private static Color ProgressColor(ScrewStructureWrapper wrapper)
+    private static string StateText(ScrewStructureWrapper wrapper)
+    {
+        // Built, Or How Far Along With The Pieces Added
+        return wrapper.Origin == ScrewStructureOrigin.Finished
+            ? AppText.Get("Built")
+            : AppText.Format(
+                "UnfinishedState",
+                wrapper.PctDonePrintable,
+                wrapper.Added,
+                wrapper.BuildCost < 0 ? "?" : wrapper.BuildCost
+            );
+    }
+
+    private static Color StateColor(ScrewStructureWrapper wrapper)
     {
         // Unknown, Barely Started, Under Way, Done
         return wrapper.PctDone switch
@@ -116,12 +115,20 @@ public partial class Structures : EditorPageBase
         };
     }
 
+    private static string ModeName(ScrewStructureModificationMode mode)
+    {
+        return AppText.Get(TextKeys.StructureMode(mode));
+    }
+
     private static string? IconOf(ScrewStructureWrapper wrapper)
     {
         return wrapper.ScrewStructure?.Icon is { } icon ? $"images/structures/{icon}" : null;
     }
 
-    private async Task SetAllAsync(ScrewStructureOrigin origin, ScrewStructureModificationMode mode)
+    private async Task SetAllAsync(
+        List<ScrewStructureWrapper> structures,
+        ScrewStructureModificationMode mode
+    )
     {
         if (
             mode == ScrewStructureModificationMode.Remove
@@ -131,7 +138,7 @@ public partial class Structures : EditorPageBase
             return;
         }
 
-        StructuresPage.SetModificationMode(FilteredStructures, origin, mode);
+        StructuresPageViewModel.SetModificationMode(structures, mode);
     }
 
     private async Task OpenModesAsync(MouseEventArgs args, ScrewStructureWrapper wrapper)
@@ -167,13 +174,10 @@ public partial class Structures : EditorPageBase
         }
     }
 
-    private sealed record StructureRow(string? Title, ScrewStructureWrapper? Structure);
-
-    private sealed record BatchMode(ScrewStructureModificationMode Mode, string LabelKey);
-
-    private sealed record OriginBatch(
-        ScrewStructureOrigin Origin,
-        string TitleKey,
-        BatchMode[] Batches
+    private sealed record StructureType(
+        string Name,
+        string Category,
+        string? Icon,
+        List<ScrewStructureWrapper> Structures
     );
 }

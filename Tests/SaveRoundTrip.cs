@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SoTF.Editor.Data.Enums;
 using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
@@ -408,6 +409,101 @@ try
     Check(foodSlot.Count == 1 && main.HasChanges("Storage"), "Food State Shows As Changed");
     main.RevertPage("Storage");
     Check(main.SaveChanges() && !main.SaveChanges(), "Edits Left After Revert Save");
+
+    // Followers And NPCs Revert Apart, Each Keeps The Other's Edit
+    var copiesBefore = followers.CopiesOf(Constants.Actors.KelvinTypeId).Count;
+    var removedNpc = npcs.AllActors.First(candidate => candidate.ActorType?.IsFollower() != true);
+    main.SpawnFollower(Constants.Actors.KelvinTypeId);
+    main.ModifyActors(save =>
+        actorModifier.Modify(
+            save,
+            new EditActorViewModel(removedNpc, gameData.ActorTypes)
+            {
+                ModificationMode = ActorModificationMode.Remove,
+            }
+        )
+    );
+    Check(main.HasChanges("Followers") && main.HasChanges("Npcs"), "Spawn And Removal Are Seen");
+    main.RevertPage("Followers");
+    Check(
+        !main.HasChanges("Followers")
+            && followers.CopiesOf(Constants.Actors.KelvinTypeId).Count == copiesBefore
+            && main.HasChanges("Npcs"),
+        "Reverted Followers Keep NPC Edits"
+    );
+    main.RevertPage("Npcs");
+    Check(
+        !main.HasUnsavedChanges()
+            && npcs.AllActors.Any(candidate => candidate.UniqueId == removedNpc.UniqueId),
+        "Reverted NPCs Leave Nothing Unsaved"
+    );
+
+    // A Removed Zipline And Tools Revert Too
+    map.Build();
+    map.RemoveZipline(map.AllPois().OfType<ZiplinePoi>().First());
+    Check(main.HasChanges("Map"), "Removed Zipline Is Seen");
+    main.RevertPage("Map");
+    Check(!main.HasUnsavedChanges(), "Reverted Map Leaves Nothing Unsaved");
+    foreach (
+        var (tool, run) in new (string, Action)[]
+        {
+            ("EternalFires", () => main.EternalFires()),
+            ("CannibalAnger", () => main.SetCannibalAnger(45)),
+            ("ResetContainers", () => gameState.ResetContainers()),
+        }
+    )
+    {
+        var toolBefore = main.ToolState();
+        run();
+        main.FinishTool(tool, toolBefore);
+    }
+
+    Check(main.HasChanges("Tools") && main.HasChanges("Npcs"), "Tool Edits Are Seen");
+    main.RevertPage("Tools");
+    Check(!main.HasUnsavedChanges(), "Reverted Tools Leave Nothing Unsaved");
+
+    // A Deleted Follower Keeps Its Memory, Revive Never Doubles It
+    var deletedId = followers.CopiesOf(Constants.Actors.VirginiaTypeId)[0].UniqueId;
+    main.ModifyActors(save =>
+        save
+            .SavegameStore.LoadJsonRaw(SavegameStore.FileType.SaveData)!
+            .GetJsonBasedToken(Constants.JsonKeys.VailWorldSim)!["Actors"]!
+            .First(actor => actor["UniqueId"]?.Value<int>() == deletedId)
+            .Remove()
+    );
+    main.ReviveFollower(Constants.Actors.VirginiaTypeId);
+    Check(
+        followers.CopiesOf(Constants.Actors.VirginiaTypeId)
+            is [{ UniqueId: { } revivedId, Influences.Count: 3 }]
+            && revivedId != deletedId,
+        "Revive Takes A Fresh Id"
+    );
+    main.RevertPage("Followers");
+    Check(
+        !main.HasUnsavedChanges()
+            && followers.CopiesOf(Constants.Actors.VirginiaTypeId) is [{ UniqueId: var backId }]
+            && backId == deletedId,
+        "Reverted Revive Leaves Nothing Unsaved"
+    );
+
+    // A Repeated Memory Reads Once, The Newest Wins
+    main.ModifyActors(save =>
+    {
+        var memories = (JArray)
+            save
+                .SavegameStore.LoadJsonRaw(SavegameStore.FileType.SaveData)!
+                .GetJsonBasedToken(Constants.JsonKeys.VailWorldSim)!["InfluenceMemory"]!;
+        var memory = memories.First(entry => entry["UniqueId"]?.Value<int>() == deletedId);
+        var repeated = memory.DeepClone();
+        ((JArray)repeated["Influences"]!).Merge(memory["Influences"]!.DeepClone());
+        memories.Add(repeated);
+    });
+    Check(
+        followers.CopiesOf(Constants.Actors.VirginiaTypeId) is [{ Influences.Count: 3 }],
+        "Repeated Memory Reads Once"
+    );
+    main.RevertPage("Followers");
+    Check(!main.HasUnsavedChanges(), "Reverted Repeat Leaves Nothing Unsaved");
 
     // A Save Keeps Its Change List In Its Backup
     player.PlayerState.Fullness = 44;

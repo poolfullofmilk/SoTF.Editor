@@ -314,10 +314,10 @@ public class FollowerModifier(SaveDataWrapper saveDataWrapper)
 
     private static bool ResetPlayerInfluence(JToken vailWorldSim, int uniqueId)
     {
-        // The First Memory Of This Follower, Its First Player Influence
+        // The Newest Memory Of This Follower, Its First Player Influence
         if (
             (vailWorldSim["InfluenceMemory"] ?? Enumerable.Empty<JToken>())
-                .FirstOrDefault(memory => memory["UniqueId"]?.Value<int>() == uniqueId)
+                .LastOrDefault(memory => memory["UniqueId"]?.Value<int>() == uniqueId)
                 ?["Influences"]?.FirstOrDefault(influence =>
                     influence["TypeId"]?.ToString() == Influence.Type.Player
                 )
@@ -447,11 +447,11 @@ public class FollowerModifier(SaveDataWrapper saveDataWrapper)
             return false;
         }
 
-        var followersInfluenceMemory = influenceMemory.FirstOrDefault(memory =>
-            memory["UniqueId"]?.Value<int>() == uniqueId
-        );
-
-        if (followersInfluenceMemory == null)
+        List<JToken> memories =
+        [
+            .. influenceMemory.Where(memory => memory["UniqueId"]?.Value<int>() == uniqueId),
+        ];
+        if (memories.Count == 0)
         {
             if (influences.Count == 0)
             {
@@ -462,15 +462,17 @@ public class FollowerModifier(SaveDataWrapper saveDataWrapper)
             return true;
         }
 
+        // The Newest Memory Counts, An Edit Folds Repeats Into It
         if (
-            followersInfluenceMemory["Influences"] is JArray followersInfluences
+            memories[^1]["Influences"] is JArray followersInfluences
             && !HasDifferencesInMemories(followersInfluences, influences)
         )
         {
             return false;
         }
 
-        followersInfluenceMemory["Influences"] = JToken.FromObject(influences);
+        memories.SkipLast(1).ToList().ForEach(memory => memory.Remove());
+        memories[^1]["Influences"] = JToken.FromObject(influences);
         return true;
     }
 
@@ -479,38 +481,17 @@ public class FollowerModifier(SaveDataWrapper saveDataWrapper)
         List<Influence> newInfluences
     )
     {
-        if (existingInfluences.Count != newInfluences.Count)
-        {
-            return true;
-        }
-
-        var newInfluencesByType = newInfluences
+        // A Repeated Type Counts Once, As The Page Loaded It
+        var existingByType = (existingInfluences.ToObject<List<Influence>>() ?? [])
             .DistinctBy(influence => influence.TypeId)
             .ToDictionary(influence => influence.TypeId);
-
-        foreach (var existingInfluence in existingInfluences)
-        {
-            if (existingInfluence["TypeId"]?.ToString() is not { } typeId)
-            {
-                continue;
-            }
-
-            if (
-                !newInfluencesByType.Remove(typeId, out var newInfluence)
-                || Math.Abs((existingInfluence["Anger"]?.Value<float>() ?? 0f) - newInfluence.Anger)
-                    > 0.001
-                || Math.Abs((existingInfluence["Fear"]?.Value<float>() ?? 0f) - newInfluence.Fear)
-                    > 0.001
-                || Math.Abs(
-                    (existingInfluence["Sentiment"]?.Value<float>() ?? 0f) - newInfluence.Sentiment
-                ) > 0.001
-            )
-            {
-                return true;
-            }
-        }
-
-        return newInfluencesByType.Count > 0;
+        return existingByType.Count != newInfluences.Count
+            || newInfluences.Exists(influence =>
+                !existingByType.TryGetValue(influence.TypeId, out var existing)
+                || Math.Abs(existing.Anger - influence.Anger) > 0.001
+                || Math.Abs(existing.Fear - influence.Fear) > 0.001
+                || Math.Abs(existing.Sentiment - influence.Sentiment) > 0.001
+            );
     }
 
     public bool CreateFollower(int typeId, HashSet<int> itemIds, Outfit? outfit, Position pos)

@@ -25,8 +25,6 @@ public class StructuresPageViewModel
         _structuresById = gameData.ScrewStructures.ToDictionary(structure => structure.Id);
     }
 
-    public ScrewStructure? BatchSelectedStructureType { get; set; }
-
     public List<ScrewStructureWrapper> Structures { get; } = [];
 
     public bool HasChanges => Structures.Any(structure => structure.IsChanged);
@@ -255,28 +253,26 @@ public class StructuresPageViewModel
         }
     }
 
-    public IEnumerable<ScrewStructureWrapper> BatchTargets(
+    // Some Row Takes The Mode And Is Not Already There
+    public static bool CanSetAll(
         IEnumerable<ScrewStructureWrapper> rows,
-        ScrewStructureOrigin origin
-    )
-    {
-        return rows.Where(structure =>
-            structure.Origin == origin
-            && (
-                BatchSelectedStructureType == null
-                || structure.ScrewStructure?.Id == BatchSelectedStructureType.Id
-            )
-        );
-    }
-
-    public void SetModificationMode(
-        IEnumerable<ScrewStructureWrapper> rows,
-        ScrewStructureOrigin origin,
         ScrewStructureModificationMode mode
     )
     {
-        // Only The Rows The Search Shows
-        foreach (var wrapper in BatchTargets(rows, origin))
+        return mode == ScrewStructureModificationMode.None
+            ? rows.Any(wrapper => wrapper.IsChanged)
+            : rows.Any(wrapper =>
+                wrapper.ModificationModes.Contains(mode) && wrapper.ModificationMode != mode
+            );
+    }
+
+    public static void SetModificationMode(
+        IEnumerable<ScrewStructureWrapper> rows,
+        ScrewStructureModificationMode mode
+    )
+    {
+        // Rows That Cannot Take The Mode Keep Theirs
+        foreach (var wrapper in rows.Where(wrapper => wrapper.ModificationModes.Contains(mode)))
         {
             wrapper.ModificationMode = mode;
         }

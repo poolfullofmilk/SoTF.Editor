@@ -158,18 +158,13 @@ public class FoodStorage(StorageDefinition definition, ItemList itemList, int in
     {
         foreach (var storedItem in Slots.SelectMany(slot => slot.StoredItems))
         {
-            if (!storedItem.HasItem() && storedItem.SupportedItems.Count > 0)
-            {
-                storedItem.SelectedItem = storedItem.SupportedItems.FirstOrDefault(wrapper =>
+            storedItem.Fill(
+                storedItem.SupportedItems.FirstOrDefault(wrapper =>
                     wrapper.Item.Id == DefaultItemIdForUnselectedSlot
                     && wrapper.FoodSpoilStorageModuleWrapper?.FoodSpoilStorageModule
                         is { CurrentState: DefaultVariantForUnselectedSlot }
-                );
-            }
-            else
-            {
-                storedItem.SetToMax();
-            }
+                )
+            );
         }
     }
 }

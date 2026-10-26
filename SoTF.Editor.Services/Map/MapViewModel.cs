@@ -23,22 +23,15 @@ public class MapViewModel(
         nameof(PoiGroupType.Bunkers),
         nameof(PoiGroupType.Caves),
         nameof(PoiGroupType.Doors),
+        nameof(PoiGroupType.Helicopters),
+        nameof(PoiGroupType.Info),
+        nameof(PoiGroupType.Laptops),
         nameof(PoiGroupType.Player),
         nameof(PoiGroupType.Printers),
         nameof(PoiGroupType.Villages),
         nameof(PoiGroupType.ZipLines),
         PoiGroupKeys.Actors + "_followers",
-        PoiGroupKeys.Items + "armor",
-        PoiGroupKeys.Items + "attachment",
-        PoiGroupKeys.Items + "blueprint",
-        PoiGroupKeys.Items + "clothes",
-        PoiGroupKeys.Items + "equipment",
-        PoiGroupKeys.Items + "key",
-        PoiGroupKeys.Items + "misc",
-        PoiGroupKeys.Items + "printed",
-        PoiGroupKeys.Items + "tool",
-        PoiGroupKeys.Items + "weapon",
-        PoiGroupKeys.Items + "weaponMod",
+        PoiGroupKeys.WorldItems + "Knight V",
     ];
 
     private List<IPoiGrouper> _poiGroups = [];
@@ -230,10 +223,14 @@ public class MapViewModel(
         SaveSettings();
     }
 
+    public bool IsAtDefault()
+    {
+        return AllGroups().All(group => group.Enabled == IsDefault(group));
+    }
+
     private static bool IsDefault(PoiGroup group)
     {
-        return group.GroupType == PoiGroupType.Structures
-            || s_defaultGroups.Contains(group.GroupKey);
+        return s_defaultGroups.Contains(group.GroupKey);
     }
 
     public void SetAllEnabled(bool enabled)

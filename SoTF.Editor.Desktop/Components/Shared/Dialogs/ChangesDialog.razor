@@ -1,0 +1,16 @@
+<MudDialog>
+
+    <TitleContent>
+        <MudText Typo="Typo.h6">@(Label ?? AppText.Get("Changes"))</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudElement HtmlTag="div"
+                    Class="overflow-y-auto"
+                    Style="max-height:60vh">
+            <ChangeList Icon="@Icon"
+                        Changes="Changes"
+                        ShowAll />
+        </MudElement>
+    </DialogContent>
+
+</MudDialog>

@@ -102,20 +102,20 @@
                                       title="@savegame.FullPath"
                                       role="button"
                                       tabindex="0"
-                                      aria-label="@savegame.Name"
+                                      aria-label="@TitleOf(savegame)"
                                       data-keyclick
                                       @onclick="() => Open(savegame)">
                                 @if (savegame.ThumbnailPath is { } thumbnailPath)
                                 {
                                     <MudImage Src="@LocalFiles.Url(thumbnailPath)"
-                                              Alt="@savegame.Name"
+                                              Alt="@TitleOf(savegame)"
                                               Class="savegame-thumb" />
                                 }
                                 else
                                 {
                                     <MudElement HtmlTag="span"
                                                 Class="savegame-thumb d-flex align-center justify-center">
-                                        <MudIcon Icon="@Icons.Material.Rounded.Image"
+                                        <MudIcon Icon="@(savegame.IsMultiPlayerClient() ? Icons.Material.Rounded.Groups : Icons.Material.Rounded.Image)"
                                                  Color="Color.Default"
                                                  Size="Size.Large" />
                                     </MudElement>
@@ -128,7 +128,7 @@
                                         <MudText Typo="Typo.subtitle1"
                                                  Class="text-truncate text-tight"
                                                  Style="font-weight:700">
-                                            @savegame.Name
+                                            @TitleOf(savegame)
                                         </MudText>
                                         <MudSpacer />
                                         @if (IsOpen(savegame))

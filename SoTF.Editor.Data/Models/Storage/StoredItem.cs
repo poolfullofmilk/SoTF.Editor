@@ -93,17 +93,22 @@ public class StoredItem
         }
     }
 
-    public void Fill()
+    public void Fill(ItemWrapper? preferred = null)
     {
-        // One Choice Fills An Empty Slot, Picking Sets The Max
-        if (!HasItem() && SupportedItems.Count == 1)
+        // An Empty Slot Takes Its First Item At Its Max
+        if (!HasItem())
         {
-            SelectedItem = SupportedItems[0];
+            SelectedItem = preferred ?? SupportedItems.MinBy(item => item.Name);
         }
         else
         {
             SetToMax();
         }
+    }
+
+    public bool CanFill()
+    {
+        return HasItem() ? Count < Max : SupportedItems.Count > 0;
     }
 
     public bool HasItem()

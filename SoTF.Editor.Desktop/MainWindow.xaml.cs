@@ -53,8 +53,8 @@ public partial class MainWindow : Window
             hasUnsavedChanges
             && MessageBox.Show(
                 this,
-                AppText.Get("DiscardChangesText"),
-                AppText.Get("DiscardChangesTitle"),
+                AppText.Get("CloseUnsavedText"),
+                AppText.Get("CloseUnsavedTitle"),
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Warning
             ) != MessageBoxResult.Yes;

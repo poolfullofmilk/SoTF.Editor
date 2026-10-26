@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using SoTF.Editor.Data.Enums;
+using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models.Map;
 using SoTF.Editor.Desktop.Components.Shared.Dialogs;
 using SoTF.Editor.Services.Map;
+using SoTF.Editor.Services.Pages;
 
 namespace SoTF.Editor.Desktop.Components.Shared.Common;
 
@@ -20,6 +22,17 @@ public partial class PoiDetails
 
     [Inject]
     public required IDialogService DialogService { get; set; }
+
+    [Inject]
+    public required FollowerPageViewModel FollowerPage { get; set; }
+
+    // A Follower Missing From The Save Has Nothing To Move
+    private bool CanTeleportKelvin =>
+        Poi.CanTeleportKelvin() && FollowerPage.CopiesOf(Constants.Actors.KelvinTypeId).Count > 0;
+
+    private bool CanTeleportVirginia =>
+        Poi.CanTeleportVirginia()
+        && FollowerPage.CopiesOf(Constants.Actors.VirginiaTypeId).Count > 0;
 
     private IEnumerable<PoiDetail> Details
     {

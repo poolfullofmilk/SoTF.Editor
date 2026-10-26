@@ -36,16 +36,23 @@ public partial class FollowerPanel : EditorPageBase
     // The First Is The Game's Own, Later Ones Were Spawned
     private bool IsSpawnedCopy => Copies.IndexOf(Follower) > 0;
 
-    private bool IsKelvin => TypeId == Constants.Actors.KelvinTypeId;
-
     // Followers Cannot Follow The Player Into Caves
     private bool PlayerOnSurface => !PlayerPage.PlayerState.Pos.Area.IsUnderground();
 
     // A Follower Missing From The Save Sits At Origin
     private bool InSave => Follower.UniqueId != null;
-    private bool OtherInSave => FollowerPage.OtherOf(Follower).UniqueId != null;
     private bool CanMoveToPlayer => InSave && PlayerOnSurface;
-    private bool CanMoveToOther => InSave && OtherInSave;
+
+    private bool CanFillBars =>
+        InSave
+        && new[]
+        {
+            Follower.Health,
+            Follower.Fullness,
+            Follower.Hydration,
+            Follower.Energy,
+            Follower.Affection,
+        }.Any(bar => bar < 100);
 
     // Somewhere On The Surface For A New Follower To Appear
     private bool HasArrival => MainViewModel.ArrivalPosition() != null;
@@ -65,11 +72,6 @@ public partial class FollowerPanel : EditorPageBase
     private string CopyLabel(FollowerState copy)
     {
         return $"{Name} {Copies.IndexOf(copy) + 1}";
-    }
-
-    private void MoveToOther()
-    {
-        FollowerPageViewModel.MoveTo(Follower, FollowerPage.OtherOf(Follower).Pos);
     }
 
     private void Revive()

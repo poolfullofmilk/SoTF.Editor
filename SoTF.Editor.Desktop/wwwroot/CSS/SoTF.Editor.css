@@ -236,10 +236,21 @@
     flex-shrink: 0;
 }
 
-/* The Map Can Take The Width Of Both Menus */
+/* The Map Can Take The Width Of Both Menus, They Slide Away */
+.side-panel,
+.nav-panel {
+    transition: width 0.25s ease, margin-right 0.25s ease, padding 0.25s ease, opacity 0.15s ease;
+}
+
 .menus-hidden > .side-panel,
 body:has(.menus-hidden) .nav-panel {
-    display: none;
+    width: 0;
+    margin-right: -24px;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
 }
 
 .main-panel {
@@ -435,11 +446,6 @@ html, body {
 .mud-table-body .mud-table-row:not(:has(~ .mud-table-row)) > .mud-table-cell,
 .mud-simple-table tbody tr:last-child > td {
     border-bottom: none;
-}
-
-/* Group Titles Are Not Rows, So Hover Leaves Them Alone */
-.mud-table-hover .mud-table-container .mud-table-root .mud-table-body .mud-table-row:has(.group-title):hover {
-    background-color: transparent;
 }
 
 /* Group Titles Stand Apart From Their Rows */
