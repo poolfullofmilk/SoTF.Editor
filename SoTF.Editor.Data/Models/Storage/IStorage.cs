@@ -5,6 +5,7 @@ namespace SoTF.Editor.Data.Models.Storage;
 public interface IStorage
 {
     public string Description { get; }
+    public int TotalStored { get; }
     public Position? Pos { get; }
     public List<StorageSlot> Slots { get; }
     public List<ItemWrapper> SupportedItems { get; }

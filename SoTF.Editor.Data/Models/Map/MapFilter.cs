@@ -22,10 +22,7 @@ public class MapFilter
         ];
 
         AreaFilterTypeValues.AddRange(
-            allAreas
-                .Where(area => area.IsUnderground())
-                .OrderBy(area => area.Name)
-                .Select(Map.AreaFilter.Of)
+            allAreas.Where(area => area.IsUnderground()).Select(Map.AreaFilter.Of)
         );
     }
 
@@ -49,12 +46,6 @@ public class MapFilter
     }
 
     public List<AreaFilter> AreaFilterTypeValues { get; }
-
-    public bool IsSet =>
-        AreaFilter != Map.AreaFilter.All
-        || RequirementsFilter != RequirementsFilterType.All
-        || ShowOnlyUncollectedItems
-        || !string.IsNullOrWhiteSpace(FullText);
 
     public void Reset()
     {

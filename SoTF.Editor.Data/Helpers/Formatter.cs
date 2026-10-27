@@ -18,6 +18,12 @@ public static class Formatter
         return $"{bytes / 1048576.0:0.0} MB";
     }
 
+    public static string JoinParts(params string?[] parts)
+    {
+        // A Missing Part Leaves No Separator And No Dash
+        return string.Join(" · ", parts.Where(part => part is { Length: > 0 } and not "-"));
+    }
+
     public static string FormatDateTimeWithSeconds(DateTime value)
     {
         // Backups Taken In The Same Minute Stay Apart

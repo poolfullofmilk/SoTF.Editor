@@ -5,21 +5,37 @@
     </TitleContent>
     <DialogContent>
         <MudStack Spacing="2">
-            @* All States *@
-            <MudCheckBox T="bool"
-                         Value="_viewModel.VegetationStateIsAllSelected"
-                         ValueChanged="value => _viewModel.VegetationStateIsAllSelected = value"
-                         Color="Color.Info"
-                         Label="@_viewModel.PrintAll" />
+            <MudStack Row
+                      AlignItems="AlignItems.Center">
+                @* All States *@
+                <MudCheckBox T="bool"
+                             Value="_viewModel.VegetationStateIsAllSelected"
+                             ValueChanged="value => _viewModel.VegetationStateIsAllSelected = value"
+                             Color="Color.Info"
+                             Label="@AppText.Get("All")" />
+                <MudSpacer />
+                <MudText Typo="Typo.body2"
+                         Class="mud-text-secondary">
+                    @_viewModel.AllCount
+                </MudText>
+            </MudStack>
             @foreach (var state in RegrowTreesViewModel.States)
             {
-                @* State *@
-                <MudCheckBox T="bool"
-                             Value="_viewModel.VegetationStateSelected.HasFlag(state)"
-                             ValueChanged="value => Toggle(state, value)"
-                             Color="Color.Info"
-                             Class="ml-6"
-                             Label="@_viewModel.Label(state)" />
+                <MudStack Row
+                          AlignItems="AlignItems.Center"
+                          Class="ml-6">
+                    @* State *@
+                    <MudCheckBox T="bool"
+                                 Value="_viewModel.VegetationStateSelected.HasFlag(state)"
+                                 ValueChanged="value => Toggle(state, value)"
+                                 Color="Color.Info"
+                                 Label="@RegrowTreesViewModel.Label(state)" />
+                    <MudSpacer />
+                    <MudText Typo="Typo.body2"
+                             Class="mud-text-secondary">
+                        @_viewModel.CountOf(state)
+                    </MudText>
+                </MudStack>
             }
             @* Percent *@
             <MudSlider T="int"

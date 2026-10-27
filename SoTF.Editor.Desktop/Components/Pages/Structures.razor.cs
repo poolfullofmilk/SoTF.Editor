@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
 using SoTF.Editor.Data.Enums;
+using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Desktop.Components.Shared.Common;
 using SoTF.Editor.Desktop.Components.Shared.Dialogs;
@@ -87,7 +88,11 @@ public partial class Structures : EditorPageBase
             _ = structure.Origin == ScrewStructureOrigin.Finished ? built++ : unfinished++;
         }
 
-        return AppText.Format("StructureCounts", built, unfinished);
+        // A Count Of None Says Nothing, So It Stays Out
+        return Formatter.JoinParts(
+            built > 0 ? AppText.Format("StructureCountBuilt", built) : null,
+            unfinished > 0 ? AppText.Format("StructureCountUnfinished", unfinished) : null
+        );
     }
 
     private static string StateText(ScrewStructureWrapper wrapper)

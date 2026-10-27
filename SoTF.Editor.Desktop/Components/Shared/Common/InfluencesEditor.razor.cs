@@ -30,6 +30,12 @@ public partial class InfluencesEditor
 
     private string? _newType;
 
+    // The Player First, Then The Others By Name
+    private IEnumerable<Influence> SortedInfluences =>
+        Influences
+            .OrderBy(influence => influence.TypeId != Influence.Type.Player)
+            .ThenBy(influence => influence.PrintableTypeId);
+
     private IEnumerable<string> MissingTypes =>
         Influence.AllTypes.Where(type => Influences.All(influence => influence.TypeId != type));
 

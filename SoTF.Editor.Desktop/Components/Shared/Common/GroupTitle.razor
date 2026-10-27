@@ -1,0 +1,19 @@
+@* Group Title *@
+<MudStack Row
+          AlignItems="AlignItems.Center"
+          Justify="Justify.SpaceBetween"
+          Spacing="2"
+          Class="px-4 pt-4 pb-1">
+    <MudText Typo="Typo.subtitle2"
+             Class="group-title">
+        <MudHighlighter Text="@Title"
+                        HighlightedText="@Highlight" />
+    </MudText>
+    @if (Count is { } count)
+    {
+        <MudText Typo="Typo.subtitle2"
+                 Class="group-title mud-text-secondary">
+            @count
+        </MudText>
+    }
+</MudStack>

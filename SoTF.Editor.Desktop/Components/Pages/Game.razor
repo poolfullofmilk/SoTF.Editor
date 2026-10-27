@@ -157,11 +157,12 @@
         <MudTabPanel Text="@AppText.Get("GameState")"
                      Icon="@Icons.Material.Rounded.AccessTimeFilled"
                      IconColor="Color.Tertiary">
-            <MudGrid Class="fill">
+            <MudStack Row
+                      Spacing="6"
+                      Class="fill">
 
-                <MudItem xs="12"
-                         md="6"
-                         Class="fill-column">
+                <MudElement HtmlTag="div"
+                            Class="main-panel fill-column">
                     <Header Title="@AppText.Get("GameState")"
                             Class="fit">
                         <MudPaper Elevation="4"
@@ -173,16 +174,16 @@
                                     {
                                         <tr>
                                             <td style="width:40%">
-                                    <MudStack Row
-                                              AlignItems="AlignItems.Center"
-                                              Spacing="1">
-                                        <MudText Typo="Typo.body2">@AppText.Get(TextKeys.Setting(setting.Name))</MudText>
-                                        @if (InfoOf(setting.Name) is { } info)
-                                        {
-                                            <InfoIcon Text="@info" />
-                                        }
-                                    </MudStack>
-                                </td>
+                                                <MudStack Row
+                                                          AlignItems="AlignItems.Center"
+                                                          Spacing="1">
+                                                    <MudText Typo="Typo.body2">@AppText.Get(TextKeys.Setting(setting.Name))</MudText>
+                                                    @if (InfoOf(setting.Name) is { } info)
+                                                    {
+                                                        <InfoIcon Text="@info" />
+                                                    }
+                                                </MudStack>
+                                            </td>
                                             <td>
                                                 <GenericSettingEditor Setting="setting"
                                                                       Changed="@GameState.IsChanged(setting)" />
@@ -193,16 +194,15 @@
                             </MudSimpleTable>
                         </MudPaper>
                     </Header>
-                </MudItem>
+                </MudElement>
 
-                <MudItem xs="12"
-                         md="6"
-                         Class="fill-column">
+                <MudElement HtmlTag="div"
+                            Class="main-panel fill-column">
                     <Header Title="@AppText.Get("WorldObjectStates")"
                             Info="@AppText.Get("WorldObjectStatesInfo")"
-                            Class="fill">
+                            Class="fit">
                         <MudPaper Elevation="4"
-                                  Class="rounded-panel panel-flush fill fill-column">
+                                  Class="rounded-panel panel-flush fit fill-column">
                             @* World Object Search *@
                             <SearchField @bind-Value="_namedIntFilter"
                                          Class="mx-4 mt-4 mb-2" />
@@ -258,9 +258,9 @@
                             </MudTable>
                         </MudPaper>
                     </Header>
-                </MudItem>
+                </MudElement>
 
-            </MudGrid>
+            </MudStack>
         </MudTabPanel>
 
         @* Weather Tab *@
@@ -270,10 +270,12 @@
             <MudStack Spacing="6">
                 @if (Calendar is { } calendar)
                 {
+                    var loaded = LoadedCalendar ?? calendar;
+                    var marks = MarksOf(calendar, loaded);
                     @* Season Panel *@
                     <MudPaper Elevation="4"
                               Class="rounded-panel pa-4">
-                        <MudStack Spacing="3">
+                        <MudStack Spacing="2">
                             <MudStack Row
                                       AlignItems="AlignItems.Center"
                                       Wrap="Wrap.Wrap"
@@ -284,71 +286,60 @@
                                 </MudText>
                                 <InfoIcon Text="@AppText.Get("SeasonInfo")" />
                                 <MudSpacer />
-                                @* Season Select *@
-                                <MudElement HtmlTag="div"
-                                            Class="fixed-width"
-                                            Style="width:200px">
-                                    <ChangedBadge When="@(calendar.Season != LoadedCalendar?.Season)"
-                                                  Class="d-block">
-                                        <MudSelect T="string"
-                                                   Variant="Variant.Outlined"
-                                                   Value="@s_seasons[calendar.Season].Value"
-                                                   ValueChanged="ChangeSeason"
-                                                   Label="@AppText.Get("Season")"
-                                                   ToStringFunc="value => LabelOf(s_seasons, value)"
-                                                   Margin="Margin.Dense">
-                                            @foreach (var option in s_seasons)
-                                            {
-                                                <MudSelectItem Value="option.Value">@AppText.Get(option.LabelKey)</MudSelectItem>
-                                            }
-                                        </MudSelect>
-                                    </ChangedBadge>
-                                </MudElement>
-                                @* Days Left *@
-                                <ChangedBadge When="@(calendar.DaysLeft != LoadedCalendar?.DaysLeft)">
-                                    <NumberField T="int"
-                                                 Value="calendar.DaysLeft"
-                                                 ValueChanged="ChangeDaysLeft"
-                                                 Label="@AppText.Format("DaysUntilSeason", AppText.Get(s_seasons[calendar.NextSeason].LabelKey))"
-                                                 Min="1"
-                                                 Max="calendar.Length"
-                                                 Margin="Margin.Dense"
-                                                 Style="width:200px" />
-                                </ChangedBadge>
+                                <MudText Typo="Typo.body2"
+                                         Class="mud-text-secondary">
+                                    @AppText.Format("DaysUntilSeasonOf", SeasonName(calendar.NextSeason), calendar.DaysLeft)
+                                </MudText>
                             </MudStack>
-                            <MudGrid Spacing="2">
-
+                            @* Season Bar *@
+                            <MudStack Row
+                                      Spacing="2">
                                 @foreach (var (index, option) in s_seasons.Index())
                                 {
-                                    <MudItem xs="3">
-                                        <MudStack Spacing="1">
-                                            @if (calendar.Length <= MaxDayCells)
+                                    <MudStack Spacing="1"
+                                              Class="@($"flex-grow-1 season-{index}")"
+                                              Style="flex-basis:0;min-width:0">
+                                        @* Season Marks *@
+                                        <MudElement HtmlTag="div"
+                                                    Class="season-marks">
+                                            @foreach (var mark in marks.Where(candidate => candidate.Season == index))
                                             {
-                                                <MudStack Row
-                                                          Spacing="1">
-                                                    @for (var day = 1; day <= calendar.Length; day++)
-                                                    {
-                                                        <MudElement HtmlTag="span"
-                                                                    Class="@(calendar.IsDone(index, day) ? "season-day done" : "season-day")" />
-                                                    }
-                                                </MudStack>
+                                                <MudText Typo="Typo.caption"
+                                                         Class="season-mark"
+                                                         Style="@MarkStyle(mark, marks, calendar.Length)">
+                                                    @mark.Label
+                                                    <ChangedDot When="@mark.IsNew" />
+                                                </MudText>
                                             }
-                                            else
+                                        </MudElement>
+                                        <MudElement HtmlTag="div"
+                                                    Class="@(calendar.Length > MaxDayCells ? "season-days dense" : "season-days")">
+                                            @for (var day = 1; day <= calendar.Length; day++)
                                             {
-                                                <MudProgressLinear Color="Color.Info"
-                                                                   Value="@calendar.FillOf(index)"
-                                                                   Rounded
-                                                                   Size="Size.Medium" />
+                                                var picked = day;
+                                                var title = DayTitle(index, day);
+                                                @* Season Day *@
+                                                <MudElement HtmlTag="span"
+                                                            Class="@DayClass(calendar, loaded, index, day)"
+                                                            role="button"
+                                                            tabindex="@(calendar.Length > MaxDayCells ? -1 : 0)"
+                                                            title="@title"
+                                                            aria-label="@title"
+                                                            data-keyclick
+                                                            @onclick="() => PickDay(index, picked)" />
                                             }
-                                            <MudText Typo="Typo.caption"
-                                                     Class="@(index == calendar.Season ? null : "mud-text-secondary")">
-                                                @AppText.Get(option.LabelKey)
-                                            </MudText>
-                                        </MudStack>
-                                    </MudItem>
+                                        </MudElement>
+                                        <MudText Typo="Typo.caption"
+                                                 Class="@(index == calendar.Season ? null : "mud-text-secondary")">
+                                            @AppText.Get(option.LabelKey)
+                                        </MudText>
+                                    </MudStack>
                                 }
-
-                            </MudGrid>
+                            </MudStack>
+                            <MudText Typo="Typo.caption"
+                                     Class="mud-text-secondary">
+                                @AppText.Get("SeasonClickHint")
+                            </MudText>
                         </MudStack>
                     </MudPaper>
                 }

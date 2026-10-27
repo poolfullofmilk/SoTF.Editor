@@ -52,8 +52,9 @@ public static partial class BackupDiff
             pair =>
                 pair.Value.GroupBy(change => change)
                     .Select(group => new Change(
-                        group.Count() > 1 ? $"{group.Key.Name} ({group.Count()})" : group.Key.Name,
-                        group.Key.Kind
+                        group.Key.Name,
+                        group.Key.Kind,
+                        group.Count() > 1 ? group.Count() : null
                     ))
                     .ToList()
         );

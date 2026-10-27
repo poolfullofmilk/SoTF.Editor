@@ -42,8 +42,7 @@ public class RegrowTreesViewModel
 
     public VegetationState VegetationStateSelected { get; set; } = AllStates;
 
-    public string PrintAll =>
-        $"{AppText.Get("All")} ({States.Sum(state => _counts.GetValueOrDefault(state))})";
+    public int AllCount => States.Sum(CountOf);
 
     public bool VegetationStateIsAllSelected
     {
@@ -51,9 +50,14 @@ public class RegrowTreesViewModel
         set => VegetationStateSelected = value ? AllStates : VegetationState.None;
     }
 
-    public string Label(VegetationState state)
+    public static string Label(VegetationState state)
     {
-        return $"{AppText.Get(s_stateKeys[state])} ({_counts.GetValueOrDefault(state)})";
+        return AppText.Get(s_stateKeys[state]);
+    }
+
+    public int CountOf(VegetationState state)
+    {
+        return _counts.GetValueOrDefault(state);
     }
 
     public string Save()

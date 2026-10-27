@@ -1,0 +1,43 @@
+@* Armour Select *@
+<MudStack Row
+          AlignItems="AlignItems.Center"
+          Spacing="3"
+          Style="flex:0 1 250px;min-width:0">
+    @if (Value?.ImageUrl is { } imageUrl)
+    {
+        <MudImage Src="@imageUrl"
+                  Alt="@Value.Name"
+                  Class="thumb rounded-thumb" />
+    }
+    else
+    {
+        <MudIcon Icon="@Icons.Material.Rounded.Shield"
+                 Class="thumb mud-text-disabled" />
+    }
+    <ChangedBadge When="Changed"
+                  Class="flex-grow-1">
+        <MudSelect T="Item"
+                   Variant="Variant.Outlined"
+                   Value="Value"
+                   ValueChanged="ValueChanged"
+                   Label="@Label"
+                   ToStringFunc="item => item?.Name ?? string.Empty"
+                   Disabled="Disabled"
+                   Margin="Margin.Dense">
+            @foreach (var type in Types)
+            {
+                <MudSelectItem Value="type">
+                    <MudStack Row
+                              Justify="Justify.SpaceBetween"
+                              Spacing="4">
+                        <MudText Typo="Typo.body2">@type.Name</MudText>
+                        <MudText Typo="Typo.body2"
+                                 Class="mud-text-secondary">
+                            @type.Durability?.Default
+                        </MudText>
+                    </MudStack>
+                </MudSelectItem>
+            }
+        </MudSelect>
+    </ChangedBadge>
+</MudStack>

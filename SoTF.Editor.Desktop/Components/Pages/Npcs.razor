@@ -29,13 +29,6 @@
                         @AppText.Get("ByFamily")
                     </MudButton>
                 </MudButtonGroup>
-                @if (_byFamily)
-                {
-                    <MudText Typo="Typo.caption"
-                             Class="mud-text-secondary px-2">
-                        @AppText.Get("ByFamilyHint")
-                    </MudText>
-                }
                 @* Npc Search *@
                 <SearchField @bind-Value="_filter"
                              FullWidth />
@@ -52,11 +45,9 @@
                     {
                         @if (grouping.Title is { } title)
                         {
-                            <MudText Typo="Typo.subtitle2"
-                                     Class="group-title px-4 pt-4 pb-1">
-                                <MudHighlighter Text="@($"{title} ({grouping.Collections.Count})")"
-                                                HighlightedText="@_filter" />
-                            </MudText>
+                            <GroupTitle Title="@title"
+                                        Count="grouping.Collections.Count"
+                                        Highlight="@_filter" />
                         }
                         @foreach (var collection in grouping.Collections)
                         {
@@ -65,20 +56,25 @@
                                         Class="@CollectionRowClass(collection)"
                                         role="button"
                                         tabindex="0"
-                                        aria-pressed="@((Selected == collection) ? "true" : "false")"
+                                        aria-pressed="@(_selectedName == collection.Name ? "true" : "false")"
                                         data-keyclick
-                                        @onclick="() => _selected = collection">
+                                        @onclick="() => _selectedName = collection.Name">
                                 <MudStack Row
                                           AlignItems="AlignItems.Center"
                                           Spacing="2">
-                                    <MudImage Src="@collection.Actors.FirstOrDefault()?.ActorType?.IconPath"
-                                              Alt="@collection.Name"
-                                              Class="thumb thumb-round" />
+                                    <MudElement HtmlTag="div"
+                                                Class="flex-grow-1"
+                                                Style="min-width:0">
+                                        <ItemLabel Name="@collection.Name"
+                                                   Detail="@DetailOf(collection.SharedType)"
+                                                   ImageUrl="@collection.Actors.FirstOrDefault()?.ActorType?.IconPath"
+                                                   Changed="@NpcsPage.IsChanged(collection)"
+                                                   Highlight="@_filter"
+                                                   Round />
+                                    </MudElement>
                                     <MudText Typo="Typo.body2"
-                                             Class="text-truncate">
-                                        <MudHighlighter Text="@collection.Name"
-                                                        HighlightedText="@_filter" />
-                                        <ChangedDot When="@NpcsPage.IsChanged(collection)" />
+                                             Class="mud-text-secondary">
+                                        @collection.Actors.Count
                                     </MudText>
                                 </MudStack>
                             </MudElement>
@@ -96,74 +92,96 @@
             }
             else
             {
-                <Header Title="@selected.Name"
+                var namesRows = selected.SharedType is null;
+                <Header Title="@HeaderTitleOf(selected)"
                         Class="fit">
-                    <MudPaper Elevation="4"
-                              Class="rounded-panel panel-flush fit fill-column">
-                        <MudTable T="Actor"
-                                  Items="selected.Actors"
-                                  Dense
-                                  Hover
-                                  FixedHeader
-                                  Virtualize
-                                  OverscanCount="30"
-                                  Elevation="0"
-                                  Class="fit fixed-columns"
-                                  Style="--table-min-width:660px">
+                    <TitleContent>
+                        <MudText Typo="Typo.h5"
+                                 Class="mud-text-secondary">
+                            @selected.Actors.Count
+                        </MudText>
+                    </TitleContent>
+                    <ChildContent>
+                        <MudPaper Elevation="4"
+                                  Class="rounded-panel panel-flush fit fill-column">
+                            <MudTable @key="selected.Name"
+                                      T="Actor"
+                                      Items="selected.Actors"
+                                      Dense
+                                      Hover
+                                      FixedHeader
+                                      Virtualize
+                                      OverscanCount="30"
+                                      Elevation="0"
+                                      Class="fit fixed-columns"
+                                      Style="@(namesRows ? "--table-min-width:660px" : "--table-min-width:520px")">
 
-                            <ColGroup>
-                                <col />
-                                <col style="width:112px" />
-                                <col style="width:80px" />
-                                <col style="width:100px" />
-                                <col style="width:120px" />
-                                <col style="width:96px" />
-                            </ColGroup>
-                            <HeaderContent>
-                                <MudTh>@AppText.Get("Name")</MudTh>
-                                <MudTh>@AppText.Get("UniqueId")</MudTh>
-                                <MudTh>@AppText.Get("Family")</MudTh>
-                                <MudTh>@AppText.Get("State")</MudTh>
-                                <MudTh>@AppText.Get("Area")</MudTh>
-                                <MudTh />
-                            </HeaderContent>
-                            <RowTemplate>
-                                <MudTd Class="overflow-hidden">
-                                    <ItemLabel Name="@(context.ActorType?.Name ?? "???")"
-                                               Detail="@DetailOf(context)"
-                                               ImageUrl="@context.ActorType?.IconPath"
-                                               Changed="@NpcsPage.IsChanged(context)"
-                                               Round />
-                                </MudTd>
-                                <MudTd Class="selectable-text">@context.UniqueId</MudTd>
-                                <MudTd>@(context.FamilyId?.ToString() ?? "-")</MudTd>
-                                <MudTd Class="text-truncate"
-                                       title="@context.StatePrintable">
-                                    @context.StatePrintable
-                                </MudTd>
-                                <MudTd Class="text-truncate"
-                                       title="@context.Position?.Area.Name">
-                                    @context.Position?.Area.Name
-                                </MudTd>
-                                <MudTd Style="text-align:right">
-                                    <ShowOnMapButton Position="context.Position" />
-                                    @* Edit Actor *@
-                                    <MudIconButton Icon="@Icons.Material.Rounded.Edit"
-                                                   aria-label="@AppText.Get("Edit")"
-                                                   title="@AppText.Get("Edit")"
-                                                   Size="Size.Small"
-                                                   OnClick="() => EditAsync(context)" />
-                                </MudTd>
-                            </RowTemplate>
-                            <NoRecordsContent>
-                                <MudText Typo="Typo.body2"
-                                         Class="mud-text-secondary">
-                                    @AppText.Get("NothingFound")
-                                </MudText>
-                            </NoRecordsContent>
+                                <ColGroup>
+                                    @if (namesRows)
+                                    {
+                                        <col />
+                                    }
+                                    <col style="width:112px" />
+                                    <col style="width:80px" />
+                                    <col style="@(namesRows ? "width:100px" : null)" />
+                                    <col style="@(namesRows ? "width:120px" : null)" />
+                                    <col style="width:96px" />
+                                </ColGroup>
+                                <HeaderContent>
+                                    @if (namesRows)
+                                    {
+                                        <MudTh>@AppText.Get("Name")</MudTh>
+                                    }
+                                    <MudTh>@AppText.Get("UniqueId")</MudTh>
+                                    <MudTh>@AppText.Get("Family")</MudTh>
+                                    <MudTh>@AppText.Get("State")</MudTh>
+                                    <MudTh>@AppText.Get("Area")</MudTh>
+                                    <MudTh />
+                                </HeaderContent>
+                                <RowTemplate>
+                                    @if (namesRows)
+                                    {
+                                        <MudTd Class="overflow-hidden">
+                                            <ItemLabel Name="@(context.ActorType?.Name ?? "???")"
+                                                       Detail="@DetailOf(context.ActorType)"
+                                                       ImageUrl="@context.ActorType?.IconPath"
+                                                       Changed="@NpcsPage.IsChanged(context)"
+                                                       Round />
+                                        </MudTd>
+                                    }
+                                    <MudTd Class="selectable-text">
+                                        @context.UniqueId
+                                        <ChangedDot When="@(!namesRows && NpcsPage.IsChanged(context))" />
+                                    </MudTd>
+                                    <MudTd>@(context.FamilyId?.ToString() ?? "-")</MudTd>
+                                    <MudTd Class="text-truncate"
+                                           title="@context.StatePrintable">
+                                        @context.StatePrintable
+                                    </MudTd>
+                                    <MudTd Class="text-truncate"
+                                           title="@context.Position?.Area.Name">
+                                        @context.Position?.Area.Name
+                                    </MudTd>
+                                    <MudTd Style="text-align:right">
+                                        <ShowOnMapButton Position="context.Position" />
+                                        @* Edit Actor *@
+                                        <MudIconButton Icon="@Icons.Material.Rounded.Edit"
+                                                       aria-label="@AppText.Get("Edit")"
+                                                       title="@AppText.Get("Edit")"
+                                                       Size="Size.Small"
+                                                       OnClick="() => EditAsync(context)" />
+                                    </MudTd>
+                                </RowTemplate>
+                                <NoRecordsContent>
+                                    <MudText Typo="Typo.body2"
+                                             Class="mud-text-secondary">
+                                        @AppText.Get("NothingFound")
+                                    </MudText>
+                                </NoRecordsContent>
 
-                        </MudTable>
-                    </MudPaper>
+                            </MudTable>
+                        </MudPaper>
+                    </ChildContent>
                 </Header>
             }
         </MudElement>

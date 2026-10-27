@@ -29,7 +29,9 @@ public abstract class BaseStorage : IStorage
 
     public List<ItemWrapper> SupportedItems { get; }
 
-    public string Description => $"{Definition.Name} #{_index} ({GetTotalStored()})";
+    public string Description => $"{Definition.Name} #{_index}";
+
+    public int TotalStored => Slots.Sum(slot => slot.GetTotalStored());
 
     public virtual void SetSaveData(StorageSaveData saveData)
     {
@@ -178,11 +180,6 @@ public abstract class BaseStorage : IStorage
     {
         Slots.Clear();
         SetSaveData(storage.ToStorageSaveData());
-    }
-
-    private int GetTotalStored()
-    {
-        return Slots.Sum(slot => slot.GetTotalStored());
     }
 
     protected static void AddEffectiveSupportedItem(

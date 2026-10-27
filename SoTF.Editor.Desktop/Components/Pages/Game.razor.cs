@@ -203,11 +203,12 @@ public partial class Game : EditorPageBase
     private bool IsCustom => GameSetup.SelectedMode == CustomGameMode;
 
     private IEnumerable<GenericSetting> FilteredNamedIntDatas =>
-        string.IsNullOrWhiteSpace(_namedIntFilter)
-            ? GameState.NamedIntDatas
-            : GameState.NamedIntDatas.Where(setting =>
-                setting.Name.Contains(_namedIntFilter, StringComparison.OrdinalIgnoreCase)
-            );
+        GameState
+            .NamedIntDatas.Where(setting =>
+                string.IsNullOrWhiteSpace(_namedIntFilter)
+                || setting.Name.Contains(_namedIntFilter, StringComparison.OrdinalIgnoreCase)
+            )
+            .OrderBy(setting => setting.Name, StringComparer.OrdinalIgnoreCase);
 
     private static IEnumerable<string> KeysOf(SettingGroup group)
     {
@@ -257,8 +258,16 @@ public partial class Game : EditorPageBase
         );
     }
 
-    // Past Long Seasons A Cell Per Day Gets Too Thin, A Bar Fills Instead
+    // Long Seasons Touch Their Cells Into One Bar
     private const int MaxDayCells = 15;
+
+    // Wide Enough For Current Or New With Its Dot
+    private const int MarkWidth = 56;
+
+    // The Bar's Ends Lend A Label The Panel Padding
+    private const int MarkEdge = 32;
+    private const int MarkGap = 8;
+    private const int MarkInset = 6;
 
     private static string? InfoOf(string settingName)
     {
@@ -272,35 +281,100 @@ public partial class Game : EditorPageBase
         return GameState.Settings.FirstOrDefault(setting => setting.Name == name)?.IntValue;
     }
 
-    private void ChangeDaysLeft(int daysLeft)
+    private void PickDay(int season, int day)
     {
         if (DaysPerSeason is not { } daysPerSeason || Weather.Offset is not { } offset)
         {
             return;
         }
 
-        offset.DecimalValue = SeasonCalendar.OffsetForDaysLeft(
-            Math.Clamp(daysLeft, 1, (int)daysPerSeason),
-            GameStateValue("GameDays") ?? 0,
-            offset.DecimalValue ?? 0,
-            daysPerSeason
-        );
+        // From The Loaded Offset, Its Own Day Restores It Exactly
+        offset.DecimalValue =
+            LoadedCalendar is { } loaded && loaded.Season == season && loaded.Day == day
+                ? Weather.LoadedOffset
+                : SeasonCalendar.OffsetForDay(
+                    season,
+                    day,
+                    DaysPlayed,
+                    Weather.LoadedOffset,
+                    daysPerSeason
+                );
     }
 
-    private void ChangeSeason(string? season)
+    private static string SeasonName(int season)
     {
-        var index = Array.FindIndex(s_seasons, option => option.Value == season);
-        if (index < 0 || DaysPerSeason is not { } daysPerSeason || Weather.Offset is not { } offset)
+        return AppText.Get(s_seasons[season].LabelKey);
+    }
+
+    private static string DayTitle(int season, int day)
+    {
+        return $"{SeasonName(season)}, {AppText.Format("SavegameDay", day)}";
+    }
+
+    private static string DayClass(SeasonState calendar, SeasonState loaded, int season, int day)
+    {
+        // Filled Up To Today, Which Pulses, Today And Loaded Ringed
+        var isToday = calendar.IsDay(season, day);
+        return "season-day"
+            + (calendar.IsDone(season, day) ? " done" : "")
+            + (isToday ? " today" : "")
+            + (isToday || loaded.IsDay(season, day) ? " marked" : "");
+    }
+
+    private static List<DayMark> MarksOf(SeasonState calendar, SeasonState loaded)
+    {
+        // Current On The Loaded Day, New Once It Moved
+        List<DayMark> marks = [new(loaded.Season, loaded.Day, AppText.Get("SeasonCurrent"), false)];
+        if (!calendar.IsDay(loaded.Season, loaded.Day))
         {
-            return;
+            marks.Add(new(calendar.Season, calendar.Day, AppText.Get("SeasonNew"), true));
         }
 
-        offset.DecimalValue = SeasonCalendar.OffsetFor(
-            index,
-            DaysPlayed,
-            offset.DecimalValue ?? 0,
-            daysPerSeason
-        );
+        return marks;
+    }
+
+    private static string MarkStyle(DayMark mark, List<DayMark> marks, int length)
+    {
+        var other = marks.Find(candidate => candidate != mark);
+        var start = (mark.Day - 1) * 100.0 / length;
+        var end = mark.Day * 100.0 / length;
+
+        // Alone A Label Sits Centred Over Its Day
+        if (other is null)
+        {
+            var centred = FormattableString.Invariant(
+                $"calc({(start + end) / 2}% - {MarkWidth / 2}px)"
+            );
+            var left = mark.Season switch
+            {
+                0 => $"max(-12px, {centred})",
+                3 => $"min(calc(100% - {MarkWidth - 12}px), {centred})",
+                _ => centred,
+            };
+            return $"left:{left};width:{MarkWidth}px;text-align:center";
+        }
+
+        // Two Lean Apart, So They Never Touch
+        if ((mark.Season, mark.Day).CompareTo((other.Season, other.Day)) < 0)
+        {
+            var edge = FormattableString.Invariant($"calc({end}% - {MarkInset}px)");
+            var right = mark.Season switch
+            {
+                0 => $"max({MarkEdge}px, {edge})",
+                3 => $"min(calc(100% - {MarkEdge + MarkGap}px), {edge})",
+                _ => edge,
+            };
+            return $"right:calc(100% - {right})";
+        }
+
+        var begin = FormattableString.Invariant($"calc({start}% + {MarkInset}px)");
+        var from = mark.Season switch
+        {
+            0 => $"max({MarkEdge + MarkGap}px, {begin})",
+            3 => $"min(calc(100% - {MarkEdge}px), {begin})",
+            _ => begin,
+        };
+        return $"left:{from}";
     }
 
     public static string SetupLabelKey(string key)
@@ -330,17 +404,13 @@ public partial class Game : EditorPageBase
             return season < Season || (season == Season && day <= Day);
         }
 
-        // Past Seasons Are Full, This One Shows Its Progress
-        public double FillOf(int season)
+        public bool IsDay(int season, int day)
         {
-            if (season == Season)
-            {
-                return 100.0 * Day / Length;
-            }
-
-            return season < Season ? 100 : 0;
+            return season == Season && day == Day;
         }
     }
+
+    private sealed record DayMark(int Season, int Day, string Label, bool IsNew);
 
     private sealed record SelectSetting(
         string LabelKey,

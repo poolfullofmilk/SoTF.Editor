@@ -111,13 +111,6 @@ public partial class EditActorDialog
         );
     }
 
-    private string SelectionLabel(Selection selection)
-    {
-        return selection.Value == 0
-            ? AppText.Get(selection.LabelKey)
-            : AppText.Format(selection.LabelKey, CountFor(selection.Value));
-    }
-
     private string CountLabel(string labelKey)
     {
         return MatchCount > 1

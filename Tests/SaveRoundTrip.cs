@@ -526,6 +526,110 @@ try
         Check(!main.HasUnsavedChanges(), "Reverted Armour Move Leaves Nothing Unsaved");
     }
 
+    // Deleting An Inventory Piece Changes Only The Inventory
+    var heldArmour = armor.InventoryArmour.FirstOrDefault(inventory.IsHeld);
+    Check(heldArmour != null, "Sample Holds Armour In The Inventory");
+    if (heldArmour != null)
+    {
+        var heldCount = heldArmour.TotalCount;
+        armor.DeleteFromInventory(heldArmour);
+        Check(
+            (heldCount > 1 ? heldArmour.TotalCount == heldCount - 1 : !inventory.IsHeld(heldArmour))
+                && main.HasChanges("Inventory")
+                && !main.HasChanges("Player"),
+            "Deleted Inventory Piece Changes Only The Inventory"
+        );
+        main.RevertPage("Inventory");
+        Check(!main.HasUnsavedChanges(), "Reverted Inventory Delete Leaves Nothing Unsaved");
+    }
+
+    // A Worn Piece Takes Another Type At Its Default Durability
+    var worn = armor.Armour.FirstOrDefault();
+    var otherType = armor.ArmourTypes.FirstOrDefault(type => type.Id != worn?.Id);
+    Check(worn != null && otherType != null, "Sample Wears Armour");
+    if (worn != null && otherType != null)
+    {
+        worn.ChangeType(otherType);
+        Check(
+            worn.Id == otherType.Id
+                && worn.ArmourPiece.RemainingArmourpoints == worn.DefaultDurability
+                && armor.IsTypeChanged(worn)
+                && main.HasChanges("Player")
+                && !main.HasChanges("Inventory"),
+            "Worn Piece Changes Type"
+        );
+        main.RevertPage("Player");
+        Check(!main.HasUnsavedChanges(), "Reverted Type Change Leaves Nothing Unsaved");
+    }
+
+    // A Backpack Stack Turns Into A Type Not Held Yet
+    var stack = armor.InventoryArmour.FirstOrDefault(inventory.IsHeld);
+    var freeType =
+        stack == null ? null : armor.TypesFor(stack).FirstOrDefault(type => type.Id != stack.Id);
+    Check(stack != null && freeType != null, "Sample Holds A Stack To Convert");
+    if (stack != null && freeType != null)
+    {
+        var stackCount = stack.TotalCount;
+        armor.ChangeType(stack, freeType);
+        var converted = inventory.ItemOf(freeType.Id);
+        Check(
+            !inventory.IsHeld(stack)
+                && converted != null
+                && inventory.IsHeld(converted)
+                && converted.TotalCount == Math.Min(stackCount, converted.Max)
+                && main.HasChanges("Inventory")
+                && !main.HasChanges("Player"),
+            "Backpack Stack Changes Type"
+        );
+        main.RevertPage("Inventory");
+        Check(!main.HasUnsavedChanges(), "Reverted Stack Change Leaves Nothing Unsaved");
+    }
+
+    // Fill All Bars Raises Strength, Then Health To Its Max
+    player.FillAllBars();
+    Check(
+        player.PlayerState.StrengthLevel == PlayerState.MaxStrengthLevel
+            && player.PlayerState.CurrentHealth
+                == PlayerState.MaxHealthAt(PlayerState.MaxStrengthLevel)
+            && !player.CanFillAllBars,
+        "Fill All Bars Fills Strength And Health"
+    );
+    main.RevertPage("Player");
+    Check(
+        !main.HasUnsavedChanges() && player.CanFillAllBars,
+        "Reverted Fill Leaves Nothing Unsaved"
+    );
+
+    // Picking A Day, Then The Loaded One, Leaves No Change
+    var dayOffset = SettingOf(weather.Settings, "_startingDayOffset");
+    var playedDays =
+        (SettingOf(gameState.Settings, "GameDays").IntValue ?? 0)
+        + ((SettingOf(gameState.Settings, "GameHours").IntValue ?? 0) / 24.0);
+    var loadedSeason = SeasonCalendar.SeasonAt(playedDays, weather.LoadedOffset, 5);
+    var loadedDay = 5 - SeasonCalendar.DaysLeft((int)playedDays, weather.LoadedOffset, 5) + 1;
+    var pickedSeason = (loadedSeason + 2) % 4;
+    dayOffset.DecimalValue = SeasonCalendar.OffsetForDay(
+        pickedSeason,
+        1,
+        playedDays,
+        weather.LoadedOffset,
+        5
+    );
+    Check(
+        main.HasChanges("Game")
+            && SeasonCalendar.SeasonAt(playedDays, dayOffset.DecimalValue ?? 0, 5) == pickedSeason
+            && SeasonCalendar.DaysLeft((int)playedDays, dayOffset.DecimalValue ?? 0, 5) == 5,
+        "Picked Season Day Is Seen"
+    );
+    dayOffset.DecimalValue = SeasonCalendar.OffsetForDay(
+        loadedSeason,
+        loadedDay,
+        playedDays,
+        weather.LoadedOffset,
+        5
+    );
+    Check(!main.HasUnsavedChanges(), "Picking The Loaded Day Again Leaves No Change");
+
     // A Save Keeps Its Change List In Its Backup
     player.PlayerState.Fullness = 44;
     Check(main.SaveChanges(new() { ["Player"] = [new Change("Fullness")] }), "Listed Change Saves");

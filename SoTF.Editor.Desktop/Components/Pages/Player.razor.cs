@@ -28,9 +28,11 @@ public partial class Player : EditorPageBase
 
     private float MaxHealthCeiling => Math.Max(DefaultMaxHealthCeiling, State.MaxHealth);
 
-    // At Max Health The Slider Stops, The Warning Says Why
+    // At Max Health, Says Strength Can Still Raise It
     private string? CurrentHealthWarning =>
-        State.CurrentHealth >= State.MaxHealth ? AppText.Get("CurrentHealthAtMax") : null;
+        State.CurrentHealth >= State.MaxHealth && State.StrengthLevel < PlayerState.MaxStrengthLevel
+            ? AppText.Get("CurrentHealthAtMax")
+            : null;
 
     private static bool IsDefault(ArmourData armour)
     {
@@ -65,6 +67,15 @@ public partial class Player : EditorPageBase
         if (await ConfirmAsync("DeleteArmour", "DeleteArmourText"))
         {
             ArmorPage.RemoveArmour(armour);
+        }
+    }
+
+    private async Task DeleteFromInventoryAsync(InventoryItem item)
+    {
+        // Same Question As A Worn Piece, One Per Click
+        if (await ConfirmAsync("DeleteArmour", "DeleteArmourText"))
+        {
+            ArmorPage.DeleteFromInventory(item);
         }
     }
 

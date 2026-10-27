@@ -4,7 +4,7 @@ public class ArmourPieceModel
 {
     public float RemainingArmourpoints { get; set; }
 
-    public int ItemId { get; init; }
+    public int ItemId { get; set; }
     public int Slot { get; set; }
 
     public static IEqualityComparer<ArmourPieceModel> ArmourPieceModelComparer { get; } =

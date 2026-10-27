@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models.Actors;
 using SoTF.Editor.Desktop.Components.Shared.Common;
 using SoTF.Editor.Desktop.Components.Shared.Dialogs;
@@ -12,9 +13,9 @@ public partial class Npcs : EditorPageBase
     [Inject]
     public required NpcsPageViewModel NpcsPage { get; set; }
 
-    // Page State
+    // Page State, Picked By Name To Outlive Actor Changes
     private bool _byFamily;
-    private ActorCollection? _selected;
+    private string? _selectedName;
     private string? _filter;
 
     // A Matching Group Shows Whole, Otherwise Only Its Matching Rows
@@ -41,6 +42,7 @@ public partial class Npcs : EditorPageBase
     {
         // A Family Row Also Matches The Creatures In It
         return Matches(collection.Name)
+            || Matches(DetailOf(collection.SharedType))
             || collection.Actors.Any(actor => Matches(actor.ActorType?.Name ?? ""));
     }
 
@@ -50,11 +52,13 @@ public partial class Npcs : EditorPageBase
             || text.Contains(_filter, StringComparison.OrdinalIgnoreCase);
     }
 
-    // Only A Shown Row, A Reload Or Search Hides It
+    // Only A Shown Row, A Search Can Hide It
     private ActorCollection? Selected =>
-        _selected != null && Groupings.Any(group => group.Collections.Contains(_selected))
-            ? _selected
-            : null;
+        _selectedName == null
+            ? null
+            : Groupings
+                .SelectMany(group => group.Collections)
+                .FirstOrDefault(collection => collection.Name == _selectedName);
 
     private void SetByFamily(bool byFamily)
     {
@@ -62,26 +66,24 @@ public partial class Npcs : EditorPageBase
         if (_byFamily != byFamily)
         {
             _byFamily = byFamily;
-            _selected = null;
+            _selectedName = null;
         }
     }
 
-    private static string DetailOf(Actor actor)
+    private static string DetailOf(ActorType? actorType)
     {
-        // A Missing Gender Leaves Out Its Part, Not A Dash
-        return string.Join(
-            " · ",
-            new[]
-            {
-                actor.ActorType?.PrintableClassification,
-                actor.ActorType?.PrintableGender,
-            }.Where(part => part is { Length: > 0 } and not "-")
-        );
+        return Formatter.JoinParts(actorType?.PrintableClassification, actorType?.PrintableGender);
+    }
+
+    private string HeaderTitleOf(ActorCollection collection)
+    {
+        // A Family Is A Number, The Title Names It
+        return _byFamily ? AppText.Format("FamilyTitle", collection.Name) : collection.Name;
     }
 
     private string CollectionRowClass(ActorCollection collection)
     {
-        var selected = _selected == collection ? " list-row-selected" : "";
+        var selected = _selectedName == collection.Name ? " list-row-selected" : "";
         return "list-row px-4 py-2" + selected;
     }
 

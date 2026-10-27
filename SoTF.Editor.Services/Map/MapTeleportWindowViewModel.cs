@@ -31,8 +31,7 @@ public class MapTeleportWindowViewModel(
 
     public float ZOffset { get; set; } = destination.TeleportationOffset;
 
-    public List<Area> Areas { get; } =
-    [.. areaMaskManager.GetAllAreas().OrderBy(area => area.Name)];
+    public List<Area> Areas { get; } = [.. areaMaskManager.GetAllAreas()];
 
     public float X { get; } = destination.Position?.X ?? destination.X;
     public float Y { get; } = destination.Position?.Y ?? 0;

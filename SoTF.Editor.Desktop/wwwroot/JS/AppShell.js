@@ -28,36 +28,80 @@ window.sotfMap = (() => {
     const maxZoom = 2;
     const dragThreshold = 4;
     const manyPoints = 1500;
+    const glideTime = 250;
     let state = null;
     let settle = 0;
+    let frame = 0;
 
-    // Thousands Of Icons Restyle Slowly, So They Catch Up Once A Wheel Zoom Settles
-    const apply = (zooming = false) => {
-        state.canvas.style.transform = `translate(${state.x}px, ${state.y}px) scale(${state.zoom})`;
-        clearTimeout(settle);
-        if (zooming && state.canvas.childElementCount > manyPoints) {
-            settle = setTimeout(() => state?.canvas.style.setProperty("--map-zoom", state.zoom), 150);
-        } else {
+    const scaleIcons = () => {
+        if (state && state.iconZoom !== state.zoom) {
+            state.iconZoom = state.zoom;
             state.canvas.style.setProperty("--map-zoom", state.zoom);
         }
     };
 
-    const zoomAt = (pointX, pointY, newZoom, zooming = false) => {
-        const zoom = Math.min(Math.max(newZoom, state.minZoom), maxZoom);
-        state.x = pointX - ((pointX - state.x) * zoom) / state.zoom;
-        state.y = pointY - ((pointY - state.y) * zoom) / state.zoom;
-        state.zoom = zoom;
-        apply(zooming);
+    // Thousands Of Icons Restyle Slowly, So They Catch Up Once The Map Settles
+    const apply = (moving = false) => {
+        state.canvas.style.transform = `translate(${state.x}px, ${state.y}px) scale(${state.zoom})`;
+        clearTimeout(settle);
+        if (moving && state.canvas.childElementCount > manyPoints) {
+            settle = setTimeout(scaleIcons, 150);
+        } else {
+            scaleIcons();
+        }
+    };
+
+    const stop = () => {
+        cancelAnimationFrame(frame);
+        state.target = null;
+    };
+
+    // Eases To A View, Zooming About The Point Both Views Share
+    const glideTo = (x, y, zoom) => {
+        stop();
+        const from = { x: state.x, y: state.y, zoom: state.zoom };
+        const zooms = Math.abs(zoom / from.zoom - 1) > 0.001;
+        const start = performance.now();
+        state.target = { x, y, zoom };
+        const step = (now) => {
+            if (!state?.target) return;
+            const progress = Math.min((now - start) / glideTime, 1);
+            const eased = 1 - (1 - progress) ** 3;
+            state.zoom = from.zoom * (zoom / from.zoom) ** eased;
+            const share = zooms ? (from.zoom - state.zoom) / (from.zoom - zoom) : eased;
+            state.x = from.x + (x - from.x) * share;
+            state.y = from.y + (y - from.y) * share;
+            apply(progress < 1);
+            if (progress < 1) {
+                frame = requestAnimationFrame(step);
+            } else {
+                state.target = null;
+            }
+        };
+        frame = requestAnimationFrame(step);
+    };
+
+    // The Point Under The Cursor Stays, Quick Steps Add Up
+    const zoomAt = (pointX, pointY, factor) => {
+        const view = state.target ?? state;
+        const zoom = Math.min(Math.max(view.zoom * factor, state.minZoom), maxZoom);
+        state.fitted = false;
+        glideTo(pointX - ((pointX - view.x) * zoom) / view.zoom, pointY - ((pointY - view.y) * zoom) / view.zoom, zoom);
     };
 
     // The Whole Map Fits, Centred
-    const fit = () => {
+    const wholeMap = () => {
         const { viewport } = state;
-        state.zoom = Math.min(viewport.clientWidth, viewport.clientHeight) / mapSize;
-        state.minZoom = state.zoom / 2;
-        state.x = (viewport.clientWidth - mapSize * state.zoom) / 2;
-        state.y = (viewport.clientHeight - mapSize * state.zoom) / 2;
-        apply();
+        const zoom = Math.min(viewport.clientWidth, viewport.clientHeight) / mapSize;
+        state.minZoom = zoom / 2;
+        state.fitted = true;
+        return { x: (viewport.clientWidth - mapSize * zoom) / 2, y: (viewport.clientHeight - mapSize * zoom) / 2, zoom };
+    };
+
+    const fit = (moving = false) => {
+        stop();
+        Object.assign(state, wholeMap());
+        apply(moving);
     };
 
     const init = (viewport, canvas) => {
@@ -65,27 +109,33 @@ window.sotfMap = (() => {
         state = { viewport, canvas, drag: null, moved: false, width: viewport.clientWidth, height: viewport.clientHeight };
         fit();
 
-        // A Resized Map Keeps Its Middle, While The Menus Slide It Refits
+        // Decoded Whole Up Front, The First Zoom In Has Nothing To Wait For
+        canvas.querySelector(".map-image")?.decode().catch(() => {});
+
+        // A Whole Map Stays Whole On Resize, Otherwise Its Middle Stays
         state.observer = new ResizeObserver(() => {
             if (!viewport.isConnected || state?.viewport !== viewport) return;
-            if (performance.now() < state.fitUntil) {
-                fit();
+            if (state.fitted) {
+                fit(true);
             } else {
+                stop();
                 state.x += (viewport.clientWidth - state.width) / 2;
                 state.y += (viewport.clientHeight - state.height) / 2;
-                apply();
+                apply(true);
             }
             state.width = viewport.clientWidth;
             state.height = viewport.clientHeight;
         });
         state.observer.observe(viewport);
 
+        // A Wheel Notch Zooms By A Fifth, A Touchpad By Its Little Steps
         viewport.addEventListener(
             "wheel",
             (event) => {
                 event.preventDefault();
                 const bounds = viewport.getBoundingClientRect();
-                zoomAt(event.clientX - bounds.left, event.clientY - bounds.top, state.zoom * (event.deltaY < 0 ? 1.2 : 1 / 1.2), true);
+                const delta = Math.min(Math.max(event.deltaY, -200), 200);
+                zoomAt(event.clientX - bounds.left, event.clientY - bounds.top, 1.2 ** (-delta / 100));
             },
             { passive: false }
         );
@@ -108,6 +158,7 @@ window.sotfMap = (() => {
 
         viewport.addEventListener("pointerdown", (event) => {
             if (event.button !== 0) return;
+            stop();
             state.drag = { startX: event.clientX, startY: event.clientY, x: state.x, y: state.y };
             state.moved = false;
         });
@@ -137,6 +188,7 @@ window.sotfMap = (() => {
         const deltaY = event.clientY - state.drag.startY;
         if (!state.moved && Math.hypot(deltaX, deltaY) < dragThreshold) return;
         state.moved = true;
+        state.fitted = false;
         state.viewport.classList.add("dragging");
         state.x = state.drag.x + deltaX;
         state.y = state.drag.y + deltaY;
@@ -152,8 +204,11 @@ window.sotfMap = (() => {
     window.addEventListener("pointerup", endDrag);
     window.addEventListener("pointercancel", endDrag);
 
+    // Show On Map Opens Right There, No Glide
     const centerOn = (mapX, mapY) => {
         if (!state) return;
+        stop();
+        state.fitted = false;
         state.zoom = maxZoom / 2;
         state.x = state.viewport.clientWidth / 2 - mapX * state.zoom;
         state.y = state.viewport.clientHeight / 2 - mapY * state.zoom;
@@ -161,27 +216,21 @@ window.sotfMap = (() => {
     };
 
     const panTo = (mapX, mapY) => {
-        state.x = state.viewport.clientWidth / 2 - mapX * state.zoom;
-        state.y = state.viewport.clientHeight / 2 - mapY * state.zoom;
-        apply();
+        const zoom = state.target?.zoom ?? state.zoom;
+        state.fitted = false;
+        glideTo(state.viewport.clientWidth / 2 - mapX * zoom, state.viewport.clientHeight / 2 - mapY * zoom, zoom);
     };
 
     const zoomBy = (factor) => {
         if (!state) return;
-        zoomAt(state.viewport.clientWidth / 2, state.viewport.clientHeight / 2, state.zoom * factor);
+        zoomAt(state.viewport.clientWidth / 2, state.viewport.clientHeight / 2, factor);
     };
 
     const reset = () => {
         if (!state) return;
-        fit();
+        const { x, y, zoom } = wholeMap();
+        glideTo(x, y, zoom);
     };
 
-    // The Menus Slide For A Quarter Second, The Map Follows And Lands Whole
-    const fitWhileResizing = () => {
-        if (!state) return;
-        state.fitUntil = performance.now() + 400;
-        setTimeout(() => state && fit(), 400);
-    };
-
-    return { init, centerOn, zoomBy, reset, fitWhileResizing };
+    return { init, centerOn, zoomBy, reset };
 })();

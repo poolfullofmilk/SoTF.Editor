@@ -30,45 +30,38 @@
                                           aria-disabled="@(IsAvailable(tool) ? "false" : "true")"
                                           data-keyclick
                                           @onclick="() => RunAsync(tool)">
-                                    <MudStack Row
-                                              AlignItems="AlignItems.Stretch"
-                                              Spacing="3"
+                                    <MudStack Spacing="1"
                                               Class="mud-height-full">
-                                        <MudIcon Icon="@tool.Icon"
-                                                 Color="Color.Info" />
-                                        <MudStack Spacing="1"
-                                                  Class="flex-grow-1"
-                                                  Style="min-width:0">
-                                            <MudStack Row
-                                                      AlignItems="AlignItems.Start"
-                                                      Spacing="2">
-                                                <MudText Typo="Typo.subtitle1"
-                                                         Class="text-tight flex-grow-1"
-                                                         Style="font-weight:700">
-                                                    @AppText.Get(tool.TitleKey)
-                                                </MudText>
-                                                <MudChip T="string"
-                                                         Variant="Variant.Text"
-                                                         Size="Size.Small"
-                                                         Color="@ChipColor(tool)"
-                                                         Class="ma-0 flex-shrink-0"
-                                                         Style="margin-top:2px !important">
-                                                    @AppText.Get(ChipKey(tool))
-                                                </MudChip>
-                                            </MudStack>
-                                            <MudText Typo="Typo.body2"
-                                                     Class="mud-text-secondary text-relaxed">
-                                                @AppText.Get(tool.TextKey)
+                                        <MudStack Row
+                                                  AlignItems="AlignItems.Center"
+                                                  Spacing="3">
+                                            <MudIcon Icon="@tool.Icon"
+                                                     Color="Color.Info" />
+                                            <MudText Typo="Typo.subtitle1"
+                                                     Class="text-tight flex-grow-1"
+                                                     Style="font-weight:700;min-width:0">
+                                                @AppText.Get(tool.TitleKey)
                                             </MudText>
-                                            @if (ValueOf(tool) is { } value)
-                                            {
-                                                <MudText Typo="Typo.body2"
-                                                         Color="Color.Info"
-                                                         Class="mt-auto pt-1">
-                                                    @value
-                                                </MudText>
-                                            }
+                                            <MudChip T="string"
+                                                     Variant="Variant.Text"
+                                                     Size="Size.Small"
+                                                     Color="@ChipColor(tool)"
+                                                     Class="ma-0 flex-shrink-0">
+                                                @AppText.Get(ChipKey(tool))
+                                            </MudChip>
                                         </MudStack>
+                                        <MudText Typo="Typo.body2"
+                                                 Class="mud-text-secondary text-relaxed pl-9">
+                                            @AppText.Get(tool.TextKey)
+                                        </MudText>
+                                        @if (ValueOf(tool) is { } value)
+                                        {
+                                            <MudText Typo="Typo.body2"
+                                                     Color="Color.Info"
+                                                     Class="mt-auto pt-1 pl-9">
+                                                @value
+                                            </MudText>
+                                        }
                                     </MudStack>
                                 </MudPaper>
                             </ChangedBadge>

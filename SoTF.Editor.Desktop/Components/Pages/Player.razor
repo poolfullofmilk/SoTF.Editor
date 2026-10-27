@@ -23,6 +23,7 @@
                                            Color="Color.Info"
                                            Size="Size.Small"
                                            StartIcon="@Icons.Material.Rounded.BatteryChargingFull"
+                                           Disabled="@(!PlayerPage.CanFillAllBars)"
                                            OnClick="PlayerPage.FillAllBars">
                                     @AppText.Get("FillAllBars")
                                 </MudButton>
@@ -57,7 +58,7 @@
                                         ValueChanged="value => State.ChangeStrengthLevel((int)value)"
                                         Info="@AppText.Get("StrengthLevelInfo")"
                                         Min="1"
-                                        Max="100" />
+                                        Max="PlayerState.MaxStrengthLevel" />
                             @* Max Health *@
                             <StatSlider Label="@AppText.Get("MaxHealth")"
                                         Changed="@PlayerPage.IsChanged(nameof(PlayerState.MaxHealth))"
@@ -171,21 +172,24 @@
                                           AlignItems="AlignItems.Center"
                                           Spacing="2"
                                           Class="pa-1">
-                                    <MudElement HtmlTag="div"
-                                                Class="flex-grow-1"
-                                                Style="min-width:0">
-                                        <ItemLabel Name="@armour.Name"
-                                                   ImageUrl="@armour.ImageUrl"
-                                                   Changed="@ArmorPage.IsChanged(armour)" />
-                                    </MudElement>
+                                    @* Armour Type *@
+                                    <ArmourSelect Value="armour.Item"
+                                                  ValueChanged="armour.ChangeType"
+                                                  Types="ArmorPage.ArmourTypes"
+                                                  Label="@AppText.Get("Type")"
+                                                  Changed="@ArmorPage.IsTypeChanged(armour)" />
+                                    <MudSpacer />
                                     @* Durability *@
-                                    <NumberField T="float"
-                                                 @bind-Value="armour.ArmourPiece.RemainingArmourpoints"
-                                                 Min="armour.MinDurability"
-                                                 Max="armour.MaxDurability"
-                                                 Margin="Margin.Dense"
-                                                 Label="@AppText.Get("Durability")"
-                                                 Style="width:120px" />
+                                    <ChangedBadge When="@ArmorPage.IsDurabilityChanged(armour)"
+                                                  Class="flex-shrink-0">
+                                        <NumberField T="float"
+                                                     @bind-Value="armour.ArmourPiece.RemainingArmourpoints"
+                                                     Min="armour.MinDurability"
+                                                     Max="armour.MaxDurability"
+                                                     Margin="Margin.Dense"
+                                                     Label="@AppText.Get("Durability")"
+                                                     Style="width:120px" />
+                                    </ChangedBadge>
                                     @* Default Button *@
                                     <Tooltip Text="@AppText.Format("SetToDefaultDurabilityOf", armour.DefaultDurability)"
                                              Disabled="@IsDefault(armour)">
@@ -237,23 +241,35 @@
                                               AlignItems="AlignItems.Center"
                                               Spacing="2"
                                               Class="@(InventoryPage.IsHeld(item) ? "pa-1" : "pa-1 not-held")">
-                                        <MudElement HtmlTag="div"
-                                                    Class="flex-grow-1"
-                                                    Style="min-width:0">
-                                            <ItemLabel Name="@item.Name"
-                                                       Detail="@AppText.Format("InInventoryCount", InventoryPage.IsHeld(item) ? item.TotalCount : 0)"
-                                                       ImageUrl="@item.ImageUrl"
-                                                       Changed="@InventoryPage.IsChanged(item)" />
-                                        </MudElement>
+                                        @* Inventory Armour Type *@
+                                        <ArmourSelect Value="item.Item"
+                                                      ValueChanged="type => ArmorPage.ChangeType(item, type)"
+                                                      Types="ArmorPage.TypesFor(item)"
+                                                      Label="@AppText.Get("Type")"
+                                                      Disabled="@(!InventoryPage.IsHeld(item))" />
+                                        <MudText Typo="Typo.body2"
+                                                 Class="mud-text-secondary text-nowrap">
+                                            @AppText.Format("InInventoryCount", InventoryPage.IsHeld(item) ? item.TotalCount : 0)
+                                            <ChangedDot When="@InventoryPage.IsChanged(item)" />
+                                        </MudText>
+                                        <MudSpacer />
                                         @* Wear Button *@
                                         <Tooltip Text="@WearText(item)">
-                                            <MudButton Variant="Variant.Text"
-                                                       Size="Size.Small"
-                                                       StartIcon="@Icons.Material.Rounded.Shield"
-                                                       Disabled="@(!ArmorPage.CanWear(item))"
-                                                       OnClick="() => ArmorPage.Wear(item)">
-                                                @AppText.Get("WearArmour")
-                                            </MudButton>
+                                            <MudIconButton Icon="@Icons.Material.Rounded.Shield"
+                                                           aria-label="@AppText.Get("WearArmour")"
+                                                           Size="Size.Small"
+                                                           Disabled="@(!ArmorPage.CanWear(item))"
+                                                           OnClick="() => ArmorPage.Wear(item)" />
+                                        </Tooltip>
+                                        @* Delete Button *@
+                                        <Tooltip Text="@AppText.Get("DeleteArmour")"
+                                                 Disabled="@(!InventoryPage.IsHeld(item))">
+                                            <MudIconButton Icon="@Icons.Material.Rounded.Delete"
+                                                           aria-label="@AppText.Get("DeleteArmour")"
+                                                           Color="Color.Error"
+                                                           Size="Size.Small"
+                                                           Disabled="@(!InventoryPage.IsHeld(item))"
+                                                           OnClick="() => DeleteFromInventoryAsync(item)" />
                                         </Tooltip>
                                     </MudStack>
                                 }
@@ -265,36 +281,16 @@
                                       Wrap="Wrap.Wrap"
                                       Spacing="2">
                                 @* New Armor *@
-                                <MudElement HtmlTag="div"
-                                            Class="fixed-width"
-                                            Style="width:250px">
-                                    <MudSelect T="Item"
-                                               Variant="Variant.Outlined"
-                                               @bind-Value="ArmorPage.NewArmour.SelectedItem"
-                                               Label="@AppText.Get("NewArmour")"
-                                               ToStringFunc="item => item?.Name ?? string.Empty"
-                                               Margin="Margin.Dense">
-                                        @foreach (var armourType in ArmorPage.ArmourTypes)
-                                        {
-                                            <MudSelectItem Value="armourType">
-                                                <MudStack Row
-                                                          Justify="Justify.SpaceBetween"
-                                                          Spacing="4">
-                                                    <MudText Typo="Typo.body2">@armourType.Name</MudText>
-                                                    <MudText Typo="Typo.body2"
-                                                             Class="mud-text-secondary">
-                                                        @armourType.Durability?.Default
-                                                    </MudText>
-                                                </MudStack>
-                                            </MudSelectItem>
-                                        }
-                                    </MudSelect>
-                                </MudElement>
+                                <ArmourSelect @bind-Value="ArmorPage.NewType"
+                                              Types="ArmorPage.ArmourTypes"
+                                              Label="@AppText.Get("NewArmour")"
+                                              Disabled="@(!ArmorPage.FreeSlots.Any())" />
                                 @* New Durability *@
                                 <NumberField T="int"
-                                             @bind-Value="ArmorPage.NewArmour.RemainingArmourpoints"
+                                             @bind-Value="ArmorPage.NewDurability"
                                              Min="1"
                                              Label="@AppText.Get("Durability")"
+                                             Disabled="@(!ArmorPage.FreeSlots.Any())"
                                              Margin="Margin.Dense"
                                              Style="width:120px" />
                                 @* Add Armor *@
@@ -302,15 +298,11 @@
                                            Color="Color.Info"
                                            Size="Size.Small"
                                            StartIcon="@Icons.Material.Rounded.Add"
-                                           Disabled="@(!ArmorPage.NewArmour.CanAddArmor())"
-                                           OnClick="ArmorPage.NewArmour.AddArmor">
+                                           Disabled="@(!ArmorPage.CanAddNew())"
+                                           OnClick="ArmorPage.AddNew">
                                     @AppText.Get("Add")
                                 </MudButton>
                             </MudStack>
-                            <MudText Typo="Typo.caption"
-                                     Class="mud-text-secondary">
-                                @AppText.Get("DurabilityTooltip")
-                            </MudText>
                         </MudStack>
                     </MudPaper>
                 </ChildContent>

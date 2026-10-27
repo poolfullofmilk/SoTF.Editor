@@ -175,7 +175,7 @@
     <value>Nothing Found</value>
   </data>
   <data name="OpenSavegameFirst" xml:space="preserve">
-    <value>Open A Savegame First</value>
+    <value>Open a Savegame First</value>
   </data>
   <data name="Remove" xml:space="preserve">
     <value>Remove</value>
@@ -187,10 +187,10 @@
     <value>Savegames</value>
   </data>
   <data name="SelectGroup" xml:space="preserve">
-    <value>Select A Group</value>
+    <value>Select a Group</value>
   </data>
   <data name="ShowOnMap" xml:space="preserve">
-    <value>Show On Map</value>
+    <value>Show on Map</value>
   </data>
   <data name="UpdateAvailable" xml:space="preserve">
     <value>Version {0} Is Available</value>
@@ -216,11 +216,14 @@
   <data name="Family" xml:space="preserve">
     <value>Family</value>
   </data>
+  <data name="FamilyTitle" xml:space="preserve">
+    <value>Family {0}</value>
+  </data>
   <data name="Gender" xml:space="preserve">
     <value>Gender</value>
   </data>
   <data name="KilledByPlayer" xml:space="preserve">
-    <value>Killed By Player</value>
+    <value>Killed by Player</value>
   </data>
   <data name="LastSpawnTime" xml:space="preserve">
     <value>Last Spawn Time</value>
@@ -274,7 +277,7 @@
     <value>Influences</value>
   </data>
   <data name="OnlySameArea" xml:space="preserve">
-    <value>Only In The Same Area</value>
+    <value>Only in the Same Area</value>
   </data>
   <data name="RemoveSpawner" xml:space="preserve">
     <value>Remove Spawner</value>
@@ -292,10 +295,10 @@
     <value>None</value>
   </data>
   <data name="TeleportNpcToPlayer" xml:space="preserve">
-    <value>NPC To Player</value>
+    <value>NPC to Player</value>
   </data>
   <data name="TeleportPlayerToNpc" xml:space="preserve">
-    <value>Player To NPC</value>
+    <value>Player to NPC</value>
   </data>
   <data name="Teleport" xml:space="preserve">
     <value>Teleport</value>
@@ -343,25 +346,19 @@
     <value>Virginia</value>
   </data>
   <data name="SetAllToDefault" xml:space="preserve">
-    <value>Set All To Default</value>
+    <value>Set All to Default</value>
   </data>
   <data name="SetAllToDefaultTooltip" xml:space="preserve">
     <value>Sets every piece to its default durability</value>
   </data>
   <data name="SetAllToMax" xml:space="preserve">
-    <value>Set All To Max</value>
+    <value>Set All to Max</value>
   </data>
   <data name="SetAllToMaxTooltip" xml:space="preserve">
     <value>Sets every piece to max durability</value>
   </data>
   <data name="SetToDefaultDurability" xml:space="preserve">
-    <value>Set To Default Durability</value>
-  </data>
-  <data name="SetToMaxDurability" xml:space="preserve">
-    <value>Set To A Very High Durability</value>
-  </data>
-  <data name="DurabilityTooltip" xml:space="preserve">
-    <value>At 0 the armor breaks, it can go very high</value>
+    <value>Set to Default Durability</value>
   </data>
   <data name="Durability" xml:space="preserve">
     <value>Durability</value>
@@ -394,13 +391,13 @@
     <value>Fill All Bars</value>
   </data>
   <data name="MoveToKelvin" xml:space="preserve">
-    <value>Move To Kelvin</value>
+    <value>Move to Kelvin</value>
   </data>
   <data name="MoveToPlayer" xml:space="preserve">
-    <value>Move To Player</value>
+    <value>Move to Player</value>
   </data>
   <data name="MoveToVirginia" xml:space="preserve">
-    <value>Move To Virginia</value>
+    <value>Move to Virginia</value>
   </data>
   <data name="Revive" xml:space="preserve">
     <value>Revive</value>
@@ -430,7 +427,7 @@
     <value>Dead</value>
   </data>
   <data name="NotInSave" xml:space="preserve">
-    <value>Not In Save</value>
+    <value>Not in Save</value>
   </data>
   <data name="AnimalSpawnRate" xml:space="preserve">
     <value>Animal Spawn Rate</value>
@@ -502,7 +499,7 @@
     <value>God Mode</value>
   </data>
   <data name="InventoryPause" xml:space="preserve">
-    <value>Pause In Inventory</value>
+    <value>Pause in Inventory</value>
   </data>
   <data name="ModeCreative" xml:space="preserve">
     <value>Creative</value>
@@ -529,7 +526,7 @@
     <value>No Cuttings Spawn</value>
   </data>
   <data name="OneHitTrees" xml:space="preserve">
-    <value>One Hit To Cut Trees</value>
+    <value>One Hit to Cut Trees</value>
   </data>
   <data name="PlayerStatsDamage" xml:space="preserve">
     <value>Player Stats Damage</value>
@@ -544,10 +541,10 @@
     <value>PvP Damage</value>
   </data>
   <data name="ReducedAmmo" xml:space="preserve">
-    <value>Reduced Ammo In Containers</value>
+    <value>Reduced Ammo in Containers</value>
   </data>
   <data name="ReducedFood" xml:space="preserve">
-    <value>Reduced Food In Containers</value>
+    <value>Reduced Food in Containers</value>
   </data>
   <data name="SeasonLength" xml:space="preserve">
     <value>Season Length</value>
@@ -615,9 +612,6 @@
   <data name="AddAll" xml:space="preserve">
     <value>Add All</value>
   </data>
-  <data name="AddAllFromCategory" xml:space="preserve">
-    <value>Add All From Category</value>
-  </data>
   <data name="Max" xml:space="preserve">
     <value>Max</value>
   </data>
@@ -625,10 +619,10 @@
     <value>Remove All</value>
   </data>
   <data name="SetAllToMin" xml:space="preserve">
-    <value>Set All To Min</value>
+    <value>Set All to Min</value>
   </data>
   <data name="ItemsInInventory" xml:space="preserve">
-    <value>Items In Inventory</value>
+    <value>Items in Inventory</value>
   </data>
   <data name="Count" xml:space="preserve">
     <value>Count</value>
@@ -649,7 +643,7 @@
     <value>Surface Only</value>
   </data>
   <data name="UndergroundOnly" xml:space="preserve">
-    <value>Caves And Bunkers Only</value>
+    <value>Caves and Bunkers Only</value>
   </data>
   <data name="NewZiplineFromHere" xml:space="preserve">
     <value>New Zipline From Here</value>
@@ -667,7 +661,7 @@
     <value>Click Another Location</value>
   </data>
   <data name="MoveToClickedPosition" xml:space="preserve">
-    <value>Move To Clicked Position</value>
+    <value>Move to Clicked Position</value>
   </data>
   <data name="MoveToClickedTooltip" xml:space="preserve">
     <value>Then click where the anchor should go</value>
@@ -712,7 +706,7 @@
     <value>Objects</value>
   </data>
   <data name="PointsOfInterest" xml:space="preserve">
-    <value>Points Of Interest</value>
+    <value>Points of Interest</value>
   </data>
   <data name="Requirements" xml:space="preserve">
     <value>Requirements</value>
@@ -723,11 +717,8 @@
   <data name="SpawnActorsWarning" xml:space="preserve">
     <value>Too many enemies or a bad spot can crash the game</value>
   </data>
-  <data name="CreateActors" xml:space="preserve">
-    <value>Create Actors</value>
-  </data>
   <data name="DestinationFamily" xml:space="preserve">
-    <value>Same As Destination</value>
+    <value>Same as Destination</value>
   </data>
   <data name="SpaceBetween" xml:space="preserve">
     <value>Space Between</value>
@@ -775,7 +766,7 @@
     <value>GitHub Project</value>
   </data>
   <data name="CheckForUpdates" xml:space="preserve">
-    <value>Check For Updates</value>
+    <value>Check for Updates</value>
   </data>
   <data name="WorldItemCloner" xml:space="preserve">
     <value>World Item Cloner</value>
@@ -784,7 +775,7 @@
     <value>Eternal Fires</value>
   </data>
   <data name="ItemPlater" xml:space="preserve">
-    <value>Item And Structure Plater</value>
+    <value>Item and Structure Plater</value>
   </data>
   <data name="ConsumedItems" xml:space="preserve">
     <value>Consumed Items</value>
@@ -808,16 +799,13 @@
     <value>Reset Traps</value>
   </data>
   <data name="SetToEndgame" xml:space="preserve">
-    <value>Set To Endgame</value>
+    <value>Set to Endgame</value>
   </data>
   <data name="Tools" xml:space="preserve">
     <value>Tools</value>
   </data>
   <data name="Unlocks" xml:space="preserve">
     <value>Unlocks</value>
-  </data>
-  <data name="ByFamilyHint" xml:space="preserve">
-    <value>A family is a group of NPCs that belong together, like a tribe</value>
   </data>
   <data name="ByFamily" xml:space="preserve">
     <value>By Family</value>
@@ -859,7 +847,7 @@
     <value>Fill All Storages</value>
   </data>
   <data name="SelectStorage" xml:space="preserve">
-    <value>Select A Storage</value>
+    <value>Select a Storage</value>
   </data>
   <data name="StorageTypes" xml:space="preserve">
     <value>Storage Types</value>
@@ -868,7 +856,7 @@
     <value>Storage</value>
   </data>
   <data name="ApplyToSameType" xml:space="preserve">
-    <value>Apply To All Of Same Type</value>
+    <value>Apply to All of Same Type</value>
   </data>
   <data name="ApplyToSameTypeTooltip" xml:space="preserve">
     <value>Copies these items and counts to every storage of this type</value>
@@ -877,7 +865,7 @@
     <value>Change Type</value>
   </data>
   <data name="SetAllToRemove" xml:space="preserve">
-    <value>Set All To Remove</value>
+    <value>Set All to Remove</value>
   </data>
   <data name="StructureCategoryFurniture" xml:space="preserve">
     <value>Furniture</value>
@@ -970,16 +958,16 @@
     <value>Follower Items</value>
   </data>
   <data name="ItemsInWeaponRacks" xml:space="preserve">
-    <value>Items In Weapon Racks</value>
+    <value>Items in Weapon Racks</value>
   </data>
   <data name="PlatingAdded" xml:space="preserve">
-    <value>Added Plating To {0} Items</value>
+    <value>Added Plating to {0} Items</value>
   </data>
   <data name="PlatingRemoved" xml:space="preserve">
     <value>Removed Plating From {0} Items</value>
   </data>
   <data name="UnableToCheckForUpdates" xml:space="preserve">
-    <value>Unable To Check For Updates</value>
+    <value>Unable to Check for Updates</value>
   </data>
   <data name="Map" xml:space="preserve">
     <value>Map</value>
@@ -1024,7 +1012,7 @@
     <value>No Changes, Nothing Saved</value>
   </data>
   <data name="UnableToSpawnFollowers" xml:space="preserve">
-    <value>Unable To Spawn Followers</value>
+    <value>Unable to Spawn Followers</value>
   </data>
   <data name="Key" xml:space="preserve">
     <value>Key</value>
@@ -1051,7 +1039,7 @@
     <value>Reset {0} containers, save to keep them</value>
   </data>
   <data name="NothingToReset" xml:space="preserve">
-    <value>Nothing To Reset</value>
+    <value>Nothing to Reset</value>
   </data>
   <data name="TrapsReset" xml:space="preserve">
     <value>Reset {0} traps, save to keep them</value>
@@ -1063,7 +1051,7 @@
     <value>Use Default Folder</value>
   </data>
   <data name="SelectSavesFolder" xml:space="preserve">
-    <value>Select The Sons Of The Forest Saves Folder</value>
+    <value>Select the Sons Of The Forest Saves Folder</value>
   </data>
   <data name="Location" xml:space="preserve">
     <value>Location</value>
@@ -1084,7 +1072,7 @@
     <value>No player profile found in {0}</value>
   </data>
   <data name="CloneAtPlayer" xml:space="preserve">
-    <value>Clone At Player Position</value>
+    <value>Clone at Player Position</value>
   </data>
   <data name="CloneAtPlayerTooltip" xml:space="preserve">
     <value>Creates a copy at the player</value>
@@ -1096,13 +1084,13 @@
     <value>Removes every copy of this type from the map</value>
   </data>
   <data name="ClonesRemoved" xml:space="preserve">
-    <value>Removed {0} Copies Of {1}</value>
+    <value>Removed {0} Copies of {1}</value>
   </data>
   <data name="NothingToRemove" xml:space="preserve">
-    <value>Nothing To Remove</value>
+    <value>Nothing to Remove</value>
   </data>
   <data name="NothingToMove" xml:space="preserve">
-    <value>Nothing To Move</value>
+    <value>Nothing to Move</value>
   </data>
   <data name="ObjectCloned" xml:space="preserve">
     <value>Copied {0} to the player, save to keep it</value>
@@ -1114,13 +1102,15 @@
     <value>World Item</value>
   </data>
   <data name="UnableToSave" xml:space="preserve">
-    <value>Unable To Save: {0}</value>
+    <value>Unable to Save: {0}</value>
   </data>
   <data name="DiscardChangesTitle" xml:space="preserve">
     <value>Discard Unsaved Changes</value>
   </data>
   <data name="DiscardChangesText" xml:space="preserve">
-    <value>Some edits are not saved yet. Yes throws them away. No keeps them so you can save first</value>
+    <value>Some edits are not saved yet.
+Yes throws them away.
+No keeps them so you can save first</value>
   </data>
   <data name="OpenBackupFolder" xml:space="preserve">
     <value>Open Backup Folder</value>
@@ -1162,10 +1152,10 @@
     <value>Male</value>
   </data>
   <data name="InfluenceCannibal" xml:space="preserve">
-    <value>Cannibal</value>
+    <value>Cannibal NPCs</value>
   </data>
   <data name="InfluenceCreepy" xml:space="preserve">
-    <value>Creepy</value>
+    <value>Creepy NPCs</value>
   </data>
   <data name="InfluencePlayer" xml:space="preserve">
     <value>Player</value>
@@ -1207,10 +1197,10 @@
     <value>Swimming</value>
   </data>
   <data name="ActorState23" xml:space="preserve">
-    <value>Stunned Or Hit</value>
+    <value>Stunned or Hit</value>
   </data>
   <data name="ActorState24" xml:space="preserve">
-    <value>Drowning Or Thrown</value>
+    <value>Drowning or Thrown</value>
   </data>
   <data name="ActorState25" xml:space="preserve">
     <value>Golf Cart</value>
@@ -1560,17 +1550,11 @@
   <data name="UpdateFolderProtected" xml:space="preserve">
     <value>The editor's folder is protected, so the release page opens to download it yourself</value>
   </data>
-  <data name="Collapse" xml:space="preserve">
-    <value>Collapse</value>
-  </data>
-  <data name="Expand" xml:space="preserve">
-    <value>Expand</value>
-  </data>
   <data name="HeldOnly" xml:space="preserve">
     <value>Held Only</value>
   </data>
   <data name="AddToInventory" xml:space="preserve">
-    <value>Add To Inventory</value>
+    <value>Add to Inventory</value>
   </data>
   <data name="StrengthLevelInfo" xml:space="preserve">
     <value>Strength raises melee damage and max health. Max health is 100 plus 2 per level above 1</value>
@@ -1729,7 +1713,7 @@
     <value>Needs Save</value>
   </data>
   <data name="SavesAtOnce" xml:space="preserve">
-    <value>Saves At Once</value>
+    <value>Saves at Once</value>
   </data>
   <data name="HostSaveOnly" xml:space="preserve">
     <value>Host Save Only</value>
@@ -1792,13 +1776,13 @@
     <value>Max health caps it, raise the strength level to go higher</value>
   </data>
   <data name="SetToMax" xml:space="preserve">
-    <value>Set To Max</value>
+    <value>Set to Max</value>
   </data>
   <data name="ResetToDefault" xml:space="preserve">
-    <value>Reset To Default</value>
+    <value>Reset to Default</value>
   </data>
   <data name="NothingToChange" xml:space="preserve">
-    <value>Nothing To Change</value>
+    <value>Nothing to Change</value>
   </data>
   <data name="UpdateNotVerified" xml:space="preserve">
     <value>The download could not be verified, so the release page opens to download it yourself</value>
@@ -1861,19 +1845,19 @@
     <value>This One</value>
   </data>
   <data name="ApplyToFamily" xml:space="preserve">
-    <value>Family ({0})</value>
+    <value>Family</value>
   </data>
   <data name="ApplyToType" xml:space="preserve">
-    <value>Same Type ({0})</value>
+    <value>Same Type</value>
   </data>
   <data name="ApplyToEveryone" xml:space="preserve">
-    <value>Everyone ({0})</value>
+    <value>Everyone</value>
   </data>
   <data name="SkipFollowers" xml:space="preserve">
-    <value>Leave Kelvin And Virginia Alone</value>
+    <value>Leave Kelvin and Virginia Alone</value>
   </data>
   <data name="ApplyCount" xml:space="preserve">
-    <value>Apply To {0}</value>
+    <value>Apply to {0}</value>
   </data>
   <data name="RemoveCount" xml:space="preserve">
     <value>Remove {0}</value>
@@ -1885,13 +1869,15 @@
     <value>Close Without Saving</value>
   </data>
   <data name="CloseUnsavedText" xml:space="preserve">
-    <value>Some edits are not saved yet. Yes closes the editor and throws them away. No keeps the editor open so you can save first</value>
+    <value>Some edits are not saved yet.
+Yes closes the editor and throws them away.
+No keeps the editor open so you can save first</value>
   </data>
   <data name="AllStructures" xml:space="preserve">
     <value>All Structures</value>
   </data>
   <data name="SelectStructure" xml:space="preserve">
-    <value>Select A Structure Type</value>
+    <value>Select a Structure Type</value>
   </data>
   <data name="StructuresInfo" xml:space="preserve">
     <value>Pick what saving does with each structure. Keep leaves it as it is</value>
@@ -1899,8 +1885,11 @@
   <data name="SetAllTo" xml:space="preserve">
     <value>Set All To</value>
   </data>
-  <data name="StructureCounts" xml:space="preserve">
-    <value>{0} Built · {1} Unfinished</value>
+  <data name="StructureCountBuilt" xml:space="preserve">
+    <value>{0} Built</value>
+  </data>
+  <data name="StructureCountUnfinished" xml:space="preserve">
+    <value>{0} Unfinished</value>
   </data>
   <data name="Built" xml:space="preserve">
     <value>Built</value>
@@ -1927,10 +1916,19 @@
     <value>How much they like them, from -100 hate to 100 love</value>
   </data>
   <data name="SeasonInfo" xml:space="preserve">
-    <value>Every season lasts as many days as Season Length on the setup tab says, so one season cannot last longer than another. Pick the season and the days left, the editor works out the offset</value>
+    <value>Every season lasts as many days as Season Length on the setup tab says, so one season cannot last longer than another. Click a day on the bar to make it today, the editor works out the offset</value>
   </data>
-  <data name="DaysUntilSeason" xml:space="preserve">
-    <value>Days Until {0}</value>
+  <data name="DaysUntilSeasonOf" xml:space="preserve">
+    <value>Days Until {0}: {1}</value>
+  </data>
+  <data name="SeasonCurrent" xml:space="preserve">
+    <value>Current</value>
+  </data>
+  <data name="SeasonNew" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="SeasonClickHint" xml:space="preserve">
+    <value>Click a day to make it today</value>
   </data>
   <data name="JoinedGameName" xml:space="preserve">
     <value>{0} {1} Days</value>
@@ -1939,10 +1937,10 @@
     <value>Other Files</value>
   </data>
   <data name="BringToPlayer" xml:space="preserve">
-    <value>Bring To Player</value>
+    <value>Bring to Player</value>
   </data>
   <data name="SpawnWhat" xml:space="preserve">
-    <value>What To Spawn</value>
+    <value>What to Spawn</value>
   </data>
   <data name="SpawnWhere" xml:space="preserve">
     <value>Where</value>
@@ -1957,7 +1955,7 @@
     <value>In Inventory</value>
   </data>
   <data name="InInventoryCount" xml:space="preserve">
-    <value>{0} In Inventory</value>
+    <value>{0} in Inventory</value>
   </data>
   <data name="WearArmour" xml:space="preserve">
     <value>Wear</value>
@@ -1966,43 +1964,43 @@
     <value>Revert</value>
   </data>
   <data name="ArmorCount" xml:space="preserve">
-    <value>Armor, {0} Of 10</value>
+    <value>Armor, {0} of 10</value>
   </data>
   <data name="ArmorInfo" xml:space="preserve">
     <value>The game places each worn piece on the body by itself, up to 10, so there is no body part to pick. Unequip puts a piece back in the inventory, delete removes it for good</value>
   </data>
   <data name="SetToDefaultDurabilityOf" xml:space="preserve">
-    <value>Set To Default Durability ({0})</value>
+    <value>Set Default Durability: {0}</value>
   </data>
   <data name="SetToMaxOf" xml:space="preserve">
-    <value>Set To Max ({0})</value>
+    <value>Set to Max: {0}</value>
   </data>
   <data name="Unequip" xml:space="preserve">
     <value>Unequip</value>
   </data>
   <data name="UnequipText" xml:space="preserve">
-    <value>Unequip To Inventory</value>
+    <value>Unequip to Inventory</value>
   </data>
   <data name="UnequipFull" xml:space="preserve">
-    <value>The inventory already holds the most it can ({0})</value>
+    <value>Inventory Already Holds {0}</value>
   </data>
   <data name="UnequipUnknown" xml:space="preserve">
-    <value>This piece has no inventory item</value>
+    <value>No Inventory Item for This Piece</value>
   </data>
   <data name="WearText" xml:space="preserve">
-    <value>Wear One From The Inventory</value>
+    <value>Wear One Piece</value>
   </data>
   <data name="WearNoneLeft" xml:space="preserve">
-    <value>None left in the inventory</value>
+    <value>None Left in Inventory</value>
   </data>
   <data name="WearAllWorn" xml:space="preserve">
-    <value>All 10 pieces are already worn</value>
+    <value>Already Wearing 10 Pieces</value>
   </data>
   <data name="DeleteArmour" xml:space="preserve">
     <value>Delete Piece</value>
   </data>
   <data name="DeleteArmourText" xml:space="preserve">
-    <value>The piece is gone for good, it does not go back to the inventory</value>
+    <value>The piece is gone for good, it is not worn or kept in the inventory</value>
   </data>
   <data name="NewArmour" xml:space="preserve">
     <value>New Piece</value>

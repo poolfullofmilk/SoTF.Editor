@@ -324,12 +324,6 @@ public class InventoryPageViewModel
     {
         return _inventory.Count > 0;
     }
-
-    public void AddAllFromCategory(Category category)
-    {
-        _inventory.AddRange(_unassignedItems.Where(item => item.Type == category.Type));
-        _unassignedItems.RemoveAll(item => item.Type == category.Type);
-    }
 }
 
 public class Category(string type)

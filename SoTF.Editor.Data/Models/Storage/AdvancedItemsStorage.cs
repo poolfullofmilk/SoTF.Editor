@@ -28,7 +28,9 @@ public class AdvancedItemsStorage : IStorage
 
     public List<ItemWrapper> SupportedItems => GetSupportedItems();
 
-    public string Description => $"{_definition.Name} #{_index} ({GetTotalStored()})";
+    public string Description => $"{_definition.Name} #{_index}";
+
+    public int TotalStored => Slots.Sum(slot => slot.GetTotalStored());
 
     public void SetSaveData(StorageSaveData saveData)
     {
@@ -210,10 +212,5 @@ public class AdvancedItemsStorage : IStorage
         }
 
         return currentSlot <= 10 ? (currentSlot - 1) / 2 : null;
-    }
-
-    private int GetTotalStored()
-    {
-        return Slots.Sum(slot => slot.GetTotalStored());
     }
 }

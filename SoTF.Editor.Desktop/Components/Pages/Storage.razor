@@ -36,11 +36,9 @@
                         }
                         @foreach (var (title, storages) in FilteredCollections)
                         {
-                            <MudText Typo="Typo.subtitle2"
-                                     Class="group-title px-4 pt-4 pb-1">
-                                <MudHighlighter Text="@title"
-                                                HighlightedText="@_filter" />
-                            </MudText>
+                            <GroupTitle Title="@title"
+                                        Count="storages.Count"
+                                        Highlight="@_filter" />
                             @foreach (var storage in storages)
                             {
                                 @* Storage Row *@
@@ -51,12 +49,20 @@
                                             aria-pressed="@((StoragePage.SelectedStorage == storage) ? "true" : "false")"
                                             data-keyclick
                                             @onclick="() => SelectStorage(storage)">
-                                    <MudText Typo="Typo.body2"
-                                             Class="text-truncate">
-                                        <MudHighlighter Text="@storage.Description"
-                                                        HighlightedText="@_filter" />
-                                        <ChangedDot When="@StoragePage.IsChanged(storage)" />
-                                    </MudText>
+                                    <MudStack Row
+                                              AlignItems="AlignItems.Center"
+                                              Spacing="2">
+                                        <MudText Typo="Typo.body2"
+                                                 Class="text-truncate flex-grow-1">
+                                            <MudHighlighter Text="@storage.Description"
+                                                            HighlightedText="@_filter" />
+                                            <ChangedDot When="@StoragePage.IsChanged(storage)" />
+                                        </MudText>
+                                        <MudText Typo="Typo.body2"
+                                                 Class="mud-text-secondary">
+                                            @storage.TotalStored
+                                        </MudText>
+                                    </MudStack>
                                 </MudElement>
                             }
                         }
@@ -76,6 +82,10 @@
                 <Header Title="@selected.Description"
                         Class="fit">
                     <TitleContent>
+                        <MudText Typo="Typo.h5"
+                                 Class="mud-text-secondary">
+                            @selected.TotalStored
+                        </MudText>
                         <MudSpacer />
                         @* Set All Max *@
                         <MudButton Variant="Variant.Text"

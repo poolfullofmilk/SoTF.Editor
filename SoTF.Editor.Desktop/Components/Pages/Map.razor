@@ -7,163 +7,166 @@
               Spacing="6"
               Class="@(_menusHidden ? "page-fill menus-hidden" : "page-fill")">
         @* Filter Panel *@
-        <MudPaper Elevation="4"
-                  Class="rounded-panel pa-4 overflow-y-auto side-panel">
-            <MudStack Spacing="3">
-                @* Point Search *@
-                <SearchField Value="@MapViewModel.MapFilter.FullText"
-                             ValueChanged="SetFullText"
-                             FullWidth />
+        <MudElement HtmlTag="div"
+                    Class="side-panel fill-column">
+            <MudPaper Elevation="4"
+                      Class="rounded-panel pa-4 overflow-y-auto fit">
+                <MudStack Spacing="3">
+                    @* Point Search *@
+                    <SearchField Value="@MapViewModel.MapFilter.FullText"
+                                 ValueChanged="SetFullText"
+                                 FullWidth />
 
-                <MudStack Row
-                          AlignItems="AlignItems.Center"
-                          Spacing="1">
-                    <MudText Typo="Typo.subtitle2">@AppText.Get("PointsOfInterest")</MudText>
-                    <MudSpacer />
-                    @* Select All *@
-                    <Tooltip Text="@AppText.Get("SelectAll")"
-                             RootClass="d-flex">
-                        <MudCheckBox T="bool?"
-                                     Value="StateOf(MapViewModel.AllGroups())"
-                                     ValueChanged="SetAllEnabled"
-                                     TriState
-                                     Color="Color.Info"
-                                     Dense />
-                    </Tooltip>
-                    @* Reset Points *@
-                    <Tooltip Text="@AppText.Get("ResetToDefault")"
-                             Disabled="@MapViewModel.IsAtDefault()"
-                             RootClass="d-flex">
-                        <MudIconButton Icon="@Icons.Material.Rounded.RestartAlt"
-                                       aria-label="@AppText.Get("ResetToDefault")"
-                                       Size="Size.Small"
-                                       Disabled="@MapViewModel.IsAtDefault()"
-                                       OnClick="ResetToDefault" />
-                    </Tooltip>
-                    @* Filter Menu *@
-                    <Tooltip Text="@AppText.Get("Filters")"
-                             RootClass="d-flex">
-                        <MudBadge Dot
-                                  Overlap
-                                  Color="Color.Info"
-                                  Visible="@HasFilters"
-                                  Class="d-flex">
-                            <MudMenu Icon="@Icons.Material.Rounded.FilterList"
-                                     AriaLabel="@AppText.Get("Filters")"
-                                     Size="Size.Small"
-                                     AnchorOrigin="Origin.BottomRight"
-                                     TransformOrigin="Origin.TopRight">
-                                @* Area Menu *@
-                                <MudMenu Label="@($"{AppText.Get("Area")}: {MapViewModel.MapFilter.AreaFilter.Name}")"
-                                         MaxHeight="400">
-                                    @foreach (var areaFilter in MapViewModel.MapFilter.AreaFilterTypeValues)
-                                    {
-                                        <MudMenuItem Icon="@CheckOf(areaFilter == MapViewModel.MapFilter.AreaFilter)"
-                                                     OnClick="() => SetAreaFilter(areaFilter)">
-                                            @areaFilter.Name
-                                        </MudMenuItem>
-                                    }
+                    <MudStack Row
+                              AlignItems="AlignItems.Center"
+                              Spacing="1">
+                        <MudText Typo="Typo.subtitle2">@AppText.Get("PointsOfInterest")</MudText>
+                        <MudSpacer />
+                        @* Reset Points *@
+                        <Tooltip Text="@AppText.Get("ResetToDefault")"
+                                 Disabled="@MapViewModel.IsAtDefault()"
+                                 RootClass="d-flex">
+                            <MudIconButton Icon="@Icons.Material.Rounded.RestartAlt"
+                                           aria-label="@AppText.Get("ResetToDefault")"
+                                           Size="Size.Small"
+                                           Disabled="@MapViewModel.IsAtDefault()"
+                                           OnClick="ResetToDefault" />
+                        </Tooltip>
+                        @* Filter Menu *@
+                        <Tooltip Text="@AppText.Get("Filters")"
+                                 RootClass="d-flex">
+                            <MudBadge Dot
+                                      Overlap
+                                      Color="Color.Info"
+                                      Visible="@HasFilters"
+                                      Class="d-flex">
+                                <MudMenu Icon="@Icons.Material.Rounded.FilterList"
+                                         AriaLabel="@AppText.Get("Filters")"
+                                         Size="Size.Small"
+                                         AnchorOrigin="Origin.BottomRight"
+                                         TransformOrigin="Origin.TopRight">
+                                    @* Area Menu *@
+                                    <MudMenu Label="@($"{AppText.Get("Area")}: {MapViewModel.MapFilter.AreaFilter.Name}")"
+                                             MaxHeight="400">
+                                        @foreach (var areaFilter in MapViewModel.MapFilter.AreaFilterTypeValues)
+                                        {
+                                            <MudMenuItem Icon="@CheckOf(areaFilter == MapViewModel.MapFilter.AreaFilter)"
+                                                         OnClick="() => SetAreaFilter(areaFilter)">
+                                                @areaFilter.Name
+                                            </MudMenuItem>
+                                        }
+                                    </MudMenu>
+                                    @* Requirements Menu *@
+                                    <MudMenu Label="@($"{AppText.Get("Requirements")}: {RequirementsName(MapViewModel.MapFilter.RequirementsFilter)}")">
+                                        @foreach (var requirementsFilter in Enum.GetValues<MapFilter.RequirementsFilterType>())
+                                        {
+                                            <MudMenuItem Icon="@CheckOf(requirementsFilter == MapViewModel.MapFilter.RequirementsFilter)"
+                                                         OnClick="() => SetRequirementsFilter(requirementsFilter)">
+                                                @RequirementsName(requirementsFilter)
+                                            </MudMenuItem>
+                                        }
+                                    </MudMenu>
+                                    @* Uncollected Only *@
+                                    <MudMenuItem Icon="@(MapViewModel.MapFilter.ShowOnlyUncollectedItems ? Icons.Material.Rounded.CheckBox : Icons.Material.Rounded.CheckBoxOutlineBlank)"
+                                                 AutoClose="false"
+                                                 OnClick="() => SetUncollectedOnly(!MapViewModel.MapFilter.ShowOnlyUncollectedItems)">
+                                        @AppText.Get("UncollectedOnly")
+                                    </MudMenuItem>
+                                    <MudDivider />
+                                    @* Reset Filters *@
+                                    <MudMenuItem Icon="@Icons.Material.Rounded.FilterListOff"
+                                                 IconColor="Color.Error"
+                                                 Class="mud-error-text"
+                                                 Disabled="@(!HasFilters)"
+                                                 OnClick="ResetFilters">
+                                        @AppText.Get("ResetFilters")
+                                    </MudMenuItem>
                                 </MudMenu>
-                                @* Requirements Menu *@
-                                <MudMenu Label="@($"{AppText.Get("Requirements")}: {RequirementsName(MapViewModel.MapFilter.RequirementsFilter)}")">
-                                    @foreach (var requirementsFilter in Enum.GetValues<MapFilter.RequirementsFilterType>())
-                                    {
-                                        <MudMenuItem Icon="@CheckOf(requirementsFilter == MapViewModel.MapFilter.RequirementsFilter)"
-                                                     OnClick="() => SetRequirementsFilter(requirementsFilter)">
-                                            @RequirementsName(requirementsFilter)
-                                        </MudMenuItem>
-                                    }
-                                </MudMenu>
-                                @* Uncollected Only *@
-                                <MudMenuItem Icon="@(MapViewModel.MapFilter.ShowOnlyUncollectedItems ? Icons.Material.Rounded.CheckBox : Icons.Material.Rounded.CheckBoxOutlineBlank)"
-                                             AutoClose="false"
-                                             OnClick="() => SetUncollectedOnly(!MapViewModel.MapFilter.ShowOnlyUncollectedItems)">
-                                    @AppText.Get("UncollectedOnly")
-                                </MudMenuItem>
-                                <MudDivider />
-                                @* Reset Filters *@
-                                <MudMenuItem Icon="@Icons.Material.Rounded.FilterListOff"
-                                             Disabled="@(!HasFilters)"
-                                             OnClick="ResetFilters">
-                                    @AppText.Get("ResetFilters")
-                                </MudMenuItem>
-                            </MudMenu>
-                        </MudBadge>
-                    </Tooltip>
-                </MudStack>
+                            </MudBadge>
+                        </Tooltip>
+                        @* Select All *@
+                        <Tooltip Text="@AppText.Get("SelectAll")"
+                                 RootClass="d-flex">
+                            <MudCheckBox T="bool?"
+                                         Value="StateOf(MapViewModel.AllGroups())"
+                                         ValueChanged="ToggleAll"
+                                         TriState
+                                         Color="Color.Info"
+                                         Dense />
+                        </Tooltip>
+                    </MudStack>
 
-                <MudStack Spacing="0">
-                    @foreach (var grouper in MapViewModel.PoiGroups.OrderBy(grouper => grouper.BaseTitle))
-                    {
-                        @switch (grouper)
+                    <MudStack Spacing="0">
+                        @foreach (var grouper in MapViewModel.PoiGroups.OrderBy(grouper => grouper.Title))
                         {
-                            case PoiGroup poiGroup:
-                                @* Group Checkbox *@
-                                <MudCheckBox T="bool"
-                                             Value="poiGroup.Enabled"
-                                             ValueChanged="value => SetEnabled(poiGroup, value)"
-                                             Color="Color.Info"
-                                             Dense
-                                             Class="@MatchClass(poiGroup)">
-                                    <MudStack Row
-                                              AlignItems="AlignItems.Center"
-                                              Spacing="2">
-                                        <MudImage Src="@poiGroup.Icon"
-                                                  Alt="@poiGroup.BaseTitle"
-                                                  Width="20"
-                                                  Height="20" />
-                                        <MudText Typo="Typo.body2">@poiGroup.Title</MudText>
-                                    </MudStack>
-                                </MudCheckBox>
-                                break;
-                            case PoiGroupCollection poiGroupCollection:
+                            @if (grouper is PoiGroupCollection collection)
+                            {
                                 <MudStack Row
                                           AlignItems="AlignItems.Center"
-                                          Spacing="0">
+                                          Spacing="0"
+                                          Class="@MatchClass(collection.PoiGroups)">
                                     @* Collection Checkbox *@
                                     <MudCheckBox T="bool?"
-                                                 Value="StateOf(poiGroupCollection.PoiGroups)"
-                                                 ValueChanged="value => SetEnabled(poiGroupCollection, value == true)"
+                                                 Value="StateOf(collection.PoiGroups)"
+                                                 ValueChanged="() => SetEnabled(collection, StateOf(collection.PoiGroups) != true)"
                                                  TriState
                                                  Color="Color.Info"
-                                                 Dense
-                                                 Class="@MatchClass(poiGroupCollection.PoiGroups)">
-                                        <MudText Typo="Typo.body2">@poiGroupCollection.Title</MudText>
-                                    </MudCheckBox>
-                                    <MudSpacer />
-                                    @* Expand Button *@
-                                    <Tooltip Text="@(IsExpanded(poiGroupCollection) ? AppText.Get("Collapse") : AppText.Get("Expand"))">
-                                        <MudIconButton Icon="@(IsExpanded(poiGroupCollection) ? Icons.Material.Rounded.ExpandLess : Icons.Material.Rounded.ExpandMore)"
-                                                       Size="Size.Small"
-                                                       OnClick="() => ToggleExpanded(poiGroupCollection)" />
-                                    </Tooltip>
+                                                 Dense />
+                                    @* Collection Button *@
+                                    <MudElement HtmlTag="div"
+                                                Class="list-row rounded-inner d-flex align-center align-self-stretch gap-1 flex-grow-1 px-1"
+                                                role="button"
+                                                tabindex="0"
+                                                aria-expanded="@(IsExpanded(collection) ? "true" : "false")"
+                                                data-keyclick
+                                                @onclick="() => ToggleExpanded(collection)">
+                                        <MudIcon Icon="@(IsExpanded(collection) ? Icons.Material.Rounded.ExpandMore : Icons.Material.Rounded.ChevronRight)"
+                                                 Size="Size.Small" />
+                                        <MudText Typo="Typo.body2"
+                                                 Class="flex-grow-1">
+                                            @collection.Title
+                                        </MudText>
+                                        <MudText Typo="Typo.body2"
+                                                 Class="mud-text-secondary">
+                                            @collection.Count
+                                        </MudText>
+                                    </MudElement>
                                 </MudStack>
-                                @foreach (var poiGroup in ExpandedGroups(poiGroupCollection))
-                                {
-                                    @* Sub Group Checkbox *@
+                            }
+                            @foreach (var poiGroup in GroupsUnder(grouper))
+                            {
+                                <MudStack Row
+                                          AlignItems="AlignItems.Center"
+                                          Spacing="2"
+                                          Class="@RowClass(poiGroup, grouper)">
+                                    @* Group Checkbox *@
                                     <MudCheckBox T="bool"
                                                  Value="poiGroup.Enabled"
                                                  ValueChanged="value => SetEnabled(poiGroup, value)"
                                                  Color="Color.Info"
-                                                 Dense
-                                                 Class="@("ml-6 " + MatchClass(poiGroup))">
+                                                 Dense>
                                         <MudStack Row
                                                   AlignItems="AlignItems.Center"
                                                   Spacing="2">
                                             <MudImage Src="@poiGroup.Icon"
-                                                      Alt="@poiGroup.BaseTitle"
+                                                      Alt="@poiGroup.Title"
                                                       Width="20"
                                                       Height="20" />
                                             <MudText Typo="Typo.body2">@poiGroup.Title</MudText>
                                         </MudStack>
                                     </MudCheckBox>
-                                }
-                                break;
+                                    <MudSpacer />
+                                    <MudText Typo="Typo.body2"
+                                             Class="mud-text-secondary pr-1">
+                                        @poiGroup.Count
+                                    </MudText>
+                                </MudStack>
+                            }
                         }
-                    }
+                    </MudStack>
                 </MudStack>
-            </MudStack>
-        </MudPaper>
+            </MudPaper>
+        </MudElement>
 
         @* Map Viewport *@
         <MudPaper Elevation="4"
@@ -257,7 +260,7 @@
                                    Variant="Variant.Filled"
                                    Size="Size.Small"
                                    Class="map-overlay"
-                                   OnClick="ToggleMenusAsync" />
+                                   OnClick="ToggleMenus" />
                 </Tooltip>
             </MudStack>
 

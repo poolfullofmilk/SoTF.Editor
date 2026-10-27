@@ -67,19 +67,6 @@
             <MudStack Row
                       AlignItems="AlignItems.Center"
                       Spacing="2">
-                @if (MainViewModel.SelectedSavegame is { } openSavegame)
-                {
-                    @* Open Savegame *@
-                    <MudButton Variant="Variant.Text"
-                               Size="Size.Small"
-                               StartIcon="@Icons.Material.Rounded.Folder"
-                               title="@openSavegame.FullPath"
-                               Class="text-nowrap mr-2"
-                               Href="/">
-                        @openSavegame.Name
-                    </MudButton>
-                }
-
                 @* Backup Menu *@
                 <Tooltip Text="@AppText.Get("Backups")"
                          Disabled="@(!HasSavegame)"

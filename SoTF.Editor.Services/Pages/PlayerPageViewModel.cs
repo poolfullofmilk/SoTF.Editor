@@ -17,6 +17,8 @@ public class PlayerPageViewModel
     private const string SicknessEntry = "Sickness";
     private const string CurrentHealthEntry = "CurrentHealth";
     private const string RaftEntry = "player.localToRaftUniqueId";
+    private const float FullBar = 100;
+    private const float FullBuff = 65535;
 
     // Float Entries The Page Edits, Each Named Like Its Property
     private static readonly Dictionary<string, PropertyInfo> s_floatEntries = new[]
@@ -150,16 +152,32 @@ public class PlayerPageViewModel
 
     public void FillAllBars()
     {
+        // Strength First, Then Health Fills To Its New Max
+        PlayerState.ChangeStrengthLevel(PlayerState.MaxStrengthLevel);
         PlayerState.CurrentHealth = PlayerState.MaxHealth;
-        PlayerState.Fullness = 100;
-        PlayerState.Hydration = 100;
-        PlayerState.Rest = 100;
-        PlayerState.Stamina = 100;
-        PlayerState.HydrationBuff = 65535;
+        PlayerState.Fullness = FullBar;
+        PlayerState.Hydration = FullBar;
+        PlayerState.Rest = FullBar;
+        PlayerState.Stamina = FullBar;
+        PlayerState.HydrationBuff = FullBuff;
         PlayerState.RestBuff = 1;
-        PlayerState.FullnessBuff = 65535;
+        PlayerState.FullnessBuff = FullBuff;
         PlayerState.Sickness = 0;
     }
+
+    // Every Bar Already Full Leaves The Button Nothing To Do
+    public bool CanFillAllBars =>
+        PlayerState.StrengthLevel != PlayerState.MaxStrengthLevel
+        || PlayerState.MaxHealth != PlayerState.MaxHealthAt(PlayerState.MaxStrengthLevel)
+        || PlayerState.CurrentHealth < PlayerState.MaxHealth
+        || PlayerState.Fullness != FullBar
+        || PlayerState.Hydration != FullBar
+        || PlayerState.Rest != FullBar
+        || PlayerState.Stamina != FullBar
+        || PlayerState.HydrationBuff != FullBuff
+        || PlayerState.RestBuff != 1
+        || PlayerState.FullnessBuff != FullBuff
+        || PlayerState.Sickness != 0;
 
     private static Position? PositionOf(JToken entry)
     {

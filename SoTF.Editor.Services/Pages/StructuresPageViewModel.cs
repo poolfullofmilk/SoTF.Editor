@@ -253,15 +253,15 @@ public class StructuresPageViewModel
         }
     }
 
-    // Some Row Takes The Mode And Is Not Already There
-    public static bool CanSetAll(
+    // Rows The Mode Would Change, Keep Counts Edited Ones
+    public static int CountSetAll(
         IEnumerable<ScrewStructureWrapper> rows,
         ScrewStructureModificationMode mode
     )
     {
         return mode == ScrewStructureModificationMode.None
-            ? rows.Any(wrapper => wrapper.IsChanged)
-            : rows.Any(wrapper =>
+            ? rows.Count(wrapper => wrapper.IsChanged)
+            : rows.Count(wrapper =>
                 wrapper.ModificationModes.Contains(mode) && wrapper.ModificationMode != mode
             );
     }

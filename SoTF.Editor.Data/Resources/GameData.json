@@ -1095,7 +1095,7 @@
       "type": "armor",
       "isEquippableArmor": true,
       "durability": {
-        "default": 10,
+        "default": 25,
         "min": 1,
         "max": 65535
       },
@@ -1307,7 +1307,7 @@
       "type": "armor",
       "isEquippableArmor": true,
       "durability": {
-        "default": 35,
+        "default": 65,
         "min": 1,
         "max": 65535
       },
@@ -1499,7 +1499,7 @@
       "type": "armor",
       "isEquippableArmor": true,
       "durability": {
-        "default": 20,
+        "default": 40,
         "min": 1,
         "max": 65535
       },
@@ -1809,7 +1809,7 @@
       "type": "armor",
       "isEquippableArmor": true,
       "durability": {
-        "default": 80,
+        "default": 100,
         "min": 1,
         "max": 65535
       },
@@ -2132,7 +2132,7 @@
       "type": "armor",
       "isEquippableArmor": true,
       "durability": {
-        "default": 40,
+        "default": 80,
         "min": 1,
         "max": 65535
       },

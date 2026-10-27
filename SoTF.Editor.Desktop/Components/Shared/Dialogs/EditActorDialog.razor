@@ -61,7 +61,14 @@
                                                Size="Size.Small"
                                                Disabled="@(selection.Value == 1 && !_viewModel.HasFamily)"
                                                OnClick="() => _viewModel.ActorSelection = selection.Value">
-                                        @SelectionLabel(selection)
+                                        @AppText.Get(selection.LabelKey)
+                                        @if (selection.Value != 0)
+                                        {
+                                            <MudElement HtmlTag="span"
+                                                        Class="mud-text-secondary ml-2">
+                                                @CountFor(selection.Value)
+                                            </MudElement>
+                                        }
                                     </MudButton>
                                 }
                             </MudButtonGroup>

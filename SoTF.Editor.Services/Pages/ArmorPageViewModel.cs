@@ -11,7 +11,7 @@ namespace SoTF.Editor.Services.Pages;
 public class ArmorPageViewModel
 {
     private readonly List<ArmourData> _armour = [];
-    private readonly Dictionary<ArmourData, string> _loaded = new(
+    private readonly Dictionary<ArmourData, (int ItemId, float Durability, int Slot)> _loaded = new(
         ReferenceEqualityComparer.Instance
     );
     private readonly ItemList _itemList;
@@ -20,7 +20,6 @@ public class ArmorPageViewModel
     public ArmorPageViewModel(GameData gameData, InventoryPageViewModel inventoryPage)
     {
         _inventoryPage = inventoryPage;
-        NewArmour = new NewArmourPiece(_armour);
         _itemList = gameData.Items;
         ArmourTypes =
         [
@@ -31,13 +30,28 @@ public class ArmorPageViewModel
         ];
     }
 
-    public IEnumerable<ArmourData> Armour => _armour.OrderBy(armourData => armourData.Slot);
+    // Weakest To Strongest, Like The Pickers
+    public IEnumerable<ArmourData> Armour =>
+        _armour
+            .OrderBy(armourData => armourData.DefaultDurability)
+            .ThenBy(armourData => armourData.Name)
+            .ThenBy(armourData => armourData.Slot);
 
     // A Move Through The Backpack Ties This To The Inventory
     public bool MovedThroughInventory { get; private set; }
     public List<Item> ArmourTypes { get; }
 
-    public NewArmourPiece NewArmour { get; }
+    // New Piece, A Picked Type Starts At Its Default
+    public Item? NewType
+    {
+        get;
+        set
+        {
+            field = value;
+            NewDurability = value?.Durability?.Default ?? NewDurability;
+        }
+    }
+    public int NewDurability { get; set; }
 
     public bool HasChanges => _loaded.Count != _armour.Count || _armour.Any(IsChanged);
 
@@ -61,9 +75,22 @@ public class ArmorPageViewModel
         return !_loaded.TryGetValue(armourData, out var loaded) || loaded != ValueOf(armourData);
     }
 
-    private static string ValueOf(ArmourData armourData)
+    public bool IsTypeChanged(ArmourData armourData)
     {
-        return $"{armourData.Id} {armourData.ArmourPiece.RemainingArmourpoints} {armourData.Slot}";
+        return !_loaded.TryGetValue(armourData, out var loaded)
+            || loaded.ItemId != armourData.Id
+            || loaded.Slot != armourData.Slot;
+    }
+
+    public bool IsDurabilityChanged(ArmourData armourData)
+    {
+        return _loaded.TryGetValue(armourData, out var loaded)
+            && loaded.Durability != armourData.ArmourPiece.RemainingArmourpoints;
+    }
+
+    private static (int ItemId, float Durability, int Slot) ValueOf(ArmourData armourData)
+    {
+        return (armourData.Id, armourData.ArmourPiece.RemainingArmourpoints, armourData.Slot);
     }
 
     // Empty Slots, In The Order The Game Fills Them
@@ -79,7 +106,36 @@ public class ArmorPageViewModel
             .Where(item =>
                 item.Item?.IsEquippableArmor == true
                 && (_inventoryPage.IsHeld(item) || _inventoryPage.IsChanged(item))
-            );
+            )
+            .OrderBy(item => item.Item?.Durability?.Default ?? 0);
+
+    // Types The Backpack Does Not Hold Yet, Its Own Included
+    public IEnumerable<Item> TypesFor(InventoryItem item)
+    {
+        return ArmourTypes.Where(type =>
+            type.Id == item.Id
+            || _inventoryPage.ItemOf(type.Id) is { } other && !_inventoryPage.IsHeld(other)
+        );
+    }
+
+    public void ChangeType(InventoryItem item, Item? type)
+    {
+        // The Whole Stack Turns Into The Other Type
+        if (
+            type == null
+            || type.Id == item.Id
+            || !_inventoryPage.IsHeld(item)
+            || _inventoryPage.ItemOf(type.Id) is not { } target
+            || _inventoryPage.IsHeld(target)
+        )
+        {
+            return;
+        }
+
+        _inventoryPage.RemoveItemFromInventory(item);
+        _inventoryPage.AddUnassignedItem(target);
+        target.TotalCount = Math.Min(item.TotalCount, target.Max);
+    }
 
     public bool CanWear(InventoryItem item)
     {
@@ -94,17 +150,50 @@ public class ArmorPageViewModel
         }
 
         // A Piece From The Backpack Starts At Default Durability
+        Add(armour, armour.Durability?.Default ?? 1);
+        TakeOneFrom(item);
+        MovedThroughInventory = true;
+    }
+
+    public bool CanAddNew()
+    {
+        return NewType != null && NewDurability > 0 && FreeSlots.Any();
+    }
+
+    public void AddNew()
+    {
+        if (CanAddNew() && NewType is { } type)
+        {
+            Add(type, NewDurability);
+        }
+    }
+
+    private void Add(Item type, float durability)
+    {
         _armour.Add(
             new ArmourData(
                 new ArmourPieceModel
                 {
-                    ItemId = armour.Id,
-                    RemainingArmourpoints = armour.Durability?.Default ?? 1,
+                    ItemId = type.Id,
+                    RemainingArmourpoints = durability,
                     Slot = FreeSlots.First(),
                 },
-                armour
+                type
             )
         );
+    }
+
+    public void DeleteFromInventory(InventoryItem item)
+    {
+        // Gone For Good, Only The Inventory Changes
+        if (_inventoryPage.IsHeld(item))
+        {
+            TakeOneFrom(item);
+        }
+    }
+
+    private void TakeOneFrom(InventoryItem item)
+    {
         if (item.TotalCount > 1)
         {
             item.TotalCount--;
@@ -113,8 +202,6 @@ public class ArmorPageViewModel
         {
             _inventoryPage.RemoveItemFromInventory(item);
         }
-
-        MovedThroughInventory = true;
     }
 
     public bool CanMoveToInventory(ArmourData armourData)
@@ -235,53 +322,6 @@ public class ArmorPageViewModel
         foreach (var armourData in _armour)
         {
             armourData.ArmourPiece.RemainingArmourpoints = armourData.MaxDurability;
-        }
-    }
-
-    public class NewArmourPiece
-    {
-        private readonly List<ArmourData> _sink;
-
-        internal NewArmourPiece(List<ArmourData> sink)
-        {
-            _sink = sink;
-        }
-
-        public int RemainingArmourpoints { get; set; }
-
-        public Item? SelectedItem
-        {
-            get;
-            set
-            {
-                field = value;
-                RemainingArmourpoints = value?.Durability?.Default ?? RemainingArmourpoints;
-            }
-        }
-
-        public void AddArmor()
-        {
-            if (!CanAddArmor())
-            {
-                return;
-            }
-
-            var armourPiece = new ArmourPieceModel
-            {
-                ItemId = SelectedItem!.Id,
-                RemainingArmourpoints = RemainingArmourpoints,
-                Slot = PlayerArmourSystemModel.ArmorSlots.First(slot =>
-                    _sink.All(piece => piece.Slot != slot)
-                ),
-            };
-            _sink.Add(new ArmourData(armourPiece, SelectedItem));
-        }
-
-        public bool CanAddArmor()
-        {
-            return SelectedItem != null
-                && RemainingArmourpoints > 0
-                && _sink.Count < PlayerArmourSystemModel.ArmorSlots.Count;
         }
     }
 }

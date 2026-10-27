@@ -39,7 +39,7 @@ public class MapSpawnActorsViewModel
             OriginalFamilyId = FamilyId = -1;
         }
 
-        Areas = [.. areaMaskManager.GetAllAreas().OrderBy(area => area.Name)];
+        Areas = [.. areaMaskManager.GetAllAreas()];
         SelectedArea = destination.Position?.Area ?? AreaMaskManager.Surface;
     }
 

@@ -8,6 +8,12 @@ public class ActorCollection
         Name = name;
     }
 
-    public string Name => $"{field} ({Actors.Count})";
+    public string Name { get; }
     public List<Actor> Actors { get; } = [];
+
+    // One Type Throughout Names Every Row The Same
+    public ActorType? SharedType =>
+        Actors.Select(actor => actor.TypeId).Distinct().Take(2).Count() == 1
+            ? Actors[0].ActorType
+            : null;
 }

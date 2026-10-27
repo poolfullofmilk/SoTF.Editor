@@ -22,14 +22,13 @@ public partial class Storage : EditorPageBase
         StoragePage
             .StorageCollections.Select(collection =>
                 (
-                    collection.Name,
+                    Title: collection.Name,
                     Storages: Matches(collection.Name)
                         ? collection.Storages
                         : [.. collection.Storages.Where(storage => Matches(storage.Description))]
                 )
             )
-            .Where(group => group.Storages.Count > 0)
-            .Select(group => ($"{group.Name} ({group.Storages.Count})", group.Storages));
+            .Where(group => group.Storages.Count > 0);
 
     // Only A Shown Storage, A Search Can Hide It
     private IStorage? Selected =>

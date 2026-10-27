@@ -2,6 +2,8 @@
 
 public class PlayerState
 {
+    public const int MaxStrengthLevel = 100;
+
     // Capped By Max Health, Comes Back When Max Rises
     public float CurrentHealth
     {
@@ -35,9 +37,14 @@ public class PlayerState
 
     public void ChangeStrengthLevel(int level)
     {
-        // The Game Adds Two Max Health Per Level Above One
         StrengthLevel = level;
-        MaxHealth = 100 + (2 * Math.Max(level - 1, 0));
+        MaxHealth = MaxHealthAt(level);
+    }
+
+    public static float MaxHealthAt(int level)
+    {
+        // The Game Adds Two Max Health Per Level Above One
+        return 100 + (2 * Math.Max(level - 1, 0));
     }
 
     public void Reset()

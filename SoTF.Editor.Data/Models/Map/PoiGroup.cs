@@ -25,8 +25,7 @@ public class PoiGroup(
     public int Count => Pois.Count;
     public string? Icon { get; } = icon;
     public string GroupKey { get; } = groupKey;
-    public string BaseTitle { get; } = title;
-    public string Title => $"{BaseTitle} ({Count})";
+    public string Title { get; } = title;
     public PoiGroupType GroupType { get; } = groupType;
 
     public bool Enabled

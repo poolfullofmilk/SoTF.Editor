@@ -52,8 +52,9 @@ public class NpcsPageViewModel
                 )
             )
             .Select(group => new Change(
-                group.Count() > 1 ? $"{group.Key.Name} ({group.Count()})" : group.Key.Name,
-                group.Key.Kind
+                group.Key.Name,
+                group.Key.Kind,
+                group.Count() > 1 ? group.Count() : null
             ))
             .Concat(
                 RemovedCount > 0
@@ -209,6 +210,7 @@ public class NpcsPageViewModel
             AllActors
                 .OrderBy(actor => actor.GraphMask)
                 .ThenBy(actor => actor.FamilyId)
+                .ThenBy(actor => actor.UniqueId)
                 .GroupBy(actor => actor.TypeId)
                 .Select(typeGroup => new ActorCollection(
                     typeGroup.First().ActorType!.Name,
@@ -221,6 +223,7 @@ public class NpcsPageViewModel
                 .Where(actor => actor.FamilyId != null)
                 .OrderBy(actor => actor.GraphMask)
                 .ThenBy(actor => actor.TypeId)
+                .ThenBy(actor => actor.UniqueId)
                 .GroupBy(actor => actor.FamilyId)
                 .GroupBy(familyGroup => BuildNameForActorList([.. familyGroup]))
                 .Select(nameGroup =>
@@ -233,6 +236,7 @@ public class NpcsPageViewModel
                                 [.. familyGroup]
                             ))
                             .OrderByDescending(actorCollection => actorCollection.Actors.Count)
+                            .ThenBy(actorCollection => actorCollection.Actors[0].FamilyId)
                     );
                     return grouping;
                 })

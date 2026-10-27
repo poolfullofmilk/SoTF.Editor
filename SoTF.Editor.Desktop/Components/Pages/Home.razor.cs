@@ -1,4 +1,5 @@
 using Microsoft.Win32;
+using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Resources;
 using SoTF.Editor.Data.ViewModels;
 using SoTF.Editor.Desktop.Components.Shared.Common;
@@ -77,19 +78,12 @@ public partial class Home : EditorPageBase
     private static string WorldText(SavegameSummary summary)
     {
         // Day, Mode And Crash Site Tell Worlds Apart
-        return string.Join(
-            " · ",
-            new[]
-            {
-                AppText.Format("SavegameDay", summary.Days),
-                summary.GameType is { } gameType ? AppText.Get(TextKeys.GameMode(gameType)) : null,
-                summary.CrashSite is { } crashSite
-                    ? AppText.Format(
-                        "SavegameCrashSite",
-                        AppText.Get(TextKeys.CrashSite(crashSite))
-                    )
-                    : null,
-            }.OfType<string>()
+        return Formatter.JoinParts(
+            AppText.Format("SavegameDay", summary.Days),
+            summary.GameType is { } gameType ? AppText.Get(TextKeys.GameMode(gameType)) : null,
+            summary.CrashSite is { } crashSite
+                ? AppText.Format("SavegameCrashSite", AppText.Get(TextKeys.CrashSite(crashSite)))
+                : null
         );
     }
 

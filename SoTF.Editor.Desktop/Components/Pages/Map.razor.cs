@@ -124,9 +124,22 @@ public partial class Map : EditorPageBase
         }
     }
 
-    private IEnumerable<PoiGroup> ExpandedGroups(PoiGroupCollection collection)
+    // A Group Alone, A Collection Its Groups Once Opened
+    private IEnumerable<PoiGroup> GroupsUnder(IPoiGrouper grouper)
     {
-        return IsExpanded(collection) ? collection.PoiGroups.OrderBy(group => group.BaseTitle) : [];
+        return grouper switch
+        {
+            PoiGroup group => [group],
+            PoiGroupCollection collection when IsExpanded(collection) =>
+                collection.PoiGroups.OrderBy(group => group.Title),
+            _ => [],
+        };
+    }
+
+    private static string RowClass(PoiGroup group, IPoiGrouper grouper)
+    {
+        // Sub Groups Sit Under Their Collection, Empty Ones Go Grey
+        return $"{(grouper is PoiGroupCollection ? "ml-6" : "")} {MatchClass(group)}";
     }
 
     private static bool? StateOf(IEnumerable<PoiGroup> groups)
@@ -140,9 +153,10 @@ public partial class Map : EditorPageBase
         return groups.Any(group => group.Enabled) ? null : false;
     }
 
-    private void SetAllEnabled(bool? enabled)
+    private void ToggleAll()
     {
-        MapViewModel.SetAllEnabled(enabled == true);
+        // A Click Checks Or Clears, Only Picked Groups Show Mixed
+        MapViewModel.SetAllEnabled(StateOf(MapViewModel.AllGroups()) != true);
         MapViewModel.ApplyFilterToAllPois();
     }
 
@@ -192,11 +206,9 @@ public partial class Map : EditorPageBase
         MapViewModel.ApplyFilterToAllPois();
     }
 
-    private async Task ToggleMenusAsync()
+    private void ToggleMenus()
     {
-        // The Map Refits While The Menus Slide Away Or Back
         _menusHidden = !_menusHidden;
-        await JavaScript.InvokeVoidAsync("sotfMap.fitWhileResizing");
     }
 
     private async Task ZoomAsync(double factor)

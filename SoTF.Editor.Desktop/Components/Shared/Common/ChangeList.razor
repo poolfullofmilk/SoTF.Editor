@@ -7,7 +7,8 @@
         <MudIcon Icon="@Icon"
                  Size="Size.Small" />
     }
-    <MudStack Spacing="0">
+    <MudStack Spacing="0"
+              Class="flex-grow-1">
         @if (Label is not null)
         {
             <MudText Typo="Typo.body2">@Label</MudText>
@@ -41,6 +42,14 @@
                          Class="mud-text-secondary">
                     @change.Name
                 </MudText>
+                @if (change.Count is { } count)
+                {
+                    <MudSpacer />
+                    <MudText Typo="Typo.caption"
+                             Class="mud-text-secondary">
+                        @count
+                    </MudText>
+                }
             </MudStack>
         }
         @if (Hidden > 0)

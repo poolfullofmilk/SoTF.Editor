@@ -29,6 +29,11 @@ public class AreaMaskManager
 
     public IEnumerable<Area> GetAllAreas()
     {
-        return new HashSet<Area>(_areaMasks.Values.Concat(_graphMasks.Values));
+        // The Surface First, Then Caves And Bunkers By Name
+        return _areaMasks
+            .Values.Concat(_graphMasks.Values)
+            .Distinct()
+            .OrderBy(area => area.IsUnderground())
+            .ThenBy(area => area.Name);
     }
 }

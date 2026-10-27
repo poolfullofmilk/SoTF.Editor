@@ -58,7 +58,7 @@ public class WorldItemClonerViewModel(Savegame savegame)
                 worldItemTypeCounts.GetValueOrDefault(worldItemType) + 1;
             result.Add(
                 new WorldItemState(
-                    $"{group} ({worldItemTypeCounts[worldItemType]})",
+                    $"{group} #{worldItemTypeCounts[worldItemType]}",
                     group,
                     position,
                     worldItemType,

@@ -338,21 +338,94 @@ mark {
     flex-shrink: 0;
 }
 
-/* One Cell Per Season Day, Filled Up To Today */
-.season-day {
-    flex: 1 1 0;
-    height: 8px;
-    border-radius: 4px;
-    background-color: var(--mud-palette-lines-default);
+/* One Colour Per Season, One Cell Per Day, Filled Up To Today */
+.season-0 {
+    --season-color: #7bc67e;
 }
 
-    .season-day.done {
-        background-color: var(--mud-palette-info);
+.season-1 {
+    --season-color: #f2cc5b;
+}
+
+.season-2 {
+    --season-color: #ee8a4c;
+}
+
+.season-3 {
+    --season-color: #8ec5f5;
+}
+
+/* Current And New Sit Above Their Day */
+.season-marks {
+    position: relative;
+    height: 18px;
+}
+
+    .season-mark {
+        position: absolute;
+        bottom: 2px;
+        white-space: nowrap;
+        line-height: 18px !important;
     }
 
-/* Both Follower Headers Match, A Copy Picker Makes One Taller */
-.follower-header .header-row {
-    min-height: 40px;
+.season-days {
+    display: flex;
+    gap: 4px;
+}
+
+    /* Long Seasons Touch, So They Read As One Bar */
+    .season-days.dense {
+        gap: 0;
+    }
+
+.season-day {
+    flex: 1 1 0;
+    height: 12px;
+    border-radius: 4px;
+    background-color: color-mix(in srgb, var(--season-color) 24%, transparent);
+    cursor: pointer;
+}
+
+    .season-days.dense .season-day {
+        border-radius: 0;
+    }
+
+        .season-days.dense .season-day:first-child {
+            border-radius: 4px 0 0 4px;
+        }
+
+        .season-days.dense .season-day:last-child {
+            border-radius: 0 4px 4px 0;
+        }
+
+    .season-day:hover {
+        box-shadow: 0 0 0 1px var(--season-color);
+    }
+
+    .season-day.done {
+        background-color: var(--season-color);
+    }
+
+    /* The Loaded Day And The Picked One Wear A Ring, Today Pulses Slowly */
+    .season-day.marked {
+        outline: 2px solid var(--mud-palette-text-primary);
+        outline-offset: 2px;
+    }
+
+    .season-day.today {
+        animation: season-pulse 2.4s ease-in-out infinite;
+    }
+
+@keyframes season-pulse {
+    50% {
+        opacity: 0.35;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .season-day.today {
+        animation: none;
+    }
 }
 
 /* Header Actions Keep One Line, Only The Title Gives Way */
@@ -446,6 +519,11 @@ html, body {
     border-radius: var(--radius-panel) !important;
 }
 
+/* A Question Keeps Its Line Breaks, Yes And No Each On Their Own Line */
+.mud-message-box .mud-dialog-content {
+    white-space: pre-line;
+}
+
 /* Chips Carry The Slightest Theme Shadow */
 .mud-chip {
     box-shadow: var(--mud-elevation-1);
@@ -512,8 +590,10 @@ html, body {
     background-color: color-mix(in srgb, var(--mud-palette-background) 38%, transparent);
 }
 
+/* Tab Names Are Title Case Like Every Label */
 .mud-tab {
     min-width: initial !important;
+    text-transform: none;
 }
 /* #endregion */
 

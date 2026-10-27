@@ -50,11 +50,8 @@
                     }
                     @foreach (var category in FilteredTypes.GroupBy(type => type.Category))
                     {
-                        <MudText Typo="Typo.subtitle2"
-                                 Class="group-title px-4 pt-4 pb-1">
-                            <MudHighlighter Text="@category.Key"
-                                            HighlightedText="@_filter" />
-                        </MudText>
+                        <GroupTitle Title="@category.Key"
+                                    Highlight="@_filter" />
                         @foreach (var type in category)
                         {
                             @* Structure Type Row *@
@@ -100,10 +97,21 @@
                                  TransformOrigin="Origin.TopRight">
                             @foreach (var mode in s_modes)
                             {
+                                var count = StructuresPageViewModel.CountSetAll(shown, mode);
                                 @* Set All Item *@
-                                <MudMenuItem Disabled="@(!StructuresPageViewModel.CanSetAll(shown, mode))"
+                                <MudMenuItem Disabled="@(count == 0)"
                                              OnClick="() => SetAllAsync(shown, mode)">
-                                    @ModeName(mode)
+                                    <MudElement HtmlTag="span"
+                                                Class="d-flex justify-space-between gap-6">
+                                        <MudElement HtmlTag="span">@ModeName(mode)</MudElement>
+                                        @if (count > 0)
+                                        {
+                                            <MudElement HtmlTag="span"
+                                                        Class="mud-text-secondary">
+                                                @count
+                                            </MudElement>
+                                        }
+                                    </MudElement>
                                 </MudMenuItem>
                             }
                         </MudMenu>

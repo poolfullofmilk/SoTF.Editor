@@ -44,7 +44,7 @@
     {
         <MudText Typo="Typo.subtitle2">@itemList.Title</MudText>
         <MudStack Spacing="1">
-            @foreach (var wrapper in itemList.Items)
+            @foreach (var wrapper in itemList.Items.OrderBy(wrapper => wrapper.Item.Name))
             {
                 <MudStack Row
                           AlignItems="AlignItems.Center"

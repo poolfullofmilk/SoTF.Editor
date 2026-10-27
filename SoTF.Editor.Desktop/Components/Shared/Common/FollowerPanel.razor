@@ -1,8 +1,7 @@
 @inherits EditorPageBase
 
 @* Follower Panel *@
-<Header Title="@Name"
-        Class="follower-header">
+<Header Title="@Name">
     <TitleContent>
         <MudChip T="string"
                  Variant="Variant.Text"
@@ -10,26 +9,6 @@
             @Follower.Status
         </MudChip>
         <MudSpacer />
-        @if (Copies.Count > 1)
-        {
-            @* Copy Select *@
-            <MudElement HtmlTag="div"
-                        Class="fixed-width"
-                        Style="width:140px">
-                <MudSelect T="FollowerState"
-                           Value="Follower"
-                           ValueChanged="FollowerPage.Select"
-                           ToStringFunc="CopyLabel"
-                           Variant="Variant.Outlined"
-                           Margin="Margin.Dense"
-                           Dense>
-                    @foreach (var copy in Copies)
-                    {
-                        <MudSelectItem Value="copy">@CopyLabel(copy)</MudSelectItem>
-                    }
-                </MudSelect>
-            </MudElement>
-        }
         @* Remove Copy *@
         <Tooltip Text="@AppText.Get("RemoveCopy")"
                  Disabled="@(!IsSpawnedCopy)">
@@ -57,6 +36,26 @@
                               ObjectPosition="ObjectPosition.Top"
                               Class="rounded-inner flex-shrink-0" />
                     <MudStack Spacing="0">
+                        @if (Copies.Count > 1)
+                        {
+                            @* Copy Select *@
+                            <MudElement HtmlTag="div"
+                                        Class="fixed-width mb-2"
+                                        Style="width:140px">
+                                <MudSelect T="FollowerState"
+                                           Value="Follower"
+                                           ValueChanged="FollowerPage.Select"
+                                           ToStringFunc="CopyLabel"
+                                           Variant="Variant.Outlined"
+                                           Margin="Margin.Dense"
+                                           Dense>
+                                    @foreach (var copy in Copies)
+                                    {
+                                        <MudSelectItem Value="copy">@CopyLabel(copy)</MudSelectItem>
+                                    }
+                                </MudSelect>
+                            </MudElement>
+                        }
                         <MudText Typo="Typo.body2"
                                  Class="mud-text-secondary selectable-text">
                             @($"{AppText.Get("UniqueId")}: {Follower.UniqueId?.ToString() ?? "-"}")
