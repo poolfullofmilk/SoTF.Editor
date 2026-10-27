@@ -12,25 +12,16 @@
 </table>
 
 ## Features
-- Player stats with one click to fill every bar, strength and health included, outfit, armour and one inventory list of every item
-- Armour added or switched to another type right in the list, at the game's own default durability or any durability you set
-- Armour worn straight from the inventory or put back in it, backpack stacks switched to another type, with the reason shown when it cannot
-- Every storage filled to the max in one click, empty slots included, or maxed and cleared one by one
-- Kelvin and Virginia, spawned copies too: stats, outfit, items and feelings with one-click moods, revive even after the game removed them, spawn more or remove the extra ones
-- Game setup, game state and weather, with info buttons that explain each setting
-- Seasons on a year bar with a colour per season: click a day to make it today
-- NPCs edited one at a time or by family, type or everyone, with live counts before you apply
-- Structures listed per type, with one menu to finish, unfinish or remove what the list shows, each choice saying how many it changes
-- Game presets such as Hard that you can still tweak setting by setting
-- A small yellow dot on every value you changed and on its page in the menu, a list of every change before you save, a Save button that stays greyed out until there is something to save, and an undo button on every changed page in the menu to revert just that page
-- A map to teleport the player and every Kelvin or Virginia, bring any follower or NPC to you, spawn actors or move ziplines, with points grouped and counted, big groups such as actors folded open in one click, filters in one menu, a useful default selection you can reset to, a button that slides the menus away for a bigger map, and zooming that glides smoothly
-- Savegame cards show the day, mode and crash site, and joined games, which hold no name or picture, are named by mode and day and show your strength and items
-- Tools on their own page, such as regrow trees, reset fires, traps and containers, cannibal anger set for every cannibal from calm to furious to the percent, and item plating
-- Updates itself in the background from inside the app, shows what changed and checks the download against GitHub's checksum
-- Every list, card and map point works with the keyboard too
-- Long lists such as the inventory, structures and NPCs only draw the rows on screen, so they open and filter fast even on big saves
-- Fits a 1080p screen at 125 or 150% scaling
-- English and Dutch
+- Edit your stats, armour, outfit and inventory
+- Fill every storage to the max in one click
+- Edit, revive or spawn Kelvin and Virginia
+- Edit NPCs one at a time or all at once
+- Change the game settings, the weather and the season
+- Finish or remove structures
+- Teleport yourself or anyone else on the map
+- Tools such as regrowing trees and calming cannibals
+- See every change before you save, and undo them page by page
+- English and Dutch, and it updates itself
 
 ## Quick start
 1. Download the exe from the [latest release](https://github.com/poolfullofmilk/SoTF.Editor/releases/latest)
@@ -39,14 +30,9 @@
 
 ## ⚠️ Important
 - Start the game and stay in the main menu while you edit, then load the save, so Steam Cloud cannot overwrite your changes
-- Every save first copies the whole savegame to `Documents\SoTF.Editor\Backups`, and any backup can be restored or deleted from the app, which lists page by page and setting by setting what that save changed and how the backup differs from now, and older backups can be picked and deleted while the newest always stays
-- Past 500 MB of backups the oldest go, but every savegame keeps its first one
-- If a backup or load fails, nothing is overwritten and the error has a button to the backup folder
-- If the game saved while the editor was open, the editor warns before overwriting that progress
-- A joined multiplayer save only holds your own player, the world lives in the host's save
+- Every save makes a backup first, which you can restore from the app
 - Windows may warn on the first run because the app is not signed: click More info, then Run anyway
 
 ## Technical details
 - .NET 10, WPF, Blazor and MudBlazor, one self-contained exe
-- Every release first passes a save round trip test on a sample savegame
 - GPL-3.0, builds on SOTFEdit and map point data that are both MIT, see [THIRD-PARTY-NOTICES.txt](THIRD-PARTY-NOTICES.txt)

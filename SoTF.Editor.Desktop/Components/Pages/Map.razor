@@ -177,7 +177,8 @@
                         Class="map-viewport"
                         tabindex="0"
                         aria-label="@AppText.Get("MapKeyboardHint")"
-                        @onclick="() => MapViewModel.SelectPoi(null)">
+                        @onclick="ClickMapAsync"
+                        @oncontextmenu="ClickMapAsync">
                 <MudElement HtmlTag="div"
                             @bind-Ref="_canvas"
                             Class="map-canvas">
@@ -189,21 +190,21 @@
                          viewBox="0 0 4096 4096">
                         @foreach (var zipline in MapViewModel.VisibleZiplines())
                         {
-                            <line x1="@zipline.PointA.MapLeft"
-                                  y1="@zipline.PointA.MapTop"
-                                  x2="@zipline.PointB.MapLeft"
-                                  y2="@zipline.PointB.MapTop"
+                            <line x1="@Pixel(zipline.PointA.MapLeft)"
+                                  y1="@Pixel(zipline.PointA.MapTop)"
+                                  x2="@Pixel(zipline.PointB.MapLeft)"
+                                  y2="@Pixel(zipline.PointB.MapTop)"
                                   stroke="white"
                                   stroke-width="3"
                                   stroke-dasharray="8 6" />
                         }
                     </svg>
-                    @if (_crosshair is { } focus)
+                    @if (MapViewModel.SelectedPoi is LocationPoi location)
                     {
-                        <img src="images/icons/crosshair.svg"
-                             alt="@AppText.Get("Position")"
+                        <img src="@location.Icon"
+                             alt="@location.Title"
                              class="map-poi"
-                             style="@PoiStyle(focus.Left, focus.Top, 32, 0, 98)" />
+                             style="@PoiStyle(location.MapLeft, location.MapTop, location.IconSize, 0, location.IconZIndex)" />
                     }
                     @foreach (var poi in MapViewModel.VisiblePois())
                     {
@@ -215,9 +216,7 @@
                              role="button"
                              tabindex="-1"
                              data-keyclick
-                             style="@PoiStyle(poi.MapLeft, poi.MapTop, poi.IconSize, poi.IconRotation, poi.IconZIndex)"
-                             @onclick="() => MapViewModel.SelectPoi(poi)"
-                             @onclick:stopPropagation />
+                             style="@PoiStyle(poi.MapLeft, poi.MapTop, poi.IconSize, poi.IconRotation, poi.IconZIndex)" />
                     }
                 </MudElement>
             </MudElement>
@@ -264,13 +263,53 @@
                 </Tooltip>
             </MudStack>
 
-            @if (MapViewModel.SelectedPoi is BasePoi selectedPoi)
+            @if (MapViewModel.StackedPois.Count > 0 || MapViewModel.SelectedPoi is BasePoi)
             {
                 <MudPaper Elevation="4"
                           Class="rounded-panel pa-4 map-overlay position-absolute ma-4 overflow-y-auto"
                           Style="top:0;right:0;width:360px;max-height:calc(100% - 32px)">
-                    <PoiDetails Poi="selectedPoi"
-                                OnMapChanged="StateHasChanged" />
+                    @if (MapViewModel.SelectedPoi is BasePoi selectedPoi)
+                    {
+                        <PoiDetails Poi="selectedPoi"
+                                    OnMapChanged="StateHasChanged" />
+                    }
+                    else
+                    {
+                        <MudStack Spacing="3">
+                            <MudStack Row
+                                      AlignItems="AlignItems.Center"
+                                      Spacing="3">
+                                <MudText Typo="Typo.h6"
+                                         Class="text-tight">
+                                    @AppText.Format("PointsHere", MapViewModel.StackedPois.Count)
+                                </MudText>
+                                <MudSpacer />
+                                @* Close List *@
+                                <MudIconButton Icon="@Icons.Material.Rounded.Close"
+                                               aria-label="@AppText.Get("Close")"
+                                               Size="Size.Small"
+                                               OnClick="() => MapViewModel.SelectPoi(null)" />
+                            </MudStack>
+                            <MudStack Spacing="0">
+                                @foreach (var poi in MapViewModel.StackedPois)
+                                {
+                                    @* Stacked Point *@
+                                    <MudElement HtmlTag="div"
+                                                Class="list-row rounded-inner d-flex align-center gap-3 px-2 py-1"
+                                                role="button"
+                                                tabindex="0"
+                                                data-keyclick
+                                                @onclick="() => MapViewModel.SelectPoi(poi)">
+                                        <MudImage Src="@poi.Icon"
+                                                  Alt="@poi.Title"
+                                                  Width="24"
+                                                  Height="24" />
+                                        <MudText Typo="Typo.body2">@poi.Title</MudText>
+                                    </MudElement>
+                                }
+                            </MudStack>
+                        </MudStack>
+                    }
                 </MudPaper>
             }
         </MudPaper>

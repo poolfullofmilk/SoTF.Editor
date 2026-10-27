@@ -1,8 +1,8 @@
 using System.Globalization;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using MudBlazor;
-using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models.Map;
 using SoTF.Editor.Desktop.Components.Shared.Common;
 using SoTF.Editor.Services.Map;
@@ -23,15 +23,19 @@ public partial class Map : EditorPageBase
     [Inject]
     public required IJSRuntime JavaScript { get; set; }
 
+    [Inject]
+    public required ISnackbar Snackbar { get; set; }
+
     // Page State
     private ElementReference _viewport;
     private ElementReference _canvas;
     private (float Left, float Top)? _focusPixel;
-
-    // Only When No Point Sits Where The Map Was Asked To Look
-    private (float Left, float Top)? _crosshair;
     private bool _isMapReady;
     private bool _menusHidden;
+
+    // Says What To Click While A Zipline Waits
+    private Snackbar? _pickHint;
+    private string? _pickHintKey;
 
     private bool HasFilters =>
         MapViewModel.MapFilter.AreaFilter != AreaFilter.All
@@ -61,7 +65,7 @@ public partial class Map : EditorPageBase
         base.OnInitialized();
         MapViewModel.Build();
 
-        // The Point Itself When One Sits There, A Crosshair Otherwise
+        // The Point Itself When One Sits There, Its Spot Otherwise
         if (MapViewModel.TakeFocus() is { } focused)
         {
             _focusPixel = (focused.MapLeft, focused.MapTop);
@@ -69,9 +73,48 @@ public partial class Map : EditorPageBase
         else if (MapViewModel.FocusPosition is { } focusPosition)
         {
             MapViewModel.FocusPosition = null;
-            _focusPixel = CoordinateConverter.IngameToPixel(focusPosition.X, focusPosition.Z);
-            _crosshair = _focusPixel;
+            var spot = new LocationPoi(focusPosition);
+            MapViewModel.SelectPoi(spot);
+            _focusPixel = (spot.MapLeft, spot.MapTop);
         }
+    }
+
+    private async Task ClickMapAsync(MouseEventArgs args)
+    {
+        // JS Knows The Camera, Right Click Wants Only The Spot
+        if (
+            await JavaScript.InvokeAsync<float[]?>("sotfMap.toMap", args.ClientX, args.ClientY)
+            is [var left, var top, var zoom]
+        )
+        {
+            MapViewModel.Click(left, top, zoom, args.Button == 2);
+        }
+    }
+
+    private void SyncPickHint()
+    {
+        var key =
+            MapViewModel.PickFrom is null ? null
+            : MapViewModel.PicksNewZipline ? "ClickZiplineEnd"
+            : "ClickAnchorSpot";
+        if (key == _pickHintKey)
+        {
+            return;
+        }
+
+        if (_pickHint is { } hint)
+        {
+            Snackbar.Remove(hint);
+        }
+
+        _pickHint = key is null
+            ? null
+            : Snackbar.Add(
+                AppText.Get(key),
+                Severity.Info,
+                options => options.RequireInteraction = true
+            );
+        _pickHintKey = key;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -93,6 +136,8 @@ public partial class Map : EditorPageBase
                 await JavaScript.InvokeVoidAsync("sotfMap.centerOn", focus.Left, focus.Top);
             }
         }
+
+        SyncPickHint();
     }
 
     private static string PoiStyle(float left, float top, int size, float rotation, int zIndex)
@@ -101,6 +146,12 @@ public partial class Map : EditorPageBase
             CultureInfo.InvariantCulture,
             $"left:{left:0.#}px;top:{top:0.#}px;width:{size}px;height:{size}px;z-index:{zIndex + 100};--rotation:{rotation:0.#}deg"
         );
+    }
+
+    private static string Pixel(float value)
+    {
+        // SVG Reads A Dot, Never The Windows Decimal Comma
+        return value.ToString("0.#", CultureInfo.InvariantCulture);
     }
 
     private static string RequirementsName(MapFilter.RequirementsFilterType requirementsFilter)
@@ -224,6 +275,11 @@ public partial class Map : EditorPageBase
     public override void Dispose()
     {
         // No JS Here, A Closing Window Could Hang On It
+        if (_pickHint is { } hint)
+        {
+            Snackbar.Remove(hint);
+        }
+
         MapViewModel.Release();
         base.Dispose();
         GC.SuppressFinalize(this);

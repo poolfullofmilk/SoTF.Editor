@@ -63,7 +63,7 @@ public enum ElementProfileCategory
 public class ScrewStructure(
     string category,
     int id,
-    int buildCost,
+    int? buildCost,
     bool? canFinish,
     string icon,
     bool? canEdit,
@@ -81,7 +81,9 @@ public class ScrewStructure(
         string.IsNullOrEmpty(Category) ? "" : AppText.Get(TextKeys.StructureCategory(Category));
 
     public int Id { get; } = id;
-    public int BuildCost { get; } = buildCost;
+
+    // Platforms List None, Unknown Is Not Free
+    public int? BuildCost { get; } = buildCost;
     public string Icon { get; } = icon;
     public bool CanFinish { get; } = canFinish ?? true;
     public bool ShowOnMap { get; } = showOnMap ?? true;

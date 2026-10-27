@@ -8,12 +8,22 @@ public static class AppInfo
     public const string Author = "poolfullofmilk";
     public const string RepositoryUrl = "https://github.com/poolfullofmilk/SoTF.Editor";
     public const string LatestReleaseUrl = RepositoryUrl + "/releases/latest";
-    public const string ReleaseApiUrl =
-        "https://api.github.com/repos/" + Author + "/SoTF.Editor/releases/tags/";
+    private const string RepositoryApiUrl =
+        "https://api.github.com/repos/" + Author + "/SoTF.Editor/";
+    public const string ReleaseApiUrl = RepositoryApiUrl + "releases/tags/";
+    public const string CompareApiUrl = RepositoryApiUrl + "compare/";
     public const string NoticesUrl = RepositoryUrl + "/blob/master/THIRD-PARTY-NOTICES.txt";
 
     public static Version Version { get; } =
         Assembly.GetEntryAssembly()?.GetName().Version ?? new Version(0, 0);
+
+    // Release Builds Carry The Commit They Were Built From
+    public static string? Commit { get; } =
+        Assembly
+            .GetEntryAssembly()
+            ?.GetCustomAttributes<AssemblyMetadataAttribute>()
+            .FirstOrDefault(attribute => attribute.Key == "Commit")
+            ?.Value;
 
     // Patch Shows Only When It Is Not Zero, 2.7 And 2.7.1
     public static string VersionText { get; } = Version.ToString(Version.Build > 0 ? 3 : 2);

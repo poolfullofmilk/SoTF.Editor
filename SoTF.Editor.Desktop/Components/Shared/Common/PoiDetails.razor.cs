@@ -10,6 +10,7 @@ using SoTF.Editor.Services.Actors;
 using SoTF.Editor.Services.Map;
 using SoTF.Editor.Services.Pages;
 using SoTF.Editor.Services.Savegames;
+using Position = SoTF.Editor.Data.Models.Position;
 
 namespace SoTF.Editor.Desktop.Components.Shared.Common;
 
@@ -45,13 +46,49 @@ public partial class PoiDetails
     [Inject]
     public required ISnackbar Snackbar { get; set; }
 
-    // A Follower Missing From The Save Has Nothing To Move
-    private bool CanTeleportKelvin =>
-        Poi.CanTeleportKelvin() && FollowerPage.CopiesOf(Constants.Actors.KelvinTypeId).Count > 0;
+    // Within This Many Metres Someone Is Already There
+    private const float NearbyMetres = 10;
 
-    private bool CanTeleportVirginia =>
-        Poi.CanTeleportVirginia()
-        && FollowerPage.CopiesOf(Constants.Actors.VirginiaTypeId).Count > 0;
+    private bool PlayerIsThere =>
+        Poi.Position is { } destination && IsNear(destination, PlayerPage.PlayerState.Pos);
+
+    private static bool IsNear(Position destination, Position position)
+    {
+        var (x, y, z) = (
+            position.X - destination.X,
+            position.Y - destination.Y,
+            position.Z - destination.Z
+        );
+        return x * x + y * y + z * z <= NearbyMetres * NearbyMetres;
+    }
+
+    private bool IsThere(int typeId)
+    {
+        // Every Copy Of The Follower Stands There Already
+        var copies = FollowerPage.CopiesOf(typeId);
+        return Poi.Position is { } destination
+            && copies.Count > 0
+            && copies.All(copy => IsNear(destination, copy.Pos));
+    }
+
+    private bool CanTeleport(int typeId)
+    {
+        // A Follower Missing From The Save Has Nothing To Move
+        return Poi.Position is not null
+            && FollowerPage.CopiesOf(typeId).Count > 0
+            && !IsThere(typeId);
+    }
+
+    private bool IsWithPlayer(ActorPoi actorPoi)
+    {
+        return actorPoi.Position is { } position && IsNear(position, PlayerPage.PlayerState.Pos);
+    }
+
+    private Color PickColor(bool newZipline)
+    {
+        // A Waiting Pick Shows Selected, Pressing Again Stops It
+        return MapViewModel.IsPicking(Poi, newZipline) ? Color.Info : Color.Default;
+    }
 
     private IEnumerable<PoiDetail> Details
     {
@@ -160,10 +197,10 @@ public partial class PoiDetails
         await OnMapChanged.InvokeAsync();
     }
 
-    private static void RequestZipMove(ZipPointPoi zipPointPoi, bool createZipline)
+    private async Task TogglePickAsync(bool newZipline)
     {
-        zipPointPoi.IsMoveRequested = true;
-        zipPointPoi.IsZiplineCreationRequested = createZipline;
+        MapViewModel.TogglePick(Poi, newZipline);
+        await OnMapChanged.InvokeAsync();
     }
 
     private async Task BringToPlayerAsync(ActorPoi actorPoi)

@@ -60,7 +60,7 @@
                                                Color="@(_viewModel.ActorSelection == selection.Value ? Color.Info : Color.Default)"
                                                Size="Size.Small"
                                                Disabled="@(selection.Value == 1 && !_viewModel.HasFamily)"
-                                               OnClick="() => _viewModel.ActorSelection = selection.Value">
+                                               OnClick="() => Select(selection.Value)">
                                         @AppText.Get(selection.LabelKey)
                                         @if (selection.Value != 0)
                                         {
@@ -72,24 +72,31 @@
                                     </MudButton>
                                 }
                             </MudButtonGroup>
-                            <MudStack Row
-                                      Wrap="Wrap.Wrap"
-                                      Spacing="0">
-                                @* Same Area *@
-                                <MudCheckBox T="bool"
-                                             @bind-Value="_viewModel.OnlyInSameAreaAsActor"
-                                             Color="Color.Info"
-                                             Dense
-                                             Disabled="@IsSingle"
-                                             Label="@AppText.Get("OnlySameArea")" />
-                                @* Skip Followers *@
-                                <MudCheckBox T="bool"
-                                             @bind-Value="_viewModel.SkipFollowers"
-                                             Color="Color.Info"
-                                             Dense
-                                             Disabled="@IsSingle"
-                                             Label="@AppText.Get("SkipFollowers")" />
-                            </MudStack>
+                            @if (ShowsSameArea || ShowsSkipFollowers)
+                            {
+                                <MudStack Row
+                                          Wrap="Wrap.Wrap"
+                                          Spacing="0">
+                                    @if (ShowsSameArea)
+                                    {
+                                        @* Same Area *@
+                                        <MudCheckBox T="bool"
+                                                     @bind-Value="_viewModel.OnlyInSameAreaAsActor"
+                                                     Color="Color.Info"
+                                                     Dense
+                                                     Label="@AppText.Get("OnlySameArea")" />
+                                    }
+                                    @if (ShowsSkipFollowers)
+                                    {
+                                        @* Skip Followers *@
+                                        <MudCheckBox T="bool"
+                                                     @bind-Value="_viewModel.SkipFollowers"
+                                                     Color="Color.Info"
+                                                     Dense
+                                                     Label="@AppText.Get("SkipFollowers")" />
+                                    }
+                                </MudStack>
+                            }
                         </MudStack>
                     </MudPaper>
 
@@ -125,26 +132,32 @@
                                                  Max="100" />
                                 </ChangedBadge>
                             </MudStack>
-                            @* Replace Type *@
-                            <MudSelect T="ActorType"
-                                       Variant="Variant.Outlined"
-                                       @bind-Value="_viewModel.ModifyOptions.ReplaceType"
-                                       Label="@AppText.Get("ReplaceType")"
-                                       ToStringFunc="type => type?.Name"
-                                       Clearable
-                                       Dense>
-                                @foreach (var actorType in _viewModel.AllActorTypes)
-                                {
-                                    <MudSelectItem Value="actorType">@actorType.Name</MudSelectItem>
-                                }
-                            </MudSelect>
-                            @* Remove Spawner *@
-                            <MudSwitch T="bool"
-                                       @bind-Value="_viewModel.ModifyOptions.RemoveSpawner"
-                                       Color="Color.Info">
-                                @AppText.Get("RemoveSpawner")
-                                <InfoIcon Text="@AppText.Get("RemoveSpawnerTooltip")" />
-                            </MudSwitch>
+                            @if (!_viewModel.IsFollower)
+                            {
+                                @* Replace Type *@
+                                <MudSelect T="ActorType"
+                                           Variant="Variant.Outlined"
+                                           @bind-Value="_viewModel.ModifyOptions.ReplaceType"
+                                           Label="@AppText.Get("ReplaceType")"
+                                           ToStringFunc="type => type?.Name"
+                                           Clearable
+                                           Dense>
+                                    @foreach (var actorType in _viewModel.AllActorTypes)
+                                    {
+                                        <MudSelectItem Value="actorType">@actorType.Name</MudSelectItem>
+                                    }
+                                </MudSelect>
+                            }
+                            @if (ReachesSpawner)
+                            {
+                                @* Remove Spawner *@
+                                <MudSwitch T="bool"
+                                           @bind-Value="_viewModel.ModifyOptions.RemoveSpawner"
+                                           Color="Color.Info">
+                                    @AppText.Get("RemoveSpawner")
+                                    <InfoIcon Text="@AppText.Get("RemoveSpawnerTooltip")" />
+                                </MudSwitch>
+                            }
                         </MudStack>
                     </MudPaper>
 
@@ -200,13 +213,16 @@
     </DialogContent>
     <DialogActions>
         @* Remove Button *@
-        <MudButton Variant="Variant.Text"
-                   Color="Color.Error"
-                   StartIcon="@Icons.Material.Rounded.Delete"
-                   Disabled="@(MatchCount == 0)"
-                   OnClick="RemoveAsync">
-            @CountLabel("Remove")
-        </MudButton>
+        <Tooltip Text="@AppText.Get("GameFollowersStay")"
+                 Disabled="@(!RemovesGameFollower)">
+            <MudButton Variant="Variant.Text"
+                       Color="Color.Error"
+                       StartIcon="@Icons.Material.Rounded.Delete"
+                       Disabled="@(MatchCount == 0 || RemovesGameFollower)"
+                       OnClick="RemoveAsync">
+                @CountLabel("Remove")
+            </MudButton>
+        </Tooltip>
         <MudSpacer />
         @* Apply Button *@
         <MudButton Variant="Variant.Filled"

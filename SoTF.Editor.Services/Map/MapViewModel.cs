@@ -3,6 +3,7 @@ using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Models.Actors;
 using SoTF.Editor.Data.Models.Map;
+using SoTF.Editor.Data.Resources;
 using SoTF.Editor.Services.Pages;
 using SoTF.Editor.Services.Savegames;
 using SoTF.Editor.Services.Settings;
@@ -50,6 +51,13 @@ public class MapViewModel(
 
     public IPoi? SelectedPoi { get; private set; }
 
+    // Points Under One Click, Picked From A List
+    public IReadOnlyList<BasePoi> StackedPois { get; private set; } = [];
+
+    // An Anchor Move Or New Zipline Waiting For Its Spot
+    public BasePoi? PickFrom { get; private set; }
+    public bool PicksNewZipline { get; private set; }
+
     public Position? FocusPosition { get; set; }
 
     public void Build()
@@ -57,7 +65,7 @@ public class MapViewModel(
         _builtRevision = mainViewModel.Revision;
         _poiGroups = mapManager.BuildPoiGroups(mainViewModel.SelectedSavegame);
         LoadSavedSelectedPois();
-        SelectedPoi = null;
+        SelectPoi(null);
         ApplyFilterToAllPois();
     }
 
@@ -66,7 +74,7 @@ public class MapViewModel(
         // Points Hold Savegame JSON, Let Them Go With The Map
         _poiGroups = [];
         _builtRevision = -1;
-        SelectedPoi = null;
+        SelectPoi(null);
     }
 
     private void RebuildIfStale()
@@ -173,33 +181,105 @@ public class MapViewModel(
 
     public void SelectPoi(IPoi? poi)
     {
-        if (SelectedPoi is { } selectedPoi)
-        {
-            selectedPoi.IsSelected = false;
-
-            // A Pending Zipline Move Or Creation Takes The Clicked Position
-            if (
-                selectedPoi is ZipPointPoi { IsMoveRequested: true } zipPointPoi
-                && poi is { Position: { } position }
-                && mainViewModel.SelectedSavegame is { } selectedSavegame
-            )
-            {
-                if (
-                    ZiplineManager.AcceptNewPosition(zipPointPoi, selectedSavegame, position) is
-                    { } newZipline
-                )
-                {
-                    AddZipline(newZipline);
-                    poi = newZipline.PointB;
-                }
-
-                // A Moved Or New Zipline Lights The Map Menu
-                mainViewModel.NotifyChanged();
-            }
-        }
-
+        // A New Pick Ends Any List Or Waiting Zipline
+        StackedPois = [];
+        PickFrom = null;
+        SelectedPoi?.IsSelected = false;
         SelectedPoi = poi;
         poi?.IsSelected = true;
+    }
+
+    public void Click(float left, float top, float zoom, bool spotOnly)
+    {
+        // Icons Under The Pointer, Topmost First, At Screen Size
+        List<BasePoi> hits = spotOnly
+            ? []
+            :
+            [
+                .. VisiblePois()
+                    .OfType<BasePoi>()
+                    .Reverse()
+                    .Where(poi =>
+                        Math.Abs(poi.MapLeft - left) <= poi.IconSize / 2f / zoom
+                        && Math.Abs(poi.MapTop - top) <= poi.IconSize / 2f / zoom
+                    )
+                    .OrderByDescending(poi => poi.IconZIndex),
+            ];
+
+        // A Waiting Zipline Takes The Point Clicked, Or The Spot
+        if (PickFrom is { } from)
+        {
+            PickFrom = null;
+            Place(
+                from,
+                hits.FirstOrDefault(poi => poi != from && poi.Position != null)?.Position
+                    ?? SpotAt(left, top)
+            );
+            return;
+        }
+
+        SelectPoi(
+            hits.Count switch
+            {
+                0 => new LocationPoi(SpotAt(left, top))
+                {
+                    Description = AppText.Get("HeightGuessed"),
+                },
+                1 => hits[0],
+                _ => null,
+            }
+        );
+        StackedPois = hits.Count > 1 ? hits : [];
+    }
+
+    public void TogglePick(BasePoi from, bool newZipline)
+    {
+        // The Same Button Again Stops Waiting
+        PickFrom = IsPicking(from, newZipline) ? null : from;
+        PicksNewZipline = newZipline;
+    }
+
+    public bool IsPicking(BasePoi from, bool newZipline)
+    {
+        return PickFrom == from && PicksNewZipline == newZipline;
+    }
+
+    private void Place(BasePoi from, Position spot)
+    {
+        if (mainViewModel.SelectedSavegame is not { } savegame || from.Position is not { } start)
+        {
+            return;
+        }
+
+        if (!PicksNewZipline && from is ZipPointPoi anchor)
+        {
+            ZiplineManager.MoveAnchor(anchor, savegame, spot);
+        }
+        else if (PicksNewZipline && ZiplineManager.CreateNew(savegame, start, spot) is { } token)
+        {
+            var zipline = new ZiplinePoi(token, start, spot);
+            AddZipline(zipline);
+            SelectPoi(zipline.PointB);
+        }
+
+        // A Moved Or New Zipline Lights The Map Menu
+        mainViewModel.NotifyChanged();
+    }
+
+    private Position SpotAt(float left, float top)
+    {
+        var (x, z) = CoordinateConverter.PixelToIngame(left, top);
+
+        // Ponytail: Nearest Known Height, A Heightmap Would Be Exact
+        var nearest = AllPois()
+            .Where(poi => poi is not (StructurePoi or ZipPointPoi))
+            .Select(poi => poi.Position)
+            .OfType<Position>()
+            .Where(position => !position.Area.IsUnderground())
+            .MinBy(position =>
+                (position.X - x) * (position.X - x) + (position.Z - z) * (position.Z - z)
+            );
+        return new Position(x, nearest?.Y ?? 0, z);
     }
 
     private void AddZipline(ZiplinePoi zipline)
@@ -240,7 +320,7 @@ public class MapViewModel(
     {
         if (SelectedPoi != null && pois.Contains(SelectedPoi))
         {
-            SelectedPoi = null;
+            SelectPoi(null);
         }
 
         foreach (var poiGroup in AllGroups())

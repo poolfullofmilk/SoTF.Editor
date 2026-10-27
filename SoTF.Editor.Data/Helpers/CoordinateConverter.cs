@@ -88,4 +88,9 @@ public static class CoordinateConverter
     {
         return (s_xAxis.Scale * ingameX + s_xAxis.Offset, s_yAxis.Scale * ingameY + s_yAxis.Offset);
     }
+
+    public static (float X, float Z) PixelToIngame(float left, float top)
+    {
+        return ((left - s_xAxis.Offset) / s_xAxis.Scale, (top - s_yAxis.Offset) / s_yAxis.Scale);
+    }
 }

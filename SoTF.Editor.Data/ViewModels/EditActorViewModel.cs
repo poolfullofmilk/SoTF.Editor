@@ -47,6 +47,21 @@ public class EditActorViewModel
     // Family Zero Means None, Matching It Meant Every Loner
     public bool HasFamily => Actor.FamilyId is not (null or 0);
 
+    // Kelvin Or Virginia Reach Their Copies, Filters Guard Others
+    public bool IsFollower =>
+        Actor.TypeId is Constants.Actors.KelvinTypeId or Constants.Actors.VirginiaTypeId;
+
+    public bool LimitsToSameArea(short selection)
+    {
+        return selection != 0 && !IsFollower;
+    }
+
+    public bool CanSkipFollowers(short selection)
+    {
+        // Only Everyone Reaches Kelvin Or Virginia From Another Actor
+        return selection == 3 && !IsFollower;
+    }
+
     public bool Matches(
         int? typeId,
         int? familyId,
@@ -56,21 +71,28 @@ public class EditActorViewModel
     )
     {
         // Followers And Other Areas Skipped When Asked, Never Itself
+        var selected = selection ?? ActorSelection;
         var isSelf = uniqueId == Actor.UniqueId;
         if (
             !isSelf
             && (
                 (
                     SkipFollowers
+                    && CanSkipFollowers(selected)
                     && typeId is Constants.Actors.KelvinTypeId or Constants.Actors.VirginiaTypeId
-                ) || (OnlyInSameAreaAsActor && graphMask != Actor.GraphMask)
+                )
+                || (
+                    OnlyInSameAreaAsActor
+                    && LimitsToSameArea(selected)
+                    && graphMask != Actor.GraphMask
+                )
             )
         )
         {
             return false;
         }
 
-        return (selection ?? ActorSelection) switch
+        return selected switch
         {
             3 => true,
             2 => typeId == Actor.TypeId,

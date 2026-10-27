@@ -648,23 +648,8 @@
   <data name="NewZiplineFromHere" xml:space="preserve">
     <value>Nieuwe Tokkelbaan Vanaf Hier</value>
   </data>
-  <data name="NewZiplineTooltip" xml:space="preserve">
-    <value>Klik daarna waar de tokkelbaan moet eindigen</value>
-  </data>
-  <data name="DeleteBothAnchors" xml:space="preserve">
-    <value>Beide Ankers Verwijderen</value>
-  </data>
   <data name="SelectAll" xml:space="preserve">
     <value>Alles Selecteren</value>
-  </data>
-  <data name="ClickNewLocation" xml:space="preserve">
-    <value>Klik op een Andere Locatie</value>
-  </data>
-  <data name="MoveToClickedPosition" xml:space="preserve">
-    <value>Naar Aangeklikte Positie Verplaatsen</value>
-  </data>
-  <data name="MoveToClickedTooltip" xml:space="preserve">
-    <value>Klik daarna waar het anker heen moet</value>
   </data>
   <data name="SpawnActors" xml:space="preserve">
     <value>Actoren Spawnen</value>
@@ -2034,5 +2019,38 @@ Nee houdt de editor open zodat je eerst kunt opslaan</value>
   </data>
   <data name="ResetFilters" xml:space="preserve">
     <value>Filters Herstellen</value>
+  </data>
+  <data name="AlreadyThere" xml:space="preserve">
+    <value>Staat Er Al</value>
+  </data>
+  <data name="MoveAnchor" xml:space="preserve">
+    <value>Anker Verplaatsen</value>
+  </data>
+  <data name="RemoveZipline" xml:space="preserve">
+    <value>Tokkelbaan Verwijderen</value>
+  </data>
+  <data name="ClickAnchorSpot" xml:space="preserve">
+    <value>Klik op de kaart waar het anker heen moet</value>
+  </data>
+  <data name="ClickZiplineEnd" xml:space="preserve">
+    <value>Klik op de kaart waar de tokkelbaan eindigt</value>
+  </data>
+  <data name="PointsHere" xml:space="preserve">
+    <value>{0} Punten Hier</value>
+  </data>
+  <data name="HeightGuessed" xml:space="preserve">
+    <value>De kaart kent geen hoogtes, deze komt van het dichtstbijzijnde bekende punt</value>
+  </data>
+  <data name="UnfinishedAdded" xml:space="preserve">
+    <value>Onaf · {0} Toegevoegd</value>
+  </data>
+  <data name="ZiplinesOnMap" xml:space="preserve">
+    <value>Tokkelbanen pas je aan op de kaart</value>
+  </data>
+  <data name="StructureUnknown" xml:space="preserve">
+    <value>De editor weet niet wat dit nodig heeft, dus kan het dit niet aanpassen</value>
+  </data>
+  <data name="GameFollowersStay" xml:space="preserve">
+    <value>Kelvin en Virginia van het Spel Blijven</value>
   </data>
 </root>

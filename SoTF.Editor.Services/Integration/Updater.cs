@@ -59,15 +59,22 @@ public static class Updater
     {
         try
         {
-            // The Release Body Lists Commit Titles Since The Previous Tag
-            var body = (await ReleaseAsync(tag))["body"];
-            return
-            [
-                .. (body?.ToString() ?? "")
-                    .Split('\n')
-                    .Select(line => line.Trim().TrimStart('-', '*').Trim())
-                    .Where(line => line.Length > 0),
-            ];
+            // A Build Without Its Commit Reads The Release Body
+            if (AppInfo.Commit is not { } commit)
+            {
+                var body = (await GetJsonAsync(AppInfo.ReleaseApiUrl + tag))["body"];
+                return NotesOf(body?.ToString().Split('\n'));
+            }
+
+            // Ponytail: GitHub Compares 250 Commits At Most, Page Beyond That
+            var comparison = await GetJsonAsync($"{AppInfo.CompareApiUrl}{commit}...{tag}");
+
+            // Every Commit Since This Build, Newest First Like The Body
+            return NotesOf(
+                comparison["commits"]
+                    ?.Reverse()
+                    .Select(entry => entry["commit"]?["message"]?.ToString().Split('\n')[0])
+            );
         }
         catch (Exception exception)
             when (exception is HttpRequestException or TaskCanceledException or JsonReaderException)
@@ -77,9 +84,18 @@ public static class Updater
         }
     }
 
-    private static async Task<JObject> ReleaseAsync(string tag)
+    private static List<string> NotesOf(IEnumerable<string?>? lines) =>
+        [
+            .. (lines ?? [])
+                .OfType<string>()
+                .Select(line => line.Trim().TrimStart('-', '*').Trim())
+                .Where(line => line.Length > 0)
+                .Distinct(),
+        ];
+
+    private static async Task<JObject> GetJsonAsync(string url)
     {
-        using var request = new HttpRequestMessage(HttpMethod.Get, AppInfo.ReleaseApiUrl + tag);
+        using var request = new HttpRequestMessage(HttpMethod.Get, url);
         request.Headers.UserAgent.ParseAdd(AppInfo.DisplayName.Replace(' ', '.'));
         using var response = await s_checkClient.SendAsync(request);
         response.EnsureSuccessStatusCode();
@@ -157,7 +173,7 @@ public static class Updater
         string? digest;
         try
         {
-            digest = (await ReleaseAsync(tag))["assets"]
+            digest = (await GetJsonAsync(AppInfo.ReleaseApiUrl + tag))["assets"]
                 ?.FirstOrDefault(asset => asset["name"]?.ToString() == $"SoTF.Editor_{tag}.exe")
                 ?["digest"]?.ToString();
         }

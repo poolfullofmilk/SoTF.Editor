@@ -74,13 +74,18 @@
         @if (Poi is ActorPoi actorPoi)
         {
             @* Bring To Player *@
-            <MudButton Variant="Variant.Filled"
-                       Color="Color.Info"
-                       Size="Size.Small"
-                       StartIcon="@Icons.Material.Rounded.NearMe"
-                       OnClick="() => BringToPlayerAsync(actorPoi)">
-                @AppText.Get("BringToPlayer")
-            </MudButton>
+            <Tooltip Text="@AppText.Get("AlreadyThere")"
+                     Disabled="@(!IsWithPlayer(actorPoi))"
+                     RootClass="d-flex flex-column">
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Info"
+                           Size="Size.Small"
+                           StartIcon="@Icons.Material.Rounded.NearMe"
+                           Disabled="@IsWithPlayer(actorPoi)"
+                           OnClick="() => BringToPlayerAsync(actorPoi)">
+                    @AppText.Get("BringToPlayer")
+                </MudButton>
+            </Tooltip>
             @* Edit Actor *@
             <MudButton Variant="Variant.Filled"
                        Size="Size.Small"
@@ -89,44 +94,37 @@
                 @AppText.Get("Edit")
             </MudButton>
         }
+        @if (Poi is ZipPointPoi)
+        {
+            @* Move Anchor *@
+            <MudButton Variant="Variant.Filled"
+                       Color="@PickColor(false)"
+                       Size="Size.Small"
+                       StartIcon="@Icons.Material.Rounded.OpenWith"
+                       OnClick="() => TogglePickAsync(false)">
+                @AppText.Get("MoveAnchor")
+            </MudButton>
+        }
+        @if (Poi is ZipPointPoi or LocationPoi)
+        {
+            @* New Zipline *@
+            <MudButton Variant="Variant.Filled"
+                       Color="@PickColor(true)"
+                       Size="Size.Small"
+                       StartIcon="@Icons.Material.Rounded.Timeline"
+                       OnClick="() => TogglePickAsync(true)">
+                @AppText.Get("NewZiplineFromHere")
+            </MudButton>
+        }
         @if (Poi is ZipPointPoi zipPointPoi)
         {
-            @if (zipPointPoi.IsMoveRequested)
-            {
-                <MudAlert Severity="Severity.Info"
-                          Dense
-                          Elevation="4"
-                          Class="rounded-panel">
-                    @AppText.Get("ClickNewLocation")
-                </MudAlert>
-            }
-            @* Move Anchor *@
-            <Tooltip Text="@AppText.Get("MoveToClickedTooltip")">
-                <MudButton Variant="Variant.Filled"
-                           Size="Size.Small"
-                           FullWidth
-                           StartIcon="@Icons.Material.Rounded.OpenWith"
-                           OnClick="() => RequestZipMove(zipPointPoi, false)">
-                    @AppText.Get("MoveToClickedPosition")
-                </MudButton>
-            </Tooltip>
-            @* New Zipline *@
-            <Tooltip Text="@AppText.Get("NewZiplineTooltip")">
-                <MudButton Variant="Variant.Filled"
-                           Size="Size.Small"
-                           FullWidth
-                           StartIcon="@Icons.Material.Rounded.Timeline"
-                           OnClick="() => RequestZipMove(zipPointPoi, true)">
-                    @AppText.Get("NewZiplineFromHere")
-                </MudButton>
-            </Tooltip>
-            @* Delete Zipline *@
+            @* Remove Zipline *@
             <MudButton Variant="Variant.Text"
                        Color="Color.Error"
                        Size="Size.Small"
                        StartIcon="@Icons.Material.Rounded.Delete"
                        OnClick="() => RemoveZiplineAsync(zipPointPoi.Parent)">
-                @AppText.Get("DeleteBothAnchors")
+                @AppText.Get("RemoveZipline")
             </MudButton>
         }
     </MudStack>
@@ -135,30 +133,42 @@
     <MudText Typo="Typo.subtitle2">@AppText.Get("Teleportation")</MudText>
     <MudStack Spacing="1">
         @* Teleport Player *@
-        <MudButton Variant="Variant.Filled"
-                   Color="Color.Info"
-                   Size="Size.Small"
-                   StartIcon="@Icons.Material.Rounded.Person"
-                   Disabled="@(!Poi.CanTeleportPlayer())"
-                   OnClick="() => TeleportAsync(TeleportTarget.Player)">
-            @AppText.Get("TeleportPlayerHere")
-        </MudButton>
+        <Tooltip Text="@AppText.Get("AlreadyThere")"
+                 Disabled="@(!PlayerIsThere)"
+                 RootClass="d-flex flex-column">
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Info"
+                       Size="Size.Small"
+                       StartIcon="@Icons.Material.Rounded.Person"
+                       Disabled="@(Poi.Position is null || PlayerIsThere)"
+                       OnClick="() => TeleportAsync(TeleportTarget.Player)">
+                @AppText.Get("TeleportPlayerHere")
+            </MudButton>
+        </Tooltip>
         @* Teleport Kelvin *@
-        <MudButton Variant="Variant.Text"
-                   Size="Size.Small"
-                   StartIcon="@Icons.Material.Rounded.NearMe"
-                   Disabled="@(!CanTeleportKelvin)"
-                   OnClick="() => TeleportAsync(TeleportTarget.Kelvin)">
-            @AppText.Get("TeleportKelvinHere")
-        </MudButton>
+        <Tooltip Text="@AppText.Get("AlreadyThere")"
+                 Disabled="@(!IsThere(Constants.Actors.KelvinTypeId))"
+                 RootClass="d-flex flex-column">
+            <MudButton Variant="Variant.Text"
+                       Size="Size.Small"
+                       StartIcon="@Icons.Material.Rounded.NearMe"
+                       Disabled="@(!CanTeleport(Constants.Actors.KelvinTypeId))"
+                       OnClick="() => TeleportAsync(TeleportTarget.Kelvin)">
+                @AppText.Get("TeleportKelvinHere")
+            </MudButton>
+        </Tooltip>
         @* Teleport Virginia *@
-        <MudButton Variant="Variant.Text"
-                   Size="Size.Small"
-                   StartIcon="@Icons.Material.Rounded.NearMe"
-                   Disabled="@(!CanTeleportVirginia)"
-                   OnClick="() => TeleportAsync(TeleportTarget.Virginia)">
-            @AppText.Get("TeleportVirginiaHere")
-        </MudButton>
+        <Tooltip Text="@AppText.Get("AlreadyThere")"
+                 Disabled="@(!IsThere(Constants.Actors.VirginiaTypeId))"
+                 RootClass="d-flex flex-column">
+            <MudButton Variant="Variant.Text"
+                       Size="Size.Small"
+                       StartIcon="@Icons.Material.Rounded.NearMe"
+                       Disabled="@(!CanTeleport(Constants.Actors.VirginiaTypeId))"
+                       OnClick="() => TeleportAsync(TeleportTarget.Virginia)">
+                @AppText.Get("TeleportVirginiaHere")
+            </MudButton>
+        </Tooltip>
         @* Spawn Actors *@
         <MudButton Variant="Variant.Text"
                    Size="Size.Small"

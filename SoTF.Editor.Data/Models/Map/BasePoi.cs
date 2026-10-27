@@ -112,26 +112,6 @@ public abstract class BasePoi : IPoi
     {
         return $"images/icons/{icon}";
     }
-
-    public bool CanTeleportPlayer()
-    {
-        return Position != null && this is not PlayerPoi;
-    }
-
-    public bool CanTeleportKelvin()
-    {
-        return Position != null && !IsActorOfType(Constants.Actors.KelvinTypeId);
-    }
-
-    public bool CanTeleportVirginia()
-    {
-        return Position != null && !IsActorOfType(Constants.Actors.VirginiaTypeId);
-    }
-
-    private bool IsActorOfType(int typeId)
-    {
-        return this is ActorPoi actorPoi && actorPoi.Actor.TypeId == typeId;
-    }
 }
 
 public interface IPoi

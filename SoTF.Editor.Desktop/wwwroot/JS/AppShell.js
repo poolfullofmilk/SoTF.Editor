@@ -142,6 +142,14 @@ window.sotfMap = (() => {
 
         // Arrow Keys Step Through The Points, One Tab Stop For The Whole Map
         viewport.addEventListener("keydown", (event) => {
+            // Enter Clicks A Point's Middle, Stacked Points Then Ask
+            if ((event.key === "Enter" || event.key === " ") && event.target.classList?.contains("map-poi")) {
+                event.preventDefault();
+                event.stopPropagation();
+                const bounds = event.target.getBoundingClientRect();
+                event.target.dispatchEvent(new MouseEvent("click", { bubbles: true, clientX: bounds.left + bounds.width / 2, clientY: bounds.top + bounds.height / 2 }));
+                return;
+            }
             const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[event.key];
             if (!step) return;
             event.preventDefault();
@@ -152,6 +160,9 @@ window.sotfMap = (() => {
             points[next].focus({ preventScroll: true });
             panTo(parseFloat(points[next].style.left), parseFloat(points[next].style.top));
         });
+
+        // A Right Click Picks A Spot, No Browser Menu
+        viewport.addEventListener("contextmenu", (event) => event.preventDefault());
 
         // Icons Are Images, The Browser Would Drag Them Away
         viewport.addEventListener("dragstart", (event) => event.preventDefault());
@@ -221,6 +232,13 @@ window.sotfMap = (() => {
         glideTo(state.viewport.clientWidth / 2 - mapX * zoom, state.viewport.clientHeight / 2 - mapY * zoom, zoom);
     };
 
+    // A Click In Map Pixels, Plus The Zoom
+    const toMap = (clientX, clientY) => {
+        if (!state) return null;
+        const bounds = state.viewport.getBoundingClientRect();
+        return [(clientX - bounds.left - state.x) / state.zoom, (clientY - bounds.top - state.y) / state.zoom, state.zoom];
+    };
+
     const zoomBy = (factor) => {
         if (!state) return;
         zoomAt(state.viewport.clientWidth / 2, state.viewport.clientHeight / 2, factor);
@@ -232,5 +250,5 @@ window.sotfMap = (() => {
         glideTo(x, y, zoom);
     };
 
-    return { init, centerOn, zoomBy, reset };
+    return { init, centerOn, toMap, zoomBy, reset };
 })();

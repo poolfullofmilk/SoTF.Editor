@@ -648,23 +648,8 @@
   <data name="NewZiplineFromHere" xml:space="preserve">
     <value>New Zipline From Here</value>
   </data>
-  <data name="NewZiplineTooltip" xml:space="preserve">
-    <value>Then click where the zipline should end</value>
-  </data>
-  <data name="DeleteBothAnchors" xml:space="preserve">
-    <value>Delete Both Anchors</value>
-  </data>
   <data name="SelectAll" xml:space="preserve">
     <value>Select All</value>
-  </data>
-  <data name="ClickNewLocation" xml:space="preserve">
-    <value>Click Another Location</value>
-  </data>
-  <data name="MoveToClickedPosition" xml:space="preserve">
-    <value>Move to Clicked Position</value>
-  </data>
-  <data name="MoveToClickedTooltip" xml:space="preserve">
-    <value>Then click where the anchor should go</value>
   </data>
   <data name="SpawnActors" xml:space="preserve">
     <value>Spawn Actors</value>
@@ -2034,5 +2019,38 @@ No keeps the editor open so you can save first</value>
   </data>
   <data name="ResetFilters" xml:space="preserve">
     <value>Reset Filters</value>
+  </data>
+  <data name="AlreadyThere" xml:space="preserve">
+    <value>Already There</value>
+  </data>
+  <data name="MoveAnchor" xml:space="preserve">
+    <value>Move Anchor</value>
+  </data>
+  <data name="RemoveZipline" xml:space="preserve">
+    <value>Remove Zipline</value>
+  </data>
+  <data name="ClickAnchorSpot" xml:space="preserve">
+    <value>Click on the map where the anchor goes</value>
+  </data>
+  <data name="ClickZiplineEnd" xml:space="preserve">
+    <value>Click on the map where the zipline ends</value>
+  </data>
+  <data name="PointsHere" xml:space="preserve">
+    <value>{0} Points Here</value>
+  </data>
+  <data name="HeightGuessed" xml:space="preserve">
+    <value>The map knows no heights, so this one comes from the nearest known point</value>
+  </data>
+  <data name="UnfinishedAdded" xml:space="preserve">
+    <value>Unfinished · {0} Added</value>
+  </data>
+  <data name="ZiplinesOnMap" xml:space="preserve">
+    <value>Ziplines change on the map</value>
+  </data>
+  <data name="StructureUnknown" xml:space="preserve">
+    <value>The editor does not know what this needs, so it cannot change it</value>
+  </data>
+  <data name="GameFollowersStay" xml:space="preserve">
+    <value>The Game's Own Kelvin and Virginia Stay</value>
   </data>
 </root>

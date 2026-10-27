@@ -1,5 +1,5 @@
 #:project ../SoTF.Editor.Services/SoTF.Editor.Services.csproj
-#:package Microsoft.Extensions.DependencyInjection@10.0.13
+#:package Microsoft.Extensions.DependencyInjection@10.0.14
 #:property NoWarn=$(NoWarn);IL2026;IL3050
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
@@ -414,6 +414,35 @@ try
     var copiesBefore = followers.CopiesOf(Constants.Actors.KelvinTypeId).Count;
     var removedNpc = npcs.AllActors.First(candidate => candidate.ActorType?.IsFollower() != true);
     main.SpawnFollower(Constants.Actors.KelvinTypeId);
+
+    // Kelvin's Own Dialog Reaches Every Kelvin, The Filters Guard Others
+    var kelvins = npcs
+        .AllActors.Where(candidate => candidate.TypeId == Constants.Actors.KelvinTypeId)
+        .ToList();
+    var kelvinEdit = new EditActorViewModel(kelvins[0], gameData.ActorTypes) { ActorSelection = 2 };
+    var strangerEdit = new EditActorViewModel(removedNpc, gameData.ActorTypes)
+    {
+        ActorSelection = 3,
+        OnlyInSameAreaAsActor = false,
+    };
+    Check(
+        kelvins.Count > 1
+            && kelvins.All(kelvin =>
+                kelvinEdit.Matches(
+                    kelvin.TypeId,
+                    kelvin.FamilyId,
+                    kelvin.GraphMask,
+                    kelvin.UniqueId
+                )
+                && !strangerEdit.Matches(
+                    kelvin.TypeId,
+                    kelvin.FamilyId,
+                    kelvin.GraphMask,
+                    kelvin.UniqueId
+                )
+            ),
+        "Kelvin Reaches Every Copy, Others Leave Him Alone"
+    );
     main.ModifyActors(save =>
         actorModifier.Modify(
             save,
@@ -444,6 +473,46 @@ try
     Check(main.HasChanges("Map"), "Removed Zipline Is Seen");
     main.RevertPage("Map");
     Check(!main.HasUnsavedChanges(), "Reverted Map Leaves Nothing Unsaved");
+
+    // A Clicked Spot Takes A Moved Anchor And New Zipline
+    map.Build();
+    var anchor = map.AllPois().OfType<ZipPointPoi>().First();
+    var anchorX = anchor.X;
+    var ziplines = map.AllPois().OfType<ZiplinePoi>().Count();
+    var (spotLeft, spotTop) = CoordinateConverter.IngameToPixel(anchor.X + 40, anchor.Z + 40);
+    map.TogglePick(anchor, false);
+    map.Click(spotLeft, spotTop, 1, true);
+    Check(
+        main.HasChanges("Map") && Math.Abs(anchor.X - anchorX - 40) < 0.5,
+        "Anchor Moves To A Clicked Spot"
+    );
+    map.Click(spotLeft + 30, spotTop + 30, 1, true);
+    if (map.SelectedPoi is LocationPoi spot)
+    {
+        map.TogglePick(spot, true);
+        map.Click(spotLeft + 60, spotTop + 60, 1, true);
+    }
+
+    Check(
+        map.AllPois().OfType<ZiplinePoi>().Count() == ziplines + 1,
+        "New Zipline From A Clicked Spot"
+    );
+    main.RevertPage("Map");
+    Check(!main.HasUnsavedChanges(), "Reverted Zipline Picks Leave Nothing Unsaved");
+
+    // An Unknown Build Cost Never Reads As Done
+    var platform = new ScrewStructureWrapper(
+        gameData.ScrewStructures.First(structure => structure.Id == 98),
+        new JObject(),
+        16,
+        null,
+        ScrewStructureOrigin.Unfinished,
+        0
+    );
+    Check(
+        platform.PctDone == -1 && platform.ModificationModes.Count == 1,
+        "Unknown Cost Is Not Done"
+    );
     foreach (
         var (tool, run) in new (string, Action)[]
         {

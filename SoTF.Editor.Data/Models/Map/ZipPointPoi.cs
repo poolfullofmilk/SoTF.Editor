@@ -6,10 +6,6 @@ public class ZipPointPoi(Position position, ZiplinePoi parent) : BasePoi(positio
 {
     public const string IconFile = "pole.svg";
 
-    public bool IsMoveRequested { get; set; }
-
-    public bool IsZiplineCreationRequested { get; set; }
-
     public ZiplinePoi Parent { get; } = parent;
 
     public override string Icon => BaseIcon(IconFile);

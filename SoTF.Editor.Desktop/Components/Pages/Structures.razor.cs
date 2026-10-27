@@ -6,6 +6,7 @@ using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Desktop.Components.Shared.Common;
 using SoTF.Editor.Desktop.Components.Shared.Dialogs;
+using SoTF.Editor.Services.Map;
 using SoTF.Editor.Services.Pages;
 
 namespace SoTF.Editor.Desktop.Components.Pages;
@@ -97,15 +98,35 @@ public partial class Structures : EditorPageBase
 
     private static string StateText(ScrewStructureWrapper wrapper)
     {
-        // Built, Or How Far Along With The Pieces Added
-        return wrapper.Origin == ScrewStructureOrigin.Finished
-            ? AppText.Get("Built")
+        if (wrapper.Origin == ScrewStructureOrigin.Finished)
+        {
+            return AppText.Get("Built");
+        }
+
+        // How Far Along, Or Just Pieces For Unknown Costs
+        return wrapper.PctDone < 0
+            ? AppText.Format("UnfinishedAdded", wrapper.Added)
             : AppText.Format(
                 "UnfinishedState",
                 wrapper.PctDonePrintable,
                 wrapper.Added,
-                wrapper.BuildCost < 0 ? "?" : wrapper.BuildCost
+                wrapper.BuildCost
             );
+    }
+
+    private static string? LockedReason(ScrewStructureWrapper wrapper)
+    {
+        if (wrapper.ModificationModes.Count > 1)
+        {
+            return null;
+        }
+
+        // A Greyed Mode Says Why, Ziplines Change On The Map
+        return AppText.Get(
+            wrapper.ScrewStructure?.Id == ZiplineManager.ZiplineTypeId
+                ? "ZiplinesOnMap"
+                : "StructureUnknown"
+        );
     }
 
     private static Color StateColor(ScrewStructureWrapper wrapper)

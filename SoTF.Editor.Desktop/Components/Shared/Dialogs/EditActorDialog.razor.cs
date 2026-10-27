@@ -52,11 +52,28 @@ public partial class EditActorDialog
     [Inject]
     public required ISnackbar Snackbar { get; set; }
 
+    [Inject]
+    public required FollowerPageViewModel FollowerPage { get; set; }
+
     private EditActorViewModel _viewModel = null!;
 
-    private bool IsSingle => _viewModel.ActorSelection == 0;
-
     private int MatchCount => CountFor(_viewModel.ActorSelection);
+
+    // A Filter Shows Only Where It Changes Who Is Reached
+    private bool ShowsSameArea => _viewModel.LimitsToSameArea(_viewModel.ActorSelection);
+    private bool ShowsSkipFollowers => _viewModel.CanSkipFollowers(_viewModel.ActorSelection);
+
+    private bool ReachesSpawner =>
+        NpcsPage.AllActors.Any(actor =>
+            actor.SpawnerId != null && Reaches(actor, _viewModel.ActorSelection)
+        );
+
+    // The Game's Own Kelvin And Virginia Stay, As On Followers
+    private bool RemovesGameFollower =>
+        NpcsPage.AllActors.Any(actor =>
+            Reaches(actor, _viewModel.ActorSelection)
+            && FollowerPage.CopiesOf(actor.TypeId).FirstOrDefault()?.UniqueId == actor.UniqueId
+        );
 
     private IEnumerable<ActorDetail> Details =>
         [
@@ -100,15 +117,29 @@ public partial class EditActorDialog
     private int CountFor(short selection)
     {
         // The Change's Own Rule, Counted On Loaded Actors
-        return NpcsPage.AllActors.Count(actor =>
-            _viewModel.Matches(
-                actor.TypeId,
-                actor.FamilyId,
-                actor.GraphMask,
-                actor.UniqueId,
-                selection
-            )
+        return NpcsPage.AllActors.Count(actor => Reaches(actor, selection));
+    }
+
+    private bool Reaches(Actor actor, short selection)
+    {
+        return _viewModel.Matches(
+            actor.TypeId,
+            actor.FamilyId,
+            actor.GraphMask,
+            actor.UniqueId,
+            selection
         );
+    }
+
+    private void Select(short selection)
+    {
+        _viewModel.ActorSelection = selection;
+
+        // A Hidden Switch Changes Nothing
+        if (!ReachesSpawner)
+        {
+            _viewModel.ModifyOptions.RemoveSpawner = false;
+        }
     }
 
     private string CountLabel(string labelKey)

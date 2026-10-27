@@ -10,35 +10,19 @@ public static class ZiplineManager
 {
     public const int ZiplineTypeId = 55;
 
-    public static ZiplinePoi? AcceptNewPosition(
-        ZipPointPoi point,
-        Savegame selectedSavegame,
-        Position newPosition
-    )
+    public static void MoveAnchor(ZipPointPoi point, Savegame savegame, Position newPosition)
     {
-        point.IsMoveRequested = false;
-        if (point.IsZiplineCreationRequested)
-        {
-            point.IsZiplineCreationRequested = false;
-            return CreateNew(selectedSavegame, point.Position!, newPosition) is { } newToken
-                ? new ZiplinePoi(newToken, point.Position!, newPosition)
-                : null;
-        }
-
         var zipline = point.Parent;
         var posAOld = zipline.PointA.Position;
         var posBOld = zipline.PointB.Position;
         point.Position = newPosition;
 
         // A Failed Move Puts The Anchors Back
-        if (Move(selectedSavegame, zipline, posAOld, posBOld))
+        if (!Move(savegame, zipline, posAOld, posBOld))
         {
-            return null;
+            zipline.PointA.Position = posAOld;
+            zipline.PointB.Position = posBOld;
         }
-
-        zipline.PointA.Position = posAOld;
-        zipline.PointB.Position = posBOld;
-        return null;
     }
 
     public static JObject? CreateNew(Savegame savegame, Position anchorA, Position anchorB)

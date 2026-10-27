@@ -77,7 +77,8 @@ public class ScrewStructureWrapper
     // Free Structures Cost Nothing, Never A Negative Count
     public int AlmostFinishedAdded => Math.Max(0, BuildCost - 1);
 
-    public int PctDone => PctOf(_loadedStructure, _loadedAdded);
+    public int PctDone =>
+        Origin == ScrewStructureOrigin.Finished ? 100 : PctOf(_loadedStructure, _loadedAdded);
 
     public string PctDonePrintable => Printable(PctDone);
 
