@@ -562,6 +562,24 @@ try
         Check(!main.HasUnsavedChanges(), "Reverted Type Change Leaves Nothing Unsaved");
     }
 
+    // Add Piece Wears A Type At Its Default Durability
+    var weakest = armor.ArmourTypes[0];
+    var wornBefore = armor.Armour.Count();
+    Check(armor.FreeSlots.Any(), "Sample Has A Free Armour Slot");
+    armor.AddPiece(weakest);
+    Check(
+        armor.Armour.Count() == wornBefore + 1
+            && armor.Armour.Any(piece =>
+                armor.IsTypeChanged(piece)
+                && piece.Id == weakest.Id
+                && piece.ArmourPiece.RemainingArmourpoints == weakest.Durability?.Default
+            )
+            && main.HasChanges("Player"),
+        "Added Piece Wears At Its Default"
+    );
+    main.RevertPage("Player");
+    Check(!main.HasUnsavedChanges(), "Reverted Added Piece Leaves Nothing Unsaved");
+
     // A Backpack Stack Turns Into A Type Not Held Yet
     var stack = armor.InventoryArmour.FirstOrDefault(inventory.IsHeld);
     var freeType =

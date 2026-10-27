@@ -226,14 +226,22 @@
                                     </Tooltip>
                                 </MudStack>
                             }
-
-                            @if (ArmorPage.HasArmorPieces())
-                            {
-                                <MudDivider Class="my-2" />
-                            }
+                            <MudStack Row
+                                      AlignItems="AlignItems.Center"
+                                      Spacing="2"
+                                      Class="pa-1">
+                                @* Add Piece *@
+                                <ArmourSelect @key="ArmorPage.Armour.Count()"
+                                              ValueChanged="ArmorPage.AddPiece"
+                                              Types="ArmorPage.ArmourTypes"
+                                              Label="@AppText.Get("AddArmour")"
+                                              EmptyIcon="@Icons.Material.Rounded.Add"
+                                              Disabled="@(!ArmorPage.FreeSlots.Any())" />
+                            </MudStack>
 
                             @if (ArmorPage.InventoryArmour.Any())
                             {
+                                <MudDivider Class="my-2" />
                                 <MudText Typo="Typo.subtitle2">@AppText.Get("ArmourInInventory")</MudText>
                                 @foreach (var item in ArmorPage.InventoryArmour)
                                 {
@@ -273,36 +281,7 @@
                                         </Tooltip>
                                     </MudStack>
                                 }
-                                <MudDivider Class="my-2" />
                             }
-
-                            <MudStack Row
-                                      AlignItems="AlignItems.Center"
-                                      Wrap="Wrap.Wrap"
-                                      Spacing="2">
-                                @* New Armor *@
-                                <ArmourSelect @bind-Value="ArmorPage.NewType"
-                                              Types="ArmorPage.ArmourTypes"
-                                              Label="@AppText.Get("NewArmour")"
-                                              Disabled="@(!ArmorPage.FreeSlots.Any())" />
-                                @* New Durability *@
-                                <NumberField T="int"
-                                             @bind-Value="ArmorPage.NewDurability"
-                                             Min="1"
-                                             Label="@AppText.Get("Durability")"
-                                             Disabled="@(!ArmorPage.FreeSlots.Any())"
-                                             Margin="Margin.Dense"
-                                             Style="width:120px" />
-                                @* Add Armor *@
-                                <MudButton Variant="Variant.Filled"
-                                           Color="Color.Info"
-                                           Size="Size.Small"
-                                           StartIcon="@Icons.Material.Rounded.Add"
-                                           Disabled="@(!ArmorPage.CanAddNew())"
-                                           OnClick="ArmorPage.AddNew">
-                                    @AppText.Get("Add")
-                                </MudButton>
-                            </MudStack>
                         </MudStack>
                     </MudPaper>
                 </ChildContent>

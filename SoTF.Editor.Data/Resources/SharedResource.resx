@@ -2002,8 +2002,8 @@ No keeps the editor open so you can save first</value>
   <data name="DeleteArmourText" xml:space="preserve">
     <value>The piece is gone for good, it is not worn or kept in the inventory</value>
   </data>
-  <data name="NewArmour" xml:space="preserve">
-    <value>New Piece</value>
+  <data name="AddArmour" xml:space="preserve">
+    <value>Add Piece</value>
   </data>
   <data name="DeleteBackups" xml:space="preserve">
     <value>Delete Backups</value>

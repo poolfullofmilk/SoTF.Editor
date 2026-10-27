@@ -2002,8 +2002,8 @@ Nee houdt de editor open zodat je eerst kunt opslaan</value>
   <data name="DeleteArmourText" xml:space="preserve">
     <value>Het stuk verdwijnt voorgoed, het wordt niet gedragen of in de inventaris bewaard</value>
   </data>
-  <data name="NewArmour" xml:space="preserve">
-    <value>Nieuw Stuk</value>
+  <data name="AddArmour" xml:space="preserve">
+    <value>Stuk Toevoegen</value>
   </data>
   <data name="DeleteBackups" xml:space="preserve">
     <value>Back-ups Verwijderen</value>

@@ -41,18 +41,6 @@ public class ArmorPageViewModel
     public bool MovedThroughInventory { get; private set; }
     public List<Item> ArmourTypes { get; }
 
-    // New Piece, A Picked Type Starts At Its Default
-    public Item? NewType
-    {
-        get;
-        set
-        {
-            field = value;
-            NewDurability = value?.Durability?.Default ?? NewDurability;
-        }
-    }
-    public int NewDurability { get; set; }
-
     public bool HasChanges => _loaded.Count != _armour.Count || _armour.Any(IsChanged);
 
     // Removed, Added And Changed Pieces Alike
@@ -149,33 +137,28 @@ public class ArmorPageViewModel
             return;
         }
 
-        // A Piece From The Backpack Starts At Default Durability
-        Add(armour, armour.Durability?.Default ?? 1);
+        Add(armour);
         TakeOneFrom(item);
         MovedThroughInventory = true;
     }
 
-    public bool CanAddNew()
+    public void AddPiece(Item? type)
     {
-        return NewType != null && NewDurability > 0 && FreeSlots.Any();
-    }
-
-    public void AddNew()
-    {
-        if (CanAddNew() && NewType is { } type)
+        if (type != null && FreeSlots.Any())
         {
-            Add(type, NewDurability);
+            Add(type);
         }
     }
 
-    private void Add(Item type, float durability)
+    private void Add(Item type)
     {
+        // A New Or Worn Piece Starts At Its Default Durability
         _armour.Add(
             new ArmourData(
                 new ArmourPieceModel
                 {
                     ItemId = type.Id,
-                    RemainingArmourpoints = durability,
+                    RemainingArmourpoints = type.Durability?.Default ?? 1,
                     Slot = FreeSlots.First(),
                 },
                 type

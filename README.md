@@ -12,17 +12,18 @@
 </table>
 
 ## Features
-- Player stats, outfit, armour and one inventory list of every item
-- Armour worn straight from the inventory or put back in it, with the reason shown when it cannot, and any worn piece or backpack stack switched to another armour type in place
+- Player stats with one click to fill every bar, strength and health included, outfit, armour and one inventory list of every item
+- Armour added or switched to another type right in the list, at the game's own default durability or any durability you set
+- Armour worn straight from the inventory or put back in it, backpack stacks switched to another type, with the reason shown when it cannot
 - Every storage filled to the max in one click, empty slots included, or maxed and cleared one by one
 - Kelvin and Virginia, spawned copies too: stats, outfit, items and feelings with one-click moods, revive even after the game removed them, spawn more or remove the extra ones
 - Game setup, game state and weather, with info buttons that explain each setting
 - Seasons on a year bar with a colour per season: click a day to make it today
 - NPCs edited one at a time or by family, type or everyone, with live counts before you apply
-- Structures listed per type, with one menu to finish, unfinish or remove what the list shows
+- Structures listed per type, with one menu to finish, unfinish or remove what the list shows, each choice saying how many it changes
 - Game presets such as Hard that you can still tweak setting by setting
 - A small yellow dot on every value you changed and on its page in the menu, a list of every change before you save, a Save button that stays greyed out until there is something to save, and an undo button on every changed page in the menu to revert just that page
-- A map to teleport the player and every Kelvin or Virginia, bring any follower or NPC to you, spawn actors or move ziplines, with filters in one menu, a useful default selection you can reset to, a button that slides the menus away for a bigger map, and zooming that glides smoothly
+- A map to teleport the player and every Kelvin or Virginia, bring any follower or NPC to you, spawn actors or move ziplines, with points grouped and counted, big groups such as actors folded open in one click, filters in one menu, a useful default selection you can reset to, a button that slides the menus away for a bigger map, and zooming that glides smoothly
 - Savegame cards show the day, mode and crash site, and joined games, which hold no name or picture, are named by mode and day and show your strength and items
 - Tools on their own page, such as regrow trees, reset fires, traps and containers, cannibal anger set for every cannibal from calm to furious to the percent, and item plating
 - Updates itself in the background from inside the app, shows what changed and checks the download against GitHub's checksum

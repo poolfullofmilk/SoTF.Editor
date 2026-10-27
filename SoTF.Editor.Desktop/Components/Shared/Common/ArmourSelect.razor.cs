@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 using SoTF.Editor.Data.Models;
 
 namespace SoTF.Editor.Desktop.Components.Shared.Common;
@@ -22,4 +23,8 @@ public partial class ArmourSelect
 
     [Parameter]
     public bool Disabled { get; set; }
+
+    // Shown While No Type Is Picked
+    [Parameter]
+    public string EmptyIcon { get; set; } = Icons.Material.Rounded.Shield;
 }
