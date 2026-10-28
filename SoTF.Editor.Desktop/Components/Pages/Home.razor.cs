@@ -133,6 +133,14 @@ public partial class Home : EditorPageBase
         return _backupCounts.GetValueOrDefault(savegame.FullPath);
     }
 
+    private static string BackupsTitle(int count)
+    {
+        return AppText.Format(
+            "RestoreBackupOf",
+            AppText.Format(count == 1 ? "OneBackup" : "BackupCount", count)
+        );
+    }
+
     private async Task OpenDuplicateMenuAsync(MouseEventArgs args, Savegame savegame)
     {
         // One Menu For Every Card, Opened At The Button
@@ -200,24 +208,8 @@ public partial class Home : EditorPageBase
         try
         {
             // A Big Savegame Copies Off The Window Thread
-            var copied = await Task.Run(() => SavegameManager.Duplicate(savegame, modeFolder));
-            Snackbar.Add(
-                AppText.Get("SavegameDuplicated"),
-                Severity.Success,
-                options =>
-                {
-                    options.Action = AppText.Get("OpenCopy");
-                    options.OnClick = _ =>
-                    {
-                        if (SavegameManager.Load(copied) is { } copy)
-                        {
-                            MainViewModel.RequestOpen(copy);
-                        }
-
-                        return Task.CompletedTask;
-                    };
-                }
-            );
+            await Task.Run(() => SavegameManager.Duplicate(savegame, modeFolder));
+            Snackbar.Add(AppText.Get("SavegameDuplicated"), Severity.Success);
             await LoadSavegamesAsync();
         }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)

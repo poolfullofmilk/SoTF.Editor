@@ -74,12 +74,6 @@ document.addEventListener("keydown", (event) => {
     );
 })();
 
-// A Section Button Glides To Its Section
-document.addEventListener("click", (event) => {
-    const button = event.target instanceof Element ? event.target.closest("[data-scroll-to]") : null;
-    document.getElementById(button?.dataset.scrollTo ?? "")?.scrollIntoView({ behavior: "smooth", block: "start" });
-});
-
 // An Info Icon Inside A Switch Label Never Toggles The Switch
 document.addEventListener("click", (event) => {
     if (event.target instanceof Element && event.target.closest(".info-icon")) {
@@ -150,7 +144,7 @@ window.sotfMap = (() => {
             bubble.style.left = `${xs.reduce((sum, value) => sum + value) / members.length}px`;
             bubble.style.top = `${ys.reduce((sum, value) => sum + value) / members.length}px`;
             bubble.style.setProperty("--cluster-size", `${Math.min(28 + Math.log2(members.length) * 4, 48)}px`);
-            bubble.dataset.spread = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
+            bubble.members = members.flatMap((member) => [member.x, member.y]);
             bubbles.push(bubble);
             members.forEach((member) => grouped.add(member.icon));
         }
@@ -184,11 +178,11 @@ window.sotfMap = (() => {
         }
     };
 
-    // A Click In Map Pixels, Plus The Zoom And How Far It Goes
+    // A Click In Map Pixels, Plus The Zoom
     const toMap = (clientX, clientY) => {
         if (!state) return null;
         const bounds = state.viewport.getBoundingClientRect();
-        return [(clientX - bounds.left - state.x) / state.zoom, (clientY - bounds.top - state.y) / state.zoom, state.zoom, maxZoom];
+        return [(clientX - bounds.left - state.x) / state.zoom, (clientY - bounds.top - state.y) / state.zoom, state.zoom];
     };
 
     // A Waiting Zipline Follows The Cursor, Hidden Off The Map
@@ -382,12 +376,11 @@ window.sotfMap = (() => {
                     return;
                 }
 
-                // A Bubble Glides In Until Its Points Part, Blazor Never Hears
+                // A Bubble Lists Its Points, The Map Click Never Runs
                 const bubble = event.target instanceof Element ? event.target.closest(".map-cluster") : null;
                 if (bubble) {
                     event.stopPropagation();
-                    const spread = Math.max(parseFloat(bubble.dataset.spread), 1);
-                    zoomTo(parseFloat(bubble.style.left), parseFloat(bubble.style.top), Math.min(maxZoom, Math.max(state.zoom * 2, (clusterPixels * 1.5) / spread)));
+                    state.page.invokeMethodAsync("ShowStackAsync", bubble.members).catch(() => {});
                 }
             },
             true
@@ -458,13 +451,6 @@ window.sotfMap = (() => {
         placePreview();
     };
 
-    // A Stack Glides In, Centred, Until Its Points Part
-    const zoomTo = (mapX, mapY, zoom) => {
-        if (!state) return;
-        state.fitted = false;
-        glideTo(state.viewport.clientWidth / 2 - mapX * zoom, state.viewport.clientHeight / 2 - mapY * zoom, zoom);
-    };
-
     const zoomBy = (factor) => {
         if (!state) return;
         zoomAt(state.viewport.clientWidth / 2, state.viewport.clientHeight / 2, factor);
@@ -476,5 +462,5 @@ window.sotfMap = (() => {
         glideTo(x, y, zoom);
     };
 
-    return { init, centerOn, toMap, zoomTo, zoomBy, reset, preview };
+    return { init, centerOn, toMap, zoomBy, reset, preview };
 })();

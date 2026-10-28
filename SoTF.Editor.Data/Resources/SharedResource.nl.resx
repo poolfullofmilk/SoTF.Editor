@@ -1065,9 +1065,6 @@
   <data name="UnableToCopySavegame" xml:space="preserve">
     <value>Kan de savegame niet kopiëren, zie het logbestand</value>
   </data>
-  <data name="OpenCopy" xml:space="preserve">
-    <value>Openen</value>
-  </data>
   <data name="CoreGameCompleted" xml:space="preserve">
     <value>Hoofdverhaal Voltooid</value>
   </data>
@@ -2166,5 +2163,8 @@ Nee houdt de editor open zodat je eerst kunt opslaan</value>
   </data>
   <data name="ModeCustomText" xml:space="preserve">
     <value>Kies elke instelling zelf</value>
+  </data>
+  <data name="RestoreBackupOf" xml:space="preserve">
+    <value>Back-up Terugzetten: {0}</value>
   </data>
 </root>

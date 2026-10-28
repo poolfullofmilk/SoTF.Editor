@@ -1065,9 +1065,6 @@
   <data name="UnableToCopySavegame" xml:space="preserve">
     <value>Der Spielstand konnte nicht kopiert werden, siehe das Protokoll</value>
   </data>
-  <data name="OpenCopy" xml:space="preserve">
-    <value>Öffnen</value>
-  </data>
   <data name="CoreGameCompleted" xml:space="preserve">
     <value>Hauptspiel Abgeschlossen</value>
   </data>
@@ -2166,5 +2163,8 @@ Nein lässt den Editor offen, damit du zuerst speichern kannst</value>
   </data>
   <data name="ModeCustomText" xml:space="preserve">
     <value>Wähle jede Einstellung selbst</value>
+  </data>
+  <data name="RestoreBackupOf" xml:space="preserve">
+    <value>Backup Wiederherstellen: {0}</value>
   </data>
 </root>

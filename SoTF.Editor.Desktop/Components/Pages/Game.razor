@@ -84,122 +84,88 @@
 
                 @if (IsCustom)
                 {
-                    @* Section Bar *@
-                    <MudPaper Elevation="4"
-                              Class="rounded-panel px-4 py-2 sticky-bar">
-                        <MudStack Row
-                                  AlignItems="AlignItems.Center"
-                                  Wrap="Wrap.Wrap"
-                                  Spacing="2">
-                            @foreach (var group in VisibleGroups)
-                            {
-                                @* Section Button *@
+                    @foreach (var group in s_setupGroups)
+                    {
+                        <Header Title="@AppText.Get(group.TitleKey)"
+                                Icon="@group.Icon">
+                            <TitleContent>
+                                <MudSpacer />
+                                @* Reset Group *@
                                 <MudButton Variant="Variant.Text"
                                            Size="Size.Small"
-                                           StartIcon="@group.Icon"
-                                           data-scroll-to="@SectionId(group)">
-                                    @AppText.Get(group.TitleKey)
+                                           Disabled="@(!GameSetup.HasAny(KeysOf(group)))"
+                                           OnClick="() => GameSetup.ResetSettings(KeysOf(group))">
+                                    @AppText.Get("SetAllToDefault")
                                 </MudButton>
-                            }
-                            <MudSpacer />
-                            @* Setting Search *@
-                            <SearchField @bind-Value="_settingFilter" />
-                        </MudStack>
-                    </MudPaper>
+                            </TitleContent>
+                            <ChildContent>
+                                <MudPaper Elevation="4"
+                                          Class="rounded-panel pa-4">
+                                    <MudGrid Spacing="3">
 
-                    @if (!VisibleGroups.Any())
-                    {
-                        <EmptyState Icon="@Icons.Material.Rounded.SearchOff"
-                                    Text="@AppText.Get("NothingFound")" />
-                    }
-                    @foreach (var group in VisibleGroups)
-                    {
-                        <MudElement HtmlTag="section"
-                                    id="@SectionId(group)"
-                                    Class="section-anchor">
-                            <Header Title="@AppText.Get(group.TitleKey)"
-                                    Icon="@group.Icon">
-                                <TitleContent>
-                                    <MudSpacer />
-                                    @* Reset Group *@
-                                    <MudButton Variant="Variant.Text"
-                                               Size="Size.Small"
-                                               Disabled="@(!GameSetup.HasAny(KeysOf(group)))"
-                                               OnClick="() => GameSetup.ResetSettings(KeysOf(group))">
-                                        @AppText.Get("SetAllToDefault")
-                                    </MudButton>
-                                </TitleContent>
-                                <ChildContent>
-                                    <MudPaper Elevation="4"
-                                              Class="rounded-panel pa-4">
-                                        <MudGrid Spacing="3">
-
-                                            @foreach (var setting in group.Selects.Where(setting => Matches(setting.LabelKey)))
-                                            {
-                                                <MudItem xs="12"
-                                                         sm="6"
-                                                         md="4"
-                                                         Class="d-flex">
-                                                    <MudPaper Elevation="0"
-                                                              Class="@SettingClass(IsSet(setting))">
-                                                        <MudStack Spacing="2">
-                                                            <MudStack Row
-                                                                      AlignItems="AlignItems.Center"
-                                                                      Spacing="1">
-                                                                <MudText Typo="Typo.subtitle2"
-                                                                         Class="text-truncate">
-                                                                    <MudHighlighter Text="@AppText.Get(setting.LabelKey)"
-                                                                                    HighlightedText="@_settingFilter" />
-                                                                    <ChangedDot When="@GameSetup.IsChanged(setting.Key, setting.Fallback)" />
-                                                                </MudText>
-                                                                <InfoIcon Text="@AppText.Get(setting.InfoKey)" />
-                                                            </MudStack>
-                                                            @* Setting Choices *@
-                                                            <MudButtonGroup OverrideStyles="false"
-                                                                            Size="Size.Small"
-                                                                            Class="setting-choices">
-                                                                @foreach (var option in setting.Options)
-                                                                {
-                                                                    <MudButton Variant="Variant.Filled"
-                                                                               Size="Size.Small"
-                                                                               Color="@(IsPicked(setting, option) ? Color.Info : Color.Default)"
-                                                                               OnClick="() => GameSetup.SetString(setting.Key, option.Value, setting.Fallback)">
-                                                                        @AppText.Get(option.LabelKey)
-                                                                    </MudButton>
-                                                                }
-                                                            </MudButtonGroup>
+                                        @foreach (var setting in group.Selects)
+                                        {
+                                            <MudItem xs="12"
+                                                     sm="6"
+                                                     md="4"
+                                                     Class="d-flex">
+                                                <MudPaper Elevation="0"
+                                                          Class="@SettingClass(IsSet(setting))">
+                                                    <MudStack Spacing="2">
+                                                        <MudStack Row
+                                                                  AlignItems="AlignItems.Center"
+                                                                  Spacing="1">
+                                                            <MudText Typo="Typo.subtitle2"
+                                                                     Class="text-truncate">
+                                                                @AppText.Get(setting.LabelKey)
+                                                                <ChangedDot When="@GameSetup.IsChanged(setting.Key, setting.Fallback)" />
+                                                            </MudText>
+                                                            <InfoIcon Text="@AppText.Get(setting.InfoKey)" />
                                                         </MudStack>
-                                                    </MudPaper>
-                                                </MudItem>
-                                            }
-                                            @foreach (var toggle in group.Toggles.Where(toggle => Matches(toggle.LabelKey)))
-                                            {
-                                                <MudItem xs="12"
-                                                         sm="6"
-                                                         md="4"
-                                                         Class="d-flex">
-                                                    <MudPaper Elevation="0"
-                                                              Class="@SettingClass(IsSet(toggle))">
-                                                        @* Setup Switch *@
-                                                        <MudSwitch T="bool"
-                                                                   Value="GameSetup.GetBool(toggle.Key, toggle.Fallback)"
-                                                                   ValueChanged="value => GameSetup.SetBool(toggle.Key, value, toggle.Fallback)"
-                                                                   Color="Color.Info"
-                                                                   Class="ma-0">
-                                                            <MudHighlighter Text="@AppText.Get(toggle.LabelKey)"
-                                                                            HighlightedText="@_settingFilter" />
-                                                            <ChangedDot When="@GameSetup.IsChanged(toggle.Key, toggle.Fallback)" />
-                                                            <InfoIcon Text="@AppText.Get(toggle.InfoKey)" />
-                                                        </MudSwitch>
-                                                    </MudPaper>
-                                                </MudItem>
-                                            }
+                                                        @* Setting Choices *@
+                                                        <MudButtonGroup OverrideStyles="false"
+                                                                        Size="Size.Small"
+                                                                        Class="setting-choices">
+                                                            @foreach (var option in setting.Options)
+                                                            {
+                                                                <MudButton Variant="Variant.Filled"
+                                                                           Size="Size.Small"
+                                                                           Color="@(IsPicked(setting, option) ? Color.Info : Color.Default)"
+                                                                           OnClick="() => GameSetup.SetString(setting.Key, option.Value, setting.Fallback)">
+                                                                    @AppText.Get(option.LabelKey)
+                                                                </MudButton>
+                                                            }
+                                                        </MudButtonGroup>
+                                                    </MudStack>
+                                                </MudPaper>
+                                            </MudItem>
+                                        }
+                                        @foreach (var toggle in group.Toggles)
+                                        {
+                                            <MudItem xs="12"
+                                                     sm="6"
+                                                     md="4"
+                                                     Class="d-flex">
+                                                <MudPaper Elevation="0"
+                                                          Class="@(SettingClass(IsSet(toggle)) + " d-flex align-center")">
+                                                    @* Setup Switch *@
+                                                    <MudSwitch T="bool"
+                                                               Value="GameSetup.GetBool(toggle.Key, toggle.Fallback)"
+                                                               ValueChanged="value => GameSetup.SetBool(toggle.Key, value, toggle.Fallback)"
+                                                               Color="Color.Info"
+                                                               Class="ma-0">
+                                                        @AppText.Get(toggle.LabelKey)
+                                                        <ChangedDot When="@GameSetup.IsChanged(toggle.Key, toggle.Fallback)" />
+                                                        <InfoIcon Text="@AppText.Get(toggle.InfoKey)" />
+                                                    </MudSwitch>
+                                                </MudPaper>
+                                            </MudItem>
+                                        }
 
-                                        </MudGrid>
-                                    </MudPaper>
-                                </ChildContent>
-                            </Header>
-                        </MudElement>
+                                    </MudGrid>
+                                </MudPaper>
+                            </ChildContent>
+                        </Header>
                     }
                 }
                 else
@@ -228,32 +194,21 @@
                     <Header Title="@AppText.Get("GameState")"
                             Class="fit">
                         <MudPaper Elevation="4"
-                                  Class="rounded-panel panel-flush overflow-y-auto fit">
-                            <MudSimpleTable Dense
-                                            Elevation="0">
-                                <tbody>
-                                    @foreach (var setting in GameState.Settings)
-                                    {
-                                        <tr>
-                                            <td style="width:40%">
-                                                <MudStack Row
-                                                          AlignItems="AlignItems.Center"
-                                                          Spacing="1">
-                                                    <MudText Typo="Typo.body2">@AppText.Get(TextKeys.Setting(setting.Name))</MudText>
-                                                    @if (InfoOf(setting.Name) is { } info)
-                                                    {
-                                                        <InfoIcon Text="@info" />
-                                                    }
-                                                </MudStack>
-                                            </td>
-                                            <td>
-                                                <GenericSettingEditor Setting="setting"
-                                                                      Changed="@GameState.IsChanged(setting)" />
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </MudSimpleTable>
+                                  Class="rounded-panel pa-4 overflow-y-auto fit">
+                            <MudGrid Spacing="3">
+
+                                @foreach (var setting in GameState.Settings)
+                                {
+                                    <MudItem xs="12"
+                                             lg="6"
+                                             Class="d-flex">
+                                        <SettingCard Setting="setting"
+                                                     Changed="@GameState.IsChanged(setting)"
+                                                     Info="@InfoOf(setting.Name)" />
+                                    </MudItem>
+                                }
+
+                            </MudGrid>
                         </MudPaper>
                     </Header>
                 </MudElement>
@@ -406,32 +361,22 @@
                     </MudPaper>
                 }
                 <MudPaper Elevation="4"
-                          Class="rounded-panel panel-flush">
-                    <MudSimpleTable Dense
-                                    Elevation="0">
-                        <tbody>
-                            @foreach (var setting in WeatherRows)
-                            {
-                                <tr>
-                                    <td style="width:40%">
-                                        <MudStack Row
-                                                  AlignItems="AlignItems.Center"
-                                                  Spacing="1">
-                                            <MudText Typo="Typo.body2">@AppText.Get(TextKeys.Setting(setting.Name))</MudText>
-                                            @if (InfoOf(setting.Name) is { } info)
-                                            {
-                                                <InfoIcon Text="@info" />
-                                            }
-                                        </MudStack>
-                                    </td>
-                                    <td>
-                                        <GenericSettingEditor Setting="setting"
-                                                              Changed="@Weather.IsChanged(setting)" />
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </MudSimpleTable>
+                          Class="rounded-panel pa-4">
+                    <MudGrid Spacing="3">
+
+                        @foreach (var setting in WeatherRows)
+                        {
+                            <MudItem xs="12"
+                                     sm="6"
+                                     md="4"
+                                     Class="d-flex">
+                                <SettingCard Setting="setting"
+                                             Changed="@Weather.IsChanged(setting)"
+                                             Info="@InfoOf(setting.Name)" />
+                            </MudItem>
+                        }
+
+                    </MudGrid>
                 </MudPaper>
             </MudStack>
         </MudTabPanel>

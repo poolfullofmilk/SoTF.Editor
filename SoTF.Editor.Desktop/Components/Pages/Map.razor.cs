@@ -107,11 +107,10 @@ public partial class Map : EditorPageBase
         // JS Knows The Camera, Right Click Wants Only The Spot
         if (
             await JavaScript.InvokeAsync<float[]?>("sotfMap.toMap", args.ClientX, args.ClientY)
-                is [var left, var top, var zoom, var maxZoom]
-            && MapViewModel.Click(left, top, zoom, args.Button == 2, maxZoom) is { } closer
+            is [var left, var top, var zoom]
         )
         {
-            await JavaScript.InvokeVoidAsync("sotfMap.zoomTo", left, top, closer);
+            MapViewModel.Click(left, top, zoom, args.Button == 2);
         }
     }
 
@@ -186,6 +185,17 @@ public partial class Map : EditorPageBase
             CultureInfo.InvariantCulture,
             $"left:{location.MapLeft:0.#}px;top:{location.MapTop:0.#}px;z-index:{PinZIndex}"
         );
+    }
+
+    // A Bubble Click Lists Its Points
+    [JSInvokable]
+    public Task ShowStackAsync(float[] positions)
+    {
+        return InvokeAsync(() =>
+        {
+            MapViewModel.ShowStack(positions);
+            StateHasChanged();
+        });
     }
 
     // Escape Closes The Panel And Stops A Waiting Zipline

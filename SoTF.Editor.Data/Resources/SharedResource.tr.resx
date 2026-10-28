@@ -1065,9 +1065,6 @@
   <data name="UnableToCopySavegame" xml:space="preserve">
     <value>Kayıt kopyalanamadı, günlüğe bakın</value>
   </data>
-  <data name="OpenCopy" xml:space="preserve">
-    <value>Aç</value>
-  </data>
   <data name="CoreGameCompleted" xml:space="preserve">
     <value>Ana Oyun Tamamlandı</value>
   </data>
@@ -2166,5 +2163,8 @@ Hayır düzenleyiciyi açık tutar, böylece önce kaydedebilirsiniz</value>
   </data>
   <data name="ModeCustomText" xml:space="preserve">
     <value>Her ayarı kendiniz seçin</value>
+  </data>
+  <data name="RestoreBackupOf" xml:space="preserve">
+    <value>Yedeği Geri Yükle: {0}</value>
   </data>
 </root>

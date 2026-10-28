@@ -186,7 +186,6 @@ public partial class Game : EditorPageBase
     public required WeatherPageViewModel Weather { get; set; }
 
     private string? _namedIntFilter;
-    private string? _settingFilter;
 
     private bool ModeChanged => GameSetup.IsChanged(GameSetupKeys.Mode, CustomGameMode);
 
@@ -226,24 +225,6 @@ public partial class Game : EditorPageBase
     private bool IsPicked(SelectSetting setting, SettingOption option)
     {
         return GameSetup.GetString(setting.Key, setting.Fallback) == option.Value;
-    }
-
-    private bool Matches(string labelKey)
-    {
-        return string.IsNullOrWhiteSpace(_settingFilter)
-            || AppText.Get(labelKey).Contains(_settingFilter, StringComparison.OrdinalIgnoreCase);
-    }
-
-    // Groups The Search Leaves Something In
-    private IEnumerable<SettingGroup> VisibleGroups =>
-        s_setupGroups.Where(group =>
-            group.Selects.Any(setting => Matches(setting.LabelKey))
-            || group.Toggles.Any(toggle => Matches(toggle.LabelKey))
-        );
-
-    private static string SectionId(SettingGroup group)
-    {
-        return "setup-" + group.TitleKey;
     }
 
     private async Task LoadPresetAsync(string mode)

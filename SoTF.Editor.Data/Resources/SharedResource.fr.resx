@@ -1065,9 +1065,6 @@
   <data name="UnableToCopySavegame" xml:space="preserve">
     <value>Impossible de copier la partie, voir le journal</value>
   </data>
-  <data name="OpenCopy" xml:space="preserve">
-    <value>Ouvrir</value>
-  </data>
   <data name="CoreGameCompleted" xml:space="preserve">
     <value>Jeu Principal Terminé</value>
   </data>
@@ -2166,5 +2163,8 @@ Non garde l'éditeur ouvert pour que vous puissiez enregistrer d'abord</value>
   </data>
   <data name="ModeCustomText" xml:space="preserve">
     <value>Choisissez chaque réglage vous-même</value>
+  </data>
+  <data name="RestoreBackupOf" xml:space="preserve">
+    <value>Restaurer une Copie de Secours : {0}</value>
   </data>
 </root>

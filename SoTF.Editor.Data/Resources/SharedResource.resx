@@ -1065,9 +1065,6 @@
   <data name="UnableToCopySavegame" xml:space="preserve">
     <value>Unable to copy the savegame, see the log</value>
   </data>
-  <data name="OpenCopy" xml:space="preserve">
-    <value>Open</value>
-  </data>
   <data name="CoreGameCompleted" xml:space="preserve">
     <value>Core Game Completed</value>
   </data>
@@ -2166,5 +2163,8 @@ No keeps the editor open so you can save first</value>
   </data>
   <data name="ModeCustomText" xml:space="preserve">
     <value>Pick every setting yourself</value>
+  </data>
+  <data name="RestoreBackupOf" xml:space="preserve">
+    <value>Restore Backup: {0}</value>
   </data>
 </root>

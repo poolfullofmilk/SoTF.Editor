@@ -14,10 +14,6 @@ public class MapViewModel
 {
     private const float MinimumZiplineMetres = 2;
 
-    // A Stack's Screen Spread: Enough To Part, Then The Goal
-    private const float StackApartPixels = 8;
-    private const float StackSpreadPixels = 48;
-
     // What The Map Shows Before Any Choice, And After Reset
     private static readonly HashSet<string> s_defaultGroups =
     [
@@ -347,7 +343,7 @@ public class MapViewModel
         poi?.IsSelected = true;
     }
 
-    public float? Click(float left, float top, float zoom, bool spotOnly, float maxZoom = 1)
+    public void Click(float left, float top, float zoom, bool spotOnly)
     {
         // Icons Under The Pointer, Topmost First, At Screen Size
         List<BasePoi> hits = spotOnly
@@ -377,25 +373,12 @@ public class MapViewModel
             // Both Ends On One Spot Is No Zipline, Keep Waiting
             if (PickLineStart?.Position?.GroundDistanceTo(spot) < MinimumZiplineMetres)
             {
-                return null;
+                return;
             }
 
             PickFrom = null;
             Place(from, spot);
-            return null;
-        }
-
-        // Spread Points Part When Closer, Only Twins Need The List
-        var spread =
-            hits.Count > 1
-                ? Math.Max(
-                    hits.Max(poi => poi.MapLeft) - hits.Min(poi => poi.MapLeft),
-                    hits.Max(poi => poi.MapTop) - hits.Min(poi => poi.MapTop)
-                )
-                : 0;
-        if (zoom < maxZoom && spread * maxZoom >= StackApartPixels)
-        {
-            return Math.Min(Math.Max(zoom * 2, StackSpreadPixels / spread), maxZoom);
+            return;
         }
 
         SelectPoi(
@@ -410,7 +393,26 @@ public class MapViewModel
             }
         );
         StackedPois = hits.Count > 1 ? hits : [];
-        return null;
+    }
+
+    public void ShowStack(IReadOnlyList<float> positions)
+    {
+        // A Bubble's Pixel Pairs, Its Styles Rounded To A Tenth
+        var spots = positions.Chunk(2).ToList();
+        List<BasePoi> stacked =
+        [
+            .. VisiblePois()
+                .OfType<BasePoi>()
+                .Where(poi =>
+                    spots.Exists(spot =>
+                        Math.Abs(spot[0] - poi.MapLeft) < 0.06
+                        && Math.Abs(spot[1] - poi.MapTop) < 0.06
+                    )
+                )
+                .OrderByDescending(poi => poi.IconZIndex),
+        ];
+        SelectPoi(stacked.Count == 1 ? stacked[0] : null);
+        StackedPois = stacked.Count > 1 ? stacked : [];
     }
 
     public void TogglePick(BasePoi from, bool newZipline)

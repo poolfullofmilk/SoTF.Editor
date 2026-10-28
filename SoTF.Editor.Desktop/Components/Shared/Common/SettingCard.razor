@@ -1,0 +1,20 @@
+@* Setting Card *@
+<MudPaper Elevation="0"
+          Class="inset rounded-panel pa-4 flex-grow-1">
+    <MudStack Spacing="2">
+        <MudStack Row
+                  AlignItems="AlignItems.Center"
+                  Spacing="1">
+            <MudText Typo="Typo.subtitle2"
+                     Class="text-truncate">
+                @AppText.Get(TextKeys.Setting(Setting.Name))
+            </MudText>
+            @if (Info is not null)
+            {
+                <InfoIcon Text="@Info" />
+            }
+        </MudStack>
+        <GenericSettingEditor Setting="Setting"
+                              Changed="Changed" />
+    </MudStack>
+</MudPaper>
