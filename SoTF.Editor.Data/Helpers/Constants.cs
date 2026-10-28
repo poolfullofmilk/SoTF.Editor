@@ -23,7 +23,10 @@ public static class Constants
     public static class Settings
     {
         public const int SettingTypeBool = 0;
+        public const int SettingTypeInt = 1;
+        public const int SettingTypeFloat = 2;
         public const int SettingTypeString = 3;
+        public const int SettingTypeFloatArray = 4;
     }
 
     public static class GameSetupKeys
@@ -70,6 +73,7 @@ public static class Constants
         public const string FloatValue = "FloatValue";
         public const string StringValue = "StringValue";
         public const string BoolValue = "BoolValue";
+        public const string FloatArrayValue = "FloatArrayValue";
     }
 
     public static class JsonKeys

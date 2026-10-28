@@ -182,15 +182,19 @@ public static class TextKeys
                     .Select(PoiGroup)
             );
 
-        var english = CultureInfo.InvariantCulture;
-        var dutch = CultureInfo.GetCultureInfo("nl");
+        // English Lives In The Neutral Resx
+        var cultures = AppText
+            .Languages.Select(language =>
+                language.Culture == AppText.DefaultCulture
+                    ? CultureInfo.InvariantCulture
+                    : CultureInfo.GetCultureInfo(language.Culture)
+            )
+            .ToList();
         return
         [
             .. gameKeys
                 .Where(key => !GameNames.Has(key))
-                .Concat(
-                    appKeys.Where(key => !AppText.Has(key, english) || !AppText.Has(key, dutch))
-                )
+                .Concat(appKeys.Where(key => cultures.Any(culture => !AppText.Has(key, culture))))
                 .Distinct(),
         ];
     }

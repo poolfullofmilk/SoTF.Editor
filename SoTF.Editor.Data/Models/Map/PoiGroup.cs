@@ -22,7 +22,9 @@ public class PoiGroup(
 
     public HashSet<IPoi> Pois { get; } = [.. pois];
 
-    public int Count => Pois.Count;
+    // Two Anchors And A Line Count As One Zipline
+    public int Count =>
+        GroupType == PoiGroupType.ZipLines ? Pois.Count(poi => poi is ZiplinePoi) : Pois.Count;
     public string? Icon { get; } = icon;
     public string GroupKey { get; } = groupKey;
     public string Title { get; } = title;

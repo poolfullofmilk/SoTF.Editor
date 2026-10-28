@@ -145,7 +145,7 @@
     <value>About</value>
   </data>
   <data name="AboutText" xml:space="preserve">
-    <value>Edit your Sons of the Forest savegames</value>
+    <value>Edit your Sons Of The Forest savegames</value>
   </data>
   <data name="Backups" xml:space="preserve">
     <value>Backups</value>
@@ -157,7 +157,7 @@
     <value>A fan project, not affiliated with Endnight Games</value>
   </data>
   <data name="MapDataNotice" xml:space="preserve">
-    <value>Map points from Sons of the Forest Map by Leon Machens, MIT license</value>
+    <value>Map points from Sons Of The Forest Map by Leon Machens, MIT license</value>
   </data>
   <data name="DropHint" xml:space="preserve">
     <value>Drop a savegame folder anywhere in the window to open it</value>
@@ -666,11 +666,23 @@
   <data name="Coordinates" xml:space="preserve">
     <value>Coordinates</value>
   </data>
+  <data name="Distance" xml:space="preserve">
+    <value>Distance</value>
+  </data>
+  <data name="CopyCoordinates" xml:space="preserve">
+    <value>Copy Coordinates</value>
+  </data>
+  <data name="CoordinatesCopied" xml:space="preserve">
+    <value>Coordinates Copied</value>
+  </data>
   <data name="Followers" xml:space="preserve">
     <value>Followers</value>
   </data>
   <data name="Search" xml:space="preserve">
     <value>Search</value>
+  </data>
+  <data name="Results" xml:space="preserve">
+    <value>Results</value>
   </data>
   <data name="UncollectedOnly" xml:space="preserve">
     <value>Uncollected Items Only</value>
@@ -719,6 +731,12 @@
   </data>
   <data name="Teleportation" xml:space="preserve">
     <value>Teleportation</value>
+  </data>
+  <data name="Actor" xml:space="preserve">
+    <value>Actor</value>
+  </data>
+  <data name="Zipline" xml:space="preserve">
+    <value>Zipline</value>
   </data>
   <data name="Destination" xml:space="preserve">
     <value>Destination</value>
@@ -1043,6 +1061,21 @@
   </data>
   <data name="Singleplayer" xml:space="preserve">
     <value>Singleplayer</value>
+  </data>
+  <data name="CopyToSingleplayer" xml:space="preserve">
+    <value>Copy to Singleplayer</value>
+  </data>
+  <data name="CopyToSingleplayerText" xml:space="preserve">
+    <value>This world, as last saved, is copied into your singleplayer savegames. The original stays as it is</value>
+  </data>
+  <data name="CopiedToSingleplayer" xml:space="preserve">
+    <value>Copied to Singleplayer</value>
+  </data>
+  <data name="UnableToCopySavegame" xml:space="preserve">
+    <value>Unable to copy the savegame, see the log</value>
+  </data>
+  <data name="OpenCopy" xml:space="preserve">
+    <value>Open</value>
   </data>
   <data name="CoreGameCompleted" xml:space="preserve">
     <value>Core Game Completed</value>
@@ -1551,7 +1584,7 @@ No keeps them so you can save first</value>
     <value>The difficulty the game was made with. Custom unlocks every setting below</value>
   </data>
   <data name="UidInfo" xml:space="preserve">
-    <value>The id the game gives this save. It never changes</value>
+    <value>The ID the game gives this save. It never changes</value>
   </data>
   <data name="ConsumableEffectsInfo" xml:space="preserve">
     <value>How much food, drinks and medicine help. Hard gives less</value>
@@ -1815,7 +1848,7 @@ No keeps them so you can save first</value>
     <value>Show Menus</value>
   </data>
   <data name="TeleportCopies" xml:space="preserve">
-    <value>{0} ({1} Copies)</value>
+    <value>{0}, {1} Copies</value>
   </data>
   <data name="Filters" xml:space="preserve">
     <value>Filters</value>
@@ -1939,6 +1972,9 @@ No keeps the editor open so you can save first</value>
   <data name="ArmourInInventory" xml:space="preserve">
     <value>In Inventory</value>
   </data>
+  <data name="ArmourWorn" xml:space="preserve">
+    <value>Worn</value>
+  </data>
   <data name="InInventoryCount" xml:space="preserve">
     <value>{0} in Inventory</value>
   </data>
@@ -2037,6 +2073,9 @@ No keeps the editor open so you can save first</value>
   </data>
   <data name="PointsHere" xml:space="preserve">
     <value>{0} Points Here</value>
+  </data>
+  <data name="MorePointsHere" xml:space="preserve">
+    <value>{0} more, zoom in to reach them</value>
   </data>
   <data name="HeightGuessed" xml:space="preserve">
     <value>The map knows no heights, so this one comes from the nearest known point</value>

@@ -283,24 +283,34 @@ public class InventoryPageViewModel
         return hasChanges;
     }
 
+    // An Item In Hand Stays One, Set All Skips It
+    private IEnumerable<InventoryItem> CountableItems =>
+        _inventory.Where(inventoryItem => !inventoryItem.IsEquipped);
+
     public bool CanSetAllToMin()
     {
-        return _inventory.Any(inventoryItem => inventoryItem.TotalCount != 1);
+        return CountableItems.Any(inventoryItem => inventoryItem.TotalCount != 1);
     }
 
     public bool CanSetAllToMax()
     {
-        return _inventory.Any(inventoryItem => inventoryItem.TotalCount != inventoryItem.Max);
+        return CountableItems.Any(inventoryItem => inventoryItem.TotalCount != inventoryItem.Max);
     }
 
     public void SetAllEquippedToMin()
     {
-        _inventory.ForEach(inventoryItem => inventoryItem.TotalCount = 1);
+        foreach (var inventoryItem in CountableItems)
+        {
+            inventoryItem.TotalCount = 1;
+        }
     }
 
     public void SetAllEquippedToMax()
     {
-        _inventory.ForEach(inventoryItem => inventoryItem.TotalCount = inventoryItem.Max);
+        foreach (var inventoryItem in CountableItems)
+        {
+            inventoryItem.TotalCount = inventoryItem.Max;
+        }
     }
 
     public void RemoveAllEquipped()

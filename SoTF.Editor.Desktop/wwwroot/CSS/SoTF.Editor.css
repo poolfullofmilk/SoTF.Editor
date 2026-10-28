@@ -413,10 +413,10 @@ mark {
     }
 
     .season-day.today {
-        animation: season-pulse 2.4s ease-in-out infinite;
+        animation: slow-pulse 2.4s ease-in-out infinite;
     }
 
-@keyframes season-pulse {
+@keyframes slow-pulse {
     50% {
         opacity: 0.35;
     }
@@ -542,6 +542,11 @@ html, body {
         overflow: clip;
         overflow-clip-margin: border-box;
     }
+
+/* Icon Text Buttons Take Filled Padding, Clear Of The Edge */
+.mud-button-text-size-small:has(.mud-button-icon-start) {
+    padding-inline: 10px;
+}
 
 /* Table */
 .mud-elevation-4.mud-table .mud-table-head .mud-table-cell {
@@ -682,15 +687,58 @@ html, body {
 /* Icons Keep Their Screen Size Whatever The Zoom */
 .map-poi {
     position: absolute;
+    width: 32px;
+    height: 32px;
+    z-index: 100;
     transform: translate(-50%, -50%) scale(calc(1 / var(--map-zoom, 1))) rotate(var(--rotation, 0deg));
     cursor: pointer;
 }
 
-    .map-poi.selected {
-        outline: 3px solid var(--mud-palette-info);
-        outline-offset: 2px;
-        border-radius: 50%;
+/* A Picked Icon's Ring Covers Its Rim, No Gap Shows */
+.map-ring {
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    border: 3px solid var(--mud-palette-info);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(calc(1 / var(--map-zoom, 1)));
+    pointer-events: none;
+    animation: pick-flash 2.4s ease-in-out infinite;
+}
+
+/* Solid, Then A Quick Dip, Opacity Alone For The Compositor */
+@keyframes pick-flash {
+    0%,
+    65%,
+    100% {
+        opacity: 1;
     }
+
+    80% {
+        opacity: 0.3;
+    }
+}
+
+/* The Anchor To Be Follows The Cursor, Clicks Pass Through */
+.map-pick-ghost {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+    .map-pick-ghost.idle,
+    .map-pick-line.idle {
+        visibility: hidden;
+    }
+
+/* A Location's Pin Tip Stays On Its Spot While Zooming */
+.map-pin {
+    position: absolute;
+    width: 30px;
+    height: 40px;
+    transform: translate(-50%, -100%) scale(calc(1 / var(--map-zoom, 1)));
+    transform-origin: 50% 100%;
+    cursor: pointer;
+}
 
 .map-zipline {
     position: absolute;
@@ -699,6 +747,39 @@ html, body {
     width: 4096px;
     height: 4096px;
     pointer-events: none;
+}
+
+    /* Lines Keep Their Screen Width At Every Zoom, Like Icons */
+    .map-zipline line {
+        stroke: white;
+        stroke-width: calc(2px / var(--map-zoom, 1));
+        stroke-dasharray: calc(8px / var(--map-zoom, 1)) calc(6px / var(--map-zoom, 1));
+    }
+
+    /* A Picked Zipline Runs Solid Blue, A Little Wider */
+    .map-zipline .map-zipline-picked {
+        stroke: var(--mud-palette-info);
+        stroke-width: calc(3px / var(--map-zoom, 1));
+        stroke-dasharray: none;
+        stroke-linecap: round;
+    }
+
+    .map-zipline-pick {
+        animation: pick-flash 2.4s ease-in-out infinite;
+    }
+
+    /* A Waiting Zipline Runs Dashed Blue To The Cursor */
+    .map-pick-line line {
+        stroke: var(--mud-palette-info);
+        stroke-linecap: round;
+    }
+
+/* After The Rules It Undoes, Or They Win */
+@media (prefers-reduced-motion: reduce) {
+    .map-ring,
+    .map-zipline-pick {
+        animation: none;
+    }
 }
 
 /* Panels And Buttons Over The Map Take The Glass Look */

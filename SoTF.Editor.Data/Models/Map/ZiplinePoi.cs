@@ -38,8 +38,10 @@ public class ZiplinePoi : IPoi
 
     public void ApplyFilter(MapFilter mapFilter)
     {
-        Filtered =
-            mapFilter.RequirementsFilter == MapFilter.RequirementsFilterType.InaccessibleOnly;
+        // The Line Hides With Either Anchor, Search And Area Included
+        PointA.ApplyFilter(mapFilter);
+        PointB.ApplyFilter(mapFilter);
+        Filtered = PointA.Filtered || PointB.Filtered;
     }
 
     public string PrintableCoordinates => "";

@@ -113,6 +113,11 @@ public partial class App : Application
                 .Classes
                 .Position
                 .BottomRight;
+
+            // Solid With A Quick Fade, The Defaults Looked See-Through
+            configuration.SnackbarConfiguration.MaximumOpacity = 100;
+            configuration.SnackbarConfiguration.ShowTransitionDuration = 200;
+            configuration.SnackbarConfiguration.HideTransitionDuration = 250;
         });
 
         services.AddSingleton(gameData);

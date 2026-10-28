@@ -145,7 +145,7 @@
     <value>Over</value>
   </data>
   <data name="AboutText" xml:space="preserve">
-    <value>Bewerk je Sons of the Forest savegames</value>
+    <value>Bewerk je Sons Of The Forest savegames</value>
   </data>
   <data name="Backups" xml:space="preserve">
     <value>Back-ups</value>
@@ -157,10 +157,10 @@
     <value>Een fanproject, niet verbonden aan Endnight Games</value>
   </data>
   <data name="MapDataNotice" xml:space="preserve">
-    <value>Kaartpunten van Sons of the Forest Map door Leon Machens, MIT-licentie</value>
+    <value>Kaartpunten van Sons Of The Forest Map door Leon Machens, MIT-licentie</value>
   </data>
   <data name="DropHint" xml:space="preserve">
-    <value>Sleep een savegamemap in het venster om hem te openen</value>
+    <value>Sleep een savegamemap ergens in het venster om hem te openen</value>
   </data>
   <data name="Help" xml:space="preserve">
     <value>Help</value>
@@ -346,19 +346,19 @@
     <value>Virginia</value>
   </data>
   <data name="SetAllToDefault" xml:space="preserve">
-    <value>Alles op Standaard Zetten</value>
+    <value>Alles op Standaard</value>
   </data>
   <data name="SetAllToDefaultTooltip" xml:space="preserve">
-    <value>Zet elk stuk op zijn standaard duurzaamheid</value>
+    <value>Zet elk stuk op zijn standaardduurzaamheid</value>
   </data>
   <data name="SetAllToMax" xml:space="preserve">
-    <value>Alles op Max Zetten</value>
+    <value>Alles op Max</value>
   </data>
   <data name="SetAllToMaxTooltip" xml:space="preserve">
     <value>Zet elk stuk op maximale duurzaamheid</value>
   </data>
   <data name="SetToDefaultDurability" xml:space="preserve">
-    <value>Op Standaard Duurzaamheid Zetten</value>
+    <value>Op Standaardduurzaamheid Zetten</value>
   </data>
   <data name="Durability" xml:space="preserve">
     <value>Duurzaamheid</value>
@@ -448,7 +448,7 @@
     <value>Aangepaste Instellingen</value>
   </data>
   <data name="CustomHint" xml:space="preserve">
-    <value>Kies de modus Aangepast om losse instellingen te wijzigen, of laad een preset om vanaf een modus te beginnen</value>
+    <value>Kies de modus Aangepast om losse instellingen te wijzigen, of laad een voorinstelling om vanaf een modus te beginnen</value>
   </data>
   <data name="Default" xml:space="preserve">
     <value>Standaard</value>
@@ -538,7 +538,7 @@
     <value>Neerslagfrequentie</value>
   </data>
   <data name="PvpDamage" xml:space="preserve">
-    <value>PvP Schade</value>
+    <value>PvP-Schade</value>
   </data>
   <data name="ReducedAmmo" xml:space="preserve">
     <value>Minder Munitie in Containers</value>
@@ -619,7 +619,7 @@
     <value>Alles Verwijderen</value>
   </data>
   <data name="SetAllToMin" xml:space="preserve">
-    <value>Alles op Min Zetten</value>
+    <value>Alles op Min</value>
   </data>
   <data name="ItemsInInventory" xml:space="preserve">
     <value>Items in Inventaris</value>
@@ -640,7 +640,7 @@
     <value>Alles</value>
   </data>
   <data name="SurfaceOnly" xml:space="preserve">
-    <value>Alleen Oppervlak</value>
+    <value>Alleen Bovengronds</value>
   </data>
   <data name="UndergroundOnly" xml:space="preserve">
     <value>Alleen Grotten en Bunkers</value>
@@ -666,11 +666,23 @@
   <data name="Coordinates" xml:space="preserve">
     <value>Coördinaten</value>
   </data>
+  <data name="Distance" xml:space="preserve">
+    <value>Afstand</value>
+  </data>
+  <data name="CopyCoordinates" xml:space="preserve">
+    <value>Coördinaten Kopiëren</value>
+  </data>
+  <data name="CoordinatesCopied" xml:space="preserve">
+    <value>Coördinaten Gekopieerd</value>
+  </data>
   <data name="Followers" xml:space="preserve">
     <value>Volgers</value>
   </data>
   <data name="Search" xml:space="preserve">
     <value>Zoeken</value>
+  </data>
+  <data name="Results" xml:space="preserve">
+    <value>Resultaten</value>
   </data>
   <data name="UncollectedOnly" xml:space="preserve">
     <value>Alleen Niet Verzamelde Items</value>
@@ -720,6 +732,12 @@
   <data name="Teleportation" xml:space="preserve">
     <value>Teleportatie</value>
   </data>
+  <data name="Actor" xml:space="preserve">
+    <value>Actor</value>
+  </data>
+  <data name="Zipline" xml:space="preserve">
+    <value>Tokkelbaan</value>
+  </data>
   <data name="Destination" xml:space="preserve">
     <value>Bestemming</value>
   </data>
@@ -748,7 +766,7 @@
     <value>Savegame Herladen</value>
   </data>
   <data name="GitHubProject" xml:space="preserve">
-    <value>GitHub Project</value>
+    <value>GitHub-Project</value>
   </data>
   <data name="CheckForUpdates" xml:space="preserve">
     <value>Controleren op Updates</value>
@@ -760,7 +778,7 @@
     <value>Eeuwige Vuren</value>
   </data>
   <data name="ItemPlater" xml:space="preserve">
-    <value>Items en Constructies Vergulden</value>
+    <value>Vergulden</value>
   </data>
   <data name="ConsumedItems" xml:space="preserve">
     <value>Geconsumeerde Items</value>
@@ -778,7 +796,7 @@
     <value>Vuren Resetten</value>
   </data>
   <data name="ResetStructureDamage" xml:space="preserve">
-    <value>Schade aan Constructies Resetten</value>
+    <value>Constructies Herstellen</value>
   </data>
   <data name="ResetTraps" xml:space="preserve">
     <value>Vallen Resetten</value>
@@ -805,7 +823,7 @@
     <value>Speler</value>
   </data>
   <data name="MaxHealth" xml:space="preserve">
-    <value>Maximale Gezondheid</value>
+    <value>Max. Gezondheid</value>
   </data>
   <data name="Sickness" xml:space="preserve">
     <value>Ziekte</value>
@@ -820,7 +838,7 @@
     <value>Passende Slots Vullen</value>
   </data>
   <data name="FillFittingSlotsTooltip" xml:space="preserve">
-    <value>Vult elke slot waar dit item in past, de andere slots blijven zoals ze zijn</value>
+    <value>Vult elk slot waar dit item in past, de andere slots blijven zoals ze zijn</value>
   </data>
   <data name="ClearAll" xml:space="preserve">
     <value>Alles Leegmaken</value>
@@ -829,7 +847,7 @@
     <value>Alles Vullen Met</value>
   </data>
   <data name="FillAllStorages" xml:space="preserve">
-    <value>Alle Opslag Vullen</value>
+    <value>Alle Opslagen Vullen</value>
   </data>
   <data name="SelectStorage" xml:space="preserve">
     <value>Kies een Opslag</value>
@@ -868,7 +886,7 @@
     <value>Vallen</value>
   </data>
   <data name="StructureCategoryUtility" xml:space="preserve">
-    <value>Nuttig</value>
+    <value>Voorzieningen</value>
   </data>
   <data name="StructureCategoryRaft" xml:space="preserve">
     <value>Vlot</value>
@@ -970,7 +988,7 @@
     <value>Wijzigingen Overschrijven</value>
   </data>
   <data name="RestoreBackupText" xml:space="preserve">
-    <value>De huidige bestanden krijgen eerst een back-up, dit kan dus ongedaan worden</value>
+    <value>De huidige bestanden krijgen eerst een back-up, dus dit kan ongedaan worden gemaakt</value>
   </data>
   <data name="RestoreBackupTitle" xml:space="preserve">
     <value>Back-up Terugzetten</value>
@@ -1043,6 +1061,21 @@
   </data>
   <data name="Singleplayer" xml:space="preserve">
     <value>Singleplayer</value>
+  </data>
+  <data name="CopyToSingleplayer" xml:space="preserve">
+    <value>Naar Singleplayer Kopiëren</value>
+  </data>
+  <data name="CopyToSingleplayerText" xml:space="preserve">
+    <value>Deze wereld wordt, zoals laatst opgeslagen, gekopieerd naar je singleplayer savegames. Het origineel blijft zoals het is</value>
+  </data>
+  <data name="CopiedToSingleplayer" xml:space="preserve">
+    <value>Gekopieerd Naar Singleplayer</value>
+  </data>
+  <data name="UnableToCopySavegame" xml:space="preserve">
+    <value>Kan de savegame niet kopiëren, zie het logbestand</value>
+  </data>
+  <data name="OpenCopy" xml:space="preserve">
+    <value>Openen</value>
   </data>
   <data name="CoreGameCompleted" xml:space="preserve">
     <value>Hoofdverhaal Voltooid</value>
@@ -1368,7 +1401,7 @@ Nee houdt ze zodat je eerst kunt opslaan</value>
     <value>Vijvers</value>
   </data>
   <data name="PoiGroupPrinters" xml:space="preserve">
-    <value>3D Printers</value>
+    <value>3D-Printers</value>
   </data>
   <data name="PoiGroupSupply" xml:space="preserve">
     <value>Voorraad</value>
@@ -1551,7 +1584,7 @@ Nee houdt ze zodat je eerst kunt opslaan</value>
     <value>De moeilijkheid waarmee het spel gemaakt is. Aangepast maakt elke instelling hieronder vrij</value>
   </data>
   <data name="UidInfo" xml:space="preserve">
-    <value>Het id dat het spel aan deze save geeft. Het verandert nooit</value>
+    <value>Het ID dat het spel aan deze save geeft. Het verandert nooit</value>
   </data>
   <data name="ConsumableEffectsInfo" xml:space="preserve">
     <value>Hoeveel eten, drinken en medicijnen helpen. Moeilijk geeft minder</value>
@@ -1566,7 +1599,7 @@ Nee houdt ze zodat je eerst kunt opslaan</value>
     <value>Hoeveel kou je pijn doet</value>
   </data>
   <data name="BuildingResistanceInfo" xml:space="preserve">
-    <value>Hoeveel schade je bouwwerken kunnen hebben</value>
+    <value>Hoeveel schade je bouwwerken kunnen verdragen</value>
   </data>
   <data name="StatRegenerationPenaltiesInfo" xml:space="preserve">
     <value>Weinig eten, drinken of rust vertraagt hoe snel je gezondheid terugkomt</value>
@@ -1725,7 +1758,7 @@ Nee houdt ze zodat je eerst kunt opslaan</value>
     <value>Voorinstelling Laden</value>
   </data>
   <data name="LoadPresetText" xml:space="preserve">
-    <value>Elke instelling krijgt de waarden van die modus. De modus wordt Aangepast, zodat je elke instelling nog kan wijzigen</value>
+    <value>Elke instelling krijgt de waarden van die modus. De modus wordt Aangepast, zodat je elke instelling nog kunt wijzigen</value>
   </data>
   <data name="SavegameDay" xml:space="preserve">
     <value>Dag {0}</value>
@@ -1815,7 +1848,7 @@ Nee houdt ze zodat je eerst kunt opslaan</value>
     <value>Menu's Tonen</value>
   </data>
   <data name="TeleportCopies" xml:space="preserve">
-    <value>{0} ({1} Kopieën)</value>
+    <value>{0}, {1} Kopieën</value>
   </data>
   <data name="Filters" xml:space="preserve">
     <value>Filters</value>
@@ -1833,7 +1866,7 @@ Nee houdt ze zodat je eerst kunt opslaan</value>
     <value>Familie</value>
   </data>
   <data name="ApplyToType" xml:space="preserve">
-    <value>Zelfde Soort</value>
+    <value>Zelfde Type</value>
   </data>
   <data name="ApplyToEveryone" xml:space="preserve">
     <value>Iedereen</value>
@@ -1862,7 +1895,7 @@ Nee houdt de editor open zodat je eerst kunt opslaan</value>
     <value>Alle Constructies</value>
   </data>
   <data name="SelectStructure" xml:space="preserve">
-    <value>Kies een Soort Constructie</value>
+    <value>Kies een Constructietype</value>
   </data>
   <data name="StructuresInfo" xml:space="preserve">
     <value>Kies wat opslaan met elke constructie doet. Behouden laat hem zoals hij is</value>
@@ -1939,6 +1972,9 @@ Nee houdt de editor open zodat je eerst kunt opslaan</value>
   <data name="ArmourInInventory" xml:space="preserve">
     <value>In Inventaris</value>
   </data>
+  <data name="ArmourWorn" xml:space="preserve">
+    <value>Gedragen</value>
+  </data>
   <data name="InInventoryCount" xml:space="preserve">
     <value>{0} in Inventaris</value>
   </data>
@@ -1955,7 +1991,7 @@ Nee houdt de editor open zodat je eerst kunt opslaan</value>
     <value>Het spel plaatst elk gedragen stuk zelf op het lichaam, tot 10, dus er is geen lichaamsdeel te kiezen. Uittrekken legt een stuk terug in de inventaris, verwijderen haalt het voorgoed weg</value>
   </data>
   <data name="SetToDefaultDurabilityOf" xml:space="preserve">
-    <value>Standaard Duurzaamheid: {0}</value>
+    <value>Op Standaardduurzaamheid Zetten: {0}</value>
   </data>
   <data name="SetToMaxOf" xml:space="preserve">
     <value>Op Max Zetten: {0}</value>
@@ -2015,7 +2051,7 @@ Nee houdt de editor open zodat je eerst kunt opslaan</value>
     <value>Volgers kunnen niet mee een grot in, verlaat eerst de grot</value>
   </data>
   <data name="NoArrival" xml:space="preserve">
-    <value>Nergens om te spawnen: je bent in een grot en geen volger is buiten</value>
+    <value>Nergens om te spawnen: je bent in een grot en er is geen volger buiten</value>
   </data>
   <data name="ResetFilters" xml:space="preserve">
     <value>Filters Herstellen</value>
@@ -2037,6 +2073,9 @@ Nee houdt de editor open zodat je eerst kunt opslaan</value>
   </data>
   <data name="PointsHere" xml:space="preserve">
     <value>{0} Punten Hier</value>
+  </data>
+  <data name="MorePointsHere" xml:space="preserve">
+    <value>Nog {0}, zoom in om ze te bereiken</value>
   </data>
   <data name="HeightGuessed" xml:space="preserve">
     <value>De kaart kent geen hoogtes, deze komt van het dichtstbijzijnde bekende punt</value>

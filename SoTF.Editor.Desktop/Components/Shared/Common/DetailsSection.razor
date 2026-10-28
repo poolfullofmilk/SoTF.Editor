@@ -1,0 +1,23 @@
+@* Section Title *@
+<MudDivider />
+<MudStack Row
+          AlignItems="AlignItems.Center"
+          Spacing="2">
+    <MudText Typo="Typo.subtitle2">@Title</MudText>
+    @if (HostOnly)
+    {
+        <MudSpacer />
+        @* Host Save Only *@
+        <MudChip T="string"
+                 Variant="Variant.Text"
+                 Size="Size.Small"
+                 Class="ma-0 flex-shrink-0">
+            @AppText.Get("HostSaveOnly")
+        </MudChip>
+    }
+</MudStack>
+@* Section Buttons *@
+<MudStack Spacing="1"
+          AlignItems="AlignItems.Center">
+    @ChildContent
+</MudStack>

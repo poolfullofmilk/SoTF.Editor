@@ -41,7 +41,7 @@ public class MapFilter
         {
             field = value;
             NormalizedLowercaseFullText =
-                value != null ? TranslationHelper.Normalize(value).ToLower() : null;
+                value != null ? TranslationHelper.Normalize(value).ToLowerInvariant() : null;
         }
     }
 

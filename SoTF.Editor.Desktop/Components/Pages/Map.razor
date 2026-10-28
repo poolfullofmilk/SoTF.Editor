@@ -17,6 +17,67 @@
                                  ValueChanged="SetFullText"
                                  FullWidth />
 
+                    @if (IsSearching)
+                    {
+                        var results = MapViewModel.SearchResults();
+                        <MudStack Row
+                                  AlignItems="AlignItems.Center"
+                                  Spacing="1">
+                            <MudText Typo="Typo.subtitle2">@AppText.Get("Results")</MudText>
+                            <MudSpacer />
+                            <MudText Typo="Typo.body2"
+                                     Class="mud-text-secondary pr-1">
+                                @results.Count
+                            </MudText>
+                        </MudStack>
+                        @* Search Results *@
+                        <MudPaper Elevation="0"
+                                  Class="inset rounded-panel panel-flush overflow-y-auto"
+                                  Style="max-height:240px">
+                            @if (results.Count == 0)
+                            {
+                                <MudText Typo="Typo.body2"
+                                         Class="mud-text-secondary px-4 py-2">
+                                    @AppText.Get("NothingFound")
+                                </MudText>
+                            }
+                            @foreach (var result in results.Take(MaxResults))
+                            {
+                                @* Result Row *@
+                                <MudElement HtmlTag="div"
+                                            Class="list-row d-flex align-center gap-3 px-4 py-1"
+                                            role="button"
+                                            tabindex="0"
+                                            data-keyclick
+                                            @onclick="() => FocusResultAsync(result)">
+                                    <MudImage Src="@result.Poi.Icon"
+                                              Alt="@result.Poi.Title"
+                                              Width="20"
+                                              Height="20" />
+                                    <MudStack Spacing="0"
+                                              Style="min-width:0">
+                                        <MudText Typo="Typo.body2"
+                                                 Class="text-truncate">
+                                            <MudHighlighter Text="@result.Poi.Title"
+                                                            HighlightedText="@MapViewModel.MapFilter.FullText" />
+                                        </MudText>
+                                        <MudText Typo="Typo.caption"
+                                                 Class="mud-text-secondary text-truncate">
+                                            @Formatter.JoinParts(result.Group.Title, result.Poi.AreaName)
+                                        </MudText>
+                                    </MudStack>
+                                </MudElement>
+                            }
+                            @if (results.Count > MaxResults)
+                            {
+                                <MudText Typo="Typo.caption"
+                                         Class="mud-text-secondary px-4 py-2">
+                                    @AppText.Format("AndMore", results.Count - MaxResults)
+                                </MudText>
+                            }
+                        </MudPaper>
+                    }
+
                     <MudStack Row
                               AlignItems="AlignItems.Center"
                               Spacing="1">
@@ -183,40 +244,66 @@
                             @bind-Ref="_canvas"
                             Class="map-canvas">
                     @* Map Image *@
-                    <img src="images/map/dark.jpg"
+                    <img src="images/map/dark.webp"
                          alt="@AppText.Get("Map")"
                          class="map-image" />
-                    <svg class="map-zipline"
-                         viewBox="0 0 4096 4096">
-                        @foreach (var zipline in MapViewModel.VisibleZiplines())
-                        {
-                            <line x1="@Pixel(zipline.PointA.MapLeft)"
-                                  y1="@Pixel(zipline.PointA.MapTop)"
-                                  x2="@Pixel(zipline.PointB.MapLeft)"
-                                  y2="@Pixel(zipline.PointB.MapTop)"
-                                  stroke="white"
-                                  stroke-width="3"
-                                  stroke-dasharray="8 6" />
-                        }
-                    </svg>
-                    @if (MapViewModel.SelectedPoi is LocationPoi location)
+                    <MapPoints Version="@MapViewModel.SyncPoints()" />
+                    @if (MapViewModel.SelectedPoi is ZipPointPoi { Parent: { Visible: true } zipline })
                     {
+                        @* Picked Zipline *@
+                        <svg class="map-zipline map-zipline-pick"
+                             viewBox="0 0 4096 4096">
+                            <line x1="@MapPoints.Pixel(zipline.PointA.MapLeft)"
+                                  y1="@MapPoints.Pixel(zipline.PointA.MapTop)"
+                                  x2="@MapPoints.Pixel(zipline.PointB.MapLeft)"
+                                  y2="@MapPoints.Pixel(zipline.PointB.MapTop)"
+                                  class="map-zipline-picked" />
+                        </svg>
+                        @foreach (var anchor in new[] { zipline.PointA, zipline.PointB })
+                        {
+                            <img src="@anchor.Icon"
+                                 alt="@anchor.Title"
+                                 title="@anchor.Title"
+                                 class="map-poi"
+                                 style="@MapPoints.PoiStyle(anchor.MapLeft, anchor.MapTop, anchor.IconSize, anchor.IconRotation, PickedZIndex)" />
+                            <span class="map-ring"
+                                  style="@MapPoints.RingStyle(anchor.MapLeft, anchor.MapTop, anchor.IconSize, PickedZIndex)" />
+                        }
+                    }
+                    else if (MapViewModel.SelectedPoi is LocationPoi location)
+                    {
+                        @* Location Pin *@
                         <img src="@location.Icon"
                              alt="@location.Title"
-                             class="map-poi"
-                             style="@PoiStyle(location.MapLeft, location.MapTop, location.IconSize, 0, location.IconZIndex)" />
+                             title="@location.Title"
+                             class="map-pin"
+                             style="@PinStyle(location)" />
                     }
-                    @foreach (var poi in MapViewModel.VisiblePois())
+                    else if (MapViewModel.SelectedPoi is BasePoi { Visible: true } picked)
                     {
-                        @* Point Icon *@
-                        <img src="@poi.Icon"
-                             alt="@poi.Title"
-                             title="@poi.Title"
-                             class="@(poi.IsSelected ? "map-poi selected" : "map-poi")"
-                             role="button"
-                             tabindex="-1"
-                             data-keyclick
-                             style="@PoiStyle(poi.MapLeft, poi.MapTop, poi.IconSize, poi.IconRotation, poi.IconZIndex)" />
+                        @* Picked Point *@
+                        <img src="@picked.Icon"
+                             alt="@picked.Title"
+                             title="@picked.Title"
+                             class="map-poi"
+                             style="@MapPoints.PoiStyle(picked.MapLeft, picked.MapTop, picked.IconSize, picked.IconRotation, PickedZIndex)" />
+                        <span class="map-ring"
+                              style="@MapPoints.RingStyle(picked.MapLeft, picked.MapTop, picked.IconSize, PickedZIndex)" />
+                    }
+                    @if (PickLineStart() is { } pickStart)
+                    {
+                        @* Zipline Preview *@
+                        <svg class="map-zipline map-pick-line idle"
+                             viewBox="0 0 4096 4096">
+                            <line x1="@MapPoints.Pixel(pickStart.MapLeft)"
+                                  y1="@MapPoints.Pixel(pickStart.MapTop)"
+                                  x2="@MapPoints.Pixel(pickStart.MapLeft)"
+                                  y2="@MapPoints.Pixel(pickStart.MapTop)" />
+                        </svg>
+                        <img src="@ZipPointPoi.IconUrl"
+                             alt=""
+                             class="map-poi map-pick-ghost idle"
+                             style="@MapPoints.PoiStyle(pickStart.MapLeft, pickStart.MapTop, 32, 0, GhostZIndex)" />
                     }
                 </MudElement>
             </MudElement>
@@ -291,7 +378,7 @@
                                                OnClick="() => MapViewModel.SelectPoi(null)" />
                             </MudStack>
                             <MudStack Spacing="0">
-                                @foreach (var poi in MapViewModel.StackedPois)
+                                @foreach (var poi in MapViewModel.StackedPois.Take(MaxStackRows))
                                 {
                                     @* Stacked Point *@
                                     <MudElement HtmlTag="div"
@@ -308,6 +395,13 @@
                                     </MudElement>
                                 }
                             </MudStack>
+                            @if (MapViewModel.StackedPois.Count > MaxStackRows)
+                            {
+                                <MudText Typo="Typo.body2"
+                                         Class="mud-text-secondary px-2">
+                                    @AppText.Format("MorePointsHere", MapViewModel.StackedPois.Count - MaxStackRows)
+                                </MudText>
+                            }
                         </MudStack>
                     }
                 </MudPaper>

@@ -3,6 +3,8 @@
 #:property NoWarn=$(NoWarn);IL2026;IL3050
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
+using System.Xml.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -500,6 +502,63 @@ try
     main.RevertPage("Map");
     Check(!main.HasUnsavedChanges(), "Reverted Zipline Picks Leave Nothing Unsaved");
 
+    // Ziplines Count Lines, A Line Hides With Its Anchors
+    map.Build();
+    var ziplineGroup = map.AllGroups().First(group => group.GroupType == PoiGroupType.ZipLines);
+    Check(
+        ziplineGroup.Count == map.AllPois().OfType<ZiplinePoi>().Count(),
+        "Ziplines Group Counts Lines"
+    );
+    ziplineGroup.Enabled = true;
+    map.MapFilter.FullText = "No Point Has This Name";
+    map.ApplyFilterToAllPois();
+    Check(!map.VisibleZiplines().Any(), "A Line Hides With Its Anchors");
+    map.MapFilter.FullText = null;
+    map.ApplyFilterToAllPois();
+
+    // Show On Map At A Zipline's Middle Picks That Zipline
+    var line = map.AllPois().OfType<ZiplinePoi>().First();
+    map.FocusPosition = new Position(
+        (line.PointA.Position!.X + line.PointB.Position!.X) / 2,
+        (line.PointA.Position.Y + line.PointB.Position.Y) / 2,
+        (line.PointA.Position.Z + line.PointB.Position.Z) / 2
+    );
+    Check(map.TakeFocus() == line.PointA, "Show on Map Finds A Zipline");
+
+    // A Visit Keeps Its Points, Leaving Ends A Pick
+    map.Open();
+    var firstPoint = map.AllPois().First();
+    map.TogglePick(map.AllPois().OfType<ZipPointPoi>().First(), false);
+    map.Close();
+    map.Open();
+    Check(
+        ReferenceEquals(firstPoint, map.AllPois().First()) && map.PickFrom == null,
+        "Map Keeps Its Points And Ends A Pick"
+    );
+
+    // A Save's First Zipline Makes Its Group, Shown
+    foreach (var zipline in map.AllPois().OfType<ZiplinePoi>().ToList())
+    {
+        map.RemoveZipline(zipline);
+    }
+
+    map.Build();
+    var (emptyLeft, emptyTop) = CoordinateConverter.IngameToPixel(0, 0);
+    map.Click(emptyLeft, emptyTop, 1, true);
+    if (map.SelectedPoi is LocationPoi start)
+    {
+        map.TogglePick(start, true);
+        map.Click(emptyLeft + 40, emptyTop + 40, 1, true);
+    }
+
+    Check(
+        map.AllGroups().Any(group => group.GroupType == PoiGroupType.ZipLines && group.Enabled)
+            && map.VisibleZiplines().Count() == 1,
+        "First Zipline Makes Its Group, Shown"
+    );
+    main.RevertPage("Map");
+    Check(!main.HasUnsavedChanges(), "Reverted Zipline Group Leaves Nothing Unsaved");
+
     // An Unknown Build Cost Never Reads As Done
     var platform = new ScrewStructureWrapper(
         gameData.ScrewStructures.First(structure => structure.Id == 98),
@@ -530,6 +589,24 @@ try
     Check(main.HasChanges("Tools") && main.HasChanges("Npcs"), "Tool Edits Are Seen");
     main.RevertPage("Tools");
     Check(!main.HasUnsavedChanges(), "Reverted Tools Leave Nothing Unsaved");
+
+    // A Clone Shows On The Next Map Visit
+    map.Open();
+    var worldItems = map.AllPois().OfType<WorldItemPoi>().Count();
+    var cloneBefore = main.ToolState();
+    new WorldItemClonerViewModel(main.SelectedSavegame!)
+    {
+        SelectedWorldItemType = WorldItemType.KnightV,
+    }.CloneObjectAtPlayerPos(player.PlayerState.Pos);
+    main.FinishTool("WorldItemCloner", cloneBefore);
+    map.Close();
+    map.Open();
+    Check(
+        map.AllPois().OfType<WorldItemPoi>().Count() == worldItems + 1,
+        "Cloned Item Shows On The Map"
+    );
+    main.RevertPage("Tools");
+    Check(!main.HasUnsavedChanges(), "Reverted Clone Leaves Nothing Unsaved");
 
     // A Deleted Follower Keeps Its Memory, Revive Never Doubles It
     var deletedId = followers.CopiesOf(Constants.Actors.VirginiaTypeId)[0].UniqueId;
@@ -717,6 +794,22 @@ try
     );
     Check(!main.HasUnsavedChanges(), "Picking The Loaded Day Again Leaves No Change");
 
+    // A Stat The Save Left Out Is Written Once Set
+    var playerWrapper = main.SelectedSavegame!.SavegameStore.LoadJsonRaw(
+        SavegameStore.FileType.PlayerStateSaveData
+    )!;
+    ((JArray)playerWrapper.GetJsonBasedToken(Constants.JsonKeys.PlayerState)!["_entries"]!)
+        .First(entry => entry["Name"]?.ToString() == "Sickness")
+        .Remove();
+    playerWrapper.MarkAsModified(Constants.JsonKeys.PlayerState);
+    Check(main.SaveChanges(), "Save Without Sickness Writes");
+    EditAndCheck(
+        "Missing Stat",
+        "Player",
+        () => player.PlayerState.Sickness = 12,
+        () => Math.Abs(player.PlayerState.Sickness - 12) < 0.01
+    );
+
     // A Save Keeps Its Change List In Its Backup
     player.PlayerState.Fullness = 44;
     Check(main.SaveChanges(new() { ["Player"] = [new Change("Fullness")] }), "Listed Change Saves");
@@ -777,6 +870,39 @@ try
     Check(Throws(() => main.SaveChanges()), "Missing File Fails The Save");
     Check(main.HasUnsavedChanges(), "Failed Save Keeps The Edit");
     File.Move(movedPath, archivePath);
+
+    // A Singleplayer Copy Matches Byte For Byte, Save Time Included
+    var copied = SavegameManager.CopyToSinglePlayer(main.SelectedSavegame!);
+    var copiedId = Path.GetFileName(copied);
+    Check(
+        Path.GetFileName(Path.GetDirectoryName(copied)) == "SinglePlayer"
+            && copiedId.Length == 10
+            && long.Parse(copiedId) < int.MaxValue
+            && SameHashes(HashFiles(savegamePath), HashFiles(copied))
+            && Directory.GetLastWriteTimeUtc(copied) == Directory.GetLastWriteTimeUtc(savegamePath),
+        "Copy To Singleplayer Matches The Save"
+    );
+
+    // Every Language Holds Every Text With English Placeholders
+    var resources = Path.Combine(SourceDirectory(), "..", "SoTF.Editor.Data", "Resources");
+    var englishTexts = ResxTexts(Path.Combine(resources, "SharedResource.resx"));
+    foreach (
+        var (culture, name) in AppText.Languages.Where(language =>
+            language.Culture != AppText.DefaultCulture
+        )
+    )
+    {
+        var texts = ResxTexts(Path.Combine(resources, $"SharedResource.{culture}.resx"));
+        Check(
+            texts.Count == englishTexts.Count
+                && englishTexts.All(pair =>
+                    texts.TryGetValue(pair.Key, out var text)
+                    && text.Trim().Length > 0
+                    && Placeholders(text) == Placeholders(pair.Value)
+                ),
+            $"{name} Holds Every Text"
+        );
+    }
 
     void ToolCheck(string tool, Func<string> run)
     {
@@ -865,6 +991,22 @@ static (int Collection, int Storage) FirstFillableStorage(StoragePageViewModel s
     }
 
     throw new InvalidOperationException("Found No Storage To Fill");
+}
+
+static Dictionary<string, string> ResxTexts(string path)
+{
+    return XDocument
+        .Load(path)
+        .Root!.Elements("data")
+        .ToDictionary(
+            data => (string)data.Attribute("name")!,
+            data => (string?)data.Element("value") ?? ""
+        );
+}
+
+static string Placeholders(string text)
+{
+    return string.Join(" ", Regex.Matches(text, @"\{\d+\}").Select(match => match.Value).Order());
 }
 
 static string SourceDirectory([CallerFilePath] string path = "")

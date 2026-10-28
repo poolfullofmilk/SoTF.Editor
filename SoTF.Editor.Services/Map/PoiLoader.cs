@@ -27,13 +27,13 @@ public class PoiLoader(
         SaveJson.DeserializeFromString<RawItemPoiCollection>(ResourceFile.Read("ItemPois.json"))
         ?? throw new InvalidDataException("Found No Item Points");
 
-    public IEnumerable<IPoiGrouper> Load()
+    public IEnumerable<IPoiGrouper> Load(HashSet<int> inventoryItems)
     {
-        var inventoryItems = GetInventoryItems();
         return [.. LoadRawPois(inventoryItems), LoadItemPois(inventoryItems)];
     }
 
-    private HashSet<int> GetInventoryItems()
+    // Owned Items, The Map Rebuilds When They Change
+    public HashSet<int> OwnedItemIds()
     {
         // A Weapon Mod Counts As Owned, Found By Its Hash
         var itemIdsByModHash = new Dictionary<int, int>();

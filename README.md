@@ -18,10 +18,11 @@
 - Edit NPCs one at a time or all at once
 - Change the game settings, the weather and the season
 - Finish or remove structures
-- Teleport yourself or anyone else on the map
+- Teleport yourself or anyone else on the map, and search every point on it
 - Tools such as regrowing trees and calming cannibals
+- Copy a hosted multiplayer save to singleplayer
 - See every change before you save, and undo them page by page
-- English and Dutch, and it updates itself
+- English, Dutch, German, French and Turkish, and it updates itself
 
 ## Quick start
 1. Download the exe from the [latest release](https://github.com/poolfullofmilk/SoTF.Editor/releases/latest)

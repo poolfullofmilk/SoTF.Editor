@@ -166,6 +166,22 @@
                     <MudPaper Elevation="4"
                               Class="rounded-panel pa-4">
                         <MudStack Spacing="2">
+                            <MudStack Row
+                                      AlignItems="AlignItems.Center"
+                                      Spacing="2">
+                                <MudText Typo="Typo.subtitle2">@AppText.Get("ArmourWorn")</MudText>
+                                <MudSpacer />
+                                @* Add Piece *@
+                                <Tooltip Text="@AppText.Get("AddArmour")"
+                                         Disabled="@(!CanAddPiece)"
+                                         RootClass="d-flex">
+                                    <MudIconButton Icon="@Icons.Material.Rounded.Add"
+                                                   aria-label="@AppText.Get("AddArmour")"
+                                                   Size="Size.Small"
+                                                   Disabled="@(!CanAddPiece)"
+                                                   OnClick="() => ArmorPage.AddPiece(ArmorPage.ArmourTypes.FirstOrDefault())" />
+                                </Tooltip>
+                            </MudStack>
                             @foreach (var armour in ArmorPage.Armour)
                             {
                                 <MudStack Row
@@ -226,18 +242,6 @@
                                     </Tooltip>
                                 </MudStack>
                             }
-                            <MudStack Row
-                                      AlignItems="AlignItems.Center"
-                                      Spacing="2"
-                                      Class="pa-1">
-                                @* Add Piece *@
-                                <ArmourSelect @key="ArmorPage.Armour.Count()"
-                                              ValueChanged="ArmorPage.AddPiece"
-                                              Types="ArmorPage.ArmourTypes"
-                                              Label="@AppText.Get("AddArmour")"
-                                              EmptyIcon="@Icons.Material.Rounded.Add"
-                                              Disabled="@(!ArmorPage.FreeSlots.Any())" />
-                            </MudStack>
 
                             @if (ArmorPage.InventoryArmour.Any())
                             {

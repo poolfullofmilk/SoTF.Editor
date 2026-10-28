@@ -1,4 +1,7 @@
+using Microsoft.AspNetCore.Components;
 using Microsoft.Win32;
+using MudBlazor;
+using NLog;
 using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Resources;
 using SoTF.Editor.Data.ViewModels;
@@ -10,6 +13,11 @@ namespace SoTF.Editor.Desktop.Components.Pages;
 
 public partial class Home : EditorPageBase
 {
+    private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
+
+    [Inject]
+    public required ISnackbar Snackbar { get; set; }
+
     // Empty While The Folder Is Still Being Read
     private List<Savegame>? _savegames;
     private int _scan;
@@ -98,6 +106,43 @@ public partial class Home : EditorPageBase
         if (SavegameManager.Load(savegame.FullPath) is { } fresh)
         {
             MainViewModel.RequestOpen(fresh);
+        }
+    }
+
+    private async Task CopyToSingleplayerAsync(Savegame savegame)
+    {
+        if (!await ConfirmAsync("CopyToSingleplayer", "CopyToSingleplayerText"))
+        {
+            return;
+        }
+
+        try
+        {
+            // A Big Savegame Copies Off The Window Thread
+            var copied = await Task.Run(() => SavegameManager.CopyToSinglePlayer(savegame));
+            Snackbar.Add(
+                AppText.Get("CopiedToSingleplayer"),
+                Severity.Success,
+                options =>
+                {
+                    options.Action = AppText.Get("OpenCopy");
+                    options.OnClick = _ =>
+                    {
+                        if (SavegameManager.Load(copied) is { } copy)
+                        {
+                            MainViewModel.RequestOpen(copy);
+                        }
+
+                        return Task.CompletedTask;
+                    };
+                }
+            );
+            await LoadSavegamesAsync();
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+        {
+            s_logger.Error(exception, "Failed To Copy Savegame");
+            Snackbar.Add(AppText.Get("UnableToCopySavegame"), Severity.Error);
         }
     }
 

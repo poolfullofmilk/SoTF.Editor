@@ -2,6 +2,10 @@
 @inherits EditorPageBase
 
 <RequiresSavegame NeedsWorld>
+    @{
+        // The Shown Storages, Worked Out Once Per Render
+        var collections = FilteredCollections();
+    }
     <MudStack Row
               Spacing="6"
               Class="page-fill">
@@ -27,14 +31,14 @@
                                  FullWidth />
                     <MudPaper Elevation="4"
                               Class="rounded-panel panel-flush overflow-y-auto fit">
-                        @if (!FilteredCollections.Any())
+                        @if (collections.Count == 0)
                         {
                             <MudText Typo="Typo.body2"
                                      Class="mud-text-secondary pa-4">
                                 @AppText.Get("NothingFound")
                             </MudText>
                         }
-                        @foreach (var (title, storages) in FilteredCollections)
+                        @foreach (var (title, storages) in collections)
                         {
                             <GroupTitle Title="@title"
                                         Count="storages.Count"
@@ -72,7 +76,7 @@
         </MudElement>
         <MudElement HtmlTag="div"
                     Class="main-panel fill-column">
-            @if (Selected is not { } selected)
+            @if (SelectedIn(collections) is not { } selected)
             {
                 <EmptyState Icon="@Icons.Material.Rounded.Inventory2"
                             Text="@AppText.Get("SelectStorage")" />
@@ -87,6 +91,22 @@
                             @selected.TotalStored
                         </MudText>
                         <MudSpacer />
+                        @* Slot Item Menu *@
+                        <MudMenu @ref="_slotMenu"
+                                 PositionAtCursor
+                                 Dense
+                                 MaxHeight="400">
+                            <ActivatorContent />
+                            <ChildContent>
+                                @foreach (var item in _menuSlot?.SupportedItems.OrderBy(item => item.Name) ?? Enumerable.Empty<ItemWrapper>())
+                                {
+                                    <MudMenuItem Icon="@(item == _menuSlot?.SelectedItem ? Icons.Material.Rounded.Check : null)"
+                                                 OnClick="() => PickSlotItem(item)">
+                                        @item.Name
+                                    </MudMenuItem>
+                                }
+                            </ChildContent>
+                        </MudMenu>
                         @* Set All Max *@
                         <MudButton Variant="Variant.Text"
                                    Size="Size.Small"
@@ -171,19 +191,14 @@
                                                   Alt="@storedItem.SelectedItem?.Name"
                                                   Class="thumb rounded-thumb" />
                                         @* Slot Item *@
-                                        <MudSelect T="ItemWrapper"
-                                                   @bind-Value="storedItem.SelectedItem"
-                                                   ToStringFunc="item => item?.Name ?? string.Empty"
-                                                   Placeholder="-"
-                                                   Dense
-                                                   Margin="Margin.Dense"
-                                                   Variant="Variant.Outlined"
-                                                   Class="flex-grow-1">
-                                            @foreach (var item in storedItem.SupportedItems.OrderBy(item => item.Name))
-                                            {
-                                                <MudSelectItem Value="item">@item.Name</MudSelectItem>
-                                            }
-                                        </MudSelect>
+                                        <MudButton Variant="Variant.Text"
+                                                   Size="Size.Small"
+                                                   EndIcon="@Icons.Material.Rounded.ArrowDropDown"
+                                                   data-menu-at
+                                                   OnClick="args => OpenSlotMenuAsync(args, storedItem)">
+                                            @(storedItem.SelectedItem?.Name ?? "-")
+                                        </MudButton>
+                                        <MudSpacer />
                                         @* Slot Count *@
                                         <ChangedBadge When="@StoragePage.IsChanged(selected, storedItem)">
                                             <NumberField T="int"

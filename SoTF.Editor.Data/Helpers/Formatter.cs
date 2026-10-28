@@ -18,6 +18,12 @@ public static class Formatter
         return $"{bytes / 1048576.0:0.0} MB";
     }
 
+    // Whole Metres In The Windows Number Format
+    public static string FormatDistance(float metres)
+    {
+        return $"{metres:N0} m";
+    }
+
     public static string JoinParts(params string?[] parts)
     {
         // A Missing Part Leaves No Separator And No Dash

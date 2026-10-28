@@ -2,6 +2,10 @@
 @inherits EditorPageBase
 
 <RequiresSavegame NeedsWorld>
+    @{
+        // The Shown Rows, Worked Out Once Per Render
+        var groupings = Groupings();
+    }
     <MudStack Row
               Spacing="6"
               Class="page-fill">
@@ -34,14 +38,14 @@
                              FullWidth />
                 <MudPaper Elevation="4"
                           Class="rounded-panel panel-flush overflow-y-auto fit">
-                    @if (!Groupings.Any())
+                    @if (groupings.Count == 0)
                     {
                         <MudText Typo="Typo.body2"
                                  Class="mud-text-secondary pa-4">
                             @AppText.Get("NothingFound")
                         </MudText>
                     }
-                    @foreach (var grouping in Groupings)
+                    @foreach (var grouping in groupings)
                     {
                         @if (grouping.Title is { } title)
                         {
@@ -85,7 +89,7 @@
         </MudElement>
         <MudElement HtmlTag="div"
                     Class="main-panel fill-column">
-            @if (Selected is not { } selected)
+            @if (SelectedIn(groupings) is not { } selected)
             {
                 <EmptyState Icon="@Icons.Material.Rounded.Pets"
                             Text="@AppText.Get("SelectGroup")" />

@@ -36,24 +36,31 @@ public partial class Structures : EditorPageBase
     private ScrewStructureWrapper? _menuStructure;
 
     // One Row Per Structure Type, By Category Then Name
-    private IEnumerable<StructureType> FilteredTypes =>
-        StructuresPage
-            .Structures.GroupBy(wrapper => wrapper.Name)
-            .Select(group => new StructureType(
-                group.Key,
-                group.First().Category,
-                IconOf(group.First()),
-                [.. group.OrderBy(wrapper => wrapper.Origin).ThenBy(wrapper => wrapper.PctDone)]
-            ))
-            .Where(type => Matches(type.Name) || Matches(type.Category))
-            .OrderBy(type => type.Category)
-            .ThenBy(type => type.Name);
+    private List<StructureType> FilteredTypes()
+    {
+        return
+        [
+            .. StructuresPage
+                .Structures.GroupBy(wrapper => wrapper.Name)
+                .Select(group => new StructureType(
+                    group.Key,
+                    group.First().Category,
+                    IconOf(group.First()),
+                    [.. group.OrderBy(wrapper => wrapper.Origin).ThenBy(wrapper => wrapper.PctDone)]
+                ))
+                .Where(type => Matches(type.Name) || Matches(type.Category))
+                .OrderBy(type => type.Category)
+                .ThenBy(type => type.Name),
+        ];
+    }
 
     // Only A Shown Type, A Search Can Hide It
-    private List<ScrewStructureWrapper>? ShownStructures =>
-        _showAll
-            ? [.. FilteredTypes.SelectMany(type => type.Structures)]
-            : FilteredTypes.FirstOrDefault(type => type.Name == _selectedName)?.Structures;
+    private List<ScrewStructureWrapper>? ShownIn(List<StructureType> types)
+    {
+        return _showAll
+            ? [.. types.SelectMany(type => type.Structures)]
+            : types.FirstOrDefault(type => type.Name == _selectedName)?.Structures;
+    }
 
     private string ShownTitle => _showAll ? AppText.Get("AllStructures") : _selectedName ?? "";
 

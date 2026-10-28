@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SoTF.Editor.Data.Helpers;
+using SoTF.Editor.Data.Resources;
 
 namespace SoTF.Editor.Services.Settings;
 
@@ -13,7 +14,7 @@ public class UserSettings
     public static UserSettings Current { get; } = Load();
 
     public string SavegamePath { get; set; } = "";
-    public string Language { get; set; } = "en";
+    public string Language { get; set; } = AppText.DefaultCulture;
     public HashSet<string>? SelectedMapGroups { get; set; }
 
     private static UserSettings Load()

@@ -1,0 +1,2095 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>Ekle</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Kapat</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Düzenle</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Ad</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Hayır</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Evet</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Tamam</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Konum</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Kaydet</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Bilinmiyor</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Değer</value>
+  </data>
+  <data name="About" xml:space="preserve">
+    <value>Hakkında</value>
+  </data>
+  <data name="AboutText" xml:space="preserve">
+    <value>Sons Of The Forest kayıtlarınızı düzenleyin</value>
+  </data>
+  <data name="Backups" xml:space="preserve">
+    <value>Yedekler</value>
+  </data>
+  <data name="ChangesAdded" xml:space="preserve">
+    <value>Değişiklikler eklendi, korumak için kaydedin</value>
+  </data>
+  <data name="Disclaimer" xml:space="preserve">
+    <value>Bir hayran projesi, Endnight Games ile bağlantısı yoktur</value>
+  </data>
+  <data name="MapDataNotice" xml:space="preserve">
+    <value>Harita noktaları Leon Machens'in Sons Of The Forest Map projesinden, MIT lisansı</value>
+  </data>
+  <data name="DropHint" xml:space="preserve">
+    <value>Açmak için bir kayıt klasörünü pencerede herhangi bir yere bırakın</value>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>Yardım</value>
+  </data>
+  <data name="Items" xml:space="preserve">
+    <value>Eşyalar</value>
+  </data>
+  <data name="NoSavegames" xml:space="preserve">
+    <value>Bu klasörde kayıt bulunamadı</value>
+  </data>
+  <data name="NothingFound" xml:space="preserve">
+    <value>Hiçbir Şey Bulunamadı</value>
+  </data>
+  <data name="OpenSavegameFirst" xml:space="preserve">
+    <value>Önce Bir Kayıt Açın</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Kaldır</value>
+  </data>
+  <data name="Saved" xml:space="preserve">
+    <value>Kaydedildi</value>
+  </data>
+  <data name="Savegames" xml:space="preserve">
+    <value>Kayıtlar</value>
+  </data>
+  <data name="SelectGroup" xml:space="preserve">
+    <value>Bir Grup Seçin</value>
+  </data>
+  <data name="ShowOnMap" xml:space="preserve">
+    <value>Haritada Göster</value>
+  </data>
+  <data name="UpdateAvailable" xml:space="preserve">
+    <value>Sürüm {0} Mevcut</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Sürüm</value>
+  </data>
+  <data name="ZoomIn" xml:space="preserve">
+    <value>Yakınlaştır</value>
+  </data>
+  <data name="ZoomOut" xml:space="preserve">
+    <value>Uzaklaştır</value>
+  </data>
+  <data name="CenterMap" xml:space="preserve">
+    <value>Tüm Haritayı Göster</value>
+  </data>
+  <data name="Area" xml:space="preserve">
+    <value>Bölge</value>
+  </data>
+  <data name="Classification" xml:space="preserve">
+    <value>Sınıf</value>
+  </data>
+  <data name="Family" xml:space="preserve">
+    <value>Aile</value>
+  </data>
+  <data name="FamilyTitle" xml:space="preserve">
+    <value>Aile {0}</value>
+  </data>
+  <data name="Gender" xml:space="preserve">
+    <value>Cinsiyet</value>
+  </data>
+  <data name="KilledByPlayer" xml:space="preserve">
+    <value>Oyuncu Tarafından Öldürüldü</value>
+  </data>
+  <data name="LastSpawnTime" xml:space="preserve">
+    <value>Son Oluşma Zamanı</value>
+  </data>
+  <data name="LastVisitTime" xml:space="preserve">
+    <value>Son Ziyaret</value>
+  </data>
+  <data name="SpawnedCount" xml:space="preserve">
+    <value>Oluşma Sayısı</value>
+  </data>
+  <data name="State" xml:space="preserve">
+    <value>Durum</value>
+  </data>
+  <data name="UniqueId" xml:space="preserve">
+    <value>Aktör ID</value>
+  </data>
+  <data name="GroupAnimals" xml:space="preserve">
+    <value>Hayvanlar</value>
+  </data>
+  <data name="GroupCreeps" xml:space="preserve">
+    <value>Mutantlar</value>
+  </data>
+  <data name="GroupFemaleCannibals" xml:space="preserve">
+    <value>Dişi Yamyamlar</value>
+  </data>
+  <data name="GroupFemaleMuddyCannibals" xml:space="preserve">
+    <value>Dişi Çamurlu Yamyamlar</value>
+  </data>
+  <data name="GroupMaleCannibals" xml:space="preserve">
+    <value>Erkek Yamyamlar</value>
+  </data>
+  <data name="GroupMaleMuddyCannibals" xml:space="preserve">
+    <value>Erkek Çamurlu Yamyamlar</value>
+  </data>
+  <data name="GroupMisc" xml:space="preserve">
+    <value>Diğer</value>
+  </data>
+  <data name="GroupMixed" xml:space="preserve">
+    <value>Karışık</value>
+  </data>
+  <data name="GroupMixedCannibals" xml:space="preserve">
+    <value>Karışık Yamyamlar</value>
+  </data>
+  <data name="GroupMixedMuddyCannibals" xml:space="preserve">
+    <value>Karışık Çamurlu Yamyamlar</value>
+  </data>
+  <data name="GroupNoFamily" xml:space="preserve">
+    <value>Ailesiz</value>
+  </data>
+  <data name="Influences" xml:space="preserve">
+    <value>Etkiler</value>
+  </data>
+  <data name="OnlySameArea" xml:space="preserve">
+    <value>Yalnızca Aynı Bölgede</value>
+  </data>
+  <data name="RemoveSpawner" xml:space="preserve">
+    <value>Oluşturucuyu Kaldır</value>
+  </data>
+  <data name="RemoveSpawnerTooltip" xml:space="preserve">
+    <value>NPC bir daha oluşmaz</value>
+  </data>
+  <data name="ReplaceType" xml:space="preserve">
+    <value>Türü Değiştir</value>
+  </data>
+  <data name="TeleportManyWarning" xml:space="preserve">
+    <value>Çok sayıda aktörü tek bir noktaya ışınlamak oyunu çökertebilir</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Yok</value>
+  </data>
+  <data name="TeleportNpcToPlayer" xml:space="preserve">
+    <value>NPC'yi Oyuncuya</value>
+  </data>
+  <data name="TeleportPlayerToNpc" xml:space="preserve">
+    <value>Oyuncuyu NPC'ye</value>
+  </data>
+  <data name="Teleport" xml:space="preserve">
+    <value>Işınla</value>
+  </data>
+  <data name="Affection" xml:space="preserve">
+    <value>Sevgi</value>
+  </data>
+  <data name="Anger" xml:space="preserve">
+    <value>Öfke</value>
+  </data>
+  <data name="Energy" xml:space="preserve">
+    <value>Enerji</value>
+  </data>
+  <data name="Fear" xml:space="preserve">
+    <value>Korku</value>
+  </data>
+  <data name="Fullness" xml:space="preserve">
+    <value>Tokluk</value>
+  </data>
+  <data name="FullnessBuff" xml:space="preserve">
+    <value>Tokluk Bonusu</value>
+  </data>
+  <data name="Health" xml:space="preserve">
+    <value>Sağlık</value>
+  </data>
+  <data name="Hydration" xml:space="preserve">
+    <value>Hidrasyon</value>
+  </data>
+  <data name="HydrationBuff" xml:space="preserve">
+    <value>Hidrasyon Bonusu</value>
+  </data>
+  <data name="Rest" xml:space="preserve">
+    <value>Dinlenme</value>
+  </data>
+  <data name="RestBuff" xml:space="preserve">
+    <value>Dinlenme Bonusu</value>
+  </data>
+  <data name="Stamina" xml:space="preserve">
+    <value>Kondisyon</value>
+  </data>
+  <data name="Kelvin" xml:space="preserve">
+    <value>Kelvin</value>
+  </data>
+  <data name="Virginia" xml:space="preserve">
+    <value>Virginia</value>
+  </data>
+  <data name="SetAllToDefault" xml:space="preserve">
+    <value>Tümü Varsayılan</value>
+  </data>
+  <data name="SetAllToDefaultTooltip" xml:space="preserve">
+    <value>Her parçayı varsayılan dayanıklılığına ayarlar</value>
+  </data>
+  <data name="SetAllToMax" xml:space="preserve">
+    <value>Tümü Maks</value>
+  </data>
+  <data name="SetAllToMaxTooltip" xml:space="preserve">
+    <value>Her parçayı en yüksek dayanıklılığa ayarlar</value>
+  </data>
+  <data name="SetToDefaultDurability" xml:space="preserve">
+    <value>Varsayılan Dayanıklılığa Ayarla</value>
+  </data>
+  <data name="Durability" xml:space="preserve">
+    <value>Dayanıklılık</value>
+  </data>
+  <data name="UnknownItem" xml:space="preserve">
+    <value>Bilinmeyen Eşya</value>
+  </data>
+  <data name="ChangeTypeWarning" xml:space="preserve">
+    <value>Konum ve dönüş aynı kalır, bu da hatalara veya çökmelere yol açabilir</value>
+  </data>
+  <data name="SpawnFollowersWarning" xml:space="preserve">
+    <value>Açık bir alanda oluşturun, çok sayıda yoldaş performansı düşürebilir</value>
+  </data>
+  <data name="SpawnFollower" xml:space="preserve">
+    <value>{0} Oluştur</value>
+  </data>
+  <data name="NoFiresFound" xml:space="preserve">
+    <value>Ateş Bulunamadı</value>
+  </data>
+  <data name="FiresChanged" xml:space="preserve">
+    <value>{0} ateş değiştirildi, korumak için kaydedin</value>
+  </data>
+  <data name="NoStructureDamage" xml:space="preserve">
+    <value>Yapılarda Hasar Bulunamadı</value>
+  </data>
+  <data name="StructureDamageRepaired" xml:space="preserve">
+    <value>{0} hasarlı yapı onarıldı, korumak için kaydedin</value>
+  </data>
+  <data name="FillAllBars" xml:space="preserve">
+    <value>Tüm Çubukları Doldur</value>
+  </data>
+  <data name="MoveToKelvin" xml:space="preserve">
+    <value>Kelvin'e Taşı</value>
+  </data>
+  <data name="MoveToPlayer" xml:space="preserve">
+    <value>Oyuncuya Taşı</value>
+  </data>
+  <data name="MoveToVirginia" xml:space="preserve">
+    <value>Virginia'ya Taşı</value>
+  </data>
+  <data name="Revive" xml:space="preserve">
+    <value>Canlandır</value>
+  </data>
+  <data name="Spawn" xml:space="preserve">
+    <value>Oluştur</value>
+  </data>
+  <data name="RemoveCopy" xml:space="preserve">
+    <value>Kopyayı Kaldır</value>
+  </data>
+  <data name="RemoveCopyText" xml:space="preserve">
+    <value>Bu kopya, eşyaları ve duygularıyla birlikte kayıttan çıkar</value>
+  </data>
+  <data name="Equipment" xml:space="preserve">
+    <value>Teçhizat</value>
+  </data>
+  <data name="Outfit" xml:space="preserve">
+    <value>Kıyafet</value>
+  </data>
+  <data name="ReviveTooltip" xml:space="preserve">
+    <value>Yoldaşı burada seçilen eşyalar ve kıyafetle geri getirir. Oyunun sildiği bir yoldaş oyuncunun yanında belirir, siz yeraltındayken ise dışarıdaki bir yoldaşın yanında</value>
+  </data>
+  <data name="Alive" xml:space="preserve">
+    <value>Hayatta</value>
+  </data>
+  <data name="Dead" xml:space="preserve">
+    <value>Ölü</value>
+  </data>
+  <data name="NotInSave" xml:space="preserve">
+    <value>Kayıtta Yok</value>
+  </data>
+  <data name="AnimalSpawnRate" xml:space="preserve">
+    <value>Hayvan Oluşma Oranı</value>
+  </data>
+  <data name="BuildingResistance" xml:space="preserve">
+    <value>Bina Direnci</value>
+  </data>
+  <data name="ColdPenalties" xml:space="preserve">
+    <value>Soğuk Cezaları</value>
+  </data>
+  <data name="ConsumableEffects" xml:space="preserve">
+    <value>Tüketilebilir Etkileri</value>
+  </data>
+  <data name="CreativeMode" xml:space="preserve">
+    <value>Yaratıcı Mod</value>
+  </data>
+  <data name="CustomSettings" xml:space="preserve">
+    <value>Özel Ayarlar</value>
+  </data>
+  <data name="CustomHint" xml:space="preserve">
+    <value>Tek tek ayarları değiştirmek için Özel modu seçin ya da bir moddan başlamak için bir ön ayar yükleyin</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>Varsayılan</value>
+  </data>
+  <data name="Long" xml:space="preserve">
+    <value>Uzun</value>
+  </data>
+  <data name="Realistic" xml:space="preserve">
+    <value>Gerçekçi</value>
+  </data>
+  <data name="Short" xml:space="preserve">
+    <value>Kısa</value>
+  </data>
+  <data name="DayLength" xml:space="preserve">
+    <value>Gün Uzunluğu</value>
+  </data>
+  <data name="EnemyAggression" xml:space="preserve">
+    <value>Düşman Saldırganlığı</value>
+  </data>
+  <data name="EnemyArmor" xml:space="preserve">
+    <value>Düşman Zırhı</value>
+  </data>
+  <data name="EnemyDamage" xml:space="preserve">
+    <value>Düşman Hasarı</value>
+  </data>
+  <data name="EnemyHealth" xml:space="preserve">
+    <value>Düşman Sağlığı</value>
+  </data>
+  <data name="EnemySearchParties" xml:space="preserve">
+    <value>Düşman Arama Grupları</value>
+  </data>
+  <data name="InstantBuilding" xml:space="preserve">
+    <value>Anında İnşa</value>
+  </data>
+  <data name="GameSetup" xml:space="preserve">
+    <value>Oyun Ayarları</value>
+  </data>
+  <data name="Enemies" xml:space="preserve">
+    <value>Düşmanlar</value>
+  </data>
+  <data name="Multiplayer" xml:space="preserve">
+    <value>Çok Oyunculu</value>
+  </data>
+  <data name="Weather" xml:space="preserve">
+    <value>Hava</value>
+  </data>
+  <data name="GodMode" xml:space="preserve">
+    <value>Ölümsüzlük</value>
+  </data>
+  <data name="InventoryPause" xml:space="preserve">
+    <value>Envanterde Duraklat</value>
+  </data>
+  <data name="ModeCreative" xml:space="preserve">
+    <value>Yaratıcı</value>
+  </data>
+  <data name="ModeCustom" xml:space="preserve">
+    <value>Özel</value>
+  </data>
+  <data name="Hard" xml:space="preserve">
+    <value>Zor</value>
+  </data>
+  <data name="HardSurvival" xml:space="preserve">
+    <value>Zor Hayatta Kalma</value>
+  </data>
+  <data name="Normal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="Peaceful" xml:space="preserve">
+    <value>Barışçıl</value>
+  </data>
+  <data name="Mode" xml:space="preserve">
+    <value>Mod</value>
+  </data>
+  <data name="NoCuttingsSpawn" xml:space="preserve">
+    <value>Kesim Artığı Yok</value>
+  </data>
+  <data name="OneHitTrees" xml:space="preserve">
+    <value>Ağaçları Tek Vuruşta Kes</value>
+  </data>
+  <data name="PlayerStatsDamage" xml:space="preserve">
+    <value>Oyuncu İstatistik Hasarı</value>
+  </data>
+  <data name="PlayersTriggerTraps" xml:space="preserve">
+    <value>Oyuncular Tuzakları Tetikler</value>
+  </data>
+  <data name="PrecipitationFrequency" xml:space="preserve">
+    <value>Yağış Sıklığı</value>
+  </data>
+  <data name="PvpDamage" xml:space="preserve">
+    <value>PvP Hasarı</value>
+  </data>
+  <data name="ReducedAmmo" xml:space="preserve">
+    <value>Konteynerlerde Az Mühimmat</value>
+  </data>
+  <data name="ReducedFood" xml:space="preserve">
+    <value>Konteynerlerde Az Yiyecek</value>
+  </data>
+  <data name="SeasonLength" xml:space="preserve">
+    <value>Mevsim Uzunluğu</value>
+  </data>
+  <data name="High" xml:space="preserve">
+    <value>Yüksek</value>
+  </data>
+  <data name="Low" xml:space="preserve">
+    <value>Düşük</value>
+  </data>
+  <data name="Off" xml:space="preserve">
+    <value>Kapalı</value>
+  </data>
+  <data name="Reduced" xml:space="preserve">
+    <value>Azaltılmış</value>
+  </data>
+  <data name="SingleUseContainers" xml:space="preserve">
+    <value>Tek Kullanımlık Konteynerler</value>
+  </data>
+  <data name="SpawnEnemies" xml:space="preserve">
+    <value>Düşman Oluştur</value>
+  </data>
+  <data name="Autumn" xml:space="preserve">
+    <value>Sonbahar</value>
+  </data>
+  <data name="Spring" xml:space="preserve">
+    <value>İlkbahar</value>
+  </data>
+  <data name="Summer" xml:space="preserve">
+    <value>Yaz</value>
+  </data>
+  <data name="Winter" xml:space="preserve">
+    <value>Kış</value>
+  </data>
+  <data name="StartingSeason" xml:space="preserve">
+    <value>Başlangıç Mevsimi</value>
+  </data>
+  <data name="StatRegenerationPenalties" xml:space="preserve">
+    <value>İstatistik Yenilenme Cezaları</value>
+  </data>
+  <data name="Uid" xml:space="preserve">
+    <value>UID</value>
+  </data>
+  <data name="GameState" xml:space="preserve">
+    <value>Oyun Durumu</value>
+  </data>
+  <data name="WorldObjectStatesInfo" xml:space="preserve">
+    <value>Muhtemelen 0 kapalı ya da gerçekleşmedi, 1 veya 3 açık ya da gerçekleşti demektir. Silinen bir değer kayıttan çıkar, oyun onu hiç dokunulmamış sayar</value>
+  </data>
+  <data name="WorldObjectStates" xml:space="preserve">
+    <value>Dünya Nesnesi Durumları</value>
+  </data>
+  <data name="ClearValue" xml:space="preserve">
+    <value>Değeri Temizle</value>
+  </data>
+  <data name="InfluencesInfo" xml:space="preserve">
+    <value>Yüksek korku düşmanları kaçırır, yüksek öfke saldırmalarına yol açar</value>
+  </data>
+  <data name="Sentiment" xml:space="preserve">
+    <value>Sempati</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Açık</value>
+  </data>
+  <data name="AddAll" xml:space="preserve">
+    <value>Tümünü Ekle</value>
+  </data>
+  <data name="Max" xml:space="preserve">
+    <value>Maks</value>
+  </data>
+  <data name="RemoveAll" xml:space="preserve">
+    <value>Tümünü Kaldır</value>
+  </data>
+  <data name="SetAllToMin" xml:space="preserve">
+    <value>Tümü Min</value>
+  </data>
+  <data name="ItemsInInventory" xml:space="preserve">
+    <value>Envanterdeki Eşyalar</value>
+  </data>
+  <data name="Count" xml:space="preserve">
+    <value>Adet</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Tür</value>
+  </data>
+  <data name="Actors" xml:space="preserve">
+    <value>Aktörler</value>
+  </data>
+  <data name="AlternativeItems" xml:space="preserve">
+    <value>Alternatif Eşyalar</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>Tümü</value>
+  </data>
+  <data name="SurfaceOnly" xml:space="preserve">
+    <value>Yalnızca Yüzey</value>
+  </data>
+  <data name="UndergroundOnly" xml:space="preserve">
+    <value>Yalnızca Mağaralar ve Sığınaklar</value>
+  </data>
+  <data name="NewZiplineFromHere" xml:space="preserve">
+    <value>Buradan Yeni Zipline</value>
+  </data>
+  <data name="SelectAll" xml:space="preserve">
+    <value>Tümünü Seç</value>
+  </data>
+  <data name="SpawnActors" xml:space="preserve">
+    <value>Aktör Oluştur</value>
+  </data>
+  <data name="TeleportKelvinHere" xml:space="preserve">
+    <value>Kelvin'i Buraya Işınla</value>
+  </data>
+  <data name="TeleportPlayerHere" xml:space="preserve">
+    <value>Oyuncuyu Buraya Işınla</value>
+  </data>
+  <data name="TeleportVirginiaHere" xml:space="preserve">
+    <value>Virginia'yı Buraya Işınla</value>
+  </data>
+  <data name="Coordinates" xml:space="preserve">
+    <value>Koordinatlar</value>
+  </data>
+  <data name="Distance" xml:space="preserve">
+    <value>Mesafe</value>
+  </data>
+  <data name="CopyCoordinates" xml:space="preserve">
+    <value>Koordinatları Kopyala</value>
+  </data>
+  <data name="CoordinatesCopied" xml:space="preserve">
+    <value>Koordinatlar Kopyalandı</value>
+  </data>
+  <data name="Followers" xml:space="preserve">
+    <value>Yoldaşlar</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Ara</value>
+  </data>
+  <data name="Results" xml:space="preserve">
+    <value>Sonuçlar</value>
+  </data>
+  <data name="UncollectedOnly" xml:space="preserve">
+    <value>Yalnızca Toplanmamış Eşyalar</value>
+  </data>
+  <data name="Owned" xml:space="preserve">
+    <value>Sahip Olunan</value>
+  </data>
+  <data name="IsCopy" xml:space="preserve">
+    <value>Kopya</value>
+  </data>
+  <data name="Underground" xml:space="preserve">
+    <value>Yeraltı</value>
+  </data>
+  <data name="ItemId" xml:space="preserve">
+    <value>Eşya ID</value>
+  </data>
+  <data name="Objects" xml:space="preserve">
+    <value>Nesneler</value>
+  </data>
+  <data name="PointsOfInterest" xml:space="preserve">
+    <value>İlgi Noktaları</value>
+  </data>
+  <data name="Requirements" xml:space="preserve">
+    <value>Gereksinimler</value>
+  </data>
+  <data name="ActorType" xml:space="preserve">
+    <value>Aktör Türü</value>
+  </data>
+  <data name="SpawnActorsWarning" xml:space="preserve">
+    <value>Çok fazla düşman ya da kötü bir yer oyunu çökertebilir</value>
+  </data>
+  <data name="DestinationFamily" xml:space="preserve">
+    <value>Hedefle Aynı</value>
+  </data>
+  <data name="SpaceBetween" xml:space="preserve">
+    <value>Aralık</value>
+  </data>
+  <data name="SpaceBetweenTooltip" xml:space="preserve">
+    <value>Her aktör arasındaki boşluk, 0'ın üstü onları ızgaraya dizer</value>
+  </data>
+  <data name="SpawnPattern" xml:space="preserve">
+    <value>Oluşturma Düzeni</value>
+  </data>
+  <data name="Structures" xml:space="preserve">
+    <value>Yapılar</value>
+  </data>
+  <data name="Teleportation" xml:space="preserve">
+    <value>Işınlanma</value>
+  </data>
+  <data name="Actor" xml:space="preserve">
+    <value>Aktör</value>
+  </data>
+  <data name="Zipline" xml:space="preserve">
+    <value>Zipline</value>
+  </data>
+  <data name="Destination" xml:space="preserve">
+    <value>Hedef</value>
+  </data>
+  <data name="TeleportHint" xml:space="preserve">
+    <value>X ve Z yeri, Y yüksekliği belirler, doğru bölgeyi seçin</value>
+  </data>
+  <data name="Offset" xml:space="preserve">
+    <value>Kaydırma</value>
+  </data>
+  <data name="ToTeleport" xml:space="preserve">
+    <value>Işınlanacak</value>
+  </data>
+  <data name="Wiki" xml:space="preserve">
+    <value>Wiki</value>
+  </data>
+  <data name="ZiplineAnchor" xml:space="preserve">
+    <value>Zipline Çapası</value>
+  </data>
+  <data name="Ziplines" xml:space="preserve">
+    <value>Zipline'lar</value>
+  </data>
+  <data name="OpenSavegameFolder" xml:space="preserve">
+    <value>Kayıt Klasörünü Aç</value>
+  </data>
+  <data name="ReloadSavegame" xml:space="preserve">
+    <value>Kaydı Yeniden Yükle</value>
+  </data>
+  <data name="GitHubProject" xml:space="preserve">
+    <value>GitHub Projesi</value>
+  </data>
+  <data name="CheckForUpdates" xml:space="preserve">
+    <value>Güncellemeleri Denetle</value>
+  </data>
+  <data name="WorldItemCloner" xml:space="preserve">
+    <value>Dünya Eşyası Klonla</value>
+  </data>
+  <data name="EternalFires" xml:space="preserve">
+    <value>Sonsuz Ateşler</value>
+  </data>
+  <data name="ItemPlater" xml:space="preserve">
+    <value>Altın Kaplama</value>
+  </data>
+  <data name="ConsumedItems" xml:space="preserve">
+    <value>Tüketilen Eşyalar</value>
+  </data>
+  <data name="RegrowTrees" xml:space="preserve">
+    <value>Ağaçları Yenile</value>
+  </data>
+  <data name="CannibalAnger" xml:space="preserve">
+    <value>Yamyam Öfkesi</value>
+  </data>
+  <data name="ResetContainers" xml:space="preserve">
+    <value>Konteynerleri Sıfırla</value>
+  </data>
+  <data name="ResetFires" xml:space="preserve">
+    <value>Ateşleri Sıfırla</value>
+  </data>
+  <data name="ResetStructureDamage" xml:space="preserve">
+    <value>Yapıları Onar</value>
+  </data>
+  <data name="ResetTraps" xml:space="preserve">
+    <value>Tuzakları Sıfırla</value>
+  </data>
+  <data name="SetToEndgame" xml:space="preserve">
+    <value>Oyun Sonuna Ayarla</value>
+  </data>
+  <data name="Tools" xml:space="preserve">
+    <value>Araçlar</value>
+  </data>
+  <data name="Unlocks" xml:space="preserve">
+    <value>Kilit Açma</value>
+  </data>
+  <data name="ByFamily" xml:space="preserve">
+    <value>Aileye Göre</value>
+  </data>
+  <data name="ByType" xml:space="preserve">
+    <value>Türe Göre</value>
+  </data>
+  <data name="CurrentHealth" xml:space="preserve">
+    <value>Mevcut Sağlık</value>
+  </data>
+  <data name="Player" xml:space="preserve">
+    <value>Oyuncu</value>
+  </data>
+  <data name="MaxHealth" xml:space="preserve">
+    <value>Maks. Sağlık</value>
+  </data>
+  <data name="Sickness" xml:space="preserve">
+    <value>Hastalık</value>
+  </data>
+  <data name="StrengthLevel" xml:space="preserve">
+    <value>Güç Seviyesi</value>
+  </data>
+  <data name="PoiGroupItems" xml:space="preserve">
+    <value>Eşyalar</value>
+  </data>
+  <data name="FillFittingSlots" xml:space="preserve">
+    <value>Uygun Yuvaları Doldur</value>
+  </data>
+  <data name="FillFittingSlotsTooltip" xml:space="preserve">
+    <value>Bu eşyanın sığdığı her yuvayı doldurur, diğer yuvalar olduğu gibi kalır</value>
+  </data>
+  <data name="ClearAll" xml:space="preserve">
+    <value>Tümünü Boşalt</value>
+  </data>
+  <data name="FillAllWith" xml:space="preserve">
+    <value>Tümünü Doldur</value>
+  </data>
+  <data name="FillAllStorages" xml:space="preserve">
+    <value>Tüm Depoları Doldur</value>
+  </data>
+  <data name="SelectStorage" xml:space="preserve">
+    <value>Bir Depo Seçin</value>
+  </data>
+  <data name="StorageTypes" xml:space="preserve">
+    <value>Depo Türleri</value>
+  </data>
+  <data name="Storage" xml:space="preserve">
+    <value>Depo</value>
+  </data>
+  <data name="ApplyToSameType" xml:space="preserve">
+    <value>Aynı Türdeki Tümüne Uygula</value>
+  </data>
+  <data name="ApplyToSameTypeTooltip" xml:space="preserve">
+    <value>Bu eşyaları ve adetleri bu türdeki her depoya kopyalar</value>
+  </data>
+  <data name="ChangeType" xml:space="preserve">
+    <value>Türü Değiştir</value>
+  </data>
+  <data name="SetAllToRemove" xml:space="preserve">
+    <value>Tümünü Kaldırmaya Ayarla</value>
+  </data>
+  <data name="StructureCategoryFurniture" xml:space="preserve">
+    <value>Mobilya</value>
+  </data>
+  <data name="StructureCategoryGardening" xml:space="preserve">
+    <value>Bahçecilik</value>
+  </data>
+  <data name="StructureCategoryMisc" xml:space="preserve">
+    <value>Diğer</value>
+  </data>
+  <data name="StructureCategoryStorage" xml:space="preserve">
+    <value>Depolama</value>
+  </data>
+  <data name="StructureCategoryTraps" xml:space="preserve">
+    <value>Tuzaklar</value>
+  </data>
+  <data name="StructureCategoryUtility" xml:space="preserve">
+    <value>Yardımcı Yapılar</value>
+  </data>
+  <data name="StructureCategoryRaft" xml:space="preserve">
+    <value>Sal</value>
+  </data>
+  <data name="StructureCategoryShelter" xml:space="preserve">
+    <value>Barınak</value>
+  </data>
+  <data name="StructureCategoryTreeShelter" xml:space="preserve">
+    <value>Ağaç Ev</value>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>Kategori</value>
+  </data>
+  <data name="PercentDone" xml:space="preserve">
+    <value>Tamamlanma Yüzdesi</value>
+  </data>
+  <data name="StructureModeNone" xml:space="preserve">
+    <value>Koru</value>
+  </data>
+  <data name="StructureModeRemove" xml:space="preserve">
+    <value>Kaldır</value>
+  </data>
+  <data name="StructureModeAlmostFinish" xml:space="preserve">
+    <value>Neredeyse Bitir</value>
+  </data>
+  <data name="StructureModeFinish" xml:space="preserve">
+    <value>Bitir</value>
+  </data>
+  <data name="StructureModeUnfinish" xml:space="preserve">
+    <value>Bitmemiş Yap</value>
+  </data>
+  <data name="Game" xml:space="preserve">
+    <value>Oyun</value>
+  </data>
+  <data name="Inventory" xml:space="preserve">
+    <value>Envanter</value>
+  </data>
+  <data name="Npcs" xml:space="preserve">
+    <value>NPC'ler</value>
+  </data>
+  <data name="WeatherState" xml:space="preserve">
+    <value>Hava Durumu</value>
+  </data>
+  <data name="AddPlating" xml:space="preserve">
+    <value>Kaplama Ekle</value>
+  </data>
+  <data name="RemovePlating" xml:space="preserve">
+    <value>Kaplamayı Kaldır</value>
+  </data>
+  <data name="ConstructionItem" xml:space="preserve">
+    <value>Eşya</value>
+  </data>
+  <data name="ConstructionLog" xml:space="preserve">
+    <value>Kütük</value>
+  </data>
+  <data name="ConstructionLogPlank" xml:space="preserve">
+    <value>Kalas</value>
+  </data>
+  <data name="ConstructionStick" xml:space="preserve">
+    <value>Sopa</value>
+  </data>
+  <data name="ConstructionStone" xml:space="preserve">
+    <value>Taş</value>
+  </data>
+  <data name="Constructions" xml:space="preserve">
+    <value>Yapı Parçaları</value>
+  </data>
+  <data name="ItemPlaterWarning" xml:space="preserve">
+    <value>Bu araç hemen kaydeder ve yeniden yükler, önce diğer değişiklikleri kaydedin</value>
+  </data>
+  <data name="FollowerItems" xml:space="preserve">
+    <value>Yoldaş Eşyaları</value>
+  </data>
+  <data name="ItemsInWeaponRacks" xml:space="preserve">
+    <value>Silahlıklardaki Eşyalar</value>
+  </data>
+  <data name="PlatingAdded" xml:space="preserve">
+    <value>Kaplama Eklendi: {0} Eşya</value>
+  </data>
+  <data name="PlatingRemoved" xml:space="preserve">
+    <value>Kaplama Kaldırıldı: {0} Eşya</value>
+  </data>
+  <data name="UnableToCheckForUpdates" xml:space="preserve">
+    <value>Güncellemeler Denetlenemedi</value>
+  </data>
+  <data name="Map" xml:space="preserve">
+    <value>Harita</value>
+  </data>
+  <data name="AlreadyLatestVersion" xml:space="preserve">
+    <value>Zaten en son sürüme sahipsiniz</value>
+  </data>
+  <data name="ChangesSaved" xml:space="preserve">
+    <value>Değişiklikler Kaydedildi</value>
+  </data>
+  <data name="OverwriteExternalChangesText" xml:space="preserve">
+    <value>Oyun bu kaydı siz açtıktan sonra kaydetti. Şimdi kaydetmek bu ilerlemeyi geri alabilir, korumak için önce yeniden yükleyin</value>
+  </data>
+  <data name="OverwriteExternalChangesTitle" xml:space="preserve">
+    <value>Değişikliklerin Üzerine Yaz</value>
+  </data>
+  <data name="RestoreBackupText" xml:space="preserve">
+    <value>Mevcut dosyalar önce yedeklenir, yani bu geri alınabilir</value>
+  </data>
+  <data name="RestoreBackupTitle" xml:space="preserve">
+    <value>Yedeği Geri Yükle</value>
+  </data>
+  <data name="SaveChangesTitle" xml:space="preserve">
+    <value>Değişiklikleri Kaydet</value>
+  </data>
+  <data name="SaveChangesText" xml:space="preserve">
+    <value>Bu sayfalarda değişiklik var</value>
+  </data>
+  <data name="SaveChangesBackup" xml:space="preserve">
+    <value>Önce kaydın tamamının yedeği alınır</value>
+  </data>
+  <data name="FollowerAlreadyAlive" xml:space="preserve">
+    <value>{0} Zaten Hayatta</value>
+  </data>
+  <data name="FollowerRevived" xml:space="preserve">
+    <value>Canlandırıldı: {0}, korumak için kaydedin</value>
+  </data>
+  <data name="FollowerSpawned" xml:space="preserve">
+    <value>Kopya oluşturuldu: {0}, korumak için kaydedin</value>
+  </data>
+  <data name="NoChanges" xml:space="preserve">
+    <value>Değişiklik Yok, Hiçbir Şey Kaydedilmedi</value>
+  </data>
+  <data name="UnableToSpawnFollowers" xml:space="preserve">
+    <value>Yoldaşlar Oluşturulamadı</value>
+  </data>
+  <data name="Key" xml:space="preserve">
+    <value>Anahtar</value>
+  </data>
+  <data name="Gone" xml:space="preserve">
+    <value>Yok Olmuş</value>
+  </data>
+  <data name="HalfChopped" xml:space="preserve">
+    <value>Yarı Kesilmiş</value>
+  </data>
+  <data name="NoTreesRegrown" xml:space="preserve">
+    <value>Yeniden büyütülecek {0} durumunda ağaç yok</value>
+  </data>
+  <data name="TreesRegrown" xml:space="preserve">
+    <value>{1} durumundaki {0} ağaç yeniden büyüdü, korumak için kaydedin</value>
+  </data>
+  <data name="RegrowPercent" xml:space="preserve">
+    <value>Yeniden Büyüme Yüzdesi</value>
+  </data>
+  <data name="Stumps" xml:space="preserve">
+    <value>Kütükler</value>
+  </data>
+  <data name="ContainersReset" xml:space="preserve">
+    <value>{0} konteyner sıfırlandı, korumak için kaydedin</value>
+  </data>
+  <data name="NothingToReset" xml:space="preserve">
+    <value>Sıfırlanacak Bir Şey Yok</value>
+  </data>
+  <data name="TrapsReset" xml:space="preserve">
+    <value>{0} tuzak sıfırlandı, korumak için kaydedin</value>
+  </data>
+  <data name="ChangeFolder" xml:space="preserve">
+    <value>Klasörü Değiştir</value>
+  </data>
+  <data name="UseDefaultFolder" xml:space="preserve">
+    <value>Varsayılan Klasörü Kullan</value>
+  </data>
+  <data name="SelectSavesFolder" xml:space="preserve">
+    <value>Sons Of The Forest Saves Klasörünü Seçin</value>
+  </data>
+  <data name="Location" xml:space="preserve">
+    <value>Konum</value>
+  </data>
+  <data name="Singleplayer" xml:space="preserve">
+    <value>Tek Oyunculu</value>
+  </data>
+  <data name="CopyToSingleplayer" xml:space="preserve">
+    <value>Tek Oyunculuya Kopyala</value>
+  </data>
+  <data name="CopyToSingleplayerText" xml:space="preserve">
+    <value>Bu dünya, son kaydedildiği hâliyle tek oyunculu kayıtlarınıza kopyalanır. Orijinal olduğu gibi kalır</value>
+  </data>
+  <data name="CopiedToSingleplayer" xml:space="preserve">
+    <value>Tek Oyunculuya Kopyalandı</value>
+  </data>
+  <data name="UnableToCopySavegame" xml:space="preserve">
+    <value>Kayıt kopyalanamadı, günlüğe bakın</value>
+  </data>
+  <data name="OpenCopy" xml:space="preserve">
+    <value>Aç</value>
+  </data>
+  <data name="CoreGameCompleted" xml:space="preserve">
+    <value>Ana Oyun Tamamlandı</value>
+  </data>
+  <data name="CreativeModeItem" xml:space="preserve">
+    <value>Yaratıcı Mod Eşyası</value>
+  </data>
+  <data name="EscapedIsland" xml:space="preserve">
+    <value>Adadan Kaçıldı</value>
+  </data>
+  <data name="PlayerProfileNotFound" xml:space="preserve">
+    <value>Şurada oyuncu profili bulunamadı: {0}</value>
+  </data>
+  <data name="CloneAtPlayer" xml:space="preserve">
+    <value>Oyuncu Konumunda Klonla</value>
+  </data>
+  <data name="CloneAtPlayerTooltip" xml:space="preserve">
+    <value>Oyuncunun yanında bir kopya oluşturur</value>
+  </data>
+  <data name="RemoveAllCopies" xml:space="preserve">
+    <value>Tüm Kopyaları Kaldır</value>
+  </data>
+  <data name="RemoveAllCopiesTooltip" xml:space="preserve">
+    <value>Bu türün her kopyasını haritadan kaldırır</value>
+  </data>
+  <data name="ClonesRemoved" xml:space="preserve">
+    <value>{0} Kopya Kaldırıldı: {1}</value>
+  </data>
+  <data name="NothingToRemove" xml:space="preserve">
+    <value>Kaldırılacak Bir Şey Yok</value>
+  </data>
+  <data name="NothingToMove" xml:space="preserve">
+    <value>Taşınacak Bir Şey Yok</value>
+  </data>
+  <data name="ObjectCloned" xml:space="preserve">
+    <value>Oyuncunun yanına kopyalandı: {0}, korumak için kaydedin</value>
+  </data>
+  <data name="UnknownWorldItem" xml:space="preserve">
+    <value>Bilinmeyen Eşya {0}</value>
+  </data>
+  <data name="WorldItem" xml:space="preserve">
+    <value>Dünya Eşyası</value>
+  </data>
+  <data name="UnableToSave" xml:space="preserve">
+    <value>Kaydedilemedi: {0}</value>
+  </data>
+  <data name="DiscardChangesTitle" xml:space="preserve">
+    <value>Kaydedilmemiş Değişiklikleri At</value>
+  </data>
+  <data name="DiscardChangesText" xml:space="preserve">
+    <value>Bazı değişiklikler henüz kaydedilmedi.
+Evet onları atar.
+Hayır onları tutar, böylece önce kaydedebilirsiniz</value>
+  </data>
+  <data name="OpenBackupFolder" xml:space="preserve">
+    <value>Yedek Klasörünü Aç</value>
+  </data>
+  <data name="RestoredBackup" xml:space="preserve">
+    <value>{0} Tarihli Yedek Geri Yüklendi</value>
+  </data>
+  <data name="UnableToOpen" xml:space="preserve">
+    <value>Kayıt açılamadı, günlüğe bakın</value>
+  </data>
+  <data name="UnableToRestoreBackup" xml:space="preserve">
+    <value>Yedek geri yüklenemedi. Önce oyunu kapatın ya da günlüğe bakın</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Dil</value>
+  </data>
+  <data name="ClassificationAnimal" xml:space="preserve">
+    <value>Hayvan</value>
+  </data>
+  <data name="ClassificationCannibal" xml:space="preserve">
+    <value>Yamyam</value>
+  </data>
+  <data name="ClassificationCreep" xml:space="preserve">
+    <value>Mutant</value>
+  </data>
+  <data name="ClassificationHuman" xml:space="preserve">
+    <value>İnsan</value>
+  </data>
+  <data name="ClassificationMuddyCannibal" xml:space="preserve">
+    <value>Çamurlu Yamyam</value>
+  </data>
+  <data name="ClassificationMisc" xml:space="preserve">
+    <value>Diğer</value>
+  </data>
+  <data name="GenderFemale" xml:space="preserve">
+    <value>Dişi</value>
+  </data>
+  <data name="GenderMale" xml:space="preserve">
+    <value>Erkek</value>
+  </data>
+  <data name="InfluenceCannibal" xml:space="preserve">
+    <value>Yamyam NPC'ler</value>
+  </data>
+  <data name="InfluenceCreepy" xml:space="preserve">
+    <value>Mutant NPC'ler</value>
+  </data>
+  <data name="InfluencePlayer" xml:space="preserve">
+    <value>Oyuncu</value>
+  </data>
+  <data name="ActorState0" xml:space="preserve">
+    <value>Herhangi</value>
+  </data>
+  <data name="ActorState1" xml:space="preserve">
+    <value>Savaş</value>
+  </data>
+  <data name="ActorState2" xml:space="preserve">
+    <value>Dünya</value>
+  </data>
+  <data name="ActorState3" xml:space="preserve">
+    <value>Uyuyor</value>
+  </data>
+  <data name="ActorState4" xml:space="preserve">
+    <value>Ölüyor</value>
+  </data>
+  <data name="ActorState5" xml:space="preserve">
+    <value>Yaralı</value>
+  </data>
+  <data name="ActorState6" xml:space="preserve">
+    <value>Ölü</value>
+  </data>
+  <data name="ActorState7" xml:space="preserve">
+    <value>Uçuyor</value>
+  </data>
+  <data name="ActorState8" xml:space="preserve">
+    <value>Pusuda</value>
+  </data>
+  <data name="ActorState20" xml:space="preserve">
+    <value>Yanıyor</value>
+  </data>
+  <data name="ActorState21" xml:space="preserve">
+    <value>Elektrik Çarpmış</value>
+  </data>
+  <data name="ActorState22" xml:space="preserve">
+    <value>Yüzüyor</value>
+  </data>
+  <data name="ActorState23" xml:space="preserve">
+    <value>Sersemlemiş veya Vurulmuş</value>
+  </data>
+  <data name="ActorState24" xml:space="preserve">
+    <value>Boğuluyor veya Fırlatılmış</value>
+  </data>
+  <data name="ActorState25" xml:space="preserve">
+    <value>Golf Arabası</value>
+  </data>
+  <data name="ActorState40" xml:space="preserve">
+    <value>Kayada</value>
+  </data>
+  <data name="ActorState41" xml:space="preserve">
+    <value>Ağaçta</value>
+  </data>
+  <data name="ActorState42" xml:space="preserve">
+    <value>Yaprakların Altında</value>
+  </data>
+  <data name="ActorState43" xml:space="preserve">
+    <value>Duvarda Yürüyor</value>
+  </data>
+  <data name="ActorState44" xml:space="preserve">
+    <value>Yakalanmış</value>
+  </data>
+  <data name="ActorState45" xml:space="preserve">
+    <value>Boss Girişi</value>
+  </data>
+  <data name="ActorState46" xml:space="preserve">
+    <value>Oluşma Girişi</value>
+  </data>
+  <data name="ActorState47" xml:space="preserve">
+    <value>Tavan</value>
+  </data>
+  <data name="ActorState48" xml:space="preserve">
+    <value>Yeraltı Mağarası</value>
+  </data>
+  <data name="ActorState50" xml:space="preserve">
+    <value>Savaştan Çıkıyor</value>
+  </data>
+  <data name="ActorState51" xml:space="preserve">
+    <value>Kaybolmuş</value>
+  </data>
+  <data name="ActorStateNone" xml:space="preserve">
+    <value>Yok</value>
+  </data>
+  <data name="ItemTypeAmmo" xml:space="preserve">
+    <value>Mühimmat</value>
+  </data>
+  <data name="ItemTypeArmor" xml:space="preserve">
+    <value>Zırh</value>
+  </data>
+  <data name="ItemTypeAttachment" xml:space="preserve">
+    <value>Ek Parça</value>
+  </data>
+  <data name="ItemTypeBlueprint" xml:space="preserve">
+    <value>Plan</value>
+  </data>
+  <data name="ItemTypeBodyPart" xml:space="preserve">
+    <value>Vücut Parçası</value>
+  </data>
+  <data name="ItemTypeBook" xml:space="preserve">
+    <value>Kitap</value>
+  </data>
+  <data name="ItemTypeClothes" xml:space="preserve">
+    <value>Giysi</value>
+  </data>
+  <data name="ItemTypeConsumable" xml:space="preserve">
+    <value>Tüketilebilir</value>
+  </data>
+  <data name="ItemTypeContainer" xml:space="preserve">
+    <value>Konteyner</value>
+  </data>
+  <data name="ItemTypeDocument" xml:space="preserve">
+    <value>Belge</value>
+  </data>
+  <data name="ItemTypeElectricity" xml:space="preserve">
+    <value>Elektrik</value>
+  </data>
+  <data name="ItemTypeEquipment" xml:space="preserve">
+    <value>Teçhizat</value>
+  </data>
+  <data name="ItemTypeFood" xml:space="preserve">
+    <value>Yiyecek</value>
+  </data>
+  <data name="ItemTypeKey" xml:space="preserve">
+    <value>Anahtar</value>
+  </data>
+  <data name="ItemTypeLog" xml:space="preserve">
+    <value>Kütük</value>
+  </data>
+  <data name="ItemTypeMisc" xml:space="preserve">
+    <value>Diğer</value>
+  </data>
+  <data name="ItemTypePlant" xml:space="preserve">
+    <value>Bitki</value>
+  </data>
+  <data name="ItemTypePrinted" xml:space="preserve">
+    <value>Basılmış</value>
+  </data>
+  <data name="ItemTypeSeed" xml:space="preserve">
+    <value>Tohum</value>
+  </data>
+  <data name="ItemTypeTool" xml:space="preserve">
+    <value>Alet</value>
+  </data>
+  <data name="ItemTypeTrophy" xml:space="preserve">
+    <value>Ganimet</value>
+  </data>
+  <data name="ItemTypeWeapon" xml:space="preserve">
+    <value>Silah</value>
+  </data>
+  <data name="ItemTypeWeaponMod" xml:space="preserve">
+    <value>Silah Modu</value>
+  </data>
+  <data name="RequirementsFilterAll" xml:space="preserve">
+    <value>Tümü</value>
+  </data>
+  <data name="RequirementsFilterAccessibleOnly" xml:space="preserve">
+    <value>Yalnızca Erişilebilir</value>
+  </data>
+  <data name="RequirementsFilterInaccessibleOnly" xml:space="preserve">
+    <value>Yalnızca Erişilemez</value>
+  </data>
+  <data name="SpawnPatternCross" xml:space="preserve">
+    <value>Artı</value>
+  </data>
+  <data name="SpawnPatternGrid" xml:space="preserve">
+    <value>Izgara</value>
+  </data>
+  <data name="SpawnPatternHorizontalLine" xml:space="preserve">
+    <value>Yatay Çizgi</value>
+  </data>
+  <data name="SpawnPatternRandom" xml:space="preserve">
+    <value>Rastgele</value>
+  </data>
+  <data name="SpawnPatternRectangle" xml:space="preserve">
+    <value>Dikdörtgen</value>
+  </data>
+  <data name="SpawnPatternVerticalLine" xml:space="preserve">
+    <value>Dikey Çizgi</value>
+  </data>
+  <data name="TeleportTargetPlayer" xml:space="preserve">
+    <value>Oyuncu</value>
+  </data>
+  <data name="TeleportTargetKelvin" xml:space="preserve">
+    <value>Kelvin</value>
+  </data>
+  <data name="TeleportTargetVirginia" xml:space="preserve">
+    <value>Virginia</value>
+  </data>
+  <data name="PoiGroupAmmo" xml:space="preserve">
+    <value>Mühimmat</value>
+  </data>
+  <data name="PoiGroupBunkers" xml:space="preserve">
+    <value>Sığınaklar</value>
+  </data>
+  <data name="PoiGroupCamps" xml:space="preserve">
+    <value>Kamplar</value>
+  </data>
+  <data name="PoiGroupCannibalVillages" xml:space="preserve">
+    <value>Yamyam Köyleri</value>
+  </data>
+  <data name="PoiGroupCaves" xml:space="preserve">
+    <value>Mağaralar</value>
+  </data>
+  <data name="PoiGroupCrates" xml:space="preserve">
+    <value>Sandıklar</value>
+  </data>
+  <data name="PoiGroupDoors" xml:space="preserve">
+    <value>Kapılar</value>
+  </data>
+  <data name="PoiGroupHelicopters" xml:space="preserve">
+    <value>Helikopterler</value>
+  </data>
+  <data name="PoiGroupInfo" xml:space="preserve">
+    <value>Bilgi</value>
+  </data>
+  <data name="PoiGroupLakes" xml:space="preserve">
+    <value>Göller</value>
+  </data>
+  <data name="PoiGroupLaptops" xml:space="preserve">
+    <value>Dizüstü Bilgisayarlar</value>
+  </data>
+  <data name="PoiGroupPonds" xml:space="preserve">
+    <value>Gölcükler</value>
+  </data>
+  <data name="PoiGroupPrinters" xml:space="preserve">
+    <value>3D Yazıcılar</value>
+  </data>
+  <data name="PoiGroupSupply" xml:space="preserve">
+    <value>Erzak</value>
+  </data>
+  <data name="PoiGroupVillages" xml:space="preserve">
+    <value>Köyler</value>
+  </data>
+  <data name="SettingGameName" xml:space="preserve">
+    <value>Oyun Adı</value>
+  </data>
+  <data name="SettingSaveTime" xml:space="preserve">
+    <value>Kayıt Zamanı</value>
+  </data>
+  <data name="SettingGameType" xml:space="preserve">
+    <value>Oyun Türü</value>
+  </data>
+  <data name="SettingGameDays" xml:space="preserve">
+    <value>Gün</value>
+  </data>
+  <data name="SettingGameHours" xml:space="preserve">
+    <value>Saat</value>
+  </data>
+  <data name="SettingGameMinutes" xml:space="preserve">
+    <value>Dakika</value>
+  </data>
+  <data name="SettingGameSeconds" xml:space="preserve">
+    <value>Saniye</value>
+  </data>
+  <data name="SettingGameMilliseconds" xml:space="preserve">
+    <value>Milisaniye</value>
+  </data>
+  <data name="SettingIsVirginiaDead" xml:space="preserve">
+    <value>Virginia Ölü</value>
+  </data>
+  <data name="SettingIsRobbyDead" xml:space="preserve">
+    <value>Kelvin Ölü</value>
+  </data>
+  <data name="SettingCrashSite" xml:space="preserve">
+    <value>Kaza Yeri</value>
+  </data>
+  <data name="SettingIsRaining" xml:space="preserve">
+    <value>Yağmur Yağıyor</value>
+  </data>
+  <data name="SettingRainBlocked" xml:space="preserve">
+    <value>Yağmur Engellendi</value>
+  </data>
+  <data name="SettingCloudState" xml:space="preserve">
+    <value>Bulutlar</value>
+  </data>
+  <data name="SettingCurrentRainType" xml:space="preserve">
+    <value>Yağmur Türü</value>
+  </data>
+  <data name="CrashSiteTree" xml:space="preserve">
+    <value>Ağaç</value>
+  </data>
+  <data name="CrashSiteOcean" xml:space="preserve">
+    <value>Okyanus</value>
+  </data>
+  <data name="CrashSiteSnow" xml:space="preserve">
+    <value>Kar</value>
+  </data>
+  <data name="CloudsClear" xml:space="preserve">
+    <value>Açık</value>
+  </data>
+  <data name="CloudsGrowing" xml:space="preserve">
+    <value>Bulutlar Artıyor</value>
+  </data>
+  <data name="CloudsClearing" xml:space="preserve">
+    <value>Bulutlar Azalıyor</value>
+  </data>
+  <data name="CloudsRaining" xml:space="preserve">
+    <value>Yağmur</value>
+  </data>
+  <data name="RainLight" xml:space="preserve">
+    <value>Hafif</value>
+  </data>
+  <data name="RainMedium" xml:space="preserve">
+    <value>Orta</value>
+  </data>
+  <data name="RainHeavy" xml:space="preserve">
+    <value>Şiddetli</value>
+  </data>
+  <data name="StructureType" xml:space="preserve">
+    <value>Yapı Türü</value>
+  </data>
+  <data name="Restore" xml:space="preserve">
+    <value>Geri Yükle</value>
+  </data>
+  <data name="Newest" xml:space="preserve">
+    <value>En Yeni</value>
+  </data>
+  <data name="Oldest" xml:space="preserve">
+    <value>En Eski</value>
+  </data>
+  <data name="ItemPlaterText" xml:space="preserve">
+    <value>Kaplama seçilen eşyaları, yapıları ve yapı parçalarını altın yapar, Kaplamayı kaldır onları normale döndürür</value>
+  </data>
+  <data name="EternalFiresText" xml:space="preserve">
+    <value>Dünyadaki her ateş hiç bitmeyen yakıtla yanar</value>
+  </data>
+  <data name="ResetFiresText" xml:space="preserve">
+    <value>Dünyadaki her ateş taze bir yakıtla yanar</value>
+  </data>
+  <data name="ResetStructureDamageText" xml:space="preserve">
+    <value>Yapılarınızdaki tüm hasar onarılır</value>
+  </data>
+  <data name="CannibalAngerText" xml:space="preserve">
+    <value>Yaşayan her yamyamın size ne kadar öfkeli olduğu</value>
+  </data>
+  <data name="ResetContainersText" xml:space="preserve">
+    <value>Dünyada açılmış sandıklar, çantalar ve erzaklar yeniden kapalı ve dolu olur</value>
+  </data>
+  <data name="ResetTrapsText" xml:space="preserve">
+    <value>Tetiklenmiş tuzaklar yeniden kurulur</value>
+  </data>
+  <data name="SetToEndgameText" xml:space="preserve">
+    <value>Hikâye bitmiş sayılır, sanki adada kalmayı seçmişsiniz gibi</value>
+  </data>
+  <data name="AddAllText" xml:space="preserve">
+    <value>Sahip olunmayan her eşya envantere eklenir</value>
+  </data>
+  <data name="RemoveAllText" xml:space="preserve">
+    <value>Her eşya envanterden çıkar</value>
+  </data>
+  <data name="FillAllStoragesText" xml:space="preserve">
+    <value>Her depo en fazlasına kadar doldurulur</value>
+  </data>
+  <data name="SetAllToRemoveText" xml:space="preserve">
+    <value>Listedeki her yapı kaldırılmak üzere işaretlenir, kaydetmek onları kaldırır</value>
+  </data>
+  <data name="RemoveConsumedItemsText" xml:space="preserve">
+    <value>Bu listedeki her kayıt kaldırılır, böylece o eşyalar yeniden ortaya çıkabilir</value>
+  </data>
+  <data name="SettingStartingDayOffset" xml:space="preserve">
+    <value>Mevsim Kaydırması</value>
+  </data>
+  <data name="UpdateNow" xml:space="preserve">
+    <value>Şimdi Güncelle</value>
+  </data>
+  <data name="Downloading" xml:space="preserve">
+    <value>İndiriliyor</value>
+  </data>
+  <data name="UpdateText" xml:space="preserve">
+    <value>Sizdeki sürüm: {0}. Güncelleme yenisini indirir ve düzenleyiciyi yeniden başlatır</value>
+  </data>
+  <data name="UpdateFailed" xml:space="preserve">
+    <value>Güncelleme başarısız oldu, daha sonra tekrar deneyin</value>
+  </data>
+  <data name="MultiplayerCheats" xml:space="preserve">
+    <value>Konsol Hileleri</value>
+  </data>
+  <data name="MaxHealthFollowsStrength" xml:space="preserve">
+    <value>Oyun en yüksek sağlığı güç seviyesinden belirler</value>
+  </data>
+  <data name="ClientSaveHasNoWorld" xml:space="preserve">
+    <value>İstemci kaydı yalnızca oyuncunuzu içerir, dünya oyunu kuranın kaydındadır</value>
+  </data>
+  <data name="Season" xml:space="preserve">
+    <value>Mevsim</value>
+  </data>
+  <data name="WhatChanged" xml:space="preserve">
+    <value>Yenilikler</value>
+  </data>
+  <data name="UpdateFolderProtected" xml:space="preserve">
+    <value>Düzenleyicinin klasörü korumalı, bu yüzden kendiniz indirmeniz için sürüm sayfası açılır</value>
+  </data>
+  <data name="HeldOnly" xml:space="preserve">
+    <value>Yalnızca Sahip Olunanlar</value>
+  </data>
+  <data name="AddToInventory" xml:space="preserve">
+    <value>Envantere Ekle</value>
+  </data>
+  <data name="StrengthLevelInfo" xml:space="preserve">
+    <value>Güç yakın dövüş hasarını ve en yüksek sağlığı artırır. En yüksek sağlık 100 artı 1'in üstündeki her seviye için 2'dir</value>
+  </data>
+  <data name="MultiplayerClientInfo" xml:space="preserve">
+    <value>Başkasının sunucusunda katıldığınız oyunların kayıtları. Yalnızca kendi oyuncunuzu içerirler, dünya oyunu kuranın kaydındadır</value>
+  </data>
+  <data name="ModeInfo" xml:space="preserve">
+    <value>Oyunun oluşturulduğu zorluk. Özel, aşağıdaki her ayarın kilidini açar</value>
+  </data>
+  <data name="UidInfo" xml:space="preserve">
+    <value>Oyunun bu kayda verdiği ID. Hiç değişmez</value>
+  </data>
+  <data name="ConsumableEffectsInfo" xml:space="preserve">
+    <value>Yiyecek, içecek ve ilaçların ne kadar yardım ettiği. Zor daha az verir</value>
+  </data>
+  <data name="PlayerStatsDamageInfo" xml:space="preserve">
+    <value>Açlık, susuzluk ve yorgunluğun ne kadar hasar verdiği</value>
+  </data>
+  <data name="AnimalSpawnRateInfo" xml:space="preserve">
+    <value>Adada kaç hayvan yaşadığı</value>
+  </data>
+  <data name="ColdPenaltiesInfo" xml:space="preserve">
+    <value>Soğuğun size ne kadar zarar verdiği</value>
+  </data>
+  <data name="BuildingResistanceInfo" xml:space="preserve">
+    <value>Yapılarınızın ne kadar hasara dayanabildiği</value>
+  </data>
+  <data name="StatRegenerationPenaltiesInfo" xml:space="preserve">
+    <value>Az yemek, su ya da dinlenme sağlığın ne kadar hızlı geri geldiğini yavaşlatır</value>
+  </data>
+  <data name="InventoryPauseInfo" xml:space="preserve">
+    <value>Envanter açıkken dünya durur</value>
+  </data>
+  <data name="ReducedFoodInfo" xml:space="preserve">
+    <value>Dünyada bulunacak daha az yiyecek</value>
+  </data>
+  <data name="ReducedAmmoInfo" xml:space="preserve">
+    <value>Dünyada bulunacak daha az mühimmat</value>
+  </data>
+  <data name="SingleUseContainersInfo" xml:space="preserve">
+    <value>Sandıklar ve çantalar açıldıktan sonra boş kalır</value>
+  </data>
+  <data name="PlayersTriggerTrapsInfo" xml:space="preserve">
+    <value>Tuzaklar oyuncularda da tetiklenir</value>
+  </data>
+  <data name="CreativeModeInfo" xml:space="preserve">
+    <value>Malzeme toplamadan inşa et</value>
+  </data>
+  <data name="GodModeInfo" xml:space="preserve">
+    <value>Oyuncular hasar almaz</value>
+  </data>
+  <data name="OneHitTreesInfo" xml:space="preserve">
+    <value>Ağaçlar tek vuruşta düşer</value>
+  </data>
+  <data name="InstantBuildingInfo" xml:space="preserve">
+    <value>Yerleştirilen yapılar anında tamamlanır</value>
+  </data>
+  <data name="NoCuttingsSpawnInfo" xml:space="preserve">
+    <value>Kesilen ağaçlar ve çalılar geride bir şey bırakmaz</value>
+  </data>
+  <data name="EnemyHealthInfo" xml:space="preserve">
+    <value>Düşmanların ne kadar sağlığı olduğu</value>
+  </data>
+  <data name="EnemyDamageInfo" xml:space="preserve">
+    <value>Düşmanların ne kadar sert vurduğu</value>
+  </data>
+  <data name="EnemyArmorInfo" xml:space="preserve">
+    <value>Düşman zırhının ne kadar hasarı engellediği</value>
+  </data>
+  <data name="EnemyAggressionInfo" xml:space="preserve">
+    <value>Düşmanların izlemek yerine ne kadar çabuk saldırdığı</value>
+  </data>
+  <data name="EnemySearchPartiesInfo" xml:space="preserve">
+    <value>Düşman gruplarının sizi ne sıklıkla aramaya geldiği</value>
+  </data>
+  <data name="SpawnEnemiesInfo" xml:space="preserve">
+    <value>Düşmansız oynamak için kapatın</value>
+  </data>
+  <data name="StartingSeasonInfo" xml:space="preserve">
+    <value>Oyunun başladığı mevsim. Mevsim kaydırması şimdiki mevsimi belirler</value>
+  </data>
+  <data name="SeasonLengthInfo" xml:space="preserve">
+    <value>Bir mevsimin kaç gün sürdüğü. Her mevsim aynı uzunluktadır</value>
+  </data>
+  <data name="DayLengthInfo" xml:space="preserve">
+    <value>Bir günün gerçek zamanda ne kadar sürdüğü</value>
+  </data>
+  <data name="PrecipitationFrequencyInfo" xml:space="preserve">
+    <value>Ne sıklıkla yağmur ya da kar yağdığı</value>
+  </data>
+  <data name="PvpDamageInfo" xml:space="preserve">
+    <value>Çok oyunculuda oyuncuların birbirine zarar verip veremeyeceği</value>
+  </data>
+  <data name="MultiplayerCheatsInfo" xml:space="preserve">
+    <value>Oyuncuların çok oyunculuda konsol hilelerini kullanmasına izin verir</value>
+  </data>
+  <data name="SettingGameNameInfo" xml:space="preserve">
+    <value>Oyunun kayıt listesindeki ad</value>
+  </data>
+  <data name="SettingGameTypeInfo" xml:space="preserve">
+    <value>Bu kaydın başladığı zorluk</value>
+  </data>
+  <data name="SettingSaveTimeInfo" xml:space="preserve">
+    <value>Oyunun en son ne zaman kaydettiği</value>
+  </data>
+  <data name="SettingGameDaysInfo" xml:space="preserve">
+    <value>Hayatta kalınan günler. Mevsim buna göre belirlenir</value>
+  </data>
+  <data name="SettingGameHoursInfo" xml:space="preserve">
+    <value>Günün şimdiki saati</value>
+  </data>
+  <data name="SettingCrashSiteInfo" xml:space="preserve">
+    <value>Helikopterin başlangıçta nereye düştüğü</value>
+  </data>
+  <data name="SettingIsVirginiaDeadInfo" xml:space="preserve">
+    <value>Hikâyenin Virginia'yı ölü sayıp saymadığı</value>
+  </data>
+  <data name="SettingIsRobbyDeadInfo" xml:space="preserve">
+    <value>Hikâyenin Kelvin'i ölü sayıp saymadığı. Oyun ona Robby der</value>
+  </data>
+  <data name="SettingIsRainingInfo" xml:space="preserve">
+    <value>Şu anda yağmur yağıp yağmadığı</value>
+  </data>
+  <data name="SettingRainBlockedInfo" xml:space="preserve">
+    <value>Yağmurun başlamasını engeller</value>
+  </data>
+  <data name="SettingCloudStateInfo" xml:space="preserve">
+    <value>Gökyüzünün ne kadar bulutlu olduğu</value>
+  </data>
+  <data name="SettingCurrentRainTypeInfo" xml:space="preserve">
+    <value>Şu anki yağmurun ne kadar şiddetli olduğu</value>
+  </data>
+  <data name="SettingStartingDayOffsetInfo" xml:space="preserve">
+    <value>Oyunun mevsimi hesaplarken eklediği fazladan günler. Yüksek değer sonraki mevsimi öne çeker, düşük değer bu mevsimi uzatır. Bir mevsim seçmek bunu sizin için ayarlar</value>
+  </data>
+  <data name="UnableToDeleteBackup" xml:space="preserve">
+    <value>Yedek silinemedi</value>
+  </data>
+  <data name="BackupUsage" xml:space="preserve">
+    <value>Yedekler {1} alanın {0} kadarını kullanıyor. Bu aşılırsa en eskiler silinir, ilk yedek hariç</value>
+  </data>
+  <data name="BackupsPruned" xml:space="preserve">
+    <value>Yedekler {1} sınırını aştı, bu yüzden en eski {0} yedek silindi. İlk yedek kalır</value>
+  </data>
+  <data name="ToolsHint" xml:space="preserve">
+    <value>Araçlar açık kaydı değiştirir ve diğer her değişiklik gibi kaydetmek gerekir. Altın Kaplama ve Kilit Açma hemen yazar</value>
+  </data>
+  <data name="ToolsWorld" xml:space="preserve">
+    <value>Dünya</value>
+  </data>
+  <data name="ToolsPlayer" xml:space="preserve">
+    <value>Oyuncu</value>
+  </data>
+  <data name="NeedsSave" xml:space="preserve">
+    <value>Kayıt Gerekir</value>
+  </data>
+  <data name="SavesAtOnce" xml:space="preserve">
+    <value>Hemen Kaydeder</value>
+  </data>
+  <data name="HostSaveOnly" xml:space="preserve">
+    <value>Yalnızca Kurucu Kaydı</value>
+  </data>
+  <data name="RegrowTreesText" xml:space="preserve">
+    <value>Kesilen ağaçlar seçilen oran kadar yeniden büyür</value>
+  </data>
+  <data name="WorldItemClonerText" xml:space="preserve">
+    <value>Bir golf arabasını, planörü, Knight V'yi ya da telsizi durduğunuz yere kopyalar</value>
+  </data>
+  <data name="ConsumedItemsText" xml:space="preserve">
+    <value>Oyun kullandığınız tek seferlik eşyaları hatırlar. Onları kaldırmak yeniden kullanmanızı sağlar</value>
+  </data>
+  <data name="UnlocksText" xml:space="preserve">
+    <value>Son ve Yaratıcı Mod gibi profil kilitleri, her kayıt için</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Uygula</value>
+  </data>
+  <data name="RemoveSelected" xml:space="preserve">
+    <value>Seçilenleri Kaldır</value>
+  </data>
+  <data name="LoadPreset" xml:space="preserve">
+    <value>Ön Ayar Yükle</value>
+  </data>
+  <data name="LoadPresetText" xml:space="preserve">
+    <value>Her ayar o modun değerlerini alır. Mod Özel olur, böylece her birini yine de değiştirebilirsiniz</value>
+  </data>
+  <data name="SavegameDay" xml:space="preserve">
+    <value>Gün {0}</value>
+  </data>
+  <data name="SavegameCrashSite" xml:space="preserve">
+    <value>Kaza Yeri: {0}</value>
+  </data>
+  <data name="SavegameStrength" xml:space="preserve">
+    <value>Güç {0}</value>
+  </data>
+  <data name="SavegameItems" xml:space="preserve">
+    <value>{0} Eşya</value>
+  </data>
+  <data name="MapKeyboardHint" xml:space="preserve">
+    <value>Harita, ok tuşları noktalar arasında gezinir</value>
+  </data>
+  <data name="HostedMultiplayer" xml:space="preserve">
+    <value>Kurduğunuz Çok Oyunculu Oyunlar</value>
+  </data>
+  <data name="JoinedMultiplayer" xml:space="preserve">
+    <value>Katıldığınız Çok Oyunculu Oyunlar</value>
+  </data>
+  <data name="AndMore" xml:space="preserve">
+    <value>Ve {0} Tane Daha</value>
+  </data>
+  <data name="ChangeCopies" xml:space="preserve">
+    <value>{0}, {1} Kopya</value>
+  </data>
+  <data name="ChangeRemoved" xml:space="preserve">
+    <value>{0} Kaldırıldı</value>
+  </data>
+  <data name="CurrentHealthAtMax" xml:space="preserve">
+    <value>En yüksek sağlık bunu sınırlar, daha yükseğe çıkmak için güç seviyesini artırın</value>
+  </data>
+  <data name="SetToMax" xml:space="preserve">
+    <value>Maksimuma Ayarla</value>
+  </data>
+  <data name="ResetToDefault" xml:space="preserve">
+    <value>Varsayılana Sıfırla</value>
+  </data>
+  <data name="NothingToChange" xml:space="preserve">
+    <value>Değiştirilecek Bir Şey Yok</value>
+  </data>
+  <data name="UpdateNotVerified" xml:space="preserve">
+    <value>İndirme doğrulanamadı, bu yüzden kendiniz indirmeniz için sürüm sayfası açılır</value>
+  </data>
+  <data name="SavedAfterBackup" xml:space="preserve">
+    <value>Bu Yedekten Sonra Kaydedilenler</value>
+  </data>
+  <data name="ChangesNotRecorded" xml:space="preserve">
+    <value>Bu yedek için kaydedilmedi</value>
+  </data>
+  <data name="DiffersFromNow" xml:space="preserve">
+    <value>Şimdikinden Farklı Olanlar</value>
+  </data>
+  <data name="Comparing" xml:space="preserve">
+    <value>Şimdiki kayıtla karşılaştırılıyor</value>
+  </data>
+  <data name="SameAsNow" xml:space="preserve">
+    <value>Şimdiki kayıtla aynı</value>
+  </data>
+  <data name="UnableToCompare" xml:space="preserve">
+    <value>Karşılaştırılamadı, bir dosya kullanımda</value>
+  </data>
+  <data name="SaveName" xml:space="preserve">
+    <value>Kayıt Adı</value>
+  </data>
+  <data name="Thumbnail" xml:space="preserve">
+    <value>Küçük Resim</value>
+  </data>
+  <data name="RevertPage" xml:space="preserve">
+    <value>Sayfayı Geri Al</value>
+  </data>
+  <data name="RevertPageText" xml:space="preserve">
+    <value>{0} sayfasındaki kaydedilmemiş her değişiklik yüklendiği hâline döner</value>
+  </data>
+  <data name="AngerLevel" xml:space="preserve">
+    <value>Öfke</value>
+  </data>
+  <data name="CannibalAngerNow" xml:space="preserve">
+    <value>Şu an ortalama %{0}</value>
+  </data>
+  <data name="HideMenus" xml:space="preserve">
+    <value>Menüleri Gizle</value>
+  </data>
+  <data name="ShowMenus" xml:space="preserve">
+    <value>Menüleri Göster</value>
+  </data>
+  <data name="TeleportCopies" xml:space="preserve">
+    <value>{0}, {1} Kopya</value>
+  </data>
+  <data name="Filters" xml:space="preserve">
+    <value>Filtreler</value>
+  </data>
+  <data name="Changes" xml:space="preserve">
+    <value>Değişiklikler</value>
+  </data>
+  <data name="ApplyTo" xml:space="preserve">
+    <value>Uygulanacak</value>
+  </data>
+  <data name="ApplyToThis" xml:space="preserve">
+    <value>Bu</value>
+  </data>
+  <data name="ApplyToFamily" xml:space="preserve">
+    <value>Aile</value>
+  </data>
+  <data name="ApplyToType" xml:space="preserve">
+    <value>Aynı Tür</value>
+  </data>
+  <data name="ApplyToEveryone" xml:space="preserve">
+    <value>Herkes</value>
+  </data>
+  <data name="SkipFollowers" xml:space="preserve">
+    <value>Kelvin ve Virginia'yı Atla</value>
+  </data>
+  <data name="ApplyCount" xml:space="preserve">
+    <value>{0} Aktöre Uygula</value>
+  </data>
+  <data name="RemoveCount" xml:space="preserve">
+    <value>{0} Tanesini Kaldır</value>
+  </data>
+  <data name="RemoveActorsText" xml:space="preserve">
+    <value>Anıları ve taşıdıkları eşyalarla birlikte kayıttan çıkarlar</value>
+  </data>
+  <data name="CloseUnsavedTitle" xml:space="preserve">
+    <value>Kaydetmeden Kapat</value>
+  </data>
+  <data name="CloseUnsavedText" xml:space="preserve">
+    <value>Bazı değişiklikler henüz kaydedilmedi.
+Evet düzenleyiciyi kapatır ve onları atar.
+Hayır düzenleyiciyi açık tutar, böylece önce kaydedebilirsiniz</value>
+  </data>
+  <data name="AllStructures" xml:space="preserve">
+    <value>Tüm Yapılar</value>
+  </data>
+  <data name="SelectStructure" xml:space="preserve">
+    <value>Bir Yapı Türü Seçin</value>
+  </data>
+  <data name="StructuresInfo" xml:space="preserve">
+    <value>Kaydetmenin her yapıya ne yapacağını seçin. Koru onu olduğu gibi bırakır</value>
+  </data>
+  <data name="SetAllTo" xml:space="preserve">
+    <value>Tümünü Ayarla</value>
+  </data>
+  <data name="StructureCountBuilt" xml:space="preserve">
+    <value>{0} İnşa Edilmiş</value>
+  </data>
+  <data name="StructureCountUnfinished" xml:space="preserve">
+    <value>{0} Bitmemiş</value>
+  </data>
+  <data name="Built" xml:space="preserve">
+    <value>İnşa Edilmiş</value>
+  </data>
+  <data name="UnfinishedState" xml:space="preserve">
+    <value>{0} · {1} / {2}</value>
+  </data>
+  <data name="OnSave" xml:space="preserve">
+    <value>Kaydederken</value>
+  </data>
+  <data name="MoodFriendly" xml:space="preserve">
+    <value>Dost</value>
+  </data>
+  <data name="MoodNeutral" xml:space="preserve">
+    <value>Tarafsız</value>
+  </data>
+  <data name="MoodHostile" xml:space="preserve">
+    <value>Düşman</value>
+  </data>
+  <data name="MoodAfraid" xml:space="preserve">
+    <value>Korkmuş</value>
+  </data>
+  <data name="SentimentInfo" xml:space="preserve">
+    <value>Onları ne kadar sevdikleri, -100 nefretten 100 sevgiye</value>
+  </data>
+  <data name="SeasonInfo" xml:space="preserve">
+    <value>Her mevsim, ayarlar sekmesindeki Mevsim Uzunluğu kadar gün sürer, bu yüzden bir mevsim diğerinden uzun süremez. Bir günü bugün yapmak için çubukta o güne tıklayın, düzenleyici kaydırmayı hesaplar</value>
+  </data>
+  <data name="DaysUntilSeasonOf" xml:space="preserve">
+    <value>{0} Mevsimine Kalan Gün: {1}</value>
+  </data>
+  <data name="SeasonCurrent" xml:space="preserve">
+    <value>Şimdiki</value>
+  </data>
+  <data name="SeasonNew" xml:space="preserve">
+    <value>Yeni</value>
+  </data>
+  <data name="SeasonClickHint" xml:space="preserve">
+    <value>Bir günü bugün yapmak için ona tıklayın</value>
+  </data>
+  <data name="JoinedGameName" xml:space="preserve">
+    <value>{0} {1} Gün</value>
+  </data>
+  <data name="Files" xml:space="preserve">
+    <value>Diğer Dosyalar</value>
+  </data>
+  <data name="BringToPlayer" xml:space="preserve">
+    <value>Oyuncuya Getir</value>
+  </data>
+  <data name="SpawnWhat" xml:space="preserve">
+    <value>Ne Oluşturulacak</value>
+  </data>
+  <data name="SpawnWhere" xml:space="preserve">
+    <value>Nereye</value>
+  </data>
+  <data name="SpawnOffsetInfo" xml:space="preserve">
+    <value>Hedefe eklenir, metre olarak. Biraz yukarısı onları yerin dışında tutar</value>
+  </data>
+  <data name="SpawnCount" xml:space="preserve">
+    <value>{0} {1} Oluştur</value>
+  </data>
+  <data name="ArmourInInventory" xml:space="preserve">
+    <value>Envanterde</value>
+  </data>
+  <data name="ArmourWorn" xml:space="preserve">
+    <value>Giyilen</value>
+  </data>
+  <data name="InInventoryCount" xml:space="preserve">
+    <value>Envanterde {0}</value>
+  </data>
+  <data name="WearArmour" xml:space="preserve">
+    <value>Giy</value>
+  </data>
+  <data name="Revert" xml:space="preserve">
+    <value>Geri Al</value>
+  </data>
+  <data name="ArmorCount" xml:space="preserve">
+    <value>Zırh, 10 Üzerinden {0}</value>
+  </data>
+  <data name="ArmorInfo" xml:space="preserve">
+    <value>Oyun giyilen her parçayı vücuda kendisi yerleştirir, en fazla 10, bu yüzden seçilecek bir vücut parçası yoktur. Çıkar bir parçayı envantere geri koyar, sil onu tamamen kaldırır</value>
+  </data>
+  <data name="SetToDefaultDurabilityOf" xml:space="preserve">
+    <value>Varsayılan Dayanıklılığa Ayarla: {0}</value>
+  </data>
+  <data name="SetToMaxOf" xml:space="preserve">
+    <value>Maksimuma Ayarla: {0}</value>
+  </data>
+  <data name="Unequip" xml:space="preserve">
+    <value>Çıkar</value>
+  </data>
+  <data name="UnequipText" xml:space="preserve">
+    <value>Envantere Çıkar</value>
+  </data>
+  <data name="UnequipFull" xml:space="preserve">
+    <value>Envanterde Zaten {0} Var</value>
+  </data>
+  <data name="UnequipUnknown" xml:space="preserve">
+    <value>Bu Parça İçin Envanter Eşyası Yok</value>
+  </data>
+  <data name="WearText" xml:space="preserve">
+    <value>Bir Parça Giy</value>
+  </data>
+  <data name="WearNoneLeft" xml:space="preserve">
+    <value>Envanterde Hiç Kalmadı</value>
+  </data>
+  <data name="WearAllWorn" xml:space="preserve">
+    <value>Zaten 10 Parça Giyiliyor</value>
+  </data>
+  <data name="DeleteArmour" xml:space="preserve">
+    <value>Parçayı Sil</value>
+  </data>
+  <data name="DeleteArmourText" xml:space="preserve">
+    <value>Parça tamamen gider, ne giyilir ne de envanterde tutulur</value>
+  </data>
+  <data name="AddArmour" xml:space="preserve">
+    <value>Parça Ekle</value>
+  </data>
+  <data name="DeleteBackups" xml:space="preserve">
+    <value>Yedekleri Sil</value>
+  </data>
+  <data name="DeleteBackupsText" xml:space="preserve">
+    <value>Silinecek yedekleri seçin. En yenisi her zaman kalır</value>
+  </data>
+  <data name="AllButNewest" xml:space="preserve">
+    <value>En Yeni Hariç Tümü</value>
+  </data>
+  <data name="DeleteCount" xml:space="preserve">
+    <value>{0} Tanesini Sil</value>
+  </data>
+  <data name="DeleteBackupsConfirm" xml:space="preserve">
+    <value>{0} yedek kalıcı olarak silinir</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Geri</value>
+  </data>
+  <data name="CannibalAngerDialogText" xml:space="preserve">
+    <value>Yaşayan her yamyam size karşı bu öfkeyi alır ve sizi o kadar sevmez. 0'da öldürdüklerinizi, kestiğiniz ağaçları ve köy ziyaretlerinizi de unuturlar, böylece gerçekten sakinleşirler</value>
+  </data>
+  <data name="FollowersStayOutside" xml:space="preserve">
+    <value>Yoldaşlar sizi mağaralara takip edemez, önce mağaradan çıkın</value>
+  </data>
+  <data name="NoArrival" xml:space="preserve">
+    <value>Oluşturulacak yer yok: bir mağaradasınız ve dışarıda yoldaş yok</value>
+  </data>
+  <data name="ResetFilters" xml:space="preserve">
+    <value>Filtreleri Sıfırla</value>
+  </data>
+  <data name="AlreadyThere" xml:space="preserve">
+    <value>Zaten Orada</value>
+  </data>
+  <data name="MoveAnchor" xml:space="preserve">
+    <value>Çapayı Taşı</value>
+  </data>
+  <data name="RemoveZipline" xml:space="preserve">
+    <value>Zipline'ı Kaldır</value>
+  </data>
+  <data name="ClickAnchorSpot" xml:space="preserve">
+    <value>Çapanın gideceği yere haritada tıklayın</value>
+  </data>
+  <data name="ClickZiplineEnd" xml:space="preserve">
+    <value>Zipline'ın bittiği yere haritada tıklayın</value>
+  </data>
+  <data name="PointsHere" xml:space="preserve">
+    <value>Burada {0} Nokta</value>
+  </data>
+  <data name="MorePointsHere" xml:space="preserve">
+    <value>{0} tane daha, ulaşmak için yakınlaştırın</value>
+  </data>
+  <data name="HeightGuessed" xml:space="preserve">
+    <value>Harita yükseklikleri bilmez, bu değer en yakın bilinen noktadan gelir</value>
+  </data>
+  <data name="UnfinishedAdded" xml:space="preserve">
+    <value>Bitmemiş · {0} Eklendi</value>
+  </data>
+  <data name="ZiplinesOnMap" xml:space="preserve">
+    <value>Zipline'lar haritada değiştirilir</value>
+  </data>
+  <data name="StructureUnknown" xml:space="preserve">
+    <value>Düzenleyici bunun neye ihtiyaç duyduğunu bilmiyor, bu yüzden değiştiremez</value>
+  </data>
+  <data name="GameFollowersStay" xml:space="preserve">
+    <value>Oyunun Kendi Kelvin ve Virginia'sı Kalır</value>
+  </data>
+</root>

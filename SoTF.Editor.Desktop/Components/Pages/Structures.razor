@@ -2,6 +2,10 @@
 @inherits EditorPageBase
 
 <RequiresSavegame NeedsWorld>
+    @{
+        // The Shown Types, Worked Out Once Per Render
+        var types = FilteredTypes();
+    }
     <MudStack Row
               Spacing="6"
               Class="page-fill">
@@ -36,19 +40,19 @@
                                 </MudText>
                                 <MudText Typo="Typo.caption"
                                          Class="mud-text-secondary">
-                                    @CountsOf(FilteredTypes.SelectMany(type => type.Structures))
+                                    @CountsOf(types.SelectMany(type => type.Structures))
                                 </MudText>
                             </MudStack>
                         </MudStack>
                     </MudElement>
-                    @if (!FilteredTypes.Any())
+                    @if (types.Count == 0)
                     {
                         <MudText Typo="Typo.body2"
                                  Class="mud-text-secondary pa-4">
                             @AppText.Get("NothingFound")
                         </MudText>
                     }
-                    @foreach (var category in FilteredTypes.GroupBy(type => type.Category))
+                    @foreach (var category in types.GroupBy(type => type.Category))
                     {
                         <GroupTitle Title="@category.Key"
                                     Highlight="@_filter" />
@@ -75,7 +79,7 @@
         </MudElement>
         <MudElement HtmlTag="div"
                     Class="main-panel fill-column">
-            @if (ShownStructures is not { } shown)
+            @if (ShownIn(types) is not { } shown)
             {
                 <EmptyState Icon="@Icons.Material.Rounded.Cabin"
                             Text="@AppText.Get("SelectStructure")" />
@@ -167,6 +171,7 @@
                                                            Size="Size.Small"
                                                            EndIcon="@Icons.Material.Rounded.ArrowDropDown"
                                                            Disabled="@(context.ModificationModes.Count <= 1)"
+                                                           data-menu-at
                                                            OnClick="args => OpenModesAsync(args, context)">
                                                     @ModeName(context.ModificationMode ?? ScrewStructureModificationMode.None)
                                                 </MudButton>

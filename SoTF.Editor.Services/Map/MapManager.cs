@@ -18,9 +18,10 @@ public class MapManager(
     GameData gameData
 )
 {
-    public List<IPoiGrouper> BuildPoiGroups(Savegame? savegame)
+    public List<IPoiGrouper> BuildPoiGroups(Savegame? savegame, HashSet<int> ownedItemIds)
     {
-        var poiGroups = new List<IPoiGrouper>
+        // A Joined Save Has No Actors Or Structures
+        var poiGroups = new[]
         {
             new PoiGroupCollection(
                 false,
@@ -36,31 +37,22 @@ public class MapManager(
                 GetStructurePois(),
                 PoiGroupType.Structures
             ),
-        };
+        }
+            .Where(collection => collection.PoiGroups.Count > 0)
+            .ToList<IPoiGrouper>();
 
         if (savegame != null)
         {
             poiGroups.AddRange(GetWorldItemPois(savegame));
 
-            // Each Line Shows Both Anchors And The Line Between
             var ziplinePois = GetZiplinePois(savegame);
             if (ziplinePois.Count > 0)
             {
-                poiGroups.Add(
-                    new PoiGroup(
-                        false,
-                        ziplinePois.SelectMany(zipline =>
-                            new IPoi[] { zipline.PointA, zipline.PointB, zipline }
-                        ),
-                        AppText.Get("Ziplines"),
-                        PoiGroupType.ZipLines,
-                        "images/icons/" + ZipPointPoi.IconFile
-                    )
-                );
+                poiGroups.Add(ZiplineGroup(ziplinePois));
             }
         }
 
-        poiGroups.AddRange(poiLoader.Load());
+        poiGroups.AddRange(poiLoader.Load(ownedItemIds));
 
         poiGroups.Add(
             new PoiGroup(
@@ -73,6 +65,18 @@ public class MapManager(
         );
 
         return [.. poiGroups.OrderBy(group => group.Title)];
+    }
+
+    // Each Line Shows Both Anchors And The Line Between
+    public static PoiGroup ZiplineGroup(IEnumerable<ZiplinePoi> ziplines)
+    {
+        return new PoiGroup(
+            false,
+            ziplines.SelectMany(zipline => new IPoi[] { zipline.PointA, zipline.PointB, zipline }),
+            AppText.Get("Ziplines"),
+            PoiGroupType.ZipLines,
+            "images/icons/" + ZipPointPoi.IconFile
+        );
     }
 
     private List<PoiGroup> GetActorPois()

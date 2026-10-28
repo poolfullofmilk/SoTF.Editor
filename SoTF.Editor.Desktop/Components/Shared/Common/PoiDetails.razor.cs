@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using SoTF.Editor.Data.Enums;
@@ -46,8 +47,14 @@ public partial class PoiDetails
     [Inject]
     public required ISnackbar Snackbar { get; set; }
 
+    [Inject]
+    public required IJsApiService JsApiService { get; set; }
+
     // Within This Many Metres Someone Is Already There
     private const float NearbyMetres = 10;
+
+    // A Joined Save Holds No World, Its Map Only Shows
+    private bool IsClientSave => MainViewModel.SelectedSavegame?.IsMultiPlayerClient() == true;
 
     private bool PlayerIsThere =>
         Poi.Position is { } destination && IsNear(destination, PlayerPage.PlayerState.Pos);
@@ -90,19 +97,44 @@ public partial class PoiDetails
         return MapViewModel.IsPicking(Poi, newZipline) ? Color.Info : Color.Default;
     }
 
+    private Variant PickVariant(bool newZipline)
+    {
+        return MapViewModel.IsPicking(Poi, newZipline) ? Variant.Filled : Variant.Text;
+    }
+
     private IEnumerable<PoiDetail> Details
     {
         get
         {
             var details = new List<PoiDetail>
             {
-                new(AppText.Get("Coordinates"), Poi.PrintableCoordinates),
+                new(AppText.Get("Coordinates"), Poi.PrintableCoordinates, Poi.Position != null),
+            };
+
+            // How Far The Player Walks, Over The Ground
+            if (Poi is not PlayerPoi)
+            {
+                var player = PlayerPage.PlayerState.Pos;
+                details.Add(
+                    new(
+                        AppText.Get("Distance"),
+                        Formatter.FormatDistance(
+                            MathF.Sqrt(
+                                (Poi.X - player.X) * (Poi.X - player.X)
+                                    + (Poi.Z - player.Z) * (Poi.Z - player.Z)
+                            )
+                        )
+                    )
+                );
+            }
+
+            details.AddRange([
                 new(AppText.Get("Area"), Poi.AreaName ?? "-"),
                 new(
                     AppText.Get("Underground"),
                     Poi.IsUnderground ? AppText.Get("Yes") : AppText.Get("No")
                 ),
-            };
+            ]);
 
             // Type Specific Rows Follow The Shared Ones
             switch (Poi)
@@ -185,6 +217,23 @@ public partial class PoiDetails
         }
     }
 
+    private async Task CopyCoordinatesAsync()
+    {
+        // Plain Numbers With A Dot, As The Console Takes Them
+        if (Poi.Position is not { } position)
+        {
+            return;
+        }
+
+        await JsApiService.CopyToClipboardAsync(
+            string.Create(
+                CultureInfo.InvariantCulture,
+                $"{position.X:0.##} {position.Y:0.##} {position.Z:0.##}"
+            )
+        );
+        Snackbar.Add(AppText.Get("CoordinatesCopied"), Severity.Info);
+    }
+
     private async Task CloseAsync()
     {
         MapViewModel.SelectPoi(null);
@@ -262,7 +311,7 @@ public partial class PoiDetails
         await dialog.Result;
     }
 
-    private sealed record PoiDetail(string Label, string Value);
+    private sealed record PoiDetail(string Label, string Value, bool Copies = false);
 
     private sealed record PoiItemList(string Title, IEnumerable<ItemInInventoryWrapper> Items);
 }

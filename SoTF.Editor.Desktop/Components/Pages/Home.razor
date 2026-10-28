@@ -156,10 +156,28 @@
                                             </MudText>
                                         }
                                     }
-                                    <MudText Typo="Typo.body2"
-                                             Class="mud-text-secondary">
-                                        @Formatter.FormatDateTime(savegame.LastSaveTime)
-                                    </MudText>
+                                    <MudStack Row
+                                              AlignItems="AlignItems.Center"
+                                              Spacing="2">
+                                        <MudText Typo="Typo.body2"
+                                                 Class="mud-text-secondary">
+                                            @Formatter.FormatDateTime(savegame.LastSaveTime)
+                                        </MudText>
+                                        @if (savegame.IsMultiPlayer() || savegame.IsMultiPlayerClient())
+                                        {
+                                            <MudSpacer />
+                                            @* Copy To Singleplayer *@
+                                            <span @onclick:stopPropagation="true">
+                                                <MudIconButton Icon="@Icons.Material.Rounded.ContentCopy"
+                                                               aria-label="@AppText.Get("CopyToSingleplayer")"
+                                                               title="@(savegame.IsMultiPlayerClient() ? null : AppText.Get("CopyToSingleplayer"))"
+                                                               Size="Size.Small"
+                                                               Class="my-n1"
+                                                               Disabled="@savegame.IsMultiPlayerClient()"
+                                                               OnClick="() => CopyToSingleplayerAsync(savegame)" />
+                                            </span>
+                                        }
+                                    </MudStack>
                                 </MudStack>
                             </MudPaper>
                         </MudItem>

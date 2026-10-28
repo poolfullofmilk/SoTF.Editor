@@ -34,6 +34,8 @@ public partial class Player : EditorPageBase
             ? AppText.Get("CurrentHealthAtMax")
             : null;
 
+    private bool CanAddPiece => ArmorPage.FreeSlots.Any();
+
     private static bool IsDefault(ArmourData armour)
     {
         return armour.ArmourPiece.RemainingArmourpoints == armour.DefaultDurability;

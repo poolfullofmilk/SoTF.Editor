@@ -481,12 +481,14 @@ public class MainViewModel(
 
     public void FinishTool(string tool, string stateBefore)
     {
-        if (
-            ToolState() != stateBefore
-            && (SelectedSavegame?.SavegameStore.HasModified() == true || gameStatePage.HasChanges)
-        )
+        if (ToolState() != stateBefore)
         {
-            _changedTools.Add(tool);
+            // A Tool Can Add Or Move What The Map Shows
+            Revision++;
+            if (SelectedSavegame?.SavegameStore.HasModified() == true || gameStatePage.HasChanges)
+            {
+                _changedTools.Add(tool);
+            }
         }
 
         NotifyChanged();

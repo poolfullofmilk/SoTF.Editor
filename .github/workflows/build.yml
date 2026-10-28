@@ -1,0 +1,33 @@
+name: Build
+
+# Every Branch Push And Pull Request Builds And Tests, Only A Tag Releases
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+
+# A Newer Push Replaces A Run Still Going On The Same Branch
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Build
+        run: dotnet build SoTF.Editor.slnx -c Release
+
+      # A Save Without Edits Writes Nothing, Every Page Edit Reads Back
+      - name: Test Save Round Trip
+        run: dotnet run Tests/SaveRoundTrip.cs

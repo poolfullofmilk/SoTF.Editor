@@ -4,7 +4,7 @@
     <MudMenu Icon="@Icons.Material.Rounded.Public"
              AriaLabel="@AppText.Get("Language")"
              Size="Size.Small">
-        @foreach (var (culture, name) in AppCulture.Languages)
+        @foreach (var (culture, name) in AppText.Languages)
         {
             @* Language *@
             <MudMenuItem Icon="@(AppCulture.Current == culture ? Icons.Material.Rounded.Check : string.Empty)"

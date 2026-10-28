@@ -14,6 +14,17 @@ public partial class Map : EditorPageBase
     // The Map Image Fades Into This At Its Edges
     private const string MapBackground = "#6186be";
 
+    // Picked Points Over Other Icons, The Preview On Top
+    private const int PickedZIndex = 900;
+    private const int PinZIndex = 1000;
+    private const int GhostZIndex = 1000;
+
+    // A Zoomed Out Click Can Cover Hundreds
+    private const int MaxStackRows = 40;
+
+    // A Short Search Matches Thousands
+    private const int MaxResults = 50;
+
     // Camera, Filters And Selection Edit Nothing, Zipline Edits Notify Themselves
     protected override bool EditsSavegame => false;
 
@@ -27,15 +38,17 @@ public partial class Map : EditorPageBase
     public required ISnackbar Snackbar { get; set; }
 
     // Page State
+    private DotNetObjectReference<Map>? _self;
     private ElementReference _viewport;
     private ElementReference _canvas;
     private (float Left, float Top)? _focusPixel;
     private bool _isMapReady;
     private bool _menusHidden;
 
-    // Says What To Click While A Zipline Waits
+    // The Waiting Zipline's Hint And Preview Start
     private Snackbar? _pickHint;
     private string? _pickHintKey;
+    private BasePoi? _previewStart;
 
     private bool HasFilters =>
         MapViewModel.MapFilter.AreaFilter != AreaFilter.All
@@ -60,10 +73,13 @@ public partial class Map : EditorPageBase
 
     private string MenusText => AppText.Get(_menusHidden ? "ShowMenus" : "HideMenus");
 
+    // Two Letters Make A Search, One Matches Nearly Everything
+    private bool IsSearching => MapViewModel.MapFilter.FullText?.Trim().Length >= 2;
+
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        MapViewModel.Build();
+        MapViewModel.Open();
 
         // The Point Itself When One Sits There, Its Spot Otherwise
         if (MapViewModel.TakeFocus() is { } focused)
@@ -89,6 +105,30 @@ public partial class Map : EditorPageBase
         {
             MapViewModel.Click(left, top, zoom, args.Button == 2);
         }
+    }
+
+    // A Move Hangs From The Other Anchor
+    private BasePoi? PickLineStart()
+    {
+        return MapViewModel.PickFrom switch
+        {
+            ZipPointPoi { Parent: { } zipline } anchor when !MapViewModel.PicksNewZipline =>
+                zipline.PointA == anchor ? zipline.PointB : zipline.PointA,
+            var from => from,
+        };
+    }
+
+    private async Task SyncPreviewAsync()
+    {
+        // JS Moves The Preview With The Cursor
+        var start = PickLineStart();
+        if (start == _previewStart)
+        {
+            return;
+        }
+
+        _previewStart = start;
+        await JavaScript.InvokeVoidAsync("sotfMap.preview", start is not null);
     }
 
     private void SyncPickHint()
@@ -128,7 +168,8 @@ public partial class Map : EditorPageBase
         if (!_isMapReady)
         {
             _isMapReady = true;
-            await JavaScript.InvokeVoidAsync("sotfMap.init", _viewport, _canvas);
+            _self = DotNetObjectReference.Create(this);
+            await JavaScript.InvokeVoidAsync("sotfMap.init", _viewport, _canvas, _self);
 
             // Show On Map Lands Centred On Its Position
             if (_focusPixel is { } focus)
@@ -138,20 +179,26 @@ public partial class Map : EditorPageBase
         }
 
         SyncPickHint();
+        await SyncPreviewAsync();
     }
 
-    private static string PoiStyle(float left, float top, int size, float rotation, int zIndex)
+    private static string PinStyle(LocationPoi location)
     {
         return string.Create(
             CultureInfo.InvariantCulture,
-            $"left:{left:0.#}px;top:{top:0.#}px;width:{size}px;height:{size}px;z-index:{zIndex + 100};--rotation:{rotation:0.#}deg"
+            $"left:{location.MapLeft:0.#}px;top:{location.MapTop:0.#}px;z-index:{PinZIndex}"
         );
     }
 
-    private static string Pixel(float value)
+    // Escape Closes The Panel And Stops A Waiting Zipline
+    [JSInvokable]
+    public Task CloseDetailsAsync()
     {
-        // SVG Reads A Dot, Never The Windows Decimal Comma
-        return value.ToString("0.#", CultureInfo.InvariantCulture);
+        return InvokeAsync(() =>
+        {
+            MapViewModel.SelectPoi(null);
+            StateHasChanged();
+        });
     }
 
     private static string RequirementsName(MapFilter.RequirementsFilterType requirementsFilter)
@@ -230,6 +277,12 @@ public partial class Map : EditorPageBase
         MapViewModel.ApplyFilterToAllPois();
     }
 
+    private async Task FocusResultAsync(MapSearchResult result)
+    {
+        MapViewModel.FocusOn(result.Poi);
+        await JavaScript.InvokeVoidAsync("sotfMap.centerOn", result.Poi.MapLeft, result.Poi.MapTop);
+    }
+
     private void SetAreaFilter(AreaFilter areaFilter)
     {
         MapViewModel.MapFilter.AreaFilter = areaFilter;
@@ -280,7 +333,8 @@ public partial class Map : EditorPageBase
             Snackbar.Remove(hint);
         }
 
-        MapViewModel.Release();
+        MapViewModel.Close();
+        _self?.Dispose();
         base.Dispose();
         GC.SuppressFinalize(this);
     }

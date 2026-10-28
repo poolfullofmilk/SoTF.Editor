@@ -25,11 +25,11 @@ public abstract class BasePoi : IPoi
     public float Z { get; private set; }
 
     private string NormalizedLowercaseTitle =>
-        field ??= TranslationHelper.Normalize(Title).ToLower();
+        field ??= TranslationHelper.Normalize(Title).ToLowerInvariant();
 
     private string? NormalizedLowercaseDescription =>
         field ??= Description is { } description
-            ? TranslationHelper.Normalize(description).ToLower()
+            ? TranslationHelper.Normalize(description).ToLowerInvariant()
             : null;
 
     public Position? Position
@@ -67,7 +67,9 @@ public abstract class BasePoi : IPoi
     public abstract string Icon { get; }
 
     public virtual int IconSize => 32;
-    public virtual int IconZIndex => IsSelected ? 99 : 0;
+
+    // A Picked Icon Draws Again On Top
+    public virtual int IconZIndex => 0;
     public float IconRotation => Position?.Rotation ?? 0;
 
     public float MapLeft { get; private set; }

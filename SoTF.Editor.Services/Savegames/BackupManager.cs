@@ -448,7 +448,7 @@ public static partial class BackupManager
             );
     }
 
-    private static void CopyVerified(string file, string copy)
+    internal static void CopyVerified(string file, string copy)
     {
         Directory.CreateDirectory(Path.GetDirectoryName(copy)!);
         File.Copy(file, copy);
@@ -456,7 +456,7 @@ public static partial class BackupManager
         // Saving Waits Until The Copy Reads Back Identical
         if (!File.ReadAllBytes(file).AsSpan().SequenceEqual(File.ReadAllBytes(copy)))
         {
-            throw new IOException($"Backup Copy Differs From {file}");
+            throw new IOException($"Copy Differs From {file}");
         }
     }
 }

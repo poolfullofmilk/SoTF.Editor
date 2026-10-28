@@ -19,24 +19,29 @@ public partial class Npcs : EditorPageBase
     private string? _filter;
 
     // A Matching Group Shows Whole, Otherwise Only Its Matching Rows
-    private IEnumerable<CollectionGroup> Groupings =>
-        (
-            _byFamily
-                ? NpcsPage.ActorsByFamily.Select(grouping => new CollectionGroup(
-                    grouping.Name,
-                    grouping.ActorCollections
-                ))
-                : [new CollectionGroup(null, NpcsPage.ActorsByType)]
-        )
-            .Select(group =>
-                group.Title is { } title && Matches(title)
-                    ? group
-                    : group with
-                    {
-                        Collections = [.. group.Collections.Where(Matches)],
-                    }
+    private List<CollectionGroup> Groupings()
+    {
+        return
+        [
+            .. (
+                _byFamily
+                    ? NpcsPage.ActorsByFamily.Select(grouping => new CollectionGroup(
+                        grouping.Name,
+                        grouping.ActorCollections
+                    ))
+                    : [new CollectionGroup(null, NpcsPage.ActorsByType)]
             )
-            .Where(group => group.Collections.Count > 0);
+                .Select(group =>
+                    group.Title is { } title && Matches(title)
+                        ? group
+                        : group with
+                        {
+                            Collections = [.. group.Collections.Where(Matches)],
+                        }
+                )
+                .Where(group => group.Collections.Count > 0),
+        ];
+    }
 
     private bool Matches(ActorCollection collection)
     {
@@ -53,12 +58,14 @@ public partial class Npcs : EditorPageBase
     }
 
     // Only A Shown Row, A Search Can Hide It
-    private ActorCollection? Selected =>
-        _selectedName == null
+    private ActorCollection? SelectedIn(List<CollectionGroup> groupings)
+    {
+        return _selectedName == null
             ? null
-            : Groupings
+            : groupings
                 .SelectMany(group => group.Collections)
                 .FirstOrDefault(collection => collection.Name == _selectedName);
+    }
 
     private void SetByFamily(bool byFamily)
     {

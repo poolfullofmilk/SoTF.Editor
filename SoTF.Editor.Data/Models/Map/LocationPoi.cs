@@ -4,7 +4,9 @@ namespace SoTF.Editor.Data.Models.Map;
 
 public class LocationPoi(Position position) : BasePoi(position)
 {
-    public override string Icon => BaseIcon("crosshair.svg");
+    public const string IconFile = "pin.svg";
+
+    public override string Icon => BaseIcon(IconFile);
 
     public override string Title => AppText.Get("Location");
 }

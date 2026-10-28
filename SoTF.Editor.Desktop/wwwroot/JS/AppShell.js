@@ -6,6 +6,74 @@ document.addEventListener("keydown", (event) => {
     }
 });
 
+// A Cursor Menu (data-menu-at) Takes The Keyboard Like A Select
+(() => {
+    let opener = null;
+    let menu = null;
+    const itemsOf = (popover) => [...popover.querySelectorAll('[role="menuitem"]:not([aria-disabled="true"])')];
+
+    // The Picked Item Or The First Gets Focus, Centred
+    const focusPicked = (tries = 30) => {
+        requestAnimationFrame(() => {
+            const popover = document.querySelector(".mud-popover-open:has(.mud-menu-item)");
+            if (!popover) {
+                if (tries > 0) focusPicked(tries - 1);
+                return;
+            }
+            menu = popover;
+            const items = itemsOf(popover);
+            const item = items.find((candidate) => candidate.querySelector(".mud-menu-item-icon")) ?? items[0];
+            if (item) {
+                const list = item.closest(".mud-menu-list") ?? popover;
+                item.focus({ preventScroll: true });
+                list.scrollTop = item.offsetTop - (list.clientHeight - item.offsetHeight) / 2;
+            }
+        });
+    };
+
+    // Keyboard Clicks Have No Position, Click Again Below The Button
+    document.addEventListener(
+        "click",
+        (event) => {
+            const button = event.target instanceof Element ? event.target.closest("[data-menu-at]") : null;
+            if (!button) return;
+            opener = button;
+            if (event.isTrusted && event.detail === 0) {
+                event.stopImmediatePropagation();
+                event.preventDefault();
+                const rect = button.getBoundingClientRect();
+                button.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true, clientX: rect.left, clientY: rect.bottom }));
+            }
+            focusPicked();
+        },
+        true
+    );
+
+    // Arrows Walk Items, Enter Or Space Picks, Before MudMenu Hears
+    window.addEventListener(
+        "keydown",
+        (event) => {
+            const item = event.target instanceof Element ? event.target.closest('[role="menuitem"]') : null;
+            if (!item || !menu?.classList.contains("mud-popover-open") || !menu.contains(item)) return;
+            if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+                event.preventDefault();
+                event.stopPropagation();
+                const items = itemsOf(menu);
+                items[items.indexOf(item) + (event.key === "ArrowDown" ? 1 : -1)]?.focus();
+            } else if (event.key === "Enter" || event.key === " " || event.key === "Escape") {
+                if (event.key !== "Escape") {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    item.click();
+                }
+                const button = opener;
+                setTimeout(() => button?.isConnected && button.focus());
+            }
+        },
+        true
+    );
+})();
+
 // An Info Icon Inside A Switch Label Never Toggles The Switch
 document.addEventListener("click", (event) => {
     if (event.target instanceof Element && event.target.closest(".info-icon")) {
@@ -40,6 +108,28 @@ window.sotfMap = (() => {
         }
     };
 
+    // A Click In Map Pixels, Plus The Zoom
+    const toMap = (clientX, clientY) => {
+        if (!state) return null;
+        const bounds = state.viewport.getBoundingClientRect();
+        return [(clientX - bounds.left - state.x) / state.zoom, (clientY - bounds.top - state.y) / state.zoom, state.zoom];
+    };
+
+    // A Waiting Zipline Follows The Cursor, Hidden Off The Map
+    const placePreview = () => {
+        const preview = state?.preview;
+        if (!preview) return;
+        const idle = !state.pointer;
+        preview.line.ownerSVGElement.classList.toggle("idle", idle);
+        preview.ghost.classList.toggle("idle", idle);
+        if (idle) return;
+        const [x, y] = toMap(state.pointer.x, state.pointer.y);
+        preview.line.setAttribute("x2", x);
+        preview.line.setAttribute("y2", y);
+        preview.ghost.style.left = `${x}px`;
+        preview.ghost.style.top = `${y}px`;
+    };
+
     // Thousands Of Icons Restyle Slowly, So They Catch Up Once The Map Settles
     const apply = (moving = false) => {
         state.canvas.style.transform = `translate(${state.x}px, ${state.y}px) scale(${state.zoom})`;
@@ -49,6 +139,7 @@ window.sotfMap = (() => {
         } else {
             scaleIcons();
         }
+        placePreview();
     };
 
     const stop = () => {
@@ -104,9 +195,9 @@ window.sotfMap = (() => {
         apply(moving);
     };
 
-    const init = (viewport, canvas) => {
+    const init = (viewport, canvas, page) => {
         state?.observer.disconnect();
-        state = { viewport, canvas, drag: null, moved: false, width: viewport.clientWidth, height: viewport.clientHeight };
+        state = { viewport, canvas, page, drag: null, moved: false, width: viewport.clientWidth, height: viewport.clientHeight };
         fit();
 
         // Decoded Whole Up Front, The First Zoom In Has Nothing To Wait For
@@ -167,6 +258,16 @@ window.sotfMap = (() => {
         // Icons Are Images, The Browser Would Drag Them Away
         viewport.addEventListener("dragstart", (event) => event.preventDefault());
 
+        // The Cursor Over The Map, For A Zipline's Preview
+        viewport.addEventListener("pointermove", (event) => {
+            state.pointer = { x: event.clientX, y: event.clientY };
+            placePreview();
+        });
+        viewport.addEventListener("pointerleave", () => {
+            state.pointer = null;
+            placePreview();
+        });
+
         viewport.addEventListener("pointerdown", (event) => {
             if (event.button !== 0) return;
             stop();
@@ -215,6 +316,14 @@ window.sotfMap = (() => {
     window.addEventListener("pointerup", endDrag);
     window.addEventListener("pointercancel", endDrag);
 
+    // Escape Closes The Panel, Unless A Dialog, Menu Or Field
+    document.addEventListener("keydown", (event) => {
+        if (event.key !== "Escape" || !state?.page || !state.viewport.isConnected) return;
+        if (document.querySelector(".mud-dialog-container, .mud-popover-open .mud-list")) return;
+        if (event.target instanceof Element && event.target.closest("input, textarea, [contenteditable]")) return;
+        state.page.invokeMethodAsync("CloseDetailsAsync").catch(() => {});
+    });
+
     // Show On Map Opens Right There, No Glide
     const centerOn = (mapX, mapY) => {
         if (!state) return;
@@ -232,11 +341,13 @@ window.sotfMap = (() => {
         glideTo(state.viewport.clientWidth / 2 - mapX * zoom, state.viewport.clientHeight / 2 - mapY * zoom, zoom);
     };
 
-    // A Click In Map Pixels, Plus The Zoom
-    const toMap = (clientX, clientY) => {
-        if (!state) return null;
-        const bounds = state.viewport.getBoundingClientRect();
-        return [(clientX - bounds.left - state.x) / state.zoom, (clientY - bounds.top - state.y) / state.zoom, state.zoom];
+    // Blazor Shows The Preview, JS Keeps It Under The Cursor
+    const preview = (on) => {
+        if (!state) return;
+        const line = on ? state.canvas.querySelector(".map-pick-line line") : null;
+        const ghost = on ? state.canvas.querySelector(".map-pick-ghost") : null;
+        state.preview = line && ghost ? { line, ghost } : null;
+        placePreview();
     };
 
     const zoomBy = (factor) => {
@@ -250,5 +361,5 @@ window.sotfMap = (() => {
         glideTo(x, y, zoom);
     };
 
-    return { init, centerOn, toMap, zoomBy, reset };
+    return { init, centerOn, toMap, zoomBy, reset, preview };
 })();

@@ -6,6 +6,8 @@ using SoTF.Editor.Data.Models.Actors;
 using SoTF.Editor.Data.Resources;
 using SoTF.Editor.Services.Actors;
 using SoTF.Editor.Services.Savegames;
+using static SoTF.Editor.Data.Helpers.Constants.Settings;
+using static SoTF.Editor.Data.Helpers.Constants.SettingValueKeys;
 
 namespace SoTF.Editor.Services.Pages;
 
@@ -17,6 +19,7 @@ public class PlayerPageViewModel
     private const string SicknessEntry = "Sickness";
     private const string CurrentHealthEntry = "CurrentHealth";
     private const string RaftEntry = "player.localToRaftUniqueId";
+    private const string TargetHealthEntry = "TargetHealth";
     private const float FullBar = 100;
     private const float FullBuff = 65535;
 
@@ -181,7 +184,7 @@ public class PlayerPageViewModel
 
     private static Position? PositionOf(JToken entry)
     {
-        return entry["FloatArrayValue"]?.ToObject<float[]>() is { Length: 3 } values
+        return entry[FloatArrayValue]?.ToObject<float[]>() is { Length: 3 } values
             ? new Position(values[0], values[1], values[2])
             : null;
     }
@@ -265,6 +268,67 @@ public class PlayerPageViewModel
         return true;
     }
 
+    private bool AddMissingEntries(JArray entries)
+    {
+        // A Missing Entry Is Added Only Off Its Default
+        var names = entries.Select(entry => entry["Name"]?.ToString()).OfType<string>().ToHashSet();
+        var added = false;
+        void Add(string name, int settingType, string valueKey, JToken value)
+        {
+            if (names.Add(name))
+            {
+                entries.Add(
+                    new JObject
+                    {
+                        ["Name"] = name,
+                        ["SettingType"] = settingType,
+                        [valueKey] = value,
+                    }
+                );
+                added = true;
+            }
+        }
+
+        foreach (var (name, property) in s_floatEntries)
+        {
+            if (
+                !names.Contains(name)
+                && (float)property.GetValue(PlayerState)! is not 0 and var value
+            )
+            {
+                // A New Current Health Brings Its Target, As Edits Do
+                if (name == CurrentHealthEntry)
+                {
+                    Add(TargetHealthEntry, SettingTypeFloat, FloatValue, value);
+                }
+
+                Add(name, SettingTypeFloat, FloatValue, value);
+            }
+        }
+
+        if (PlayerState.StrengthLevel != 0)
+        {
+            Add(StrengthLevelEntry, SettingTypeInt, IntValue, PlayerState.StrengthLevel);
+        }
+
+        if (PlayerState.Pos.Area.AreaMask != 0)
+        {
+            Add(PlayerAreaMaskEntry, SettingTypeInt, IntValue, PlayerState.Pos.Area.AreaMask);
+        }
+
+        if (PlayerState.Pos is not { X: 0, Y: 0, Z: 0 })
+        {
+            Add(
+                PlayerPositionEntry,
+                SettingTypeFloatArray,
+                FloatArrayValue,
+                JToken.FromObject(new[] { PlayerState.Pos.X, PlayerState.Pos.Y, PlayerState.Pos.Z })
+            );
+        }
+
+        return added;
+    }
+
     private bool UpdatePlayerState(Savegame? savegame)
     {
         if (EntriesOf(savegame) is not { } entries)
@@ -287,7 +351,7 @@ public class PlayerPageViewModel
                 case PlayerPositionEntry
                     when PositionOf(entry) is { } oldPlayerPos
                         && !oldPlayerPos.HasSameCoordinates(PlayerState.Pos):
-                    entry["FloatArrayValue"]!.Replace(
+                    entry[FloatArrayValue]!.Replace(
                         JToken.FromObject(
                             new[] { PlayerState.Pos.X, PlayerState.Pos.Y, PlayerState.Pos.Z }
                         )
@@ -305,7 +369,7 @@ public class PlayerPageViewModel
                 case SicknessEntry when PlayerState.Sickness == 0:
                     hasChanges |= SettingEntry.RemoveFloat(entry);
                     break;
-                case "TargetHealth" when currentHealthChanged:
+                case TargetHealthEntry when currentHealthChanged:
                     hasChanges |= JsonModifier.SetFloat(
                         entry,
                         Constants.SettingValueKeys.FloatValue,
@@ -321,6 +385,8 @@ public class PlayerPageViewModel
                     break;
             }
         }
+
+        hasChanges |= AddMissingEntries(entries);
 
         // Moving Clears The Raft Link, Else The Game Snaps Back
         if (

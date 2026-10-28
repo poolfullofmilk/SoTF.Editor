@@ -1,0 +1,24 @@
+@* Zipline Lines *@
+<svg class="map-zipline"
+     viewBox="0 0 4096 4096">
+    @foreach (var zipline in MapViewModel.VisibleZiplines())
+    {
+        <line x1="@Pixel(zipline.PointA.MapLeft)"
+              y1="@Pixel(zipline.PointA.MapTop)"
+              x2="@Pixel(zipline.PointB.MapLeft)"
+              y2="@Pixel(zipline.PointB.MapTop)" />
+    }
+</svg>
+@foreach (var poi in PointsToDraw())
+{
+    @* Point Icon *@
+    <img @key="poi"
+         src="@poi.Icon"
+         alt="@poi.Title"
+         title="@poi.Title"
+         class="map-poi"
+         role="button"
+         tabindex="-1"
+         data-keyclick
+         style="@PoiStyle(poi.MapLeft, poi.MapTop, poi.IconSize, poi.IconRotation, poi.IconZIndex)" />
+}
