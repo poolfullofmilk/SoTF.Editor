@@ -37,7 +37,7 @@ The Release exe is ReadyToRun (`PublishReadyToRun`), so MudBlazor and the editor
 
 ### Releasing
 
-Versions take a third number. A fix or a small change ships as a patch (`3.4.1`, then `3.4.2`); only a release with new features or reworked pages bumps the minor (`3.5`). Try the patch first. The update check, the exe name and the tag all handle three parts.
+Versions take a third number, and the owner wants it used: every release bumps the patch (`3.9.1`, then `3.9.2`), new features and reworked pages included, and the minor moves only when the owner asks for it. This beats the shared rule of one digit after the dot. Never jump to a new major or minor on your own (4.0 after 3.9 was taken back for 3.9.1). The update check, the exe name and the tag all handle three parts.
 
 A release is made by the workflow, not by hand, the way `WiFiWatch` does it. `.github/workflows/release.yml` runs `Tests/SaveRoundTrip.cs`, publishes the exe on a `v*` tag and creates the release `SoTF Editor v<Version>` with the exe as its only file. Unlike other projects the body is not empty: it lists the commit titles since the previous tag (`fetch-depth: 0`, `git describe` on `<tag>^`), and the update dialog of a build without its commit shows them under What Changed (a workflow build lists every commit since itself, see Updates). So commit titles are what users read, and they never say Release or a version number: the tag already says it, and the title would repeat it in the notes.
 
