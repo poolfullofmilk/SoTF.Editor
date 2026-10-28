@@ -103,30 +103,44 @@ window.sotfMap = (() => {
     const dragThreshold = 4;
     const manyPoints = 1500;
     const glideTime = 250;
-    const clusterPixels = 44;
+    const clusterPixels = 52;
     let state = null;
     let settle = 0;
     let frame = 0;
     let clusterTimer = 0;
 
-    // Points Sharing A Screen Cell Become One Count Bubble
+    // Points Near A Group's First Point Join It, A Grid Finds Neighbours
     const cluster = () => {
         if (!state?.clusters?.isConnected) return;
         const icons = state.canvas.querySelectorAll(".map-poi[data-keyclick]:not([data-solo])");
-        const cells = new Map();
+        const groups = [];
         if (state.zoom < maxZoom * 0.99) {
-            const size = clusterPixels / state.zoom;
+            const radius = clusterPixels / state.zoom;
+            const seeds = new Map();
+            const cellOf = (x, y) => [Math.floor(x / radius), Math.floor(y / radius)];
             for (const icon of icons) {
                 const x = parseFloat(icon.style.left);
                 const y = parseFloat(icon.style.top);
-                const key = `${Math.floor(x / size)},${Math.floor(y / size)}`;
-                if (!cells.has(key)) cells.set(key, []);
-                cells.get(key).push({ icon, x, y });
+                const [column, row] = cellOf(x, y);
+                let home = null;
+                for (let stepX = -1; stepX <= 1 && !home; stepX++) {
+                    for (let stepY = -1; stepY <= 1 && !home; stepY++) {
+                        home = (seeds.get(`${column + stepX},${row + stepY}`) ?? []).find((group) => Math.hypot(group.x - x, group.y - y) < radius);
+                    }
+                }
+                if (home) {
+                    home.members.push({ icon, x, y });
+                } else {
+                    const group = { x, y, members: [{ icon, x, y }] };
+                    groups.push(group);
+                    if (!seeds.has(`${column},${row}`)) seeds.set(`${column},${row}`, []);
+                    seeds.get(`${column},${row}`).push(group);
+                }
             }
         }
         const grouped = new Set();
         const bubbles = [];
-        for (const members of cells.values()) {
+        for (const { members } of groups) {
             if (members.length < 2) continue;
             const xs = members.map((member) => member.x);
             const ys = members.map((member) => member.y);
