@@ -89,6 +89,15 @@ public static class CoordinateConverter
         return (s_xAxis.Scale * ingameX + s_xAxis.Offset, s_yAxis.Scale * ingameY + s_yAxis.Offset);
     }
 
+    public static float MapAngle(float headingDegrees)
+    {
+        // A Step Ahead In Game, Measured Again On The Map
+        var radians = headingDegrees * MathF.PI / 180;
+        var (startLeft, startTop) = IngameToPixel(0, 0);
+        var (aheadLeft, aheadTop) = IngameToPixel(MathF.Sin(radians), MathF.Cos(radians));
+        return MathF.Atan2(aheadLeft - startLeft, startTop - aheadTop) * 180 / MathF.PI;
+    }
+
     public static (float X, float Z) PixelToIngame(float left, float top)
     {
         return ((left - s_xAxis.Offset) / s_xAxis.Scale, (top - s_yAxis.Offset) / s_yAxis.Scale);

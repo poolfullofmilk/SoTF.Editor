@@ -1,8 +1,10 @@
 using System.Globalization;
 using System.Text;
 using Microsoft.AspNetCore.Components;
+using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models.Map;
 using SoTF.Editor.Services.Map;
+using SoTF.Editor.Services.Pages;
 
 namespace SoTF.Editor.Desktop.Components.Shared.Common;
 
@@ -23,6 +25,9 @@ public partial class MapPoints : IDisposable
 
     [Inject]
     public required MapViewModel MapViewModel { get; set; }
+
+    [Inject]
+    public required PlayerPageViewModel PlayerPage { get; set; }
 
     // Icons On The Page, Each Render Adds One Chunk More
     private HashSet<IPoi> _drawn = new(ReferenceEqualityComparer.Instance);
@@ -70,9 +75,9 @@ public partial class MapPoints : IDisposable
         }
     }
 
-    public static string PoiStyle(float left, float top, int size, float rotation, int zIndex)
+    public static string PoiStyle(float left, float top, int size, int zIndex)
     {
-        // Most Icons Take The Stylesheet's Size, Stacking And Angle
+        // Most Icons Take The Stylesheet's Size And Stacking
         var style = new StringBuilder();
         style.Append(CultureInfo.InvariantCulture, $"left:{left:0.#}px;top:{top:0.#}px");
         if (size != DefaultSize)
@@ -85,12 +90,17 @@ public partial class MapPoints : IDisposable
             style.Append(CultureInfo.InvariantCulture, $";z-index:{zIndex + 100}");
         }
 
-        if (rotation != 0)
-        {
-            style.Append(CultureInfo.InvariantCulture, $";--rotation:{rotation:0.#}deg");
-        }
-
         return style.ToString();
+    }
+
+    private string HeadingStyle(float left, float top, int zIndex)
+    {
+        // The Arrow Turns Where The Player Looked When Saving
+        var angle = CoordinateConverter.MapAngle(PlayerPage.PlayerState.Heading);
+        return string.Create(
+            CultureInfo.InvariantCulture,
+            $"left:{left:0.#}px;top:{top:0.#}px;z-index:{zIndex + 100};--heading:{angle:0.#}deg"
+        );
     }
 
     public static string RingStyle(float left, float top, int size, int zIndex)

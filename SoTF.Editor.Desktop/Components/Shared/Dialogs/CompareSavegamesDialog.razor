@@ -1,0 +1,30 @@
+<MudDialog>
+
+    <TitleContent>
+        <MudText Typo="Typo.h6">@AppText.Get("CompareSavegames")</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudStack Spacing="2">
+            <MudText Typo="Typo.body2"
+                     Class="mud-text-secondary">
+                @AppText.Format("CompareFromTo", NameOf(Then), NameOf(Now))
+            </MudText>
+            @* Differences *@
+            <MudElement HtmlTag="div"
+                        Class="inset rounded-panel pa-4 overflow-y-auto"
+                        Style="max-height:60vh">
+                <MudStack Spacing="2">
+                    @if (StatusText is { } text)
+                    {
+                        <MudText Typo="Typo.caption"
+                                 Class="mud-text-secondary">
+                            @text
+                        </MudText>
+                    }
+                    <DifferenceList Changes="@(_differences ?? [])" />
+                </MudStack>
+            </MudElement>
+        </MudStack>
+    </DialogContent>
+
+</MudDialog>

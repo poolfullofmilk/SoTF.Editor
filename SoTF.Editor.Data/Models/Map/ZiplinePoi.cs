@@ -34,7 +34,6 @@ public class ZiplinePoi : IPoi
 
     public int IconSize => 0;
     public int IconZIndex => -1;
-    public float IconRotation => 0;
 
     public void ApplyFilter(MapFilter mapFilter)
     {

@@ -61,7 +61,8 @@ public partial class MainLayout : IDisposable
     private bool HasSavegame => MainViewModel.SelectedSavegame != null;
 
     private bool HasBackups =>
-        MainViewModel.SelectedSavegame is { } savegame && BackupManager.HasAny(savegame.FullPath);
+        MainViewModel.SelectedSavegame is { } savegame
+        && BackupManager.Count(savegame.FullPath) > 0;
 
     private bool IsClientSave => MainViewModel.SelectedSavegame?.IsMultiPlayerClient() == true;
 
@@ -85,6 +86,7 @@ public partial class MainLayout : IDisposable
     {
         MainViewModel.Changed += OnChanged;
         MainViewModel.OpenRequested += OnOpenRequested;
+        MainViewModel.RestoreRequested += OnRestoreRequested;
         BackupManager.Pruned += OnBackupsPruned;
     }
 
@@ -201,25 +203,36 @@ public partial class MainLayout : IDisposable
 
     private async Task OpenAsync(Savegame savegame)
     {
-        if (!await DialogService.ConfirmDiscardAsync(MainViewModel))
+        if (await TryOpenAsync(savegame) && IsActive(s_pages[0]))
         {
-            return;
+            NavigationManager.NavigateTo("Player");
         }
+    }
 
-        if (
-            !await TryBusyAsync(
+    private async Task<bool> TryOpenAsync(Savegame savegame)
+    {
+        return await DialogService.ConfirmDiscardAsync(MainViewModel)
+            && await TryBusyAsync(
                 savegame,
                 () => MainViewModel.SelectSavegame(savegame),
                 "UnableToOpen"
-            )
+            );
+    }
+
+    private void OnRestoreRequested(Savegame savegame)
+    {
+        _ = InvokeAsync(() => RestoreFromCardAsync(savegame));
+    }
+
+    private async Task RestoreFromCardAsync(Savegame savegame)
+    {
+        // A Card's Backups Belong To Its Savegame, It Opens First
+        if (
+            MainViewModel.SelectedSavegame?.FullPath == savegame.FullPath
+            || await TryOpenAsync(savegame)
         )
         {
-            return;
-        }
-
-        if (IsActive(s_pages[0]))
-        {
-            NavigationManager.NavigateTo("Player");
+            await RestoreBackupAsync();
         }
     }
 
@@ -426,6 +439,7 @@ public partial class MainLayout : IDisposable
     {
         MainViewModel.Changed -= OnChanged;
         MainViewModel.OpenRequested -= OnOpenRequested;
+        MainViewModel.RestoreRequested -= OnRestoreRequested;
         BackupManager.Pruned -= OnBackupsPruned;
         GC.SuppressFinalize(this);
     }

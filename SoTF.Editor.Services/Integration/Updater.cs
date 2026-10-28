@@ -106,13 +106,19 @@ public static class Updater
         Path.GetFileName(Environment.ProcessPath)
             ?.StartsWith(ExecutablePrefix, StringComparison.OrdinalIgnoreCase) == true;
 
-    public static Task<string> DownloadAsync(ReleaseInfo release)
+    public static Task<string> DownloadAsync(
+        ReleaseInfo release,
+        IProgress<(long Received, long Total)> progress
+    )
     {
         // Off The Window's Thread, So The Window Never Freezes
-        return Task.Run(() => DownloadOnPoolAsync(release));
+        return Task.Run(() => DownloadOnPoolAsync(release, progress));
     }
 
-    private static async Task<string> DownloadOnPoolAsync(ReleaseInfo release)
+    private static async Task<string> DownloadOnPoolAsync(
+        ReleaseInfo release,
+        IProgress<(long Received, long Total)> progress
+    )
     {
         var started = Stopwatch.StartNew();
         var targetPath = Path.Combine(
@@ -140,7 +146,18 @@ public static class Updater
                 )
             )
             {
-                await response.Content.CopyToAsync(file);
+                // Zero Total Means GitHub Sent No Length
+                var total = response.Content.Headers.ContentLength ?? 0;
+                await using var download = await response.Content.ReadAsStreamAsync();
+                var buffer = new byte[81920];
+                long received = 0;
+                int read;
+                while ((read = await download.ReadAsync(buffer)) > 0)
+                {
+                    await file.WriteAsync(buffer.AsMemory(0, read));
+                    received += read;
+                    progress.Report((received, total));
+                }
             }
 
             // A Download That Differs From GitHub's Checksum Never Runs

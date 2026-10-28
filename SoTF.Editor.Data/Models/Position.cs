@@ -30,8 +30,12 @@ public class Position(float x, float y, float z)
     [JsonIgnore]
     public string PrintableShort => $"X: {X:F2}, Y: {Y:F2}, Z: {Z:F2}";
 
-    [JsonIgnore]
-    public float Rotation { get; set; }
+    public float GroundDistanceTo(Position other)
+    {
+        // How Far Someone Walks, Heights Left Out
+        var (x, z) = (X - other.X, Z - other.Z);
+        return MathF.Sqrt(x * x + z * z);
+    }
 
     public Position WithoutOffset()
     {

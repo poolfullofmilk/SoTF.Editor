@@ -1062,15 +1062,6 @@
   <data name="Singleplayer" xml:space="preserve">
     <value>Singleplayer</value>
   </data>
-  <data name="CopyToSingleplayer" xml:space="preserve">
-    <value>Naar Singleplayer Kopiëren</value>
-  </data>
-  <data name="CopyToSingleplayerText" xml:space="preserve">
-    <value>Deze wereld wordt, zoals laatst opgeslagen, gekopieerd naar je singleplayer savegames. Het origineel blijft zoals het is</value>
-  </data>
-  <data name="CopiedToSingleplayer" xml:space="preserve">
-    <value>Gekopieerd Naar Singleplayer</value>
-  </data>
   <data name="UnableToCopySavegame" xml:space="preserve">
     <value>Kan de savegame niet kopiëren, zie het logbestand</value>
   </data>
@@ -2091,5 +2082,86 @@ Nee houdt de editor open zodat je eerst kunt opslaan</value>
   </data>
   <data name="GameFollowersStay" xml:space="preserve">
     <value>Kelvin en Virginia van het Spel Blijven</value>
+  </data>
+  <data name="StartingUpdate" xml:space="preserve">
+    <value>Update Starten</value>
+  </data>
+  <data name="DownloadedOf" xml:space="preserve">
+    <value>{0} van {1}</value>
+  </data>
+  <data name="UpdatingTitle" xml:space="preserve">
+    <value>Update Bezig</value>
+  </data>
+  <data name="UpdatingText" xml:space="preserve">
+    <value>De editor sluit vanzelf zodra de update gedownload is</value>
+  </data>
+  <data name="Duplicate" xml:space="preserve">
+    <value>Dupliceren</value>
+  </data>
+  <data name="DuplicateToSingleplayer" xml:space="preserve">
+    <value>Dupliceren Naar Singleplayer</value>
+  </data>
+  <data name="DuplicateToSingleplayerText" xml:space="preserve">
+    <value>Deze wereld wordt, zoals laatst opgeslagen, gekopieerd naar je singleplayer savegames. Het origineel blijft zoals het is</value>
+  </data>
+  <data name="DuplicateToMultiplayer" xml:space="preserve">
+    <value>Dupliceren Naar Multiplayer Als Host</value>
+  </data>
+  <data name="DuplicateToMultiplayerText" xml:space="preserve">
+    <value>Deze wereld wordt, zoals laatst opgeslagen, gekopieerd naar je multiplayer savegames als host. Het origineel blijft zoals het is</value>
+  </data>
+  <data name="SavegameDuplicated" xml:space="preserve">
+    <value>Savegame gedupliceerd</value>
+  </data>
+  <data name="Original" xml:space="preserve">
+    <value>Origineel</value>
+  </data>
+  <data name="OneBackup" xml:space="preserve">
+    <value>{0} Back-up</value>
+  </data>
+  <data name="BackupCount" xml:space="preserve">
+    <value>{0} Back-ups</value>
+  </data>
+  <data name="DeleteCopy" xml:space="preserve">
+    <value>Kopie Verwijderen</value>
+  </data>
+  <data name="DeleteCopyText" xml:space="preserve">
+    <value>Deze kopie gaat naar de prullenbak, samen met de eigen back-ups van de game. Verwijder hem terwijl de game draait, anders kan Steam Cloud hem terugzetten</value>
+  </data>
+  <data name="CopyDeleted" xml:space="preserve">
+    <value>Kopie naar de prullenbak verplaatst</value>
+  </data>
+  <data name="UnableToDeleteCopy" xml:space="preserve">
+    <value>Kan de kopie niet verwijderen, zie het logbestand</value>
+  </data>
+  <data name="SavegameGone" xml:space="preserve">
+    <value>Deze savegame is weg, de lijst wordt opnieuw gelezen</value>
+  </data>
+  <data name="NearPlayer" xml:space="preserve">
+    <value>Bij Speler</value>
+  </data>
+  <data name="AnyDistance" xml:space="preserve">
+    <value>Elke Afstand</value>
+  </data>
+  <data name="CompareSavegames" xml:space="preserve">
+    <value>Savegames Vergelijken</value>
+  </data>
+  <data name="CompareWith" xml:space="preserve">
+    <value>Vergelijken Met</value>
+  </data>
+  <data name="CompareFromTo" xml:space="preserve">
+    <value>Wat er veranderde van {0} naar {1}</value>
+  </data>
+  <data name="SavegamesSame" xml:space="preserve">
+    <value>Beide savegames zijn gelijk</value>
+  </data>
+  <data name="ExportZip" xml:space="preserve">
+    <value>Exporteren Als Zip</value>
+  </data>
+  <data name="SavegameExported" xml:space="preserve">
+    <value>Savegame geëxporteerd</value>
+  </data>
+  <data name="UnableToExport" xml:space="preserve">
+    <value>Kan de savegame niet exporteren, zie het logbestand</value>
   </data>
 </root>

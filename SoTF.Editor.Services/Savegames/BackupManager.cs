@@ -343,10 +343,10 @@ public static partial class BackupManager
             : [];
     }
 
-    public static bool HasAny(string savegamePath)
+    public static int Count(string savegamePath)
     {
         var folder = FolderOf(savegamePath);
-        return Directory.Exists(folder) && Directory.EnumerateDirectories(folder).Any();
+        return Directory.Exists(folder) ? Directory.EnumerateDirectories(folder).Count() : 0;
     }
 
     public static long TotalSize()

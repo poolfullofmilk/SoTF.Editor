@@ -20,5 +20,13 @@
          role="button"
          tabindex="-1"
          data-keyclick
-         style="@PoiStyle(poi.MapLeft, poi.MapTop, poi.IconSize, poi.IconRotation, poi.IconZIndex)" />
+         style="@PoiStyle(poi.MapLeft, poi.MapTop, poi.IconSize, poi.IconZIndex)" />
+    @if (poi is PlayerPoi)
+    {
+        <svg class="map-heading"
+             viewBox="0 0 16 12"
+             style="@HeadingStyle(poi.MapLeft, poi.MapTop, poi.IconZIndex)">
+            <polygon points="8,1.5 14.5,10.5 1.5,10.5" />
+        </svg>
+    }
 }

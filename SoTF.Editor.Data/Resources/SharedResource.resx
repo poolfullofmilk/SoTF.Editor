@@ -1062,15 +1062,6 @@
   <data name="Singleplayer" xml:space="preserve">
     <value>Singleplayer</value>
   </data>
-  <data name="CopyToSingleplayer" xml:space="preserve">
-    <value>Copy to Singleplayer</value>
-  </data>
-  <data name="CopyToSingleplayerText" xml:space="preserve">
-    <value>This world, as last saved, is copied into your singleplayer savegames. The original stays as it is</value>
-  </data>
-  <data name="CopiedToSingleplayer" xml:space="preserve">
-    <value>Copied to Singleplayer</value>
-  </data>
   <data name="UnableToCopySavegame" xml:space="preserve">
     <value>Unable to copy the savegame, see the log</value>
   </data>
@@ -2091,5 +2082,86 @@ No keeps the editor open so you can save first</value>
   </data>
   <data name="GameFollowersStay" xml:space="preserve">
     <value>The Game's Own Kelvin and Virginia Stay</value>
+  </data>
+  <data name="StartingUpdate" xml:space="preserve">
+    <value>Starting Update</value>
+  </data>
+  <data name="DownloadedOf" xml:space="preserve">
+    <value>{0} of {1}</value>
+  </data>
+  <data name="UpdatingTitle" xml:space="preserve">
+    <value>Update Running</value>
+  </data>
+  <data name="UpdatingText" xml:space="preserve">
+    <value>The editor closes by itself once the update has downloaded</value>
+  </data>
+  <data name="Duplicate" xml:space="preserve">
+    <value>Duplicate</value>
+  </data>
+  <data name="DuplicateToSingleplayer" xml:space="preserve">
+    <value>Duplicate to Singleplayer</value>
+  </data>
+  <data name="DuplicateToSingleplayerText" xml:space="preserve">
+    <value>This world, as last saved, is copied into your singleplayer savegames. The original stays as it is</value>
+  </data>
+  <data name="DuplicateToMultiplayer" xml:space="preserve">
+    <value>Duplicate to Hosted Multiplayer</value>
+  </data>
+  <data name="DuplicateToMultiplayerText" xml:space="preserve">
+    <value>This world, as last saved, is copied into your hosted multiplayer savegames. The original stays as it is</value>
+  </data>
+  <data name="SavegameDuplicated" xml:space="preserve">
+    <value>Savegame duplicated</value>
+  </data>
+  <data name="Original" xml:space="preserve">
+    <value>Original</value>
+  </data>
+  <data name="OneBackup" xml:space="preserve">
+    <value>{0} Backup</value>
+  </data>
+  <data name="BackupCount" xml:space="preserve">
+    <value>{0} Backups</value>
+  </data>
+  <data name="DeleteCopy" xml:space="preserve">
+    <value>Delete Copy</value>
+  </data>
+  <data name="DeleteCopyText" xml:space="preserve">
+    <value>This copy moves to the Recycle Bin with the game's own backups of it. Delete it while the game runs, or Steam Cloud can bring it back</value>
+  </data>
+  <data name="CopyDeleted" xml:space="preserve">
+    <value>Copy moved to the Recycle Bin</value>
+  </data>
+  <data name="UnableToDeleteCopy" xml:space="preserve">
+    <value>Unable to delete the copy, see the log</value>
+  </data>
+  <data name="SavegameGone" xml:space="preserve">
+    <value>This savegame is gone, the list is read again</value>
+  </data>
+  <data name="NearPlayer" xml:space="preserve">
+    <value>Near Player</value>
+  </data>
+  <data name="AnyDistance" xml:space="preserve">
+    <value>Any Distance</value>
+  </data>
+  <data name="CompareSavegames" xml:space="preserve">
+    <value>Compare Savegames</value>
+  </data>
+  <data name="CompareWith" xml:space="preserve">
+    <value>Compare With</value>
+  </data>
+  <data name="CompareFromTo" xml:space="preserve">
+    <value>What changed from {0} to {1}</value>
+  </data>
+  <data name="SavegamesSame" xml:space="preserve">
+    <value>Both savegames are the same</value>
+  </data>
+  <data name="ExportZip" xml:space="preserve">
+    <value>Export as Zip</value>
+  </data>
+  <data name="SavegameExported" xml:space="preserve">
+    <value>Savegame exported</value>
+  </data>
+  <data name="UnableToExport" xml:space="preserve">
+    <value>Unable to export the savegame, see the log</value>
   </data>
 </root>

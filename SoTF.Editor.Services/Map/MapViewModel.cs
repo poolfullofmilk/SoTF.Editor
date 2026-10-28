@@ -12,6 +12,12 @@ namespace SoTF.Editor.Services.Map;
 
 public class MapViewModel
 {
+    private const float MinimumZiplineMetres = 2;
+
+    // A Stack's Screen Spread: Enough To Part, Then The Goal
+    private const float StackApartPixels = 8;
+    private const float StackSpreadPixels = 48;
+
     // What The Map Shows Before Any Choice, And After Reset
     private static readonly HashSet<string> s_defaultGroups =
     [
@@ -86,6 +92,17 @@ public class MapViewModel
     // An Anchor Move Or New Zipline Waiting For Its Spot
     public BasePoi? PickFrom { get; private set; }
     public bool PicksNewZipline { get; private set; }
+
+    // The Fixed End: The Pick, Or A Moved Anchor's Partner
+    public BasePoi? PickLineStart =>
+        PickFrom switch
+        {
+            ZipPointPoi { Parent: { } zipline } anchor when !PicksNewZipline => zipline.PointA
+            == anchor
+                ? zipline.PointB
+                : zipline.PointA,
+            var from => from,
+        };
 
     public Position? FocusPosition { get; set; }
 
@@ -215,9 +232,9 @@ public class MapViewModel
                 continue;
             }
 
-            var before = (point.MapLeft, point.MapTop, point.IconRotation);
+            var before = (point.MapLeft, point.MapTop);
             point.Position = livePosition;
-            if (before != (point.MapLeft, point.MapTop, point.IconRotation))
+            if (before != (point.MapLeft, point.MapTop))
             {
                 PointsVersion++;
             }
@@ -330,7 +347,7 @@ public class MapViewModel
         poi?.IsSelected = true;
     }
 
-    public void Click(float left, float top, float zoom, bool spotOnly)
+    public float? Click(float left, float top, float zoom, bool spotOnly, float maxZoom = 1)
     {
         // Icons Under The Pointer, Topmost First, At Screen Size
         List<BasePoi> hits = spotOnly
@@ -351,13 +368,34 @@ public class MapViewModel
         // A Waiting Zipline Takes The Point Clicked, Or The Spot
         if (PickFrom is { } from)
         {
+            var spot =
+                hits.FirstOrDefault(poi =>
+                    poi != from && poi != PickLineStart && poi.Position != null
+                )?.Position
+                ?? SpotAt(left, top);
+
+            // Both Ends On One Spot Is No Zipline, Keep Waiting
+            if (PickLineStart?.Position?.GroundDistanceTo(spot) < MinimumZiplineMetres)
+            {
+                return null;
+            }
+
             PickFrom = null;
-            Place(
-                from,
-                hits.FirstOrDefault(poi => poi != from && poi.Position != null)?.Position
-                    ?? SpotAt(left, top)
-            );
-            return;
+            Place(from, spot);
+            return null;
+        }
+
+        // Spread Points Part When Closer, Only Twins Need The List
+        var spread =
+            hits.Count > 1
+                ? Math.Max(
+                    hits.Max(poi => poi.MapLeft) - hits.Min(poi => poi.MapLeft),
+                    hits.Max(poi => poi.MapTop) - hits.Min(poi => poi.MapTop)
+                )
+                : 0;
+        if (zoom < maxZoom && spread * maxZoom >= StackApartPixels)
+        {
+            return Math.Min(Math.Max(zoom * 2, StackSpreadPixels / spread), maxZoom);
         }
 
         SelectPoi(
@@ -372,6 +410,7 @@ public class MapViewModel
             }
         );
         StackedPois = hits.Count > 1 ? hits : [];
+        return null;
     }
 
     public void TogglePick(BasePoi from, bool newZipline)
@@ -479,6 +518,7 @@ public class MapViewModel
 
     public void ApplyFilterToAllPois()
     {
+        MapFilter.PlayerPosition = _playerPage.PlayerState.Pos;
         foreach (var poi in AllPois())
         {
             poi.ApplyFilter(MapFilter);

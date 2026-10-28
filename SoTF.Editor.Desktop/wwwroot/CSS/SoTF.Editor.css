@@ -47,6 +47,7 @@
     --side-width: clamp(280px, 24vw, 400px);
     --glass-opacity: 66%;
     --glass-blur: blur(12px);
+    --map-edge: color-mix(in srgb, var(--mud-palette-black) 50%, transparent);
     --row-hover-amount: 12%;
     --row-hover: color-mix(in srgb, var(--mud-palette-black) var(--row-hover-amount), transparent);
     --row-selected: color-mix(in srgb, var(--mud-palette-black) 18%, transparent);
@@ -637,6 +638,13 @@ html, body {
     outline-offset: -2px;
 }
 
+/* Card Chips Sit On The Picture's Top Right */
+.savegame-chips {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+}
+
 /* Savegame Thumbnails Keep The Game's Wide Ratio */
 .savegame-thumb {
     width: 100%;
@@ -690,20 +698,38 @@ html, body {
     width: 32px;
     height: 32px;
     z-index: 100;
-    transform: translate(-50%, -50%) scale(calc(1 / var(--map-zoom, 1))) rotate(var(--rotation, 0deg));
+    transform: translate(-50%, -50%) scale(calc(1 / var(--map-zoom, 1)));
     cursor: pointer;
 }
 
-/* A Picked Icon's Ring Covers Its Rim, No Gap Shows */
+/* A Small Wedge Just Outside The Player Icon Shows Where They Looked */
+.map-heading {
+    position: absolute;
+    width: 16px;
+    height: 12px;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(calc(1 / var(--map-zoom, 1))) rotate(var(--heading)) translateY(-23px);
+}
+
+    /* Edged Like The Icons, So It Reads On Snow */
+    .map-heading polygon {
+        fill: var(--mud-palette-info);
+        stroke: var(--map-edge);
+        stroke-width: 1.5px;
+        stroke-linejoin: round;
+    }
+
+/* A Picked Icon's Ring Covers Its Rim, A Black Edge Outside */
 .map-ring {
     position: absolute;
     width: 36px;
     height: 36px;
     border: 3px solid var(--mud-palette-info);
     border-radius: 50%;
+    box-shadow: 0 0 0 2px var(--map-edge);
     transform: translate(-50%, -50%) scale(calc(1 / var(--map-zoom, 1)));
     pointer-events: none;
-    animation: pick-flash 2.4s ease-in-out infinite;
+    animation: pick-flash 1.6s ease-in-out infinite;
 }
 
 /* Solid, Then A Quick Dip, Opacity Alone For The Compositor */
@@ -765,7 +791,7 @@ html, body {
     }
 
     .map-zipline-pick {
-        animation: pick-flash 2.4s ease-in-out infinite;
+        animation: pick-flash 1.6s ease-in-out infinite;
     }
 
     /* A Waiting Zipline Runs Dashed Blue To The Cursor */

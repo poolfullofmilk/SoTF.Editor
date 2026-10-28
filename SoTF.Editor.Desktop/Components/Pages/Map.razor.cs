@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using MudBlazor;
+using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models.Map;
 using SoTF.Editor.Desktop.Components.Shared.Common;
 using SoTF.Editor.Services.Map;
@@ -53,7 +54,13 @@ public partial class Map : EditorPageBase
     private bool HasFilters =>
         MapViewModel.MapFilter.AreaFilter != AreaFilter.All
         || MapViewModel.MapFilter.RequirementsFilter != MapFilter.RequirementsFilterType.All
-        || MapViewModel.MapFilter.ShowOnlyUncollectedItems;
+        || MapViewModel.MapFilter.ShowOnlyUncollectedItems
+        || MapViewModel.MapFilter.NearPlayerMetres > 0;
+
+    private static string NearPlayerName(int metres)
+    {
+        return metres > 0 ? Formatter.FormatDistance(metres) : AppText.Get("AnyDistance");
+    }
 
     private static string? CheckOf(bool selected)
     {
@@ -100,28 +107,19 @@ public partial class Map : EditorPageBase
         // JS Knows The Camera, Right Click Wants Only The Spot
         if (
             await JavaScript.InvokeAsync<float[]?>("sotfMap.toMap", args.ClientX, args.ClientY)
-            is [var left, var top, var zoom]
+                is [var left, var top, var zoom, var maxZoom]
+            && MapViewModel.Click(left, top, zoom, args.Button == 2, maxZoom) is { } closer
         )
         {
-            MapViewModel.Click(left, top, zoom, args.Button == 2);
+            await JavaScript.InvokeVoidAsync("sotfMap.zoomTo", left, top, closer);
         }
     }
 
     // A Move Hangs From The Other Anchor
-    private BasePoi? PickLineStart()
-    {
-        return MapViewModel.PickFrom switch
-        {
-            ZipPointPoi { Parent: { } zipline } anchor when !MapViewModel.PicksNewZipline =>
-                zipline.PointA == anchor ? zipline.PointB : zipline.PointA,
-            var from => from,
-        };
-    }
-
     private async Task SyncPreviewAsync()
     {
         // JS Moves The Preview With The Cursor
-        var start = PickLineStart();
+        var start = MapViewModel.PickLineStart;
         if (start == _previewStart)
         {
             return;
@@ -292,6 +290,12 @@ public partial class Map : EditorPageBase
     private void SetRequirementsFilter(MapFilter.RequirementsFilterType requirementsFilter)
     {
         MapViewModel.MapFilter.RequirementsFilter = requirementsFilter;
+        MapViewModel.ApplyFilterToAllPois();
+    }
+
+    private void SetNearPlayer(int metres)
+    {
+        MapViewModel.MapFilter.NearPlayerMetres = metres;
         MapViewModel.ApplyFilterToAllPois();
     }
 

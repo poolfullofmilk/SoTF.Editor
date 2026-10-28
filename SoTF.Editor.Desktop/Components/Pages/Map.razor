@@ -10,8 +10,9 @@
         <MudElement HtmlTag="div"
                     Class="side-panel fill-column">
             <MudPaper Elevation="4"
-                      Class="rounded-panel pa-4 overflow-y-auto fit">
-                <MudStack Spacing="3">
+                      Class="rounded-panel pa-4 fit d-flex flex-column">
+                <MudStack Spacing="3"
+                          Class="fill-column fit">
                     @* Point Search *@
                     <SearchField Value="@MapViewModel.MapFilter.FullText"
                                  ValueChanged="SetFullText"
@@ -32,7 +33,7 @@
                         </MudStack>
                         @* Search Results *@
                         <MudPaper Elevation="0"
-                                  Class="inset rounded-panel panel-flush overflow-y-auto"
+                                  Class="inset rounded-panel panel-flush overflow-y-auto flex-shrink-0"
                                   Style="max-height:240px">
                             @if (results.Count == 0)
                             {
@@ -127,6 +128,16 @@
                                             </MudMenuItem>
                                         }
                                     </MudMenu>
+                                    @* Near Player Menu *@
+                                    <MudMenu Label="@($"{AppText.Get("NearPlayer")}: {NearPlayerName(MapViewModel.MapFilter.NearPlayerMetres)}")">
+                                        @foreach (var metres in MapFilter.NearPlayerChoices)
+                                        {
+                                            <MudMenuItem Icon="@CheckOf(metres == MapViewModel.MapFilter.NearPlayerMetres)"
+                                                         OnClick="() => SetNearPlayer(metres)">
+                                                @NearPlayerName(metres)
+                                            </MudMenuItem>
+                                        }
+                                    </MudMenu>
                                     @* Uncollected Only *@
                                     <MudMenuItem Icon="@(MapViewModel.MapFilter.ShowOnlyUncollectedItems ? Icons.Material.Rounded.CheckBox : Icons.Material.Rounded.CheckBoxOutlineBlank)"
                                                  AutoClose="false"
@@ -157,7 +168,9 @@
                         </Tooltip>
                     </MudStack>
 
-                    <MudStack Spacing="0">
+                    @* Point Groups *@
+                    <MudStack Spacing="0"
+                              Class="overflow-y-auto fit">
                         @foreach (var grouper in MapViewModel.PoiGroups.OrderBy(grouper => grouper.Title))
                         {
                             @if (grouper is PoiGroupCollection collection)
@@ -265,7 +278,7 @@
                                  alt="@anchor.Title"
                                  title="@anchor.Title"
                                  class="map-poi"
-                                 style="@MapPoints.PoiStyle(anchor.MapLeft, anchor.MapTop, anchor.IconSize, anchor.IconRotation, PickedZIndex)" />
+                                 style="@MapPoints.PoiStyle(anchor.MapLeft, anchor.MapTop, anchor.IconSize, PickedZIndex)" />
                             <span class="map-ring"
                                   style="@MapPoints.RingStyle(anchor.MapLeft, anchor.MapTop, anchor.IconSize, PickedZIndex)" />
                         }
@@ -286,11 +299,11 @@
                              alt="@picked.Title"
                              title="@picked.Title"
                              class="map-poi"
-                             style="@MapPoints.PoiStyle(picked.MapLeft, picked.MapTop, picked.IconSize, picked.IconRotation, PickedZIndex)" />
+                             style="@MapPoints.PoiStyle(picked.MapLeft, picked.MapTop, picked.IconSize, PickedZIndex)" />
                         <span class="map-ring"
                               style="@MapPoints.RingStyle(picked.MapLeft, picked.MapTop, picked.IconSize, PickedZIndex)" />
                     }
-                    @if (PickLineStart() is { } pickStart)
+                    @if (MapViewModel.PickLineStart is { } pickStart)
                     {
                         @* Zipline Preview *@
                         <svg class="map-zipline map-pick-line idle"
@@ -303,7 +316,7 @@
                         <img src="@ZipPointPoi.IconUrl"
                              alt=""
                              class="map-poi map-pick-ghost idle"
-                             style="@MapPoints.PoiStyle(pickStart.MapLeft, pickStart.MapTop, 32, 0, GhostZIndex)" />
+                             style="@MapPoints.PoiStyle(pickStart.MapLeft, pickStart.MapTop, 32, GhostZIndex)" />
                     }
                 </MudElement>
             </MudElement>

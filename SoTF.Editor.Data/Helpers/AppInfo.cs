@@ -45,4 +45,6 @@ public static class AppInfo
         Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
         FolderName
     );
+
+    public static readonly string ExportsDirectory = Path.Combine(DocumentsDirectory, "Exports");
 }

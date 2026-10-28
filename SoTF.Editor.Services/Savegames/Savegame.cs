@@ -137,8 +137,8 @@ public partial class Savegame
 
     private SavegameSummary? ReadSummary()
     {
-        // A Store Of Its Own, Opening Reads Everything Fresh
-        var store = new SavegameStore(FullPath);
+        // Opening Reads A Fresh Savegame, This One Only Lists
+        var store = SavegameStore;
         try
         {
             var gameState = store

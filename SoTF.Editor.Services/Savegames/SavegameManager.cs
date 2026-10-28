@@ -1,12 +1,17 @@
 ﻿using System.Globalization;
+using System.IO.Compression;
+using Microsoft.VisualBasic.FileIO;
 using NLog;
+using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Services.Settings;
+using SearchOption = System.IO.SearchOption;
 
 namespace SoTF.Editor.Services.Savegames;
 
 public static class SavegameManager
 {
-    private const string SinglePlayerFolder = "SinglePlayer";
+    public const string SinglePlayerFolder = "SinglePlayer";
+    public const string MultiplayerFolder = "Multiplayer";
 
     // Ten Digits Below The Largest Int, The Game Skips Larger
     private const int FirstSaveId = 1_000_000_000;
@@ -22,24 +27,38 @@ public static class SavegameManager
             return [];
         }
 
+        // One Unreadable Folder Never Empties The Whole List
+        return
+        [
+            .. Directory
+                .EnumerateFiles(
+                    savesPath,
+                    "SaveData.*",
+                    new EnumerationOptions
+                    {
+                        RecurseSubdirectories = true,
+                        IgnoreInaccessible = true,
+                    }
+                )
+                .Select(Path.GetDirectoryName)
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .Select(TryLoad)
+                .OfType<Savegame>()
+                .OrderByDescending(savegame => savegame.LastSaveTime),
+        ];
+    }
+
+    private static Savegame? TryLoad(string? path)
+    {
         try
         {
-            return
-            [
-                .. new DirectoryInfo(savesPath)
-                    .GetFiles("SaveData.*", SearchOption.AllDirectories)
-                    .Select(file => Load(file.DirectoryName))
-                    .OfType<Savegame>()
-                    .OrderByDescending(savegame => savegame.LastSaveTime)
-                    .DistinctBy(savegame => savegame.FullPath),
-            ];
+            return Load(path);
         }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
         {
-            s_logger.Error(exception, $"Failed To Read Savegames From {savesPath}");
+            s_logger.Error(exception, $"Failed To Read Savegame {path}");
+            return null;
         }
-
-        return [];
     }
 
     public static string GetSavePath()
@@ -64,9 +83,23 @@ public static class SavegameManager
         );
     }
 
-    public static string CopyToSinglePlayer(Savegame savegame)
+    public static bool IsCopy(Savegame savegame)
     {
-        // The Steam Id Folder Gets A New SinglePlayer Save Id
+        return UserSettings.Current.CopiedSavegames.Contains(
+            savegame.FullPath,
+            StringComparer.OrdinalIgnoreCase
+        );
+    }
+
+    public static string Duplicate(Savegame savegame, string modeFolder)
+    {
+        // A Joined Save Holds No World To Play On
+        if (savegame.IsMultiPlayerClient())
+        {
+            throw new IOException($"Cannot Duplicate Joined Save {savegame.FullPath}");
+        }
+
+        // A New Save Id In That Mode's Folder
         var source = new DirectoryInfo(savegame.FullPath);
         var steamFolder =
             source.Parent?.Parent
@@ -76,7 +109,7 @@ public static class SavegameManager
         {
             target = Path.Combine(
                 steamFolder.FullName,
-                SinglePlayerFolder,
+                modeFolder,
                 Random.Shared.Next(FirstSaveId, int.MaxValue).ToString(CultureInfo.InvariantCulture)
             );
         } while (Directory.Exists(target) || File.Exists(target));
@@ -104,8 +137,70 @@ public static class SavegameManager
             throw;
         }
 
+        // Only Copies The Editor Made Can Be Deleted
+        UserSettings.Current.CopiedSavegames.Add(target);
+        UserSettings.Current.Save();
         s_logger.Info($"Copied {source.FullName} To {target}");
         return target;
+    }
+
+    public static string Export(Savegame savegame)
+    {
+        // An Export Never Overwrites, A Second One Gets A Number
+        Directory.CreateDirectory(AppInfo.ExportsDirectory);
+        var name = string.Concat(
+            savegame.Name.Select(character =>
+                Path.GetInvalidFileNameChars().Contains(character) ? '_' : character
+            )
+        );
+        var stem = Path.Combine(
+            AppInfo.ExportsDirectory,
+            $"{name} {DateTime.Now:yyyy-MM-dd HH-mm-ss}"
+        );
+        var target = stem + ".zip";
+        for (var number = 2; File.Exists(target); number++)
+        {
+            target = $"{stem} {number}.zip";
+        }
+
+        // The Save Id Folder Inside, Ready For A Mode Folder
+        ZipFile.CreateFromDirectory(
+            savegame.FullPath,
+            target,
+            CompressionLevel.Optimal,
+            includeBaseDirectory: true
+        );
+        s_logger.Info($"Exported {savegame.FullPath} To {target}");
+        return target;
+    }
+
+    public static void DeleteCopy(Savegame savegame)
+    {
+        if (!IsCopy(savegame))
+        {
+            throw new IOException($"Not A Copy {savegame.FullPath}");
+        }
+
+        // To The Recycle Bin, With The Game's Own Backups
+        var directory = new DirectoryInfo(savegame.FullPath);
+        FileSystem.DeleteDirectory(
+            directory.FullName,
+            UIOption.OnlyErrorDialogs,
+            RecycleOption.SendToRecycleBin
+        );
+        foreach (
+            var gameBackup in directory.Parent?.GetFiles($"{directory.Name}_backup_*.zip") ?? []
+        )
+        {
+            FileSystem.DeleteFile(
+                gameBackup.FullName,
+                UIOption.OnlyErrorDialogs,
+                RecycleOption.SendToRecycleBin
+            );
+        }
+
+        // Still Listed, Steam Cloud May Bring It Back
+        s_logger.Info($"Moved Copy {directory.FullName} To The Recycle Bin");
     }
 
     private static string GetSavegamePathFromAppData()

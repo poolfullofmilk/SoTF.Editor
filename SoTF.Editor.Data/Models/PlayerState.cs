@@ -23,6 +23,9 @@ public class PlayerState
 
     public Position Pos { get; set; } = new(0, 0, 0);
 
+    // Degrees From North, Clockwise Seen From Above
+    public float Heading { get; set; }
+
     public float Rest { get; set; }
 
     public float RestBuff { get; set; }
@@ -50,6 +53,7 @@ public class PlayerState
     public void Reset()
     {
         Pos = new Position(0, 0, 0);
+        Heading = 0;
         StrengthLevel = 0;
         CurrentHealth = 0;
         MaxHealth = 0;

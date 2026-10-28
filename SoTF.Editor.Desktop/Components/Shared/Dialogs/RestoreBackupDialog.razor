@@ -53,12 +53,7 @@
                             @AppText.Get("ChangesNotRecorded")
                         </MudText>
                     }
-                    @foreach (var (page, changes) in _savedChanges)
-                    {
-                        <ChangeList Icon="@IconOf(page)"
-                                    Label="@LabelOf(page)"
-                                    Changes="changes" />
-                    }
+                    <DifferenceList Changes="_savedChanges" />
                 </MudStack>
                 <MudStack Spacing="2">
                     <MudText Typo="Typo.subtitle2">@AppText.Get("DiffersFromNow")</MudText>
@@ -69,12 +64,7 @@
                             @text
                         </MudText>
                     }
-                    @foreach (var (page, changes) in OrderedDifferences)
-                    {
-                        <ChangeList Icon="@IconOf(page)"
-                                    Label="@LabelOf(page)"
-                                    Changes="changes" />
-                    }
+                    <DifferenceList Changes="@(_differences ?? [])" />
                 </MudStack>
             </MudStack>
         }

@@ -111,18 +111,13 @@ public partial class PoiDetails
                 new(AppText.Get("Coordinates"), Poi.PrintableCoordinates, Poi.Position != null),
             };
 
-            // How Far The Player Walks, Over The Ground
-            if (Poi is not PlayerPoi)
+            if (Poi is not PlayerPoi && Poi.Position is { } position)
             {
-                var player = PlayerPage.PlayerState.Pos;
                 details.Add(
                     new(
                         AppText.Get("Distance"),
                         Formatter.FormatDistance(
-                            MathF.Sqrt(
-                                (Poi.X - player.X) * (Poi.X - player.X)
-                                    + (Poi.Z - player.Z) * (Poi.Z - player.Z)
-                            )
+                            position.GroundDistanceTo(PlayerPage.PlayerState.Pos)
                         )
                     )
                 );

@@ -54,6 +54,14 @@ public class MainViewModel(
 
     public event Action<Savegame>? OpenRequested;
 
+    // A Card's Backups Chip, The Layout Opens And Restores
+    public event Action<Savegame>? RestoreRequested;
+
+    public void RequestRestore(Savegame savegame)
+    {
+        RestoreRequested?.Invoke(savegame);
+    }
+
     public void NotifyChanged()
     {
         Changed?.Invoke();
@@ -421,14 +429,15 @@ public class MainViewModel(
 
     public bool SaveChanges(Dictionary<string, List<Change>>? changes = null)
     {
-        if (SelectedSavegame is not { } selectedSavegame)
+        if (SelectedSavegame is not { } selectedSavegame || !HasUnsavedChanges())
         {
             return false;
         }
 
         // Only Content That Differs From The Load Is Written
+        selectedSavegame.SavegameStore.BackUpLoaded(changes);
         MergePages(selectedSavegame);
-        var hasChanges = selectedSavegame.SavegameStore.SaveAllModified(changes);
+        var hasChanges = selectedSavegame.SavegameStore.SaveAllModified();
 
         if (hasChanges)
         {

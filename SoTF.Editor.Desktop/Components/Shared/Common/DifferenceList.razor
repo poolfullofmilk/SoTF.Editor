@@ -1,0 +1,6 @@
+@foreach (var (page, changes) in Ordered)
+{
+    <ChangeList Icon="@IconOf(page)"
+                Label="@LabelOf(page)"
+                Changes="changes" />
+}

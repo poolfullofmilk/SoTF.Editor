@@ -108,11 +108,11 @@ window.sotfMap = (() => {
         }
     };
 
-    // A Click In Map Pixels, Plus The Zoom
+    // A Click In Map Pixels, Plus The Zoom And How Far It Goes
     const toMap = (clientX, clientY) => {
         if (!state) return null;
         const bounds = state.viewport.getBoundingClientRect();
-        return [(clientX - bounds.left - state.x) / state.zoom, (clientY - bounds.top - state.y) / state.zoom, state.zoom];
+        return [(clientX - bounds.left - state.x) / state.zoom, (clientY - bounds.top - state.y) / state.zoom, state.zoom, maxZoom];
     };
 
     // A Waiting Zipline Follows The Cursor, Hidden Off The Map
@@ -350,6 +350,13 @@ window.sotfMap = (() => {
         placePreview();
     };
 
+    // A Stack Glides In, Centred, Until Its Points Part
+    const zoomTo = (mapX, mapY, zoom) => {
+        if (!state) return;
+        state.fitted = false;
+        glideTo(state.viewport.clientWidth / 2 - mapX * zoom, state.viewport.clientHeight / 2 - mapY * zoom, zoom);
+    };
+
     const zoomBy = (factor) => {
         if (!state) return;
         zoomAt(state.viewport.clientWidth / 2, state.viewport.clientHeight / 2, factor);
@@ -361,5 +368,5 @@ window.sotfMap = (() => {
         glideTo(x, y, zoom);
     };
 
-    return { init, centerOn, toMap, zoomBy, reset, preview };
+    return { init, centerOn, toMap, zoomTo, zoomBy, reset, preview };
 })();

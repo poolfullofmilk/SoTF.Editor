@@ -32,6 +32,18 @@ public class MapFilter
 
     public bool ShowOnlyUncollectedItems { get; set; }
 
+    // Zero Means Any Distance, The Map Sets The Player
+    public static readonly int[] NearPlayerChoices = [0, 100, 250, 500, 1000];
+    public int NearPlayerMetres { get; set; }
+    public Position? PlayerPosition { get; set; }
+
+    public bool IsFarFromPlayer(float x, float z)
+    {
+        return NearPlayerMetres > 0
+            && PlayerPosition is { } player
+            && new Position(x, 0, z).GroundDistanceTo(player) > NearPlayerMetres;
+    }
+
     public string? NormalizedLowercaseFullText { get; private set; }
 
     public string? FullText
@@ -52,6 +64,7 @@ public class MapFilter
         AreaFilter = Map.AreaFilter.All;
         RequirementsFilter = RequirementsFilterType.All;
         ShowOnlyUncollectedItems = false;
+        NearPlayerMetres = 0;
         FullText = null;
     }
 }

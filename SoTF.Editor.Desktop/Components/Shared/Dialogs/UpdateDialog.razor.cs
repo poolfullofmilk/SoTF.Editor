@@ -35,6 +35,23 @@ public partial class UpdateDialog
     private bool _isInstalling;
     private List<string> _notes = [];
 
+    // Bytes So Far, Zero Total While No Length Is Sent
+    private long _received;
+    private long _total;
+    private int _percent;
+
+    private string ProgressText =>
+        _total > 0 && _received >= _total ? AppText.Get("StartingUpdate")
+        : _total > 0
+            ? AppText.Format(
+                "DownloadedOf",
+                Formatter.FormatSize(_received),
+                Formatter.FormatSize(_total)
+            )
+        : Formatter.FormatSize(_received);
+
+    private static MainWindow? Window => Application.Current.MainWindow as MainWindow;
+
     protected override async Task OnInitializedAsync()
     {
         _notes = await Updater.NotesAsync(Release.Tag);
@@ -66,13 +83,16 @@ public partial class UpdateDialog
 
         // A Running Update Cannot Be Closed Halfway
         _isInstalling = true;
+        Window?.IsUpdating = true;
         await SetClosableAsync(false);
         try
         {
-            Updater.Launch(await Updater.DownloadAsync(Release));
+            Updater.Launch(
+                await Updater.DownloadAsync(Release, new Progress<(long, long)>(ShowProgress))
+            );
 
             // The New Exe Waits, Edits Were Already Discarded
-            if (Application.Current.MainWindow is MainWindow window)
+            if (Window is { } window)
             {
                 window.ClosesWithoutAsking = true;
                 _ = window.Dispatcher.BeginInvoke(window.Close);
@@ -105,6 +125,28 @@ public partial class UpdateDialog
             _isInstalling = false;
             await SetClosableAsync(true);
         }
+        finally
+        {
+            Window?.IsUpdating = false;
+        }
+    }
+
+    private void ShowProgress((long Received, long Total) progress)
+    {
+        // Redraws Once Per Percent, Not Per Chunk
+        var (received, total) = progress;
+        var percent = total > 0 ? (int)(received * 100 / total) : 0;
+        var moved =
+            total != _total || (total > 0 ? percent != _percent : received - _received >= 1048576);
+        if (!moved)
+        {
+            return;
+        }
+
+        _received = received;
+        _total = total;
+        _percent = percent;
+        _ = InvokeAsync(StateHasChanged);
     }
 
     private Task SetClosableAsync(bool closable)

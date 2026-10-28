@@ -134,13 +134,19 @@ public class SavegameStore
         );
     }
 
-    public bool SaveAllModified(Dictionary<string, List<Change>>? changes = null)
+    public void BackUpLoaded(Dictionary<string, List<Change>>? changes)
     {
-        return SaveWrappers(
+        // Pages Merge After This, So A Failure Merges Nothing
+        CheckFilesExist(_rawData.Where(pair => pair.Value != null).Select(pair => pair.Key));
+        BackupManager.Create(_path, changes);
+    }
+
+    public bool SaveAllModified()
+    {
+        return Write(
             _rawData
-                .Where(pair => pair.Value != null)
-                .ToDictionary(pair => pair.Key, pair => pair.Value!),
-            changes
+                .Where(pair => pair.Value?.HasModified() == true)
+                .ToDictionary(pair => pair.Key, pair => pair.Value!)
         );
     }
 
@@ -152,24 +158,39 @@ public class SavegameStore
         var changedWrappers = wrappers
             .Where(pair => pair.Value.HasModified())
             .ToDictionary(pair => pair.Key, pair => pair.Value);
-        if (changedWrappers.Count == 0)
+        if (changedWrappers.Count > 0)
         {
-            s_logger.Info("Found No Changes");
-            return false;
+            CheckFilesExist(changedWrappers.Keys);
+
+            // Nothing Is Written Until A Verified Copy Exists
+            BackupManager.Create(_path, changes);
         }
 
+        return Write(changedWrappers);
+    }
+
+    private void CheckFilesExist(IEnumerable<FileType> fileTypes)
+    {
         // A File Gone Since Loading Fails Before Any Write
         var archivePath = ResolvePath(FileType.SaveDataArchive.GetFilename());
-        foreach (var fileName in changedWrappers.Keys.Select(fileType => fileType.GetFilename()))
+        foreach (var fileName in fileTypes.Select(fileType => fileType.GetFilename()))
         {
             if (!File.Exists(ResolvePath(fileName)) && !File.Exists(archivePath))
             {
                 throw new IOException($"Found No {fileName} To Write");
             }
         }
+    }
 
-        // Nothing Is Written Until A Verified Copy Exists
-        BackupManager.Create(_path, changes);
+    private bool Write(Dictionary<FileType, SaveDataWrapper> changedWrappers)
+    {
+        if (changedWrappers.Count == 0)
+        {
+            s_logger.Info("Found No Changes");
+            return false;
+        }
+
+        var archivePath = ResolvePath(FileType.SaveDataArchive.GetFilename());
 
         var archiveEntries = new List<(string FileName, string Json)>();
         foreach (var (fileType, saveDataWrapper) in changedWrappers)

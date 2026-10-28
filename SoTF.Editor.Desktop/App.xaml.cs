@@ -114,8 +114,8 @@ public partial class App : Application
                 .Position
                 .BottomRight;
 
-            // Solid With A Quick Fade, The Defaults Looked See-Through
-            configuration.SnackbarConfiguration.MaximumOpacity = 100;
+            // Barely See-Through With A Quick Fade
+            configuration.SnackbarConfiguration.MaximumOpacity = 92;
             configuration.SnackbarConfiguration.ShowTransitionDuration = 200;
             configuration.SnackbarConfiguration.HideTransitionDuration = 250;
         });

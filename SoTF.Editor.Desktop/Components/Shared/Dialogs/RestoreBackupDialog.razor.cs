@@ -4,7 +4,7 @@ using NLog;
 using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.ViewModels;
-using SoTF.Editor.Desktop.Components.Layout;
+using SoTF.Editor.Desktop.Components.Shared.Common;
 using SoTF.Editor.Services.Savegames;
 
 namespace SoTF.Editor.Desktop.Components.Shared.Dialogs;
@@ -37,11 +37,6 @@ public partial class RestoreBackupDialog
     private Dictionary<string, List<Change>> _savedChanges = [];
     private Dictionary<string, List<Change>>? _differences;
 
-    // Pages In Menu Order, Other Files Last
-    private IEnumerable<KeyValuePair<string, List<Change>>> OrderedDifferences =>
-        (_differences ?? []).OrderBy(pair =>
-            PageOf(pair.Key) is { } link ? MainLayout.Pages.ToList().IndexOf(link) : int.MaxValue
-        );
     private bool _compareFailed;
 
     private string? DifferencesText
@@ -73,12 +68,7 @@ public partial class RestoreBackupDialog
         try
         {
             var differences = await Task.Run(() =>
-                BackupDiff.Describe(
-                    SavegamePath,
-                    backup.Path,
-                    GameData,
-                    key => AppText.Get(Pages.Game.SetupLabelKey(key), BackupDiff.Words(key))
-                )
+                DifferenceList.Describe(SavegamePath, backup.Path, GameData)
             );
             if (_selected == backup)
             {
@@ -91,27 +81,6 @@ public partial class RestoreBackupDialog
             s_logger.Warn(exception, "Failed To Compare Backup");
             _compareFailed = _selected == backup;
         }
-    }
-
-    private static MainLayout.PageLink? PageOf(string href)
-    {
-        return MainLayout.Pages.FirstOrDefault(link => link.Href == href);
-    }
-
-    private static string LabelOf(string href)
-    {
-        return PageOf(href) is { } link ? AppText.Get(link.LabelKey) : AppText.Get(href, href);
-    }
-
-    // Restores And Other Files Are No Page, Own Icons
-    private static string? IconOf(string href)
-    {
-        return href switch
-        {
-            BackupManager.RestoreKey => Icons.Material.Rounded.Restore,
-            BackupDiff.FilesKey => Icons.Material.Rounded.Description,
-            _ => PageOf(href)?.Icon,
-        };
     }
 
     // Measured Once, Every Row Click Renders Again

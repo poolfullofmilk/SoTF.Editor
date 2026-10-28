@@ -15,6 +15,7 @@ public class PlayerPageViewModel
 {
     private const string PlayerPositionEntry = "player.position";
     private const string PlayerAreaMaskEntry = "player.areaMask";
+    private const string PlayerRotationEntry = "player.rotation";
     private const string StrengthLevelEntry = "StrengthLevel";
     private const string SicknessEntry = "Sickness";
     private const string CurrentHealthEntry = "CurrentHealth";
@@ -211,6 +212,13 @@ public class PlayerPageViewModel
                     break;
                 case PlayerAreaMaskEntry:
                     areaMask = SettingEntry.ReadInt(entry) ?? 0;
+                    break;
+                case PlayerRotationEntry
+                    when entry[FloatArrayValue]?.ToObject<float[]>()
+                        is [var x, var y, var z, var w]:
+                    // Unity's Quaternion Turned Into A Turn About The Up Axis
+                    PlayerState.Heading =
+                        MathF.Atan2(2 * (w * y + x * z), 1 - 2 * (x * x + y * y)) * 180 / MathF.PI;
                     break;
                 case StrengthLevelEntry:
                     PlayerState.StrengthLevel = SettingEntry.ReadInt(entry) ?? 0;

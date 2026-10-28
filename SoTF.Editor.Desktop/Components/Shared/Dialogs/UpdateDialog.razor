@@ -26,6 +26,32 @@
                     }
                 </MudStack>
             }
+            @if (_isInstalling)
+            {
+                @* Download Progress *@
+                <MudStack Spacing="1"
+                          Class="mt-2">
+                    <MudProgressLinear Color="Color.Info"
+                                       Value="@_percent"
+                                       Indeterminate="@(_total == 0)"
+                                       Rounded
+                                       Size="Size.Medium" />
+                    <MudStack Row
+                              Justify="Justify.SpaceBetween">
+                        <MudText Typo="Typo.caption"
+                                 Class="mud-text-secondary">
+                            @ProgressText
+                        </MudText>
+                        @if (_total > 0)
+                        {
+                            <MudText Typo="Typo.caption"
+                                     Class="mud-text-secondary">
+                                @($"{_percent}%")
+                            </MudText>
+                        }
+                    </MudStack>
+                </MudStack>
+            }
         </MudStack>
     </DialogContent>
     <DialogActions>
@@ -34,13 +60,6 @@
                    Color="Color.Info"
                    StartIcon="@(_isInstalling ? null : Icons.Material.Rounded.SystemUpdateAlt)"
                    OnClick="InstallAsync">
-            @if (_isInstalling)
-            {
-                <MudProgressCircular Color="Color.Inherit"
-                                     Indeterminate
-                                     Class="mr-2"
-                                     Style="width:16px;height:16px" />
-            }
             @(_isInstalling ? AppText.Get("Downloading") : AppText.Get("UpdateNow"))
         </MudButton>
     </DialogActions>

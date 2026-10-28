@@ -17,6 +17,9 @@ public class UserSettings
     public string Language { get; set; } = AppText.DefaultCulture;
     public HashSet<string>? SelectedMapGroups { get; set; }
 
+    // Savegames The Editor Duplicated, The Only Ones It Deletes
+    public List<string> CopiedSavegames { get; set; } = [];
+
     private static UserSettings Load()
     {
         try

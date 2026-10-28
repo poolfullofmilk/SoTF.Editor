@@ -1062,15 +1062,6 @@
   <data name="Singleplayer" xml:space="preserve">
     <value>Tek Oyunculu</value>
   </data>
-  <data name="CopyToSingleplayer" xml:space="preserve">
-    <value>Tek Oyunculuya Kopyala</value>
-  </data>
-  <data name="CopyToSingleplayerText" xml:space="preserve">
-    <value>Bu dünya, son kaydedildiği hâliyle tek oyunculu kayıtlarınıza kopyalanır. Orijinal olduğu gibi kalır</value>
-  </data>
-  <data name="CopiedToSingleplayer" xml:space="preserve">
-    <value>Tek Oyunculuya Kopyalandı</value>
-  </data>
   <data name="UnableToCopySavegame" xml:space="preserve">
     <value>Kayıt kopyalanamadı, günlüğe bakın</value>
   </data>
@@ -2091,5 +2082,86 @@ Hayır düzenleyiciyi açık tutar, böylece önce kaydedebilirsiniz</value>
   </data>
   <data name="GameFollowersStay" xml:space="preserve">
     <value>Oyunun Kendi Kelvin ve Virginia'sı Kalır</value>
+  </data>
+  <data name="StartingUpdate" xml:space="preserve">
+    <value>Güncelleme Başlatılıyor</value>
+  </data>
+  <data name="DownloadedOf" xml:space="preserve">
+    <value>{0} / {1}</value>
+  </data>
+  <data name="UpdatingTitle" xml:space="preserve">
+    <value>Güncelleme Sürüyor</value>
+  </data>
+  <data name="UpdatingText" xml:space="preserve">
+    <value>Güncelleme indirildiğinde düzenleyici kendiliğinden kapanır</value>
+  </data>
+  <data name="Duplicate" xml:space="preserve">
+    <value>Çoğalt</value>
+  </data>
+  <data name="DuplicateToSingleplayer" xml:space="preserve">
+    <value>Tek Oyunculuya Çoğalt</value>
+  </data>
+  <data name="DuplicateToSingleplayerText" xml:space="preserve">
+    <value>Bu dünya, son kaydedildiği hâliyle tek oyunculu kayıtlarınıza kopyalanır. Orijinal olduğu gibi kalır</value>
+  </data>
+  <data name="DuplicateToMultiplayer" xml:space="preserve">
+    <value>Kurduğunuz Çok Oyunculuya Çoğalt</value>
+  </data>
+  <data name="DuplicateToMultiplayerText" xml:space="preserve">
+    <value>Bu dünya, son kaydedildiği hâliyle kurduğunuz çok oyunculu kayıtlarınıza kopyalanır. Orijinal olduğu gibi kalır</value>
+  </data>
+  <data name="SavegameDuplicated" xml:space="preserve">
+    <value>Kayıt çoğaltıldı</value>
+  </data>
+  <data name="Original" xml:space="preserve">
+    <value>Orijinal</value>
+  </data>
+  <data name="OneBackup" xml:space="preserve">
+    <value>{0} Yedek</value>
+  </data>
+  <data name="BackupCount" xml:space="preserve">
+    <value>{0} Yedek</value>
+  </data>
+  <data name="DeleteCopy" xml:space="preserve">
+    <value>Kopyayı Sil</value>
+  </data>
+  <data name="DeleteCopyText" xml:space="preserve">
+    <value>Bu kopya, oyunun ona ait yedekleriyle birlikte Geri Dönüşüm Kutusu'na taşınır. Oyun açıkken silin, yoksa Steam Cloud onu geri getirebilir</value>
+  </data>
+  <data name="CopyDeleted" xml:space="preserve">
+    <value>Kopya Geri Dönüşüm Kutusu'na taşındı</value>
+  </data>
+  <data name="UnableToDeleteCopy" xml:space="preserve">
+    <value>Kopya silinemedi, günlüğe bakın</value>
+  </data>
+  <data name="SavegameGone" xml:space="preserve">
+    <value>Bu kayıt artık yok, liste yeniden okunuyor</value>
+  </data>
+  <data name="NearPlayer" xml:space="preserve">
+    <value>Oyuncuya Yakın</value>
+  </data>
+  <data name="AnyDistance" xml:space="preserve">
+    <value>Her Mesafe</value>
+  </data>
+  <data name="CompareSavegames" xml:space="preserve">
+    <value>Kayıtları Karşılaştır</value>
+  </data>
+  <data name="CompareWith" xml:space="preserve">
+    <value>Şununla Karşılaştır</value>
+  </data>
+  <data name="CompareFromTo" xml:space="preserve">
+    <value>{0} ile {1} arasındaki farklar</value>
+  </data>
+  <data name="SavegamesSame" xml:space="preserve">
+    <value>İki kayıt aynı</value>
+  </data>
+  <data name="ExportZip" xml:space="preserve">
+    <value>Zip Olarak Dışa Aktar</value>
+  </data>
+  <data name="SavegameExported" xml:space="preserve">
+    <value>Kayıt dışa aktarıldı</value>
+  </data>
+  <data name="UnableToExport" xml:space="preserve">
+    <value>Kayıt dışa aktarılamadı, günlüğe bakın</value>
   </data>
 </root>

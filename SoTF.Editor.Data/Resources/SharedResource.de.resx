@@ -1062,15 +1062,6 @@
   <data name="Singleplayer" xml:space="preserve">
     <value>Einzelspieler</value>
   </data>
-  <data name="CopyToSingleplayer" xml:space="preserve">
-    <value>In Einzelspieler Kopieren</value>
-  </data>
-  <data name="CopyToSingleplayerText" xml:space="preserve">
-    <value>Diese Welt wird, wie zuletzt gespeichert, in deine Einzelspieler-Spielstände kopiert. Das Original bleibt, wie es ist</value>
-  </data>
-  <data name="CopiedToSingleplayer" xml:space="preserve">
-    <value>In Einzelspieler Kopiert</value>
-  </data>
   <data name="UnableToCopySavegame" xml:space="preserve">
     <value>Der Spielstand konnte nicht kopiert werden, siehe das Protokoll</value>
   </data>
@@ -2091,5 +2082,86 @@ Nein lässt den Editor offen, damit du zuerst speichern kannst</value>
   </data>
   <data name="GameFollowersStay" xml:space="preserve">
     <value>Kelvin und Virginia des Spiels Bleiben</value>
+  </data>
+  <data name="StartingUpdate" xml:space="preserve">
+    <value>Update Wird Gestartet</value>
+  </data>
+  <data name="DownloadedOf" xml:space="preserve">
+    <value>{0} von {1}</value>
+  </data>
+  <data name="UpdatingTitle" xml:space="preserve">
+    <value>Update Läuft</value>
+  </data>
+  <data name="UpdatingText" xml:space="preserve">
+    <value>Der Editor schließt sich von selbst, sobald das Update heruntergeladen ist</value>
+  </data>
+  <data name="Duplicate" xml:space="preserve">
+    <value>Duplizieren</value>
+  </data>
+  <data name="DuplicateToSingleplayer" xml:space="preserve">
+    <value>In Einzelspieler Duplizieren</value>
+  </data>
+  <data name="DuplicateToSingleplayerText" xml:space="preserve">
+    <value>Diese Welt wird, wie zuletzt gespeichert, in deine Einzelspieler-Spielstände kopiert. Das Original bleibt, wie es ist</value>
+  </data>
+  <data name="DuplicateToMultiplayer" xml:space="preserve">
+    <value>In Mehrspieler als Host Duplizieren</value>
+  </data>
+  <data name="DuplicateToMultiplayerText" xml:space="preserve">
+    <value>Diese Welt wird, wie zuletzt gespeichert, in deine Mehrspieler-Spielstände als Host kopiert. Das Original bleibt, wie es ist</value>
+  </data>
+  <data name="SavegameDuplicated" xml:space="preserve">
+    <value>Spielstand dupliziert</value>
+  </data>
+  <data name="Original" xml:space="preserve">
+    <value>Original</value>
+  </data>
+  <data name="OneBackup" xml:space="preserve">
+    <value>{0} Backup</value>
+  </data>
+  <data name="BackupCount" xml:space="preserve">
+    <value>{0} Backups</value>
+  </data>
+  <data name="DeleteCopy" xml:space="preserve">
+    <value>Kopie Löschen</value>
+  </data>
+  <data name="DeleteCopyText" xml:space="preserve">
+    <value>Diese Kopie wandert mit den eigenen Backups des Spiels in den Papierkorb. Lösche sie, während das Spiel läuft, sonst kann Steam Cloud sie zurückbringen</value>
+  </data>
+  <data name="CopyDeleted" xml:space="preserve">
+    <value>Kopie in den Papierkorb verschoben</value>
+  </data>
+  <data name="UnableToDeleteCopy" xml:space="preserve">
+    <value>Die Kopie konnte nicht gelöscht werden, siehe das Protokoll</value>
+  </data>
+  <data name="SavegameGone" xml:space="preserve">
+    <value>Dieser Spielstand ist weg, die Liste wird neu gelesen</value>
+  </data>
+  <data name="NearPlayer" xml:space="preserve">
+    <value>Nahe am Spieler</value>
+  </data>
+  <data name="AnyDistance" xml:space="preserve">
+    <value>Jede Entfernung</value>
+  </data>
+  <data name="CompareSavegames" xml:space="preserve">
+    <value>Spielstände Vergleichen</value>
+  </data>
+  <data name="CompareWith" xml:space="preserve">
+    <value>Vergleichen Mit</value>
+  </data>
+  <data name="CompareFromTo" xml:space="preserve">
+    <value>Was sich von {0} zu {1} geändert hat</value>
+  </data>
+  <data name="SavegamesSame" xml:space="preserve">
+    <value>Beide Spielstände sind gleich</value>
+  </data>
+  <data name="ExportZip" xml:space="preserve">
+    <value>Als Zip Exportieren</value>
+  </data>
+  <data name="SavegameExported" xml:space="preserve">
+    <value>Spielstand exportiert</value>
+  </data>
+  <data name="UnableToExport" xml:space="preserve">
+    <value>Der Spielstand konnte nicht exportiert werden, siehe das Protokoll</value>
   </data>
 </root>

@@ -1,4 +1,7 @@
+using System.ComponentModel;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Win32;
 using MudBlazor;
 using NLog;
@@ -6,6 +9,7 @@ using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Resources;
 using SoTF.Editor.Data.ViewModels;
 using SoTF.Editor.Desktop.Components.Shared.Common;
+using SoTF.Editor.Desktop.Components.Shared.Dialogs;
 using SoTF.Editor.Services.Savegames;
 using SoTF.Editor.Services.Settings;
 
@@ -20,7 +24,11 @@ public partial class Home : EditorPageBase
 
     // Empty While The Folder Is Still Being Read
     private List<Savegame>? _savegames;
+    private Dictionary<string, int> _backupCounts = [];
     private int _scan;
+    private MudMenu? _duplicateMenu;
+    private MudMenu? _compareMenu;
+    private Savegame? _menuSavegame;
 
     private static string SavegamePath => SavegameManager.GetSavePath();
 
@@ -59,15 +67,22 @@ public partial class Home : EditorPageBase
         // A Slow Disk Never Holds The Window, Newer Scans Win
         var scan = ++_scan;
         _savegames = null;
-        var savegames = await Task.Run(() =>
+        var (savegames, backupCounts) = await Task.Run(() =>
         {
             var found = SavegameManager.GetSavegames();
             found.ForEach(savegame => _ = savegame.Summary);
-            return found;
+            return (
+                found,
+                found.ToDictionary(
+                    savegame => savegame.FullPath,
+                    savegame => BackupManager.Count(savegame.FullPath)
+                )
+            );
         });
         if (scan == _scan)
         {
             _savegames = savegames;
+            _backupCounts = backupCounts;
         }
     }
 
@@ -100,18 +115,98 @@ public partial class Home : EditorPageBase
         return $"{AppText.Format("SavegameStrength", summary.StrengthLevel)} · {AppText.Format("SavegameItems", summary.ItemCount)}";
     }
 
-    private void Open(Savegame savegame)
+    private async Task OpenAsync(Savegame savegame)
     {
         // The Card Was Read When Listed, Opening Reads It Again
         if (SavegameManager.Load(savegame.FullPath) is { } fresh)
         {
             MainViewModel.RequestOpen(fresh);
+            return;
+        }
+
+        // Gone Since The List Was Read, The List Catches Up
+        Snackbar.Add(AppText.Get("SavegameGone"), Severity.Warning);
+        await LoadSavegamesAsync();
+    }
+
+    private int BackupCountOf(Savegame savegame)
+    {
+        return _backupCounts.GetValueOrDefault(savegame.FullPath);
+    }
+
+    private async Task OpenMenuAsync(MudMenu? menu, MouseEventArgs args, Savegame savegame)
+    {
+        // One Menu For Every Card, Opened At The Button
+        _menuSavegame = savegame;
+        if (menu is not null)
+        {
+            await menu.OpenMenuAsync(args);
         }
     }
 
-    private async Task CopyToSingleplayerAsync(Savegame savegame)
+    private string GroupOf(Savegame savegame)
     {
-        if (!await ConfirmAsync("CopyToSingleplayer", "CopyToSingleplayerText"))
+        return SavegameGroups.First(group => group.Savegames.Contains(savegame)).Title;
+    }
+
+    private void RestoreFromCard(Savegame savegame)
+    {
+        // A Fresh Read, Or The Outside Change Check Misfires
+        if (SavegameManager.Load(savegame.FullPath) is { } fresh)
+        {
+            MainViewModel.RequestRestore(fresh);
+        }
+    }
+
+    private async Task CompareAsync(Savegame other)
+    {
+        if (_menuSavegame is { } savegame)
+        {
+            await CompareSavegamesDialog.ShowAsync(DialogService, savegame, other);
+        }
+    }
+
+    private async Task ExportAsync(Savegame savegame)
+    {
+        try
+        {
+            var exported = await Task.Run(() => SavegameManager.Export(savegame));
+            Snackbar.Add(AppText.Get("SavegameExported"), Severity.Success);
+            ShowInExplorer(exported);
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+        {
+            s_logger.Error(exception, "Failed To Export Savegame");
+            Snackbar.Add(AppText.Get("UnableToExport"), Severity.Error);
+        }
+    }
+
+    private static void ShowInExplorer(string path)
+    {
+        try
+        {
+            Process.Start(new ProcessStartInfo("explorer.exe", $"/select,\"{path}\""));
+        }
+        catch (Win32Exception exception)
+        {
+            // A Shell That Fails To Open Never Fails The Export
+            s_logger.Warn(exception, "Failed To Show Export");
+        }
+    }
+
+    private Task DuplicateToSingleplayerAsync()
+    {
+        return DuplicateAsync(SavegameManager.SinglePlayerFolder, "DuplicateToSingleplayer");
+    }
+
+    private Task DuplicateToMultiplayerAsync()
+    {
+        return DuplicateAsync(SavegameManager.MultiplayerFolder, "DuplicateToMultiplayer");
+    }
+
+    private async Task DuplicateAsync(string modeFolder, string labelKey)
+    {
+        if (_menuSavegame is not { } savegame || !await ConfirmAsync(labelKey, labelKey + "Text"))
         {
             return;
         }
@@ -119,9 +214,9 @@ public partial class Home : EditorPageBase
         try
         {
             // A Big Savegame Copies Off The Window Thread
-            var copied = await Task.Run(() => SavegameManager.CopyToSinglePlayer(savegame));
+            var copied = await Task.Run(() => SavegameManager.Duplicate(savegame, modeFolder));
             Snackbar.Add(
-                AppText.Get("CopiedToSingleplayer"),
+                AppText.Get("SavegameDuplicated"),
                 Severity.Success,
                 options =>
                 {
@@ -144,6 +239,42 @@ public partial class Home : EditorPageBase
             s_logger.Error(exception, "Failed To Copy Savegame");
             Snackbar.Add(AppText.Get("UnableToCopySavegame"), Severity.Error);
         }
+    }
+
+    private async Task DeleteCopyAsync(Savegame savegame)
+    {
+        var isOpen = IsOpen(savegame);
+        if (
+            isOpen && !await DialogService.ConfirmDiscardAsync(MainViewModel)
+            || !await ConfirmAsync("DeleteCopy", "DeleteCopyText")
+        )
+        {
+            return;
+        }
+
+        try
+        {
+            // An Open Copy Closes First, Its Files Are Going
+            if (isOpen)
+            {
+                MainViewModel.SelectSavegame(null);
+            }
+
+            SavegameManager.DeleteCopy(savegame);
+            Snackbar.Add(AppText.Get("CopyDeleted"), Severity.Success);
+        }
+        catch (Exception exception)
+            when (exception
+                    is IOException
+                        or UnauthorizedAccessException
+                        or OperationCanceledException
+            )
+        {
+            s_logger.Error(exception, "Failed To Delete Savegame Copy");
+            Snackbar.Add(AppText.Get("UnableToDeleteCopy"), Severity.Error);
+        }
+
+        await LoadSavegamesAsync();
     }
 
     private async Task ChangeFolderAsync()

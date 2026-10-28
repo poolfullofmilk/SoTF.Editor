@@ -1062,15 +1062,6 @@
   <data name="Singleplayer" xml:space="preserve">
     <value>Solo</value>
   </data>
-  <data name="CopyToSingleplayer" xml:space="preserve">
-    <value>Copier en Solo</value>
-  </data>
-  <data name="CopyToSingleplayerText" xml:space="preserve">
-    <value>Ce monde, tel qu'enregistré la dernière fois, est copié dans vos parties solo. L'original reste tel quel</value>
-  </data>
-  <data name="CopiedToSingleplayer" xml:space="preserve">
-    <value>Copié en Solo</value>
-  </data>
   <data name="UnableToCopySavegame" xml:space="preserve">
     <value>Impossible de copier la partie, voir le journal</value>
   </data>
@@ -2091,5 +2082,86 @@ Non garde l'éditeur ouvert pour que vous puissiez enregistrer d'abord</value>
   </data>
   <data name="GameFollowersStay" xml:space="preserve">
     <value>Kelvin et Virginia du Jeu Restent</value>
+  </data>
+  <data name="StartingUpdate" xml:space="preserve">
+    <value>Lancement de la Mise à Jour</value>
+  </data>
+  <data name="DownloadedOf" xml:space="preserve">
+    <value>{0} sur {1}</value>
+  </data>
+  <data name="UpdatingTitle" xml:space="preserve">
+    <value>Mise à Jour en Cours</value>
+  </data>
+  <data name="UpdatingText" xml:space="preserve">
+    <value>L'éditeur se ferme tout seul une fois la mise à jour téléchargée</value>
+  </data>
+  <data name="Duplicate" xml:space="preserve">
+    <value>Dupliquer</value>
+  </data>
+  <data name="DuplicateToSingleplayer" xml:space="preserve">
+    <value>Dupliquer en Solo</value>
+  </data>
+  <data name="DuplicateToSingleplayerText" xml:space="preserve">
+    <value>Ce monde, tel qu'enregistré la dernière fois, est copié dans vos parties solo. L'original reste tel quel</value>
+  </data>
+  <data name="DuplicateToMultiplayer" xml:space="preserve">
+    <value>Dupliquer en Multijoueur en Hôte</value>
+  </data>
+  <data name="DuplicateToMultiplayerText" xml:space="preserve">
+    <value>Ce monde, tel qu'enregistré la dernière fois, est copié dans vos parties multijoueur en hôte. L'original reste tel quel</value>
+  </data>
+  <data name="SavegameDuplicated" xml:space="preserve">
+    <value>Partie dupliquée</value>
+  </data>
+  <data name="Original" xml:space="preserve">
+    <value>Original</value>
+  </data>
+  <data name="OneBackup" xml:space="preserve">
+    <value>{0} Copie de Secours</value>
+  </data>
+  <data name="BackupCount" xml:space="preserve">
+    <value>{0} Copies de Secours</value>
+  </data>
+  <data name="DeleteCopy" xml:space="preserve">
+    <value>Supprimer la Copie</value>
+  </data>
+  <data name="DeleteCopyText" xml:space="preserve">
+    <value>Cette copie part dans la corbeille, avec les sauvegardes du jeu qui lui appartiennent. Supprimez-la pendant que le jeu tourne, sinon Steam Cloud peut la remettre</value>
+  </data>
+  <data name="CopyDeleted" xml:space="preserve">
+    <value>Copie déplacée dans la corbeille</value>
+  </data>
+  <data name="UnableToDeleteCopy" xml:space="preserve">
+    <value>Impossible de supprimer la copie, voir le journal</value>
+  </data>
+  <data name="SavegameGone" xml:space="preserve">
+    <value>Cette partie a disparu, la liste est relue</value>
+  </data>
+  <data name="NearPlayer" xml:space="preserve">
+    <value>Près du Joueur</value>
+  </data>
+  <data name="AnyDistance" xml:space="preserve">
+    <value>Toute Distance</value>
+  </data>
+  <data name="CompareSavegames" xml:space="preserve">
+    <value>Comparer des Parties</value>
+  </data>
+  <data name="CompareWith" xml:space="preserve">
+    <value>Comparer Avec</value>
+  </data>
+  <data name="CompareFromTo" xml:space="preserve">
+    <value>Ce qui a changé de {0} à {1}</value>
+  </data>
+  <data name="SavegamesSame" xml:space="preserve">
+    <value>Les deux parties sont identiques</value>
+  </data>
+  <data name="ExportZip" xml:space="preserve">
+    <value>Exporter en Zip</value>
+  </data>
+  <data name="SavegameExported" xml:space="preserve">
+    <value>Partie exportée</value>
+  </data>
+  <data name="UnableToExport" xml:space="preserve">
+    <value>Impossible d'exporter la partie, voir le journal</value>
   </data>
 </root>

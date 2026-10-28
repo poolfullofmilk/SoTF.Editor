@@ -14,6 +14,9 @@ public class ArmorPageViewModel
     private readonly Dictionary<ArmourData, (int ItemId, float Durability, int Slot)> _loaded = new(
         ReferenceEqualityComparer.Instance
     );
+
+    // Loaded Pieces By Strength, Added Ones Join The End
+    private readonly Dictionary<ArmourData, int> _rank = new(ReferenceEqualityComparer.Instance);
     private readonly ItemList _itemList;
     private readonly InventoryPageViewModel _inventoryPage;
 
@@ -30,12 +33,8 @@ public class ArmorPageViewModel
         ];
     }
 
-    // Weakest To Strongest, Like The Pickers
     public IEnumerable<ArmourData> Armour =>
-        _armour
-            .OrderBy(armourData => armourData.DefaultDurability)
-            .ThenBy(armourData => armourData.Name)
-            .ThenBy(armourData => armourData.Slot);
+        _armour.OrderBy(armourData => _rank.GetValueOrDefault(armourData, int.MaxValue));
 
     // A Move Through The Backpack Ties This To The Inventory
     public bool MovedThroughInventory { get; private set; }
@@ -238,9 +237,15 @@ public class ArmorPageViewModel
         );
 
         _loaded.Clear();
-        foreach (var armourData in _armour)
+        _rank.Clear();
+        var weakestFirst = _armour
+            .OrderBy(armourData => armourData.DefaultDurability)
+            .ThenBy(armourData => armourData.Name)
+            .ThenBy(armourData => armourData.Slot);
+        foreach (var armourData in weakestFirst)
         {
             _loaded[armourData] = ValueOf(armourData);
+            _rank[armourData] = _rank.Count;
         }
     }
 

@@ -70,7 +70,6 @@ public abstract class BasePoi : IPoi
 
     // A Picked Icon Draws Again On Top
     public virtual int IconZIndex => 0;
-    public float IconRotation => Position?.Rotation ?? 0;
 
     public float MapLeft { get; private set; }
 
@@ -98,6 +97,7 @@ public abstract class BasePoi : IPoi
     protected bool ShouldFilterByPlace(MapFilter mapFilter)
     {
         return (mapFilter.AreaFilter != AreaFilter.All && !mapFilter.AreaFilter.ShouldInclude(this))
+            || mapFilter.IsFarFromPlayer(X, Z)
             || (
                 !string.IsNullOrWhiteSpace(mapFilter.NormalizedLowercaseFullText)
                 && FullTextFilter(mapFilter.NormalizedLowercaseFullText)
@@ -131,7 +131,6 @@ public interface IPoi
     public bool Visible { get; }
     public int IconSize { get; }
     public int IconZIndex { get; }
-    public float IconRotation { get; }
     public bool IsSelected { get; set; }
     public void ApplyFilter(MapFilter mapFilter);
 }

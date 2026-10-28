@@ -1,6 +1,7 @@
 #:project ../SoTF.Editor.Services/SoTF.Editor.Services.csproj
 #:package Microsoft.Extensions.DependencyInjection@10.0.14
 #:property NoWarn=$(NoWarn);IL2026;IL3050
+using System.IO.Compression;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
@@ -476,6 +477,24 @@ try
     main.RevertPage("Map");
     Check(!main.HasUnsavedChanges(), "Reverted Map Leaves Nothing Unsaved");
 
+    // Near Player Leaves Only Points Within Reach
+    map.Build();
+    map.SetAllEnabled(true);
+    map.MapFilter.NearPlayerMetres = 250;
+    map.ApplyFilterToAllPois();
+    var standing = player.PlayerState.Pos;
+    Check(
+        map.VisiblePois().OfType<PlayerPoi>().Any()
+            && map.VisiblePois()
+                .OfType<BasePoi>()
+                .All(poi => new Position(poi.X, 0, poi.Z).GroundDistanceTo(standing) <= 250)
+            && map.VisiblePois().Count() < map.AllPois().Count(),
+        "Near Player Shows Only Close Points"
+    );
+    map.MapFilter.Reset();
+    map.ResetToDefault();
+    map.ApplyFilterToAllPois();
+
     // A Clicked Spot Takes A Moved Anchor And New Zipline
     map.Build();
     var anchor = map.AllPois().OfType<ZipPointPoi>().First();
@@ -483,6 +502,13 @@ try
     var ziplines = map.AllPois().OfType<ZiplinePoi>().Count();
     var (spotLeft, spotTop) = CoordinateConverter.IngameToPixel(anchor.X + 40, anchor.Z + 40);
     map.TogglePick(anchor, false);
+    var partner = map.PickLineStart!;
+    var (partnerLeft, partnerTop) = CoordinateConverter.IngameToPixel(partner.X, partner.Z);
+    map.Click(partnerLeft, partnerTop, 1, true);
+    Check(
+        map.PickFrom == anchor && Math.Abs(anchor.X - anchorX) < 0.01,
+        "Anchor On Its Partner Keeps Waiting"
+    );
     map.Click(spotLeft, spotTop, 1, true);
     Check(
         main.HasChanges("Map") && Math.Abs(anchor.X - anchorX - 40) < 0.5,
@@ -864,15 +890,26 @@ try
     Check(store.HasChanged(), "Rewritten File Shows As Outside Change");
 
     // A Missing File Fails The Save And Keeps The Edit
-    player.PlayerState.Fullness = 10;
+    var fullnessBefore = player.PlayerState.Fullness;
+    player.PlayerState.Fullness = fullnessBefore + 7;
     var movedPath = Path.Combine(work, "Moved.zip");
     File.Move(archivePath, movedPath);
     Check(Throws(() => main.SaveChanges()), "Missing File Fails The Save");
     Check(main.HasUnsavedChanges(), "Failed Save Keeps The Edit");
     File.Move(movedPath, archivePath);
 
+    // The Failed Save Merged Nothing, So Revert Still Undoes It
+    main.RevertPage("Player");
+    Check(
+        !main.HasUnsavedChanges() && player.PlayerState.Fullness == fullnessBefore,
+        "Revert After A Failed Save Undoes The Edit"
+    );
+
     // A Singleplayer Copy Matches Byte For Byte, Save Time Included
-    var copied = SavegameManager.CopyToSinglePlayer(main.SelectedSavegame!);
+    var copied = SavegameManager.Duplicate(
+        main.SelectedSavegame!,
+        SavegameManager.SinglePlayerFolder
+    );
     var copiedId = Path.GetFileName(copied);
     Check(
         Path.GetFileName(Path.GetDirectoryName(copied)) == "SinglePlayer"
@@ -882,6 +919,44 @@ try
             && Directory.GetLastWriteTimeUtc(copied) == Directory.GetLastWriteTimeUtc(savegamePath),
         "Copy To Singleplayer Matches The Save"
     );
+
+    // Only A Copy The Editor Made Can Be Deleted
+    var multiplayerCopy = SavegameManager.Load(
+        SavegameManager.Duplicate(main.SelectedSavegame!, SavegameManager.MultiplayerFolder)
+    )!;
+    Check(
+        SavegameManager.IsCopy(multiplayerCopy)
+            && !SavegameManager.IsCopy(main.SelectedSavegame!)
+            && multiplayerCopy.IsMultiPlayer()
+            && Throws(() => SavegameManager.DeleteCopy(main.SelectedSavegame!)),
+        "Only Copies Count As Copies"
+    );
+    SavegameManager.DeleteCopy(multiplayerCopy);
+    Check(
+        !Directory.Exists(multiplayerCopy.FullPath) && Directory.Exists(savegamePath),
+        "Deleting A Copy Keeps The Original"
+    );
+
+    // A Copy Compares As The Same, An Export Never Overwrites
+    Check(
+        BackupDiff.Describe(copied, savegamePath, gameData, key => key).Count == 0,
+        "Copy Compares As The Same Savegame"
+    );
+    var exported = SavegameManager.Export(main.SelectedSavegame!);
+    var exportedAgain = SavegameManager.Export(main.SelectedSavegame!);
+    using (var archive = ZipFile.OpenRead(exported))
+    {
+        Check(
+            exported != exportedAgain
+                && archive.Entries.Any(entry =>
+                    entry.FullName.StartsWith(Path.GetFileName(savegamePath) + "/SaveData")
+                ),
+            "Export Holds The Save Folder"
+        );
+    }
+
+    File.Delete(exported);
+    File.Delete(exportedAgain);
 
     // Every Language Holds Every Text With English Placeholders
     var resources = Path.Combine(SourceDirectory(), "..", "SoTF.Editor.Data", "Resources");

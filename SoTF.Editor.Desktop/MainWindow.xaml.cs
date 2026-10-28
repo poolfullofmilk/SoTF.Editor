@@ -18,6 +18,9 @@ public partial class MainWindow : Window
     // Windows Shutting Down Or An Update Restarting
     public bool ClosesWithoutAsking { get; set; }
 
+    // A Download In Flight Keeps The Window Open
+    public bool IsUpdating { get; set; }
+
     public MainWindow(IServiceProvider services, MainViewModel mainViewModel)
     {
         InitializeComponent();
@@ -34,6 +37,20 @@ public partial class MainWindow : Window
         // Windows Shutting Down Is Never Held Up
         if (ClosesWithoutAsking)
         {
+            return;
+        }
+
+        // The Update Closes The Window Itself Once Downloaded
+        if (IsUpdating)
+        {
+            eventArgs.Cancel = true;
+            MessageBox.Show(
+                this,
+                AppText.Get("UpdatingText"),
+                AppText.Get("UpdatingTitle"),
+                MessageBoxButton.OK,
+                MessageBoxImage.Information
+            );
             return;
         }
 
