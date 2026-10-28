@@ -27,7 +27,6 @@ public partial class Home : EditorPageBase
     private Dictionary<string, int> _backupCounts = [];
     private int _scan;
     private MudMenu? _duplicateMenu;
-    private MudMenu? _compareMenu;
     private Savegame? _menuSavegame;
 
     private static string SavegamePath => SavegameManager.GetSavePath();
@@ -134,19 +133,14 @@ public partial class Home : EditorPageBase
         return _backupCounts.GetValueOrDefault(savegame.FullPath);
     }
 
-    private async Task OpenMenuAsync(MudMenu? menu, MouseEventArgs args, Savegame savegame)
+    private async Task OpenDuplicateMenuAsync(MouseEventArgs args, Savegame savegame)
     {
         // One Menu For Every Card, Opened At The Button
         _menuSavegame = savegame;
-        if (menu is not null)
+        if (_duplicateMenu is not null)
         {
-            await menu.OpenMenuAsync(args);
+            await _duplicateMenu.OpenMenuAsync(args);
         }
-    }
-
-    private string GroupOf(Savegame savegame)
-    {
-        return SavegameGroups.First(group => group.Savegames.Contains(savegame)).Title;
     }
 
     private void RestoreFromCard(Savegame savegame)
@@ -155,14 +149,6 @@ public partial class Home : EditorPageBase
         if (SavegameManager.Load(savegame.FullPath) is { } fresh)
         {
             MainViewModel.RequestRestore(fresh);
-        }
-    }
-
-    private async Task CompareAsync(Savegame other)
-    {
-        if (_menuSavegame is { } savegame)
-        {
-            await CompareSavegamesDialog.ShowAsync(DialogService, savegame, other);
         }
     }
 

@@ -2113,9 +2113,6 @@ Non garde l'éditeur ouvert pour que vous puissiez enregistrer d'abord</value>
   <data name="SavegameDuplicated" xml:space="preserve">
     <value>Partie dupliquée</value>
   </data>
-  <data name="Original" xml:space="preserve">
-    <value>Original</value>
-  </data>
   <data name="OneBackup" xml:space="preserve">
     <value>{0} Copie de Secours</value>
   </data>
@@ -2143,18 +2140,6 @@ Non garde l'éditeur ouvert pour que vous puissiez enregistrer d'abord</value>
   <data name="AnyDistance" xml:space="preserve">
     <value>Toute Distance</value>
   </data>
-  <data name="CompareSavegames" xml:space="preserve">
-    <value>Comparer des Parties</value>
-  </data>
-  <data name="CompareWith" xml:space="preserve">
-    <value>Comparer Avec</value>
-  </data>
-  <data name="CompareFromTo" xml:space="preserve">
-    <value>Ce qui a changé de {0} à {1}</value>
-  </data>
-  <data name="SavegamesSame" xml:space="preserve">
-    <value>Les deux parties sont identiques</value>
-  </data>
   <data name="ExportZip" xml:space="preserve">
     <value>Exporter en Zip</value>
   </data>
@@ -2163,5 +2148,23 @@ Non garde l'éditeur ouvert pour que vous puissiez enregistrer d'abord</value>
   </data>
   <data name="UnableToExport" xml:space="preserve">
     <value>Impossible d'exporter la partie, voir le journal</value>
+  </data>
+  <data name="NormalText" xml:space="preserve">
+    <value>Le jeu tel qu'il a été conçu</value>
+  </data>
+  <data name="HardText" xml:space="preserve">
+    <value>Des ennemis plus forts et une survie plus rude</value>
+  </data>
+  <data name="HardSurvivalText" xml:space="preserve">
+    <value>Difficile, avec une survie plus rude et moins de provisions</value>
+  </data>
+  <data name="PeacefulText" xml:space="preserve">
+    <value>Aucun ennemi, seulement la survie</value>
+  </data>
+  <data name="ModeCreativeText" xml:space="preserve">
+    <value>Construisez librement sans rien récolter</value>
+  </data>
+  <data name="ModeCustomText" xml:space="preserve">
+    <value>Choisissez chaque réglage vous-même</value>
   </data>
 </root>

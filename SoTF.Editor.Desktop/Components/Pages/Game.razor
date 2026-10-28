@@ -12,132 +12,194 @@
                      Icon="@Icons.Material.Rounded.Tune"
                      IconColor="Color.Tertiary">
             <MudStack Spacing="6">
-                <MudPaper Elevation="4"
-                          Class="rounded-panel pa-4">
-                    <MudGrid>
+                <Header Title="@AppText.Get("Mode")"
+                        Info="@AppText.Get("ModeInfo")">
+                    <TitleContent>
+                        <MudSpacer />
+                        <MudText Typo="Typo.body2"
+                                 Class="mud-text-secondary text-truncate"
+                                 title="@AppText.Get("UidInfo")">
+                            @AppText.Get("Uid") @GameSetup.Uid
+                        </MudText>
+                    </TitleContent>
+                    <ChildContent>
+                        <MudPaper Elevation="4"
+                                  Class="rounded-panel pa-4">
+                            <MudGrid Spacing="3">
 
-                        <MudItem xs="12"
-                                 md="6">
-                            <MudStack Row
-                                      AlignItems="AlignItems.Center"
-                                      Spacing="1">
-                                @* Load Preset *@
-                                <Tooltip Text="@AppText.Get("LoadPreset")"
-                                         RootClass="d-flex flex-shrink-0">
-                                    <MudMenu Icon="@Icons.Material.Rounded.Tune"
-                                             AriaLabel="@AppText.Get("LoadPreset")"
-                                             Size="Size.Small">
-                                        @foreach (var mode in Presets)
-                                        {
-                                            <MudMenuItem OnClick="() => LoadPresetAsync(mode.Value)">@AppText.Get(mode.LabelKey)</MudMenuItem>
-                                        }
-                                    </MudMenu>
-                                </Tooltip>
-                                @* Game Mode *@
-                                <ChangedBadge When="ModeChanged"
-                                              Class="flex-grow-1">
-                                    <MudSelect T="string"
-                                               Variant="Variant.Outlined"
-                                               @bind-Value="GameSetup.SelectedMode"
-                                               Label="@AppText.Get("Mode")"
-                                               ToStringFunc="value => LabelOf(s_modes, value)">
-                                        @foreach (var mode in s_modes)
-                                        {
-                                            <MudSelectItem Value="mode.Value">@AppText.Get(mode.LabelKey)</MudSelectItem>
-                                        }
-                                    </MudSelect>
-                                </ChangedBadge>
-                                <InfoIcon Text="@AppText.Get("ModeInfo")" />
-                            </MudStack>
-                        </MudItem>
-                        <MudItem xs="12"
-                                 md="6">
-                            <MudStack Row
-                                      AlignItems="AlignItems.Center"
-                                      Spacing="1">
-                                <MudTextField T="string"
-                                              Variant="Variant.Outlined"
-                                              Value="GameSetup.Uid"
-                                              Label="@AppText.Get("Uid")"
-                                              Disabled />
-                                <InfoIcon Text="@AppText.Get("UidInfo")" />
-                            </MudStack>
-                        </MudItem>
+                                @foreach (var mode in s_modes)
+                                {
+                                    <MudItem xs="12"
+                                             sm="6"
+                                             md="4"
+                                             lg="2"
+                                             Class="d-flex">
+                                        @* Mode Card *@
+                                        <MudPaper Elevation="0"
+                                                  Class="@ModeClass(mode)"
+                                                  role="button"
+                                                  tabindex="0"
+                                                  aria-pressed="@(IsMode(mode) ? "true" : "false")"
+                                                  data-keyclick
+                                                  @onclick="() => GameSetup.SelectedMode = mode.Value">
+                                            <MudStack Spacing="1">
+                                                <MudStack Row
+                                                          AlignItems="AlignItems.Center"
+                                                          Spacing="2">
+                                                    <MudIcon Icon="@mode.Icon"
+                                                             Color="@(IsMode(mode) ? Color.Info : Color.Tertiary)" />
+                                                    <MudText Typo="Typo.subtitle1"
+                                                             Class="flex-grow-1"
+                                                             Style="font-weight:700">
+                                                        @AppText.Get(mode.LabelKey)
+                                                        <ChangedDot When="@IsModeChanged(mode)" />
+                                                    </MudText>
+                                                    @if (mode.IsPreset)
+                                                    {
+                                                        @* Load Preset *@
+                                                        <span class="d-flex"
+                                                              @onclick:stopPropagation="true">
+                                                            <MudIconButton Icon="@Icons.Material.Rounded.EditNote"
+                                                                           aria-label="@AppText.Get("LoadPreset")"
+                                                                           title="@AppText.Get("LoadPreset")"
+                                                                           Size="Size.Small"
+                                                                           Class="my-n1"
+                                                                           OnClick="() => LoadPresetAsync(mode.Value)" />
+                                                        </span>
+                                                    }
+                                                </MudStack>
+                                                <MudText Typo="Typo.body2"
+                                                         Class="mud-text-secondary">
+                                                    @AppText.Get(mode.TextKey)
+                                                </MudText>
+                                            </MudStack>
+                                        </MudPaper>
+                                    </MudItem>
+                                }
 
-                    </MudGrid>
-                </MudPaper>
+                            </MudGrid>
+                        </MudPaper>
+                    </ChildContent>
+                </Header>
 
                 @if (IsCustom)
                 {
-                    @foreach (var group in s_setupGroups)
-                    {
-                        <Header Title="@AppText.Get(group.TitleKey)"
-                                Icon="@group.Icon">
-                            <TitleContent>
-                                <MudSpacer />
-                                @* Reset Group *@
+                    @* Section Bar *@
+                    <MudPaper Elevation="4"
+                              Class="rounded-panel px-4 py-2 sticky-bar">
+                        <MudStack Row
+                                  AlignItems="AlignItems.Center"
+                                  Wrap="Wrap.Wrap"
+                                  Spacing="2">
+                            @foreach (var group in VisibleGroups)
+                            {
+                                @* Section Button *@
                                 <MudButton Variant="Variant.Text"
                                            Size="Size.Small"
-                                           Disabled="@(!GameSetup.HasAny(KeysOf(group)))"
-                                           OnClick="() => GameSetup.ResetSettings(KeysOf(group))">
-                                    @AppText.Get("SetAllToDefault")
+                                           StartIcon="@group.Icon"
+                                           data-scroll-to="@SectionId(group)">
+                                    @AppText.Get(group.TitleKey)
                                 </MudButton>
-                            </TitleContent>
-                            <ChildContent>
-                                <MudPaper Elevation="4"
-                                          Class="rounded-panel pa-4">
-                                    <MudGrid>
+                            }
+                            <MudSpacer />
+                            @* Setting Search *@
+                            <SearchField @bind-Value="_settingFilter" />
+                        </MudStack>
+                    </MudPaper>
 
-                                        @foreach (var setting in group.Selects)
-                                        {
-                                            <MudItem xs="12"
-                                                     sm="6"
-                                                     md="4">
-                                                <MudStack Row
-                                                          AlignItems="AlignItems.Center"
-                                                          Spacing="1">
-                                                    @* Setup Select *@
-                                                    <ChangedBadge When="@GameSetup.IsChanged(setting.Key, setting.Fallback)"
-                                                                  Class="flex-grow-1">
-                                                        <MudSelect T="string"
-                                                                   Variant="Variant.Outlined"
-                                                                   Value="GameSetup.GetString(setting.Key, setting.Fallback)"
-                                                                   ValueChanged="value => GameSetup.SetString(setting.Key, value, setting.Fallback)"
-                                                                   Label="@AppText.Get(setting.LabelKey)"
-                                                                   Clearable
-                                                                   ToStringFunc="value => LabelOf(setting.Options, value)">
-                                                            @foreach (var option in setting.Options)
-                                                            {
-                                                                <MudSelectItem Value="option.Value">@AppText.Get(option.LabelKey)</MudSelectItem>
-                                                            }
-                                                        </MudSelect>
-                                                    </ChangedBadge>
-                                                    <InfoIcon Text="@AppText.Get(setting.InfoKey)" />
-                                                </MudStack>
-                                            </MudItem>
-                                        }
-                                        @foreach (var toggle in group.Toggles)
-                                        {
-                                            <MudItem xs="12"
-                                                     sm="6"
-                                                     md="4"
-                                                     Class="d-flex align-center">
-                                                @* Setup Switch *@
-                                                <MudSwitch T="bool"
-                                                           Value="GameSetup.GetBool(toggle.Key, toggle.Fallback)"
-                                                           ValueChanged="value => GameSetup.SetBool(toggle.Key, value, toggle.Fallback)"
-                                                           Color="Color.Info">
-                                                    @AppText.Get(toggle.LabelKey)
-                                                    <ChangedDot When="@GameSetup.IsChanged(toggle.Key, toggle.Fallback)" />
-                                                    <InfoIcon Text="@AppText.Get(toggle.InfoKey)" />
-                                                </MudSwitch>
-                                            </MudItem>
-                                        }
+                    @if (!VisibleGroups.Any())
+                    {
+                        <EmptyState Icon="@Icons.Material.Rounded.SearchOff"
+                                    Text="@AppText.Get("NothingFound")" />
+                    }
+                    @foreach (var group in VisibleGroups)
+                    {
+                        <MudElement HtmlTag="section"
+                                    id="@SectionId(group)"
+                                    Class="section-anchor">
+                            <Header Title="@AppText.Get(group.TitleKey)"
+                                    Icon="@group.Icon">
+                                <TitleContent>
+                                    <MudSpacer />
+                                    @* Reset Group *@
+                                    <MudButton Variant="Variant.Text"
+                                               Size="Size.Small"
+                                               Disabled="@(!GameSetup.HasAny(KeysOf(group)))"
+                                               OnClick="() => GameSetup.ResetSettings(KeysOf(group))">
+                                        @AppText.Get("SetAllToDefault")
+                                    </MudButton>
+                                </TitleContent>
+                                <ChildContent>
+                                    <MudPaper Elevation="4"
+                                              Class="rounded-panel pa-4">
+                                        <MudGrid Spacing="3">
 
-                                    </MudGrid>
-                                </MudPaper>
-                            </ChildContent>
-                        </Header>
+                                            @foreach (var setting in group.Selects.Where(setting => Matches(setting.LabelKey)))
+                                            {
+                                                <MudItem xs="12"
+                                                         sm="6"
+                                                         md="4"
+                                                         Class="d-flex">
+                                                    <MudPaper Elevation="0"
+                                                              Class="@SettingClass(IsSet(setting))">
+                                                        <MudStack Spacing="2">
+                                                            <MudStack Row
+                                                                      AlignItems="AlignItems.Center"
+                                                                      Spacing="1">
+                                                                <MudText Typo="Typo.subtitle2"
+                                                                         Class="text-truncate">
+                                                                    <MudHighlighter Text="@AppText.Get(setting.LabelKey)"
+                                                                                    HighlightedText="@_settingFilter" />
+                                                                    <ChangedDot When="@GameSetup.IsChanged(setting.Key, setting.Fallback)" />
+                                                                </MudText>
+                                                                <InfoIcon Text="@AppText.Get(setting.InfoKey)" />
+                                                            </MudStack>
+                                                            @* Setting Choices *@
+                                                            <MudButtonGroup OverrideStyles="false"
+                                                                            Size="Size.Small"
+                                                                            Class="setting-choices">
+                                                                @foreach (var option in setting.Options)
+                                                                {
+                                                                    <MudButton Variant="Variant.Filled"
+                                                                               Size="Size.Small"
+                                                                               Color="@(IsPicked(setting, option) ? Color.Info : Color.Default)"
+                                                                               OnClick="() => GameSetup.SetString(setting.Key, option.Value, setting.Fallback)">
+                                                                        @AppText.Get(option.LabelKey)
+                                                                    </MudButton>
+                                                                }
+                                                            </MudButtonGroup>
+                                                        </MudStack>
+                                                    </MudPaper>
+                                                </MudItem>
+                                            }
+                                            @foreach (var toggle in group.Toggles.Where(toggle => Matches(toggle.LabelKey)))
+                                            {
+                                                <MudItem xs="12"
+                                                         sm="6"
+                                                         md="4"
+                                                         Class="d-flex">
+                                                    <MudPaper Elevation="0"
+                                                              Class="@SettingClass(IsSet(toggle))">
+                                                        @* Setup Switch *@
+                                                        <MudSwitch T="bool"
+                                                                   Value="GameSetup.GetBool(toggle.Key, toggle.Fallback)"
+                                                                   ValueChanged="value => GameSetup.SetBool(toggle.Key, value, toggle.Fallback)"
+                                                                   Color="Color.Info"
+                                                                   Class="ma-0">
+                                                            <MudHighlighter Text="@AppText.Get(toggle.LabelKey)"
+                                                                            HighlightedText="@_settingFilter" />
+                                                            <ChangedDot When="@GameSetup.IsChanged(toggle.Key, toggle.Fallback)" />
+                                                            <InfoIcon Text="@AppText.Get(toggle.InfoKey)" />
+                                                        </MudSwitch>
+                                                    </MudPaper>
+                                                </MudItem>
+                                            }
+
+                                        </MudGrid>
+                                    </MudPaper>
+                                </ChildContent>
+                            </Header>
+                        </MudElement>
                     }
                 }
                 else

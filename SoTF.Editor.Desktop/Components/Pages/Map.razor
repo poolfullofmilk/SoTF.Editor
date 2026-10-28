@@ -261,11 +261,19 @@
                          alt="@AppText.Get("Map")"
                          class="map-image" />
                     <MapPoints Version="@MapViewModel.SyncPoints()" />
+                    @* Cluster Bubbles *@
+                    <MudElement HtmlTag="div"
+                                Class="map-clusters" />
                     @if (MapViewModel.SelectedPoi is ZipPointPoi { Parent: { Visible: true } zipline })
                     {
                         @* Picked Zipline *@
                         <svg class="map-zipline map-zipline-pick"
                              viewBox="0 0 4096 4096">
+                            <line x1="@MapPoints.Pixel(zipline.PointA.MapLeft)"
+                                  y1="@MapPoints.Pixel(zipline.PointA.MapTop)"
+                                  x2="@MapPoints.Pixel(zipline.PointB.MapLeft)"
+                                  y2="@MapPoints.Pixel(zipline.PointB.MapTop)"
+                                  class="map-zipline-glow" />
                             <line x1="@MapPoints.Pixel(zipline.PointA.MapLeft)"
                                   y1="@MapPoints.Pixel(zipline.PointA.MapTop)"
                                   x2="@MapPoints.Pixel(zipline.PointB.MapLeft)"
@@ -276,8 +284,7 @@
                         {
                             <img src="@anchor.Icon"
                                  alt="@anchor.Title"
-                                 title="@anchor.Title"
-                                 class="map-poi"
+                                 class="map-poi map-picked"
                                  style="@MapPoints.PoiStyle(anchor.MapLeft, anchor.MapTop, anchor.IconSize, PickedZIndex)" />
                             <span class="map-ring"
                                   style="@MapPoints.RingStyle(anchor.MapLeft, anchor.MapTop, anchor.IconSize, PickedZIndex)" />
@@ -288,7 +295,6 @@
                         @* Location Pin *@
                         <img src="@location.Icon"
                              alt="@location.Title"
-                             title="@location.Title"
                              class="map-pin"
                              style="@PinStyle(location)" />
                     }
@@ -297,10 +303,9 @@
                         @* Picked Point *@
                         <img src="@picked.Icon"
                              alt="@picked.Title"
-                             title="@picked.Title"
-                             class="map-poi"
+                             class="map-poi map-picked"
                              style="@MapPoints.PoiStyle(picked.MapLeft, picked.MapTop, picked.IconSize, PickedZIndex)" />
-                        <span class="map-ring"
+                        <span class="@(picked is PlayerPoi ? "map-ring round" : "map-ring")"
                               style="@MapPoints.RingStyle(picked.MapLeft, picked.MapTop, picked.IconSize, PickedZIndex)" />
                     }
                     @if (MapViewModel.PickLineStart is { } pickStart)
@@ -320,6 +325,10 @@
                     }
                 </MudElement>
             </MudElement>
+
+            @* Point Label *@
+            <MudElement HtmlTag="span"
+                        Class="map-label idle" />
 
             @* Zoom Buttons *@
             <MudStack Spacing="2"

@@ -74,6 +74,12 @@ document.addEventListener("keydown", (event) => {
     );
 })();
 
+// A Section Button Glides To Its Section
+document.addEventListener("click", (event) => {
+    const button = event.target instanceof Element ? event.target.closest("[data-scroll-to]") : null;
+    document.getElementById(button?.dataset.scrollTo ?? "")?.scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
 // An Info Icon Inside A Switch Label Never Toggles The Switch
 document.addEventListener("click", (event) => {
     if (event.target instanceof Element && event.target.closest(".info-icon")) {
@@ -97,14 +103,70 @@ window.sotfMap = (() => {
     const dragThreshold = 4;
     const manyPoints = 1500;
     const glideTime = 250;
+    const clusterPixels = 44;
     let state = null;
     let settle = 0;
     let frame = 0;
+    let clusterTimer = 0;
+
+    // Points Sharing A Screen Cell Become One Count Bubble
+    const cluster = () => {
+        if (!state?.clusters?.isConnected) return;
+        const icons = state.canvas.querySelectorAll(".map-poi[data-keyclick]:not([data-solo])");
+        const cells = new Map();
+        if (state.zoom < maxZoom * 0.99) {
+            const size = clusterPixels / state.zoom;
+            for (const icon of icons) {
+                const x = parseFloat(icon.style.left);
+                const y = parseFloat(icon.style.top);
+                const key = `${Math.floor(x / size)},${Math.floor(y / size)}`;
+                if (!cells.has(key)) cells.set(key, []);
+                cells.get(key).push({ icon, x, y });
+            }
+        }
+        const grouped = new Set();
+        const bubbles = [];
+        for (const members of cells.values()) {
+            if (members.length < 2) continue;
+            const xs = members.map((member) => member.x);
+            const ys = members.map((member) => member.y);
+            const bubble = document.createElement("span");
+            bubble.className = "map-cluster";
+            bubble.textContent = members.length;
+            bubble.style.left = `${xs.reduce((sum, value) => sum + value) / members.length}px`;
+            bubble.style.top = `${ys.reduce((sum, value) => sum + value) / members.length}px`;
+            bubble.style.setProperty("--cluster-size", `${Math.min(28 + Math.log2(members.length) * 4, 48)}px`);
+            bubble.dataset.spread = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
+            bubbles.push(bubble);
+            members.forEach((member) => grouped.add(member.icon));
+        }
+        icons.forEach((icon) => icon.classList.toggle("clustered", grouped.has(icon)));
+        state.clusters.replaceChildren(...bubbles);
+    };
+
+    const clusterSoon = () => {
+        clearTimeout(clusterTimer);
+        clusterTimer = setTimeout(cluster, 120);
+    };
+
+    // The Map Panel's Name Tag, Placed Over The Hovered Point
+    const hideLabel = () => state?.label?.classList.add("idle");
+    const showLabel = (point) => {
+        const { label } = state;
+        if (!label) return;
+        const bounds = point.getBoundingClientRect();
+        const panel = label.offsetParent.getBoundingClientRect();
+        label.textContent = point.alt;
+        label.style.left = `${bounds.left + bounds.width / 2 - panel.left}px`;
+        label.style.top = `${bounds.top - panel.top}px`;
+        label.classList.remove("idle");
+    };
 
     const scaleIcons = () => {
         if (state && state.iconZoom !== state.zoom) {
             state.iconZoom = state.zoom;
             state.canvas.style.setProperty("--map-zoom", state.zoom);
+            clusterSoon();
         }
     };
 
@@ -132,6 +194,7 @@ window.sotfMap = (() => {
 
     // Thousands Of Icons Restyle Slowly, So They Catch Up Once The Map Settles
     const apply = (moving = false) => {
+        hideLabel();
         state.canvas.style.transform = `translate(${state.x}px, ${state.y}px) scale(${state.zoom})`;
         clearTimeout(settle);
         if (moving && state.canvas.childElementCount > manyPoints) {
@@ -197,8 +260,27 @@ window.sotfMap = (() => {
 
     const init = (viewport, canvas, page) => {
         state?.observer.disconnect();
+        state?.points.disconnect();
         state = { viewport, canvas, page, drag: null, moved: false, width: viewport.clientWidth, height: viewport.clientHeight };
+        state.clusters = canvas.querySelector(".map-clusters");
+        state.label = viewport.parentElement.querySelector(".map-label");
         fit();
+
+        // New Or Removed Icons Group Again Once They Land
+        state.points = new MutationObserver(clusterSoon);
+        state.points.observe(canvas, { childList: true });
+        clusterSoon();
+
+        // A Hovered Point Shows Its Name
+        viewport.addEventListener("pointerover", (event) => {
+            const point = event.target instanceof Element ? event.target.closest(".map-poi, .map-pin") : null;
+            if (point?.alt && !state.drag) {
+                showLabel(point);
+            } else {
+                hideLabel();
+            }
+        });
+        viewport.addEventListener("pointerout", hideLabel);
 
         // Decoded Whole Up Front, The First Zoom In Has Nothing To Wait For
         canvas.querySelector(".map-image")?.decode().catch(() => {});
@@ -244,7 +326,7 @@ window.sotfMap = (() => {
             const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[event.key];
             if (!step) return;
             event.preventDefault();
-            const points = [...canvas.querySelectorAll(".map-poi[data-keyclick]")];
+            const points = [...canvas.querySelectorAll(".map-poi[data-keyclick]:not(.clustered)")];
             if (points.length === 0) return;
             const current = points.indexOf(document.activeElement);
             const next = current < 0 ? (step > 0 ? 0 : points.length - 1) : (current + step + points.length) % points.length;
@@ -270,6 +352,7 @@ window.sotfMap = (() => {
 
         viewport.addEventListener("pointerdown", (event) => {
             if (event.button !== 0) return;
+            hideLabel();
             stop();
             state.drag = { startX: event.clientX, startY: event.clientY, x: state.x, y: state.y };
             state.moved = false;
@@ -282,6 +365,15 @@ window.sotfMap = (() => {
                 if (state.moved) {
                     event.stopPropagation();
                     state.moved = false;
+                    return;
+                }
+
+                // A Bubble Glides In Until Its Points Part, Blazor Never Hears
+                const bubble = event.target instanceof Element ? event.target.closest(".map-cluster") : null;
+                if (bubble) {
+                    event.stopPropagation();
+                    const spread = Math.max(parseFloat(bubble.dataset.spread), 1);
+                    zoomTo(parseFloat(bubble.style.left), parseFloat(bubble.style.top), Math.min(maxZoom, Math.max(state.zoom * 2, (clusterPixels * 1.5) / spread)));
                 }
             },
             true
@@ -293,6 +385,8 @@ window.sotfMap = (() => {
         // A Map That Left The Page Lets Its Elements Go
         if (state && !state.viewport.isConnected) {
             state.observer.disconnect();
+            state.points.disconnect();
+            hideLabel();
             state = null;
         }
         if (!state?.drag) return;

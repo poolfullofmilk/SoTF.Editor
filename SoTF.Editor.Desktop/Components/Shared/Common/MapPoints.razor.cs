@@ -95,7 +95,7 @@ public partial class MapPoints : IDisposable
 
     private string HeadingStyle(float left, float top, int zIndex)
     {
-        // The Arrow Turns Where The Player Looked When Saving
+        // The Cone Turns Where The Player Looked When Saving
         var angle = CoordinateConverter.MapAngle(PlayerPage.PlayerState.Heading);
         return string.Create(
             CultureInfo.InvariantCulture,

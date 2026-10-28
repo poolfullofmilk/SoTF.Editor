@@ -48,6 +48,7 @@
     --glass-opacity: 66%;
     --glass-blur: blur(12px);
     --map-edge: color-mix(in srgb, var(--mud-palette-black) 50%, transparent);
+    --map-tile-radius: 28%;
     --row-hover-amount: 12%;
     --row-hover: color-mix(in srgb, var(--mud-palette-black) var(--row-hover-amount), transparent);
     --row-selected: color-mix(in srgb, var(--mud-palette-black) 18%, transparent);
@@ -603,6 +604,41 @@ html, body {
 }
 /* #endregion */
 
+/* #region Game Setup */
+/* The Section Bar Stays Under The App Bar While Scrolling */
+.sticky-bar {
+    position: sticky;
+    top: 71px;
+    z-index: 4;
+    background-color: color-mix(in srgb, var(--mud-palette-surface) var(--glass-opacity), transparent) !important;
+    backdrop-filter: var(--glass-blur);
+}
+
+/* A Jump Lands Below The App Bar And The Section Bar */
+.section-anchor {
+    scroll-margin-top: 140px;
+}
+
+/* A Setting Off Its Default Wears A Blue Edge */
+.setting-set {
+    box-shadow: inset 0 0 0 2px var(--mud-palette-info);
+}
+
+/* Choices Share The Card's Width Like One Control */
+.setting-choices {
+    display: flex;
+    width: 100%;
+}
+
+    .setting-choices > .mud-button-root {
+        flex: 1 1 0;
+        min-width: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+/* #endregion */
+
 /* #region Rows And Cards */
 /* Rows Darken And Never Lighten */
 .list-row {
@@ -632,18 +668,19 @@ html, body {
     opacity: 0.5;
 }
 
-/* The Open Savegame Wears The Accent Ring */
+/* The Open Savegame Wears The Accent Ring Over Its Picture */
 .card-open {
-    outline: 2px solid var(--mud-palette-info);
-    outline-offset: -2px;
+    position: relative;
 }
 
-/* Card Chips Sit On The Picture's Top Right */
-.savegame-chips {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-}
+    .card-open::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border: 2px solid var(--mud-palette-info);
+        border-radius: inherit;
+        pointer-events: none;
+    }
 
 /* Savegame Thumbnails Keep The Game's Wide Ratio */
 .savegame-thumb {
@@ -700,48 +737,134 @@ html, body {
     z-index: 100;
     transform: translate(-50%, -50%) scale(calc(1 / var(--map-zoom, 1)));
     cursor: pointer;
+    transition: scale 120ms ease-out;
 }
 
-/* A Small Wedge Just Outside The Player Icon Shows Where They Looked */
-.map-heading {
-    position: absolute;
-    width: 16px;
-    height: 12px;
-    pointer-events: none;
-    transform: translate(-50%, -50%) scale(calc(1 / var(--map-zoom, 1))) rotate(var(--heading)) translateY(-23px);
-}
-
-    /* Edged Like The Icons, So It Reads On Snow */
-    .map-heading polygon {
-        fill: var(--mud-palette-info);
-        stroke: var(--map-edge);
-        stroke-width: 1.5px;
-        stroke-linejoin: round;
+    /* Only Scale Eases, Zooming Never Lags */
+    .map-poi:hover {
+        scale: 1.2;
     }
 
-/* A Picked Icon's Ring Covers Its Rim, A Black Edge Outside */
+    /* Item And Creature Pictures Sit On A Tile Like The Icons */
+    .map-poi[src$=".png"] {
+        box-sizing: border-box;
+        padding: 3px;
+        border-radius: var(--map-tile-radius);
+        background-color: rgba(30, 30, 30, 0.85);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12), 0 0 0 1px var(--map-edge);
+    }
+
+    /* Points In A Bubble Hide Until The Zoom Parts Them */
+    .map-poi.clustered {
+        visibility: hidden;
+    }
+
+/* A Count Bubble For Points Too Close To Tell Apart, Under The Rest */
+.map-cluster {
+    position: absolute;
+    z-index: 99;
+    width: var(--cluster-size);
+    height: var(--cluster-size);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: rgba(30, 30, 30, 0.88);
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.85), 0 0 0 1px var(--map-edge);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    transform: translate(-50%, -50%) scale(calc(1 / var(--map-zoom, 1)));
+    cursor: zoom-in;
+    user-select: none;
+    transition: scale 120ms ease-out;
+}
+
+    .map-cluster:hover {
+        scale: 1.12;
+    }
+
+/* A Name Over The Hovered Point, Above The Map */
+.map-label {
+    position: absolute;
+    z-index: 5;
+    padding: 4px 10px;
+    border-radius: 10px;
+    background-color: color-mix(in srgb, var(--mud-palette-surface) 88%, transparent);
+    box-shadow: var(--mud-elevation-4);
+    color: var(--mud-palette-text-primary);
+    font-size: 13px;
+    white-space: nowrap;
+    pointer-events: none;
+    transform: translate(-50%, calc(-100% - 6px));
+}
+
+    .map-label.idle {
+        visibility: hidden;
+    }
+
+/* A Soft Cone Under The Player Shows Where They Looked */
+.map-heading {
+    position: absolute;
+    width: 96px;
+    height: 96px;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(calc(1 / var(--map-zoom, 1))) rotate(var(--heading));
+}
+
+    /* A Slow Ripple Marks The Player */
+    .map-heading-pulse {
+        fill: none;
+        stroke: var(--mud-palette-info);
+        stroke-width: 2px;
+        transform-box: fill-box;
+        transform-origin: center;
+        animation: player-pulse 2.4s ease-out infinite;
+    }
+
+@keyframes player-pulse {
+    0% {
+        transform: scale(0.8);
+        opacity: 0.9;
+    }
+
+    100% {
+        transform: scale(2.4);
+        opacity: 0;
+    }
+}
+
+/* The Picked Point Steps Forward In A Blue Halo */
+.map-picked {
+    scale: 1.15;
+}
+
 .map-ring {
     position: absolute;
     width: 36px;
     height: 36px;
     border: 3px solid var(--mud-palette-info);
-    border-radius: 50%;
-    box-shadow: 0 0 0 2px var(--map-edge);
+    border-radius: var(--map-tile-radius);
+    box-shadow: 0 0 0 2px var(--map-edge), 0 0 18px 4px color-mix(in srgb, var(--mud-palette-info) 60%, transparent);
     transform: translate(-50%, -50%) scale(calc(1 / var(--map-zoom, 1)));
+    scale: 1.15;
     pointer-events: none;
-    animation: pick-flash 1.6s ease-in-out infinite;
+    animation: pick-flash 2s ease-in-out infinite;
 }
 
-/* Solid, Then A Quick Dip, Opacity Alone For The Compositor */
+    .map-ring.round {
+        border-radius: 50%;
+    }
+
+/* A Gentle Breath, Opacity Alone For The Compositor */
 @keyframes pick-flash {
     0%,
-    65%,
     100% {
         opacity: 1;
     }
 
-    80% {
-        opacity: 0.3;
+    50% {
+        opacity: 0.55;
     }
 }
 
@@ -777,34 +900,49 @@ html, body {
 
     /* Lines Keep Their Screen Width At Every Zoom, Like Icons */
     .map-zipline line {
-        stroke: white;
+        stroke: rgba(255, 255, 255, 0.92);
         stroke-width: calc(2px / var(--map-zoom, 1));
-        stroke-dasharray: calc(8px / var(--map-zoom, 1)) calc(6px / var(--map-zoom, 1));
-    }
-
-    /* A Picked Zipline Runs Solid Blue, A Little Wider */
-    .map-zipline .map-zipline-picked {
-        stroke: var(--mud-palette-info);
-        stroke-width: calc(3px / var(--map-zoom, 1));
-        stroke-dasharray: none;
         stroke-linecap: round;
     }
 
+    /* A Dark Edge Under Each Line, So It Reads On Snow */
+    .map-zipline .map-zipline-edge {
+        stroke: var(--map-edge);
+        stroke-width: calc(5px / var(--map-zoom, 1));
+    }
+
+    /* A Picked Zipline Runs Solid Blue In A Soft Glow */
+    .map-zipline .map-zipline-picked {
+        stroke: var(--mud-palette-info);
+        stroke-width: calc(3px / var(--map-zoom, 1));
+    }
+
+    .map-zipline .map-zipline-glow {
+        stroke: color-mix(in srgb, var(--mud-palette-info) 35%, transparent);
+        stroke-width: calc(10px / var(--map-zoom, 1));
+    }
+
     .map-zipline-pick {
-        animation: pick-flash 1.6s ease-in-out infinite;
+        animation: pick-flash 2s ease-in-out infinite;
     }
 
     /* A Waiting Zipline Runs Dashed Blue To The Cursor */
     .map-pick-line line {
         stroke: var(--mud-palette-info);
-        stroke-linecap: round;
+        stroke-dasharray: calc(8px / var(--map-zoom, 1)) calc(6px / var(--map-zoom, 1));
     }
 
 /* After The Rules It Undoes, Or They Win */
 @media (prefers-reduced-motion: reduce) {
     .map-ring,
-    .map-zipline-pick {
+    .map-zipline-pick,
+    .map-heading-pulse {
         animation: none;
+    }
+
+    .map-poi,
+    .map-cluster {
+        transition: none;
     }
 }
 

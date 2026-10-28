@@ -2113,9 +2113,6 @@ Nee houdt de editor open zodat je eerst kunt opslaan</value>
   <data name="SavegameDuplicated" xml:space="preserve">
     <value>Savegame gedupliceerd</value>
   </data>
-  <data name="Original" xml:space="preserve">
-    <value>Origineel</value>
-  </data>
   <data name="OneBackup" xml:space="preserve">
     <value>{0} Back-up</value>
   </data>
@@ -2143,18 +2140,6 @@ Nee houdt de editor open zodat je eerst kunt opslaan</value>
   <data name="AnyDistance" xml:space="preserve">
     <value>Elke Afstand</value>
   </data>
-  <data name="CompareSavegames" xml:space="preserve">
-    <value>Savegames Vergelijken</value>
-  </data>
-  <data name="CompareWith" xml:space="preserve">
-    <value>Vergelijken Met</value>
-  </data>
-  <data name="CompareFromTo" xml:space="preserve">
-    <value>Wat er veranderde van {0} naar {1}</value>
-  </data>
-  <data name="SavegamesSame" xml:space="preserve">
-    <value>Beide savegames zijn gelijk</value>
-  </data>
   <data name="ExportZip" xml:space="preserve">
     <value>Exporteren Als Zip</value>
   </data>
@@ -2163,5 +2148,23 @@ Nee houdt de editor open zodat je eerst kunt opslaan</value>
   </data>
   <data name="UnableToExport" xml:space="preserve">
     <value>Kan de savegame niet exporteren, zie het logbestand</value>
+  </data>
+  <data name="NormalText" xml:space="preserve">
+    <value>Het spel zoals het bedoeld is</value>
+  </data>
+  <data name="HardText" xml:space="preserve">
+    <value>Sterkere vijanden en zwaarder overleven</value>
+  </data>
+  <data name="HardSurvivalText" xml:space="preserve">
+    <value>Zwaar, met zwaarder overleven en minder voorraad</value>
+  </data>
+  <data name="PeacefulText" xml:space="preserve">
+    <value>Geen vijanden, alleen overleven</value>
+  </data>
+  <data name="ModeCreativeText" xml:space="preserve">
+    <value>Vrij bouwen zonder te verzamelen</value>
+  </data>
+  <data name="ModeCustomText" xml:space="preserve">
+    <value>Kies elke instelling zelf</value>
   </data>
 </root>

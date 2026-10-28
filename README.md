@@ -9,7 +9,7 @@
 - Finish or remove structures
 - Teleport yourself or anyone else on the map, and search or filter every point on it
 - Tools such as regrowing trees and calming cannibals
-- Duplicate, compare and export your savegames
+- Duplicate and export your savegames
 - See every change before you save, and undo them page by page
 - English, Dutch, German, French and Turkish, and it updates itself
 

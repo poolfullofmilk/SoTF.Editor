@@ -937,11 +937,7 @@ try
         "Deleting A Copy Keeps The Original"
     );
 
-    // A Copy Compares As The Same, An Export Never Overwrites
-    Check(
-        BackupDiff.Describe(copied, savegamePath, gameData, key => key).Count == 0,
-        "Copy Compares As The Same Savegame"
-    );
+    // An Export Never Overwrites
     var exported = SavegameManager.Export(main.SelectedSavegame!);
     var exportedAgain = SavegameManager.Export(main.SelectedSavegame!);
     using (var archive = ZipFile.OpenRead(exported))

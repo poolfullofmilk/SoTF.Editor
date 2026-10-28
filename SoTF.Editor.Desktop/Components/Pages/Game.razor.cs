@@ -12,14 +12,14 @@ namespace SoTF.Editor.Desktop.Components.Pages;
 public partial class Game : EditorPageBase
 {
     // Values The Game Writes, Labels From The Translations
-    private static readonly SettingOption[] s_modes =
+    private static readonly ModeCard[] s_modes =
     [
-        new("Normal", "Normal"),
-        new(HardGameMode, "Hard"),
-        new(HardSurvivalGameMode, "HardSurvival"),
-        new(PeacefulGameMode, "Peaceful"),
-        new(CreativeGameMode, "ModeCreative"),
-        new(CustomGameMode, "ModeCustom"),
+        new("Normal", "Normal", MudBlazor.Icons.Material.Rounded.Forest),
+        new(HardGameMode, "Hard", MudBlazor.Icons.Material.Rounded.Whatshot),
+        new(HardSurvivalGameMode, "HardSurvival", MudBlazor.Icons.Material.Rounded.AcUnit),
+        new(PeacefulGameMode, "Peaceful", MudBlazor.Icons.Material.Rounded.Spa),
+        new(CreativeGameMode, "ModeCreative", MudBlazor.Icons.Material.Rounded.Construction),
+        new(CustomGameMode, "ModeCustom", MudBlazor.Icons.Material.Rounded.Tune),
     ];
 
     private static readonly SettingOption[] s_offNormalHard =
@@ -186,11 +186,65 @@ public partial class Game : EditorPageBase
     public required WeatherPageViewModel Weather { get; set; }
 
     private string? _namedIntFilter;
+    private string? _settingFilter;
 
     private bool ModeChanged => GameSetup.IsChanged(GameSetupKeys.Mode, CustomGameMode);
 
-    private static IEnumerable<SettingOption> Presets =>
-        s_modes.Where(mode => mode.Value != CustomGameMode);
+    private bool IsMode(ModeCard mode)
+    {
+        return GameSetup.SelectedMode == mode.Value;
+    }
+
+    private bool IsModeChanged(ModeCard mode)
+    {
+        return IsMode(mode) && ModeChanged;
+    }
+
+    private string ModeClass(ModeCard mode)
+    {
+        // The Picked Mode Wears The Accent Ring
+        return "inset rounded-panel pa-4 hover-card flex-grow-1"
+            + (IsMode(mode) ? " card-open" : "");
+    }
+
+    private static string SettingClass(bool isSet)
+    {
+        // Off Its Default, A Setting Wears A Blue Edge
+        return "inset rounded-panel pa-4 flex-grow-1" + (isSet ? " setting-set" : "");
+    }
+
+    private bool IsSet(SelectSetting setting)
+    {
+        return GameSetup.GetString(setting.Key, setting.Fallback) != setting.Fallback;
+    }
+
+    private bool IsSet(ToggleSetting toggle)
+    {
+        return GameSetup.GetBool(toggle.Key, toggle.Fallback) != toggle.Fallback;
+    }
+
+    private bool IsPicked(SelectSetting setting, SettingOption option)
+    {
+        return GameSetup.GetString(setting.Key, setting.Fallback) == option.Value;
+    }
+
+    private bool Matches(string labelKey)
+    {
+        return string.IsNullOrWhiteSpace(_settingFilter)
+            || AppText.Get(labelKey).Contains(_settingFilter, StringComparison.OrdinalIgnoreCase);
+    }
+
+    // Groups The Search Leaves Something In
+    private IEnumerable<SettingGroup> VisibleGroups =>
+        s_setupGroups.Where(group =>
+            group.Selects.Any(setting => Matches(setting.LabelKey))
+            || group.Toggles.Any(toggle => Matches(toggle.LabelKey))
+        );
+
+    private static string SectionId(SettingGroup group)
+    {
+        return "setup-" + group.TitleKey;
+    }
 
     private async Task LoadPresetAsync(string mode)
     {
@@ -215,13 +269,6 @@ public partial class Game : EditorPageBase
         return group
             .Selects.Select(setting => setting.Key)
             .Concat(group.Toggles.Select(toggle => toggle.Key));
-    }
-
-    private static string LabelOf(IEnumerable<SettingOption> options, string? value)
-    {
-        return options.FirstOrDefault(option => option.Value == value) is { } option
-            ? AppText.Get(option.LabelKey)
-            : value ?? string.Empty;
     }
 
     private double? DaysPerSeason =>
@@ -392,6 +439,13 @@ public partial class Game : EditorPageBase
     }
 
     private sealed record SettingOption(string Value, string LabelKey);
+
+    private sealed record ModeCard(string Value, string LabelKey, string Icon)
+    {
+        public string TextKey => LabelKey + "Text";
+
+        public bool IsPreset => Value != CustomGameMode;
+    }
 
     private sealed record SeasonState(int Season, int DaysLeft, int Length)
     {

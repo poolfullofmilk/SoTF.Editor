@@ -2113,9 +2113,6 @@ Nein lässt den Editor offen, damit du zuerst speichern kannst</value>
   <data name="SavegameDuplicated" xml:space="preserve">
     <value>Spielstand dupliziert</value>
   </data>
-  <data name="Original" xml:space="preserve">
-    <value>Original</value>
-  </data>
   <data name="OneBackup" xml:space="preserve">
     <value>{0} Backup</value>
   </data>
@@ -2143,18 +2140,6 @@ Nein lässt den Editor offen, damit du zuerst speichern kannst</value>
   <data name="AnyDistance" xml:space="preserve">
     <value>Jede Entfernung</value>
   </data>
-  <data name="CompareSavegames" xml:space="preserve">
-    <value>Spielstände Vergleichen</value>
-  </data>
-  <data name="CompareWith" xml:space="preserve">
-    <value>Vergleichen Mit</value>
-  </data>
-  <data name="CompareFromTo" xml:space="preserve">
-    <value>Was sich von {0} zu {1} geändert hat</value>
-  </data>
-  <data name="SavegamesSame" xml:space="preserve">
-    <value>Beide Spielstände sind gleich</value>
-  </data>
   <data name="ExportZip" xml:space="preserve">
     <value>Als Zip Exportieren</value>
   </data>
@@ -2163,5 +2148,23 @@ Nein lässt den Editor offen, damit du zuerst speichern kannst</value>
   </data>
   <data name="UnableToExport" xml:space="preserve">
     <value>Der Spielstand konnte nicht exportiert werden, siehe das Protokoll</value>
+  </data>
+  <data name="NormalText" xml:space="preserve">
+    <value>Das Spiel, wie es gedacht ist</value>
+  </data>
+  <data name="HardText" xml:space="preserve">
+    <value>Stärkere Feinde und härteres Überleben</value>
+  </data>
+  <data name="HardSurvivalText" xml:space="preserve">
+    <value>Schwer, mit härterem Überleben und weniger Vorräten</value>
+  </data>
+  <data name="PeacefulText" xml:space="preserve">
+    <value>Keine Feinde, nur Überleben</value>
+  </data>
+  <data name="ModeCreativeText" xml:space="preserve">
+    <value>Frei bauen, ohne zu sammeln</value>
+  </data>
+  <data name="ModeCustomText" xml:space="preserve">
+    <value>Wähle jede Einstellung selbst</value>
   </data>
 </root>

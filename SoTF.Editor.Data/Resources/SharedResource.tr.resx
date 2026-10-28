@@ -2113,9 +2113,6 @@ Hayır düzenleyiciyi açık tutar, böylece önce kaydedebilirsiniz</value>
   <data name="SavegameDuplicated" xml:space="preserve">
     <value>Kayıt çoğaltıldı</value>
   </data>
-  <data name="Original" xml:space="preserve">
-    <value>Orijinal</value>
-  </data>
   <data name="OneBackup" xml:space="preserve">
     <value>{0} Yedek</value>
   </data>
@@ -2143,18 +2140,6 @@ Hayır düzenleyiciyi açık tutar, böylece önce kaydedebilirsiniz</value>
   <data name="AnyDistance" xml:space="preserve">
     <value>Her Mesafe</value>
   </data>
-  <data name="CompareSavegames" xml:space="preserve">
-    <value>Kayıtları Karşılaştır</value>
-  </data>
-  <data name="CompareWith" xml:space="preserve">
-    <value>Şununla Karşılaştır</value>
-  </data>
-  <data name="CompareFromTo" xml:space="preserve">
-    <value>{0} ile {1} arasındaki farklar</value>
-  </data>
-  <data name="SavegamesSame" xml:space="preserve">
-    <value>İki kayıt aynı</value>
-  </data>
   <data name="ExportZip" xml:space="preserve">
     <value>Zip Olarak Dışa Aktar</value>
   </data>
@@ -2163,5 +2148,23 @@ Hayır düzenleyiciyi açık tutar, böylece önce kaydedebilirsiniz</value>
   </data>
   <data name="UnableToExport" xml:space="preserve">
     <value>Kayıt dışa aktarılamadı, günlüğe bakın</value>
+  </data>
+  <data name="NormalText" xml:space="preserve">
+    <value>Oyunun tasarlandığı hâli</value>
+  </data>
+  <data name="HardText" xml:space="preserve">
+    <value>Daha güçlü düşmanlar ve daha zorlu hayatta kalma</value>
+  </data>
+  <data name="HardSurvivalText" xml:space="preserve">
+    <value>Zor, daha zorlu hayatta kalma ve daha az erzakla</value>
+  </data>
+  <data name="PeacefulText" xml:space="preserve">
+    <value>Düşman yok, sadece hayatta kalma</value>
+  </data>
+  <data name="ModeCreativeText" xml:space="preserve">
+    <value>Toplamadan özgürce inşa edin</value>
+  </data>
+  <data name="ModeCustomText" xml:space="preserve">
+    <value>Her ayarı kendiniz seçin</value>
   </data>
 </root>
