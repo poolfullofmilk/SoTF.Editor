@@ -21,8 +21,6 @@
                                  sm="6"
                                  lg="4">
                             @* Tool Card *@
-                            <ChangedBadge When="MainViewModel.IsToolChanged(tool.TitleKey)"
-                                          Class="d-block mud-height-full">
                                 <MudPaper Elevation="4"
                                           Class="@CardClass(tool)"
                                           role="button"
@@ -64,7 +62,6 @@
                                         }
                                     </MudStack>
                                 </MudPaper>
-                            </ChangedBadge>
                         </MudItem>
                     }
 

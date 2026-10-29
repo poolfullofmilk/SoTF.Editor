@@ -373,13 +373,13 @@
     <value>{0} Spawnen</value>
   </data>
   <data name="NoFiresFound" xml:space="preserve">
-    <value>Geen Vuren Gevonden</value>
+    <value>Geen vuren gevonden</value>
   </data>
   <data name="FiresChanged" xml:space="preserve">
     <value>{0} vuren aangepast, sla op om ze te bewaren</value>
   </data>
   <data name="NoStructureDamage" xml:space="preserve">
-    <value>Geen Schade aan Constructies Gevonden</value>
+    <value>Geen schade aan constructies gevonden</value>
   </data>
   <data name="StructureDamageRepaired" xml:space="preserve">
     <value>{0} beschadigde constructies hersteld, sla op om ze te bewaren</value>
@@ -415,7 +415,7 @@
     <value>Outfit</value>
   </data>
   <data name="ReviveTooltip" xml:space="preserve">
-    <value>Brengt de volger terug met de hier gekozen items en outfit. Een volger die het spel verwijderde verschijnt bij de speler, of naast een volger buiten als je ondergronds bent</value>
+    <value>Brengt de volger terug met de hier gekozen items en outfit. Een volger die het spel verwijderde, komt terug naast je, of naast een volger buiten als je ondergronds bent</value>
   </data>
   <data name="Alive" xml:space="preserve">
     <value>Levend</value>
@@ -520,7 +520,7 @@
     <value>Modus</value>
   </data>
   <data name="NoCuttingsSpawn" xml:space="preserve">
-    <value>Geen Stekken Spawnen</value>
+    <value>Geen Snoeiresten</value>
   </data>
   <data name="OneHitTrees" xml:space="preserve">
     <value>Bomen Kappen met Eén Slag</value>
@@ -589,7 +589,7 @@
     <value>Spelstatus</value>
   </data>
   <data name="WorldObjectStatesInfo" xml:space="preserve">
-    <value>Waarschijnlijk is 0 gesloten of niet gebeurd, 1 of 3 geopend of gebeurd. Een gewiste waarde verdwijnt uit de save, dus het spel ziet het als nooit aangeraakt</value>
+    <value>0 betekent waarschijnlijk gesloten of nog niet gebeurd, 1 of 3 geopend of gebeurd. Een gewiste waarde verdwijnt uit de save, dus het spel ziet het als nooit aangeraakt</value>
   </data>
   <data name="WorldObjectStates" xml:space="preserve">
     <value>Status van Wereldobjecten</value>
@@ -670,7 +670,7 @@
     <value>Coördinaten Kopiëren</value>
   </data>
   <data name="CoordinatesCopied" xml:space="preserve">
-    <value>Coördinaten Gekopieerd</value>
+    <value>Coördinaten gekopieerd</value>
   </data>
   <data name="Followers" xml:space="preserve">
     <value>Volgers</value>
@@ -688,7 +688,7 @@
     <value>In Bezit</value>
   </data>
   <data name="IsCopy" xml:space="preserve">
-    <value>Is Kopie</value>
+    <value>Gekloond</value>
   </data>
   <data name="Underground" xml:space="preserve">
     <value>Ondergronds</value>
@@ -718,7 +718,7 @@
     <value>Tussenruimte</value>
   </data>
   <data name="SpaceBetweenTooltip" xml:space="preserve">
-    <value>Ruimte tussen elke actor, boven 0 in een raster</value>
+    <value>Ruimte tussen elke actor, boven 0 staan ze in een raster</value>
   </data>
   <data name="SpawnPattern" xml:space="preserve">
     <value>Spawnpatroon</value>
@@ -907,7 +907,7 @@
     <value>Verwijderen</value>
   </data>
   <data name="StructureModeAlmostFinish" xml:space="preserve">
-    <value>Bijna Klaar</value>
+    <value>Bijna Afwerken</value>
   </data>
   <data name="StructureModeFinish" xml:space="preserve">
     <value>Afwerken</value>
@@ -949,7 +949,7 @@
     <value>Steen</value>
   </data>
   <data name="Constructions" xml:space="preserve">
-    <value>Bouwwerken</value>
+    <value>Bouwdelen</value>
   </data>
   <data name="ItemPlaterWarning" xml:space="preserve">
     <value>Dit hulpmiddel slaat meteen op en herlaadt, sla andere wijzigingen eerst op</value>
@@ -961,13 +961,13 @@
     <value>Items in Wapenrekken</value>
   </data>
   <data name="PlatingAdded" xml:space="preserve">
-    <value>Verguldsel Toegevoegd aan {0} Items</value>
+    <value>Verguldsel toegevoegd aan {0} items</value>
   </data>
   <data name="PlatingRemoved" xml:space="preserve">
-    <value>Verguldsel Verwijderd van {0} Items</value>
+    <value>Verguldsel verwijderd van {0} items</value>
   </data>
   <data name="UnableToCheckForUpdates" xml:space="preserve">
-    <value>Kan Niet Controleren op Updates</value>
+    <value>Kan niet controleren op updates</value>
   </data>
   <data name="Map" xml:space="preserve">
     <value>Kaart</value>
@@ -976,7 +976,7 @@
     <value>Je hebt al de nieuwste versie</value>
   </data>
   <data name="ChangesSaved" xml:space="preserve">
-    <value>Wijzigingen Opgeslagen</value>
+    <value>Wijzigingen opgeslagen</value>
   </data>
   <data name="OverwriteExternalChangesText" xml:space="preserve">
     <value>De game heeft deze savegame opgeslagen nadat je hem opende. Nu opslaan kan die voortgang ongedaan maken, laad eerst opnieuw om die te houden</value>
@@ -1000,7 +1000,7 @@
     <value>Eerst wordt een back-up van de hele savegame gemaakt</value>
   </data>
   <data name="FollowerAlreadyAlive" xml:space="preserve">
-    <value>{0} Leeft Al</value>
+    <value>{0} leeft al</value>
   </data>
   <data name="FollowerRevived" xml:space="preserve">
     <value>{0} tot leven gewekt, sla op om het te bewaren</value>
@@ -1009,10 +1009,10 @@
     <value>Kopie van {0} gespawnd, sla op om hem te bewaren</value>
   </data>
   <data name="NoChanges" xml:space="preserve">
-    <value>Geen Wijzigingen, Niets Opgeslagen</value>
+    <value>Geen wijzigingen, niets opgeslagen</value>
   </data>
   <data name="UnableToSpawnFollowers" xml:space="preserve">
-    <value>Kan Volgers Niet Spawnen</value>
+    <value>Kan volgers niet spawnen</value>
   </data>
   <data name="Key" xml:space="preserve">
     <value>Sleutel</value>
@@ -1039,7 +1039,7 @@
     <value>{0} containers gereset, sla op om ze te bewaren</value>
   </data>
   <data name="NothingToReset" xml:space="preserve">
-    <value>Niets om te Resetten</value>
+    <value>Niets om te resetten</value>
   </data>
   <data name="TrapsReset" xml:space="preserve">
     <value>{0} vallen gereset, sla op om ze te bewaren</value>
@@ -1087,13 +1087,13 @@
     <value>Verwijdert elke kopie van dit type van de kaart</value>
   </data>
   <data name="ClonesRemoved" xml:space="preserve">
-    <value>{0} Kopieën van {1} Verwijderd</value>
+    <value>{0} kopieën van {1} verwijderd</value>
   </data>
   <data name="NothingToRemove" xml:space="preserve">
-    <value>Niets om te Verwijderen</value>
+    <value>Niets om te verwijderen</value>
   </data>
   <data name="NothingToMove" xml:space="preserve">
-    <value>Niets om te Verplaatsen</value>
+    <value>Niets om te verplaatsen</value>
   </data>
   <data name="ObjectCloned" xml:space="preserve">
     <value>{0} gekopieerd naar de speler, sla op om het te bewaren</value>
@@ -1105,7 +1105,7 @@
     <value>Wereldobject</value>
   </data>
   <data name="UnableToSave" xml:space="preserve">
-    <value>Kan Niet Opslaan: {0}</value>
+    <value>Kan niet opslaan: {0}</value>
   </data>
   <data name="DiscardChangesTitle" xml:space="preserve">
     <value>Niet Opgeslagen Wijzigingen Verwerpen</value>
@@ -1206,7 +1206,7 @@ Nee houdt ze zodat je eerst kunt opslaan</value>
     <value>Verdrinkend of Geworpen</value>
   </data>
   <data name="ActorState25" xml:space="preserve">
-    <value>Golfkar</value>
+    <value>In Golfkar</value>
   </data>
   <data name="ActorState40" xml:space="preserve">
     <value>Op Rots</value>
@@ -1230,13 +1230,13 @@ Nee houdt ze zodat je eerst kunt opslaan</value>
     <value>Spawnintro</value>
   </data>
   <data name="ActorState47" xml:space="preserve">
-    <value>Plafond</value>
+    <value>Aan het Plafond</value>
   </data>
   <data name="ActorState48" xml:space="preserve">
-    <value>Ondergrondse Grot</value>
+    <value>In een Grot</value>
   </data>
   <data name="ActorState50" xml:space="preserve">
-    <value>Gevecht Verlaten</value>
+    <value>Verlaat Gevecht</value>
   </data>
   <data name="ActorState51" xml:space="preserve">
     <value>Verdwenen</value>
@@ -1389,7 +1389,7 @@ Nee houdt ze zodat je eerst kunt opslaan</value>
     <value>3D-Printers</value>
   </data>
   <data name="PoiGroupSupply" xml:space="preserve">
-    <value>Voorraad</value>
+    <value>Voorraden</value>
   </data>
   <data name="PoiGroupVillages" xml:space="preserve">
     <value>Dorpen</value>
@@ -1482,7 +1482,7 @@ Nee houdt ze zodat je eerst kunt opslaan</value>
     <value>Oudste</value>
   </data>
   <data name="ItemPlaterText" xml:space="preserve">
-    <value>Vergulden maakt de gekozen items, constructies en bouwdelen goud, Verguldsel verwijderen maakt ze weer gewoon</value>
+    <value>Vergulden maakt de gekozen items, constructies en bouwdelen goud. Verguldsel Verwijderen maakt ze weer gewoon</value>
   </data>
   <data name="EternalFiresText" xml:space="preserve">
     <value>Elk vuur in de wereld brandt met brandstof die nooit opraakt</value>
@@ -1599,7 +1599,7 @@ Nee houdt ze zodat je eerst kunt opslaan</value>
     <value>Minder munitie te vinden in de wereld</value>
   </data>
   <data name="SingleUseContainersInfo" xml:space="preserve">
-    <value>Kisten en koffers blijven leeg eens ze open zijn</value>
+    <value>Kisten en koffers blijven leeg zodra ze geopend zijn</value>
   </data>
   <data name="PlayersTriggerTrapsInfo" xml:space="preserve">
     <value>Vallen gaan ook af bij spelers</value>
@@ -1692,19 +1692,19 @@ Nee houdt ze zodat je eerst kunt opslaan</value>
     <value>Hoe hard het nu regent</value>
   </data>
   <data name="SettingStartingDayOffsetInfo" xml:space="preserve">
-    <value>Extra dagen die het spel meetelt om het seizoen te bepalen. Hoger brengt het volgende seizoen sneller, lager houdt dit seizoen langer. Een seizoen kiezen zet dit voor je</value>
+    <value>Extra dagen die het spel meetelt om het seizoen te bepalen. Hoger brengt het volgende seizoen sneller, lager houdt dit seizoen langer</value>
   </data>
   <data name="UnableToDeleteBackup" xml:space="preserve">
     <value>Kan de back-up niet verwijderen</value>
   </data>
   <data name="BackupUsage" xml:space="preserve">
-    <value>Back-ups gebruiken {0} van {1}. Daarboven gaan de oudste weg, behalve de allereerste</value>
+    <value>Back-ups gebruiken {0} van {1}. Daarboven worden de oudste verwijderd, behalve de allereerste</value>
   </data>
   <data name="BackupsPruned" xml:space="preserve">
     <value>Back-ups gingen over {1}, dus de {0} oudste zijn verwijderd. De allereerste blijft</value>
   </data>
   <data name="ToolsHint" xml:space="preserve">
-    <value>Hulpmiddelen wijzigen de open save en hebben Opslaan nodig, zoals elke andere wijziging. Vergulden en Ontgrendelingen schrijven meteen</value>
+    <value>Hulpmiddelen wijzigen de open save en hebben Opslaan nodig, zoals elke andere wijziging. Vergulden en Ontgrendelingen slaan meteen op</value>
   </data>
   <data name="ToolsWorld" xml:space="preserve">
     <value>Wereld</value>
@@ -1785,7 +1785,7 @@ Nee houdt ze zodat je eerst kunt opslaan</value>
     <value>Standaard Herstellen</value>
   </data>
   <data name="NothingToChange" xml:space="preserve">
-    <value>Niets om te Wijzigen</value>
+    <value>Niets om te wijzigen</value>
   </data>
   <data name="UpdateNotVerified" xml:space="preserve">
     <value>De download kon niet gecontroleerd worden, dus de releasepagina opent om hem zelf te downloaden</value>
@@ -1818,7 +1818,7 @@ Nee houdt ze zodat je eerst kunt opslaan</value>
     <value>Pagina Terugzetten</value>
   </data>
   <data name="RevertPageText" xml:space="preserve">
-    <value>Elke niet opgeslagen wijziging op {0} gaat terug naar hoe hij geladen was</value>
+    <value>Elke niet opgeslagen wijziging op {0} wordt teruggezet naar de geladen stand</value>
   </data>
   <data name="AngerLevel" xml:space="preserve">
     <value>Woede</value>
@@ -1886,7 +1886,7 @@ Nee houdt de editor open zodat je eerst kunt opslaan</value>
     <value>Kies wat opslaan met elke constructie doet. Behouden laat hem zoals hij is</value>
   </data>
   <data name="SetAllTo" xml:space="preserve">
-    <value>Alles Op</value>
+    <value>Alles Zetten Op</value>
   </data>
   <data name="StructureCountBuilt" xml:space="preserve">
     <value>{0} Gebouwd</value>
@@ -1916,10 +1916,10 @@ Nee houdt de editor open zodat je eerst kunt opslaan</value>
     <value>Bang</value>
   </data>
   <data name="SentimentInfo" xml:space="preserve">
-    <value>Hoeveel ze hen mogen, van -100 haat tot 100 liefde</value>
+    <value>Hoeveel ze de speler of groep op deze kaart mogen, van -100 haat tot 100 liefde</value>
   </data>
   <data name="SeasonInfo" xml:space="preserve">
-    <value>Elk seizoen duurt zoveel dagen als Seizoenslengte op het instellingentabblad zegt, dus het ene seizoen kan niet langer duren dan het andere. Klik op een dag in de balk om er vandaag van te maken, de editor rekent de verschuiving uit</value>
+    <value>Elk seizoen duurt zoveel dagen als Seizoenslengte op het tabblad Spelinstellingen zegt, dus het ene seizoen kan niet langer duren dan het andere. Klik op een dag in de balk om er vandaag van te maken, de editor rekent de verschuiving uit</value>
   </data>
   <data name="DaysUntilSeasonOf" xml:space="preserve">
     <value>Dagen tot {0}: {1}</value>
@@ -1973,7 +1973,7 @@ Nee houdt de editor open zodat je eerst kunt opslaan</value>
     <value>Pantser, {0} van 10</value>
   </data>
   <data name="ArmorInfo" xml:space="preserve">
-    <value>Het spel plaatst elk gedragen stuk zelf op het lichaam, tot 10, dus er is geen lichaamsdeel te kiezen. Uittrekken legt een stuk terug in de inventaris, verwijderen haalt het voorgoed weg</value>
+    <value>Het spel plaatst elk gedragen stuk zelf op het lichaam, tot 10, dus er is geen lichaamsdeel te kiezen. Uittrekken legt een stuk terug in de inventaris, Verwijderen haalt het voorgoed weg</value>
   </data>
   <data name="SetToDefaultDurabilityOf" xml:space="preserve">
     <value>Op Standaardduurzaamheid Zetten: {0}</value>
@@ -2030,7 +2030,7 @@ Nee houdt de editor open zodat je eerst kunt opslaan</value>
     <value>Terug</value>
   </data>
   <data name="CannibalAngerDialogText" xml:space="preserve">
-    <value>Elke levende kannibaal krijgt deze boosheid op jou en heeft evenveel afkeer. Op 0 vergeten ze ook je doden, gekapte bomen en dorpsbezoeken, zodat ze echt kalmeren</value>
+    <value>Elke levende kannibaal krijgt deze woede op jou en heeft evenveel afkeer van je. Op 0 vergeten ze ook wie je gedood hebt, de gekapte bomen en je dorpsbezoeken, zodat ze echt kalmeren</value>
   </data>
   <data name="FollowersStayOutside" xml:space="preserve">
     <value>Volgers kunnen niet mee een grot in, verlaat eerst de grot</value>
@@ -2039,7 +2039,7 @@ Nee houdt de editor open zodat je eerst kunt opslaan</value>
     <value>Nergens om te spawnen: je bent in een grot en er is geen volger buiten</value>
   </data>
   <data name="ResetFilters" xml:space="preserve">
-    <value>Filters Herstellen</value>
+    <value>Filters Wissen</value>
   </data>
   <data name="AlreadyThere" xml:space="preserve">
     <value>Staat Er Al</value>
@@ -2078,7 +2078,7 @@ Nee houdt de editor open zodat je eerst kunt opslaan</value>
     <value>Kelvin en Virginia van het Spel Blijven</value>
   </data>
   <data name="StartingUpdate" xml:space="preserve">
-    <value>Update Starten</value>
+    <value>Update Wordt Gestart</value>
   </data>
   <data name="DownloadedOf" xml:space="preserve">
     <value>{0} van {1}</value>
@@ -2126,7 +2126,7 @@ Nee houdt de editor open zodat je eerst kunt opslaan</value>
     <value>Kan de kopie niet verwijderen, zie het logbestand</value>
   </data>
   <data name="SavegameGone" xml:space="preserve">
-    <value>Deze savegame is weg, de lijst wordt opnieuw gelezen</value>
+    <value>Deze savegame bestaat niet meer, de lijst is vernieuwd</value>
   </data>
   <data name="NearPlayer" xml:space="preserve">
     <value>Bij Speler</value>

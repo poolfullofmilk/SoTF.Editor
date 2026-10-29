@@ -373,13 +373,13 @@
     <value>{0} Spawnen</value>
   </data>
   <data name="NoFiresFound" xml:space="preserve">
-    <value>Keine Feuer Gefunden</value>
+    <value>Keine Feuer gefunden</value>
   </data>
   <data name="FiresChanged" xml:space="preserve">
     <value>{0} Feuer geändert, speichere, um sie zu behalten</value>
   </data>
   <data name="NoStructureDamage" xml:space="preserve">
-    <value>Keine Schäden an Bauwerken Gefunden</value>
+    <value>Keine Schäden an Bauwerken gefunden</value>
   </data>
   <data name="StructureDamageRepaired" xml:space="preserve">
     <value>{0} beschädigte Bauwerke repariert, speichere, um sie zu behalten</value>
@@ -415,7 +415,7 @@
     <value>Outfit</value>
   </data>
   <data name="ReviveTooltip" xml:space="preserve">
-    <value>Holt den Begleiter mit den hier gewählten Gegenständen und dem Outfit zurück. Einer, den das Spiel gelöscht hat, erscheint beim Spieler oder neben einem Begleiter draußen, während du unter der Erde bist</value>
+    <value>Holt den Begleiter mit den hier gewählten Gegenständen und dem Outfit zurück. Ein Begleiter, den das Spiel entfernt hat, erscheint neben dir oder, während du unter der Erde bist, neben einem Begleiter draußen</value>
   </data>
   <data name="Alive" xml:space="preserve">
     <value>Lebendig</value>
@@ -589,7 +589,7 @@
     <value>Spielzustand</value>
   </data>
   <data name="WorldObjectStatesInfo" xml:space="preserve">
-    <value>Wahrscheinlich bedeutet 0 geschlossen oder nicht passiert, 1 oder 3 geöffnet oder passiert. Ein gelöschter Wert verlässt den Spielstand, das Spiel sieht ihn also als nie berührt</value>
+    <value>0 bedeutet wahrscheinlich geschlossen oder noch nicht passiert, 1 oder 3 geöffnet oder passiert. Ein gelöschter Wert verlässt den Spielstand, das Spiel sieht ihn also als nie berührt</value>
   </data>
   <data name="WorldObjectStates" xml:space="preserve">
     <value>Zustände von Weltobjekten</value>
@@ -670,7 +670,7 @@
     <value>Koordinaten Kopieren</value>
   </data>
   <data name="CoordinatesCopied" xml:space="preserve">
-    <value>Koordinaten Kopiert</value>
+    <value>Koordinaten kopiert</value>
   </data>
   <data name="Followers" xml:space="preserve">
     <value>Begleiter</value>
@@ -688,7 +688,7 @@
     <value>Im Besitz</value>
   </data>
   <data name="IsCopy" xml:space="preserve">
-    <value>Ist Kopie</value>
+    <value>Geklont</value>
   </data>
   <data name="Underground" xml:space="preserve">
     <value>Unterirdisch</value>
@@ -961,13 +961,13 @@
     <value>Gegenstände in Waffenständern</value>
   </data>
   <data name="PlatingAdded" xml:space="preserve">
-    <value>Vergoldung zu {0} Gegenständen Hinzugefügt</value>
+    <value>Vergoldung zu {0} Gegenständen hinzugefügt</value>
   </data>
   <data name="PlatingRemoved" xml:space="preserve">
-    <value>Vergoldung von {0} Gegenständen Entfernt</value>
+    <value>Vergoldung von {0} Gegenständen entfernt</value>
   </data>
   <data name="UnableToCheckForUpdates" xml:space="preserve">
-    <value>Suche nach Updates Fehlgeschlagen</value>
+    <value>Suche nach Updates fehlgeschlagen</value>
   </data>
   <data name="Map" xml:space="preserve">
     <value>Karte</value>
@@ -976,7 +976,7 @@
     <value>Du hast bereits die neueste Version</value>
   </data>
   <data name="ChangesSaved" xml:space="preserve">
-    <value>Änderungen Gespeichert</value>
+    <value>Änderungen gespeichert</value>
   </data>
   <data name="OverwriteExternalChangesText" xml:space="preserve">
     <value>Das Spiel hat diesen Spielstand gespeichert, nachdem du ihn geöffnet hast. Jetzt zu speichern kann diesen Fortschritt rückgängig machen, lade zuerst neu, um ihn zu behalten</value>
@@ -1000,7 +1000,7 @@
     <value>Zuerst wird ein Backup des ganzen Spielstands erstellt</value>
   </data>
   <data name="FollowerAlreadyAlive" xml:space="preserve">
-    <value>{0} Lebt Bereits</value>
+    <value>{0} lebt bereits</value>
   </data>
   <data name="FollowerRevived" xml:space="preserve">
     <value>{0} wiederbelebt, speichere, um es zu behalten</value>
@@ -1009,10 +1009,10 @@
     <value>Kopie von {0} gespawnt, speichere, um sie zu behalten</value>
   </data>
   <data name="NoChanges" xml:space="preserve">
-    <value>Keine Änderungen, Nichts Gespeichert</value>
+    <value>Keine Änderungen, nichts gespeichert</value>
   </data>
   <data name="UnableToSpawnFollowers" xml:space="preserve">
-    <value>Begleiter Konnten Nicht Gespawnt Werden</value>
+    <value>Begleiter konnten nicht gespawnt werden</value>
   </data>
   <data name="Key" xml:space="preserve">
     <value>Schlüssel</value>
@@ -1039,7 +1039,7 @@
     <value>{0} Behälter zurückgesetzt, speichere, um sie zu behalten</value>
   </data>
   <data name="NothingToReset" xml:space="preserve">
-    <value>Nichts Zurückzusetzen</value>
+    <value>Nichts zurückzusetzen</value>
   </data>
   <data name="TrapsReset" xml:space="preserve">
     <value>{0} Fallen zurückgesetzt, speichere, um sie zu behalten</value>
@@ -1087,13 +1087,13 @@
     <value>Entfernt jede Kopie dieses Typs von der Karte</value>
   </data>
   <data name="ClonesRemoved" xml:space="preserve">
-    <value>{0} Kopien von {1} Entfernt</value>
+    <value>{0} Kopien von {1} entfernt</value>
   </data>
   <data name="NothingToRemove" xml:space="preserve">
-    <value>Nichts zu Entfernen</value>
+    <value>Nichts zu entfernen</value>
   </data>
   <data name="NothingToMove" xml:space="preserve">
-    <value>Nichts zu Verschieben</value>
+    <value>Nichts zu verschieben</value>
   </data>
   <data name="ObjectCloned" xml:space="preserve">
     <value>{0} zum Spieler kopiert, speichere, um es zu behalten</value>
@@ -1105,7 +1105,7 @@
     <value>Weltobjekt</value>
   </data>
   <data name="UnableToSave" xml:space="preserve">
-    <value>Speichern Fehlgeschlagen: {0}</value>
+    <value>Speichern fehlgeschlagen: {0}</value>
   </data>
   <data name="DiscardChangesTitle" xml:space="preserve">
     <value>Ungespeicherte Änderungen Verwerfen</value>
@@ -1206,7 +1206,7 @@ Nein behält sie, damit du zuerst speichern kannst</value>
     <value>Ertrinkend oder Geworfen</value>
   </data>
   <data name="ActorState25" xml:space="preserve">
-    <value>Golfwagen</value>
+    <value>Im Golfwagen</value>
   </data>
   <data name="ActorState40" xml:space="preserve">
     <value>Auf Felsen</value>
@@ -1230,13 +1230,13 @@ Nein behält sie, damit du zuerst speichern kannst</value>
     <value>Spawn-Intro</value>
   </data>
   <data name="ActorState47" xml:space="preserve">
-    <value>Decke</value>
+    <value>An der Decke</value>
   </data>
   <data name="ActorState48" xml:space="preserve">
-    <value>Unterirdische Höhle</value>
+    <value>In einer Höhle</value>
   </data>
   <data name="ActorState50" xml:space="preserve">
-    <value>Kampf Verlassen</value>
+    <value>Verlässt den Kampf</value>
   </data>
   <data name="ActorState51" xml:space="preserve">
     <value>Despawnt</value>
@@ -1482,7 +1482,7 @@ Nein behält sie, damit du zuerst speichern kannst</value>
     <value>Älteste</value>
   </data>
   <data name="ItemPlaterText" xml:space="preserve">
-    <value>Vergolden färbt die gewählten Gegenstände, Bauwerke und Bauteile golden, Vergoldung entfernen macht sie wieder normal</value>
+    <value>Vergolden färbt die gewählten Gegenstände, Bauwerke und Bauteile golden. Vergoldung Entfernen macht sie wieder normal</value>
   </data>
   <data name="EternalFiresText" xml:space="preserve">
     <value>Jedes Feuer der Welt brennt mit Brennstoff, der nie ausgeht</value>
@@ -1692,19 +1692,19 @@ Nein behält sie, damit du zuerst speichern kannst</value>
     <value>Wie stark es gerade regnet</value>
   </data>
   <data name="SettingStartingDayOffsetInfo" xml:space="preserve">
-    <value>Zusätzliche Tage, die das Spiel mitzählt, wenn es die Jahreszeit berechnet. Höher bringt die nächste Jahreszeit früher, niedriger hält diese länger. Eine Jahreszeit zu wählen, setzt ihn für dich</value>
+    <value>Zusätzliche Tage, die das Spiel mitzählt, wenn es die Jahreszeit berechnet. Höher bringt die nächste Jahreszeit früher, niedriger hält diese länger</value>
   </data>
   <data name="UnableToDeleteBackup" xml:space="preserve">
     <value>Das Backup konnte nicht gelöscht werden</value>
   </data>
   <data name="BackupUsage" xml:space="preserve">
-    <value>Backups belegen {0} von {1}. Darüber hinaus fallen die ältesten weg, außer dem allerersten</value>
+    <value>Backups belegen {0} von {1}. Darüber hinaus werden die ältesten gelöscht, außer dem allerersten</value>
   </data>
   <data name="BackupsPruned" xml:space="preserve">
     <value>Backups haben {1} überschritten, daher wurden die {0} ältesten gelöscht. Das allererste bleibt</value>
   </data>
   <data name="ToolsHint" xml:space="preserve">
-    <value>Werkzeuge ändern den geöffneten Spielstand und brauchen Speichern, wie jede andere Änderung. Vergolden und Freischaltungen schreiben sofort</value>
+    <value>Werkzeuge ändern den geöffneten Spielstand und brauchen Speichern, wie jede andere Änderung. Vergolden und Freischaltungen speichern sofort</value>
   </data>
   <data name="ToolsWorld" xml:space="preserve">
     <value>Welt</value>
@@ -1785,7 +1785,7 @@ Nein behält sie, damit du zuerst speichern kannst</value>
     <value>Auf Standard Zurücksetzen</value>
   </data>
   <data name="NothingToChange" xml:space="preserve">
-    <value>Nichts zu Ändern</value>
+    <value>Nichts zu ändern</value>
   </data>
   <data name="UpdateNotVerified" xml:space="preserve">
     <value>Der Download konnte nicht geprüft werden, daher öffnet sich die Release-Seite, um es selbst herunterzuladen</value>
@@ -1916,10 +1916,10 @@ Nein lässt den Editor offen, damit du zuerst speichern kannst</value>
     <value>Ängstlich</value>
   </data>
   <data name="SentimentInfo" xml:space="preserve">
-    <value>Wie sehr sie sie mögen, von -100 Hass bis 100 Liebe</value>
+    <value>Wie sehr sie den Spieler oder die Gruppe auf dieser Karte mögen, von -100 Hass bis 100 Liebe</value>
   </data>
   <data name="SeasonInfo" xml:space="preserve">
-    <value>Jede Jahreszeit dauert so viele Tage, wie Jahreszeitenlänge im Einstellungen-Tab sagt, also kann keine Jahreszeit länger dauern als eine andere. Klicke auf einen Tag in der Leiste, um ihn zu heute zu machen, der Editor berechnet den Versatz</value>
+    <value>Jede Jahreszeit dauert so viele Tage, wie Jahreszeitenlänge im Tab Spieleinstellungen sagt, also kann keine Jahreszeit länger dauern als eine andere. Klicke auf einen Tag in der Leiste, um ihn zu heute zu machen, der Editor berechnet den Versatz</value>
   </data>
   <data name="DaysUntilSeasonOf" xml:space="preserve">
     <value>Tage bis {0}: {1}</value>
@@ -2126,7 +2126,7 @@ Nein lässt den Editor offen, damit du zuerst speichern kannst</value>
     <value>Die Kopie konnte nicht gelöscht werden, siehe das Protokoll</value>
   </data>
   <data name="SavegameGone" xml:space="preserve">
-    <value>Dieser Spielstand ist weg, die Liste wird neu gelesen</value>
+    <value>Diesen Spielstand gibt es nicht mehr, die Liste wurde neu geladen</value>
   </data>
   <data name="NearPlayer" xml:space="preserve">
     <value>Nahe am Spieler</value>
@@ -2147,13 +2147,13 @@ Nein lässt den Editor offen, damit du zuerst speichern kannst</value>
     <value>Das Spiel, wie es gedacht ist</value>
   </data>
   <data name="HardText" xml:space="preserve">
-    <value>Stärkere Feinde und härteres Überleben</value>
+    <value>Stärkere Gegner und härteres Überleben</value>
   </data>
   <data name="HardSurvivalText" xml:space="preserve">
     <value>Schwer, mit härterem Überleben und weniger Vorräten</value>
   </data>
   <data name="PeacefulText" xml:space="preserve">
-    <value>Keine Feinde, nur Überleben</value>
+    <value>Keine Gegner, nur Überleben</value>
   </data>
   <data name="ModeCreativeText" xml:space="preserve">
     <value>Frei bauen, ohne zu sammeln</value>

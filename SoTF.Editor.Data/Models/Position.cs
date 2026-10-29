@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Newtonsoft.Json;
 using SoTF.Editor.Data.Enums;
+using SoTF.Editor.Data.Helpers;
 
 namespace SoTF.Editor.Data.Models;
 
@@ -28,7 +29,7 @@ public class Position(float x, float y, float z)
     public float Z { get; init; } = z;
 
     [JsonIgnore]
-    public string PrintableShort => $"X: {X:F2}, Y: {Y:F2}, Z: {Z:F2}";
+    public string PrintableShort => Formatter.FormatPosition(X, Y, Z);
 
     public float GroundDistanceTo(Position other)
     {

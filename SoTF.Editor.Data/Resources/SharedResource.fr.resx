@@ -373,13 +373,13 @@
     <value>Faire Apparaître {0}</value>
   </data>
   <data name="NoFiresFound" xml:space="preserve">
-    <value>Aucun Feu Trouvé</value>
+    <value>Aucun feu trouvé</value>
   </data>
   <data name="FiresChanged" xml:space="preserve">
     <value>{0} feux modifiés, enregistrez pour les garder</value>
   </data>
   <data name="NoStructureDamage" xml:space="preserve">
-    <value>Aucun Dégât sur les Constructions</value>
+    <value>Aucun dégât sur les constructions</value>
   </data>
   <data name="StructureDamageRepaired" xml:space="preserve">
     <value>{0} constructions endommagées réparées, enregistrez pour les garder</value>
@@ -415,7 +415,7 @@
     <value>Tenue</value>
   </data>
   <data name="ReviveTooltip" xml:space="preserve">
-    <value>Ramène le compagnon avec les objets et la tenue choisis ici. Un compagnon supprimé par le jeu apparaît près du joueur, ou à côté d'un compagnon dehors si vous êtes sous terre</value>
+    <value>Ramène le compagnon avec les objets et la tenue choisis ici. Un compagnon retiré par le jeu revient près de vous, ou près d'un compagnon dehors si vous êtes sous terre</value>
   </data>
   <data name="Alive" xml:space="preserve">
     <value>Vivant</value>
@@ -589,7 +589,7 @@
     <value>État de la Partie</value>
   </data>
   <data name="WorldObjectStatesInfo" xml:space="preserve">
-    <value>Probablement, 0 signifie fermé ou pas arrivé, 1 ou 3 ouvert ou arrivé. Une valeur effacée quitte la partie, le jeu la considère donc comme jamais touchée</value>
+    <value>0 signifie sans doute fermé ou pas encore arrivé, 1 ou 3 ouvert ou arrivé. Une valeur effacée quitte la partie, le jeu la considère donc comme jamais touchée</value>
   </data>
   <data name="WorldObjectStates" xml:space="preserve">
     <value>États des Objets du Monde</value>
@@ -643,7 +643,7 @@
     <value>Grottes et Bunkers Seulement</value>
   </data>
   <data name="NewZiplineFromHere" xml:space="preserve">
-    <value>Nouvelle Tyrolienne d'Ici</value>
+    <value>Nouvelle Tyrolienne Depuis Ici</value>
   </data>
   <data name="SelectAll" xml:space="preserve">
     <value>Tout Sélectionner</value>
@@ -670,7 +670,7 @@
     <value>Copier les Coordonnées</value>
   </data>
   <data name="CoordinatesCopied" xml:space="preserve">
-    <value>Coordonnées Copiées</value>
+    <value>Coordonnées copiées</value>
   </data>
   <data name="Followers" xml:space="preserve">
     <value>Compagnons</value>
@@ -688,7 +688,7 @@
     <value>Possédé</value>
   </data>
   <data name="IsCopy" xml:space="preserve">
-    <value>Est une Copie</value>
+    <value>Cloné</value>
   </data>
   <data name="Underground" xml:space="preserve">
     <value>Souterrain</value>
@@ -961,13 +961,13 @@
     <value>Objets dans les Râteliers</value>
   </data>
   <data name="PlatingAdded" xml:space="preserve">
-    <value>Dorure Ajoutée à {0} Objets</value>
+    <value>Dorure ajoutée à {0} objets</value>
   </data>
   <data name="PlatingRemoved" xml:space="preserve">
-    <value>Dorure Retirée de {0} Objets</value>
+    <value>Dorure retirée de {0} objets</value>
   </data>
   <data name="UnableToCheckForUpdates" xml:space="preserve">
-    <value>Impossible de Rechercher des Mises à Jour</value>
+    <value>Impossible de rechercher des mises à jour</value>
   </data>
   <data name="Map" xml:space="preserve">
     <value>Carte</value>
@@ -976,7 +976,7 @@
     <value>Vous avez déjà la dernière version</value>
   </data>
   <data name="ChangesSaved" xml:space="preserve">
-    <value>Modifications Enregistrées</value>
+    <value>Modifications enregistrées</value>
   </data>
   <data name="OverwriteExternalChangesText" xml:space="preserve">
     <value>Le jeu a enregistré cette partie après son ouverture. Enregistrer maintenant peut annuler cette progression, rechargez d'abord pour la garder</value>
@@ -1000,7 +1000,7 @@
     <value>Une copie de secours de toute la partie est faite d'abord</value>
   </data>
   <data name="FollowerAlreadyAlive" xml:space="preserve">
-    <value>{0} Est Déjà en Vie</value>
+    <value>{0} est déjà en vie</value>
   </data>
   <data name="FollowerRevived" xml:space="preserve">
     <value>{0} est de nouveau en vie, enregistrez pour garder ce changement</value>
@@ -1009,10 +1009,10 @@
     <value>Copie de {0} créée, enregistrez pour la garder</value>
   </data>
   <data name="NoChanges" xml:space="preserve">
-    <value>Aucune Modification, Rien d'Enregistré</value>
+    <value>Aucune modification, rien d'enregistré</value>
   </data>
   <data name="UnableToSpawnFollowers" xml:space="preserve">
-    <value>Impossible de Faire Apparaître les Compagnons</value>
+    <value>Impossible de faire apparaître les compagnons</value>
   </data>
   <data name="Key" xml:space="preserve">
     <value>Clé</value>
@@ -1039,7 +1039,7 @@
     <value>{0} conteneurs réinitialisés, enregistrez pour les garder</value>
   </data>
   <data name="NothingToReset" xml:space="preserve">
-    <value>Rien à Réinitialiser</value>
+    <value>Rien à réinitialiser</value>
   </data>
   <data name="TrapsReset" xml:space="preserve">
     <value>{0} pièges réinitialisés, enregistrez pour les garder</value>
@@ -1087,13 +1087,13 @@
     <value>Supprime chaque copie de ce type de la carte</value>
   </data>
   <data name="ClonesRemoved" xml:space="preserve">
-    <value>{0} Copies de {1} Supprimées</value>
+    <value>{0} copies de {1} supprimées</value>
   </data>
   <data name="NothingToRemove" xml:space="preserve">
-    <value>Rien à Supprimer</value>
+    <value>Rien à supprimer</value>
   </data>
   <data name="NothingToMove" xml:space="preserve">
-    <value>Rien à Déplacer</value>
+    <value>Rien à déplacer</value>
   </data>
   <data name="ObjectCloned" xml:space="preserve">
     <value>{0} copié près du joueur, enregistrez pour le garder</value>
@@ -1105,7 +1105,7 @@
     <value>Objet du Monde</value>
   </data>
   <data name="UnableToSave" xml:space="preserve">
-    <value>Impossible d'Enregistrer : {0}</value>
+    <value>Impossible d'enregistrer : {0}</value>
   </data>
   <data name="DiscardChangesTitle" xml:space="preserve">
     <value>Abandonner les Modifications Non Enregistrées</value>
@@ -1206,7 +1206,7 @@ Non les garde pour que vous puissiez enregistrer d'abord</value>
     <value>Noyade ou Projeté</value>
   </data>
   <data name="ActorState25" xml:space="preserve">
-    <value>Voiturette de Golf</value>
+    <value>En Voiturette de Golf</value>
   </data>
   <data name="ActorState40" xml:space="preserve">
     <value>Sur un Rocher</value>
@@ -1230,10 +1230,10 @@ Non les garde pour que vous puissiez enregistrer d'abord</value>
     <value>Intro d'Apparition</value>
   </data>
   <data name="ActorState47" xml:space="preserve">
-    <value>Plafond</value>
+    <value>Au Plafond</value>
   </data>
   <data name="ActorState48" xml:space="preserve">
-    <value>Grotte Souterraine</value>
+    <value>Dans une Grotte</value>
   </data>
   <data name="ActorState50" xml:space="preserve">
     <value>Quitte le Combat</value>
@@ -1482,7 +1482,7 @@ Non les garde pour que vous puissiez enregistrer d'abord</value>
     <value>Plus Ancienne</value>
   </data>
   <data name="ItemPlaterText" xml:space="preserve">
-    <value>La dorure rend dorés les objets, constructions et éléments de construction choisis, Retirer la dorure les rend normaux</value>
+    <value>La dorure rend dorés les objets, constructions et éléments de construction choisis. Retirer la Dorure les rend normaux</value>
   </data>
   <data name="EternalFiresText" xml:space="preserve">
     <value>Chaque feu du monde brûle avec un combustible qui ne s'épuise jamais</value>
@@ -1692,19 +1692,19 @@ Non les garde pour que vous puissiez enregistrer d'abord</value>
     <value>À quel point il pleut fort en ce moment</value>
   </data>
   <data name="SettingStartingDayOffsetInfo" xml:space="preserve">
-    <value>Jours en plus que le jeu compte pour calculer la saison. Plus haut amène la saison suivante plus tôt, plus bas garde celle-ci plus longtemps. Choisir une saison le règle pour vous</value>
+    <value>Jours en plus que le jeu compte pour calculer la saison. Plus haut amène la saison suivante plus tôt, plus bas garde celle-ci plus longtemps</value>
   </data>
   <data name="UnableToDeleteBackup" xml:space="preserve">
     <value>Impossible de supprimer la copie de secours</value>
   </data>
   <data name="BackupUsage" xml:space="preserve">
-    <value>Les copies de secours utilisent {0} sur {1}. Au-delà, les plus anciennes partent, sauf la toute première</value>
+    <value>Les copies de secours utilisent {0} sur {1}. Au-delà, les plus anciennes sont supprimées, sauf la toute première</value>
   </data>
   <data name="BackupsPruned" xml:space="preserve">
     <value>Les copies de secours ont dépassé {1}, les {0} plus anciennes ont donc été supprimées. La toute première reste</value>
   </data>
   <data name="ToolsHint" xml:space="preserve">
-    <value>Les outils modifient la partie ouverte et demandent un enregistrement, comme toute autre modification. La dorure et les déblocages écrivent tout de suite</value>
+    <value>Les outils modifient la partie ouverte et demandent un enregistrement, comme toute autre modification. La dorure et les déblocages enregistrent tout de suite</value>
   </data>
   <data name="ToolsWorld" xml:space="preserve">
     <value>Monde</value>
@@ -1785,7 +1785,7 @@ Non les garde pour que vous puissiez enregistrer d'abord</value>
     <value>Rétablir par Défaut</value>
   </data>
   <data name="NothingToChange" xml:space="preserve">
-    <value>Rien à Changer</value>
+    <value>Rien à changer</value>
   </data>
   <data name="UpdateNotVerified" xml:space="preserve">
     <value>Le téléchargement n'a pas pu être vérifié, la page de la version s'ouvre donc pour le télécharger vous-même</value>
@@ -1916,10 +1916,10 @@ Non garde l'éditeur ouvert pour que vous puissiez enregistrer d'abord</value>
     <value>Effrayé</value>
   </data>
   <data name="SentimentInfo" xml:space="preserve">
-    <value>À quel point ils les apprécient, de -100 haine à 100 amour</value>
+    <value>À quel point ils apprécient le joueur ou le groupe de cette carte, de -100 haine à 100 amour</value>
   </data>
   <data name="SeasonInfo" xml:space="preserve">
-    <value>Chaque saison dure autant de jours qu'indiqué par Durée des Saisons dans l'onglet de configuration, une saison ne peut donc pas durer plus longtemps qu'une autre. Cliquez sur un jour de la barre pour en faire aujourd'hui, l'éditeur calcule le décalage</value>
+    <value>Chaque saison dure autant de jours qu'indiqué par Durée des Saisons dans l'onglet Configuration de la Partie, une saison ne peut donc pas durer plus longtemps qu'une autre. Cliquez sur un jour de la barre pour en faire aujourd'hui, l'éditeur calcule le décalage</value>
   </data>
   <data name="DaysUntilSeasonOf" xml:space="preserve">
     <value>Jours avant {0} : {1}</value>
@@ -1973,7 +1973,7 @@ Non garde l'éditeur ouvert pour que vous puissiez enregistrer d'abord</value>
     <value>Armure, {0} sur 10</value>
   </data>
   <data name="ArmorInfo" xml:space="preserve">
-    <value>Le jeu place lui-même chaque pièce portée sur le corps, jusqu'à 10, il n'y a donc pas de partie du corps à choisir. Retirer remet une pièce dans l'inventaire, supprimer l'enlève pour de bon</value>
+    <value>Le jeu place lui-même chaque pièce portée sur le corps, jusqu'à 10, il n'y a donc pas de partie du corps à choisir. Retirer remet une pièce dans l'inventaire, Supprimer l'enlève pour de bon</value>
   </data>
   <data name="SetToDefaultDurabilityOf" xml:space="preserve">
     <value>Durabilité par Défaut : {0}</value>
@@ -2126,7 +2126,7 @@ Non garde l'éditeur ouvert pour que vous puissiez enregistrer d'abord</value>
     <value>Impossible de supprimer la copie, voir le journal</value>
   </data>
   <data name="SavegameGone" xml:space="preserve">
-    <value>Cette partie a disparu, la liste est relue</value>
+    <value>Cette partie n'existe plus, la liste a été actualisée</value>
   </data>
   <data name="NearPlayer" xml:space="preserve">
     <value>Près du Joueur</value>

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using SoTF.Editor.Data.Enums;
+using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Models.Map;
 using SoTF.Editor.Services.Map;
@@ -57,17 +58,15 @@ public partial class SpawnActorsDialog
 
         // The Destination Actor's Own Family Reads As Such
         return familyId == _viewModel.OriginalFamilyId
-            ? $"{familyId} ({AppText.Get("DestinationFamily")})"
+            ? Formatter.JoinParts(familyId.ToString(), AppText.Get("DestinationFamily"))
             : familyId.ToString()!;
     }
 
-    // Spawn One Or Spawn 5 Cannibal, Never A Bare Create
+    // Spawn 5 Cannibal, Or Spawn Until A Type Is Picked
     private string SpawnLabel =>
-        AppText.Format(
-            "SpawnCount",
-            _viewModel.SpawnCount,
-            _viewModel.SelectedActorType?.Name ?? AppText.Get("ActorType")
-        );
+        _viewModel.SelectedActorType is { } actorType
+            ? AppText.Format("SpawnCount", _viewModel.SpawnCount, actorType.Name)
+            : AppText.Get("Spawn");
 
     private static string PatternName(SpawnPattern pattern)
     {

@@ -256,7 +256,7 @@
     <value>Male Muddy Cannibals</value>
   </data>
   <data name="GroupMisc" xml:space="preserve">
-    <value>Misc</value>
+    <value>Other</value>
   </data>
   <data name="GroupMixed" xml:space="preserve">
     <value>Mixed</value>
@@ -373,13 +373,13 @@
     <value>Spawn {0}</value>
   </data>
   <data name="NoFiresFound" xml:space="preserve">
-    <value>No Fires Found</value>
+    <value>No fires found</value>
   </data>
   <data name="FiresChanged" xml:space="preserve">
     <value>Changed {0} fires, save to keep them</value>
   </data>
   <data name="NoStructureDamage" xml:space="preserve">
-    <value>No Structure Damage Found</value>
+    <value>No structure damage found</value>
   </data>
   <data name="StructureDamageRepaired" xml:space="preserve">
     <value>Repaired {0} damaged structures, save to keep them</value>
@@ -415,7 +415,7 @@
     <value>Outfit</value>
   </data>
   <data name="ReviveTooltip" xml:space="preserve">
-    <value>Brings the follower back with the items and outfit set here. One the game deleted appears at the player, or beside a follower outside while you are underground</value>
+    <value>Brings the follower back with the items and outfit set here. A follower the game removed comes back beside you, or beside a follower outside while you are underground</value>
   </data>
   <data name="Alive" xml:space="preserve">
     <value>Alive</value>
@@ -589,7 +589,7 @@
     <value>Game State</value>
   </data>
   <data name="WorldObjectStatesInfo" xml:space="preserve">
-    <value>Likely 0 means closed or not happened, 1 or 3 means opened or happened. A cleared value leaves the save, so the game treats it as never touched</value>
+    <value>0 most likely means closed or not yet happened, 1 or 3 opened or happened. A cleared value leaves the save, so the game treats it as never touched</value>
   </data>
   <data name="WorldObjectStates" xml:space="preserve">
     <value>World Object States</value>
@@ -670,7 +670,7 @@
     <value>Copy Coordinates</value>
   </data>
   <data name="CoordinatesCopied" xml:space="preserve">
-    <value>Coordinates Copied</value>
+    <value>Coordinates copied</value>
   </data>
   <data name="Followers" xml:space="preserve">
     <value>Followers</value>
@@ -688,7 +688,7 @@
     <value>Owned</value>
   </data>
   <data name="IsCopy" xml:space="preserve">
-    <value>Is Copy</value>
+    <value>Cloned</value>
   </data>
   <data name="Underground" xml:space="preserve">
     <value>Underground</value>
@@ -874,7 +874,7 @@
     <value>Gardening</value>
   </data>
   <data name="StructureCategoryMisc" xml:space="preserve">
-    <value>Misc</value>
+    <value>Other</value>
   </data>
   <data name="StructureCategoryStorage" xml:space="preserve">
     <value>Storage</value>
@@ -949,7 +949,7 @@
     <value>Stone</value>
   </data>
   <data name="Constructions" xml:space="preserve">
-    <value>Constructions</value>
+    <value>Building Pieces</value>
   </data>
   <data name="ItemPlaterWarning" xml:space="preserve">
     <value>This tool saves right away and reloads, save other changes first</value>
@@ -961,13 +961,13 @@
     <value>Items in Weapon Racks</value>
   </data>
   <data name="PlatingAdded" xml:space="preserve">
-    <value>Added Plating to {0} Items</value>
+    <value>Added plating to {0} items</value>
   </data>
   <data name="PlatingRemoved" xml:space="preserve">
-    <value>Removed Plating From {0} Items</value>
+    <value>Removed plating from {0} items</value>
   </data>
   <data name="UnableToCheckForUpdates" xml:space="preserve">
-    <value>Unable to Check for Updates</value>
+    <value>Unable to check for updates</value>
   </data>
   <data name="Map" xml:space="preserve">
     <value>Map</value>
@@ -976,7 +976,7 @@
     <value>You already have the latest version</value>
   </data>
   <data name="ChangesSaved" xml:space="preserve">
-    <value>Changes Saved</value>
+    <value>Changes saved</value>
   </data>
   <data name="OverwriteExternalChangesText" xml:space="preserve">
     <value>The game saved this savegame after you opened it. Saving now can undo that progress, reload first to keep it</value>
@@ -1000,7 +1000,7 @@
     <value>A backup of the whole savegame is made first</value>
   </data>
   <data name="FollowerAlreadyAlive" xml:space="preserve">
-    <value>{0} Is Already Alive</value>
+    <value>{0} is already alive</value>
   </data>
   <data name="FollowerRevived" xml:space="preserve">
     <value>Revived {0}, save to keep it</value>
@@ -1009,10 +1009,10 @@
     <value>Spawned a copy of {0}, save to keep it</value>
   </data>
   <data name="NoChanges" xml:space="preserve">
-    <value>No Changes, Nothing Saved</value>
+    <value>No changes, nothing saved</value>
   </data>
   <data name="UnableToSpawnFollowers" xml:space="preserve">
-    <value>Unable to Spawn Followers</value>
+    <value>Unable to spawn followers</value>
   </data>
   <data name="Key" xml:space="preserve">
     <value>Key</value>
@@ -1039,7 +1039,7 @@
     <value>Reset {0} containers, save to keep them</value>
   </data>
   <data name="NothingToReset" xml:space="preserve">
-    <value>Nothing to Reset</value>
+    <value>Nothing to reset</value>
   </data>
   <data name="TrapsReset" xml:space="preserve">
     <value>Reset {0} traps, save to keep them</value>
@@ -1087,13 +1087,13 @@
     <value>Removes every copy of this type from the map</value>
   </data>
   <data name="ClonesRemoved" xml:space="preserve">
-    <value>Removed {0} Copies of {1}</value>
+    <value>Removed {0} copies of {1}</value>
   </data>
   <data name="NothingToRemove" xml:space="preserve">
-    <value>Nothing to Remove</value>
+    <value>Nothing to remove</value>
   </data>
   <data name="NothingToMove" xml:space="preserve">
-    <value>Nothing to Move</value>
+    <value>Nothing to move</value>
   </data>
   <data name="ObjectCloned" xml:space="preserve">
     <value>Copied {0} to the player, save to keep it</value>
@@ -1105,7 +1105,7 @@
     <value>World Item</value>
   </data>
   <data name="UnableToSave" xml:space="preserve">
-    <value>Unable to Save: {0}</value>
+    <value>Unable to save: {0}</value>
   </data>
   <data name="DiscardChangesTitle" xml:space="preserve">
     <value>Discard Unsaved Changes</value>
@@ -1146,7 +1146,7 @@ No keeps them so you can save first</value>
     <value>Muddy Cannibal</value>
   </data>
   <data name="ClassificationMisc" xml:space="preserve">
-    <value>Misc</value>
+    <value>Other</value>
   </data>
   <data name="GenderFemale" xml:space="preserve">
     <value>Female</value>
@@ -1206,7 +1206,7 @@ No keeps them so you can save first</value>
     <value>Drowning or Thrown</value>
   </data>
   <data name="ActorState25" xml:space="preserve">
-    <value>Golf Cart</value>
+    <value>In Golf Cart</value>
   </data>
   <data name="ActorState40" xml:space="preserve">
     <value>On Rock</value>
@@ -1230,13 +1230,13 @@ No keeps them so you can save first</value>
     <value>Spawn Intro</value>
   </data>
   <data name="ActorState47" xml:space="preserve">
-    <value>Ceiling</value>
+    <value>On Ceiling</value>
   </data>
   <data name="ActorState48" xml:space="preserve">
-    <value>Underground Cave</value>
+    <value>In a Cave</value>
   </data>
   <data name="ActorState50" xml:space="preserve">
-    <value>Leave Combat</value>
+    <value>Leaving Combat</value>
   </data>
   <data name="ActorState51" xml:space="preserve">
     <value>Despawned</value>
@@ -1290,7 +1290,7 @@ No keeps them so you can save first</value>
     <value>Log</value>
   </data>
   <data name="ItemTypeMisc" xml:space="preserve">
-    <value>Misc</value>
+    <value>Other</value>
   </data>
   <data name="ItemTypePlant" xml:space="preserve">
     <value>Plant</value>
@@ -1389,7 +1389,7 @@ No keeps them so you can save first</value>
     <value>3D Printers</value>
   </data>
   <data name="PoiGroupSupply" xml:space="preserve">
-    <value>Supply</value>
+    <value>Supplies</value>
   </data>
   <data name="PoiGroupVillages" xml:space="preserve">
     <value>Villages</value>
@@ -1482,7 +1482,7 @@ No keeps them so you can save first</value>
     <value>Oldest</value>
   </data>
   <data name="ItemPlaterText" xml:space="preserve">
-    <value>Plating turns the chosen items, structures and building pieces gold, Remove plating turns them back to normal</value>
+    <value>Plating turns the chosen items, structures and building pieces gold. Remove Plating turns them back</value>
   </data>
   <data name="EternalFiresText" xml:space="preserve">
     <value>Every fire in the world is lit with fuel that never runs out</value>
@@ -1692,19 +1692,19 @@ No keeps them so you can save first</value>
     <value>How heavy the current rain is</value>
   </data>
   <data name="SettingStartingDayOffsetInfo" xml:space="preserve">
-    <value>Extra days the game counts when it works out the season. Higher brings the next season sooner, lower keeps this one longer. Picking a season sets it for you</value>
+    <value>Extra days the game counts when it works out the season. Higher brings the next season sooner, lower keeps this one longer</value>
   </data>
   <data name="UnableToDeleteBackup" xml:space="preserve">
     <value>Unable to delete the backup</value>
   </data>
   <data name="BackupUsage" xml:space="preserve">
-    <value>Backups use {0} of {1}. Past that, the oldest go, except the very first</value>
+    <value>Backups use {0} of {1}. Past that, the oldest are deleted, except the very first</value>
   </data>
   <data name="BackupsPruned" xml:space="preserve">
     <value>Backups passed {1}, so the {0} oldest were deleted. The very first stays</value>
   </data>
   <data name="ToolsHint" xml:space="preserve">
-    <value>Tools change the open save and need Save, like any other edit. The Plater and Unlocks write at once</value>
+    <value>Tools change the open save and need Save, like any other edit. The Plater and Unlocks save at once</value>
   </data>
   <data name="ToolsWorld" xml:space="preserve">
     <value>World</value>
@@ -1785,7 +1785,7 @@ No keeps them so you can save first</value>
     <value>Reset to Default</value>
   </data>
   <data name="NothingToChange" xml:space="preserve">
-    <value>Nothing to Change</value>
+    <value>Nothing to change</value>
   </data>
   <data name="UpdateNotVerified" xml:space="preserve">
     <value>The download could not be verified, so the release page opens to download it yourself</value>
@@ -1916,10 +1916,10 @@ No keeps the editor open so you can save first</value>
     <value>Afraid</value>
   </data>
   <data name="SentimentInfo" xml:space="preserve">
-    <value>How much they like them, from -100 hate to 100 love</value>
+    <value>How much they like the player or group on this card, from -100 hate to 100 love</value>
   </data>
   <data name="SeasonInfo" xml:space="preserve">
-    <value>Every season lasts as many days as Season Length on the setup tab says, so one season cannot last longer than another. Click a day on the bar to make it today, the editor works out the offset</value>
+    <value>Every season lasts as many days as Season Length on the Game Setup tab says, so one season cannot last longer than another. Click a day on the bar to make it today, the editor works out the offset</value>
   </data>
   <data name="DaysUntilSeasonOf" xml:space="preserve">
     <value>Days Until {0}: {1}</value>
@@ -1973,7 +1973,7 @@ No keeps the editor open so you can save first</value>
     <value>Armor, {0} of 10</value>
   </data>
   <data name="ArmorInfo" xml:space="preserve">
-    <value>The game places each worn piece on the body by itself, up to 10, so there is no body part to pick. Unequip puts a piece back in the inventory, delete removes it for good</value>
+    <value>The game places each worn piece on the body by itself, up to 10, so there is no body part to pick. Unequip puts a piece back in the inventory, Delete removes it for good</value>
   </data>
   <data name="SetToDefaultDurabilityOf" xml:space="preserve">
     <value>Set Default Durability: {0}</value>
@@ -2126,7 +2126,7 @@ No keeps the editor open so you can save first</value>
     <value>Unable to delete the copy, see the log</value>
   </data>
   <data name="SavegameGone" xml:space="preserve">
-    <value>This savegame is gone, the list is read again</value>
+    <value>This savegame no longer exists, the list was refreshed</value>
   </data>
   <data name="NearPlayer" xml:space="preserve">
     <value>Near Player</value>

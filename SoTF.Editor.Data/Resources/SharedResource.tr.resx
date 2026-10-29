@@ -373,13 +373,13 @@
     <value>{0} Oluştur</value>
   </data>
   <data name="NoFiresFound" xml:space="preserve">
-    <value>Ateş Bulunamadı</value>
+    <value>Ateş bulunamadı</value>
   </data>
   <data name="FiresChanged" xml:space="preserve">
     <value>{0} ateş değiştirildi, korumak için kaydedin</value>
   </data>
   <data name="NoStructureDamage" xml:space="preserve">
-    <value>Yapılarda Hasar Bulunamadı</value>
+    <value>Yapılarda hasar bulunamadı</value>
   </data>
   <data name="StructureDamageRepaired" xml:space="preserve">
     <value>{0} hasarlı yapı onarıldı, korumak için kaydedin</value>
@@ -415,7 +415,7 @@
     <value>Kıyafet</value>
   </data>
   <data name="ReviveTooltip" xml:space="preserve">
-    <value>Yoldaşı burada seçilen eşyalar ve kıyafetle geri getirir. Oyunun sildiği bir yoldaş oyuncunun yanında belirir, siz yeraltındayken ise dışarıdaki bir yoldaşın yanında</value>
+    <value>Yoldaşı burada seçilen eşyalar ve kıyafetle geri getirir. Oyunun kaldırdığı bir yoldaş yanınızda belirir, yeraltındaysanız dışarıdaki bir yoldaşın yanında</value>
   </data>
   <data name="Alive" xml:space="preserve">
     <value>Hayatta</value>
@@ -589,7 +589,7 @@
     <value>Oyun Durumu</value>
   </data>
   <data name="WorldObjectStatesInfo" xml:space="preserve">
-    <value>Muhtemelen 0 kapalı ya da gerçekleşmedi, 1 veya 3 açık ya da gerçekleşti demektir. Silinen bir değer kayıttan çıkar, oyun onu hiç dokunulmamış sayar</value>
+    <value>0 büyük olasılıkla kapalı ya da henüz gerçekleşmedi, 1 veya 3 açık ya da gerçekleşti demektir. Silinen bir değer kayıttan çıkar, oyun onu hiç dokunulmamış sayar</value>
   </data>
   <data name="WorldObjectStates" xml:space="preserve">
     <value>Dünya Nesnesi Durumları</value>
@@ -670,7 +670,7 @@
     <value>Koordinatları Kopyala</value>
   </data>
   <data name="CoordinatesCopied" xml:space="preserve">
-    <value>Koordinatlar Kopyalandı</value>
+    <value>Koordinatlar kopyalandı</value>
   </data>
   <data name="Followers" xml:space="preserve">
     <value>Yoldaşlar</value>
@@ -688,7 +688,7 @@
     <value>Sahip Olunan</value>
   </data>
   <data name="IsCopy" xml:space="preserve">
-    <value>Kopya</value>
+    <value>Klonlanmış</value>
   </data>
   <data name="Underground" xml:space="preserve">
     <value>Yeraltı</value>
@@ -961,13 +961,13 @@
     <value>Silahlıklardaki Eşyalar</value>
   </data>
   <data name="PlatingAdded" xml:space="preserve">
-    <value>Kaplama Eklendi: {0} Eşya</value>
+    <value>Kaplama eklendi: {0} eşya</value>
   </data>
   <data name="PlatingRemoved" xml:space="preserve">
-    <value>Kaplama Kaldırıldı: {0} Eşya</value>
+    <value>Kaplama kaldırıldı: {0} eşya</value>
   </data>
   <data name="UnableToCheckForUpdates" xml:space="preserve">
-    <value>Güncellemeler Denetlenemedi</value>
+    <value>Güncellemeler denetlenemedi</value>
   </data>
   <data name="Map" xml:space="preserve">
     <value>Harita</value>
@@ -976,7 +976,7 @@
     <value>Zaten en son sürüme sahipsiniz</value>
   </data>
   <data name="ChangesSaved" xml:space="preserve">
-    <value>Değişiklikler Kaydedildi</value>
+    <value>Değişiklikler kaydedildi</value>
   </data>
   <data name="OverwriteExternalChangesText" xml:space="preserve">
     <value>Oyun bu kaydı siz açtıktan sonra kaydetti. Şimdi kaydetmek bu ilerlemeyi geri alabilir, korumak için önce yeniden yükleyin</value>
@@ -1000,7 +1000,7 @@
     <value>Önce kaydın tamamının yedeği alınır</value>
   </data>
   <data name="FollowerAlreadyAlive" xml:space="preserve">
-    <value>{0} Zaten Hayatta</value>
+    <value>{0} zaten hayatta</value>
   </data>
   <data name="FollowerRevived" xml:space="preserve">
     <value>Canlandırıldı: {0}, korumak için kaydedin</value>
@@ -1009,10 +1009,10 @@
     <value>Kopya oluşturuldu: {0}, korumak için kaydedin</value>
   </data>
   <data name="NoChanges" xml:space="preserve">
-    <value>Değişiklik Yok, Hiçbir Şey Kaydedilmedi</value>
+    <value>Değişiklik yok, hiçbir şey kaydedilmedi</value>
   </data>
   <data name="UnableToSpawnFollowers" xml:space="preserve">
-    <value>Yoldaşlar Oluşturulamadı</value>
+    <value>Yoldaşlar oluşturulamadı</value>
   </data>
   <data name="Key" xml:space="preserve">
     <value>Anahtar</value>
@@ -1039,7 +1039,7 @@
     <value>{0} konteyner sıfırlandı, korumak için kaydedin</value>
   </data>
   <data name="NothingToReset" xml:space="preserve">
-    <value>Sıfırlanacak Bir Şey Yok</value>
+    <value>Sıfırlanacak bir şey yok</value>
   </data>
   <data name="TrapsReset" xml:space="preserve">
     <value>{0} tuzak sıfırlandı, korumak için kaydedin</value>
@@ -1087,13 +1087,13 @@
     <value>Bu türün her kopyasını haritadan kaldırır</value>
   </data>
   <data name="ClonesRemoved" xml:space="preserve">
-    <value>{0} Kopya Kaldırıldı: {1}</value>
+    <value>{0} kopya kaldırıldı: {1}</value>
   </data>
   <data name="NothingToRemove" xml:space="preserve">
-    <value>Kaldırılacak Bir Şey Yok</value>
+    <value>Kaldırılacak bir şey yok</value>
   </data>
   <data name="NothingToMove" xml:space="preserve">
-    <value>Taşınacak Bir Şey Yok</value>
+    <value>Taşınacak bir şey yok</value>
   </data>
   <data name="ObjectCloned" xml:space="preserve">
     <value>Oyuncunun yanına kopyalandı: {0}, korumak için kaydedin</value>
@@ -1206,7 +1206,7 @@ Hayır onları tutar, böylece önce kaydedebilirsiniz</value>
     <value>Boğuluyor veya Fırlatılmış</value>
   </data>
   <data name="ActorState25" xml:space="preserve">
-    <value>Golf Arabası</value>
+    <value>Golf Arabasında</value>
   </data>
   <data name="ActorState40" xml:space="preserve">
     <value>Kayada</value>
@@ -1230,10 +1230,10 @@ Hayır onları tutar, böylece önce kaydedebilirsiniz</value>
     <value>Oluşma Girişi</value>
   </data>
   <data name="ActorState47" xml:space="preserve">
-    <value>Tavan</value>
+    <value>Tavanda</value>
   </data>
   <data name="ActorState48" xml:space="preserve">
-    <value>Yeraltı Mağarası</value>
+    <value>Mağarada</value>
   </data>
   <data name="ActorState50" xml:space="preserve">
     <value>Savaştan Çıkıyor</value>
@@ -1482,7 +1482,7 @@ Hayır onları tutar, böylece önce kaydedebilirsiniz</value>
     <value>En Eski</value>
   </data>
   <data name="ItemPlaterText" xml:space="preserve">
-    <value>Kaplama seçilen eşyaları, yapıları ve yapı parçalarını altın yapar, Kaplamayı kaldır onları normale döndürür</value>
+    <value>Kaplama seçilen eşyaları, yapıları ve yapı parçalarını altın yapar. Kaplamayı Kaldır onları normale döndürür</value>
   </data>
   <data name="EternalFiresText" xml:space="preserve">
     <value>Dünyadaki her ateş hiç bitmeyen yakıtla yanar</value>
@@ -1692,7 +1692,7 @@ Hayır onları tutar, böylece önce kaydedebilirsiniz</value>
     <value>Şu anki yağmurun ne kadar şiddetli olduğu</value>
   </data>
   <data name="SettingStartingDayOffsetInfo" xml:space="preserve">
-    <value>Oyunun mevsimi hesaplarken eklediği fazladan günler. Yüksek değer sonraki mevsimi öne çeker, düşük değer bu mevsimi uzatır. Bir mevsim seçmek bunu sizin için ayarlar</value>
+    <value>Oyunun mevsimi hesaplarken eklediği fazladan günler. Yüksek değer sonraki mevsimi öne çeker, düşük değer bu mevsimi uzatır</value>
   </data>
   <data name="UnableToDeleteBackup" xml:space="preserve">
     <value>Yedek silinemedi</value>
@@ -1704,7 +1704,7 @@ Hayır onları tutar, böylece önce kaydedebilirsiniz</value>
     <value>Yedekler {1} sınırını aştı, bu yüzden en eski {0} yedek silindi. İlk yedek kalır</value>
   </data>
   <data name="ToolsHint" xml:space="preserve">
-    <value>Araçlar açık kaydı değiştirir ve diğer her değişiklik gibi kaydetmek gerekir. Altın Kaplama ve Kilit Açma hemen yazar</value>
+    <value>Araçlar açık kaydı değiştirir ve diğer her değişiklik gibi Kaydet gerektirir. Altın Kaplama ve Kilit Açma hemen kaydeder</value>
   </data>
   <data name="ToolsWorld" xml:space="preserve">
     <value>Dünya</value>
@@ -1785,7 +1785,7 @@ Hayır onları tutar, böylece önce kaydedebilirsiniz</value>
     <value>Varsayılana Sıfırla</value>
   </data>
   <data name="NothingToChange" xml:space="preserve">
-    <value>Değiştirilecek Bir Şey Yok</value>
+    <value>Değiştirilecek bir şey yok</value>
   </data>
   <data name="UpdateNotVerified" xml:space="preserve">
     <value>İndirme doğrulanamadı, bu yüzden kendiniz indirmeniz için sürüm sayfası açılır</value>
@@ -1910,16 +1910,16 @@ Hayır düzenleyiciyi açık tutar, böylece önce kaydedebilirsiniz</value>
     <value>Tarafsız</value>
   </data>
   <data name="MoodHostile" xml:space="preserve">
-    <value>Düşman</value>
+    <value>Düşmanca</value>
   </data>
   <data name="MoodAfraid" xml:space="preserve">
     <value>Korkmuş</value>
   </data>
   <data name="SentimentInfo" xml:space="preserve">
-    <value>Onları ne kadar sevdikleri, -100 nefretten 100 sevgiye</value>
+    <value>Bu karttaki oyuncuyu ya da grubu ne kadar sevdikleri, -100 nefretten 100 sevgiye</value>
   </data>
   <data name="SeasonInfo" xml:space="preserve">
-    <value>Her mevsim, ayarlar sekmesindeki Mevsim Uzunluğu kadar gün sürer, bu yüzden bir mevsim diğerinden uzun süremez. Bir günü bugün yapmak için çubukta o güne tıklayın, düzenleyici kaydırmayı hesaplar</value>
+    <value>Her mevsim, Oyun Ayarları sekmesindeki Mevsim Uzunluğu kadar gün sürer, bu yüzden bir mevsim diğerinden uzun süremez. Bir günü bugün yapmak için çubukta o güne tıklayın, düzenleyici kaydırmayı hesaplar</value>
   </data>
   <data name="DaysUntilSeasonOf" xml:space="preserve">
     <value>{0} Mevsimine Kalan Gün: {1}</value>
@@ -1973,7 +1973,7 @@ Hayır düzenleyiciyi açık tutar, böylece önce kaydedebilirsiniz</value>
     <value>Zırh, 10 Üzerinden {0}</value>
   </data>
   <data name="ArmorInfo" xml:space="preserve">
-    <value>Oyun giyilen her parçayı vücuda kendisi yerleştirir, en fazla 10, bu yüzden seçilecek bir vücut parçası yoktur. Çıkar bir parçayı envantere geri koyar, sil onu tamamen kaldırır</value>
+    <value>Oyun giyilen her parçayı vücuda kendisi yerleştirir, en fazla 10, bu yüzden seçilecek bir vücut parçası yoktur. Çıkar bir parçayı envantere geri koyar, Sil onu tamamen kaldırır</value>
   </data>
   <data name="SetToDefaultDurabilityOf" xml:space="preserve">
     <value>Varsayılan Dayanıklılığa Ayarla: {0}</value>
@@ -2126,7 +2126,7 @@ Hayır düzenleyiciyi açık tutar, böylece önce kaydedebilirsiniz</value>
     <value>Kopya silinemedi, günlüğe bakın</value>
   </data>
   <data name="SavegameGone" xml:space="preserve">
-    <value>Bu kayıt artık yok, liste yeniden okunuyor</value>
+    <value>Bu kayıt artık yok, liste yenilendi</value>
   </data>
   <data name="NearPlayer" xml:space="preserve">
     <value>Oyuncuya Yakın</value>

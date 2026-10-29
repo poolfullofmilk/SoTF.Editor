@@ -202,23 +202,20 @@ public partial class Game : EditorPageBase
     private string ModeClass(ModeCard mode)
     {
         // The Picked Mode Wears The Accent Ring
-        return "rounded-panel pa-4 hover-card flex-grow-1" + (IsMode(mode) ? " card-open" : "");
+        return "rounded-panel pa-4 hover-card flex-grow-1"
+            + (IsMode(mode) ? " card-open" : "")
+            + (IsModeChanged(mode) ? " card-changed" : "");
     }
 
-    private static string SettingClass(bool isSet)
+    private static string SettingClass(bool changed)
     {
-        // Off Its Default, A Setting Wears A Blue Edge
-        return "rounded-panel pa-4 flex-grow-1" + (isSet ? " setting-set" : "");
+        // One Setting Per Card, Its Dot Sits On The Corner
+        return "rounded-panel pa-4 flex-grow-1" + (changed ? " card-changed" : "");
     }
 
-    private bool IsSet(SelectSetting setting)
+    private static string SeasonClass(List<DayMark> marks)
     {
-        return GameSetup.GetString(setting.Key, setting.Fallback) != setting.Fallback;
-    }
-
-    private bool IsSet(ToggleSetting toggle)
-    {
-        return GameSetup.GetBool(toggle.Key, toggle.Fallback) != toggle.Fallback;
+        return "rounded-panel pa-4" + (marks.Exists(mark => mark.IsNew) ? " card-changed" : "");
     }
 
     private bool IsPicked(SelectSetting setting, SettingOption option)

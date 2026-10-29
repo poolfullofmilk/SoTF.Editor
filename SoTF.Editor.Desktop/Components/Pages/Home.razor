@@ -1,117 +1,98 @@
 @page "/"
 @inherits EditorPageBase
 
-<MudStack Spacing="6">
-    <Header Title="@AppText.Get("Savegames")">
-        <MudPaper Elevation="4"
-                  Class="rounded-panel pa-4">
-            <MudStack Row
-                      AlignItems="AlignItems.Center"
-                      Wrap="Wrap.Wrap"
-                      Spacing="4">
-                <MudTextField T="string"
-                              Value="@SavegamePath"
-                              Label="@AppText.Get("Location")"
-                              ReadOnly
-                              Disabled
-                              Variant="Variant.Outlined"
-                              Margin="Margin.Dense"
-                              Class="flex-grow-1"
-                              Style="min-width:320px" />
+<MudStack Row
+          Spacing="6">
+    <MudElement HtmlTag="div"
+                Class="side-panel">
+        <Header Title="@AppText.Get("Savegames")">
+            <MudPaper Elevation="4"
+                      Class="rounded-panel pa-4">
+                <MudStack Spacing="3">
+                    <MudTextField T="string"
+                                  Value="@SavegamePath"
+                                  Label="@AppText.Get("Location")"
+                                  ReadOnly
+                                  Disabled
+                                  Variant="Variant.Outlined"
+                                  Margin="Margin.Dense" />
+                    <MudStack Row
+                              Wrap="Wrap.Wrap"
+                              Justify="Justify.Center"
+                              Spacing="2">
+                        @* Change Folder *@
+                        <MudButton Variant="Variant.Filled"
+                                   Size="Size.Small"
+                                   StartIcon="@Icons.Material.Rounded.Folder"
+                                   OnClick="ChangeFolderAsync">
+                            @AppText.Get("ChangeFolder")
+                        </MudButton>
 
-                @* Change Folder *@
-                <MudButton Variant="Variant.Filled"
-                           Size="Size.Small"
-                           StartIcon="@Icons.Material.Rounded.Folder"
-                           OnClick="ChangeFolderAsync">
-                    @AppText.Get("ChangeFolder")
-                </MudButton>
+                        @* Default Folder *@
+                        <MudButton Variant="Variant.Filled"
+                                   Size="Size.Small"
+                                   StartIcon="@Icons.Material.Rounded.SettingsBackupRestore"
+                                   Disabled="@IsDefaultFolder"
+                                   OnClick="SetDefaultFolderAsync">
+                            @AppText.Get("UseDefaultFolder")
+                        </MudButton>
+                    </MudStack>
+                    <MudText Typo="Typo.body2"
+                             Class="mud-text-secondary">
+                        @AppText.Get("DropHint")
+                    </MudText>
+                </MudStack>
+            </MudPaper>
+        </Header>
+    </MudElement>
 
-                @* Default Folder *@
-                <MudButton Variant="Variant.Filled"
-                           Size="Size.Small"
-                           StartIcon="@Icons.Material.Rounded.SettingsBackupRestore"
-                           Disabled="@IsDefaultFolder"
-                           OnClick="SetDefaultFolderAsync">
-                    @AppText.Get("UseDefaultFolder")
-                </MudButton>
-            </MudStack>
-            <MudText Typo="Typo.body2"
-                     Class="mud-text-secondary mt-2">
-                @AppText.Get("DropHint")
-            </MudText>
-        </MudPaper>
-    </Header>
-
-    @if (_savegames is null)
-    {
-        @* Savegame Skeletons *@
-        <MudGrid>
-
-            @for (var index = 0; index < 4; index++)
-            {
-                <MudItem xs="12"
-                         sm="6"
-                         md="4"
-                         lg="3">
+    <MudStack Spacing="6"
+              Class="main-panel">
+        @if (_savegames is null)
+        {
+            @* Savegame Skeletons *@
+            <MudStack Spacing="3">
+                @for (var index = 0; index < 3; index++)
+                {
                     <MudPaper Elevation="4"
-                              Class="rounded-panel overflow-hidden">
-                        <MudSkeleton SkeletonType="SkeletonType.Rectangle"
-                                     Animation="Animation.Wave"
-                                     Height="auto"
-                                     Class="savegame-thumb" />
-                        <MudStack Spacing="0"
+                              Class="rounded-panel">
+                        <MudStack Row
+                                  Spacing="3"
                                   Class="pa-3">
-                            <MudText Typo="Typo.subtitle1">
-                                <MudSkeleton Animation="Animation.Wave"
-                                             Width="60%" />
-                            </MudText>
-                            <MudText Typo="Typo.body2">
-                                <MudSkeleton Animation="Animation.Wave"
-                                             Width="40%" />
-                            </MudText>
+                            <MudSkeleton SkeletonType="SkeletonType.Rectangle"
+                                         Animation="Animation.Wave"
+                                         Height="auto"
+                                         Class="savegame-thumb rounded-inner" />
+                            <MudStack Spacing="0"
+                                      Class="main-panel">
+                                <MudText Typo="Typo.subtitle1">
+                                    <MudSkeleton Animation="Animation.Wave"
+                                                 Width="60%" />
+                                </MudText>
+                                <MudText Typo="Typo.body2">
+                                    <MudSkeleton Animation="Animation.Wave"
+                                                 Width="40%" />
+                                </MudText>
+                            </MudStack>
                         </MudStack>
                     </MudPaper>
-                </MudItem>
-            }
-
-        </MudGrid>
-    }
-    else if (_savegames.Count == 0)
-    {
-        <EmptyState Icon="@Icons.Material.Rounded.FolderOff"
-                    Text="@AppText.Get("NoSavegames")" />
-    }
-    else
-    {
-        @* Duplicate Menu *@
-        <MudMenu @ref="_duplicateMenu"
-                 PositionAtCursor
-                 Dense>
-            <ActivatorContent />
-            <ChildContent>
-                <MudMenuItem Icon="@Icons.Material.Rounded.Person"
-                             OnClick="DuplicateToSingleplayerAsync">
-                    @AppText.Get("DuplicateToSingleplayer")
-                </MudMenuItem>
-                <MudMenuItem Icon="@Icons.Material.Rounded.Group"
-                             OnClick="DuplicateToMultiplayerAsync">
-                    @AppText.Get("DuplicateToMultiplayer")
-                </MudMenuItem>
-            </ChildContent>
-        </MudMenu>
-        @foreach (var group in SavegameGroups)
+                }
+            </MudStack>
+        }
+        else if (_savegames.Count == 0)
         {
-            <Header Title="@group.Title"
-                    Info="@group.Info">
-                <MudGrid>
-
-                    @foreach (var savegame in group.Savegames)
-                    {
-                        <MudItem xs="12"
-                                 sm="6"
-                                 md="4"
-                                 lg="3">
+            <EmptyState Icon="@Icons.Material.Rounded.FolderOff"
+                        Text="@AppText.Get("NoSavegames")" />
+        }
+        else
+        {
+            @foreach (var group in SavegameGroups)
+            {
+                <Header Title="@group.Title"
+                        Info="@group.Info">
+                    <MudStack Spacing="3">
+                        @foreach (var savegame in group.Savegames)
+                        {
                             @* Savegame Card *@
                             <MudPaper Elevation="4"
                                       Class="@CardClass(savegame)"
@@ -121,108 +102,129 @@
                                       aria-label="@savegame.Name"
                                       data-keyclick
                                       @onclick="() => OpenAsync(savegame)">
-                                @if (savegame.ThumbnailPath is { } thumbnailPath)
-                                {
-                                    <MudImage Src="@LocalFiles.Url(thumbnailPath)"
-                                              Alt="@savegame.Name"
-                                              Class="savegame-thumb" />
-                                }
-                                else
-                                {
-                                    <MudElement HtmlTag="span"
-                                                Class="savegame-thumb d-flex align-center justify-center">
-                                        <MudIcon Icon="@(savegame.IsMultiPlayerClient() ? Icons.Material.Rounded.Groups : Icons.Material.Rounded.Image)"
-                                                 Color="Color.Default"
-                                                 Size="Size.Large" />
-                                    </MudElement>
-                                }
-                                <MudStack Spacing="0"
+                                <MudStack Row
+                                          Spacing="3"
                                           Class="pa-3">
-                                    <MudStack Row
-                                              AlignItems="AlignItems.Center"
-                                              Spacing="2">
-                                        <MudText Typo="Typo.subtitle1"
-                                                 Class="mud-typography-nowrap text-tight"
-                                                 Style="font-weight:700">
-                                            @savegame.Name
-                                        </MudText>
-                                        <MudSpacer />
-                                        @if (IsOpen(savegame))
-                                        {
-                                            @* Open Chip *@
-                                            <MudChip T="string"
-                                                     Variant="Variant.Text"
-                                                     Color="Color.Info"
-                                                     Size="Size.Small">
-                                                @AppText.Get("Open")
-                                            </MudChip>
-                                        }
-                                    </MudStack>
-                                    @if (savegame.Summary is { } summary)
+                                    @if (savegame.ThumbnailPath is { } thumbnailPath)
                                     {
-                                        <MudText Typo="Typo.body2"
-                                                 Class="mud-typography-nowrap">
-                                            @WorldText(summary)
-                                        </MudText>
-                                        @if (savegame.IsMultiPlayerClient())
+                                        <MudImage Src="@LocalFiles.Url(thumbnailPath)"
+                                                  Alt="@savegame.Name"
+                                                  Class="savegame-thumb rounded-inner" />
+                                    }
+                                    else
+                                    {
+                                        <MudElement HtmlTag="span"
+                                                    Class="savegame-thumb rounded-inner inset d-flex align-center justify-center">
+                                            <MudIcon Icon="@(savegame.IsMultiPlayerClient() ? Icons.Material.Rounded.Groups : Icons.Material.Rounded.Image)"
+                                                     Color="Color.Default" />
+                                        </MudElement>
+                                    }
+                                    <MudStack Spacing="0"
+                                              Justify="Justify.SpaceBetween"
+                                              Class="main-panel">
+                                        <MudStack Row
+                                                  AlignItems="AlignItems.Center"
+                                                  Spacing="2">
+                                            <MudText Typo="Typo.subtitle1"
+                                                     Class="mud-typography-nowrap text-tight"
+                                                     Style="font-weight:700">
+                                                @savegame.Name
+                                            </MudText>
+                                            <MudSpacer />
+                                            @if (IsOpen(savegame))
+                                            {
+                                                @* Open Chip *@
+                                                <MudChip T="string"
+                                                         Variant="Variant.Text"
+                                                         Color="Color.Info"
+                                                         Size="Size.Small"
+                                                         Class="my-0">
+                                                    @AppText.Get("Open")
+                                                </MudChip>
+                                            }
+                                        </MudStack>
+                                        @if (savegame.Summary is { } summary)
                                         {
                                             <MudText Typo="Typo.body2"
                                                      Class="mud-typography-nowrap">
-                                                @PlayerText(summary)
+                                                @WorldText(summary)
                                             </MudText>
+                                            @if (savegame.IsMultiPlayerClient())
+                                            {
+                                                <MudText Typo="Typo.body2"
+                                                         Class="mud-typography-nowrap">
+                                                    @PlayerText(summary)
+                                                </MudText>
+                                            }
                                         }
-                                    }
-                                    <MudStack Row
-                                              AlignItems="AlignItems.Center"
-                                              Spacing="2">
-                                        <MudText Typo="Typo.body2"
-                                                 Class="mud-text-secondary mud-typography-nowrap">
-                                            @Formatter.FormatDateTime(savegame.LastSaveTime)
-                                        </MudText>
-                                        <MudSpacer />
-                                        @* Card Buttons *@
-                                        <span class="d-flex align-center my-n1"
-                                              @onclick:stopPropagation="true">
-                                            @if (BackupCountOf(savegame) is > 0 and var backupCount)
-                                            {
-                                                @* Backups Button *@
-                                                <MudIconButton Icon="@Icons.Material.Rounded.History"
-                                                               aria-label="@BackupsTitle(backupCount)"
-                                                               title="@BackupsTitle(backupCount)"
+                                        <MudStack Row
+                                                  AlignItems="AlignItems.Center"
+                                                  Spacing="2">
+                                            <MudText Typo="Typo.body2"
+                                                     Class="mud-text-secondary mud-typography-nowrap">
+                                                @Formatter.FormatDateTime(savegame.LastSaveTime)
+                                            </MudText>
+                                            <MudSpacer />
+                                            @* Card Buttons *@
+                                            <span class="d-flex align-center my-n1"
+                                                  @onclick:stopPropagation="true">
+                                                @if (BackupCountOf(savegame) is > 0 and var backupCount)
+                                                {
+                                                    @* Backups Button *@
+                                                    <MudIconButton Icon="@Icons.Material.Rounded.History"
+                                                                   aria-label="@BackupsTitle(backupCount)"
+                                                                   title="@BackupsTitle(backupCount)"
+                                                                   Size="Size.Small"
+                                                                   OnClick="() => RestoreFromCard(savegame)" />
+                                                }
+                                                @if (SavegameManager.IsCopy(savegame))
+                                                {
+                                                    <MudIconButton Icon="@Icons.Material.Rounded.Delete"
+                                                                   Color="Color.Error"
+                                                                   aria-label="@AppText.Get("DeleteCopy")"
+                                                                   title="@AppText.Get("DeleteCopy")"
+                                                                   Size="Size.Small"
+                                                                   OnClick="() => DeleteCopyAsync(savegame)" />
+                                                }
+                                                <MudIconButton Icon="@Icons.Material.Rounded.FolderZip"
+                                                               aria-label="@AppText.Get("ExportZip")"
+                                                               title="@AppText.Get("ExportZip")"
                                                                Size="Size.Small"
-                                                               OnClick="() => RestoreFromCard(savegame)" />
-                                            }
-                                            @if (SavegameManager.IsCopy(savegame))
-                                            {
-                                                <MudIconButton Icon="@Icons.Material.Rounded.Delete"
-                                                               Color="Color.Error"
-                                                               aria-label="@AppText.Get("DeleteCopy")"
-                                                               title="@AppText.Get("DeleteCopy")"
-                                                               Size="Size.Small"
-                                                               OnClick="() => DeleteCopyAsync(savegame)" />
-                                            }
-                                            <MudIconButton Icon="@Icons.Material.Rounded.FolderZip"
-                                                           aria-label="@AppText.Get("ExportZip")"
-                                                           title="@AppText.Get("ExportZip")"
-                                                           Size="Size.Small"
-                                                           OnClick="() => ExportAsync(savegame)" />
-                                            @if (!savegame.IsMultiPlayerClient())
-                                            {
-                                                <MudIconButton Icon="@Icons.Material.Rounded.ContentCopy"
-                                                               aria-label="@AppText.Get("Duplicate")"
-                                                               title="@AppText.Get("Duplicate")"
-                                                               Size="Size.Small"
-                                                               OnClick="args => OpenDuplicateMenuAsync(args, savegame)" />
-                                            }
-                                        </span>
+                                                               OnClick="() => ExportAsync(savegame)" />
+                                                @if (!savegame.IsMultiPlayerClient())
+                                                {
+                                                    <MudIconButton Icon="@Icons.Material.Rounded.ContentCopy"
+                                                                   aria-label="@AppText.Get("Duplicate")"
+                                                                   title="@AppText.Get("Duplicate")"
+                                                                   Size="Size.Small"
+                                                                   OnClick="args => OpenDuplicateMenuAsync(args, savegame)" />
+                                                }
+                                            </span>
+                                        </MudStack>
                                     </MudStack>
                                 </MudStack>
                             </MudPaper>
-                        </MudItem>
-                    }
-
-                </MudGrid>
-            </Header>
+                        }
+                    </MudStack>
+                </Header>
+            }
         }
-    }
+    </MudStack>
 </MudStack>
+
+@* Duplicate Menu *@
+<MudMenu @ref="_duplicateMenu"
+         PositionAtCursor
+         Dense>
+    <ActivatorContent />
+    <ChildContent>
+        <MudMenuItem Icon="@Icons.Material.Rounded.Person"
+                     OnClick="DuplicateToSingleplayerAsync">
+            @AppText.Get("DuplicateToSingleplayer")
+        </MudMenuItem>
+        <MudMenuItem Icon="@Icons.Material.Rounded.Group"
+                     OnClick="DuplicateToMultiplayerAsync">
+            @AppText.Get("DuplicateToMultiplayer")
+        </MudMenuItem>
+    </ChildContent>
+</MudMenu>

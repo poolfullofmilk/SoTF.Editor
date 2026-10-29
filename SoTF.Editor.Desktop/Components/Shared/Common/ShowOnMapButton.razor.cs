@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Services.Map;
 
@@ -19,7 +20,7 @@ public partial class ShowOnMapButton
     private string? Title =>
         Position is null
             ? null
-            : $"{AppText.Get("ShowOnMap")}\n{Position.PrintableShort} {Position.Area.Name}";
+            : $"{AppText.Get("ShowOnMap")}: {Formatter.JoinParts(Position.PrintableShort, Position.Area.Name)}";
 
     private void Show()
     {

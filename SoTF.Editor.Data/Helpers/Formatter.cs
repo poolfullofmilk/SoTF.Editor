@@ -5,13 +5,25 @@ namespace SoTF.Editor.Data.Helpers;
 
 public static class Formatter
 {
-    // One Date Format Everywhere, Sortable And Language Neutral
-    private const string DisplayDateTimeFormat = "yyyy-MM-dd HH:mm";
-    private const string DisplayDateTimeSecondsFormat = "yyyy-MM-dd HH:mm:ss";
+    // One Date Format Everywhere, Day First
+    private const string DisplayDateTimeFormat = "dd-MM-yyyy HH:mm";
+    private const string DisplayDateTimeSecondsFormat = "dd-MM-yyyy HH:mm:ss";
 
     public static string FormatDateTime(DateTime value)
     {
         return value.ToString(DisplayDateTimeFormat, CultureInfo.InvariantCulture);
+    }
+
+    public static string FormatDateTimeWithSeconds(DateTime value)
+    {
+        // Backups Taken In The Same Minute Stay Apart
+        return value.ToString(DisplayDateTimeSecondsFormat, CultureInfo.InvariantCulture);
+    }
+
+    public static string FormatPosition(float x, float? y, float z)
+    {
+        // Dots Between Axes, So A Decimal Comma Never Blurs Them
+        return JoinParts($"X {x:F2}", y is { } height ? $"Y {height:F2}" : null, $"Z {z:F2}");
     }
 
     public static string FormatSize(long bytes)
@@ -19,9 +31,9 @@ public static class Formatter
         return $"{bytes / 1048576.0:0.0} MB";
     }
 
-    // Whole Metres In The Windows Number Format
     public static string FormatDistance(float metres)
     {
+        // Whole Metres In The Windows Number Format
         return $"{metres:N0} m";
     }
 
@@ -29,12 +41,6 @@ public static class Formatter
     {
         // A Missing Part Leaves No Separator And No Dash
         return string.Join(" · ", parts.Where(part => part is { Length: > 0 } and not "-"));
-    }
-
-    public static string FormatDateTimeWithSeconds(DateTime value)
-    {
-        // Backups Taken In The Same Minute Stay Apart
-        return value.ToString(DisplayDateTimeSecondsFormat, CultureInfo.InvariantCulture);
     }
 
     public static string Normalize(string text)

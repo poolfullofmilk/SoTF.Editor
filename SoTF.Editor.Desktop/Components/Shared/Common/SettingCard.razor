@@ -4,7 +4,7 @@
 {
     @* Setting Card *@
     <MudPaper Elevation="4"
-              Class="rounded-panel pa-4 flex-grow-1 d-flex align-center">
+              Class="@(CardClass + " d-flex align-center")">
         @* Setting Switch *@
         <MudSwitch T="bool"
                    Value="Setting.BoolValue ?? false"
@@ -12,7 +12,6 @@
                    Color="Color.Info"
                    Class="ma-0">
             @AppText.Get(TextKeys.Setting(Setting.Name))
-            <ChangedDot When="Changed" />
             @if (Info is not null)
             {
                 <InfoIcon Text="@Info" />
@@ -24,7 +23,7 @@ else
 {
     @* Setting Card *@
     <MudPaper Elevation="4"
-              Class="rounded-panel pa-4 flex-grow-1">
+              Class="@CardClass">
         <MudStack Spacing="2">
             <MudStack Row
                       AlignItems="AlignItems.Center"
@@ -38,8 +37,7 @@ else
                     <InfoIcon Text="@Info" />
                 }
             </MudStack>
-            <GenericSettingEditor Setting="Setting"
-                                  Changed="Changed" />
+            <GenericSettingEditor Setting="Setting" />
         </MudStack>
     </MudPaper>
 }

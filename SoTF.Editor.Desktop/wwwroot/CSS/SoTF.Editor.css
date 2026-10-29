@@ -220,14 +220,32 @@
     vertical-align: top;
 }
 
-.changed-dot {
+.changed-dot,
+.card-changed::before {
     background-color: var(--mud-palette-warning);
 }
+
+/* A Card Holding One Setting Wears Its Dot In The Top Right Corner */
+.card-changed {
+    position: relative;
+}
+
+    .card-changed::before {
+        content: "";
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        pointer-events: none;
+    }
 
 /* Badges Lift Off Their Surface Like Chips */
 .mud-badge,
 .update-dot .mud-menu-item-text::after,
-.changed-dot {
+.changed-dot,
+.card-changed::before {
     box-shadow: var(--mud-elevation-1);
 }
 
@@ -595,11 +613,6 @@ html, body {
 /* #endregion */
 
 /* #region Game Setup */
-/* A Setting Off Its Default Wears A Blue Edge Over Its Shadow */
-.setting-set {
-    box-shadow: inset 0 0 0 2px var(--mud-palette-info), var(--mud-elevation-4);
-}
-
 /* Cards Scroll Inside, With Room Left For Their Shadow */
 .card-scroll {
     overflow-y: auto;
@@ -665,12 +678,13 @@ html, body {
         pointer-events: none;
     }
 
-/* Savegame Thumbnails Keep The Game's Wide Ratio */
+/* Savegame Thumbnails Half The Game's 256 By 160 */
 .savegame-thumb {
-    width: 100%;
-    aspect-ratio: 16 / 9;
+    width: 128px;
+    aspect-ratio: 16 / 10;
     object-fit: cover;
-    display: block;
+    flex-shrink: 0;
+    align-self: flex-start;
 }
 /* #endregion */
 

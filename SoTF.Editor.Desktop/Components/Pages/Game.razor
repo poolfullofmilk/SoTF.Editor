@@ -50,7 +50,6 @@
                                                          Class="flex-grow-1"
                                                          Style="font-weight:700">
                                                     @AppText.Get(mode.LabelKey)
-                                                    <ChangedDot When="@IsModeChanged(mode)" />
                                                 </MudText>
                                                 @if (mode.IsPreset)
                                                 {
@@ -105,7 +104,7 @@
                                                  md="4"
                                                  Class="d-flex">
                                             <MudPaper Elevation="4"
-                                                      Class="@SettingClass(IsSet(setting))">
+                                                      Class="@SettingClass(GameSetup.IsChanged(setting.Key, setting.Fallback))">
                                                 <MudStack Spacing="2">
                                                     <MudStack Row
                                                               AlignItems="AlignItems.Center"
@@ -113,7 +112,6 @@
                                                         <MudText Typo="Typo.subtitle2"
                                                                  Class="mud-typography-nowrap">
                                                             @AppText.Get(setting.LabelKey)
-                                                            <ChangedDot When="@GameSetup.IsChanged(setting.Key, setting.Fallback)" />
                                                         </MudText>
                                                         <InfoIcon Text="@AppText.Get(setting.InfoKey)" />
                                                     </MudStack>
@@ -142,7 +140,7 @@
                                                  md="4"
                                                  Class="d-flex">
                                             <MudPaper Elevation="4"
-                                                      Class="@(SettingClass(IsSet(toggle)) + " d-flex align-center")">
+                                                      Class="@(SettingClass(GameSetup.IsChanged(toggle.Key, toggle.Fallback)) + " d-flex align-center")">
                                                 @* Setup Switch *@
                                                 <MudSwitch T="bool"
                                                            Value="GameSetup.GetBool(toggle.Key, toggle.Fallback)"
@@ -150,7 +148,6 @@
                                                            Color="Color.Info"
                                                            Class="ma-0">
                                                     @AppText.Get(toggle.LabelKey)
-                                                    <ChangedDot When="@GameSetup.IsChanged(toggle.Key, toggle.Fallback)" />
                                                     <InfoIcon Text="@AppText.Get(toggle.InfoKey)" />
                                                 </MudSwitch>
                                             </MudPaper>
@@ -285,7 +282,7 @@
                     var marks = MarksOf(calendar, loaded);
                     @* Season Panel *@
                     <MudPaper Elevation="4"
-                              Class="rounded-panel pa-4">
+                              Class="@SeasonClass(marks)">
                         <MudStack Spacing="2">
                             <MudStack Row
                                       AlignItems="AlignItems.Center"
@@ -319,7 +316,6 @@
                                                          Class="season-mark"
                                                          Style="@MarkStyle(mark, marks, calendar.Length)">
                                                     @mark.Label
-                                                    <ChangedDot When="@mark.IsNew" />
                                                 </MudText>
                                             }
                                         </MudElement>

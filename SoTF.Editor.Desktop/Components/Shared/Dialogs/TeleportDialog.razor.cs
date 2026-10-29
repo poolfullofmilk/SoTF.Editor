@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using SoTF.Editor.Data.Enums;
+using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Models.Map;
 using SoTF.Editor.Services.Map;
@@ -44,7 +45,11 @@ public partial class TeleportDialog
             (AppText.Get("Destination"), _viewModel.Destination),
             (
                 AppText.Get("Position"),
-                $"X: {_viewModel.Landing.X:F2}, Y: {_viewModel.Landing.Y:F2}, Z: {_viewModel.Landing.Z:F2}"
+                Formatter.FormatPosition(
+                    _viewModel.Landing.X,
+                    _viewModel.Landing.Y,
+                    _viewModel.Landing.Z
+                )
             ),
         ];
 

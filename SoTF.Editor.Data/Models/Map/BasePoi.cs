@@ -56,9 +56,7 @@ public abstract class BasePoi : IPoi
     public string? AreaName => Position?.Area.Name;
 
     public string PrintableCoordinates =>
-        Position != null
-            ? $"X: {Position.X:F2}, Y: {Position.Y:F2}, Z: {Position.Z:F2}"
-            : $"X: {X}, Z: {Z}";
+        Position?.PrintableShort ?? Formatter.FormatPosition(X, null, Z);
 
     public virtual bool IsUnderground => Position?.Area.IsUnderground() ?? false;
 

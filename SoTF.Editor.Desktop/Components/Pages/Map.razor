@@ -14,8 +14,11 @@
                 <MudStack Row
                           AlignItems="AlignItems.Center"
                           Spacing="1"
-                          Class="pl-2">
-                    <MudText Typo="Typo.subtitle2">@AppText.Get("PointsOfInterest")</MudText>
+                          Class="header-row pl-2">
+                    <MudText Typo="Typo.h5"
+                             Class="header-title">
+                        @AppText.Get("PointsOfInterest")
+                    </MudText>
                     <MudSpacer />
                     @* Reset Points *@
                     <Tooltip Text="@AppText.Get("ResetToDefault")"

@@ -13,4 +13,7 @@ public partial class SettingCard : EditorPageBase
 
     [Parameter]
     public string? Info { get; set; }
+
+    // One Setting Per Card, Its Dot Sits On The Corner
+    private string CardClass => "rounded-panel pa-4 flex-grow-1" + (Changed ? " card-changed" : "");
 }

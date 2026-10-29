@@ -95,9 +95,9 @@ public partial class Tools : EditorPageBase
 
     private string CardClass(Tool tool)
     {
-        return IsAvailable(tool)
-            ? "rounded-panel pa-4 mud-height-full hover-card"
-            : "rounded-panel pa-4 mud-height-full tool-unavailable";
+        return "rounded-panel pa-4 mud-height-full"
+            + (IsAvailable(tool) ? " hover-card" : " tool-unavailable")
+            + (MainViewModel.IsToolChanged(tool.TitleKey) ? " card-changed" : "");
     }
 
     private string ChipKey(Tool tool)
