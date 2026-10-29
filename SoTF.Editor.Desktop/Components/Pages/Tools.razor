@@ -40,13 +40,16 @@
                                                      Style="font-weight:700;min-width:0">
                                                 @AppText.Get(tool.TitleKey)
                                             </MudText>
-                                            <MudChip T="string"
-                                                     Variant="Variant.Text"
-                                                     Size="Size.Small"
-                                                     Color="@ChipColor(tool)"
-                                                     Class="ma-0 flex-shrink-0">
-                                                @AppText.Get(ChipKey(tool))
-                                            </MudChip>
+                                            @if (ChipKey(tool) is { } chipKey)
+                                            {
+                                                <MudChip T="string"
+                                                         Variant="Variant.Text"
+                                                         Size="Size.Small"
+                                                         Color="@ChipColor(tool)"
+                                                         Class="ma-0 flex-shrink-0">
+                                                    @AppText.Get(chipKey)
+                                                </MudChip>
+                                            }
                                         </MudStack>
                                         <MudText Typo="Typo.body2"
                                                  Class="mud-text-secondary text-relaxed pl-9">

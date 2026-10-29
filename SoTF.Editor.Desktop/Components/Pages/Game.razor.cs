@@ -293,6 +293,25 @@ public partial class Game : EditorPageBase
     private const int MarkGap = 8;
     private const int MarkInset = 6;
 
+    // The Clock's Parts Share One Card In Place Of Hours
+    private static readonly string[] s_timeSettingNames =
+    [
+        "GameHours",
+        "GameMinutes",
+        "GameSeconds",
+        "GameMilliseconds",
+    ];
+
+    private IEnumerable<GenericSetting> StateCards =>
+        GameState.Settings.Where(setting =>
+            setting.Name == s_timeSettingNames[0] || !s_timeSettingNames.Contains(setting.Name)
+        );
+
+    private IEnumerable<GenericSetting> TimeParts =>
+        s_timeSettingNames.SelectMany(name =>
+            GameState.Settings.Where(setting => setting.Name == name)
+        );
+
     private static string? InfoOf(string settingName)
     {
         return TextKeys.SettingsWithInfo.Contains(settingName)

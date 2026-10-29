@@ -6,8 +6,10 @@ public class WorldItemPoi(WorldItemState state) : BasePoi(state.Position)
 {
     public WorldItemState State { get; } = state;
 
-    public override string Icon =>
-        State.WorldItemType switch
+    public override string Icon => IconOf(State.WorldItemType);
+
+    public static string IconOf(WorldItemType type) =>
+        type switch
         {
             WorldItemType.HangGlider => "images/worldobjects/hang-gliding.svg",
             WorldItemType.KnightV => "images/worldobjects/monowheel.svg",

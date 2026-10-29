@@ -1014,9 +1014,6 @@
   <data name="UnableToSpawnFollowers" xml:space="preserve">
     <value>Yoldaşlar oluşturulamadı</value>
   </data>
-  <data name="Key" xml:space="preserve">
-    <value>Anahtar</value>
-  </data>
   <data name="Gone" xml:space="preserve">
     <value>Yok Olmuş</value>
   </data>
@@ -1667,9 +1664,6 @@ Hayır onları tutar, böylece önce kaydedebilirsiniz</value>
   <data name="SettingGameDaysInfo" xml:space="preserve">
     <value>Hayatta kalınan günler. Mevsim buna göre belirlenir</value>
   </data>
-  <data name="SettingGameHoursInfo" xml:space="preserve">
-    <value>Günün şimdiki saati</value>
-  </data>
   <data name="SettingCrashSiteInfo" xml:space="preserve">
     <value>Helikopterin başlangıçta nereye düştüğü</value>
   </data>
@@ -1711,9 +1705,6 @@ Hayır onları tutar, böylece önce kaydedebilirsiniz</value>
   </data>
   <data name="ToolsPlayer" xml:space="preserve">
     <value>Oyuncu</value>
-  </data>
-  <data name="NeedsSave" xml:space="preserve">
-    <value>Kayıt Gerekir</value>
   </data>
   <data name="SavesAtOnce" xml:space="preserve">
     <value>Hemen Kaydeder</value>
@@ -2163,5 +2154,14 @@ Hayır düzenleyiciyi açık tutar, böylece önce kaydedebilirsiniz</value>
   </data>
   <data name="RestoreBackupOf" xml:space="preserve">
     <value>Yedeği Geri Yükle: {0}</value>
+  </data>
+  <data name="TimeOfDay" xml:space="preserve">
+    <value>Günün Saati</value>
+  </data>
+  <data name="EmptySlot" xml:space="preserve">
+    <value>Boş</value>
+  </data>
+  <data name="ScrollToTop" xml:space="preserve">
+    <value>Başa Dön</value>
   </data>
 </root>

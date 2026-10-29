@@ -19,4 +19,7 @@ public partial class ArmourSelect
 
     [Parameter]
     public bool Disabled { get; set; }
+
+    [Parameter]
+    public string? Label { get; set; }
 }

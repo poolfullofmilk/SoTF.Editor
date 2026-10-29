@@ -2,10 +2,12 @@
 
     <DialogContent>
         <MudStack Spacing="4">
-            <MudText Typo="Typo.body2"
-                     Class="text-relaxed">
+            <MudAlert Severity="Severity.Warning"
+                      Dense
+                      Elevation="4"
+                      Class="rounded-panel">
                 @AppText.Get("ChangeTypeWarning")
-            </MudText>
+            </MudAlert>
             @* Structure Type *@
             <MudSelect T="ScrewStructure"
                        Variant="Variant.Outlined"

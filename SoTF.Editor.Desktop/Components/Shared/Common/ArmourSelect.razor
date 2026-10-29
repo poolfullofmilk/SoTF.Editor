@@ -20,9 +20,10 @@
                    Variant="Variant.Outlined"
                    Value="Value"
                    ValueChanged="ValueChanged"
-                   Label="@AppText.Get("Type")"
+                   Label="@Label"
                    ToStringFunc="item => item?.Name ?? string.Empty"
                    Disabled="Disabled"
+                   Dense
                    Margin="Margin.Dense">
             @foreach (var type in Types)
             {

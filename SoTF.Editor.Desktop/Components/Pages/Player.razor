@@ -61,6 +61,7 @@
                                         Max="PlayerState.MaxStrengthLevel" />
                             @* Max Health *@
                             <StatSlider Label="@AppText.Get("MaxHealth")"
+                                        Tint="@StatColors.Health"
                                         Changed="@PlayerPage.IsChanged(nameof(PlayerState.MaxHealth))"
                                         Info="@AppText.Get("MaxHealthFollowsStrength")"
                                         Value="State.MaxHealth"
@@ -68,6 +69,7 @@
                                         ReadOnly />
                             @* Current Health *@
                             <StatSlider Label="@AppText.Get("CurrentHealth")"
+                                        Tint="@StatColors.Health"
                                         Changed="@PlayerPage.IsChanged(nameof(PlayerState.CurrentHealth))"
                                         Warning="@CurrentHealthWarning"
                                         @bind-Value="State.CurrentHealth"
@@ -76,40 +78,48 @@
                                         Step="0.1f" />
                             @* Sickness *@
                             <StatSlider Label="@AppText.Get("Sickness")"
+                                        Tint="@StatColors.Sickness"
                                         Changed="@PlayerPage.IsChanged(nameof(PlayerState.Sickness))"
                                         @bind-Value="State.Sickness"
                                         Max="State.MaxHealth"
                                         Step="0.1f" />
                             @* Fullness *@
                             <StatSlider Label="@AppText.Get("Fullness")"
+                                        Tint="@StatColors.Fullness"
                                         Changed="@PlayerPage.IsChanged(nameof(PlayerState.Fullness))"
                                         @bind-Value="State.Fullness" />
                             @* Hydration *@
                             <StatSlider Label="@AppText.Get("Hydration")"
+                                        Tint="@StatColors.Hydration"
                                         Changed="@PlayerPage.IsChanged(nameof(PlayerState.Hydration))"
                                         @bind-Value="State.Hydration" />
                             @* Rest *@
                             <StatSlider Label="@AppText.Get("Rest")"
+                                        Tint="@StatColors.Rest"
                                         Changed="@PlayerPage.IsChanged(nameof(PlayerState.Rest))"
                                         @bind-Value="State.Rest" />
                             @* Stamina *@
                             <StatSlider Label="@AppText.Get("Stamina")"
+                                        Tint="@StatColors.Stamina"
                                         Changed="@PlayerPage.IsChanged(nameof(PlayerState.Stamina))"
                                         @bind-Value="State.Stamina" />
                             @* Fullness Buff *@
                             <StatSlider Label="@AppText.Get("FullnessBuff")"
+                                        Tint="@StatColors.Fullness"
                                         Changed="@PlayerPage.IsChanged(nameof(PlayerState.FullnessBuff))"
                                         @bind-Value="State.FullnessBuff"
                                         Min="-100"
                                         Max="65535" />
                             @* Hydration Buff *@
                             <StatSlider Label="@AppText.Get("HydrationBuff")"
+                                        Tint="@StatColors.Hydration"
                                         Changed="@PlayerPage.IsChanged(nameof(PlayerState.HydrationBuff))"
                                         @bind-Value="State.HydrationBuff"
                                         Min="-100"
                                         Max="65535" />
                             @* Rest Buff *@
                             <StatSlider Label="@AppText.Get("RestBuff")"
+                                        Tint="@StatColors.Rest"
                                         Changed="@PlayerPage.IsChanged(nameof(PlayerState.RestBuff))"
                                         @bind-Value="State.RestBuff"
                                         Max="1"
@@ -122,7 +132,8 @@
                                            Variant="Variant.Outlined"
                                            @bind-Value="State.SelectedCloth"
                                            Label="@AppText.Get("Outfit")"
-                                           ToStringFunc="item => item?.Name ?? string.Empty">
+                                           ToStringFunc="item => item?.Name ?? string.Empty"
+                                           Dense>
                                     @foreach (var cloth in PlayerPage.AvailableClothes)
                                     {
                                         <MudSelectItem Value="cloth">@cloth.Name</MudSelectItem>
@@ -147,7 +158,8 @@
                         <MudButton Variant="Variant.Text"
                                    Size="Size.Small"
                                    Disabled="@(!ArmorPage.CanSetAllToDefault())"
-                                   OnClick="ArmorPage.SetAllToDefault">
+                                   OnClick="ArmorPage.SetAllToDefault"
+                                   StartIcon="@Icons.Material.Rounded.SettingsBackupRestore">
                             @AppText.Get("SetAllToDefault")
                         </MudButton>
                     </Tooltip>
@@ -157,7 +169,8 @@
                         <MudButton Variant="Variant.Text"
                                    Size="Size.Small"
                                    Disabled="@(!ArmorPage.CanSetAllToMax())"
-                                   OnClick="ArmorPage.SetAllToMax">
+                                   OnClick="ArmorPage.SetAllToMax"
+                                   StartIcon="@Icons.Material.Rounded.KeyboardDoubleArrowUp">
                             @AppText.Get("SetAllToMax")
                         </MudButton>
                     </Tooltip>
@@ -182,16 +195,17 @@
                                                    OnClick="() => ArmorPage.AddPiece(ArmorPage.ArmourTypes.FirstOrDefault())" />
                                 </Tooltip>
                             </MudStack>
-                            @foreach (var armour in ArmorPage.Armour)
+                            @foreach (var (index, armour) in ArmorPage.Armour.Index())
                             {
                                 <MudStack Row
                                           AlignItems="AlignItems.Center"
                                           Spacing="2"
-                                          Class="pa-1">
+                                          Class="hover-host pa-1">
                                     @* Armour Type *@
                                     <ArmourSelect Value="armour.Item"
                                                   ValueChanged="armour.ChangeType"
                                                   Types="ArmorPage.ArmourTypes"
+                                                  Label="@(index == 0 ? AppText.Get("Type") : null)"
                                                   Changed="@ArmorPage.IsTypeChanged(armour)" />
                                     <MudSpacer />
                                     @* Durability *@
@@ -202,7 +216,8 @@
                                                      Min="armour.MinDurability"
                                                      Max="armour.MaxDurability"
                                                      Margin="Margin.Dense"
-                                                     Label="@AppText.Get("Durability")"
+                                                     HideSpinButtons
+                                                     Label="@(index == 0 ? AppText.Get("Durability") : null)"
                                                      Style="width:120px" />
                                     </ChangedBadge>
                                     @* Default Button *@
@@ -211,6 +226,7 @@
                                         <MudIconButton Icon="@Icons.Material.Rounded.SettingsBackupRestore"
                                                        aria-label="@AppText.Get("SetToDefaultDurability")"
                                                        Size="Size.Small"
+                                                       Class="hover-action"
                                                        Disabled="@IsDefault(armour)"
                                                        OnClick="() => armour.ArmourPiece.RemainingArmourpoints = armour.DefaultDurability" />
                                     </Tooltip>
@@ -220,6 +236,7 @@
                                         <MudIconButton Icon="@Icons.Material.Rounded.KeyboardDoubleArrowUp"
                                                        aria-label="@AppText.Get("SetToMax")"
                                                        Size="Size.Small"
+                                                       Class="hover-action"
                                                        Disabled="@(armour.ArmourPiece.RemainingArmourpoints >= armour.MaxDurability)"
                                                        OnClick="() => armour.ArmourPiece.RemainingArmourpoints = armour.MaxDurability" />
                                     </Tooltip>
@@ -228,6 +245,7 @@
                                         <MudIconButton Icon="@Icons.Material.Rounded.Backpack"
                                                        aria-label="@AppText.Get("Unequip")"
                                                        Size="Size.Small"
+                                                       Class="hover-action"
                                                        Disabled="@(!ArmorPage.CanMoveToInventory(armour))"
                                                        OnClick="() => ArmorPage.MoveToInventory(armour)" />
                                     </Tooltip>
@@ -235,8 +253,8 @@
                                     <Tooltip Text="@AppText.Get("DeleteArmour")">
                                         <MudIconButton Icon="@Icons.Material.Rounded.Delete"
                                                        aria-label="@AppText.Get("DeleteArmour")"
-                                                       Color="Color.Error"
                                                        Size="Size.Small"
+                                                       Class="hover-action danger-hover"
                                                        OnClick="() => DeleteArmourAsync(armour)" />
                                     </Tooltip>
                                 </MudStack>
@@ -251,7 +269,7 @@
                                     <MudStack Row
                                               AlignItems="AlignItems.Center"
                                               Spacing="2"
-                                              Class="@(InventoryPage.IsHeld(item) ? "pa-1" : "pa-1 not-held")">
+                                              Class="@(InventoryPage.IsHeld(item) ? "hover-host pa-1" : "hover-host pa-1 not-held")">
                                         @* Inventory Armour Type *@
                                         <ArmourSelect Value="item.Item"
                                                       ValueChanged="type => ArmorPage.ChangeType(item, type)"
@@ -268,6 +286,7 @@
                                             <MudIconButton Icon="@Icons.Material.Rounded.Shield"
                                                            aria-label="@AppText.Get("WearArmour")"
                                                            Size="Size.Small"
+                                                           Class="hover-action"
                                                            Disabled="@(!ArmorPage.CanWear(item))"
                                                            OnClick="() => ArmorPage.Wear(item)" />
                                         </Tooltip>
@@ -276,8 +295,8 @@
                                                  Disabled="@(!InventoryPage.IsHeld(item))">
                                             <MudIconButton Icon="@Icons.Material.Rounded.Delete"
                                                            aria-label="@AppText.Get("DeleteArmour")"
-                                                           Color="Color.Error"
                                                            Size="Size.Small"
+                                                           Class="hover-action danger-hover"
                                                            Disabled="@(!InventoryPage.IsHeld(item))"
                                                            OnClick="() => DeleteFromInventoryAsync(item)" />
                                         </Tooltip>

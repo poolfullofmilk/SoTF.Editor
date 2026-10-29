@@ -66,7 +66,6 @@ public static class TextKeys
         "GameType",
         "SaveTime",
         "GameDays",
-        "GameHours",
         "CrashSite",
         "IsVirginiaDead",
         "IsRobbyDead",

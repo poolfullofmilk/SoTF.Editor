@@ -11,8 +11,12 @@
         }
         else
         {
+            @* Consumed Items Table *@
             <MudTable T="ModifyConsumedItemsViewModel.ConsumedItemWrapper"
                       Items="_viewModel.ConsumedItems"
+                      MultiSelection
+                      SelectedItems="_selected"
+                      SelectedItemsChanged="SelectionChanged"
                       Dense
                       Hover
                       FixedHeader
@@ -20,19 +24,17 @@
                       Class="fit"
                       Style="max-height:50vh">
 
+                <ColGroup>
+                    <col style="width:56px" />
+                    <col />
+                </ColGroup>
                 <HeaderContent>
                     <MudTh>@AppText.Get("Name")</MudTh>
-                    <MudTh>@AppText.Get("Key")</MudTh>
-                    <MudTh>@AppText.Get("Remove")</MudTh>
                 </HeaderContent>
                 <RowTemplate>
-                    <MudTd>@context.Name</MudTd>
-                    <MudTd Class="mud-text-secondary">@context.Key</MudTd>
                     <MudTd>
-                        @* Remove Checkbox *@
-                        <MudCheckBox T="bool"
-                                     @bind-Value="context.Remove"
-                                     Color="Color.Error" />
+                        <ItemLabel Name="@context.Name"
+                                   ImageUrl="@context.ImageUrl" />
                     </MudTd>
                 </RowTemplate>
 
@@ -43,7 +45,8 @@
         @* Remove All *@
         <MudButton Color="Color.Error"
                    Disabled="@(_viewModel.ConsumedItems.Count == 0)"
-                   OnClick="RemoveAllAsync">
+                   OnClick="RemoveAllAsync"
+                   StartIcon="@Icons.Material.Rounded.DeleteSweep">
             @AppText.Get("RemoveAll")
         </MudButton>
         <MudSpacer />

@@ -26,9 +26,17 @@
                     <MudStack Row
                               AlignItems="AlignItems.Center"
                               Spacing="3">
-                        <MudIcon Icon="@RowIcon(backup)"
-                                 Color="@(_marked.Contains(backup) ? Color.Error : Color.Default)"
-                                 Size="Size.Small" />
+                        @if (_deleting)
+                        {
+                            <MudIcon Icon="@RowIcon(backup)"
+                                     Color="@(_marked.Contains(backup) ? Color.Error : Color.Default)"
+                                     Size="Size.Small" />
+                        }
+                        else
+                        {
+                            <MudElement HtmlTag="span"
+                                        Class="timeline-dot" />
+                        }
                         <MudStack Spacing="0"
                                   Class="flex-grow-1">
                             <MudText Typo="Typo.body2">@Formatter.FormatDateTimeWithSeconds(backup.TakenAt)</MudText>

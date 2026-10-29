@@ -6,8 +6,18 @@
 <MudPopoverProvider />
 <MudDialogProvider BackdropClick="false"
                    CloseButton="true"
+                   CloseOnEscapeKey="true"
                    MaxWidth="MaxWidth.False" />
 <MudSnackbarProvider />
+
+@* Scroll To Top *@
+<MudScrollToTop>
+    <MudFab Color="Color.Info"
+            Size="Size.Small"
+            StartIcon="@Icons.Material.Rounded.ArrowUpward"
+            aria-label="@AppText.Get("ScrollToTop")"
+            title="@AppText.Get("ScrollToTop")" />
+</MudScrollToTop>
 
 @* Busy Overlay *@
 <MudOverlay Visible="_isBusy"
@@ -42,7 +52,10 @@
                           Class="d-flex">
                     <MudMenu Icon="@Icons.Material.Rounded.Help"
                              AriaLabel="@AppText.Get("Help")"
-                             Size="Size.Small">
+                             Size="Size.Small"
+                             Dense
+                             AnchorOrigin="Origin.BottomLeft"
+                             TransformOrigin="Origin.TopLeft">
                         @* Project Page *@
                         <MudMenuItem Icon="@Icons.Custom.Brands.GitHub"
                                      Label="@AppText.Get("GitHubProject")"
@@ -74,6 +87,7 @@
                     <MudMenu Icon="@Icons.Material.Rounded.Restore"
                              AriaLabel="@AppText.Get("Backups")"
                              Size="Size.Small"
+                             Dense
                              AnchorOrigin="Origin.BottomRight"
                              TransformOrigin="Origin.TopRight"
                              Disabled="@(!HasSavegame)">
@@ -127,7 +141,9 @@
             @* Navigation Panel *@
             <MudPaper Elevation="4"
                       Class="rounded-panel pa-2 nav-panel">
-                <MudStack Spacing="1">
+                <MudNavMenu Color="Color.Info"
+                            Rounded
+                            Margin="Margin.Dense">
                     @foreach (var group in s_pageGroups)
                     {
                         @if (group != s_pageGroups[0])
@@ -138,18 +154,14 @@
                         {
                             <MudElement HtmlTag="div"
                                         Class="relative">
-                                @* Page Button *@
-                                <MudButton StartIcon="@link.Icon"
-                                           Color="@(IsActive(link) ? Color.Secondary : Color.Default)"
-                                           Variant="@(IsActive(link) ? Variant.Filled : Variant.Text)"
-                                           Class="justify-start"
-                                           Style="@(IsActive(link) ? null : "padding:6px 16px")"
-                                           FullWidth
-                                           Disabled="@IsDisabled(link)"
-                                           Href="@link.Href">
+                                @* Page Link *@
+                                <MudNavLink Href="@link.Href"
+                                            Match="NavLinkMatch.All"
+                                            Icon="@link.Icon"
+                                            Disabled="@IsDisabled(link)">
                                     @AppText.Get(link.LabelKey)
                                     <ChangedDot When="@MainViewModel.HasChanges(link.Href)" />
-                                </MudButton>
+                                </MudNavLink>
                                 @if (CanRevert(link))
                                 {
                                     @* Revert Page *@
@@ -172,7 +184,7 @@
                             @AppText.Get("ClientSaveHasNoWorld")
                         </MudText>
                     }
-                </MudStack>
+                </MudNavMenu>
             </MudPaper>
 
             @* Page *@

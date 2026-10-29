@@ -23,6 +23,16 @@ public partial class Storage : EditorPageBase
     private MudMenu? _slotMenu;
     private StoredItem? _menuSlot;
 
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        // The First Storage Shows Until Another Is Picked
+        StoragePage.SelectedStorage ??= StoragePage
+            .StorageCollections.FirstOrDefault()
+            ?.Storages.FirstOrDefault();
+    }
+
     // A Matching Type Shows Whole, Otherwise Only Its Matching Storages
     private List<(string Title, List<IStorage> Storages)> FilteredCollections()
     {
@@ -67,6 +77,14 @@ public partial class Storage : EditorPageBase
     private void PickSlotItem(ItemWrapper item)
     {
         _menuSlot?.SelectedItem = item;
+    }
+
+    // An Item Without A Picture Shows The Question Mark
+    private static string PictureOf(ItemWrapper item)
+    {
+        return string.IsNullOrEmpty(item.Item.ImageUrl)
+            ? "images/icons/question-mark.svg"
+            : item.Item.ImageUrl;
     }
 
     private bool Matches(string text)

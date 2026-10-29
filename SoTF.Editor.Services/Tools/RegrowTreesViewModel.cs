@@ -42,14 +42,6 @@ public class RegrowTreesViewModel
 
     public VegetationState VegetationStateSelected { get; set; } = AllStates;
 
-    public int AllCount => States.Sum(CountOf);
-
-    public bool VegetationStateIsAllSelected
-    {
-        get => VegetationStateSelected.HasFlag(AllStates);
-        set => VegetationStateSelected = value ? AllStates : VegetationState.None;
-    }
-
     public static string Label(VegetationState state)
     {
         return AppText.Get(s_stateKeys[state]);

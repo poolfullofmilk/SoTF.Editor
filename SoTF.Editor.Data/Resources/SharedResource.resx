@@ -1014,9 +1014,6 @@
   <data name="UnableToSpawnFollowers" xml:space="preserve">
     <value>Unable to spawn followers</value>
   </data>
-  <data name="Key" xml:space="preserve">
-    <value>Key</value>
-  </data>
   <data name="Gone" xml:space="preserve">
     <value>Gone</value>
   </data>
@@ -1667,9 +1664,6 @@ No keeps them so you can save first</value>
   <data name="SettingGameDaysInfo" xml:space="preserve">
     <value>Days survived. The season follows from it</value>
   </data>
-  <data name="SettingGameHoursInfo" xml:space="preserve">
-    <value>The hour of the current day</value>
-  </data>
   <data name="SettingCrashSiteInfo" xml:space="preserve">
     <value>Where the helicopter crashed at the start</value>
   </data>
@@ -1711,9 +1705,6 @@ No keeps them so you can save first</value>
   </data>
   <data name="ToolsPlayer" xml:space="preserve">
     <value>Player</value>
-  </data>
-  <data name="NeedsSave" xml:space="preserve">
-    <value>Needs Save</value>
   </data>
   <data name="SavesAtOnce" xml:space="preserve">
     <value>Saves at Once</value>
@@ -2163,5 +2154,14 @@ No keeps the editor open so you can save first</value>
   </data>
   <data name="RestoreBackupOf" xml:space="preserve">
     <value>Restore Backup: {0}</value>
+  </data>
+  <data name="TimeOfDay" xml:space="preserve">
+    <value>Time of Day</value>
+  </data>
+  <data name="EmptySlot" xml:space="preserve">
+    <value>Empty</value>
+  </data>
+  <data name="ScrollToTop" xml:space="preserve">
+    <value>Back to Top</value>
   </data>
 </root>

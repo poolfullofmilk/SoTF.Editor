@@ -97,6 +97,7 @@
                                  Variant="Variant.Filled"
                                  Color="Color.Info"
                                  Size="Size.Small"
+                                 Dense
                                  AnchorOrigin="Origin.BottomRight"
                                  TransformOrigin="Origin.TopRight">
                             @foreach (var mode in s_modes)
@@ -187,7 +188,8 @@
                                             }
                                         </MudStack>
                                     </MudTd>
-                                    <MudTd Style="text-align:right">
+                                    <MudTd Class="hover-action"
+                                           Style="text-align:right">
                                         <ShowOnMapButton Position="context.Position" />
                                         @* Change Type *@
                                         <MudIconButton Icon="@Icons.Material.Rounded.SwapHoriz"
@@ -208,7 +210,8 @@
                             </MudTable>
                             @* Modification Menu *@
                             <MudMenu @ref="_modeMenu"
-                                     PositionAtCursor>
+                                     PositionAtCursor
+                                     Dense>
                                 <ActivatorContent />
                                 <ChildContent>
                                     @foreach (var mode in _menuStructure?.ModificationModes ?? [])

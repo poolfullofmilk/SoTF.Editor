@@ -301,7 +301,7 @@ public partial class PoiDetails
             {
                 { spawnDialog => spawnDialog.Destination, Poi },
             },
-            new DialogOptions { MaxWidth = MaxWidth.Medium, FullWidth = true }
+            new DialogOptions { MaxWidth = MaxWidth.Small, FullWidth = true }
         );
         await dialog.Result;
     }

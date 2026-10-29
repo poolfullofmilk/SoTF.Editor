@@ -3,6 +3,7 @@
 
 <RequiresSavegame NeedsWorld>
     <MudTabs Elevation="4"
+             SliderColor="Color.Info"
              TabHeaderClass="mb-6"
              AlwaysShowScrollButtons
              Rounded>
@@ -90,7 +91,8 @@
                                 <MudButton Variant="Variant.Text"
                                            Size="Size.Small"
                                            Disabled="@(!GameSetup.HasAny(KeysOf(group)))"
-                                           OnClick="() => GameSetup.ResetSettings(KeysOf(group))">
+                                           OnClick="() => GameSetup.ResetSettings(KeysOf(group))"
+                                           StartIcon="@Icons.Material.Rounded.SettingsBackupRestore">
                                     @AppText.Get("SetAllToDefault")
                                 </MudButton>
                             </TitleContent>
@@ -188,14 +190,47 @@
                                     Class="card-scroll fit">
                             <MudGrid Spacing="3">
 
-                                @foreach (var setting in GameState.Settings)
+                                @foreach (var setting in StateCards)
                                 {
                                     <MudItem xs="12"
-                                             lg="6"
+                                             lg="@(setting.Name == s_timeSettingNames[0] ? 12 : 6)"
                                              Class="d-flex">
-                                        <SettingCard Setting="setting"
-                                                     Changed="@GameState.IsChanged(setting)"
-                                                     Info="@InfoOf(setting.Name)" />
+                                        @if (setting.Name == s_timeSettingNames[0])
+                                        {
+                                            @* Time Card *@
+                                            <MudPaper Elevation="4"
+                                                      Class="rounded-panel pa-4 flex-grow-1">
+                                                <MudStack Spacing="2">
+                                                    <MudText Typo="Typo.subtitle2"
+                                                             Class="mud-typography-nowrap">
+                                                        @AppText.Get("TimeOfDay")
+                                                    </MudText>
+                                                    <MudStack Row
+                                                              Spacing="2">
+                                                        @foreach (var part in TimeParts)
+                                                        {
+                                                            @* Time Part *@
+                                                            <ChangedBadge When="@GameState.IsChanged(part)"
+                                                                          Class="flex-grow-1">
+                                                                <NumberField T="int?"
+                                                                             @bind-Value="part.IntValue"
+                                                                             Label="@AppText.Get(TextKeys.Setting(part.Name))"
+                                                                             Min="part.MinInt"
+                                                                             Max="part.MaxInt"
+                                                                             Margin="Margin.Dense"
+                                                                             HideSpinButtons />
+                                                            </ChangedBadge>
+                                                        }
+                                                    </MudStack>
+                                                </MudStack>
+                                            </MudPaper>
+                                        }
+                                        else
+                                        {
+                                            <SettingCard Setting="setting"
+                                                         Changed="@GameState.IsChanged(setting)"
+                                                         Info="@InfoOf(setting.Name)" />
+                                        }
                                     </MudItem>
                                 }
 
@@ -243,15 +278,16 @@
                                         <GenericSettingEditor Setting="context"
                                                               Changed="@GameState.IsChanged(context)" />
                                     </MudTd>
-                                    <MudTd Style="text-align:right">
+                                    <MudTd Class="hover-action"
+                                           Style="text-align:right">
                                         @* Clear Value *@
                                         @if (context.IntValue is not null)
                                         {
                                             <MudIconButton Icon="@Icons.Material.Rounded.Backspace"
                                                            title="@AppText.Get("ClearValue")"
                                                            aria-label="@AppText.Get("ClearValue")"
-                                                           Color="Color.Error"
                                                            Size="Size.Small"
+                                                           Class="danger-hover"
                                                            OnClick="() => context.IntValue = null" />
                                         }
                                     </MudTd>

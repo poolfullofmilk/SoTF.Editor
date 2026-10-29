@@ -18,21 +18,23 @@
             </MudAlert>
             @foreach (var group in OptionGroups)
             {
-                <MudStack Spacing="0">
+                <MudStack Spacing="1">
                     <MudText Typo="Typo.subtitle2">@group.Title</MudText>
-                    <MudStack Row
-                              Wrap="Wrap.Wrap"
-                              Spacing="0">
+                    @* Option Chips *@
+                    <MudChipSet T="string"
+                                SelectionMode="SelectionMode.MultiSelection"
+                                CheckMark
+                                Variant="Variant.Text"
+                                SelectedColor="Color.Info">
                         @foreach (var option in group.Options)
                         {
-                            @* Option *@
-                            <MudCheckBox T="bool"
-                                         Value="option.Get()"
-                                         ValueChanged="option.Set"
-                                         Color="Color.Info"
-                                         Label="@option.Label" />
+                            <MudChip T="string"
+                                     Value="@option.Label"
+                                     Text="@option.Label"
+                                     Selected="option.Get()"
+                                     SelectedChanged="option.Set" />
                         }
-                    </MudStack>
+                    </MudChipSet>
                 </MudStack>
             }
         </MudStack>

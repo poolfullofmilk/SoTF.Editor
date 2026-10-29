@@ -1014,9 +1014,6 @@
   <data name="UnableToSpawnFollowers" xml:space="preserve">
     <value>Begleiter konnten nicht gespawnt werden</value>
   </data>
-  <data name="Key" xml:space="preserve">
-    <value>Schlüssel</value>
-  </data>
   <data name="Gone" xml:space="preserve">
     <value>Verschwunden</value>
   </data>
@@ -1667,9 +1664,6 @@ Nein behält sie, damit du zuerst speichern kannst</value>
   <data name="SettingGameDaysInfo" xml:space="preserve">
     <value>Überlebte Tage. Die Jahreszeit ergibt sich daraus</value>
   </data>
-  <data name="SettingGameHoursInfo" xml:space="preserve">
-    <value>Die Stunde des aktuellen Tages</value>
-  </data>
   <data name="SettingCrashSiteInfo" xml:space="preserve">
     <value>Wo der Hubschrauber zu Beginn abgestürzt ist</value>
   </data>
@@ -1711,9 +1705,6 @@ Nein behält sie, damit du zuerst speichern kannst</value>
   </data>
   <data name="ToolsPlayer" xml:space="preserve">
     <value>Spieler</value>
-  </data>
-  <data name="NeedsSave" xml:space="preserve">
-    <value>Zu Speichern</value>
   </data>
   <data name="SavesAtOnce" xml:space="preserve">
     <value>Speichert Sofort</value>
@@ -2163,5 +2154,14 @@ Nein lässt den Editor offen, damit du zuerst speichern kannst</value>
   </data>
   <data name="RestoreBackupOf" xml:space="preserve">
     <value>Backup Wiederherstellen: {0}</value>
+  </data>
+  <data name="TimeOfDay" xml:space="preserve">
+    <value>Tageszeit</value>
+  </data>
+  <data name="EmptySlot" xml:space="preserve">
+    <value>Leer</value>
+  </data>
+  <data name="ScrollToTop" xml:space="preserve">
+    <value>Nach Oben</value>
   </data>
 </root>

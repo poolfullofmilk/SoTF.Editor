@@ -12,15 +12,13 @@ public static class ConfirmDialog
     )
     {
         // A Close Button Would Read As A Third Answer
-        var confirmed = await dialogService.ShowMessageBoxAsync(
+        var dialog = await dialogService.ShowAsync<YesNoDialog>(
             title,
-            message,
-            AppText.Get("Yes"),
-            AppText.Get("No"),
-            options: new DialogOptions { CloseButton = false }
+            new DialogParameters<YesNoDialog> { { yesNoDialog => yesNoDialog.Message, message } },
+            new DialogOptions { CloseButton = false, MaxWidth = MaxWidth.ExtraSmall }
         );
 
-        return confirmed == true;
+        return await dialog.Result is { Canceled: false };
     }
 
     public static async Task<bool> ConfirmDiscardAsync(

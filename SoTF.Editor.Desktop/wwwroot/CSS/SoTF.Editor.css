@@ -52,7 +52,16 @@
     --row-hover-amount: 12%;
     --row-hover: color-mix(in srgb, var(--mud-palette-black) var(--row-hover-amount), transparent);
     --row-selected: color-mix(in srgb, var(--mud-palette-black) 18%, transparent);
-    --thumb-size: 32px;
+    --thumb-size: 36px;
+    --popover-opacity: 92%;
+    --inset-fill: color-mix(in srgb, var(--mud-palette-black) 22%, transparent);
+    --tonal-info: color-mix(in srgb, var(--mud-palette-info) 20%, transparent);
+    --tonal-info-hover: color-mix(in srgb, var(--mud-palette-info) 30%, transparent);
+    --tonal-info-text: color-mix(in srgb, var(--mud-palette-info) 40%, var(--mud-palette-white));
+    --tooltip-surface: color-mix(in srgb, var(--mud-palette-white) 9%, var(--mud-palette-surface));
+    --scrollbar-thumb: color-mix(in srgb, var(--mud-palette-white) 18%, transparent);
+    --scrollbar-thumb-hover: color-mix(in srgb, var(--mud-palette-white) 32%, transparent);
+    --quick: 120ms ease-out;
 }
 
 /* A 1080p Screen At 125 Or 150 Percent Gets A Slimmer Frame */
@@ -63,11 +72,37 @@
     }
 }
 
-/* App Bar Glass On Menus, Selects And Dropdowns */
+/* Menus, Selects And Dropdowns Frost Nearly Opaque, Text Behind Never Shows */
 .mud-popover.mud-paper {
-    background-color: color-mix(in srgb, var(--mud-palette-surface) var(--glass-opacity), transparent);
+    background-color: color-mix(in srgb, var(--mud-palette-surface) var(--popover-opacity), transparent);
     backdrop-filter: var(--glass-blur);
 }
+
+/* Thin Scrollbars With No Arrows, Like The Rest Of Windows */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+::-webkit-scrollbar-button {
+    display: none;
+}
+
+::-webkit-scrollbar-thumb {
+    border: 3px solid transparent;
+    border-radius: 10px;
+    background-clip: padding-box;
+    background-color: var(--scrollbar-thumb);
+}
+
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: var(--scrollbar-thumb-hover);
+    }
 
 /* Dialogs Blur The Page Behind Them */
 .mud-overlay-scrim.mud-overlay-dark {
@@ -123,6 +158,20 @@
     object-fit: contain;
     flex-shrink: 0;
 }
+
+    /* Pictures Sit On A Tile Like The Map's, Icons Bring Their Own */
+    .thumb[src$=".png"]:not(.thumb-round),
+    .thumb-empty {
+        box-sizing: border-box;
+        padding: 4px;
+        border-radius: var(--map-tile-radius) !important;
+        background-color: var(--inset-fill);
+    }
+
+    /* An Empty Slot Is A Dashed Tile */
+    .thumb-empty {
+        border: 2px dashed var(--mud-palette-lines-default);
+    }
 
 /* Page Gutters, Top Clears The App Bar */
 .page-gutter {
@@ -302,6 +351,9 @@ body:has(.menus-hidden) .nav-panel {
 
 mark {
     padding: 0 !important;
+    border-radius: 3px;
+    background-color: var(--tonal-info-hover);
+    color: inherit;
 }
 
 /* Each Change In The Save Summary Leads With Its Mark */
@@ -494,9 +546,25 @@ html, body {
     user-select: text;
 }
 
-/* Long Tooltips Wrap, Each Line Centred */
-.mud-tooltip {
-    max-width: 360px;
+/* Tooltips Rise On A Lighter Surface, Long Ones Wrap, Each Line Centred */
+.mud-tooltip.mud-tooltip-default {
+    max-width: 320px !important;
+    padding: 6px 10px;
+    border-radius: var(--radius-inner);
+    background-color: var(--tooltip-surface);
+    color: var(--mud-palette-text-primary);
+    box-shadow: var(--mud-elevation-4);
+    font-size: 13px;
+    font-weight: 400;
+}
+
+    .mud-tooltip.mud-tooltip-default.mud-tooltip-arrow::after {
+        border-color: var(--tooltip-surface) transparent transparent transparent;
+    }
+
+/* A Button's Tooltip Steps Aside While Its Menu Is Open */
+.mud-popover-provider:has(.mud-popover-open .mud-menu-list) .mud-tooltip {
+    visibility: hidden;
 }
 
 /* Blazor Shows This Only After A Crash */
@@ -529,8 +597,13 @@ html, body {
     border-radius: var(--radius-panel) !important;
 }
 
+    /* Actions Line Up With The Content's Edges */
+    .mud-dialog .mud-dialog-actions {
+        padding: 8px 24px 20px;
+    }
+
 /* A Question Keeps Its Line Breaks, Yes And No Each On Their Own Line */
-.mud-message-box .mud-dialog-content {
+.pre-line {
     white-space: pre-line;
 }
 
@@ -539,12 +612,92 @@ html, body {
     box-shadow: var(--mud-elevation-1);
 }
 
+/* No Material Ripple, Buttons Fade Their Colour Instead */
+.mud-ripple-effect {
+    display: none !important;
+}
+
+.mud-button-root {
+    transition: background-color var(--quick), color var(--quick), opacity var(--quick);
+}
+
 /* Filled Buttons Take The Theme Shadow Instead Of Material's Own */
 .mud-button-filled,
 .mud-button-filled:hover,
 .mud-button-filled:focus-visible,
 .mud-button-filled:active {
     box-shadow: var(--mud-elevation-1);
+}
+
+/* Picks And Page Actions Are Tonal, Save And A Dialog's Action Stay Solid */
+:is(.mud-button-group-root, .mud-main-content) .mud-button-filled.mud-button-filled-info:not(:disabled, .mud-disabled) {
+    background-color: var(--tonal-info);
+    color: var(--tonal-info-text);
+    box-shadow: none;
+}
+
+    :is(.mud-button-group-root, .mud-main-content) .mud-button-filled.mud-button-filled-info:not(:disabled, .mud-disabled):is(:hover, :focus-visible, :active) {
+        background-color: var(--tonal-info-hover);
+    }
+
+/* A Picked Chip Is Tonal Like A Picked Button */
+.mud-chip.mud-chip-selected.mud-chip-color-info {
+    background-color: var(--tonal-info);
+    color: var(--tonal-info-text);
+    box-shadow: none;
+}
+
+/* A Row's Delete Stays Grey Until It Is Aimed At */
+.danger-hover:not(:disabled):is(:hover, :focus-visible) {
+    color: var(--mud-palette-error) !important;
+}
+
+/* Row Actions Show On Hover Or Focus, Always On Touch, A Cell Keeps Its Line */
+:is(.hover-action:not(td), td.hover-action > *) {
+    transition: opacity var(--quick);
+}
+
+@media (hover: hover) {
+    :is(.hover-host, .mud-table-row):not(:hover, :focus-within) :is(.hover-action:not(td), td.hover-action > *) {
+        opacity: 0;
+    }
+}
+
+/* Fields Sit Inset, Their Edge Shows On Hover And Turns Blue On Focus */
+.mud-input.mud-input-outlined {
+    border-radius: var(--mud-default-borderradius);
+    background-color: var(--inset-fill);
+}
+
+    .mud-input.mud-input-outlined .mud-input-outlined-border,
+    .mud-input.mud-input-outlined.mud-disabled .mud-input-outlined-border {
+        border-color: transparent;
+    }
+
+    .mud-input.mud-input-outlined:focus-within .mud-input-outlined-border {
+        border-color: var(--mud-palette-info);
+    }
+
+.mud-input-control:focus-within .mud-input-label {
+    color: var(--mud-palette-info);
+}
+
+/* The Navigation Marks Its Page Tonal And Darkens On Hover */
+.mud-navmenu.mud-navmenu-info .mud-nav-link.active:not(.mud-nav-link-disabled) {
+    background-color: var(--tonal-info);
+    color: var(--tonal-info-text);
+}
+
+    .mud-navmenu.mud-navmenu-info .mud-nav-link.active:not(.mud-nav-link-disabled) .mud-nav-link-icon {
+        color: var(--tonal-info-text);
+    }
+
+.mud-navmenu .mud-nav-link:not(.active):hover {
+    background-color: var(--row-hover);
+}
+
+.mud-nav-link .mud-nav-link-text {
+    font-weight: 500;
 }
 
     /* Ripple Reaches Over The Transparent Border, So No Rim */
@@ -569,12 +722,13 @@ html, body {
     border-bottom: none;
 }
 
-/* Group Titles Stand Apart From Their Rows */
+/* Group Titles Stay On Top Of Their Rows While They Scroll */
 .group-title {
-    text-decoration: underline;
-    text-decoration-color: var(--mud-palette-info);
-    text-decoration-thickness: 2px;
-    text-underline-offset: 5px;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: var(--mud-palette-surface);
+    color: var(--mud-palette-text-secondary);
 }
 
 /* A Number At Its Limit Greys Out That Spin Button */
@@ -588,21 +742,28 @@ html, body {
         pointer-events: none;
     }
 
-/* A Real Size Thumb, A Scaled 2 Px One Rasterizes Lopsided At 125% */
-.mud-slider.mud-slider-small .mud-slider-input::-webkit-slider-thumb {
-    width: 12px;
-    height: 12px;
-    margin-top: -5px;
+/* A Real Size Thumb, A Scaled 4 Px One Rasterizes Lopsided At 125% */
+.mud-slider.mud-slider-medium .mud-slider-input::-webkit-slider-thumb {
+    width: 16px;
+    height: 16px;
+    margin-top: -6px;
     transform: none;
+}
+
+/* Tracks And Bars Run Rounded, The Filled Part Too */
+.mud-slider .mud-slider-filled,
+.mud-progress-linear {
+    border-radius: 4px;
 }
 
 .mud-slider.mud-slider-info .mud-slider-input:is(:active, :focus-visible)::-webkit-slider-thumb {
     box-shadow: 0 0 0 8px rgba(var(--mud-palette-info-rgb), 0.24);
 }
 
-/* Tabs */
-.mud-tabs .mud-tab-active {
+/* Tabs, The Open One Reads Brightest */
+.mud-tabs .mud-tab.mud-tab-active {
     background-color: color-mix(in srgb, var(--mud-palette-background) 38%, transparent);
+    color: var(--mud-palette-text-primary);
 }
 
 /* Tab Names Are Title Case Like Every Label */
@@ -650,13 +811,15 @@ html, body {
     background: var(--row-selected) !important;
 }
 
-/* Cards Darken As One Surface And Never Move */
+/* Cards Darken As One Surface In A Faint Blue Ring And Never Move */
 .hover-card {
     cursor: pointer;
+    transition: background-color var(--quick), box-shadow var(--quick);
 }
 
     .hover-card:hover {
         background-color: color-mix(in srgb, var(--mud-palette-black) var(--row-hover-amount), var(--mud-palette-surface));
+        box-shadow: 0 0 0 2px var(--tonal-info-hover), var(--mud-elevation-4);
     }
 
 /* A Tool The Open Savegame Cannot Use Stays Grey */
@@ -686,6 +849,55 @@ html, body {
     flex-shrink: 0;
     align-self: flex-start;
 }
+
+/* Backups Read As A Timeline, A Dot Each On One Line */
+.timeline-row {
+    position: relative;
+}
+
+    .timeline-row::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 25px;
+        width: 2px;
+        background-color: var(--mud-palette-lines-default);
+    }
+
+    .timeline-row:first-child::before {
+        top: 50%;
+    }
+
+    .timeline-row:last-child::before {
+        bottom: 50%;
+    }
+
+.timeline-dot {
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    width: 12px;
+    height: 12px;
+    margin: 0 4px;
+    border: 2px solid var(--mud-palette-text-secondary);
+    border-radius: 50%;
+    background-color: var(--mud-palette-background);
+}
+
+.list-row-selected .timeline-dot {
+    border-color: var(--mud-palette-info);
+    background-color: var(--mud-palette-info);
+}
+
+/* Small Pictures In Menus And Choices */
+.thumb.thumb-small {
+    --thumb-size: 24px;
+}
+
+    .thumb.thumb-small[src$=".png"] {
+        padding: 2px;
+    }
 /* #endregion */
 
 /* #region Map */

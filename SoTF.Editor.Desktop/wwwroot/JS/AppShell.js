@@ -31,14 +31,14 @@ document.addEventListener("keydown", (event) => {
         });
     };
 
-    // Keyboard Clicks Have No Position, Click Again Below The Button
+    // Every Click Opens The Menu Below The Button, Never Over It
     document.addEventListener(
         "click",
         (event) => {
             const button = event.target instanceof Element ? event.target.closest("[data-menu-at]") : null;
             if (!button) return;
             opener = button;
-            if (event.isTrusted && event.detail === 0) {
+            if (event.isTrusted) {
                 event.stopImmediatePropagation();
                 event.preventDefault();
                 const rect = button.getBoundingClientRect();
@@ -73,6 +73,21 @@ document.addEventListener("keydown", (event) => {
         true
     );
 })();
+
+// Escape Closes An Open Menu First, Focus Goes Back To Its Button
+window.addEventListener(
+    "keydown",
+    (event) => {
+        if (event.key !== "Escape") return;
+        const activator = document.querySelector('.mud-menu :is(button, .mud-menu-activator)[aria-expanded="true"]');
+        if (!activator) return;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        activator.click();
+        activator.focus?.();
+    },
+    true
+);
 
 // An Info Icon Inside A Switch Label Never Toggles The Switch
 document.addEventListener("click", (event) => {

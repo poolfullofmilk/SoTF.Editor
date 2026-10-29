@@ -3,7 +3,10 @@
          RootClass="d-flex">
     <MudMenu Icon="@Icons.Material.Rounded.Public"
              AriaLabel="@AppText.Get("Language")"
-             Size="Size.Small">
+             Size="Size.Small"
+             Dense
+             AnchorOrigin="Origin.BottomLeft"
+             TransformOrigin="Origin.TopLeft">
         @foreach (var (culture, name) in AppText.Languages)
         {
             @* Language *@

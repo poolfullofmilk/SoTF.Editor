@@ -100,6 +100,37 @@
                         </MudStack>
                     </MudPaper>
 
+                    @* Teleport Section *@
+                    <MudPaper Elevation="0"
+                              Class="inset rounded-panel pa-4">
+                        <MudStack Spacing="2">
+                            <MudText Typo="Typo.subtitle2">@AppText.Get("Teleport")</MudText>
+                            @* Teleport Buttons *@
+                            <MudButtonGroup Variant="Variant.Filled"
+                                            Size="Size.Small"
+                                            OverrideStyles="false"
+                                            Class="align-self-start">
+                                @foreach (var teleport in s_teleports)
+                                {
+                                    @* Teleport Button *@
+                                    <MudButton Variant="Variant.Filled"
+                                               Color="@(_viewModel.ModifyOptions.TeleportMode == teleport.Mode ? Color.Info : Color.Default)"
+                                               Size="Size.Small"
+                                               OnClick="() => _viewModel.ModifyOptions.TeleportMode = teleport.Mode">
+                                        @AppText.Get(teleport.LabelKey)
+                                    </MudButton>
+                                }
+                            </MudButtonGroup>
+                            @if (_viewModel.ModifyOptions.TeleportMode == "NpcToPlayer" && MatchCount > 1)
+                            {
+                                <MudText Typo="Typo.caption"
+                                         Color="Color.Warning">
+                                    @AppText.Get("TeleportManyWarning")
+                                </MudText>
+                            }
+                        </MudStack>
+                    </MudPaper>
+
                 </MudStack>
             </MudItem>
 
@@ -157,37 +188,6 @@
                                     @AppText.Get("RemoveSpawner")
                                     <InfoIcon Text="@AppText.Get("RemoveSpawnerTooltip")" />
                                 </MudSwitch>
-                            }
-                        </MudStack>
-                    </MudPaper>
-
-                    @* Teleport Section *@
-                    <MudPaper Elevation="0"
-                              Class="inset rounded-panel pa-4">
-                        <MudStack Spacing="2">
-                            <MudText Typo="Typo.subtitle2">@AppText.Get("Teleport")</MudText>
-                            @* Teleport Buttons *@
-                            <MudButtonGroup Variant="Variant.Filled"
-                                            Size="Size.Small"
-                                            OverrideStyles="false"
-                                            Class="align-self-start">
-                                @foreach (var teleport in s_teleports)
-                                {
-                                    @* Teleport Button *@
-                                    <MudButton Variant="Variant.Filled"
-                                               Color="@(_viewModel.ModifyOptions.TeleportMode == teleport.Mode ? Color.Info : Color.Default)"
-                                               Size="Size.Small"
-                                               OnClick="() => _viewModel.ModifyOptions.TeleportMode = teleport.Mode">
-                                        @AppText.Get(teleport.LabelKey)
-                                    </MudButton>
-                                }
-                            </MudButtonGroup>
-                            @if (_viewModel.ModifyOptions.TeleportMode == "NpcToPlayer" && MatchCount > 1)
-                            {
-                                <MudText Typo="Typo.caption"
-                                         Color="Color.Warning">
-                                    @AppText.Get("TeleportManyWarning")
-                                </MudText>
                             }
                         </MudStack>
                     </MudPaper>

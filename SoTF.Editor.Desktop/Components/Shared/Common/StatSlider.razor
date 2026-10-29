@@ -26,8 +26,10 @@
                            Min="Min"
                            Max="Max"
                            Color="Color.Info"
+                           Size="Size.Medium"
                            Rounded
-                           Class="flex-grow-1" />
+                           Class="flex-grow-1"
+                           Style="@StatColors.StyleOf(Tint)" />
     }
     else
     {
@@ -39,8 +41,11 @@
                    Max="Max"
                    Step="Step"
                    Color="Color.Info"
+                   Size="Size.Medium"
+                   Variant="Variant.Filled"
                    Immediate
-                   Class="flex-grow-1" />
+                   Class="flex-grow-1"
+                   Style="@StatColors.StyleOf(Tint)" />
     }
     @* Value Field *@
     <ChangedBadge When="Changed"

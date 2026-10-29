@@ -11,21 +11,24 @@
                 <MudButton Variant="Variant.Text"
                            Size="Size.Small"
                            Disabled="@(!InventoryPage.HasUnassignedItems())"
-                           OnClick="AddAllAsync">
+                           OnClick="AddAllAsync"
+                           StartIcon="@Icons.Material.Rounded.PlaylistAdd">
                     @AppText.Get("AddAll")
                 </MudButton>
                 @* Set All Min *@
                 <MudButton Variant="Variant.Text"
                            Size="Size.Small"
                            Disabled="@(!InventoryPage.CanSetAllToMin())"
-                           OnClick="InventoryPage.SetAllEquippedToMin">
+                           OnClick="InventoryPage.SetAllEquippedToMin"
+                           StartIcon="@Icons.Material.Rounded.KeyboardDoubleArrowDown">
                     @AppText.Get("SetAllToMin")
                 </MudButton>
                 @* Set All Max *@
                 <MudButton Variant="Variant.Text"
                            Size="Size.Small"
                            Disabled="@(!InventoryPage.CanSetAllToMax())"
-                           OnClick="InventoryPage.SetAllEquippedToMax">
+                           OnClick="InventoryPage.SetAllEquippedToMax"
+                           StartIcon="@Icons.Material.Rounded.KeyboardDoubleArrowUp">
                     @AppText.Get("SetAllToMax")
                 </MudButton>
                 @* Remove All *@
@@ -33,7 +36,8 @@
                            Color="Color.Error"
                            Size="Size.Small"
                            Disabled="@(!InventoryPage.HasInventoryItems())"
-                           OnClick="RemoveAllAsync">
+                           OnClick="RemoveAllAsync"
+                           StartIcon="@Icons.Material.Rounded.DeleteSweep">
                     @AppText.Get("RemoveAll")
                 </MudButton>
             </TitleContent>
@@ -109,10 +113,12 @@
                                                      Max="context.Max"
                                                      Disabled="context.IsEquipped"
                                                      Margin="Margin.Dense"
+                                                     HideSpinButtons
                                                      Style="width:110px" />
                                     </ChangedBadge>
                                 </MudTd>
-                                <MudTd Style="text-align:right">
+                                <MudTd Class="hover-action"
+                                       Style="text-align:right">
                                     @* Max Button *@
                                     <MaxButton Max="context.Max"
                                                Disabled="@(context.IsEquipped || context.TotalCount >= context.Max)"
@@ -121,8 +127,8 @@
                                     <MudIconButton Icon="@Icons.Material.Rounded.Delete"
                                                    aria-label="@AppText.Get("Remove")"
                                                    title="@AppText.Get("Remove")"
-                                                   Color="Color.Error"
                                                    Size="Size.Small"
+                                                   Class="danger-hover"
                                                    OnClick="() => InventoryPage.RemoveItemFromInventory(context)" />
                                 </MudTd>
                             }

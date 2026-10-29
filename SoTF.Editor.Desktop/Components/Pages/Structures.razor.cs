@@ -29,7 +29,9 @@ public partial class Structures : EditorPageBase
     // Page State
     private string? _filter;
     private string? _selectedName;
-    private bool _showAll;
+
+    // All Structures Shows Until A Type Is Picked
+    private bool _showAll = true;
 
     // One Menu For Every Row, Row Selects Leaked Popovers
     private MudMenu? _modeMenu;

@@ -5,38 +5,26 @@
     </TitleContent>
     <DialogContent>
         <MudStack Spacing="2">
-            <MudStack Row
-                      AlignItems="AlignItems.Center">
-                @* All States *@
-                <MudCheckBox T="bool"
-                             Value="_viewModel.VegetationStateIsAllSelected"
-                             ValueChanged="value => _viewModel.VegetationStateIsAllSelected = value"
-                             Color="Color.Info"
-                             Label="@AppText.Get("All")" />
-                <MudSpacer />
-                <MudText Typo="Typo.body2"
-                         Class="mud-text-secondary">
-                    @_viewModel.AllCount
-                </MudText>
-            </MudStack>
-            @foreach (var state in RegrowTreesViewModel.States)
-            {
-                <MudStack Row
-                          AlignItems="AlignItems.Center"
-                          Class="ml-6">
-                    @* State *@
-                    <MudCheckBox T="bool"
-                                 Value="_viewModel.VegetationStateSelected.HasFlag(state)"
-                                 ValueChanged="value => Toggle(state, value)"
-                                 Color="Color.Info"
-                                 Label="@RegrowTreesViewModel.Label(state)" />
-                    <MudSpacer />
-                    <MudText Typo="Typo.body2"
-                             Class="mud-text-secondary">
-                        @_viewModel.CountOf(state)
-                    </MudText>
-                </MudStack>
-            }
+            @* State Chips *@
+            <MudChipSet T="string"
+                        SelectionMode="SelectionMode.MultiSelection"
+                        CheckMark
+                        Variant="Variant.Text"
+                        SelectedColor="Color.Info">
+                @foreach (var state in RegrowTreesViewModel.States)
+                {
+                    <MudChip T="string"
+                             Value="@state.ToString()"
+                             Selected="_viewModel.VegetationStateSelected.HasFlag(state)"
+                             SelectedChanged="value => Toggle(state, value)">
+                        @RegrowTreesViewModel.Label(state)
+                        <MudElement HtmlTag="span"
+                                    Class="mud-text-secondary ml-2">
+                            @_viewModel.CountOf(state)
+                        </MudElement>
+                    </MudChip>
+                }
+            </MudChipSet>
             @* Percent *@
             <MudSlider T="int"
                        @bind-Value="_viewModel.PctRegrow"

@@ -33,4 +33,7 @@ public partial class StatSlider
 
     [Parameter]
     public bool Changed { get; set; }
+
+    [Parameter]
+    public string? Tint { get; set; }
 }

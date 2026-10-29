@@ -1014,9 +1014,6 @@
   <data name="UnableToSpawnFollowers" xml:space="preserve">
     <value>Impossible de faire apparaître les compagnons</value>
   </data>
-  <data name="Key" xml:space="preserve">
-    <value>Clé</value>
-  </data>
   <data name="Gone" xml:space="preserve">
     <value>Disparus</value>
   </data>
@@ -1667,9 +1664,6 @@ Non les garde pour que vous puissiez enregistrer d'abord</value>
   <data name="SettingGameDaysInfo" xml:space="preserve">
     <value>Jours survécus. La saison en découle</value>
   </data>
-  <data name="SettingGameHoursInfo" xml:space="preserve">
-    <value>L'heure du jour actuel</value>
-  </data>
   <data name="SettingCrashSiteInfo" xml:space="preserve">
     <value>Où l'hélicoptère s'est écrasé au début</value>
   </data>
@@ -1711,9 +1705,6 @@ Non les garde pour que vous puissiez enregistrer d'abord</value>
   </data>
   <data name="ToolsPlayer" xml:space="preserve">
     <value>Joueur</value>
-  </data>
-  <data name="NeedsSave" xml:space="preserve">
-    <value>À Enregistrer</value>
   </data>
   <data name="SavesAtOnce" xml:space="preserve">
     <value>Écrit Aussitôt</value>
@@ -2163,5 +2154,14 @@ Non garde l'éditeur ouvert pour que vous puissiez enregistrer d'abord</value>
   </data>
   <data name="RestoreBackupOf" xml:space="preserve">
     <value>Restaurer une Copie de Secours : {0}</value>
+  </data>
+  <data name="TimeOfDay" xml:space="preserve">
+    <value>Heure du Jour</value>
+  </data>
+  <data name="EmptySlot" xml:space="preserve">
+    <value>Vide</value>
+  </data>
+  <data name="ScrollToTop" xml:space="preserve">
+    <value>Haut de Page</value>
   </data>
 </root>

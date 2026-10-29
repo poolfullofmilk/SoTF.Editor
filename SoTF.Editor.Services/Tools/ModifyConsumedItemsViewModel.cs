@@ -77,5 +77,7 @@ public class ModifyConsumedItemsViewModel
         public string Key { get; } = key;
 
         public string Name => item?.Name ?? Key;
+
+        public string? ImageUrl => item?.ImageUrl;
     }
 }

@@ -117,6 +117,9 @@ public partial class App : Application
             configuration.SnackbarConfiguration.HideTransitionDuration = 250;
         });
 
+        // Tooltips Wait A Moment Before Showing
+        MudGlobal.TooltipDefaults.Delay = TimeSpan.FromMilliseconds(300);
+
         services.AddSingleton(gameData);
         foreach (var type in EditorServices.Singletons)
         {

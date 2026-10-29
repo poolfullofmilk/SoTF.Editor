@@ -9,6 +9,9 @@ public static class Formatter
     private const string DisplayDateTimeFormat = "dd-MM-yyyy HH:mm";
     private const string DisplayDateTimeSecondsFormat = "dd-MM-yyyy HH:mm:ss";
 
+    // Keeps An Axis Letter With Its Number
+    private const char NoBreakSpace = '\u00A0';
+
     public static string FormatDateTime(DateTime value)
     {
         return value.ToString(DisplayDateTimeFormat, CultureInfo.InvariantCulture);
@@ -22,8 +25,12 @@ public static class Formatter
 
     public static string FormatPosition(float x, float? y, float z)
     {
-        // Dots Between Axes, So A Decimal Comma Never Blurs Them
-        return JoinParts($"X {x:F2}", y is { } height ? $"Y {height:F2}" : null, $"Z {z:F2}");
+        // Dots Between Axes, A Line Only Breaks Between Them
+        return JoinParts(
+            $"X{NoBreakSpace}{x:F2}",
+            y is { } height ? $"Y{NoBreakSpace}{height:F2}" : null,
+            $"Z{NoBreakSpace}{z:F2}"
+        );
     }
 
     public static string FormatSize(long bytes)

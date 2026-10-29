@@ -111,6 +111,7 @@
 
                     @* Health *@
                     <StatSlider Label="@AppText.Get("Health")"
+                                Tint="@StatColors.Health"
                                 Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Health))"
                                 @bind-Value="Follower.Health" />
                     @* Anger *@
@@ -123,18 +124,22 @@
                                 @bind-Value="Follower.Fear" />
                     @* Fullness *@
                     <StatSlider Label="@AppText.Get("Fullness")"
+                                Tint="@StatColors.Fullness"
                                 Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Fullness))"
                                 @bind-Value="Follower.Fullness" />
                     @* Hydration *@
                     <StatSlider Label="@AppText.Get("Hydration")"
+                                Tint="@StatColors.Hydration"
                                 Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Hydration))"
                                 @bind-Value="Follower.Hydration" />
                     @* Energy *@
                     <StatSlider Label="@AppText.Get("Energy")"
+                                Tint="@StatColors.Stamina"
                                 Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Energy))"
                                 @bind-Value="Follower.Energy" />
                     @* Affection *@
                     <StatSlider Label="@AppText.Get("Affection")"
+                                Tint="@StatColors.Affection"
                                 Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Affection))"
                                 @bind-Value="Follower.Affection" />
 
@@ -145,7 +150,8 @@
                                    Variant="Variant.Outlined"
                                    @bind-Value="Follower.Outfit"
                                    Label="@AppText.Get("Outfit")"
-                                   ToStringFunc="outfit => outfit?.Name ?? string.Empty">
+                                   ToStringFunc="outfit => outfit?.Name ?? string.Empty"
+                                   Dense>
                             @foreach (var outfit in Follower.Outfits.OrderBy(outfit => outfit.Name))
                             {
                                 <MudSelectItem Value="outfit">@outfit.Name</MudSelectItem>
@@ -157,21 +163,22 @@
                              Class="mt-2">
                         @AppText.Get("Equipment")
                     </MudText>
-                    <MudStack Row
-                              Wrap="Wrap.Wrap"
-                              Spacing="0">
+                    @* Equipment Chips *@
+                    <MudChipSet T="string"
+                                SelectionMode="SelectionMode.MultiSelection"
+                                CheckMark
+                                Variant="Variant.Text"
+                                SelectedColor="Color.Info">
                         @foreach (var equippableItem in Follower.Inventory.OrderBy(item => item.Name))
                         {
-                            @* Equipment *@
-                            <MudCheckBox T="bool"
-                                         @bind-Value="equippableItem.Selected"
-                                         Color="Color.Info"
-                                         Dense>
+                            <MudChip T="string"
+                                     Value="@equippableItem.Name"
+                                     @bind-Selected="equippableItem.Selected">
                                 @equippableItem.Name
                                 <ChangedDot When="@FollowerPage.IsChanged(Follower, equippableItem)" />
-                            </MudCheckBox>
+                            </MudChip>
                         }
-                    </MudStack>
+                    </MudChipSet>
                 </MudStack>
             </MudPaper>
         </ChildContent>

@@ -24,8 +24,9 @@ public static class AppTheme
     private const string PageBackground = "#202020";
     private const string RaisedSurface = "#2a2a2a";
 
-    // One Accent Blue For Secondary And Info
+    // One Accent Blue For Secondary And Info, Darker On Hover
     private const string AccentBlue = "#3d8bfd";
+    private const string AccentBlueDarken = "#2b74e0";
 
     // Shared White Overlay Steps
     private const string TextStrong = "rgba(255,255,255, 0.85)";
@@ -53,6 +54,7 @@ public static class AppTheme
 
             // Status Colors
             Info = AccentBlue,
+            InfoDarken = AccentBlueDarken,
             Warning = "#f5b544",
 
             // UI Elements
@@ -78,7 +80,7 @@ public static class AppTheme
             // Form Elements
             PrimaryDarken = Colors.Gray.Darken2,
             PrimaryLighten = Colors.Gray.Lighten4,
-            SecondaryDarken = Colors.Gray.Darken1,
+            SecondaryDarken = AccentBlueDarken,
             SecondaryLighten = Colors.Shades.White,
             TertiaryDarken = Colors.Gray.Darken3,
             TertiaryLighten = Colors.Gray.Lighten2,
@@ -87,7 +89,7 @@ public static class AppTheme
             Divider = LineStrong,
             DividerLight = LineFaint,
             LinesDefault = LineStrong,
-            LinesInputs = TextFaint,
+            LinesInputs = LineStrong,
 
             // Focus States
             Dark = RaisedSurface,
@@ -97,7 +99,7 @@ public static class AppTheme
             // Tables
             TableLines = LineStrong,
             TableStriped = "rgba(255,255,255, 0.05)",
-            TableHover = LineFaint,
+            TableHover = "rgba(0,0,0, 0.12)",
 
             // System
             OverlayDark = "rgba(0, 0, 0, 0.5)",

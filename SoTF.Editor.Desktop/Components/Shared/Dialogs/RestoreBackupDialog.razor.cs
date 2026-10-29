@@ -106,16 +106,12 @@ public partial class RestoreBackupDialog
     {
         var picked = IsPicked(backup) ? " list-row-selected" : "";
         var locked = _deleting && backup == Backups[0] ? " not-held" : "";
-        return "list-row px-4 py-2" + picked + locked;
+        var timeline = _deleting ? "" : " timeline-row";
+        return "list-row px-4 py-2" + picked + locked + timeline;
     }
 
     private string RowIcon(SavegameBackup backup)
     {
-        if (!_deleting)
-        {
-            return Icons.Material.Rounded.History;
-        }
-
         if (backup == Backups[0])
         {
             return Icons.Material.Rounded.Lock;

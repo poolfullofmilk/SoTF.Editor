@@ -33,7 +33,10 @@
             @foreach (var detail in Details)
             {
                 <tr>
-                    <td class="mud-text-secondary">@detail.Label</td>
+                    <td class="mud-text-secondary mud-typography-nowrap"
+                        style="width:1%">
+                        @detail.Label
+                    </td>
                     <td>
                         <MudStack Row
                                   AlignItems="AlignItems.Center"

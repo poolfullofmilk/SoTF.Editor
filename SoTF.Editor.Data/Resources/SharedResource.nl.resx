@@ -1014,9 +1014,6 @@
   <data name="UnableToSpawnFollowers" xml:space="preserve">
     <value>Kan volgers niet spawnen</value>
   </data>
-  <data name="Key" xml:space="preserve">
-    <value>Sleutel</value>
-  </data>
   <data name="Gone" xml:space="preserve">
     <value>Verdwenen</value>
   </data>
@@ -1667,9 +1664,6 @@ Nee houdt ze zodat je eerst kunt opslaan</value>
   <data name="SettingGameDaysInfo" xml:space="preserve">
     <value>Overleefde dagen. Het seizoen volgt eruit</value>
   </data>
-  <data name="SettingGameHoursInfo" xml:space="preserve">
-    <value>Het uur van de huidige dag</value>
-  </data>
   <data name="SettingCrashSiteInfo" xml:space="preserve">
     <value>Waar de helikopter bij de start neerstortte</value>
   </data>
@@ -1711,9 +1705,6 @@ Nee houdt ze zodat je eerst kunt opslaan</value>
   </data>
   <data name="ToolsPlayer" xml:space="preserve">
     <value>Speler</value>
-  </data>
-  <data name="NeedsSave" xml:space="preserve">
-    <value>Opslaan Nodig</value>
   </data>
   <data name="SavesAtOnce" xml:space="preserve">
     <value>Slaat Meteen Op</value>
@@ -2163,5 +2154,14 @@ Nee houdt de editor open zodat je eerst kunt opslaan</value>
   </data>
   <data name="RestoreBackupOf" xml:space="preserve">
     <value>Back-up Terugzetten: {0}</value>
+  </data>
+  <data name="TimeOfDay" xml:space="preserve">
+    <value>Tijd van de Dag</value>
+  </data>
+  <data name="EmptySlot" xml:space="preserve">
+    <value>Leeg</value>
+  </data>
+  <data name="ScrollToTop" xml:space="preserve">
+    <value>Naar Boven</value>
   </data>
 </root>

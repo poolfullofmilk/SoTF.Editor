@@ -102,7 +102,14 @@
                                 {
                                     <MudMenuItem Icon="@(item == _menuSlot?.SelectedItem ? Icons.Material.Rounded.Check : null)"
                                                  OnClick="() => PickSlotItem(item)">
-                                        @item.Name
+                                        <MudStack Row
+                                                  AlignItems="AlignItems.Center"
+                                                  Spacing="2">
+                                            <MudImage Src="@PictureOf(item)"
+                                                      Alt="@item.Name"
+                                                      Class="thumb thumb-small" />
+                                            @item.Name
+                                        </MudStack>
                                     </MudMenuItem>
                                 }
                             </ChildContent>
@@ -111,7 +118,8 @@
                         <MudButton Variant="Variant.Text"
                                    Size="Size.Small"
                                    Disabled="@(!StoragePageViewModel.CanSetAllToMax(selected))"
-                                   OnClick="() => StoragePageViewModel.SetAllToMax(selected)">
+                                   OnClick="() => StoragePageViewModel.SetAllToMax(selected)"
+                                   StartIcon="@Icons.Material.Rounded.KeyboardDoubleArrowUp">
                             @AppText.Get("SetAllToMax")
                         </MudButton>
                         @* Apply To Same Type *@
@@ -120,7 +128,8 @@
                             <MudButton Variant="Variant.Text"
                                        Size="Size.Small"
                                        Disabled="@(!StoragePage.HasSameTypeStorages(selected))"
-                                       OnClick="() => ApplyToSameTypeAsync(selected)">
+                                       OnClick="() => ApplyToSameTypeAsync(selected)"
+                                       StartIcon="@Icons.Material.Rounded.CopyAll">
                                 @AppText.Get("ApplyToSameType")
                             </MudButton>
                         </Tooltip>
@@ -129,7 +138,8 @@
                                    Color="Color.Error"
                                    Size="Size.Small"
                                    Disabled="@(!StoragePageViewModel.HasStoredItems(selected))"
-                                   OnClick="() => StoragePageViewModel.ClearAll(selected)">
+                                   OnClick="() => StoragePageViewModel.ClearAll(selected)"
+                                   StartIcon="@Icons.Material.Rounded.ClearAll">
                             @AppText.Get("ClearAll")
                         </MudButton>
                         <ShowOnMapButton Position="selected.Pos" />
@@ -152,10 +162,20 @@
                                                    ValueChanged="SelectFillItem"
                                                    Label="@AppText.Get("FillAllWith")"
                                                    ToStringFunc="item => item?.Name ?? string.Empty"
+                                                   Dense
                                                    Margin="Margin.Dense">
                                             @foreach (var item in selected.SupportedItems.OrderBy(item => item.Name))
                                             {
-                                                <MudSelectItem Value="item">@item.Name</MudSelectItem>
+                                                <MudSelectItem Value="item">
+                                                    <MudStack Row
+                                                              AlignItems="AlignItems.Center"
+                                                              Spacing="2">
+                                                        <MudImage Src="@PictureOf(item)"
+                                                                  Alt="@item.Name"
+                                                                  Class="thumb thumb-small" />
+                                                        @item.Name
+                                                    </MudStack>
+                                                </MudSelectItem>
                                             }
                                         </MudSelect>
                                     </MudElement>
@@ -186,17 +206,27 @@
                                 {
                                     <MudStack Row
                                               AlignItems="AlignItems.Center"
-                                              Spacing="3">
-                                        <MudImage Src="@(storedItem.SelectedItem?.Item.ImageUrl ?? "images/icons/question-mark.svg")"
-                                                  Alt="@storedItem.SelectedItem?.Name"
-                                                  Class="thumb rounded-thumb" />
+                                              Spacing="3"
+                                              Class="hover-host">
+                                        @if (storedItem.SelectedItem is { } slotItem)
+                                        {
+                                            <MudImage Src="@PictureOf(slotItem)"
+                                                      Alt="@slotItem.Name"
+                                                      Class="thumb rounded-thumb" />
+                                        }
+                                        else
+                                        {
+                                            <MudElement HtmlTag="span"
+                                                        Class="thumb thumb-empty" />
+                                        }
                                         @* Slot Item *@
                                         <MudButton Variant="Variant.Text"
                                                    Size="Size.Small"
                                                    EndIcon="@Icons.Material.Rounded.ArrowDropDown"
+                                                   Class="@(storedItem.HasItem() ? null : "mud-text-secondary")"
                                                    data-menu-at
                                                    OnClick="args => OpenSlotMenuAsync(args, storedItem)">
-                                            @(storedItem.SelectedItem?.Name ?? "-")
+                                            @(storedItem.SelectedItem?.Name ?? AppText.Get("EmptySlot"))
                                         </MudButton>
                                         <MudSpacer />
                                         @* Slot Count *@
@@ -207,18 +237,20 @@
                                                          Max="storedItem.Max"
                                                          Disabled="@(!storedItem.HasItem())"
                                                          Margin="Margin.Dense"
+                                                         HideSpinButtons
                                                          Style="width:110px" />
                                         </ChangedBadge>
                                         @* Slot Max *@
                                         <MaxButton Max="storedItem.Max"
                                                    Disabled="@(!storedItem.HasItem() || storedItem.Count >= storedItem.Max)"
+                                                   Class="hover-action"
                                                    OnClick="storedItem.SetToMax" />
                                         @* Slot Remove *@
                                         <MudIconButton Icon="@Icons.Material.Rounded.Delete"
                                                        aria-label="@AppText.Get("Remove")"
                                                        title="@(storedItem.HasItem() ? AppText.Get("Remove") : null)"
-                                                       Color="Color.Error"
                                                        Size="Size.Small"
+                                                       Class="hover-action danger-hover"
                                                        Disabled="@(!storedItem.HasItem())"
                                                        OnClick="storedItem.Clear" />
                                     </MudStack>

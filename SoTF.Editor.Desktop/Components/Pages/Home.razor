@@ -9,13 +9,17 @@
             <MudPaper Elevation="4"
                       Class="rounded-panel pa-4">
                 <MudStack Spacing="3">
-                    <MudTextField T="string"
-                                  Value="@SavegamePath"
-                                  Label="@AppText.Get("Location")"
-                                  ReadOnly
-                                  Disabled
-                                  Variant="Variant.Outlined"
-                                  Margin="Margin.Dense" />
+                    <MudStack Spacing="0">
+                        <MudText Typo="Typo.caption"
+                                 Class="mud-text-secondary">
+                            @AppText.Get("Location")
+                        </MudText>
+                        <MudText Typo="Typo.body2"
+                                 Class="selectable-text"
+                                 Style="word-break:break-all">
+                            @SavegamePath
+                        </MudText>
+                    </MudStack>
                     <MudStack Row
                               Wrap="Wrap.Wrap"
                               Justify="Justify.Center"
@@ -119,8 +123,8 @@
                                                      Color="Color.Default" />
                                         </MudElement>
                                     }
-                                    <MudStack Spacing="0"
-                                              Justify="Justify.SpaceBetween"
+                                    <MudStack Spacing="1"
+                                              Justify="Justify.Center"
                                               Class="main-panel">
                                         <MudStack Row
                                                   AlignItems="AlignItems.Center"
@@ -166,7 +170,7 @@
                                             </MudText>
                                             <MudSpacer />
                                             @* Card Buttons *@
-                                            <span class="d-flex align-center my-n1"
+                                            <span class="d-flex align-center my-n1 hover-action"
                                                   @onclick:stopPropagation="true">
                                                 @if (BackupCountOf(savegame) is > 0 and var backupCount)
                                                 {
@@ -197,6 +201,7 @@
                                                                    aria-label="@AppText.Get("Duplicate")"
                                                                    title="@AppText.Get("Duplicate")"
                                                                    Size="Size.Small"
+                                                                   data-menu-at
                                                                    OnClick="args => OpenDuplicateMenuAsync(args, savegame)" />
                                                 }
                                             </span>

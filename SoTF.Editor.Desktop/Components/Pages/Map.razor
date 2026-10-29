@@ -41,11 +41,13 @@
                             <MudMenu Icon="@Icons.Material.Rounded.FilterList"
                                      AriaLabel="@AppText.Get("Filters")"
                                      Size="Size.Small"
+                                     Dense
                                      AnchorOrigin="Origin.BottomRight"
                                      TransformOrigin="Origin.TopRight">
                                 @* Area Menu *@
                                 <MudMenu Label="@($"{AppText.Get("Area")}: {MapViewModel.MapFilter.AreaFilter.Name}")"
-                                         MaxHeight="400">
+                                         MaxHeight="400"
+                                         Dense>
                                     @foreach (var areaFilter in MapViewModel.MapFilter.AreaFilterTypeValues)
                                     {
                                         <MudMenuItem Icon="@CheckOf(areaFilter == MapViewModel.MapFilter.AreaFilter)"
@@ -55,7 +57,8 @@
                                     }
                                 </MudMenu>
                                 @* Requirements Menu *@
-                                <MudMenu Label="@($"{AppText.Get("Requirements")}: {RequirementsName(MapViewModel.MapFilter.RequirementsFilter)}")">
+                                <MudMenu Label="@($"{AppText.Get("Requirements")}: {RequirementsName(MapViewModel.MapFilter.RequirementsFilter)}")"
+                                         Dense>
                                     @foreach (var requirementsFilter in Enum.GetValues<MapFilter.RequirementsFilterType>())
                                     {
                                         <MudMenuItem Icon="@CheckOf(requirementsFilter == MapViewModel.MapFilter.RequirementsFilter)"
@@ -65,7 +68,8 @@
                                     }
                                 </MudMenu>
                                 @* Near Player Menu *@
-                                <MudMenu Label="@($"{AppText.Get("NearPlayer")}: {NearPlayerName(MapViewModel.MapFilter.NearPlayerMetres)}")">
+                                <MudMenu Label="@($"{AppText.Get("NearPlayer")}: {NearPlayerName(MapViewModel.MapFilter.NearPlayerMetres)}")"
+                                         Dense>
                                     @foreach (var metres in MapFilter.NearPlayerChoices)
                                     {
                                         <MudMenuItem Icon="@CheckOf(metres == MapViewModel.MapFilter.NearPlayerMetres)"

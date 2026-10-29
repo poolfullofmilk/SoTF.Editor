@@ -24,6 +24,19 @@ public partial class ConsumedItemsDialog
     public required IDialogService DialogService { get; set; }
 
     private ModifyConsumedItemsViewModel _viewModel = null!;
+    private HashSet<ModifyConsumedItemsViewModel.ConsumedItemWrapper> _selected = [];
+
+    // The Ticked Rows Are The Ones Removed
+    private void SelectionChanged(
+        HashSet<ModifyConsumedItemsViewModel.ConsumedItemWrapper> selected
+    )
+    {
+        _selected = selected;
+        foreach (var item in _viewModel.ConsumedItems)
+        {
+            item.Remove = selected.Contains(item);
+        }
+    }
 
     protected override void OnInitialized()
     {

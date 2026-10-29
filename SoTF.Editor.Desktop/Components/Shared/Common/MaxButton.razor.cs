@@ -12,4 +12,7 @@ public partial class MaxButton
 
     [Parameter]
     public EventCallback OnClick { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
 }

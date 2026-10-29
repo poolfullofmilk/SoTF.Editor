@@ -100,14 +100,15 @@ public partial class Tools : EditorPageBase
             + (MainViewModel.IsToolChanged(tool.TitleKey) ? " card-changed" : "");
     }
 
-    private string ChipKey(Tool tool)
+    // Only The Exceptions Wear A Chip
+    private string? ChipKey(Tool tool)
     {
         if (!IsAvailable(tool))
         {
             return "HostSaveOnly";
         }
 
-        return tool.SavesAtOnce ? "SavesAtOnce" : "NeedsSave";
+        return tool.SavesAtOnce ? "SavesAtOnce" : null;
     }
 
     private Color ChipColor(Tool tool)

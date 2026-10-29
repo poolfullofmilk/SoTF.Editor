@@ -18,6 +18,18 @@ public partial class Npcs : EditorPageBase
     private string? _selectedName;
     private string? _filter;
 
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _selectedName = FirstShownName();
+    }
+
+    // The First Shown Row Is Picked Until Another Is
+    private string? FirstShownName()
+    {
+        return Groupings().SelectMany(group => group.Collections).FirstOrDefault()?.Name;
+    }
+
     // A Matching Group Shows Whole, Otherwise Only Its Matching Rows
     private List<CollectionGroup> Groupings()
     {
@@ -69,11 +81,11 @@ public partial class Npcs : EditorPageBase
 
     private void SetByFamily(bool byFamily)
     {
-        // The Other Grouping Has Other Rows, Nothing Stays Picked
+        // The Other Grouping Has Other Rows, Its First Is Picked
         if (_byFamily != byFamily)
         {
             _byFamily = byFamily;
-            _selectedName = null;
+            _selectedName = FirstShownName();
         }
     }
 

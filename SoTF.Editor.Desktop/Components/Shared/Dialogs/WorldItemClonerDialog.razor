@@ -16,7 +16,14 @@
                                Size="Size.Small"
                                Color="@(_viewModel.SelectedWorldItemType == worldItemType ? Color.Info : Color.Default)"
                                OnClick="() => _viewModel.SelectedWorldItemType = worldItemType">
-                        @ItemName(worldItemType)
+                        <MudStack Row
+                                  AlignItems="AlignItems.Center"
+                                  Spacing="2">
+                            <MudImage Src="@WorldItemPoi.IconOf(worldItemType)"
+                                      Alt="@ItemName(worldItemType)"
+                                      Class="thumb thumb-small" />
+                            @ItemName(worldItemType)
+                        </MudStack>
                     </MudButton>
                 }
             </MudButtonGroup>

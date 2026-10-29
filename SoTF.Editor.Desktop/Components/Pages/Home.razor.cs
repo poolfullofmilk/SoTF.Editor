@@ -94,7 +94,7 @@ public partial class Home : EditorPageBase
     {
         // The Open Savegame Gets The Accent Ring
         var selected = IsOpen(savegame) ? " card-open" : "";
-        return "rounded-panel hover-card" + selected;
+        return "rounded-panel hover-card hover-host" + selected;
     }
 
     private static string WorldText(SavegameSummary summary)
