@@ -24,9 +24,9 @@ public partial class Npcs : EditorPageBase
         _selectedName = FirstShownName();
     }
 
-    // The First Shown Row Is Picked Until Another Is
     private string? FirstShownName()
     {
+        // The First Shown Row Is Picked Until Another Is
         return Groupings().SelectMany(group => group.Collections).FirstOrDefault()?.Name;
     }
 

@@ -266,6 +266,23 @@ public class StructuresPageViewModel
             );
     }
 
+    public static int CountLocked(
+        IEnumerable<ScrewStructureWrapper> rows,
+        ScrewStructureModificationMode mode
+    )
+    {
+        // Rows The Mode Would Reach But Cannot Change
+        return mode == ScrewStructureModificationMode.None
+            ? 0
+            : rows.Count(wrapper =>
+                wrapper.ModificationModes.Count == 1
+                && (
+                    mode != ScrewStructureModificationMode.Finish
+                    || wrapper.Origin == ScrewStructureOrigin.Unfinished
+                )
+            );
+    }
+
     public static void SetModificationMode(
         IEnumerable<ScrewStructureWrapper> rows,
         ScrewStructureModificationMode mode

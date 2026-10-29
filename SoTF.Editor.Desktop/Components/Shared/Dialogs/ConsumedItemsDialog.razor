@@ -15,8 +15,7 @@
             <MudTable T="ModifyConsumedItemsViewModel.ConsumedItemWrapper"
                       Items="_viewModel.ConsumedItems"
                       MultiSelection
-                      SelectedItems="_selected"
-                      SelectedItemsChanged="SelectionChanged"
+                      @bind-SelectedItems="_selected"
                       Dense
                       Hover
                       FixedHeader
@@ -53,7 +52,7 @@
         @* Apply Button *@
         <MudButton Variant="Variant.Filled"
                    Color="Color.Info"
-                   Disabled="@(!_viewModel.ConsumedItems.Exists(item => item.Remove))"
+                   Disabled="@(_selected.Count == 0)"
                    OnClick="Apply">
             @AppText.Get("RemoveSelected")
         </MudButton>

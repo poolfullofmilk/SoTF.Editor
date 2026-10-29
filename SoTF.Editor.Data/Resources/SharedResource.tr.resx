@@ -2164,4 +2164,34 @@ Hayır düzenleyiciyi açık tutar, böylece önce kaydedebilirsiniz</value>
   <data name="ScrollToTop" xml:space="preserve">
     <value>Başa Dön</value>
   </data>
+  <data name="LockedCount" xml:space="preserve">
+    <value>Kilitli: {0}</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Dışa Aktar</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>İçe Aktar</value>
+  </data>
+  <data name="ImportInventory" xml:space="preserve">
+    <value>Envanteri İçe Aktar</value>
+  </data>
+  <data name="ImportInventoryText" xml:space="preserve">
+    <value>Envanter dosyadaki liste olur, dosyada olmayan eşyalar çıkarılır. Kaydet'e basana kadar hiçbir şey yazılmaz</value>
+  </data>
+  <data name="ImportedItems" xml:space="preserve">
+    <value>{0} eşya içe aktarıldı</value>
+  </data>
+  <data name="NothingToImport" xml:space="preserve">
+    <value>Dosyada bilinen eşya yok</value>
+  </data>
+  <data name="InventoryExported" xml:space="preserve">
+    <value>Envanter dışa aktarıldı</value>
+  </data>
+  <data name="UnableToExportInventory" xml:space="preserve">
+    <value>Envanter dışa aktarılamadı, günlüğe bakın</value>
+  </data>
+  <data name="UnableToReadFile" xml:space="preserve">
+    <value>Dosya okunamadı</value>
+  </data>
 </root>

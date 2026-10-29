@@ -278,11 +278,6 @@ public class ArmorPageViewModel
         return true;
     }
 
-    public bool HasArmorPieces()
-    {
-        return _armour.Count > 0;
-    }
-
     public bool CanSetAllToDefault()
     {
         return _armour.Any(armourData =>

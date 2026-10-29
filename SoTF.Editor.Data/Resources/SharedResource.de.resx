@@ -2164,4 +2164,34 @@ Nein lässt den Editor offen, damit du zuerst speichern kannst</value>
   <data name="ScrollToTop" xml:space="preserve">
     <value>Nach Oben</value>
   </data>
+  <data name="LockedCount" xml:space="preserve">
+    <value>Gesperrt: {0}</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Exportieren</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Importieren</value>
+  </data>
+  <data name="ImportInventory" xml:space="preserve">
+    <value>Inventar Importieren</value>
+  </data>
+  <data name="ImportInventoryText" xml:space="preserve">
+    <value>Das Inventar wird zur Liste in der Datei, fehlende Gegenstände werden entfernt. Erst Speichern schreibt es</value>
+  </data>
+  <data name="ImportedItems" xml:space="preserve">
+    <value>{0} Gegenstände importiert</value>
+  </data>
+  <data name="NothingToImport" xml:space="preserve">
+    <value>Die Datei enthält keine bekannten Gegenstände</value>
+  </data>
+  <data name="InventoryExported" xml:space="preserve">
+    <value>Inventar exportiert</value>
+  </data>
+  <data name="UnableToExportInventory" xml:space="preserve">
+    <value>Das Inventar konnte nicht exportiert werden, siehe das Protokoll</value>
+  </data>
+  <data name="UnableToReadFile" xml:space="preserve">
+    <value>Die Datei konnte nicht gelesen werden</value>
+  </data>
 </root>

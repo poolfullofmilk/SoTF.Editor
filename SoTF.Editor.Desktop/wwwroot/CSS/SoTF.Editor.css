@@ -728,8 +728,15 @@ html, body {
     top: 0;
     z-index: 1;
     background-color: var(--mud-palette-surface);
-    color: var(--mud-palette-text-secondary);
 }
+
+    /* A Title And Its Count Stand Apart From Their Rows */
+    .group-underline {
+        text-decoration: underline;
+        text-decoration-color: var(--mud-palette-info);
+        text-decoration-thickness: 2px;
+        text-underline-offset: 5px;
+    }
 
 /* A Number At Its Limit Greys Out That Spin Button */
 .number-field {

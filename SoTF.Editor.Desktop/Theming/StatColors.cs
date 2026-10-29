@@ -13,9 +13,9 @@ public static class StatColors
     public const string Sickness = "#b5c94f";
     public const string Affection = "#f472b6";
 
-    // A Tinted Bar Takes The Info Colour's Place Inside Itself
     public static string? StyleOf(string? color)
     {
+        // A Tinted Bar Takes The Info Colour's Place Inside Itself
         if (color is null)
         {
             return null;

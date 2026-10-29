@@ -79,9 +79,9 @@ public partial class Storage : EditorPageBase
         _menuSlot?.SelectedItem = item;
     }
 
-    // An Item Without A Picture Shows The Question Mark
     private static string PictureOf(ItemWrapper item)
     {
+        // An Item Without A Picture Shows The Question Mark
         return string.IsNullOrEmpty(item.Item.ImageUrl)
             ? "images/icons/question-mark.svg"
             : item.Item.ImageUrl;

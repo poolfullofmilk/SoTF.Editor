@@ -144,26 +144,32 @@ public static class SavegameManager
         return target;
     }
 
-    public static string Export(Savegame savegame)
+    public static string NewExportPath(string name, string extension)
     {
         // An Export Never Overwrites, A Second One Gets A Number
         Directory.CreateDirectory(AppInfo.ExportsDirectory);
-        var name = string.Concat(
-            savegame.Name.Select(character =>
+        var safeName = string.Concat(
+            name.Select(character =>
                 Path.GetInvalidFileNameChars().Contains(character) ? '_' : character
             )
         );
         var stem = Path.Combine(
             AppInfo.ExportsDirectory,
-            $"{name} {DateTime.Now:yyyy-MM-dd HH-mm-ss}"
+            $"{safeName} {DateTime.Now:yyyy-MM-dd HH-mm-ss}"
         );
-        var target = stem + ".zip";
+        var target = stem + extension;
         for (var number = 2; File.Exists(target); number++)
         {
-            target = $"{stem} {number}.zip";
+            target = $"{stem} {number}{extension}";
         }
 
+        return target;
+    }
+
+    public static string Export(Savegame savegame)
+    {
         // The Save Id Folder Inside, Ready For A Mode Folder
+        var target = NewExportPath(savegame.Name, ".zip");
         ZipFile.CreateFromDirectory(
             savegame.FullPath,
             target,

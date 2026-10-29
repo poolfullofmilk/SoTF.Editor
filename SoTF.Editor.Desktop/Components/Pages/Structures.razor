@@ -103,17 +103,18 @@
                             @foreach (var mode in s_modes)
                             {
                                 var count = StructuresPageViewModel.CountSetAll(shown, mode);
+                                var locked = count == 0 ? StructuresPageViewModel.CountLocked(shown, mode) : 0;
                                 @* Set All Item *@
                                 <MudMenuItem Disabled="@(count == 0)"
                                              OnClick="() => SetAllAsync(shown, mode)">
                                     <MudElement HtmlTag="span"
                                                 Class="d-flex justify-space-between gap-6">
                                         <MudElement HtmlTag="span">@ModeName(mode)</MudElement>
-                                        @if (count > 0)
+                                        @if (count > 0 || locked > 0)
                                         {
                                             <MudElement HtmlTag="span"
                                                         Class="mud-text-secondary">
-                                                @count
+                                                @(count > 0 ? count : AppText.Format("LockedCount", locked))
                                             </MudElement>
                                         }
                                     </MudElement>

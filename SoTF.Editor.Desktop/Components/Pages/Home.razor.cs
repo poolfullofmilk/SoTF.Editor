@@ -1,5 +1,3 @@
-using System.ComponentModel;
-using System.Diagnostics;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Win32;
@@ -10,6 +8,7 @@ using SoTF.Editor.Data.Resources;
 using SoTF.Editor.Data.ViewModels;
 using SoTF.Editor.Desktop.Components.Shared.Common;
 using SoTF.Editor.Desktop.Components.Shared.Dialogs;
+using SoTF.Editor.Desktop.Interop;
 using SoTF.Editor.Services.Savegames;
 using SoTF.Editor.Services.Settings;
 
@@ -166,25 +165,12 @@ public partial class Home : EditorPageBase
         {
             var exported = await Task.Run(() => SavegameManager.Export(savegame));
             Snackbar.Add(AppText.Get("SavegameExported"), Severity.Success);
-            ShowInExplorer(exported);
+            Explorer.ShowFile(exported);
         }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
         {
             s_logger.Error(exception, "Failed To Export Savegame");
             Snackbar.Add(AppText.Get("UnableToExport"), Severity.Error);
-        }
-    }
-
-    private static void ShowInExplorer(string path)
-    {
-        try
-        {
-            Process.Start(new ProcessStartInfo("explorer.exe", $"/select,\"{path}\""));
-        }
-        catch (Win32Exception exception)
-        {
-            // A Shell That Fails To Open Never Fails The Export
-            s_logger.Warn(exception, "Failed To Show Export");
         }
     }
 

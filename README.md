@@ -2,6 +2,7 @@
 
 ## Features
 - Edit your stats, armour, outfit and inventory
+- Export your inventory to a small text file and import it into any save
 - Fill every storage to the max in one click
 - Edit, revive or spawn Kelvin and Virginia
 - Edit NPCs one at a time or all at once

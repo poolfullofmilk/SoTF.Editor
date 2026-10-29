@@ -100,9 +100,9 @@ public partial class Tools : EditorPageBase
             + (MainViewModel.IsToolChanged(tool.TitleKey) ? " card-changed" : "");
     }
 
-    // Only The Exceptions Wear A Chip
     private string? ChipKey(Tool tool)
     {
+        // Only The Exceptions Wear A Chip
         if (!IsAvailable(tool))
         {
             return "HostSaveOnly";

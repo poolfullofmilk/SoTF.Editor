@@ -308,9 +308,7 @@ public partial class Game : EditorPageBase
         );
 
     private IEnumerable<GenericSetting> TimeParts =>
-        s_timeSettingNames.SelectMany(name =>
-            GameState.Settings.Where(setting => setting.Name == name)
-        );
+        GameState.Settings.Where(setting => s_timeSettingNames.Contains(setting.Name));
 
     private static string? InfoOf(string settingName)
     {

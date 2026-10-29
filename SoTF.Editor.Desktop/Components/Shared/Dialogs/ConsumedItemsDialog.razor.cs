@@ -26,18 +26,6 @@ public partial class ConsumedItemsDialog
     private ModifyConsumedItemsViewModel _viewModel = null!;
     private HashSet<ModifyConsumedItemsViewModel.ConsumedItemWrapper> _selected = [];
 
-    // The Ticked Rows Are The Ones Removed
-    private void SelectionChanged(
-        HashSet<ModifyConsumedItemsViewModel.ConsumedItemWrapper> selected
-    )
-    {
-        _selected = selected;
-        foreach (var item in _viewModel.ConsumedItems)
-        {
-            item.Remove = selected.Contains(item);
-        }
-    }
-
     protected override void OnInitialized()
     {
         _viewModel = new ModifyConsumedItemsViewModel(MainViewModel.SelectedSavegame!, GameData);
@@ -59,6 +47,12 @@ public partial class ConsumedItemsDialog
 
     private void Apply()
     {
+        // The Ticked Rows Are The Ones Removed
+        foreach (var item in _viewModel.ConsumedItems)
+        {
+            item.Remove = _selected.Contains(item);
+        }
+
         _viewModel.Save();
         Close();
     }

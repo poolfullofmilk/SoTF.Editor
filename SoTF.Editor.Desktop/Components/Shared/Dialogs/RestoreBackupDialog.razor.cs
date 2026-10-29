@@ -102,6 +102,9 @@ public partial class RestoreBackupDialog
         return _deleting ? _marked.Contains(backup) : backup == _selected;
     }
 
+    // A Lone Backup Keeps Its Row Height
+    private string ListStyle => Backups.Count > 1 ? "min-height:132px" : "flex-shrink:0";
+
     private string RowClass(SavegameBackup backup)
     {
         var picked = IsPicked(backup) ? " list-row-selected" : "";

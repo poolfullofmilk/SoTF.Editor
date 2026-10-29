@@ -704,6 +704,16 @@ try
         Check(!main.HasUnsavedChanges(), "Reverted Inventory Delete Leaves Nothing Unsaved");
     }
 
+    // An Exported Inventory Imports Back With Nothing Changed
+    var exportedInventory = inventory.ExportText();
+    inventory.RemoveAllEquipped();
+    var importedCount = inventory.Import(exportedInventory + "\nnot a line\n999999 5 Unknown");
+    Check(
+        importedCount == inventory.Inventory.Count && !main.HasChanges("Inventory"),
+        "Inventory Export Imports Back Unchanged"
+    );
+    Check(inventory.Import("nothing here") == 0, "Import Without Known Items Changes Nothing");
+
     // A Worn Piece Takes Another Type At Its Default Durability
     var worn = armor.Armour.FirstOrDefault();
     var otherType = armor.ArmourTypes.FirstOrDefault(type => type.Id != worn?.Id);

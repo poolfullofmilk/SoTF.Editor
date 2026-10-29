@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System.Globalization;
+using Newtonsoft.Json.Linq;
 using NLog;
 using SoTF.Editor.Data.Enums;
 using SoTF.Editor.Data.Helpers;
@@ -333,6 +334,73 @@ public class InventoryPageViewModel
     public bool HasInventoryItems()
     {
         return _inventory.Count > 0;
+    }
+
+    public string ExportText()
+    {
+        // One Line Per Held Item: Id, Count, Then Name
+        return string.Join(
+            Environment.NewLine,
+            _inventory
+                .OrderBy(item => item.Name)
+                .Select(item => $"{item.Id} {item.TotalCount} {item.Name}")
+        );
+    }
+
+    public string Export(string savegameName)
+    {
+        var target = SavegameManager.NewExportPath(
+            $"{savegameName} {AppText.Get("Inventory")}",
+            ".txt"
+        );
+        File.WriteAllText(target, ExportText());
+        s_logger.Info($"Exported Inventory To {target}");
+        return target;
+    }
+
+    public int Import(string text)
+    {
+        // A Known Id And A Count, Other Lines Are Skipped
+        var counts = new Dictionary<InventoryItem, int>();
+        foreach (var line in text.Split('\n'))
+        {
+            var parts = line.Split((char[]?)null, 3, StringSplitOptions.RemoveEmptyEntries);
+            if (
+                parts.Length >= 2
+                && int.TryParse(parts[0], CultureInfo.InvariantCulture, out var id)
+                && int.TryParse(parts[1], CultureInfo.InvariantCulture, out var count)
+                && ItemOf(id) is { } item
+            )
+            {
+                counts[item] = count;
+            }
+        }
+
+        if (counts.Count == 0)
+        {
+            return 0;
+        }
+
+        // The File Replaces The Inventory, The Item In Hand Stays
+        foreach (
+            var item in _inventory
+                .Where(item => !item.IsEquipped && !counts.ContainsKey(item))
+                .ToList()
+        )
+        {
+            RemoveItemFromInventory(item);
+        }
+
+        foreach (var (item, count) in counts)
+        {
+            AddUnassignedItem(item);
+            if (!item.IsEquipped)
+            {
+                item.TotalCount = Math.Clamp(count, 1, item.Max);
+            }
+        }
+
+        return counts.Count;
     }
 }
 

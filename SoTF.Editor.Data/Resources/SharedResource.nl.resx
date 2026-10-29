@@ -2164,4 +2164,34 @@ Nee houdt de editor open zodat je eerst kunt opslaan</value>
   <data name="ScrollToTop" xml:space="preserve">
     <value>Naar Boven</value>
   </data>
+  <data name="LockedCount" xml:space="preserve">
+    <value>Vergrendeld: {0}</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Exporteren</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Importeren</value>
+  </data>
+  <data name="ImportInventory" xml:space="preserve">
+    <value>Inventaris Importeren</value>
+  </data>
+  <data name="ImportInventoryText" xml:space="preserve">
+    <value>De inventaris wordt de lijst uit het bestand, ontbrekende items worden verwijderd. Pas Opslaan schrijft het weg</value>
+  </data>
+  <data name="ImportedItems" xml:space="preserve">
+    <value>{0} items geïmporteerd</value>
+  </data>
+  <data name="NothingToImport" xml:space="preserve">
+    <value>Het bestand bevat geen bekende items</value>
+  </data>
+  <data name="InventoryExported" xml:space="preserve">
+    <value>Inventaris geëxporteerd</value>
+  </data>
+  <data name="UnableToExportInventory" xml:space="preserve">
+    <value>Kan de inventaris niet exporteren, zie het logbestand</value>
+  </data>
+  <data name="UnableToReadFile" xml:space="preserve">
+    <value>Kan het bestand niet lezen</value>
+  </data>
 </root>

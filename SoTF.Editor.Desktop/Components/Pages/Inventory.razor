@@ -7,6 +7,21 @@
                 Class="fit">
             <TitleContent>
                 <MudSpacer />
+                @* Export *@
+                <MudButton Variant="Variant.Text"
+                           Size="Size.Small"
+                           StartIcon="@Icons.Material.Rounded.FileDownload"
+                           Disabled="@(!InventoryPage.HasInventoryItems())"
+                           OnClick="Export">
+                    @AppText.Get("Export")
+                </MudButton>
+                @* Import *@
+                <MudButton Variant="Variant.Text"
+                           Size="Size.Small"
+                           StartIcon="@Icons.Material.Rounded.FileUpload"
+                           OnClick="ImportAsync">
+                    @AppText.Get("Import")
+                </MudButton>
                 @* Add All *@
                 <MudButton Variant="Variant.Text"
                            Size="Size.Small"
@@ -113,7 +128,6 @@
                                                      Max="context.Max"
                                                      Disabled="context.IsEquipped"
                                                      Margin="Margin.Dense"
-                                                     HideSpinButtons
                                                      Style="width:110px" />
                                     </ChangedBadge>
                                 </MudTd>

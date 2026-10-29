@@ -2164,4 +2164,34 @@ Non garde l'éditeur ouvert pour que vous puissiez enregistrer d'abord</value>
   <data name="ScrollToTop" xml:space="preserve">
     <value>Haut de Page</value>
   </data>
+  <data name="LockedCount" xml:space="preserve">
+    <value>Verrouillé : {0}</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Exporter</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Importer</value>
+  </data>
+  <data name="ImportInventory" xml:space="preserve">
+    <value>Importer l'Inventaire</value>
+  </data>
+  <data name="ImportInventoryText" xml:space="preserve">
+    <value>L'inventaire devient la liste du fichier, les objets absents sont retirés. Rien n'est écrit avant Enregistrer</value>
+  </data>
+  <data name="ImportedItems" xml:space="preserve">
+    <value>{0} objets importés</value>
+  </data>
+  <data name="NothingToImport" xml:space="preserve">
+    <value>Le fichier ne contient aucun objet connu</value>
+  </data>
+  <data name="InventoryExported" xml:space="preserve">
+    <value>Inventaire exporté</value>
+  </data>
+  <data name="UnableToExportInventory" xml:space="preserve">
+    <value>Impossible d'exporter l'inventaire, voir le journal</value>
+  </data>
+  <data name="UnableToReadFile" xml:space="preserve">
+    <value>Impossible de lire le fichier</value>
+  </data>
 </root>

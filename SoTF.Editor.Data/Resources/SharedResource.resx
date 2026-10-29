@@ -2164,4 +2164,34 @@ No keeps the editor open so you can save first</value>
   <data name="ScrollToTop" xml:space="preserve">
     <value>Back to Top</value>
   </data>
+  <data name="LockedCount" xml:space="preserve">
+    <value>Locked: {0}</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="ImportInventory" xml:space="preserve">
+    <value>Import Inventory</value>
+  </data>
+  <data name="ImportInventoryText" xml:space="preserve">
+    <value>The inventory becomes the list in the file, items it lacks are removed. Nothing is written until Save</value>
+  </data>
+  <data name="ImportedItems" xml:space="preserve">
+    <value>Imported {0} items</value>
+  </data>
+  <data name="NothingToImport" xml:space="preserve">
+    <value>The file lists no known items</value>
+  </data>
+  <data name="InventoryExported" xml:space="preserve">
+    <value>Inventory exported</value>
+  </data>
+  <data name="UnableToExportInventory" xml:space="preserve">
+    <value>Unable to export the inventory, see the log</value>
+  </data>
+  <data name="UnableToReadFile" xml:space="preserve">
+    <value>Unable to read the file</value>
+  </data>
 </root>
