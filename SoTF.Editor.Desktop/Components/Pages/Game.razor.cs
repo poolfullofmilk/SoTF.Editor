@@ -202,14 +202,13 @@ public partial class Game : EditorPageBase
     private string ModeClass(ModeCard mode)
     {
         // The Picked Mode Wears The Accent Ring
-        return "inset rounded-panel pa-4 hover-card flex-grow-1"
-            + (IsMode(mode) ? " card-open" : "");
+        return "rounded-panel pa-4 hover-card flex-grow-1" + (IsMode(mode) ? " card-open" : "");
     }
 
     private static string SettingClass(bool isSet)
     {
         // Off Its Default, A Setting Wears A Blue Edge
-        return "inset rounded-panel pa-4 flex-grow-1" + (isSet ? " setting-set" : "");
+        return "rounded-panel pa-4 flex-grow-1" + (isSet ? " setting-set" : "");
     }
 
     private bool IsSet(SelectSetting setting)

@@ -1,188 +1,187 @@
 @inherits EditorPageBase
 
-@* Follower Panel *@
-<Header Title="@Name">
-    <TitleContent>
-        <MudChip T="string"
-                 Variant="Variant.Text"
-                 Size="Size.Small">
-            @Follower.Status
-        </MudChip>
-        <MudSpacer />
-        @* Remove Copy *@
-        <Tooltip Text="@AppText.Get("RemoveCopy")"
-                 Disabled="@(!IsSpawnedCopy)">
-            <MudIconButton Icon="@Icons.Material.Rounded.Delete"
-                           aria-label="@AppText.Get("RemoveCopy")"
-                           Color="Color.Error"
-                           Size="Size.Small"
-                           Disabled="@(!IsSpawnedCopy)"
-                           OnClick="RemoveCopyAsync" />
-        </Tooltip>
-        <ShowOnMapButton Position="MapPosition" />
-    </TitleContent>
-    <ChildContent>
-        <MudPaper Elevation="4"
-                  Class="rounded-panel pa-4">
-            <MudStack Spacing="3">
-                <MudStack Row
-                          AlignItems="AlignItems.Center"
-                          Spacing="4">
-                    <MudImage Src="@ImageUrl"
-                              Alt="@Name"
-                              Width="96"
-                              Height="120"
-                              ObjectFit="ObjectFit.Cover"
-                              ObjectPosition="ObjectPosition.Top"
-                              Class="rounded-inner flex-shrink-0" />
-                    <MudStack Spacing="0">
-                        @if (Copies.Count > 1)
-                        {
-                            @* Copy Select *@
-                            <MudElement HtmlTag="div"
-                                        Class="fixed-width mb-2"
-                                        Style="width:140px">
-                                <MudSelect T="FollowerState"
-                                           Value="Follower"
-                                           ValueChanged="FollowerPage.Select"
-                                           ToStringFunc="CopyLabel"
-                                           Variant="Variant.Outlined"
-                                           Margin="Margin.Dense"
-                                           Dense>
-                                    @foreach (var copy in Copies)
-                                    {
-                                        <MudSelectItem Value="copy">@CopyLabel(copy)</MudSelectItem>
-                                    }
-                                </MudSelect>
-                            </MudElement>
-                        }
-                        <MudText Typo="Typo.body2"
-                                 Class="mud-text-secondary selectable-text">
-                            @($"{AppText.Get("UniqueId")}: {Follower.UniqueId?.ToString() ?? "-"}")
-                        </MudText>
-                        <MudText Typo="Typo.body2"
-                                 Class="mud-text-secondary selectable-text">
-                            @($"{AppText.Get("Position")}: {Follower.Pos.PrintableShort}")
-                            <ChangedDot When="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Pos))" />
-                        </MudText>
+<MudStack Spacing="6">
+    @* Follower Panel *@
+    <Header Title="@Name">
+        <TitleContent>
+            <MudChip T="string"
+                     Variant="Variant.Text"
+                     Size="Size.Small">
+                @Follower.Status
+            </MudChip>
+            <MudSpacer />
+            @* Remove Copy *@
+            <Tooltip Text="@AppText.Get("RemoveCopy")"
+                     Disabled="@(!IsSpawnedCopy)">
+                <MudIconButton Icon="@Icons.Material.Rounded.Delete"
+                               aria-label="@AppText.Get("RemoveCopy")"
+                               Color="Color.Error"
+                               Size="Size.Small"
+                               Disabled="@(!IsSpawnedCopy)"
+                               OnClick="RemoveCopyAsync" />
+            </Tooltip>
+            <ShowOnMapButton Position="MapPosition" />
+        </TitleContent>
+        <ChildContent>
+            <MudPaper Elevation="4"
+                      Class="rounded-panel pa-4">
+                <MudStack Spacing="3">
+                    <MudStack Row
+                              AlignItems="AlignItems.Center"
+                              Spacing="4">
+                        <MudImage Src="@ImageUrl"
+                                  Alt="@Name"
+                                  Width="96"
+                                  Height="120"
+                                  ObjectFit="ObjectFit.Cover"
+                                  ObjectPosition="ObjectPosition.Top"
+                                  Class="rounded-inner flex-shrink-0" />
+                        <MudStack Spacing="0">
+                            @if (Copies.Count > 1)
+                            {
+                                @* Copy Select *@
+                                <MudElement HtmlTag="div"
+                                            Class="fixed-width mb-2"
+                                            Style="width:140px">
+                                    <MudSelect T="FollowerState"
+                                               Value="Follower"
+                                               ValueChanged="FollowerPage.Select"
+                                               ToStringFunc="CopyLabel"
+                                               Variant="Variant.Outlined"
+                                               Margin="Margin.Dense"
+                                               Dense>
+                                        @foreach (var copy in Copies)
+                                        {
+                                            <MudSelectItem Value="copy">@CopyLabel(copy)</MudSelectItem>
+                                        }
+                                    </MudSelect>
+                                </MudElement>
+                            }
+                            <MudText Typo="Typo.body2"
+                                     Class="mud-text-secondary selectable-text">
+                                @($"{AppText.Get("UniqueId")}: {Follower.UniqueId?.ToString() ?? "-"}")
+                            </MudText>
+                            <MudText Typo="Typo.body2"
+                                     Class="mud-text-secondary selectable-text">
+                                @($"{AppText.Get("Position")}: {Follower.Pos.PrintableShort}")
+                                <ChangedDot When="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Pos))" />
+                            </MudText>
+                        </MudStack>
                     </MudStack>
-                </MudStack>
 
-                <MudStack Row
-                          Wrap="Wrap.Wrap"
-                          Spacing="2">
-                    @* Fill Bars *@
-                    <MudButton Variant="Variant.Filled"
-                               Color="Color.Info"
-                               Size="Size.Small"
-                               StartIcon="@Icons.Material.Rounded.BatteryChargingFull"
-                               Disabled="@(!CanFillBars)"
-                               OnClick="() => FollowerPageViewModel.FillAllBars(Follower)">
-                        @AppText.Get("FillAllBars")
-                    </MudButton>
-                    @* Move To Player *@
-                    <MudButton Variant="Variant.Text"
-                               Size="Size.Small"
-                               StartIcon="@Icons.Material.Rounded.NearMe"
-                               Disabled="@(!InSave)"
-                               OnClick="MoveToPlayer">
-                        @AppText.Get("MoveToPlayer")
-                    </MudButton>
-                    @* Revive *@
-                    <Tooltip Text="@AppText.Get("ReviveTooltip")"
-                             Disabled="@(!CanRevive)">
+                    <MudStack Row
+                              Wrap="Wrap.Wrap"
+                              Spacing="2">
+                        @* Fill Bars *@
+                        <MudButton Variant="Variant.Filled"
+                                   Color="Color.Info"
+                                   Size="Size.Small"
+                                   StartIcon="@Icons.Material.Rounded.BatteryChargingFull"
+                                   Disabled="@(!CanFillBars)"
+                                   OnClick="() => FollowerPageViewModel.FillAllBars(Follower)">
+                            @AppText.Get("FillAllBars")
+                        </MudButton>
+                        @* Move To Player *@
                         <MudButton Variant="Variant.Text"
                                    Size="Size.Small"
-                                   StartIcon="@Icons.Material.Rounded.Favorite"
-                                   Disabled="@(!CanRevive)"
-                                   OnClick="Revive">
-                            @AppText.Get("Revive")
+                                   StartIcon="@Icons.Material.Rounded.NearMe"
+                                   Disabled="@(!InSave)"
+                                   OnClick="MoveToPlayer">
+                            @AppText.Get("MoveToPlayer")
                         </MudButton>
-                    </Tooltip>
-                    @* Spawn *@
-                    <MudButton Variant="Variant.Text"
-                               Size="Size.Small"
-                               StartIcon="@Icons.Material.Rounded.GroupAdd"
-                               OnClick="SpawnAsync">
-                        @AppText.Get("Spawn")
-                    </MudButton>
-                </MudStack>
+                        @* Revive *@
+                        <Tooltip Text="@AppText.Get("ReviveTooltip")"
+                                 Disabled="@(!CanRevive)">
+                            <MudButton Variant="Variant.Text"
+                                       Size="Size.Small"
+                                       StartIcon="@Icons.Material.Rounded.Favorite"
+                                       Disabled="@(!CanRevive)"
+                                       OnClick="Revive">
+                                @AppText.Get("Revive")
+                            </MudButton>
+                        </Tooltip>
+                        @* Spawn *@
+                        <MudButton Variant="Variant.Text"
+                                   Size="Size.Small"
+                                   StartIcon="@Icons.Material.Rounded.GroupAdd"
+                                   OnClick="SpawnAsync">
+                            @AppText.Get("Spawn")
+                        </MudButton>
+                    </MudStack>
 
-                @* Health *@
-                <StatSlider Label="@AppText.Get("Health")"
-                            Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Health))"
-                            @bind-Value="Follower.Health" />
-                @* Anger *@
-                <StatSlider Label="@AppText.Get("Anger")"
-                            Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Anger))"
-                            @bind-Value="Follower.Anger" />
-                @* Fear *@
-                <StatSlider Label="@AppText.Get("Fear")"
-                            Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Fear))"
-                            @bind-Value="Follower.Fear" />
-                @* Fullness *@
-                <StatSlider Label="@AppText.Get("Fullness")"
-                            Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Fullness))"
-                            @bind-Value="Follower.Fullness" />
-                @* Hydration *@
-                <StatSlider Label="@AppText.Get("Hydration")"
-                            Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Hydration))"
-                            @bind-Value="Follower.Hydration" />
-                @* Energy *@
-                <StatSlider Label="@AppText.Get("Energy")"
-                            Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Energy))"
-                            @bind-Value="Follower.Energy" />
-                @* Affection *@
-                <StatSlider Label="@AppText.Get("Affection")"
-                            Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Affection))"
-                            @bind-Value="Follower.Affection" />
+                    @* Health *@
+                    <StatSlider Label="@AppText.Get("Health")"
+                                Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Health))"
+                                @bind-Value="Follower.Health" />
+                    @* Anger *@
+                    <StatSlider Label="@AppText.Get("Anger")"
+                                Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Anger))"
+                                @bind-Value="Follower.Anger" />
+                    @* Fear *@
+                    <StatSlider Label="@AppText.Get("Fear")"
+                                Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Fear))"
+                                @bind-Value="Follower.Fear" />
+                    @* Fullness *@
+                    <StatSlider Label="@AppText.Get("Fullness")"
+                                Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Fullness))"
+                                @bind-Value="Follower.Fullness" />
+                    @* Hydration *@
+                    <StatSlider Label="@AppText.Get("Hydration")"
+                                Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Hydration))"
+                                @bind-Value="Follower.Hydration" />
+                    @* Energy *@
+                    <StatSlider Label="@AppText.Get("Energy")"
+                                Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Energy))"
+                                @bind-Value="Follower.Energy" />
+                    @* Affection *@
+                    <StatSlider Label="@AppText.Get("Affection")"
+                                Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Affection))"
+                                @bind-Value="Follower.Affection" />
 
-                @* Outfit *@
-                <ChangedBadge When="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Outfit))"
-                              Class="d-block">
-                    <MudSelect T="Outfit"
-                               Variant="Variant.Outlined"
-                               @bind-Value="Follower.Outfit"
-                               Label="@AppText.Get("Outfit")"
-                               ToStringFunc="outfit => outfit?.Name ?? string.Empty">
-                        @foreach (var outfit in Follower.Outfits.OrderBy(outfit => outfit.Name))
+                    @* Outfit *@
+                    <ChangedBadge When="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Outfit))"
+                                  Class="d-block">
+                        <MudSelect T="Outfit"
+                                   Variant="Variant.Outlined"
+                                   @bind-Value="Follower.Outfit"
+                                   Label="@AppText.Get("Outfit")"
+                                   ToStringFunc="outfit => outfit?.Name ?? string.Empty">
+                            @foreach (var outfit in Follower.Outfits.OrderBy(outfit => outfit.Name))
+                            {
+                                <MudSelectItem Value="outfit">@outfit.Name</MudSelectItem>
+                            }
+                        </MudSelect>
+                    </ChangedBadge>
+
+                    <MudText Typo="Typo.subtitle2"
+                             Class="mt-2">
+                        @AppText.Get("Equipment")
+                    </MudText>
+                    <MudStack Row
+                              Wrap="Wrap.Wrap"
+                              Spacing="0">
+                        @foreach (var equippableItem in Follower.Inventory.OrderBy(item => item.Name))
                         {
-                            <MudSelectItem Value="outfit">@outfit.Name</MudSelectItem>
+                            @* Equipment *@
+                            <MudCheckBox T="bool"
+                                         @bind-Value="equippableItem.Selected"
+                                         Color="Color.Info"
+                                         Dense>
+                                @equippableItem.Name
+                                <ChangedDot When="@FollowerPage.IsChanged(Follower, equippableItem)" />
+                            </MudCheckBox>
                         }
-                    </MudSelect>
-                </ChangedBadge>
-
-                <MudText Typo="Typo.subtitle2"
-                         Class="mt-2">
-                    @AppText.Get("Equipment")
-                </MudText>
-                <MudStack Row
-                          Wrap="Wrap.Wrap"
-                          Spacing="0">
-                    @foreach (var equippableItem in Follower.Inventory.OrderBy(item => item.Name))
-                    {
-                        @* Equipment *@
-                        <MudCheckBox T="bool"
-                                     @bind-Value="equippableItem.Selected"
-                                     Color="Color.Info"
-                                     Dense>
-                            @equippableItem.Name
-                            <ChangedDot When="@FollowerPage.IsChanged(Follower, equippableItem)" />
-                        </MudCheckBox>
-                    }
+                    </MudStack>
                 </MudStack>
+            </MudPaper>
+        </ChildContent>
+    </Header>
 
-                <MudStack Row
-                          AlignItems="AlignItems.Center"
-                          Spacing="1"
-                          Class="mt-2">
-                    <MudText Typo="Typo.subtitle2">@AppText.Get("Influences")</MudText>
-                    <InfoIcon Text="@AppText.Get("InfluencesInfo")" />
-                </MudStack>
-                <InfluencesEditor Influences="Follower.Influences"
-                                  ChangedWhen="IsInfluenceChanged"
-                                  OnChanged="StateHasChanged" />
-            </MudStack>
-        </MudPaper>
-    </ChildContent>
-</Header>
+    @* Influences *@
+    <Header Title="@AppText.Get("Influences")"
+            Info="@AppText.Get("InfluencesInfo")">
+        <InfluencesEditor Influences="Follower.Influences"
+                          ChangedWhen="IsInfluenceChanged"
+                          OnChanged="StateHasChanged" />
+    </Header>
+</MudStack>

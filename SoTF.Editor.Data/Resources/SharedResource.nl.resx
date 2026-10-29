@@ -1455,10 +1455,10 @@ Nee houdt ze zodat je eerst kunt opslaan</value>
     <value>Helder</value>
   </data>
   <data name="CloudsGrowing" xml:space="preserve">
-    <value>Wolken Nemen Toe</value>
+    <value>Toenemend</value>
   </data>
   <data name="CloudsClearing" xml:space="preserve">
-    <value>Wolken Nemen Af</value>
+    <value>Afnemend</value>
   </data>
   <data name="CloudsRaining" xml:space="preserve">
     <value>Regen</value>

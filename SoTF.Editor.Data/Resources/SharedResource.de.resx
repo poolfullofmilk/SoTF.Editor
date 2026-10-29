@@ -1455,10 +1455,10 @@ Nein behält sie, damit du zuerst speichern kannst</value>
     <value>Klar</value>
   </data>
   <data name="CloudsGrowing" xml:space="preserve">
-    <value>Wolken Nehmen Zu</value>
+    <value>Zunehmend</value>
   </data>
   <data name="CloudsClearing" xml:space="preserve">
-    <value>Wolken Nehmen Ab</value>
+    <value>Abnehmend</value>
   </data>
   <data name="CloudsRaining" xml:space="preserve">
     <value>Regen</value>

@@ -97,7 +97,7 @@ window.sotfMap = (() => {
     const dragThreshold = 4;
     const manyPoints = 1500;
     const glideTime = 250;
-    const clusterPixels = 52;
+    const clusterPixels = 24;
     let state = null;
     let settle = 0;
     let frame = 0;
@@ -143,7 +143,7 @@ window.sotfMap = (() => {
             bubble.textContent = members.length;
             bubble.style.left = `${xs.reduce((sum, value) => sum + value) / members.length}px`;
             bubble.style.top = `${ys.reduce((sum, value) => sum + value) / members.length}px`;
-            bubble.style.setProperty("--cluster-size", `${Math.min(28 + Math.log2(members.length) * 4, 48)}px`);
+            bubble.style.setProperty("--cluster-size", `${Math.min(28 + Math.log2(members.length) * 2, 36)}px`);
             bubble.members = members.flatMap((member) => [member.x, member.y]);
             bubbles.push(bubble);
             members.forEach((member) => grouped.add(member.icon));

@@ -1455,10 +1455,10 @@ Hayır onları tutar, böylece önce kaydedebilirsiniz</value>
     <value>Açık</value>
   </data>
   <data name="CloudsGrowing" xml:space="preserve">
-    <value>Bulutlar Artıyor</value>
+    <value>Artıyor</value>
   </data>
   <data name="CloudsClearing" xml:space="preserve">
-    <value>Bulutlar Azalıyor</value>
+    <value>Azalıyor</value>
   </data>
   <data name="CloudsRaining" xml:space="preserve">
     <value>Yağmur</value>

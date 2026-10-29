@@ -1455,10 +1455,10 @@ Non les garde pour que vous puissiez enregistrer d'abord</value>
     <value>Dégagé</value>
   </data>
   <data name="CloudsGrowing" xml:space="preserve">
-    <value>Nuages en Hausse</value>
+    <value>En Hausse</value>
   </data>
   <data name="CloudsClearing" xml:space="preserve">
-    <value>Nuages en Baisse</value>
+    <value>En Baisse</value>
   </data>
   <data name="CloudsRaining" xml:space="preserve">
     <value>Pluie</value>

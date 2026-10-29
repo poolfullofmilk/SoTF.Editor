@@ -34,20 +34,20 @@
                          Style="max-width:160px" />
             break;
         case GenericSetting.DataType.Enum:
-            <MudSelect T="object"
-                       Variant="Variant.Outlined"
-                       @bind-Value="Setting.SelectedItem"
-                       ToStringFunc="value => value is null ? string.Empty : Setting.PossibleValues.GetValueOrDefault(value, value.ToString() ?? string.Empty)"
-                       Dense
-                       Margin="Margin.Dense">
+            @* Setting Choices *@
+            <MudButtonGroup OverrideStyles="false"
+                            Size="Size.Small"
+                            Class="setting-choices">
                 @foreach (var possibleValue in Setting.PossibleValues)
                 {
-                    <MudSelectItem T="object"
-                                   Value="possibleValue.Key">
+                    <MudButton Variant="Variant.Filled"
+                               Size="Size.Small"
+                               Color="@(Equals(Setting.SelectedItem, possibleValue.Key) ? Color.Info : Color.Default)"
+                               OnClick="() => Setting.SelectedItem = possibleValue.Key">
                         @possibleValue.Value
-                    </MudSelectItem>
+                    </MudButton>
                 }
-            </MudSelect>
+            </MudButtonGroup>
             break;
         default:
             <MudTextField T="string"

@@ -4,20 +4,22 @@
         <MudText Typo="Typo.h6">@AppText.Get("WorldItemCloner")</MudText>
     </TitleContent>
     <DialogContent>
-        <MudStack Spacing="4">
-            @* World Item *@
-            <MudSelect T="WorldItemType?"
-                       Variant="Variant.Outlined"
-                       @bind-Value="_viewModel.SelectedWorldItemType"
-                       Label="@AppText.Get("WorldItem")">
+        <MudStack Spacing="2">
+            <MudText Typo="Typo.subtitle2">@AppText.Get("WorldItem")</MudText>
+            @* World Item Choices *@
+            <MudButtonGroup OverrideStyles="false"
+                            Size="Size.Small"
+                            Class="setting-choices">
                 @foreach (var worldItemType in WorldItemClonerViewModel.CloneableTypes)
                 {
-                    <MudSelectItem T="WorldItemType?"
-                                   Value="@worldItemType">
+                    <MudButton Variant="Variant.Filled"
+                               Size="Size.Small"
+                               Color="@(_viewModel.SelectedWorldItemType == worldItemType ? Color.Info : Color.Default)"
+                               OnClick="() => _viewModel.SelectedWorldItemType = worldItemType">
                         @ItemName(worldItemType)
-                    </MudSelectItem>
+                    </MudButton>
                 }
-            </MudSelect>
+            </MudButtonGroup>
             <MudText Typo="Typo.body2"
                      Class="mud-text-secondary">
                 @AppText.Get("CloneAtPlayerTooltip")

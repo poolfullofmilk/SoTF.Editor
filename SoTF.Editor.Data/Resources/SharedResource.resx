@@ -1455,10 +1455,10 @@ No keeps them so you can save first</value>
     <value>Clear</value>
   </data>
   <data name="CloudsGrowing" xml:space="preserve">
-    <value>Clouds Growing</value>
+    <value>Growing</value>
   </data>
   <data name="CloudsClearing" xml:space="preserve">
-    <value>Clouds Clearing</value>
+    <value>Clearing</value>
   </data>
   <data name="CloudsRaining" xml:space="preserve">
     <value>Raining</value>

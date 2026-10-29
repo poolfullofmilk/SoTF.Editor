@@ -186,17 +186,11 @@
                                             @if (BackupCountOf(savegame) is > 0 and var backupCount)
                                             {
                                                 @* Backups Button *@
-                                                <MudBadge Content="backupCount"
-                                                          Overlap
-                                                          Origin="Origin.BottomRight"
-                                                          Color="Color.Info"
-                                                          Class="d-flex">
-                                                    <MudIconButton Icon="@Icons.Material.Rounded.History"
-                                                                   aria-label="@BackupsTitle(backupCount)"
-                                                                   title="@BackupsTitle(backupCount)"
-                                                                   Size="Size.Small"
-                                                                   OnClick="() => RestoreFromCard(savegame)" />
-                                                </MudBadge>
+                                                <MudIconButton Icon="@Icons.Material.Rounded.History"
+                                                               aria-label="@BackupsTitle(backupCount)"
+                                                               title="@BackupsTitle(backupCount)"
+                                                               Size="Size.Small"
+                                                               OnClick="() => RestoreFromCard(savegame)" />
                                             }
                                             @if (SavegameManager.IsCopy(savegame))
                                             {

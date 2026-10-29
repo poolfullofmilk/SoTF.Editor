@@ -9,237 +9,236 @@
         @* Filter Panel *@
         <MudElement HtmlTag="div"
                     Class="side-panel fill-column">
-            <MudPaper Elevation="4"
-                      Class="rounded-panel pa-4 fit d-flex flex-column">
-                <MudStack Spacing="3"
-                          Class="fill-column fit">
-                    @* Point Search *@
-                    <SearchField Value="@MapViewModel.MapFilter.FullText"
-                                 ValueChanged="SetFullText"
-                                 FullWidth />
+            <MudStack Spacing="3"
+                      Class="fill-column fit">
+                @* Point Search *@
+                <SearchField Value="@MapViewModel.MapFilter.FullText"
+                             ValueChanged="SetFullText"
+                             FullWidth />
 
-                    @if (IsSearching)
-                    {
-                        var results = MapViewModel.SearchResults();
-                        <MudStack Row
-                                  AlignItems="AlignItems.Center"
-                                  Spacing="1">
-                            <MudText Typo="Typo.subtitle2">@AppText.Get("Results")</MudText>
-                            <MudSpacer />
-                            <MudText Typo="Typo.body2"
-                                     Class="mud-text-secondary pr-1">
-                                @results.Count
-                            </MudText>
-                        </MudStack>
-                        @* Search Results *@
-                        <MudPaper Elevation="0"
-                                  Class="inset rounded-panel panel-flush overflow-y-auto flex-shrink-0"
-                                  Style="max-height:240px">
-                            @if (results.Count == 0)
-                            {
-                                <MudText Typo="Typo.body2"
-                                         Class="mud-text-secondary px-4 py-2">
-                                    @AppText.Get("NothingFound")
-                                </MudText>
-                            }
-                            @foreach (var result in results.Take(MaxResults))
-                            {
-                                @* Result Row *@
-                                <MudElement HtmlTag="div"
-                                            Class="list-row d-flex align-center gap-3 px-4 py-1"
-                                            role="button"
-                                            tabindex="0"
-                                            data-keyclick
-                                            @onclick="() => FocusResultAsync(result)">
-                                    <MudImage Src="@result.Poi.Icon"
-                                              Alt="@result.Poi.Title"
-                                              Width="20"
-                                              Height="20" />
-                                    <MudStack Spacing="0"
-                                              Style="min-width:0">
-                                        <MudText Typo="Typo.body2"
-                                                 Class="text-truncate">
-                                            <MudHighlighter Text="@result.Poi.Title"
-                                                            HighlightedText="@MapViewModel.MapFilter.FullText" />
-                                        </MudText>
-                                        <MudText Typo="Typo.caption"
-                                                 Class="mud-text-secondary text-truncate">
-                                            @Formatter.JoinParts(result.Group.Title, result.Poi.AreaName)
-                                        </MudText>
-                                    </MudStack>
-                                </MudElement>
-                            }
-                            @if (results.Count > MaxResults)
-                            {
-                                <MudText Typo="Typo.caption"
-                                         Class="mud-text-secondary px-4 py-2">
-                                    @AppText.Format("AndMore", results.Count - MaxResults)
-                                </MudText>
-                            }
-                        </MudPaper>
-                    }
-
+                @if (IsSearching)
+                {
+                    var results = MapViewModel.SearchResults();
                     <MudStack Row
                               AlignItems="AlignItems.Center"
-                              Spacing="1">
-                        <MudText Typo="Typo.subtitle2">@AppText.Get("PointsOfInterest")</MudText>
+                              Spacing="1"
+                              Class="pl-2">
+                        <MudText Typo="Typo.subtitle2">@AppText.Get("Results")</MudText>
                         <MudSpacer />
-                        @* Reset Points *@
-                        <Tooltip Text="@AppText.Get("ResetToDefault")"
-                                 Disabled="@MapViewModel.IsAtDefault()"
-                                 RootClass="d-flex">
-                            <MudIconButton Icon="@Icons.Material.Rounded.RestartAlt"
-                                           aria-label="@AppText.Get("ResetToDefault")"
-                                           Size="Size.Small"
-                                           Disabled="@MapViewModel.IsAtDefault()"
-                                           OnClick="ResetToDefault" />
-                        </Tooltip>
-                        @* Filter Menu *@
-                        <Tooltip Text="@AppText.Get("Filters")"
-                                 RootClass="d-flex">
-                            <MudBadge Dot
-                                      Overlap
-                                      Color="Color.Info"
-                                      Visible="@HasFilters"
-                                      Class="d-flex">
-                                <MudMenu Icon="@Icons.Material.Rounded.FilterList"
-                                         AriaLabel="@AppText.Get("Filters")"
-                                         Size="Size.Small"
-                                         AnchorOrigin="Origin.BottomRight"
-                                         TransformOrigin="Origin.TopRight">
-                                    @* Area Menu *@
-                                    <MudMenu Label="@($"{AppText.Get("Area")}: {MapViewModel.MapFilter.AreaFilter.Name}")"
-                                             MaxHeight="400">
-                                        @foreach (var areaFilter in MapViewModel.MapFilter.AreaFilterTypeValues)
-                                        {
-                                            <MudMenuItem Icon="@CheckOf(areaFilter == MapViewModel.MapFilter.AreaFilter)"
-                                                         OnClick="() => SetAreaFilter(areaFilter)">
-                                                @areaFilter.Name
-                                            </MudMenuItem>
-                                        }
-                                    </MudMenu>
-                                    @* Requirements Menu *@
-                                    <MudMenu Label="@($"{AppText.Get("Requirements")}: {RequirementsName(MapViewModel.MapFilter.RequirementsFilter)}")">
-                                        @foreach (var requirementsFilter in Enum.GetValues<MapFilter.RequirementsFilterType>())
-                                        {
-                                            <MudMenuItem Icon="@CheckOf(requirementsFilter == MapViewModel.MapFilter.RequirementsFilter)"
-                                                         OnClick="() => SetRequirementsFilter(requirementsFilter)">
-                                                @RequirementsName(requirementsFilter)
-                                            </MudMenuItem>
-                                        }
-                                    </MudMenu>
-                                    @* Near Player Menu *@
-                                    <MudMenu Label="@($"{AppText.Get("NearPlayer")}: {NearPlayerName(MapViewModel.MapFilter.NearPlayerMetres)}")">
-                                        @foreach (var metres in MapFilter.NearPlayerChoices)
-                                        {
-                                            <MudMenuItem Icon="@CheckOf(metres == MapViewModel.MapFilter.NearPlayerMetres)"
-                                                         OnClick="() => SetNearPlayer(metres)">
-                                                @NearPlayerName(metres)
-                                            </MudMenuItem>
-                                        }
-                                    </MudMenu>
-                                    @* Uncollected Only *@
-                                    <MudMenuItem Icon="@(MapViewModel.MapFilter.ShowOnlyUncollectedItems ? Icons.Material.Rounded.CheckBox : Icons.Material.Rounded.CheckBoxOutlineBlank)"
-                                                 AutoClose="false"
-                                                 OnClick="() => SetUncollectedOnly(!MapViewModel.MapFilter.ShowOnlyUncollectedItems)">
-                                        @AppText.Get("UncollectedOnly")
-                                    </MudMenuItem>
-                                    <MudDivider />
-                                    @* Reset Filters *@
-                                    <MudMenuItem Icon="@Icons.Material.Rounded.FilterListOff"
-                                                 IconColor="Color.Error"
-                                                 Class="mud-error-text"
-                                                 Disabled="@(!HasFilters)"
-                                                 OnClick="ResetFilters">
-                                        @AppText.Get("ResetFilters")
-                                    </MudMenuItem>
-                                </MudMenu>
-                            </MudBadge>
-                        </Tooltip>
-                        @* Select All *@
-                        <Tooltip Text="@AppText.Get("SelectAll")"
-                                 RootClass="d-flex">
-                            <MudCheckBox T="bool?"
-                                         Value="StateOf(MapViewModel.AllGroups())"
-                                         ValueChanged="ToggleAll"
-                                         TriState
-                                         Color="Color.Info"
-                                         Dense />
-                        </Tooltip>
+                        <MudText Typo="Typo.body2"
+                                 Class="mud-text-secondary pr-1">
+                            @results.Count
+                        </MudText>
                     </MudStack>
-
-                    @* Point Groups *@
-                    <MudStack Spacing="0"
-                              Class="overflow-y-auto fit">
-                        @foreach (var grouper in MapViewModel.PoiGroups.OrderBy(grouper => grouper.Title))
+                    @* Search Results *@
+                    <MudPaper Elevation="4"
+                              Class="rounded-panel panel-flush overflow-y-auto flex-shrink-0"
+                              Style="max-height:240px">
+                        @if (results.Count == 0)
                         {
-                            @if (grouper is PoiGroupCollection collection)
-                            {
-                                <MudStack Row
-                                          AlignItems="AlignItems.Center"
-                                          Spacing="0"
-                                          Class="@MatchClass(collection.PoiGroups)">
-                                    @* Collection Checkbox *@
-                                    <MudCheckBox T="bool?"
-                                                 Value="StateOf(collection.PoiGroups)"
-                                                 ValueChanged="() => SetEnabled(collection, StateOf(collection.PoiGroups) != true)"
-                                                 TriState
-                                                 Color="Color.Info"
-                                                 Dense />
-                                    @* Collection Button *@
-                                    <MudElement HtmlTag="div"
-                                                Class="list-row rounded-inner d-flex align-center align-self-stretch gap-1 flex-grow-1 px-1"
-                                                role="button"
-                                                tabindex="0"
-                                                aria-expanded="@(IsExpanded(collection) ? "true" : "false")"
-                                                data-keyclick
-                                                @onclick="() => ToggleExpanded(collection)">
-                                        <MudIcon Icon="@(IsExpanded(collection) ? Icons.Material.Rounded.ExpandMore : Icons.Material.Rounded.ChevronRight)"
-                                                 Size="Size.Small" />
-                                        <MudText Typo="Typo.body2"
-                                                 Class="flex-grow-1">
-                                            @collection.Title
-                                        </MudText>
-                                        <MudText Typo="Typo.body2"
-                                                 Class="mud-text-secondary">
-                                            @collection.Count
-                                        </MudText>
-                                    </MudElement>
-                                </MudStack>
-                            }
-                            @foreach (var poiGroup in GroupsUnder(grouper))
-                            {
-                                <MudStack Row
-                                          AlignItems="AlignItems.Center"
-                                          Spacing="2"
-                                          Class="@RowClass(poiGroup, grouper)">
-                                    @* Group Checkbox *@
-                                    <MudCheckBox T="bool"
-                                                 Value="poiGroup.Enabled"
-                                                 ValueChanged="value => SetEnabled(poiGroup, value)"
-                                                 Color="Color.Info"
-                                                 Dense>
-                                        <MudStack Row
-                                                  AlignItems="AlignItems.Center"
-                                                  Spacing="2">
-                                            <MudImage Src="@poiGroup.Icon"
-                                                      Alt="@poiGroup.Title"
-                                                      Width="20"
-                                                      Height="20" />
-                                            <MudText Typo="Typo.body2">@poiGroup.Title</MudText>
-                                        </MudStack>
-                                    </MudCheckBox>
-                                    <MudSpacer />
+                            <MudText Typo="Typo.body2"
+                                     Class="mud-text-secondary px-4 py-2">
+                                @AppText.Get("NothingFound")
+                            </MudText>
+                        }
+                        @foreach (var result in results.Take(MaxResults))
+                        {
+                            @* Result Row *@
+                            <MudElement HtmlTag="div"
+                                        Class="list-row d-flex align-center gap-3 px-4 py-1"
+                                        role="button"
+                                        tabindex="0"
+                                        data-keyclick
+                                        @onclick="() => FocusResultAsync(result)">
+                                <MudImage Src="@result.Poi.Icon"
+                                          Alt="@result.Poi.Title"
+                                          Width="20"
+                                          Height="20" />
+                                <MudStack Spacing="0"
+                                          Style="min-width:0">
                                     <MudText Typo="Typo.body2"
-                                             Class="mud-text-secondary pr-1">
-                                        @poiGroup.Count
+                                             Class="text-truncate">
+                                        <MudHighlighter Text="@result.Poi.Title"
+                                                        HighlightedText="@MapViewModel.MapFilter.FullText" />
+                                    </MudText>
+                                    <MudText Typo="Typo.caption"
+                                             Class="mud-text-secondary text-truncate">
+                                        @Formatter.JoinParts(result.Group.Title, result.Poi.AreaName)
                                     </MudText>
                                 </MudStack>
-                            }
+                            </MudElement>
                         }
-                    </MudStack>
+                        @if (results.Count > MaxResults)
+                        {
+                            <MudText Typo="Typo.caption"
+                                     Class="mud-text-secondary px-4 py-2">
+                                @AppText.Format("AndMore", results.Count - MaxResults)
+                            </MudText>
+                        }
+                    </MudPaper>
+                }
+
+                <MudStack Row
+                          AlignItems="AlignItems.Center"
+                          Spacing="1"
+                          Class="pl-2">
+                    <MudText Typo="Typo.subtitle2">@AppText.Get("PointsOfInterest")</MudText>
+                    <MudSpacer />
+                    @* Reset Points *@
+                    <Tooltip Text="@AppText.Get("ResetToDefault")"
+                             Disabled="@MapViewModel.IsAtDefault()"
+                             RootClass="d-flex">
+                        <MudIconButton Icon="@Icons.Material.Rounded.RestartAlt"
+                                       aria-label="@AppText.Get("ResetToDefault")"
+                                       Size="Size.Small"
+                                       Disabled="@MapViewModel.IsAtDefault()"
+                                       OnClick="ResetToDefault" />
+                    </Tooltip>
+                    @* Filter Menu *@
+                    <Tooltip Text="@AppText.Get("Filters")"
+                             RootClass="d-flex">
+                        <MudBadge Dot
+                                  Overlap
+                                  Color="Color.Info"
+                                  Visible="@HasFilters"
+                                  Class="d-flex">
+                            <MudMenu Icon="@Icons.Material.Rounded.FilterList"
+                                     AriaLabel="@AppText.Get("Filters")"
+                                     Size="Size.Small"
+                                     AnchorOrigin="Origin.BottomRight"
+                                     TransformOrigin="Origin.TopRight">
+                                @* Area Menu *@
+                                <MudMenu Label="@($"{AppText.Get("Area")}: {MapViewModel.MapFilter.AreaFilter.Name}")"
+                                         MaxHeight="400">
+                                    @foreach (var areaFilter in MapViewModel.MapFilter.AreaFilterTypeValues)
+                                    {
+                                        <MudMenuItem Icon="@CheckOf(areaFilter == MapViewModel.MapFilter.AreaFilter)"
+                                                     OnClick="() => SetAreaFilter(areaFilter)">
+                                            @areaFilter.Name
+                                        </MudMenuItem>
+                                    }
+                                </MudMenu>
+                                @* Requirements Menu *@
+                                <MudMenu Label="@($"{AppText.Get("Requirements")}: {RequirementsName(MapViewModel.MapFilter.RequirementsFilter)}")">
+                                    @foreach (var requirementsFilter in Enum.GetValues<MapFilter.RequirementsFilterType>())
+                                    {
+                                        <MudMenuItem Icon="@CheckOf(requirementsFilter == MapViewModel.MapFilter.RequirementsFilter)"
+                                                     OnClick="() => SetRequirementsFilter(requirementsFilter)">
+                                            @RequirementsName(requirementsFilter)
+                                        </MudMenuItem>
+                                    }
+                                </MudMenu>
+                                @* Near Player Menu *@
+                                <MudMenu Label="@($"{AppText.Get("NearPlayer")}: {NearPlayerName(MapViewModel.MapFilter.NearPlayerMetres)}")">
+                                    @foreach (var metres in MapFilter.NearPlayerChoices)
+                                    {
+                                        <MudMenuItem Icon="@CheckOf(metres == MapViewModel.MapFilter.NearPlayerMetres)"
+                                                     OnClick="() => SetNearPlayer(metres)">
+                                            @NearPlayerName(metres)
+                                        </MudMenuItem>
+                                    }
+                                </MudMenu>
+                                @* Uncollected Only *@
+                                <MudMenuItem Icon="@(MapViewModel.MapFilter.ShowOnlyUncollectedItems ? Icons.Material.Rounded.CheckBox : Icons.Material.Rounded.CheckBoxOutlineBlank)"
+                                             AutoClose="false"
+                                             OnClick="() => SetUncollectedOnly(!MapViewModel.MapFilter.ShowOnlyUncollectedItems)">
+                                    @AppText.Get("UncollectedOnly")
+                                </MudMenuItem>
+                                <MudDivider />
+                                @* Reset Filters *@
+                                <MudMenuItem Icon="@Icons.Material.Rounded.FilterListOff"
+                                             IconColor="Color.Error"
+                                             Class="mud-error-text"
+                                             Disabled="@(!HasFilters)"
+                                             OnClick="ResetFilters">
+                                    @AppText.Get("ResetFilters")
+                                </MudMenuItem>
+                            </MudMenu>
+                        </MudBadge>
+                    </Tooltip>
+                    @* Select All *@
+                    <Tooltip Text="@AppText.Get("SelectAll")"
+                             RootClass="d-flex">
+                        <MudCheckBox T="bool?"
+                                     Value="StateOf(MapViewModel.AllGroups())"
+                                     ValueChanged="ToggleAll"
+                                     TriState
+                                     Color="Color.Info"
+                                     Dense />
+                    </Tooltip>
                 </MudStack>
-            </MudPaper>
+
+                @* Point Groups *@
+                <MudPaper Elevation="4"
+                          Class="rounded-panel px-3 py-2 overflow-y-auto fit">
+                    @foreach (var grouper in MapViewModel.PoiGroups.OrderBy(grouper => grouper.Title))
+                    {
+                        @if (grouper is PoiGroupCollection collection)
+                        {
+                            <MudStack Row
+                                      AlignItems="AlignItems.Center"
+                                      Spacing="0"
+                                      Class="@MatchClass(collection.PoiGroups)">
+                                @* Collection Checkbox *@
+                                <MudCheckBox T="bool?"
+                                             Value="StateOf(collection.PoiGroups)"
+                                             ValueChanged="() => SetEnabled(collection, StateOf(collection.PoiGroups) != true)"
+                                             TriState
+                                             Color="Color.Info"
+                                             Dense />
+                                @* Collection Button *@
+                                <MudElement HtmlTag="div"
+                                            Class="list-row rounded-inner d-flex align-center align-self-stretch gap-1 flex-grow-1 px-1"
+                                            role="button"
+                                            tabindex="0"
+                                            aria-expanded="@(IsExpanded(collection) ? "true" : "false")"
+                                            data-keyclick
+                                            @onclick="() => ToggleExpanded(collection)">
+                                    <MudIcon Icon="@(IsExpanded(collection) ? Icons.Material.Rounded.ExpandMore : Icons.Material.Rounded.ChevronRight)"
+                                             Size="Size.Small" />
+                                    <MudText Typo="Typo.body2"
+                                             Class="flex-grow-1">
+                                        @collection.Title
+                                    </MudText>
+                                    <MudText Typo="Typo.body2"
+                                             Class="mud-text-secondary">
+                                        @collection.Count
+                                    </MudText>
+                                </MudElement>
+                            </MudStack>
+                        }
+                        @foreach (var poiGroup in GroupsUnder(grouper))
+                        {
+                            <MudStack Row
+                                      AlignItems="AlignItems.Center"
+                                      Spacing="2"
+                                      Class="@RowClass(poiGroup, grouper)">
+                                @* Group Checkbox *@
+                                <MudCheckBox T="bool"
+                                             Value="poiGroup.Enabled"
+                                             ValueChanged="value => SetEnabled(poiGroup, value)"
+                                             Color="Color.Info"
+                                             Dense>
+                                    <MudStack Row
+                                              AlignItems="AlignItems.Center"
+                                              Spacing="2">
+                                        <MudImage Src="@poiGroup.Icon"
+                                                  Alt="@poiGroup.Title"
+                                                  Width="20"
+                                                  Height="20" />
+                                        <MudText Typo="Typo.body2">@poiGroup.Title</MudText>
+                                    </MudStack>
+                                </MudCheckBox>
+                                <MudSpacer />
+                                <MudText Typo="Typo.body2"
+                                         Class="mud-text-secondary pr-1">
+                                    @poiGroup.Count
+                                </MudText>
+                            </MudStack>
+                        }
+                    }
+                </MudPaper>
+            </MudStack>
         </MudElement>
 
         @* Map Viewport *@
