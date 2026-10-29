@@ -102,6 +102,7 @@ window.sotfMap = (() => {
     let settle = 0;
     let frame = 0;
     let clusterTimer = 0;
+    let clusterFrame = 0;
 
     // Points Near A Group's First Point Join It, A Grid Finds Neighbours
     const cluster = () => {
@@ -155,6 +156,12 @@ window.sotfMap = (() => {
     const clusterSoon = () => {
         clearTimeout(clusterTimer);
         clusterTimer = setTimeout(cluster, 120);
+    };
+
+    // Icons That Land Fold Before Their First Paint, Never Loose First
+    const clusterNow = () => {
+        cancelAnimationFrame(clusterFrame);
+        clusterFrame = requestAnimationFrame(cluster);
     };
 
     // The Map Panel's Name Tag, Placed Over The Hovered Point
@@ -275,9 +282,9 @@ window.sotfMap = (() => {
         fit();
 
         // New Or Removed Icons Group Again Once They Land
-        state.points = new MutationObserver(clusterSoon);
-        state.points.observe(canvas, { childList: true });
-        clusterSoon();
+        state.points = new MutationObserver(clusterNow);
+        state.points.observe(canvas.querySelector(".map-points") ?? canvas, { childList: true });
+        clusterNow();
 
         // A Hovered Point Shows Its Name
         viewport.addEventListener("pointerover", (event) => {

@@ -25,7 +25,7 @@
                   Class="mud-width-full px-2"
                   Spacing="2">
             <MudText Typo="Typo.h6"
-                     Class="text-truncate mr-4">
+                     Class="mud-typography-nowrap mr-4">
                 @AppInfo.DisplayName
             </MudText>
 
@@ -137,7 +137,7 @@
                         @foreach (var link in group)
                         {
                             <MudElement HtmlTag="div"
-                                        Class="position-relative">
+                                        Class="relative">
                                 @* Page Button *@
                                 <MudButton StartIcon="@link.Icon"
                                            Color="@(IsActive(link) ? Color.Secondary : Color.Default)"

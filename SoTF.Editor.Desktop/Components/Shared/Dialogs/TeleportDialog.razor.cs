@@ -44,7 +44,7 @@ public partial class TeleportDialog
             (AppText.Get("Destination"), _viewModel.Destination),
             (
                 AppText.Get("Position"),
-                $"X: {_viewModel.X:F2}, Y: {_viewModel.Y:F2}, Z: {_viewModel.Z:F2}"
+                $"X: {_viewModel.Landing.X:F2}, Y: {_viewModel.Landing.Y:F2}, Z: {_viewModel.Landing.Z:F2}"
             ),
         ];
 

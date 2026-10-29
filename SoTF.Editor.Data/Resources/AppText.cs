@@ -6,7 +6,10 @@ namespace SoTF.Editor.Data.Resources;
 public static class AppText
 {
     // Code Without A Localizer Reads The Same Resx
-    private static readonly ResourceManager s_resourceManager = new(typeof(SharedResource));
+    private static readonly ResourceManager s_resourceManager = new(
+        "SoTF.Editor.Data.Resources.SharedResource",
+        typeof(AppText).Assembly
+    );
 
     // English Is The Neutral Resx, Others Fall Back To It
     public const string DefaultCulture = "en";

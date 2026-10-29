@@ -16,7 +16,7 @@
     <MudStack Spacing="0"
               Style="min-width:0">
         <MudText Typo="Typo.body2"
-                 Class="text-truncate text-tight">
+                 Class="mud-typography-nowrap text-tight">
             <MudHighlighter Text="@Name"
                             HighlightedText="@Highlight" />
             <ChangedDot When="Changed" />
@@ -24,7 +24,7 @@
         @if (!string.IsNullOrEmpty(Detail))
         {
             <MudText Typo="Typo.caption"
-                     Class="mud-text-secondary text-truncate">
+                     Class="mud-text-secondary mud-typography-nowrap">
                 <MudHighlighter Text="@Detail"
                                 HighlightedText="@Highlight" />
             </MudText>

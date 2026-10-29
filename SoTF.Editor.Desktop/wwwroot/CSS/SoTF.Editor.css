@@ -458,19 +458,9 @@ mark {
     height: 100%;
 }
 
-/* Overlay Corners And Truncation, The Few Utilities MudBlazor Lacks */
+/* Overlay Corners, A Utility MudBlazor Lacks */
 .position-absolute {
     position: absolute !important;
-}
-
-.position-relative {
-    position: relative !important;
-}
-
-.text-truncate {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }
 
 /* Theme Values For The Page */
@@ -705,6 +695,13 @@ html, body {
     width: 4096px;
     height: 4096px;
     transform-origin: 0 0;
+}
+
+/* Icons Append At The End, Inserting Before Siblings Is Slow */
+.map-points {
+    position: absolute;
+    left: 0;
+    top: 0;
 }
 
 .map-image {

@@ -77,7 +77,7 @@ public class InventoryPageViewModel
     public IEnumerable<InventoryItem> Filter(string? filter, string? type, bool heldOnly)
     {
         // One List, Held Items And Everything That Could Be Added
-        var normalizedFilter = TranslationHelper.Normalize(filter ?? "");
+        var normalizedFilter = Formatter.Normalize(filter ?? "");
         return (heldOnly ? _inventory : _inventory.Concat(_unassignedItems))
             .Where(item => type == null || item.Type == type)
             .Where(item =>

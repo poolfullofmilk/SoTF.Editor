@@ -11,7 +11,7 @@
     }
     else
     {
-        <MudIcon Icon="@EmptyIcon"
+        <MudIcon Icon="@Icons.Material.Rounded.Shield"
                  Class="thumb mud-text-disabled" />
     }
     <ChangedBadge When="Changed"
@@ -20,7 +20,7 @@
                    Variant="Variant.Outlined"
                    Value="Value"
                    ValueChanged="ValueChanged"
-                   Label="@Label"
+                   Label="@AppText.Get("Type")"
                    ToStringFunc="item => item?.Name ?? string.Empty"
                    Disabled="Disabled"
                    Margin="Margin.Dense">

@@ -7,10 +7,7 @@ using Newtonsoft.Json;
 using NLog;
 using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
-using SoTF.Editor.Services.Actors;
 using SoTF.Editor.Services.Integration;
-using SoTF.Editor.Services.Map;
-using SoTF.Editor.Services.Pages;
 using SoTF.Editor.Services.Savegames;
 using SoTF.Editor.Services.Settings;
 
@@ -121,21 +118,10 @@ public partial class App : Application
         });
 
         services.AddSingleton(gameData);
-        services.AddSingleton<PlayerPageViewModel>();
-        services.AddSingleton<ArmorPageViewModel>();
-        services.AddSingleton<InventoryPageViewModel>();
-        services.AddSingleton<StoragePageViewModel>();
-        services.AddSingleton<FollowerPageViewModel>();
-        services.AddSingleton<GameSetupPageViewModel>();
-        services.AddSingleton<GameStatePageViewModel>();
-        services.AddSingleton<WeatherPageViewModel>();
-        services.AddSingleton<NpcsPageViewModel>();
-        services.AddSingleton<StructuresPageViewModel>();
-        services.AddSingleton<MainViewModel>();
-        services.AddSingleton<MapViewModel>();
-        services.AddSingleton<ActorModifier>();
-        services.AddSingleton<MapManager>();
-        services.AddSingleton<PoiLoader>();
+        foreach (var type in EditorServices.Singletons)
+        {
+            services.AddSingleton(type);
+        }
 
         var serviceProvider = services.BuildServiceProvider();
         var window = new MainWindow(

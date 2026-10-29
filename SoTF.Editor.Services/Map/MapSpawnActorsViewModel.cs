@@ -25,9 +25,7 @@ public class MapSpawnActorsViewModel
             ? [.. allActorTypes.Where(actorType => !actorType.IsFollower())]
             : allActorTypes;
         _destination = destination;
-        X = destination.Position?.X ?? destination.X;
-        Y = destination.Position?.Y ?? 0;
-        Z = destination.Position?.Z ?? destination.Z;
+        Landing = new Landing(destination, 1, areaMaskManager);
 
         if (destination is ActorPoi actorPoi)
         {
@@ -38,28 +36,17 @@ public class MapSpawnActorsViewModel
         {
             OriginalFamilyId = FamilyId = -1;
         }
-
-        Areas = [.. areaMaskManager.GetAllAreas()];
-        SelectedArea = destination.Position?.Area ?? AreaMaskManager.Surface;
     }
 
     public int? FamilyId { get; set; }
 
     public ActorType? SelectedActorType { get; set; }
 
-    public Area SelectedArea { get; set; }
-
     public SpawnPattern SelectedSpawnPattern { get; set; } = SpawnPattern.Grid;
 
     public int SpaceBetween { get; set; }
 
     public int SpawnCount { get; set; } = 1;
-
-    public float XOffset { get; set; } = 1;
-
-    public float YOffset { get; set; } = 1;
-
-    public float ZOffset { get; set; } = 1;
 
     public int? OriginalFamilyId { get; }
 
@@ -68,13 +55,9 @@ public class MapSpawnActorsViewModel
 
     public List<Influence> Influences { get; } = [];
 
-    public float X { get; }
-    public float Y { get; }
-    public float Z { get; }
+    public Landing Landing { get; }
 
     public string Destination => _destination.Title;
-
-    public List<Area> Areas { get; }
 
     public bool CanSpawn()
     {
@@ -88,15 +71,9 @@ public class MapSpawnActorsViewModel
             return;
         }
 
-        // The Picked Area Counts, It Was Ignored Before
-        var newPosition = new Position(X + XOffset, Y + YOffset, Z + ZOffset)
-        {
-            Area = SelectedArea,
-        };
-
         ActorModifier.Spawn(
             savegame,
-            newPosition,
+            Landing.At(),
             SelectedActorType,
             SpawnCount,
             FamilyId == -1 ? null : FamilyId,

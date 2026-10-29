@@ -24,12 +24,12 @@ public record Item
 
     public string NormalizedLowercaseName
     {
-        get { return field ??= TranslationHelper.Normalize(Name).ToLowerInvariant(); }
+        get { return field ??= Formatter.Normalize(Name).ToLowerInvariant(); }
     }
 
     private string NormalizedLowercaseType
     {
-        get { return field ??= TranslationHelper.Normalize(Type).ToLowerInvariant(); }
+        get { return field ??= Formatter.Normalize(Type).ToLowerInvariant(); }
     }
 
     public virtual bool Equals(Item? other)

@@ -11,73 +11,6 @@
                     Class="side-panel fill-column">
             <MudStack Spacing="3"
                       Class="fill-column fit">
-                @* Point Search *@
-                <SearchField Value="@MapViewModel.MapFilter.FullText"
-                             ValueChanged="SetFullText"
-                             FullWidth />
-
-                @if (IsSearching)
-                {
-                    var results = MapViewModel.SearchResults();
-                    <MudStack Row
-                              AlignItems="AlignItems.Center"
-                              Spacing="1"
-                              Class="pl-2">
-                        <MudText Typo="Typo.subtitle2">@AppText.Get("Results")</MudText>
-                        <MudSpacer />
-                        <MudText Typo="Typo.body2"
-                                 Class="mud-text-secondary pr-1">
-                            @results.Count
-                        </MudText>
-                    </MudStack>
-                    @* Search Results *@
-                    <MudPaper Elevation="4"
-                              Class="rounded-panel panel-flush overflow-y-auto flex-shrink-0"
-                              Style="max-height:240px">
-                        @if (results.Count == 0)
-                        {
-                            <MudText Typo="Typo.body2"
-                                     Class="mud-text-secondary px-4 py-2">
-                                @AppText.Get("NothingFound")
-                            </MudText>
-                        }
-                        @foreach (var result in results.Take(MaxResults))
-                        {
-                            @* Result Row *@
-                            <MudElement HtmlTag="div"
-                                        Class="list-row d-flex align-center gap-3 px-4 py-1"
-                                        role="button"
-                                        tabindex="0"
-                                        data-keyclick
-                                        @onclick="() => FocusResultAsync(result)">
-                                <MudImage Src="@result.Poi.Icon"
-                                          Alt="@result.Poi.Title"
-                                          Width="20"
-                                          Height="20" />
-                                <MudStack Spacing="0"
-                                          Style="min-width:0">
-                                    <MudText Typo="Typo.body2"
-                                             Class="text-truncate">
-                                        <MudHighlighter Text="@result.Poi.Title"
-                                                        HighlightedText="@MapViewModel.MapFilter.FullText" />
-                                    </MudText>
-                                    <MudText Typo="Typo.caption"
-                                             Class="mud-text-secondary text-truncate">
-                                        @Formatter.JoinParts(result.Group.Title, result.Poi.AreaName)
-                                    </MudText>
-                                </MudStack>
-                            </MudElement>
-                        }
-                        @if (results.Count > MaxResults)
-                        {
-                            <MudText Typo="Typo.caption"
-                                     Class="mud-text-secondary px-4 py-2">
-                                @AppText.Format("AndMore", results.Count - MaxResults)
-                            </MudText>
-                        }
-                    </MudPaper>
-                }
-
                 <MudStack Row
                           AlignItems="AlignItems.Center"
                           Spacing="1"
@@ -170,80 +103,152 @@
 
                 @* Point Groups *@
                 <MudPaper Elevation="4"
-                          Class="rounded-panel px-3 py-2 overflow-y-auto fit">
-                    @foreach (var grouper in MapViewModel.PoiGroups.OrderBy(grouper => grouper.Title))
+                          Class="rounded-panel panel-flush fit fill-column">
+                    @* Point Search *@
+                    <MudElement HtmlTag="div"
+                                Class="flex-shrink-0 px-4 pt-4 pb-2">
+                        <SearchField Value="@MapViewModel.MapFilter.FullText"
+                                     ValueChanged="SetFullText"
+                                     FullWidth />
+                    </MudElement>
+                    @if (IsSearching)
                     {
-                        @if (grouper is PoiGroupCollection collection)
-                        {
-                            <MudStack Row
-                                      AlignItems="AlignItems.Center"
-                                      Spacing="0"
-                                      Class="@MatchClass(collection.PoiGroups)">
-                                @* Collection Checkbox *@
-                                <MudCheckBox T="bool?"
-                                             Value="StateOf(collection.PoiGroups)"
-                                             ValueChanged="() => SetEnabled(collection, StateOf(collection.PoiGroups) != true)"
-                                             TriState
-                                             Color="Color.Info"
-                                             Dense />
-                                @* Collection Button *@
+                        var results = MapViewModel.SearchResults();
+                        <MudStack Row
+                                  AlignItems="AlignItems.Center"
+                                  Spacing="1"
+                                  Class="flex-shrink-0 px-4 pt-1">
+                            <MudText Typo="Typo.subtitle2">@AppText.Get("Results")</MudText>
+                            <MudSpacer />
+                            <MudText Typo="Typo.body2"
+                                     Class="mud-text-secondary">
+                                @results.Count
+                            </MudText>
+                        </MudStack>
+                        @* Search Results *@
+                        <MudElement HtmlTag="div"
+                                    Class="overflow-y-auto flex-shrink-0"
+                                    Style="max-height:240px">
+                            @if (results.Count == 0)
+                            {
+                                <MudText Typo="Typo.body2"
+                                         Class="mud-text-secondary px-4 py-2">
+                                    @AppText.Get("NothingFound")
+                                </MudText>
+                            }
+                            @foreach (var result in results.Take(MaxResults))
+                            {
+                                @* Result Row *@
                                 <MudElement HtmlTag="div"
-                                            Class="list-row rounded-inner d-flex align-center align-self-stretch gap-1 flex-grow-1 px-1"
+                                            Class="list-row d-flex align-center gap-3 px-4 py-1"
                                             role="button"
                                             tabindex="0"
-                                            aria-expanded="@(IsExpanded(collection) ? "true" : "false")"
                                             data-keyclick
-                                            @onclick="() => ToggleExpanded(collection)">
-                                    <MudIcon Icon="@(IsExpanded(collection) ? Icons.Material.Rounded.ExpandMore : Icons.Material.Rounded.ChevronRight)"
-                                             Size="Size.Small" />
-                                    <MudText Typo="Typo.body2"
-                                             Class="flex-grow-1">
-                                        @collection.Title
-                                    </MudText>
-                                    <MudText Typo="Typo.body2"
-                                             Class="mud-text-secondary">
-                                        @collection.Count
-                                    </MudText>
-                                </MudElement>
-                            </MudStack>
-                        }
-                        @foreach (var poiGroup in GroupsUnder(grouper))
-                        {
-                            <MudStack Row
-                                      AlignItems="AlignItems.Center"
-                                      Spacing="2"
-                                      Class="@RowClass(poiGroup, grouper)">
-                                @* Group Checkbox *@
-                                <MudCheckBox T="bool"
-                                             Value="poiGroup.Enabled"
-                                             ValueChanged="value => SetEnabled(poiGroup, value)"
-                                             Color="Color.Info"
-                                             Dense>
-                                    <MudStack Row
-                                              AlignItems="AlignItems.Center"
-                                              Spacing="2">
-                                        <MudImage Src="@poiGroup.Icon"
-                                                  Alt="@poiGroup.Title"
-                                                  Width="20"
-                                                  Height="20" />
-                                        <MudText Typo="Typo.body2">@poiGroup.Title</MudText>
+                                            @onclick="() => FocusResultAsync(result)">
+                                    <MudImage Src="@result.Poi.Icon"
+                                              Alt="@result.Poi.Title"
+                                              Width="20"
+                                              Height="20" />
+                                    <MudStack Spacing="0"
+                                              Style="min-width:0">
+                                        <MudText Typo="Typo.body2"
+                                                 Class="mud-typography-nowrap">
+                                            <MudHighlighter Text="@result.Poi.Title"
+                                                            HighlightedText="@MapViewModel.MapFilter.FullText" />
+                                        </MudText>
+                                        <MudText Typo="Typo.caption"
+                                                 Class="mud-text-secondary mud-typography-nowrap">
+                                            @Formatter.JoinParts(result.Group.Title, result.Poi.AreaName)
+                                        </MudText>
                                     </MudStack>
-                                </MudCheckBox>
-                                <MudSpacer />
-                                <MudText Typo="Typo.body2"
-                                         Class="mud-text-secondary pr-1">
-                                    @poiGroup.Count
+                                </MudElement>
+                            }
+                            @if (results.Count > MaxResults)
+                            {
+                                <MudText Typo="Typo.caption"
+                                         Class="mud-text-secondary px-4 py-2">
+                                    @AppText.Format("AndMore", results.Count - MaxResults)
                                 </MudText>
-                            </MudStack>
-                        }
+                            }
+                        </MudElement>
+                        <MudDivider Class="flex-shrink-0 mt-2" />
                     }
+                    <MudElement HtmlTag="div"
+                                Class="overflow-y-auto fit px-3 py-2">
+                        @foreach (var grouper in MapViewModel.PoiGroups.OrderBy(grouper => grouper.Title))
+                        {
+                            @if (grouper is PoiGroupCollection collection)
+                            {
+                                <MudStack Row
+                                          AlignItems="AlignItems.Center"
+                                          Spacing="0"
+                                          Class="@MatchClass(collection.PoiGroups)">
+                                    @* Collection Checkbox *@
+                                    <MudCheckBox T="bool?"
+                                                 Value="StateOf(collection.PoiGroups)"
+                                                 ValueChanged="() => SetEnabled(collection, StateOf(collection.PoiGroups) != true)"
+                                                 TriState
+                                                 Color="Color.Info"
+                                                 Dense />
+                                    @* Collection Button *@
+                                    <MudElement HtmlTag="div"
+                                                Class="list-row rounded-inner d-flex align-center align-self-stretch gap-1 flex-grow-1 px-1"
+                                                role="button"
+                                                tabindex="0"
+                                                aria-expanded="@(IsExpanded(collection) ? "true" : "false")"
+                                                data-keyclick
+                                                @onclick="() => ToggleExpanded(collection)">
+                                        <MudIcon Icon="@(IsExpanded(collection) ? Icons.Material.Rounded.ExpandMore : Icons.Material.Rounded.ChevronRight)"
+                                                 Size="Size.Small" />
+                                        <MudText Typo="Typo.body2"
+                                                 Class="flex-grow-1">
+                                            @collection.Title
+                                        </MudText>
+                                        <MudText Typo="Typo.body2"
+                                                 Class="mud-text-secondary">
+                                            @collection.Count
+                                        </MudText>
+                                    </MudElement>
+                                </MudStack>
+                            }
+                            @foreach (var poiGroup in GroupsUnder(grouper))
+                            {
+                                <MudStack Row
+                                          AlignItems="AlignItems.Center"
+                                          Spacing="2"
+                                          Class="@RowClass(poiGroup, grouper)">
+                                    @* Group Checkbox *@
+                                    <MudCheckBox T="bool"
+                                                 Value="poiGroup.Enabled"
+                                                 ValueChanged="value => SetEnabled(poiGroup, value)"
+                                                 Color="Color.Info"
+                                                 Dense>
+                                        <MudStack Row
+                                                  AlignItems="AlignItems.Center"
+                                                  Spacing="2">
+                                            <MudImage Src="@poiGroup.Icon"
+                                                      Alt="@poiGroup.Title"
+                                                      Width="20"
+                                                      Height="20" />
+                                            <MudText Typo="Typo.body2">@poiGroup.Title</MudText>
+                                        </MudStack>
+                                    </MudCheckBox>
+                                    <MudSpacer />
+                                    <MudText Typo="Typo.body2"
+                                             Class="mud-text-secondary pr-1">
+                                        @poiGroup.Count
+                                    </MudText>
+                                </MudStack>
+                            }
+                        }
+                    </MudElement>
                 </MudPaper>
             </MudStack>
         </MudElement>
 
         @* Map Viewport *@
         <MudPaper Elevation="4"
-                  Class="rounded-panel flex-grow-1 position-relative overflow-hidden"
+                  Class="rounded-panel flex-grow-1 relative overflow-hidden"
                   Style="@($"min-width:0;background-color:{MapBackground}")">
             <MudElement HtmlTag="div"
                         @bind-Ref="_viewport"

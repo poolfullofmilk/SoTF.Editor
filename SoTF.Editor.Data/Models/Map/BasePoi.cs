@@ -25,11 +25,11 @@ public abstract class BasePoi : IPoi
     public float Z { get; private set; }
 
     private string NormalizedLowercaseTitle =>
-        field ??= TranslationHelper.Normalize(Title).ToLowerInvariant();
+        field ??= Formatter.Normalize(Title).ToLowerInvariant();
 
     private string? NormalizedLowercaseDescription =>
         field ??= Description is { } description
-            ? TranslationHelper.Normalize(description).ToLowerInvariant()
+            ? Formatter.Normalize(description).ToLowerInvariant()
             : null;
 
     public Position? Position

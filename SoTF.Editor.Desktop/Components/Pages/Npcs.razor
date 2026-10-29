@@ -158,11 +158,11 @@
                                         <ChangedDot When="@(!namesRows && NpcsPage.IsChanged(context))" />
                                     </MudTd>
                                     <MudTd>@(context.FamilyId?.ToString() ?? "-")</MudTd>
-                                    <MudTd Class="text-truncate"
+                                    <MudTd Class="mud-typography-nowrap"
                                            title="@context.StatePrintable">
                                         @context.StatePrintable
                                     </MudTd>
-                                    <MudTd Class="text-truncate"
+                                    <MudTd Class="mud-typography-nowrap"
                                            title="@context.Position?.Area.Name">
                                         @context.Position?.Area.Name
                                     </MudTd>

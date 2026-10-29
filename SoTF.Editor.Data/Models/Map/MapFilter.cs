@@ -53,7 +53,7 @@ public class MapFilter
         {
             field = value;
             NormalizedLowercaseFullText =
-                value != null ? TranslationHelper.Normalize(value).ToLowerInvariant() : null;
+                value != null ? Formatter.Normalize(value).ToLowerInvariant() : null;
         }
     }
 

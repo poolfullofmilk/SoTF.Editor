@@ -29,32 +29,33 @@ public partial class MapPoints : IDisposable
     [Inject]
     public required PlayerPageViewModel PlayerPage { get; set; }
 
-    // Icons On The Page, Each Render Adds One Chunk More
-    private HashSet<IPoi> _drawn = new(ReferenceEqualityComparer.Instance);
+    // Icons In Page Order, Each Render Adds One Chunk More
+    private List<IPoi> _drawn = [];
     private bool _hasMore;
     private bool _isFilling;
     private bool _isDisposed;
 
     private List<IPoi> PointsToDraw()
     {
-        var drawn = new HashSet<IPoi>(ReferenceEqualityComparer.Instance);
-        var points = new List<IPoi>();
+        // Kept Icons Stay Put, New Ones Join The End
+        var visible = MapViewModel.VisiblePois().ToList();
+        var shown = new HashSet<IPoi>(visible, ReferenceEqualityComparer.Instance);
+        var points = _drawn.Where(shown.Contains).ToList();
+        var drawn = new HashSet<IPoi>(points, ReferenceEqualityComparer.Instance);
         var added = 0;
         _hasMore = false;
-        foreach (var poi in MapViewModel.VisiblePois())
+        foreach (var poi in visible.Where(poi => !drawn.Contains(poi)))
         {
-            if (_drawn.Contains(poi) || added++ < Chunk)
-            {
-                drawn.Add(poi);
-                points.Add(poi);
-            }
-            else
+            if (added++ == Chunk)
             {
                 _hasMore = true;
+                break;
             }
+
+            points.Add(poi);
         }
 
-        _drawn = drawn;
+        _drawn = points;
         return points;
     }
 

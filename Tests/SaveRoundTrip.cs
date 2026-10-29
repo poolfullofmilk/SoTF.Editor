@@ -37,21 +37,10 @@ try
     var gameData = JsonConvert.DeserializeObject<GameData>(ResourceFile.Read("GameData.json"))!;
     var services = new ServiceCollection();
     services.AddSingleton(gameData);
-    services.AddSingleton<PlayerPageViewModel>();
-    services.AddSingleton<ArmorPageViewModel>();
-    services.AddSingleton<InventoryPageViewModel>();
-    services.AddSingleton<StoragePageViewModel>();
-    services.AddSingleton<FollowerPageViewModel>();
-    services.AddSingleton<GameSetupPageViewModel>();
-    services.AddSingleton<GameStatePageViewModel>();
-    services.AddSingleton<WeatherPageViewModel>();
-    services.AddSingleton<NpcsPageViewModel>();
-    services.AddSingleton<StructuresPageViewModel>();
-    services.AddSingleton<MainViewModel>();
-    services.AddSingleton<ActorModifier>();
-    services.AddSingleton<MapManager>();
-    services.AddSingleton<PoiLoader>();
-    services.AddSingleton<MapViewModel>();
+    foreach (var type in EditorServices.Singletons)
+    {
+        services.AddSingleton(type);
+    }
     using var provider = services.BuildServiceProvider();
     var main = provider.GetRequiredService<MainViewModel>();
     var player = provider.GetRequiredService<PlayerPageViewModel>();

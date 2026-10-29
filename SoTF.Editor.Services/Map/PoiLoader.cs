@@ -125,7 +125,7 @@ public class PoiLoader(
                             inventoryItems,
                             _areaMaskManager
                         )
-                        : new DefaultGenericInformationalPoi(
+                        : new InformationalPoi(
                             poi,
                             _items,
                             group.Icon!,

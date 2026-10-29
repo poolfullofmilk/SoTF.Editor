@@ -142,7 +142,7 @@
                                               AlignItems="AlignItems.Center"
                                               Spacing="2">
                                         <MudText Typo="Typo.subtitle1"
-                                                 Class="text-truncate text-tight"
+                                                 Class="mud-typography-nowrap text-tight"
                                                  Style="font-weight:700">
                                             @savegame.Name
                                         </MudText>
@@ -161,13 +161,13 @@
                                     @if (savegame.Summary is { } summary)
                                     {
                                         <MudText Typo="Typo.body2"
-                                                 Class="text-truncate">
+                                                 Class="mud-typography-nowrap">
                                             @WorldText(summary)
                                         </MudText>
                                         @if (savegame.IsMultiPlayerClient())
                                         {
                                             <MudText Typo="Typo.body2"
-                                                     Class="text-truncate">
+                                                     Class="mud-typography-nowrap">
                                                 @PlayerText(summary)
                                             </MudText>
                                         }

@@ -17,7 +17,7 @@
                     <TitleContent>
                         <MudSpacer />
                         <MudText Typo="Typo.body2"
-                                 Class="mud-text-secondary text-truncate"
+                                 Class="mud-text-secondary mud-typography-nowrap"
                                  title="@AppText.Get("UidInfo")">
                             @AppText.Get("Uid") @GameSetup.Uid
                         </MudText>
@@ -111,7 +111,7 @@
                                                               AlignItems="AlignItems.Center"
                                                               Spacing="1">
                                                         <MudText Typo="Typo.subtitle2"
-                                                                 Class="text-truncate">
+                                                                 Class="mud-typography-nowrap">
                                                             @AppText.Get(setting.LabelKey)
                                                             <ChangedDot When="@GameSetup.IsChanged(setting.Key, setting.Fallback)" />
                                                         </MudText>
@@ -237,7 +237,7 @@
                                     <MudTh />
                                 </HeaderContent>
                                 <RowTemplate>
-                                    <MudTd Class="selectable-text text-truncate"
+                                    <MudTd Class="selectable-text mud-typography-nowrap"
                                            title="@context.Name">
                                         <MudHighlighter Text="@context.Name"
                                                         HighlightedText="@_namedIntFilter" />

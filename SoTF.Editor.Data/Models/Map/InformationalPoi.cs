@@ -1,9 +1,34 @@
+using SoTF.Editor.Data.Models.Map.Static;
+
 namespace SoTF.Editor.Data.Models.Map;
 
-public abstract class InformationalPoi : BasePoi
+public class InformationalPoi : BasePoi
 {
     private readonly IEnumerable<Item>? _requirements;
     private readonly HashSet<int> _inventoryItems;
+    private readonly string _icon = "";
+
+    public InformationalPoi(
+        RawPoi rawPoi,
+        ItemList itemList,
+        string icon,
+        HashSet<int> inventoryItems,
+        AreaMaskManager areaMaskManager
+    )
+        : this(
+            rawPoi.X,
+            rawPoi.Y,
+            rawPoi.Teleport?.ToPosition(areaMaskManager),
+            rawPoi.Title ?? "",
+            rawPoi.Description,
+            itemList.GetItems(rawPoi.Requirements),
+            inventoryItems,
+            rawPoi.IsUnderground,
+            rawPoi.Wiki
+        )
+    {
+        _icon = icon;
+    }
 
     protected InformationalPoi(
         float x,
@@ -27,6 +52,8 @@ public abstract class InformationalPoi : BasePoi
     }
 
     public string? WikiLink { get; }
+
+    public override string Icon => BaseIcon(_icon);
 
     public IEnumerable<ItemInInventoryWrapper> Requirements => Wrap(_requirements) ?? [];
 

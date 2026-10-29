@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text;
 
 namespace SoTF.Editor.Data.Helpers;
 
@@ -34,5 +35,16 @@ public static class Formatter
     {
         // Backups Taken In The Same Minute Stay Apart
         return value.ToString(DisplayDateTimeSecondsFormat, CultureInfo.InvariantCulture);
+    }
+
+    public static string Normalize(string text)
+    {
+        // Accents Dropped, So Searches Match Either Spelling
+        return string.Concat(
+            text.Normalize(NormalizationForm.FormD)
+                .Where(character =>
+                    CharUnicodeInfo.GetUnicodeCategory(character) != UnicodeCategory.NonSpacingMark
+                )
+        );
     }
 }

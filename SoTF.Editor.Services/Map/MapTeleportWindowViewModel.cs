@@ -23,19 +23,8 @@ public class MapTeleportWindowViewModel(
         _ => [],
     };
 
-    public Area SelectedArea { get; set; } = destination.Position?.Area ?? AreaMaskManager.Surface;
-
-    public float XOffset { get; set; } = destination.TeleportationOffset;
-
-    public float YOffset { get; set; } = destination.TeleportationOffset;
-
-    public float ZOffset { get; set; } = destination.TeleportationOffset;
-
-    public List<Area> Areas { get; } = [.. areaMaskManager.GetAllAreas()];
-
-    public float X { get; } = destination.Position?.X ?? destination.X;
-    public float Y { get; } = destination.Position?.Y ?? 0;
-    public float Z { get; } = destination.Position?.Z ?? destination.Z;
+    public Landing Landing { get; } =
+        new(destination, destination.TeleportationOffset, areaMaskManager);
 
     public string Target =>
         _copies.Count > 1
@@ -51,20 +40,14 @@ public class MapTeleportWindowViewModel(
     {
         if (teleportTarget == TeleportTarget.Player)
         {
-            playerState.Pos = new Position(X + XOffset, Y + YOffset, Z + ZOffset)
-            {
-                Area = SelectedArea,
-            };
+            playerState.Pos = Landing.At();
             return;
         }
 
         // Copies Land A Step Apart, Not Inside Each Other
         foreach (var (index, copy) in _copies.Index())
         {
-            copy.Pos = new Position(X + XOffset + index, Y + YOffset, Z + ZOffset + index)
-            {
-                Area = SelectedArea,
-            };
+            copy.Pos = Landing.At(index);
         }
     }
 }

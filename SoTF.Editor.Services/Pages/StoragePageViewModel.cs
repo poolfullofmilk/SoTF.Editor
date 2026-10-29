@@ -174,12 +174,9 @@ public class StoragePageViewModel
             return new AdvancedItemsStorage(_advancedStorageDefinitions[id], _items, index);
         }
 
-        return definition.Type switch
-        {
-            StorageType.Food => new FoodStorage(definition, _items, index),
-            StorageType.Resource => new RestrictedStorage(definition, _items, index),
-            _ => new ItemsStorage(definition, _items, index),
-        };
+        return definition.Type == StorageType.Food
+            ? new FoodStorage(definition, _items, index)
+            : new BaseStorage(definition, _items, index);
     }
 
     private static JArray? StructuresOf(Savegame savegame)

@@ -69,29 +69,18 @@
     @if (MissingTypes.Any())
     {
         <MudStack Row
-                  AlignItems="AlignItems.Center"
+                  Wrap="Wrap.Wrap"
                   Spacing="2">
-            @* Influence Type *@
-            <MudSelect T="string"
-                       Variant="Variant.Outlined"
-                       @bind-Value="_newType"
-                       Label="@AppText.Get("Influences")"
-                       ToStringFunc="TypeName"
-                       Dense
-                       Class="flex-grow-1">
-                @foreach (var type in MissingTypes)
-                {
-                    <MudSelectItem Value="type">@TypeName(type)</MudSelectItem>
-                }
-            </MudSelect>
-            @* Add Influence *@
-            <MudButton Variant="Variant.Text"
-                       Size="Size.Small"
-                       StartIcon="@Icons.Material.Rounded.Add"
-                       Disabled="@(_newType is null)"
-                       OnClick="Add">
-                @AppText.Get("Add")
-            </MudButton>
+            @foreach (var type in MissingTypes)
+            {
+                @* Add Influence *@
+                <MudButton Variant="Variant.Text"
+                           Size="Size.Small"
+                           StartIcon="@Icons.Material.Rounded.Add"
+                           OnClick="() => Add(type)">
+                    @TypeName(type)
+                </MudButton>
+            }
         </MudStack>
     }
 </MudStack>

@@ -192,7 +192,6 @@
                                     <ArmourSelect Value="armour.Item"
                                                   ValueChanged="armour.ChangeType"
                                                   Types="ArmorPage.ArmourTypes"
-                                                  Label="@AppText.Get("Type")"
                                                   Changed="@ArmorPage.IsTypeChanged(armour)" />
                                     <MudSpacer />
                                     @* Durability *@
@@ -257,10 +256,9 @@
                                         <ArmourSelect Value="item.Item"
                                                       ValueChanged="type => ArmorPage.ChangeType(item, type)"
                                                       Types="ArmorPage.TypesFor(item)"
-                                                      Label="@AppText.Get("Type")"
                                                       Disabled="@(!InventoryPage.IsHeld(item))" />
                                         <MudText Typo="Typo.body2"
-                                                 Class="mud-text-secondary text-nowrap">
+                                                 Class="mud-text-secondary">
                                             @AppText.Format("InInventoryCount", InventoryPage.IsHeld(item) ? item.TotalCount : 0)
                                             <ChangedDot When="@InventoryPage.IsChanged(item)" />
                                         </MudText>

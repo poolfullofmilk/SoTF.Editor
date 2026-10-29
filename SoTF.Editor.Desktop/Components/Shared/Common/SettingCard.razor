@@ -1,20 +1,45 @@
-@* Setting Card *@
-<MudPaper Elevation="4"
-          Class="rounded-panel pa-4 flex-grow-1">
-    <MudStack Spacing="2">
-        <MudStack Row
-                  AlignItems="AlignItems.Center"
-                  Spacing="1">
-            <MudText Typo="Typo.subtitle2"
-                     Class="text-truncate">
-                @AppText.Get(TextKeys.Setting(Setting.Name))
-            </MudText>
+@inherits EditorPageBase
+
+@if (Setting.Type == GenericSetting.DataType.Boolean)
+{
+    @* Setting Card *@
+    <MudPaper Elevation="4"
+              Class="rounded-panel pa-4 flex-grow-1 d-flex align-center">
+        @* Setting Switch *@
+        <MudSwitch T="bool"
+                   Value="Setting.BoolValue ?? false"
+                   ValueChanged="value => Setting.BoolValue = value"
+                   Color="Color.Info"
+                   Class="ma-0">
+            @AppText.Get(TextKeys.Setting(Setting.Name))
+            <ChangedDot When="Changed" />
             @if (Info is not null)
             {
                 <InfoIcon Text="@Info" />
             }
+        </MudSwitch>
+    </MudPaper>
+}
+else
+{
+    @* Setting Card *@
+    <MudPaper Elevation="4"
+              Class="rounded-panel pa-4 flex-grow-1">
+        <MudStack Spacing="2">
+            <MudStack Row
+                      AlignItems="AlignItems.Center"
+                      Spacing="1">
+                <MudText Typo="Typo.subtitle2"
+                         Class="mud-typography-nowrap">
+                    @AppText.Get(TextKeys.Setting(Setting.Name))
+                </MudText>
+                @if (Info is not null)
+                {
+                    <InfoIcon Text="@Info" />
+                }
+            </MudStack>
+            <GenericSettingEditor Setting="Setting"
+                                  Changed="Changed" />
         </MudStack>
-        <GenericSettingEditor Setting="Setting"
-                              Changed="Changed" />
-    </MudStack>
-</MudPaper>
+    </MudPaper>
+}

@@ -2,7 +2,7 @@ using SoTF.Editor.Data.Models.Map.Static;
 
 namespace SoTF.Editor.Data.Models.Map;
 
-public class CaveOrBunkerPoi : DefaultGenericInformationalPoi
+public class CaveOrBunkerPoi : InformationalPoi
 {
     private readonly IEnumerable<Item>? _items;
     private readonly IEnumerable<string>? _objects;

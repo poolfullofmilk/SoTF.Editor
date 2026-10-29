@@ -4,7 +4,7 @@ using SoTF.Editor.Data.Models.SaveData.Storage.Module;
 
 namespace SoTF.Editor.Data.Models.Storage;
 
-public abstract class BaseStorage : IStorage
+public class BaseStorage : IStorage
 {
     private readonly int _index;
     private readonly Logger _logger = LogManager.GetCurrentClassLogger();
@@ -13,11 +13,11 @@ public abstract class BaseStorage : IStorage
 
     public Position? Pos { get; set; }
 
-    protected BaseStorage(StorageDefinition definition, int index, List<ItemWrapper> supportedItems)
+    public BaseStorage(StorageDefinition definition, ItemList itemList, int index)
     {
         Definition = definition;
         _index = index;
-        SupportedItems = supportedItems;
+        SupportedItems = SupportedItemsOf(itemList, definition);
 
         for (var slotNumber = 0; slotNumber < definition.Slots; slotNumber++)
         {
@@ -182,7 +182,39 @@ public abstract class BaseStorage : IStorage
         SetSaveData(storage.ToStorageSaveData());
     }
 
-    protected static void AddEffectiveSupportedItem(
+    private static List<ItemWrapper> SupportedItemsOf(
+        ItemList itemList,
+        StorageDefinition definition
+    )
+    {
+        var restrictedItemIds = definition.RestrictedItemIds;
+        var isShelf = definition.Type == StorageType.Items;
+        if (isShelf && restrictedItemIds?.Count == 0)
+        {
+            return [];
+        }
+
+        // No List Means Anything, Or What Fits A Shelf
+        var supportedItems = new List<ItemWrapper>();
+        foreach (
+            var item in itemList.Where(item =>
+                restrictedItemIds is { Count: > 0 }
+                    ? restrictedItemIds.Contains(item.Id)
+                    : !isShelf
+                        || (
+                            item.IsInventoryItem
+                            && (item.StorageMax?.Shelf > 0 || item.StorageMax?.Holder > 0)
+                        )
+            )
+        )
+        {
+            AddEffectiveSupportedItem(item, definition, supportedItems);
+        }
+
+        return isShelf ? [.. supportedItems.OrderBy(item => item.Name)] : supportedItems;
+    }
+
+    private static void AddEffectiveSupportedItem(
         Item item,
         StorageDefinition storageDefinition,
         List<ItemWrapper> target

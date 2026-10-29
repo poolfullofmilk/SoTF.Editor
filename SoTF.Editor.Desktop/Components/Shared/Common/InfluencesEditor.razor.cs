@@ -28,8 +28,6 @@ public partial class InfluencesEditor
     [Parameter]
     public Func<Influence, string, bool>? ChangedWhen { get; set; }
 
-    private string? _newType;
-
     // The Player First, Then The Others By Name
     private IEnumerable<Influence> SortedInfluences =>
         Influences
@@ -60,9 +58,9 @@ public partial class InfluencesEditor
         return ChangedWhen?.Invoke(influence, propertyName) == true;
     }
 
-    private static string TypeName(string? type)
+    private static string TypeName(string type)
     {
-        return type is null ? string.Empty : AppText.Get(TextKeys.Influence(type));
+        return AppText.Get(TextKeys.Influence(type));
     }
 
     private async Task Change(Action change)
@@ -71,14 +69,10 @@ public partial class InfluencesEditor
         await OnChanged.InvokeAsync();
     }
 
-    private async Task Add()
+    private async Task Add(string type)
     {
-        if (_newType is { } type)
-        {
-            Influences.Add(new Influence { TypeId = type });
-            _newType = null;
-            await OnChanged.InvokeAsync();
-        }
+        Influences.Add(new Influence { TypeId = type });
+        await OnChanged.InvokeAsync();
     }
 
     private async Task Remove(Influence influence)
