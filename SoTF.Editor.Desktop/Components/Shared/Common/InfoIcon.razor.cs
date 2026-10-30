@@ -9,4 +9,7 @@ public partial class InfoIcon
 
     [Parameter]
     public bool Warning { get; set; }
+
+    // Info Takes The Tonal Blue Like The Open Page
+    private string? IconStyle => Warning ? null : "color:var(--tonal-info-text)";
 }

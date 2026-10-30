@@ -2194,4 +2194,7 @@ Nein lässt den Editor offen, damit du zuerst speichern kannst</value>
   <data name="UnableToReadFile" xml:space="preserve">
     <value>Die Datei konnte nicht gelesen werden</value>
   </data>
+  <data name="ImportExport" xml:space="preserve">
+    <value>Importieren oder Exportieren</value>
+  </data>
 </root>

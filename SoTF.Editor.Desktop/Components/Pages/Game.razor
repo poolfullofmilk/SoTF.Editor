@@ -41,36 +41,35 @@
                                               aria-pressed="@(IsMode(mode) ? "true" : "false")"
                                               data-keyclick
                                               @onclick="() => GameSetup.SelectedMode = mode.Value">
-                                        <MudStack Spacing="1">
-                                            <MudStack Row
-                                                      AlignItems="AlignItems.Center"
-                                                      Spacing="2">
-                                                <MudIcon Icon="@mode.Icon"
-                                                         Color="@(IsMode(mode) ? Color.Info : Color.Tertiary)" />
-                                                <MudText Typo="Typo.subtitle1"
-                                                         Class="flex-grow-1"
-                                                         Style="font-weight:700">
-                                                    @AppText.Get(mode.LabelKey)
-                                                </MudText>
-                                                @if (mode.IsPreset)
-                                                {
-                                                    @* Load Preset *@
-                                                    <span class="d-flex"
-                                                          @onclick:stopPropagation="true">
-                                                        <MudIconButton Icon="@Icons.Material.Rounded.EditNote"
-                                                                       aria-label="@AppText.Get("LoadPreset")"
-                                                                       title="@AppText.Get("LoadPreset")"
-                                                                       Size="Size.Small"
-                                                                       Class="my-n1"
-                                                                       OnClick="() => LoadPresetAsync(mode.Value)" />
-                                                    </span>
-                                                }
-                                            </MudStack>
-                                            <MudText Typo="Typo.body2"
-                                                     Class="mud-text-secondary">
-                                                @AppText.Get(mode.TextKey)
+                                        <MudStack Row
+                                                  AlignItems="AlignItems.Center"
+                                                  Spacing="2">
+                                            <MudIcon Icon="@mode.Icon"
+                                                     Color="@(IsMode(mode) ? Color.Info : Color.Tertiary)" />
+                                            <MudText Typo="Typo.subtitle1"
+                                                     Class="flex-grow-1"
+                                                     Style="font-weight:700">
+                                                @AppText.Get(mode.LabelKey)
                                             </MudText>
+                                            @if (mode.IsPreset)
+                                            {
+                                                @* Load Preset *@
+                                                <span class="d-flex"
+                                                      @onclick:stopPropagation="true">
+                                                    <MudIconButton Icon="@Icons.Material.Rounded.EditNote"
+                                                                   aria-label="@AppText.Get("LoadPreset")"
+                                                                   title="@AppText.Get("LoadPreset")"
+                                                                   Size="Size.Small"
+                                                                   Class="my-n1"
+                                                                   OnClick="() => LoadPresetAsync(mode.Value)" />
+                                                </span>
+                                            }
                                         </MudStack>
+                                        <MudText Typo="Typo.body2"
+                                                 Align="Align.Center"
+                                                 Class="mud-text-secondary mt-auto pt-2">
+                                            @AppText.Get(mode.TextKey)
+                                        </MudText>
                                     </MudPaper>
                                 </MudItem>
                             }
@@ -170,7 +169,7 @@
                     <MudAlert Severity="Severity.Info"
                               Dense
                               Elevation="4"
-                              Class="rounded-panel mud-info-text">
+                              Class="rounded-panel">
                         @AppText.Get("CustomHint")
                     </MudAlert>
                 }

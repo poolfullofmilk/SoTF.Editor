@@ -691,7 +691,7 @@
     <value>Deer Hide</value>
   </data>
   <data name="Item473" xml:space="preserve">
-    <value>Leaf Armour</value>
+    <value>Leaf Armor</value>
   </data>
   <data name="Item474" xml:space="preserve">
     <value>Crafted Spear</value>
@@ -790,7 +790,7 @@
     <value>Leather Jacket</value>
   </data>
   <data name="Item494" xml:space="preserve">
-    <value>Bone Armour</value>
+    <value>Bone Armor</value>
   </data>
   <data name="Item495" xml:space="preserve">
     <value>Tactical Jacket</value>
@@ -862,7 +862,7 @@
     <value>Paper Target</value>
   </data>
   <data name="Item519" xml:space="preserve">
-    <value>Deer Hide Armour</value>
+    <value>Deer Hide Armor</value>
   </data>
   <data name="Item520" xml:space="preserve">
     <value>Structure Element</value>
@@ -967,7 +967,7 @@
     <value>Tech Mesh</value>
   </data>
   <data name="Item554" xml:space="preserve">
-    <value>Tech Armour</value>
+    <value>Tech Armor</value>
   </data>
   <data name="Item555" xml:space="preserve">
     <value>Track Suit</value>
@@ -1084,7 +1084,7 @@
     <value>Creepy Skin</value>
   </data>
   <data name="Item593" xml:space="preserve">
-    <value>Creepy Armour</value>
+    <value>Creepy Armor</value>
   </data>
   <data name="Item594" xml:space="preserve">
     <value>Guarana Berries</value>

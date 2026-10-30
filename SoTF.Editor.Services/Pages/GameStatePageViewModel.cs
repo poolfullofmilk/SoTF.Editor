@@ -265,7 +265,6 @@ public partial class GameStatePageViewModel
                 continue;
             }
 
-            s_logger.Info($"Found New Named Int Data {nameId}");
             NamedIntDatas.Add(
                 new GenericSetting(nameId, GenericSetting.DataType.Integer, namedIntData.Path)
                 {

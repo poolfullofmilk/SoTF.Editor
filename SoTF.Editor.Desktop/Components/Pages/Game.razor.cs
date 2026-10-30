@@ -15,10 +15,10 @@ public partial class Game : EditorPageBase
     // Values The Game Writes, Labels From The Translations
     private static readonly ModeCard[] s_modes =
     [
-        new("Normal", "Normal", MudBlazor.Icons.Material.Rounded.Forest),
-        new(HardGameMode, "Hard", MudBlazor.Icons.Material.Rounded.Whatshot),
-        new(HardSurvivalGameMode, "HardSurvival", MudBlazor.Icons.Material.Rounded.AcUnit),
-        new(PeacefulGameMode, "Peaceful", MudBlazor.Icons.Material.Rounded.Spa),
+        new("Normal", "Normal", MudBlazor.Icons.Material.Rounded.Hiking),
+        new(HardGameMode, "Hard", MudBlazor.Icons.Material.Rounded.SportsKabaddi),
+        new(HardSurvivalGameMode, "HardSurvival", MudBlazor.Icons.Material.Rounded.HeartBroken),
+        new(PeacefulGameMode, "Peaceful", MudBlazor.Icons.Material.Rounded.SelfImprovement),
         new(CreativeGameMode, "ModeCreative", MudBlazor.Icons.Material.Rounded.Construction),
         new(CustomGameMode, "ModeCustom", MudBlazor.Icons.Material.Rounded.Tune),
     ];
@@ -203,7 +203,7 @@ public partial class Game : EditorPageBase
     private string ModeClass(ModeCard mode)
     {
         // The Picked Mode Wears The Accent Ring
-        return "rounded-panel pa-4 hover-card flex-grow-1"
+        return "rounded-panel pa-4 hover-card flex-grow-1 d-flex flex-column"
             + (IsMode(mode) ? " card-open" : "")
             + (IsModeChanged(mode) ? " card-changed" : "");
     }

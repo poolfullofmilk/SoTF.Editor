@@ -7,21 +7,6 @@
                 Class="fit">
             <TitleContent>
                 <MudSpacer />
-                @* Export *@
-                <MudButton Variant="Variant.Text"
-                           Size="Size.Small"
-                           StartIcon="@Icons.Material.Rounded.FileDownload"
-                           Disabled="@(!InventoryPage.HasInventoryItems())"
-                           OnClick="Export">
-                    @AppText.Get("Export")
-                </MudButton>
-                @* Import *@
-                <MudButton Variant="Variant.Text"
-                           Size="Size.Small"
-                           StartIcon="@Icons.Material.Rounded.FileUpload"
-                           OnClick="ImportAsync">
-                    @AppText.Get("Import")
-                </MudButton>
                 @* Add All *@
                 <MudButton Variant="Variant.Text"
                            Size="Size.Small"
@@ -55,6 +40,26 @@
                            StartIcon="@Icons.Material.Rounded.DeleteSweep">
                     @AppText.Get("RemoveAll")
                 </MudButton>
+                @* Import Export Menu *@
+                <Tooltip Text="@AppText.Get("ImportExport")"
+                         RootClass="d-flex">
+                    <MudMenu Icon="@Icons.Material.Rounded.ImportExport"
+                             AriaLabel="@AppText.Get("ImportExport")"
+                             Size="Size.Small"
+                             Dense
+                             AnchorOrigin="Origin.BottomRight"
+                             TransformOrigin="Origin.TopRight">
+                        @* Export *@
+                        <MudMenuItem Icon="@Icons.Material.Rounded.FileDownload"
+                                     Label="@AppText.Get("Export")"
+                                     Disabled="@(!InventoryPage.HasInventoryItems())"
+                                     OnClick="Export" />
+                        @* Import *@
+                        <MudMenuItem Icon="@Icons.Material.Rounded.FileUpload"
+                                     Label="@AppText.Get("Import")"
+                                     OnClick="ImportAsync" />
+                    </MudMenu>
+                </Tooltip>
             </TitleContent>
             <ChildContent>
                 <MudPaper Elevation="4"

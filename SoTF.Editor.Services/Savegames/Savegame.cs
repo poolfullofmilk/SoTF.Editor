@@ -181,7 +181,6 @@ public partial class Savegame
             .FirstOrDefault();
         if (nameFile == null)
         {
-            s_logger.Info($"Found No Name File In {FullPath}");
             return null;
         }
 

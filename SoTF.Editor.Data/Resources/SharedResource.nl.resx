@@ -2194,4 +2194,7 @@ Nee houdt de editor open zodat je eerst kunt opslaan</value>
   <data name="UnableToReadFile" xml:space="preserve">
     <value>Kan het bestand niet lezen</value>
   </data>
+  <data name="ImportExport" xml:space="preserve">
+    <value>Importeren of Exporteren</value>
+  </data>
 </root>

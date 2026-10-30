@@ -299,7 +299,6 @@ public class StoragePageViewModel
             var newSaveData = newStorageSaveData[processedCount];
             if (oldStorageSaveData.Equals(newSaveData))
             {
-                s_logger.Info($"Kept Unchanged Storage {structureId} At {processedCount}");
                 continue;
             }
 

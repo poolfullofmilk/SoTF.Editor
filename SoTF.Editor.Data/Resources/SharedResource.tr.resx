@@ -2194,4 +2194,7 @@ Hayır düzenleyiciyi açık tutar, böylece önce kaydedebilirsiniz</value>
   <data name="UnableToReadFile" xml:space="preserve">
     <value>Dosya okunamadı</value>
   </data>
+  <data name="ImportExport" xml:space="preserve">
+    <value>İçe veya Dışa Aktar</value>
+  </data>
 </root>

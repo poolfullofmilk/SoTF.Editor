@@ -75,8 +75,7 @@ public partial class MainLayout : IDisposable
     // A Client Save Holds Only The Player, World Pages Stay Shut
     private bool IsDisabled(PageLink link)
     {
-        return (link.NeedsSavegame && !HasSavegame)
-            || (link.NeedsWorld && MainViewModel.SelectedSavegame?.IsMultiPlayerClient() == true);
+        return (link.NeedsSavegame && !HasSavegame) || (link.NeedsWorld && IsClientSave);
     }
 
     // The Dot Leads From Help Down To Check For Updates

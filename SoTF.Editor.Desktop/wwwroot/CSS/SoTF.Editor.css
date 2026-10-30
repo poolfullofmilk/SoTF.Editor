@@ -59,6 +59,9 @@
     --tonal-info: color-mix(in srgb, var(--mud-palette-info) 20%, transparent);
     --tonal-info-hover: color-mix(in srgb, var(--mud-palette-info) 30%, transparent);
     --tonal-info-text: color-mix(in srgb, var(--mud-palette-info) 40%, var(--mud-palette-white));
+    --tonal-error: color-mix(in srgb, var(--mud-palette-error) 20%, transparent);
+    --tonal-error-hover: color-mix(in srgb, var(--mud-palette-error) 30%, transparent);
+    --tonal-error-text: color-mix(in srgb, var(--mud-palette-error) 40%, var(--mud-palette-white));
     --tooltip-surface: color-mix(in srgb, var(--mud-palette-white) 9%, var(--mud-palette-surface));
     --scrollbar-thumb: color-mix(in srgb, var(--mud-palette-white) 18%, transparent);
     --scrollbar-thumb-hover: color-mix(in srgb, var(--mud-palette-white) 32%, transparent);
@@ -184,6 +187,11 @@
 .mud-tabs:has(.mud-tab-panel-active > .fill) {
     height: calc(100vh - var(--page-top) - var(--page-bottom));
     min-height: 0;
+}
+
+/* A Tab Opens At Its Full Height, MudBlazor Grew It Over 0.3 Seconds */
+.mud-tabs-panels {
+    transition: none;
 }
 
 /* Tabs Fill The Page While The Open Tab Fills */
@@ -604,15 +612,35 @@ html, body {
     box-shadow: var(--mud-elevation-1);
 }
 
-/* Picks And Page Actions Are Tonal, Save And A Dialog's Action Stay Solid */
-:is(.mud-button-group-root, .mud-main-content) .mud-button-filled.mud-button-filled-info:not(:disabled, .mud-disabled) {
+/* Every Blue Button, Pick And Info Alert Is Tonal Like The Open Page */
+.mud-button-filled.mud-button-filled-info:not(:disabled, .mud-disabled) {
     background-color: var(--tonal-info);
     color: var(--tonal-info-text);
     box-shadow: none;
 }
 
-    :is(.mud-button-group-root, .mud-main-content) .mud-button-filled.mud-button-filled-info:not(:disabled, .mud-disabled):is(:hover, :focus-visible, :active) {
+    .mud-button-filled.mud-button-filled-info:not(:disabled, .mud-disabled):is(:hover, :focus-visible, :active) {
         background-color: var(--tonal-info-hover);
+    }
+
+/* A Removal Is Tonal Too, In Red */
+.mud-button-filled.mud-button-filled-error:not(:disabled, .mud-disabled) {
+    background-color: var(--tonal-error);
+    color: var(--tonal-error-text);
+    box-shadow: none;
+}
+
+    .mud-button-filled.mud-button-filled-error:not(:disabled, .mud-disabled):is(:hover, :focus-visible, :active) {
+        background-color: var(--tonal-error-hover);
+    }
+
+.mud-alert-text-info {
+    background-color: var(--tonal-info);
+}
+
+    .mud-alert-text-info,
+    .mud-alert-text-info .mud-alert-icon {
+        color: var(--tonal-info-text);
     }
 
 /* A Picked Chip Is Tonal Like A Picked Button */

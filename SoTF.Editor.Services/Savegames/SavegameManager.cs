@@ -153,9 +153,10 @@ public static class SavegameManager
                 Path.GetInvalidFileNameChars().Contains(character) ? '_' : character
             )
         );
+        // Invariant, Or A Thai Windows Names The Year 2569
         var stem = Path.Combine(
             AppInfo.ExportsDirectory,
-            $"{safeName} {DateTime.Now:yyyy-MM-dd HH-mm-ss}"
+            $"{safeName} {DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture)}"
         );
         var target = stem + extension;
         for (var number = 2; File.Exists(target); number++)
