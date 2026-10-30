@@ -7,7 +7,7 @@ using SoTF.Editor.Services.Savegames;
 
 namespace SoTF.Editor.Services.Tools;
 
-public class WorldItemClonerViewModel(Savegame savegame)
+public sealed class WorldItemClonerViewModel(Savegame savegame)
 {
     // Items That Clone, By The Item Id A Clone Carries
     private static readonly Dictionary<int, WorldItemType> s_typesByItemId = new()

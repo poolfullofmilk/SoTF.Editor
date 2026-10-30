@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Text;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models.Map;
 using SoTF.Editor.Services.Map;
@@ -8,11 +9,8 @@ using SoTF.Editor.Services.Pages;
 
 namespace SoTF.Editor.Desktop.Components.Shared.Common;
 
-public partial class MapPoints : IDisposable
+public partial class MapPoints
 {
-    // New Icons Per Frame, So Thousands Never Block The Page
-    private const int Chunk = 1200;
-
     // The Look Every Icon Has Unless Its Style Says Otherwise
     private const int DefaultSize = 32;
 
@@ -29,51 +27,43 @@ public partial class MapPoints : IDisposable
     [Inject]
     public required PlayerPageViewModel PlayerPage { get; set; }
 
-    // Icons In Page Order, Each Render Adds One Chunk More
-    private List<IPoi> _drawn = [];
-    private bool _hasMore;
-    private bool _isFilling;
-    private bool _isDisposed;
+    [Inject]
+    public required IJSRuntime JavaScript { get; set; }
 
-    private List<IPoi> PointsToDraw()
-    {
-        // Kept Icons Stay Put, New Ones Join The End
-        var visible = MapViewModel.VisiblePois().ToList();
-        var shown = new HashSet<IPoi>(visible, ReferenceEqualityComparer.Instance);
-        var points = _drawn.Where(shown.Contains).ToList();
-        var drawn = new HashSet<IPoi>(points, ReferenceEqualityComparer.Instance);
-        var added = 0;
-        _hasMore = false;
-        foreach (var poi in visible.Where(poi => !drawn.Contains(poi)))
-        {
-            if (added++ == Chunk)
-            {
-                _hasMore = true;
-                break;
-            }
+    // JS Draws The Icons, Each Version Sent Once
+    private ElementReference _layer;
+    private int? _sentVersion;
 
-            points.Add(poi);
-        }
-
-        _drawn = points;
-        return points;
-    }
+    private sealed record PointData(
+        float X,
+        float Y,
+        string Icon,
+        string Title,
+        string Style,
+        bool Solo
+    );
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        // The Next Chunk Waits A Frame, So Clicks Get Through
-        if (!_hasMore || _isFilling)
+        // Blazor Diffs Thousands Slowly, JS Draws The Near Ones
+        if (_sentVersion == Version)
         {
             return;
         }
 
-        _isFilling = true;
-        await Task.Delay(8);
-        _isFilling = false;
-        if (!_isDisposed)
-        {
-            StateHasChanged();
-        }
+        _sentVersion = Version;
+        var points = MapViewModel
+            .VisiblePois()
+            .Select(poi => new PointData(
+                poi.MapLeft,
+                poi.MapTop,
+                poi.Icon,
+                poi.Title,
+                PoiStyle(poi.MapLeft, poi.MapTop, poi.IconSize, poi.IconZIndex),
+                poi is PlayerPoi or ZipPointPoi
+            ))
+            .ToList();
+        await JavaScript.InvokeVoidAsync("sotfMap.points", _layer, points);
     }
 
     public static string PoiStyle(float left, float top, int size, int zIndex)
@@ -114,11 +104,5 @@ public partial class MapPoints : IDisposable
     {
         // SVG Reads A Dot, Never The Windows Decimal Comma
         return value.ToString("0.#", CultureInfo.InvariantCulture);
-    }
-
-    public void Dispose()
-    {
-        _isDisposed = true;
-        GC.SuppressFinalize(this);
     }
 }

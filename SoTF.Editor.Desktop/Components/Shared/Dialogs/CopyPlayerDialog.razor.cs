@@ -61,11 +61,6 @@ public partial class CopyPlayerDialog
         };
     }
 
-    private string RowClass(Savegame savegame)
-    {
-        return "list-row px-4 py-2" + (savegame == _target ? " list-row-selected" : "");
-    }
-
     private static string DetailOf(Savegame savegame)
     {
         // Its Group, Then The Day It Reached

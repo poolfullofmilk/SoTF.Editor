@@ -1,6 +1,6 @@
 namespace SoTF.Editor.Data.Models.Actors;
 
-public class EquippableItem(Item item)
+public sealed class EquippableItem(Item item)
 {
     public bool Selected { get; set; }
 

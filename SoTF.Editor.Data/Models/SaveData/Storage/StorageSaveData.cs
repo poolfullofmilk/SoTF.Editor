@@ -2,7 +2,7 @@
 
 namespace SoTF.Editor.Data.Models.SaveData.Storage;
 
-public class StorageSaveData
+public sealed class StorageSaveData
 {
     public int Id { get; init; }
     public Position? Pos { get; init; }

@@ -3,7 +3,7 @@ using SoTF.Editor.Data.Resources;
 
 namespace SoTF.Editor.Data.Models.Actors;
 
-public record ActorType(
+public sealed record ActorType(
     int Id,
     string Classification,
     string? Gender = null,
@@ -22,7 +22,7 @@ public record ActorType(
 
     public bool IsCannibal => Classification is "cannibal" or "muddyCannibal";
 
-    public virtual bool Equals(ActorType? other)
+    public bool Equals(ActorType? other)
     {
         if (other is null)
         {

@@ -3,7 +3,7 @@ using SoTF.Editor.Data.Helpers;
 
 namespace SoTF.Editor.Data.Models.SaveData;
 
-internal class StringTypeConverter : JsonConverter
+internal sealed class StringTypeConverter : JsonConverter
 {
     public override bool CanConvert(Type objectType)
     {

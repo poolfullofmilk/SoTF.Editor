@@ -9,7 +9,7 @@ using SoTF.Editor.Services.Savegames;
 
 namespace SoTF.Editor.Services.Pages;
 
-public class StoragePageViewModel
+public sealed class StoragePageViewModel
 {
     private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
 

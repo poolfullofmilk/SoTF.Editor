@@ -39,7 +39,7 @@ public partial class Savegame
 
     public string Name => string.IsNullOrWhiteSpace(GameName) ? JoinedGameName ?? Id : GameName;
 
-    // A Joined Game Has No Name File, Named Like Hosted Ones
+    // A Joined Game Has No Name File, Named Like Hosted
     private string? JoinedGameName =>
         IsMultiPlayerClient() && Summary is { GameType: { } gameType } summary
             ? AppText.Format(

@@ -3,7 +3,7 @@ using SoTF.Editor.Data.Models.SaveData.Storage;
 
 namespace SoTF.Editor.Data.Models.Storage;
 
-public class AdvancedItemsStorage : IStorage
+public sealed class AdvancedItemsStorage : IStorage
 {
     private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
     private readonly AdvancedStorageDefinition _definition;

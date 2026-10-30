@@ -11,7 +11,7 @@ using static SoTF.Editor.Data.Helpers.Constants.SettingValueKeys;
 
 namespace SoTF.Editor.Services.Pages;
 
-public class PlayerPageViewModel
+public sealed class PlayerPageViewModel
 {
     private const string PlayerPositionEntry = "player.position";
     private const string PlayerAreaMaskEntry = "player.areaMask";

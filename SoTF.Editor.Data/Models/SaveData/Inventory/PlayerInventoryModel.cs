@@ -4,7 +4,7 @@ using SoTF.Editor.Data.ViewModels;
 
 namespace SoTF.Editor.Data.Models.SaveData.Inventory;
 
-public record PlayerInventoryModel
+public sealed record PlayerInventoryModel
 {
     public List<ItemBlockModel>? EquippedItems { get; set; }
     public required ItemInstanceManagerDataModel ItemInstanceManagerData { get; set; }

@@ -8,7 +8,7 @@ using SoTF.Editor.Services.Savegames;
 
 namespace SoTF.Editor.Services.Pages;
 
-public class ArmorPageViewModel
+public sealed class ArmorPageViewModel
 {
     private readonly List<ArmourData> _armour = [];
     private readonly Dictionary<ArmourData, (int ItemId, float Durability, int Slot)> _loaded = new(
@@ -86,7 +86,7 @@ public class ArmorPageViewModel
             _armour.TrueForAll(armourData => armourData.Slot != slot)
         );
 
-    // Armour In The Backpack, And Armour Worn From It Since The Load
+    // Backpack Armour, And Armour Worn From It Since The Load
     public IEnumerable<InventoryItem> InventoryArmour =>
         _inventoryPage
             .Filter(null, null, false)

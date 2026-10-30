@@ -1,61 +1,48 @@
+@* Zipline Lines *@
+<svg class="map-zipline"
+     viewBox="0 0 4096 4096">
+    @foreach (var zipline in MapViewModel.VisibleZiplines())
+    {
+        <line x1="@Pixel(zipline.PointA.MapLeft)"
+              y1="@Pixel(zipline.PointA.MapTop)"
+              x2="@Pixel(zipline.PointB.MapLeft)"
+              y2="@Pixel(zipline.PointB.MapTop)"
+              class="map-zipline-edge" />
+        <line x1="@Pixel(zipline.PointA.MapLeft)"
+              y1="@Pixel(zipline.PointA.MapTop)"
+              x2="@Pixel(zipline.PointB.MapLeft)"
+              y2="@Pixel(zipline.PointB.MapTop)" />
+    }
+</svg>
+@if (MapViewModel.VisiblePois().OfType<PlayerPoi>().FirstOrDefault() is { } player)
+{
+    @* Player Facing Cone *@
+    <svg class="map-heading"
+         viewBox="0 0 96 96"
+         style="@HeadingStyle(player.MapLeft, player.MapTop, player.IconZIndex)">
+        <defs>
+            <radialGradient id="map-heading-fade"
+                            cx="48"
+                            cy="48"
+                            r="46"
+                            gradientUnits="userSpaceOnUse">
+                <stop offset="0.15"
+                      style="stop-color:var(--mud-palette-info)"
+                      stop-opacity="0.9" />
+                <stop offset="1"
+                      style="stop-color:var(--mud-palette-info)"
+                      stop-opacity="0" />
+            </radialGradient>
+        </defs>
+        <path d="M48 48 L24.6 7.5 A46.8 46.8 0 0 1 71.4 7.5 Z"
+              fill="url(#map-heading-fade)" />
+        <circle cx="48"
+                cy="48"
+                r="14"
+                class="map-heading-pulse" />
+    </svg>
+}
 @* Points Layer *@
 <MudElement HtmlTag="div"
-            Class="map-points">
-    @* Zipline Lines *@
-    <svg class="map-zipline"
-         viewBox="0 0 4096 4096">
-        @foreach (var zipline in MapViewModel.VisibleZiplines())
-        {
-            <line x1="@Pixel(zipline.PointA.MapLeft)"
-                  y1="@Pixel(zipline.PointA.MapTop)"
-                  x2="@Pixel(zipline.PointB.MapLeft)"
-                  y2="@Pixel(zipline.PointB.MapTop)"
-                  class="map-zipline-edge" />
-            <line x1="@Pixel(zipline.PointA.MapLeft)"
-                  y1="@Pixel(zipline.PointA.MapTop)"
-                  x2="@Pixel(zipline.PointB.MapLeft)"
-                  y2="@Pixel(zipline.PointB.MapTop)" />
-        }
-    </svg>
-    @foreach (var poi in PointsToDraw())
-    {
-        @if (poi is PlayerPoi)
-        {
-            @* Player Facing Cone *@
-            <svg class="map-heading"
-                 viewBox="0 0 96 96"
-                 style="@HeadingStyle(poi.MapLeft, poi.MapTop, poi.IconZIndex)">
-                <defs>
-                    <radialGradient id="map-heading-fade"
-                                    cx="48"
-                                    cy="48"
-                                    r="46"
-                                    gradientUnits="userSpaceOnUse">
-                        <stop offset="0.15"
-                              style="stop-color:var(--mud-palette-info)"
-                              stop-opacity="0.9" />
-                        <stop offset="1"
-                              style="stop-color:var(--mud-palette-info)"
-                              stop-opacity="0" />
-                    </radialGradient>
-                </defs>
-                <path d="M48 48 L24.6 7.5 A46.8 46.8 0 0 1 71.4 7.5 Z"
-                      fill="url(#map-heading-fade)" />
-                <circle cx="48"
-                        cy="48"
-                        r="14"
-                        class="map-heading-pulse" />
-            </svg>
-        }
-        @* Point Icon *@
-        <img @key="poi"
-             src="@poi.Icon"
-             alt="@poi.Title"
-             class="map-poi"
-             role="button"
-             tabindex="-1"
-             data-keyclick
-             data-solo="@(poi is PlayerPoi or ZipPointPoi ? "" : null)"
-             style="@PoiStyle(poi.MapLeft, poi.MapTop, poi.IconSize, poi.IconZIndex)" />
-    }
-</MudElement>
+            @bind-Ref="_layer"
+            Class="map-points" />

@@ -3,7 +3,7 @@ using SoTF.Editor.Data.Models.SaveData.Storage.Module;
 
 namespace SoTF.Editor.Data.Models.Storage;
 
-public class StoredItem
+public sealed class StoredItem
 {
     private readonly int? _maxPerSlot;
 

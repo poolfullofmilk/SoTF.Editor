@@ -11,7 +11,7 @@ using SoTF.Editor.Services.Savegames;
 
 namespace SoTF.Editor.Services.Pages;
 
-public class InventoryPageViewModel
+public sealed class InventoryPageViewModel
 {
     public const string BlueprintPagePrefix = "DiscoverablePageUnlocked_";
     private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
@@ -414,7 +414,7 @@ public class InventoryPageViewModel
     }
 }
 
-public class Category(string type)
+public sealed class Category(string type)
 {
     public string Type { get; } = type;
 

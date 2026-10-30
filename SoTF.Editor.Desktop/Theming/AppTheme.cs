@@ -215,4 +215,10 @@ public static class AppTheme
             AppbarHeight = "55px",
         },
     };
+
+    public static string ListRowClass(bool selected)
+    {
+        // A Picked Row Stays Dark
+        return selected ? "list-row list-row-selected px-4 py-2" : "list-row px-4 py-2";
+    }
 }

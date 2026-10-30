@@ -10,7 +10,7 @@ using SoTF.Editor.Services.Tools;
 
 namespace SoTF.Editor.Services.Map;
 
-public class MapManager(
+public sealed class MapManager(
     NpcsPageViewModel npcsPageViewModel,
     StructuresPageViewModel structuresPageViewModel,
     PlayerPageViewModel playerPageViewModel,

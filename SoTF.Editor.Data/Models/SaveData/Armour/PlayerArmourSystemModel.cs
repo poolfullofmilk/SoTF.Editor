@@ -2,7 +2,7 @@ using System.Diagnostics;
 
 namespace SoTF.Editor.Data.Models.SaveData.Armour;
 
-public record PlayerArmourSystemModel : SotfBaseModel
+public sealed record PlayerArmourSystemModel : SotfBaseModel
 {
     // The Order The Game Fills Armour Slots In
     public static IReadOnlyList<int> ArmorSlots { get; } = [6, 7, 10, 11, 4, 5, 8, 9, 1, 0];

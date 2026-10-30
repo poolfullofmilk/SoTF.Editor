@@ -2,7 +2,7 @@
 
 namespace SoTF.Editor.Data.Models.Storage;
 
-public class ItemWrapper(
+public sealed class ItemWrapper(
     Item item,
     int? maxPerSlot,
     bool? preferHolder = false,

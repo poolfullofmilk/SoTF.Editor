@@ -2,7 +2,7 @@
 
 namespace SoTF.Editor.Data.Models.SaveData.Storage.Module;
 
-public class FoodSpoilStorageModuleWrapper(
+public sealed class FoodSpoilStorageModuleWrapper(
     FoodSpoilStorageModule foodSpoilStorageModule,
     int itemId,
     int variantId

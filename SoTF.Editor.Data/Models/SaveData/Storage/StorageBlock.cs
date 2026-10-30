@@ -1,6 +1,6 @@
 ﻿namespace SoTF.Editor.Data.Models.SaveData.Storage;
 
-public class StorageBlock
+public sealed class StorageBlock
 {
     public List<StorageItemBlock> ItemBlocks { get; init; } = [];
 

@@ -5,7 +5,7 @@ using SoTF.Editor.Data.Resources;
 
 namespace SoTF.Editor.Data.Models;
 
-public class ScrewStructureWrapper
+public sealed class ScrewStructureWrapper
 {
     // What Was Loaded, So Setting None Undoes A Type Change
     private readonly ScrewStructure? _loadedStructure;
@@ -82,7 +82,7 @@ public class ScrewStructureWrapper
 
     public string PctDonePrintable => Printable(PctDone);
 
-    // What A Save Would Write, Null While It Stays The Same
+    // What A Save Would Write, Null While Unchanged
     public int? NewPctDone
     {
         get

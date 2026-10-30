@@ -5,7 +5,7 @@ using SoTF.Editor.Data.Models.SaveData.Actor;
 
 namespace SoTF.Editor.Data.ViewModels;
 
-public class EditActorViewModel
+public sealed class EditActorViewModel
 {
     public EditActorViewModel(Actor actor, List<ActorType> allActorTypes)
     {
@@ -102,7 +102,7 @@ public class EditActorViewModel
     }
 }
 
-public class ModifyOptions
+public sealed class ModifyOptions
 {
     private float? _originalEnergy;
     private float? _originalHealth;

@@ -6,7 +6,7 @@ using SoTF.Editor.Data.ViewModels;
 
 namespace SoTF.Editor.Services.Savegames;
 
-public class SavegameStore
+public sealed class SavegameStore
 {
     public enum FileType
     {

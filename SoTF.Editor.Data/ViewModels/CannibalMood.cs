@@ -13,7 +13,7 @@ public sealed record CannibalMood(
 
     public bool Changes(int level)
     {
-        // A Stranger, Anyone Off That Level, Or Counts Left Over At Calm
+        // Strangers, Others Off That Level, Or Counts Left At Calm
         return !AllKnowPlayer
             || PlayerInfluences.Any(influence =>
                 Math.Abs(influence.Anger - level) >= 0.001

@@ -6,7 +6,7 @@ using SoTF.Editor.Services.Savegames;
 
 namespace SoTF.Editor.Services.Tools;
 
-public class RegrowTreesViewModel
+public sealed class RegrowTreesViewModel
 {
     private const VegetationState AllStates =
         VegetationState.Gone | VegetationState.HalfChopped | VegetationState.Stumps;

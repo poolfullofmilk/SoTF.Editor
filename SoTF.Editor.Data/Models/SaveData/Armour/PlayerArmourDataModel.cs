@@ -2,7 +2,7 @@
 
 namespace SoTF.Editor.Data.Models.SaveData.Armour;
 
-public record PlayerArmourDataModel : SotfBaseModel
+public sealed record PlayerArmourDataModel : SotfBaseModel
 {
     public required DataModel Data { get; init; }
 

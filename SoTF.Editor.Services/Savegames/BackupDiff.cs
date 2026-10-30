@@ -83,7 +83,7 @@ public static partial class BackupDiff
     }
 
     [GeneratedRegex("(?<=[a-z0-9])(?=[A-Z])")]
-    private static partial Regex WordStart();
+    internal static partial Regex WordStart();
 
     [GeneratedRegex(@"[._]?\d+$")]
     private static partial Regex TrailingId();
@@ -318,7 +318,7 @@ public static partial class BackupDiff
 
         private IEnumerable<(string, string, ChangeKind)> Actors(JToken? now, JToken? then)
         {
-            // An Actor Changes With Its Memory, Counted Once Under Its Page
+            // An Actor Changes With Its Memory, Counted Once Per Page
             var nowActors = ById(now?["Actors"]);
             var thenActors = ById(then?["Actors"]);
             var nowMemories = ById(now?["InfluenceMemory"]);

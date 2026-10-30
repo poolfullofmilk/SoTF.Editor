@@ -2,7 +2,11 @@ using Newtonsoft.Json.Linq;
 
 namespace SoTF.Editor.Data.Models;
 
-public class GenericSetting(string name, GenericSetting.DataType type, string? dataPath = null)
+public sealed class GenericSetting(
+    string name,
+    GenericSetting.DataType type,
+    string? dataPath = null
+)
 {
     public enum DataType
     {

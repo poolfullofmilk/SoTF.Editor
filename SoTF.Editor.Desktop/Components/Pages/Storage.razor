@@ -47,7 +47,7 @@
                             {
                                 @* Storage Row *@
                                 <MudElement HtmlTag="div"
-                                            Class="@StorageRowClass(storage)"
+                                            Class="@AppTheme.ListRowClass(StoragePage.SelectedStorage == storage)"
                                             role="button"
                                             tabindex="0"
                                             aria-pressed="@((StoragePage.SelectedStorage == storage) ? "true" : "false")"

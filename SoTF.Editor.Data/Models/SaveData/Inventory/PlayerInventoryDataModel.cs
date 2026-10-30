@@ -2,7 +2,7 @@
 
 namespace SoTF.Editor.Data.Models.SaveData.Inventory;
 
-public record PlayerInventoryDataModel
+public sealed record PlayerInventoryDataModel
 {
     public required DataModel Data { get; set; }
 

@@ -4,11 +4,12 @@ using SoTF.Editor.Data.Helpers;
 
 namespace SoTF.Editor.Services.Savegames;
 
-public class SaveDataWrapper(JToken parent)
+public sealed class SaveDataWrapper(JToken parent)
 {
     private readonly Dictionary<string, JToken> _jsonStringNodes = [];
 
-    // Nested Documents As Loaded, An Undone Edit Is No Change
+    // Nested Documents As Loaded, Parsed Only Once Compared Or Restored
+    private readonly Dictionary<string, string> _loadedTexts = [];
     private readonly Dictionary<string, JToken> _loadedNodes = [];
     private readonly HashSet<string> _modified = [];
 
@@ -28,15 +29,31 @@ public class SaveDataWrapper(JToken parent)
         }
 
         // Nested Json Is Parsed Once, Edits Change That Copy
-        var parsed = JToken.Parse(token.ToString());
+        var text = token.ToString();
+        var parsed = JToken.Parse(text);
         _jsonStringNodes.Add(selector, parsed);
-        _loadedNodes.Add(selector, parsed.DeepClone());
+        _loadedTexts.Add(selector, text);
         return parsed;
+    }
+
+    private JToken? Loaded(string selector)
+    {
+        // Parsed On First Need, Cloning At Load Cost 100 Ms
+        if (
+            !_loadedNodes.TryGetValue(selector, out var loaded)
+            && _loadedTexts.TryGetValue(selector, out var text)
+        )
+        {
+            loaded = JToken.Parse(text);
+            _loadedNodes.Add(selector, loaded);
+        }
+
+        return loaded;
     }
 
     public JToken? LoadedCopy(string selector)
     {
-        return _loadedNodes.GetValueOrDefault(selector)?.DeepClone();
+        return Loaded(selector)?.DeepClone();
     }
 
     public bool Replace(string selector, JToken document)
@@ -63,7 +80,7 @@ public class SaveDataWrapper(JToken parent)
     public void Revert(string selector)
     {
         // Only Pages That Read The Document Again Afterwards
-        if (_loadedNodes.TryGetValue(selector, out var loaded))
+        if (Loaded(selector) is { } loaded)
         {
             _jsonStringNodes[selector] = loaded.DeepClone();
         }
@@ -102,7 +119,7 @@ public class SaveDataWrapper(JToken parent)
     private bool IsChanged(string selector)
     {
         // A Token Edited In Place Has No Copy, It Counts
-        return !_loadedNodes.TryGetValue(selector, out var loaded)
+        return Loaded(selector) is not { } loaded
             || !JToken.DeepEquals(loaded, _jsonStringNodes[selector]);
     }
 

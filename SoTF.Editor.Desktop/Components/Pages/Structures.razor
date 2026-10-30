@@ -20,7 +20,7 @@
                               Class="rounded-panel panel-flush overflow-y-auto fit">
                         @* All Structures Row *@
                         <MudElement HtmlTag="div"
-                                    Class="@RowClass(_showAll)"
+                                    Class="@AppTheme.ListRowClass(_showAll)"
                                     role="button"
                                     tabindex="0"
                                     aria-pressed="@(_showAll ? "true" : "false")"
@@ -60,7 +60,7 @@
                             {
                                 @* Structure Type Row *@
                                 <MudElement HtmlTag="div"
-                                            Class="@RowClass(!_showAll && _selectedName == type.Name)"
+                                            Class="@AppTheme.ListRowClass(!_showAll && _selectedName == type.Name)"
                                             role="button"
                                             tabindex="0"
                                             aria-pressed="@((!_showAll && _selectedName == type.Name) ? "true" : "false")"
@@ -154,7 +154,7 @@
                                     <MudTd Class="overflow-hidden">
                                         <ItemLabel Name="@context.Name"
                                                    Detail="@context.Category"
-                                                   ImageUrl="@IconOf(context)" />
+                                                   ImageUrl="@context.ScrewStructure?.IconUrl" />
                                     </MudTd>
                                     <MudTd>
                                         <MudText Typo="Typo.body2"

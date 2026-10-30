@@ -4,7 +4,7 @@ using SoTF.Editor.Data.Resources;
 
 namespace SoTF.Editor.Services.Settings;
 
-public class UserSettings
+public sealed class UserSettings
 {
     private static readonly string s_filePath = Path.Combine(
         AppInfo.DataDirectory,

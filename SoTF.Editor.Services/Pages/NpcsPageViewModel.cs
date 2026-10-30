@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Linq;
 using NLog;
 using SoTF.Editor.Data.Enums;
 using SoTF.Editor.Data.Helpers;
@@ -10,7 +11,7 @@ using SoTF.Editor.Services.Savegames;
 
 namespace SoTF.Editor.Services.Pages;
 
-public class NpcsPageViewModel
+public sealed class NpcsPageViewModel
 {
     private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
     private readonly Dictionary<int, ActorType> _actorTypes;
@@ -159,12 +160,13 @@ public class NpcsPageViewModel
                 ?.GroupBy(spawner => spawner.UniqueId)
                 .ToDictionary(group => group.Key, group => group.First())
             ?? [];
-        var influenceMemoryByUniqueId =
-            vailWorldSim["InfluenceMemory"]
-                ?.ToObject<List<InfluenceMemory>>()
-                ?.GroupBy(memory => memory.UniqueId)
-                .ToDictionary(group => group.Key, group => group.Last())
-            ?? [];
+        // The Newest Memory Wins
+        var memoryByUniqueId = new Dictionary<int, JToken>();
+        foreach (var memory in vailWorldSim["InfluenceMemory"] ?? Enumerable.Empty<JToken>())
+        {
+            memoryByUniqueId[memory.Value<int>("UniqueId")] = memory;
+        }
+
         var killStatsByType =
             vailWorldSim["KillStatsList"]
                 ?.ToObject<List<KillStat>>()
@@ -172,7 +174,7 @@ public class NpcsPageViewModel
                 .ToDictionary(group => group.Key, group => group.First())
             ?? [];
 
-        AllActors.AddRange(vailWorldSim["Actors"]?.ToObject<List<Actor>>() ?? []);
+        AllActors.AddRange(vailWorldSim["Actors"]?.Select(ActorOf) ?? []);
         foreach (var actor in AllActors)
         {
             if (actor is { GraphMask: { } graphMask, Position: { } position })
@@ -187,13 +189,9 @@ public class NpcsPageViewModel
                 actor.Spawner = spawnersBySpawnerUniqueId.GetValueOrDefault(spawnerId);
             }
 
-            // The Newest Memory Wins, A Repeated Type Counts Once
-            if (influenceMemoryByUniqueId.GetValueOrDefault(actor.UniqueId) is { } influenceMemory)
+            if (memoryByUniqueId.GetValueOrDefault(actor.UniqueId) is { } memory)
             {
-                actor.Influences =
-                [
-                    .. influenceMemory.Influences.DistinctBy(influence => influence.TypeId),
-                ];
+                actor.Influences = InfluencesOf(memory);
             }
 
             actor.KillStats = killStatsByType.GetValueOrDefault(actor.TypeId);
@@ -242,6 +240,49 @@ public class NpcsPageViewModel
                 })
                 .OrderBy(grouping => grouping.Name)
         );
+    }
+
+    private static Actor ActorOf(JToken token)
+    {
+        // Read By Hand, ToObject Took 46 Ms For 2,220 Actors
+        return new Actor
+        {
+            UniqueId = token.Value<int>("UniqueId"),
+            TypeId = token.Value<int>("TypeId"),
+            FamilyId = token.Value<int?>("FamilyId"),
+            State = token.Value<int>("State"),
+            OutfitId = token.Value<int>("OutfitId"),
+            GraphMask = token.Value<int?>("GraphMask"),
+            SpawnerId = token.Value<int?>("SpawnerId"),
+            LastVisitTime = token.Value<float?>("LastVisitTime"),
+            Position = token["Position"] is { } position
+                ? new Position(
+                    position.Value<float>("x"),
+                    position.Value<float>("y"),
+                    position.Value<float>("z")
+                )
+                : null,
+            Stats = (token["Stats"] as JObject)
+                ?.Properties()
+                .ToDictionary(stat => stat.Name, stat => stat.Value.Value<float>()),
+        };
+    }
+
+    private static List<Influence> InfluencesOf(JToken memory)
+    {
+        // A Repeated Type Counts Once
+        return
+        [
+            .. (memory["Influences"] ?? Enumerable.Empty<JToken>())
+                .Select(influence => new Influence
+                {
+                    TypeId = influence.Value<string>("TypeId") ?? "",
+                    Anger = influence.Value<float>("Anger"),
+                    Fear = influence.Value<float>("Fear"),
+                    Sentiment = influence.Value<float>("Sentiment"),
+                })
+                .DistinctBy(influence => influence.TypeId),
+        ];
     }
 
     private static string BuildNameForActorList(List<Actor> subActors)

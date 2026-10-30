@@ -100,12 +100,6 @@ public partial class Npcs : EditorPageBase
         return _byFamily ? AppText.Format("FamilyTitle", collection.Name) : collection.Name;
     }
 
-    private string CollectionRowClass(ActorCollection collection)
-    {
-        var selected = _selectedName == collection.Name ? " list-row-selected" : "";
-        return "list-row px-4 py-2" + selected;
-    }
-
     private async Task EditAsync(Actor actor)
     {
         await EditActorDialog.ShowAsync(DialogService, actor);

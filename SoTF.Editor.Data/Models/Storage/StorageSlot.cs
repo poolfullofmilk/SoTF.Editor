@@ -1,6 +1,6 @@
 namespace SoTF.Editor.Data.Models.Storage;
 
-public class StorageSlot
+public sealed class StorageSlot
 {
     public List<StoredItem> StoredItems { get; } = [];
 

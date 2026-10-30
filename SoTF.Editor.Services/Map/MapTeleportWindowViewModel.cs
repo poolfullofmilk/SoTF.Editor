@@ -8,7 +8,7 @@ using SoTF.Editor.Services.Pages;
 
 namespace SoTF.Editor.Services.Map;
 
-public class MapTeleportWindowViewModel(
+public sealed class MapTeleportWindowViewModel(
     BasePoi destination,
     TeleportTarget teleportTarget,
     AreaMaskManager areaMaskManager,

@@ -5,7 +5,7 @@ using SoTF.Editor.Data.Resources;
 
 namespace SoTF.Editor.Data.Models;
 
-public record Item
+public sealed record Item
 {
     public int Id { get; init; }
     public string Name => GameNames.Get(TextKeys.Item(Id));
@@ -32,7 +32,7 @@ public record Item
         get { return field ??= Formatter.Normalize(Type).ToLowerInvariant(); }
     }
 
-    public virtual bool Equals(Item? other)
+    public bool Equals(Item? other)
     {
         return other is not null && Id == other.Id;
     }
@@ -51,7 +51,8 @@ public record Item
 
 public record ItemModule(int ModuleId);
 
-public record FoodSpoilModuleDefinition(int DefaultVariant, List<int> Variants) : ItemModule(3)
+public sealed record FoodSpoilModuleDefinition(int DefaultVariant, List<int> Variants)
+    : ItemModule(3)
 {
     public FoodSpoilStorageModule BuildNewModuleWithDefaults()
     {
@@ -59,7 +60,7 @@ public record FoodSpoilModuleDefinition(int DefaultVariant, List<int> Variants) 
     }
 }
 
-public record SourceActorModuleDefinition(int DefaultSourceActorType) : ItemModule(1)
+public sealed record SourceActorModuleDefinition(int DefaultSourceActorType) : ItemModule(1)
 {
     public SourceActorStorageModule BuildNewModuleWithDefaults()
     {

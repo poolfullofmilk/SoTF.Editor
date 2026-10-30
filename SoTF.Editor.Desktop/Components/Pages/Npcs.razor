@@ -60,7 +60,7 @@
                             {
                                 @* Collection Row *@
                                 <MudElement HtmlTag="div"
-                                            Class="@CollectionRowClass(collection)"
+                                            Class="@AppTheme.ListRowClass(_selectedName == collection.Name)"
                                             role="button"
                                             tabindex="0"
                                             aria-pressed="@(_selectedName == collection.Name ? "true" : "false")"

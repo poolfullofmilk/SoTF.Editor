@@ -5,7 +5,7 @@ using SoTF.Editor.Data.Models.Storage;
 
 namespace SoTF.Editor.Data.Models.SaveData.Storage;
 
-public class StorageSaveDataModuleConverter : JsonConverter<BaseStorageModule>
+public sealed class StorageSaveDataModuleConverter : JsonConverter<BaseStorageModule>
 {
     public override bool CanWrite => false;
 

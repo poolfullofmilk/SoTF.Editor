@@ -2,7 +2,7 @@
 
 namespace SoTF.Editor.Data.Models.Storage;
 
-public class AdvancedStorageDefinition(int id, List<AdvancedStorageSlotDefinition> slots)
+public sealed class AdvancedStorageDefinition(int id, List<AdvancedStorageSlotDefinition> slots)
 {
     public List<AdvancedStorageSlotDefinition> Slots { get; } = slots;
 
@@ -11,7 +11,7 @@ public class AdvancedStorageDefinition(int id, List<AdvancedStorageSlotDefinitio
     public string Name => GameNames.Get(TextKeys.Structure(Id));
 }
 
-public class AdvancedStorageSlotDefinition(
+public sealed class AdvancedStorageSlotDefinition(
     Dictionary<int, int> restrictedItems,
     IReadOnlyList<int> slotOrder
 )

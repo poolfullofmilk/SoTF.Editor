@@ -5,6 +5,7 @@ using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.ViewModels;
 using SoTF.Editor.Desktop.Components.Shared.Common;
+using SoTF.Editor.Desktop.Theming;
 using SoTF.Editor.Services.Savegames;
 
 namespace SoTF.Editor.Desktop.Components.Shared.Dialogs;
@@ -124,10 +125,9 @@ public partial class RestoreBackupDialog
 
     private string RowClass(SavegameBackup backup)
     {
-        var picked = IsPicked(backup) ? " list-row-selected" : "";
         var locked = _deleting && backup == Backups[0] ? " not-held" : "";
         var timeline = _deleting ? "" : " timeline-row";
-        return "list-row px-4 py-2" + picked + locked + timeline;
+        return AppTheme.ListRowClass(IsPicked(backup)) + locked + timeline;
     }
 
     private string RowIcon(SavegameBackup backup)
@@ -203,7 +203,7 @@ public partial class RestoreBackupDialog
             return;
         }
 
-        // The Newest Stays Whatever Was Marked, One Locked Folder Never Stops The Rest
+        // Newest Always Stays, A Locked Folder Never Stops Others
         var failed = 0;
         foreach (var backup in _marked.Where(backup => backup != Backups[0]))
         {

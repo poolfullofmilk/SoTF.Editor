@@ -10,7 +10,7 @@ using SoTF.Editor.Services.Savegames;
 
 namespace SoTF.Editor.Services.Actors;
 
-public class ActorModifier(PlayerPageViewModel playerPageViewModel)
+public sealed class ActorModifier(PlayerPageViewModel playerPageViewModel)
 {
     public void Modify(Savegame selectedSavegame, EditActorViewModel data)
     {

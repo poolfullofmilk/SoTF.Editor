@@ -2,4 +2,4 @@
 
 namespace SoTF.Editor.Data.Models.SaveData;
 
-public record ActorItemBlock(int ItemId, int TotalCount, List<JToken> UniqueItems);
+public sealed record ActorItemBlock(int ItemId, int TotalCount, List<JToken> UniqueItems);

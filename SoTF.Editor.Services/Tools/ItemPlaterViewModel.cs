@@ -6,7 +6,7 @@ using SoTF.Editor.Services.Savegames;
 
 namespace SoTF.Editor.Services.Tools;
 
-public class ItemPlaterViewModel
+public sealed class ItemPlaterViewModel
 {
     // Categories The Plater Offers, In Dialog Order
     public static IReadOnlyList<string> PlatableStructureCategories { get; } =
@@ -359,7 +359,7 @@ public class ItemPlaterViewModel
     }
 }
 
-public record PlatingResult(
+public sealed record PlatingResult(
     string Message,
     Dictionary<SavegameStore.FileType, SaveDataWrapper> WrappersToSave
 );

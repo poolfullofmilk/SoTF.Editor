@@ -2,7 +2,7 @@ using SoTF.Editor.Data.Helpers;
 
 namespace SoTF.Editor.Data.Models.Map;
 
-public class MapFilter
+public sealed class MapFilter
 {
     public enum RequirementsFilterType
     {

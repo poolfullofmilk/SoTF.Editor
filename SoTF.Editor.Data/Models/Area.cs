@@ -1,6 +1,6 @@
 ﻿namespace SoTF.Editor.Data.Models;
 
-public class Area(string name, int areaMask, int graphMask)
+public sealed class Area(string name, int areaMask, int graphMask)
 {
     public string Name { get; } = name;
     public int AreaMask { get; } = areaMask;

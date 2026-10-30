@@ -1,6 +1,6 @@
 namespace SoTF.Editor.Data.Models.Map.Static;
 
-public record RawPoi(
+public sealed record RawPoi(
     string? Title,
     string? Description,
     float X,

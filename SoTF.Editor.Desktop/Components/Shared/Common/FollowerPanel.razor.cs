@@ -75,7 +75,7 @@ public partial class FollowerPanel : EditorPageBase
 
     private void MoveToPlayer()
     {
-        // A Cave Blocks It, The Button Says So Rather Than Going Grey
+        // A Cave Blocks It, The Button Explains Instead Of Greying
         if (!PlayerOnSurface)
         {
             Snackbar.Add(AppText.Get("FollowersStayOutside"), Severity.Warning);

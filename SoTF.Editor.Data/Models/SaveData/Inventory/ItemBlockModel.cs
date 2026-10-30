@@ -2,7 +2,7 @@
 
 namespace SoTF.Editor.Data.Models.SaveData.Inventory;
 
-public class ItemBlockModel
+public sealed class ItemBlockModel
 {
     // Equipped Items Carry Modules, Read For Weapon Mods Only
     public List<JToken> Modules = [];

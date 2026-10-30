@@ -8,11 +8,12 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <RootNamespace>SoTF.Editor.Desktop</RootNamespace>
         <ApplicationIcon>Icon.ico</ApplicationIcon>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
         <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
         <DebugType>embedded</DebugType>
         <Description>A Savegame Editor For Sons Of The Forest</Description>
         <Copyright>Copyright (c) 2026 poolfullofmilk</Copyright>
-        <Version>4.2</Version>
+        <Version>4.2.1</Version>
         <AssemblyTitle>SoTF Editor</AssemblyTitle>
         <Product>SoTF Editor</Product>
         <Company>poolfullofmilk</Company>

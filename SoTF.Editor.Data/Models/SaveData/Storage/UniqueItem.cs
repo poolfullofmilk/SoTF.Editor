@@ -2,7 +2,7 @@
 
 namespace SoTF.Editor.Data.Models.SaveData.Storage;
 
-public class UniqueItem
+public sealed class UniqueItem
 {
     public List<BaseStorageModule> Modules { get; init; } = [];
 

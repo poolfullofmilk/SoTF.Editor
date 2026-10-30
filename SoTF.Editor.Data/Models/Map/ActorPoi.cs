@@ -3,7 +3,7 @@ using SoTF.Editor.Data.Models.Actors;
 
 namespace SoTF.Editor.Data.Models.Map;
 
-public class ActorPoi : BasePoi
+public sealed class ActorPoi : BasePoi
 {
     public ActorPoi(Actor actor)
         : base(actor.Position!)

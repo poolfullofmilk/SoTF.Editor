@@ -1,6 +1,6 @@
 ﻿namespace SoTF.Editor.Data.Models.Map.Static;
 
-public class Teleport(float x, float y, float z, int areaMask)
+public sealed class Teleport(float x, float y, float z, int areaMask)
 {
     public Position ToPosition(AreaMaskManager areaMaskManager)
     {

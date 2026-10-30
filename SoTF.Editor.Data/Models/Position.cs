@@ -5,7 +5,7 @@ using SoTF.Editor.Data.Helpers;
 
 namespace SoTF.Editor.Data.Models;
 
-public class Position(float x, float y, float z)
+public sealed class Position(float x, float y, float z)
 {
     private readonly float _y = y;
 

@@ -2,7 +2,7 @@ using SoTF.Editor.Data.Resources;
 
 namespace SoTF.Editor.Data.Models.Map;
 
-public class LocationPoi(Position position) : BasePoi(position)
+public sealed class LocationPoi(Position position) : BasePoi(position)
 {
     public const string IconFile = "pin.svg";
 

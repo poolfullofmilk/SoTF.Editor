@@ -2,7 +2,7 @@ using SoTF.Editor.Data.Models.Map.Static;
 
 namespace SoTF.Editor.Data.Models.Map;
 
-public class ItemPoi : InformationalPoi
+public sealed class ItemPoi : InformationalPoi
 {
     private readonly IEnumerable<Item>? _altItems;
     private readonly Item _item;

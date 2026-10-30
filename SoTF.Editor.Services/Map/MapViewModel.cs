@@ -10,7 +10,7 @@ using SoTF.Editor.Services.Settings;
 
 namespace SoTF.Editor.Services.Map;
 
-public class MapViewModel
+public sealed class MapViewModel
 {
     private const float MinimumZiplineMetres = 2;
 
@@ -238,7 +238,7 @@ public class MapViewModel
 
     public IPoi? TakeFocus()
     {
-        // Show On Map Picks The Point Itself, Its Group Turned On And Filters Cleared
+        // Picks The Point Itself, Turns Its Group On, Clears Filters
         if (FocusPosition is not { } position)
         {
             return null;

@@ -5,7 +5,7 @@ using static SoTF.Editor.Data.Helpers.Constants.Settings;
 
 namespace SoTF.Editor.Services.Pages;
 
-public class GameSetupPageViewModel
+public sealed class GameSetupPageViewModel
 {
     private const string SettingsKey = "_settings";
     public const string CustomGameMode = "Custom";

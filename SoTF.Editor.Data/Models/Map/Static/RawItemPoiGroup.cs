@@ -1,3 +1,3 @@
 ﻿namespace SoTF.Editor.Data.Models.Map.Static;
 
-public record RawItemPoiGroup(List<RawItemPoi> Pois, string? Wiki = null);
+public sealed record RawItemPoiGroup(List<RawItemPoi> Pois, string? Wiki = null);

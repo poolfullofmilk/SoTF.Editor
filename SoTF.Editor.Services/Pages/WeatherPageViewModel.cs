@@ -6,7 +6,7 @@ using SoTF.Editor.Services.Savegames;
 
 namespace SoTF.Editor.Services.Pages;
 
-public class WeatherPageViewModel
+public sealed class WeatherPageViewModel
 {
     public List<GenericSetting> Settings { get; } = [];
 

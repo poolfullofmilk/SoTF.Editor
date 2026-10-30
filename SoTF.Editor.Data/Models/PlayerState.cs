@@ -1,6 +1,6 @@
 ﻿namespace SoTF.Editor.Data.Models;
 
-public class PlayerState
+public sealed class PlayerState
 {
     public const int MaxStrengthLevel = 100;
 

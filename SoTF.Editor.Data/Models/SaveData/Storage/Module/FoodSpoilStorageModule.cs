@@ -2,7 +2,7 @@
 
 namespace SoTF.Editor.Data.Models.SaveData.Storage.Module;
 
-public record FoodSpoilStorageModule(
+public sealed record FoodSpoilStorageModule(
     int ModuleId,
     [property: JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)] int CurrentState,
     [property: JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]

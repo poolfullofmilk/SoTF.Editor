@@ -1,6 +1,6 @@
 namespace SoTF.Editor.Data.Models.Actors;
 
-public class ActorCollection
+public sealed class ActorCollection
 {
     public ActorCollection(string name, IEnumerable<Actor> actors)
     {

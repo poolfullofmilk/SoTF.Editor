@@ -4,7 +4,7 @@ using SoTF.Editor.Data.Resources;
 
 namespace SoTF.Editor.Data.ViewModels;
 
-public class ArmourData(ArmourPieceModel armourPieceModel, Item? item)
+public sealed class ArmourData(ArmourPieceModel armourPieceModel, Item? item)
 {
     public ArmourPieceModel ArmourPiece { get; } = armourPieceModel;
 

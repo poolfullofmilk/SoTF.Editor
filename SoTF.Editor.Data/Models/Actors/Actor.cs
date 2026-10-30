@@ -4,7 +4,7 @@ using SoTF.Editor.Data.Resources;
 
 namespace SoTF.Editor.Data.Models.Actors;
 
-public class Actor
+public sealed class Actor
 {
     public ActorType? ActorType { get; set; }
     public int? FamilyId { get; set; }

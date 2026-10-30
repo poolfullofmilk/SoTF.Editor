@@ -3,7 +3,7 @@ using SoTF.Editor.Data.Resources;
 
 namespace SoTF.Editor.Data.Models.SaveData.Actor;
 
-public class Influence
+public sealed class Influence
 {
     public float Anger { get; set; }
 

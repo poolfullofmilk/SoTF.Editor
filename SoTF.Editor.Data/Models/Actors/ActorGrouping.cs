@@ -1,6 +1,6 @@
 namespace SoTF.Editor.Data.Models.Actors;
 
-public class ActorGrouping(string name)
+public sealed class ActorGrouping(string name)
 {
     public string Name { get; } = name;
     public List<ActorCollection> ActorCollections { get; } = [];

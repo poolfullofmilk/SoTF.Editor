@@ -3,7 +3,7 @@ using SoTF.Editor.Data.Models.SaveData.Storage.Module;
 
 namespace SoTF.Editor.Data.Models.SaveData.Storage;
 
-public class GenericStorageModuleConverter : JsonConverter<GenericModule>
+public sealed class GenericStorageModuleConverter : JsonConverter<GenericModule>
 {
     public override bool CanRead => false;
 

@@ -9,7 +9,7 @@ using static SoTF.Editor.Data.Helpers.Constants.Actors;
 
 namespace SoTF.Editor.Services.Actors;
 
-public class FollowerModifier(SaveDataWrapper saveDataWrapper)
+public sealed class FollowerModifier(SaveDataWrapper saveDataWrapper)
 {
     public bool Revive(int typeId, HashSet<int> itemIds, Outfit? outfit, Position? pos)
     {

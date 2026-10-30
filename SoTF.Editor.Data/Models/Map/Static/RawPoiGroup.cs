@@ -2,7 +2,7 @@
 
 namespace SoTF.Editor.Data.Models.Map.Static;
 
-public record RawPoiGroup(
+public sealed record RawPoiGroup(
     string? Icon,
     List<RawPoi> Pois,
     PoiGroupType Type = PoiGroupType.Generic

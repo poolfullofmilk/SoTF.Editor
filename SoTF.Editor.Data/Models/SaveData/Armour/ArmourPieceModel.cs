@@ -1,6 +1,6 @@
 namespace SoTF.Editor.Data.Models.SaveData.Armour;
 
-public class ArmourPieceModel
+public sealed class ArmourPieceModel
 {
     public float RemainingArmourpoints { get; set; }
 

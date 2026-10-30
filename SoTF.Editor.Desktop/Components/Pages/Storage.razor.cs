@@ -93,12 +93,6 @@ public partial class Storage : EditorPageBase
             || text.Contains(_filter, StringComparison.OrdinalIgnoreCase);
     }
 
-    private string StorageRowClass(IStorage storage)
-    {
-        var selected = StoragePage.SelectedStorage == storage ? " list-row-selected" : "";
-        return "list-row px-4 py-2" + selected;
-    }
-
     private void SelectStorage(IStorage storage)
     {
         // A Fill Item Fits Only The Storage It Came From

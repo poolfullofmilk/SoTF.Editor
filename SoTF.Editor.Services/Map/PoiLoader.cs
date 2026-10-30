@@ -9,7 +9,7 @@ using SoTF.Editor.Services.Pages;
 
 namespace SoTF.Editor.Services.Map;
 
-public class PoiLoader(
+public sealed class PoiLoader(
     GameData gameData,
     InventoryPageViewModel inventoryPageViewModel,
     PlayerPageViewModel playerPageViewModel

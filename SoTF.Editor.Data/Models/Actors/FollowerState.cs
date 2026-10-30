@@ -4,7 +4,7 @@ using SoTF.Editor.Data.Resources;
 
 namespace SoTF.Editor.Data.Models.Actors;
 
-public class FollowerState
+public sealed class FollowerState
 {
     public float Affection { get; set; }
 

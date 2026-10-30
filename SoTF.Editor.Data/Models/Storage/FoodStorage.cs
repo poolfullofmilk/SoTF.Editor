@@ -4,7 +4,7 @@ using SoTF.Editor.Data.Models.SaveData.Storage.Module;
 
 namespace SoTF.Editor.Data.Models.Storage;
 
-public class FoodStorage(StorageDefinition definition, ItemList itemList, int index)
+public sealed class FoodStorage(StorageDefinition definition, ItemList itemList, int index)
     : BaseStorage(definition, itemList, index)
 {
     // Empty Racks Fill Up With Dried Fish

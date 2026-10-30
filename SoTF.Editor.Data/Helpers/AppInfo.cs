@@ -25,7 +25,7 @@ public static class AppInfo
             .FirstOrDefault(attribute => attribute.Key == "Commit")
             ?.Value;
 
-    // Patch Shows Only When It Is Not Zero, 2.7 And 2.7.1
+    // Patch Shows Only When Not Zero, 2.7 And 2.7.1
     public static string VersionText { get; } = Version.ToString(Version.Build > 0 ? 3 : 2);
 
     // Debug Builds Never Touch The Installed App's Files

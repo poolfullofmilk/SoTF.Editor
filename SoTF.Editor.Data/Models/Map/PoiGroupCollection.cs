@@ -2,7 +2,7 @@ using SoTF.Editor.Data.Enums;
 
 namespace SoTF.Editor.Data.Models.Map;
 
-public class PoiGroupCollection(
+public sealed class PoiGroupCollection(
     bool enabled,
     string title,
     string groupKey,

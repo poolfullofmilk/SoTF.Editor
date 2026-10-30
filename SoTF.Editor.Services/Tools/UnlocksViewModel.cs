@@ -5,7 +5,7 @@ using SoTF.Editor.Services.Savegames;
 
 namespace SoTF.Editor.Services.Tools;
 
-public class UnlocksViewModel
+public sealed class UnlocksViewModel
 {
     private const string SettingsKey = "_settings";
     private const string BoolValueKey = "BoolValue";

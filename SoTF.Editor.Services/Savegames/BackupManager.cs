@@ -1,7 +1,6 @@
 using System.Globalization;
 using System.IO.Compression;
 using System.Security.Cryptography;
-using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using NLog;
@@ -12,7 +11,7 @@ using SoTF.Editor.Data.ViewModels;
 
 namespace SoTF.Editor.Services.Savegames;
 
-public static partial class BackupManager
+public static class BackupManager
 {
     private const string FolderTimeFormat = "yyyy-MM-dd HH-mm-ss";
 
@@ -198,11 +197,8 @@ public static partial class BackupManager
             name = name[..^SaveDataSuffix.Length];
         }
 
-        return WordStart().Replace(name.Replace('_', ' '), " ");
+        return BackupDiff.WordStart().Replace(name.Replace('_', ' '), " ");
     }
-
-    [GeneratedRegex("(?<=[a-z0-9])(?=[A-Z])")]
-    private static partial Regex WordStart();
 
     private static string CopyAll(string savegamePath)
     {

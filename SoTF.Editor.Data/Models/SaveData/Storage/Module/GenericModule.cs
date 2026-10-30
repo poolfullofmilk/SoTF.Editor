@@ -5,14 +5,14 @@ using Newtonsoft.Json.Linq;
 namespace SoTF.Editor.Data.Models.SaveData.Storage.Module;
 
 [JsonConverter(typeof(GenericStorageModuleConverter))]
-public record GenericModule(int ModuleId, JObject ModuleToken) : BaseStorageModule(ModuleId)
+public sealed record GenericModule(int ModuleId, JObject ModuleToken) : BaseStorageModule(ModuleId)
 {
     static GenericModule()
     {
         Debug.Assert(SelfTestPasses());
     }
 
-    public virtual bool Equals(GenericModule? other)
+    public bool Equals(GenericModule? other)
     {
         // Tokens Compare By Content, Not By Reference
         return other != null

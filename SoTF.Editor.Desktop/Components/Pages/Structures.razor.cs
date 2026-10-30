@@ -47,7 +47,7 @@ public partial class Structures : EditorPageBase
                 .Select(group => new StructureType(
                     group.Key,
                     group.First().Category,
-                    IconOf(group.First()),
+                    group.First().ScrewStructure?.IconUrl,
                     [.. group.OrderBy(wrapper => wrapper.Origin).ThenBy(wrapper => wrapper.PctDone)]
                 ))
                 .Where(type => Matches(type.Name) || Matches(type.Category))
@@ -70,11 +70,6 @@ public partial class Structures : EditorPageBase
     {
         return string.IsNullOrWhiteSpace(_filter)
             || text.Contains(_filter, StringComparison.OrdinalIgnoreCase);
-    }
-
-    private static string RowClass(bool selected)
-    {
-        return "list-row px-4 py-2" + (selected ? " list-row-selected" : "");
     }
 
     private void SelectAll()
@@ -153,11 +148,6 @@ public partial class Structures : EditorPageBase
     private static string ModeName(ScrewStructureModificationMode mode)
     {
         return AppText.Get(TextKeys.StructureMode(mode));
-    }
-
-    private static string? IconOf(ScrewStructureWrapper wrapper)
-    {
-        return wrapper.ScrewStructure?.Icon is { } icon ? $"images/structures/{icon}" : null;
     }
 
     private async Task SetAllAsync(

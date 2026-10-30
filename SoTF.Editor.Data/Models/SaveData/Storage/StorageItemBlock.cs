@@ -2,7 +2,7 @@
 
 namespace SoTF.Editor.Data.Models.SaveData.Storage;
 
-public class StorageItemBlock
+public sealed class StorageItemBlock
 {
     public int ItemId { get; init; }
     public int TotalCount { get; init; }

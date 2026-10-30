@@ -43,7 +43,7 @@
                     {
                         @* Savegame Row *@
                         <MudElement HtmlTag="div"
-                                    Class="@RowClass(savegame)"
+                                    Class="@AppTheme.ListRowClass(savegame == _target)"
                                     role="button"
                                     tabindex="0"
                                     aria-pressed="@(savegame == _target ? "true" : "false")"

@@ -2,7 +2,7 @@ using SoTF.Editor.Data.Enums;
 
 namespace SoTF.Editor.Data.Models.Map;
 
-public class WorldItemPoi(WorldItemState state) : BasePoi(state.Position)
+public sealed class WorldItemPoi(WorldItemState state) : BasePoi(state.Position)
 {
     public WorldItemState State { get; } = state;
 

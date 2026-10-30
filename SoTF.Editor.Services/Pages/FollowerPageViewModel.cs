@@ -13,7 +13,7 @@ using static SoTF.Editor.Data.Helpers.Constants.Actors;
 
 namespace SoTF.Editor.Services.Pages;
 
-public class FollowerPageViewModel
+public sealed class FollowerPageViewModel
 {
     private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
 

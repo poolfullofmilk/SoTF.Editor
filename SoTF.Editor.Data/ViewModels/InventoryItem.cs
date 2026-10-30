@@ -4,7 +4,7 @@ using SoTF.Editor.Data.Resources;
 
 namespace SoTF.Editor.Data.ViewModels;
 
-public class InventoryItem(ItemBlockModel itemBlock, Item? item, bool isEquipped = false)
+public sealed class InventoryItem(ItemBlockModel itemBlock, Item? item, bool isEquipped = false)
 {
     public Item? Item { get; } = item;
     public bool IsEquipped { get; } = isEquipped;

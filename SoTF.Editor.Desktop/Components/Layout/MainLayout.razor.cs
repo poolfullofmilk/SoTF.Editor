@@ -73,7 +73,7 @@ public partial class MainLayout : IDisposable
         return MainViewModel.HasChanges(link.Href);
     }
 
-    // A Client Save Holds Only The Player, World Pages Stay Shut
+    // A Client Save Holds Only The Player, World Pages Shut
     private bool IsDisabled(PageLink link)
     {
         return (link.NeedsSavegame && !HasSavegame) || (link.NeedsWorld && IsClientSave);
@@ -238,7 +238,7 @@ public partial class MainLayout : IDisposable
 
     private async Task RevertPageAsync(PageLink page)
     {
-        // The Same List The Save Dialog Shows, For That Page Only
+        // The Save Dialog's List, For That Page Only
         var dialog = await DialogService.ShowAsync<SaveChangesDialog>(
             (string?)null,
             new DialogParameters<SaveChangesDialog>

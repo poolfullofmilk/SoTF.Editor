@@ -13,7 +13,7 @@ using SoTF.Editor.Services.Pages;
 
 namespace SoTF.Editor.Services.Savegames;
 
-public class MainViewModel(
+public sealed class MainViewModel(
     PlayerPageViewModel playerPage,
     ArmorPageViewModel armorPage,
     InventoryPageViewModel inventoryPage,
@@ -481,7 +481,7 @@ public class MainViewModel(
     #endregion
 
     #region Tool Methods
-    // Unsaved Files And Game State, A Tool That Moves Them Changed Something
+    // Unsaved Files And Game State, A Tool Moving Them Changed
     public string ToolState()
     {
         return (SelectedSavegame?.SavegameStore.ChangedState() ?? "") + gameStatePage.ValueState;

@@ -17,24 +17,6 @@
     unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
-@font-face {
-    font-family: "Nunito";
-    font-style: italic;
-    font-weight: 200 1000;
-    font-display: swap;
-    src: url("../Fonts/Nunito-Italic-Latin.woff2") format("woff2");
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
-    font-family: "Nunito";
-    font-style: italic;
-    font-weight: 200 1000;
-    font-display: swap;
-    src: url("../Fonts/Nunito-Italic-LatinExt.woff2") format("woff2");
-    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
-}
-
 /* Shared Tokens */
 :root {
     --radius-panel: 20px;
@@ -119,12 +101,8 @@
     backdrop-filter: var(--glass-blur);
 }
 
-/* An Inset Surface Sits On The Page Colour Inside A Panel Or Dialog */
-.inset {
-    background-color: var(--mud-palette-background) !important;
-}
-
-/* A Dialog On The Page Colour Raises Its Sections Like Panels */
+/* Inset Surfaces And Page Coloured Dialogs, Whose Sections Rise Like Panels */
+.inset,
 .dialog-page {
     background-color: var(--mud-palette-background) !important;
 }
@@ -233,8 +211,7 @@
     .mud-table.fit > .mud-table-container {
         flex: 1 1 auto;
         min-height: 0;
-        overflow-y: auto;
-        overflow-x: auto;
+        overflow: auto;
     }
 
 /* Lists Run Edge To Edge, The Panel Clips Them To Its Corners */
@@ -712,12 +689,6 @@ html, body {
     font-weight: 500;
 }
 
-    /* Ripple Reaches Over The Transparent Border, So No Rim */
-    .mud-button-filled.mud-icon-button {
-        overflow: clip;
-        overflow-clip-margin: border-box;
-    }
-
 /* Icon Text Buttons Take Filled Padding, Clear Of The Edge */
 .mud-button-text-size-small:has(.mud-button-icon-start) {
     padding-inline: 10px;
@@ -942,7 +913,7 @@ html, body {
     transform-origin: 0 0;
 }
 
-/* Icons Append At The End, Inserting Before Siblings Is Slow */
+/* JS Draws The Icons Here, Only Those Near The View */
 .map-points {
     position: absolute;
     left: 0;
@@ -971,25 +942,24 @@ html, body {
     initial-value: 1;
 }
 
-/* Marks Land On Whole Device Pixels, Or They Draw Soft */
+/* Marks Keep Their Screen Size Whatever The Zoom, Growing About Their Middle On Whole Device Pixels */
 .map-poi,
 .map-ring,
 .map-cluster {
+    position: absolute;
     left: calc(var(--x) * 1px);
     top: calc(var(--y) * 1px);
     --snap-x: calc((round(var(--x) * var(--map-zoom, 1) * var(--dpr, 1)) / var(--dpr, 1) / var(--map-zoom, 1) - var(--x)) * 1px);
     --snap-y: calc((round(var(--y) * var(--map-zoom, 1) * var(--dpr, 1)) / var(--dpr, 1) / var(--map-zoom, 1) - var(--y)) * 1px);
+    transform: translate(calc(-50% + var(--snap-x)), calc(-50% + var(--snap-y))) scale(calc(var(--poi-scale) / var(--map-zoom, 1)));
+    transition: --poi-scale var(--quick);
 }
 
-/* Icons Keep Their Screen Size Whatever The Zoom, Growing About Their Middle */
 .map-poi {
-    position: absolute;
     width: 32px;
     height: 32px;
     z-index: 100;
-    transform: translate(calc(-50% + var(--snap-x)), calc(-50% + var(--snap-y))) scale(calc(var(--poi-scale) / var(--map-zoom, 1)));
     cursor: pointer;
-    transition: --poi-scale 120ms ease-out;
 }
 
     .map-poi:hover {
@@ -1005,14 +975,8 @@ html, body {
         box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12), 0 0 0 1px var(--map-edge);
     }
 
-    /* Points In A Bubble Hide Until The Zoom Parts Them */
-    .map-poi.clustered {
-        visibility: hidden;
-    }
-
 /* A Count Bubble For Points Too Close To Tell Apart, Under The Rest */
 .map-cluster {
-    position: absolute;
     z-index: 99;
     width: var(--cluster-size);
     height: var(--cluster-size);
@@ -1025,10 +989,8 @@ html, body {
     color: #fff;
     font-size: 13px;
     font-weight: 700;
-    transform: translate(calc(-50% + var(--snap-x)), calc(-50% + var(--snap-y))) scale(calc(var(--poi-scale) / var(--map-zoom, 1)));
     cursor: pointer;
     user-select: none;
-    transition: --poi-scale 120ms ease-out;
 }
 
     .map-cluster:hover {
@@ -1097,14 +1059,12 @@ html, body {
     }
 
 .map-ring {
-    position: absolute;
     width: 36px;
     height: 36px;
     border: 3px solid var(--mud-palette-info);
-    border-radius: var(--map-tile-radius);
+    /* Concentric With The Tile, 18 Of 64 Plus The Ring's Reach */
+    border-radius: calc(29.7% + 0.8px);
     box-shadow: 0 0 18px 4px color-mix(in srgb, var(--mud-palette-info) 60%, transparent);
-    transform: translate(calc(-50% + var(--snap-x)), calc(-50% + var(--snap-y))) scale(calc(var(--poi-scale) / var(--map-zoom, 1)));
-    transition: --poi-scale 120ms ease-out;
     pointer-events: none;
     animation: pick-flash 2s ease-in-out infinite;
 }
@@ -1198,6 +1158,7 @@ html, body {
     }
 
     .map-poi,
+    .map-ring,
     .map-cluster {
         transition: none;
     }

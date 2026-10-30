@@ -5,7 +5,7 @@ using SoTF.Editor.Services.Savegames;
 
 namespace SoTF.Editor.Services.Tools;
 
-public class ModifyConsumedItemsViewModel
+public sealed class ModifyConsumedItemsViewModel
 {
     private const string Prefix = "consumed.";
     private readonly Savegame _savegame;

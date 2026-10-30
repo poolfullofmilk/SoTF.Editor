@@ -8,7 +8,7 @@ using SoTF.Editor.Services.Savegames;
 
 namespace SoTF.Editor.Services.Map;
 
-public class MapSpawnActorsViewModel
+public sealed class MapSpawnActorsViewModel
 {
     private readonly BasePoi _destination;
 

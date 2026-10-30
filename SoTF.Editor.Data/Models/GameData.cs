@@ -5,7 +5,7 @@ using SoTF.Editor.Data.Resources;
 
 namespace SoTF.Editor.Data.Models;
 
-public class GameData
+public sealed class GameData
 {
     public GameData(
         IEnumerable<Item> items,
@@ -44,7 +44,7 @@ public class GameData
     public List<string> NamedIntKeys { get; }
 }
 
-public class ElementProfile(ElementProfileCategory category, int id, int goldPlatedId)
+public sealed class ElementProfile(ElementProfileCategory category, int id, int goldPlatedId)
 {
     public ElementProfileCategory Category { get; } = category;
     public int Id { get; } = id;
@@ -60,7 +60,7 @@ public enum ElementProfileCategory
     Stick,
 }
 
-public class ScrewStructure(
+public sealed class ScrewStructure(
     string category,
     int id,
     int? buildCost,
@@ -84,13 +84,13 @@ public class ScrewStructure(
 
     // Platforms List None, Unknown Is Not Free
     public int? BuildCost { get; } = buildCost;
-    public string Icon { get; } = icon;
+    public string IconUrl { get; } = $"images/structures/{icon}";
     public bool CanFinish { get; } = canFinish ?? true;
     public bool ShowOnMap { get; } = showOnMap ?? true;
     public bool CanEdit { get; } = canEdit ?? true;
 }
 
-public class FollowerData
+public sealed class FollowerData
 {
     private readonly Dictionary<int, int[]> _equippableItems;
     private readonly Dictionary<int, List<Outfit>> _outfits;
@@ -120,7 +120,7 @@ public class FollowerData
     }
 }
 
-public class Outfit(int typeId, int id)
+public sealed class Outfit(int typeId, int id)
 {
     public int Id { get; } = id;
 

@@ -3,7 +3,7 @@ using SoTF.Editor.Data.Enums;
 
 namespace SoTF.Editor.Data.Models;
 
-public record WorldItemState(
+public sealed record WorldItemState(
     string ObjectName,
     [property: JsonIgnore] string Group,
     Position Position,

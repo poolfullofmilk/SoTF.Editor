@@ -110,66 +110,64 @@ window.sotfMap = (() => {
     const mapSize = 4096;
     const maxZoom = 2;
     const dragThreshold = 4;
-    const manyPoints = 1500;
     const glideTime = 250;
     const clusterPixels = 24;
     let state = null;
-    let settle = 0;
     let frame = 0;
     let clusterTimer = 0;
-    let clusterFrame = 0;
 
-    // Where A Mark Sits In Map Pixels
-    const spotOf = (element) => [parseFloat(element.style.getPropertyValue("--x")), parseFloat(element.style.getPropertyValue("--y"))];
+    // Points From Blazor, Tied To Their Layer
+    let sent = null;
 
     // Points Near A Group's First Point Join It, A Grid Finds Neighbours
     const cluster = () => {
-        if (!state?.clusters?.isConnected) return;
-        const icons = state.canvas.querySelectorAll(".map-poi[data-keyclick]:not([data-solo])");
+        clearTimeout(clusterTimer);
+        if (!state || sent?.layer !== state.layer) return;
+        const { points } = sent;
         const groups = [];
-        if (state.zoom < maxZoom * 0.99) {
-            const radius = clusterPixels / state.zoom;
-            const seeds = new Map();
-            const cellOf = (x, y) => [Math.floor(x / radius), Math.floor(y / radius)];
-            for (const icon of icons) {
-                const [x, y] = spotOf(icon);
-                const [column, row] = cellOf(x, y);
-                let home = null;
-                for (let stepX = -1; stepX <= 1 && !home; stepX++) {
-                    for (let stepY = -1; stepY <= 1 && !home; stepY++) {
-                        home = (seeds.get(`${column + stepX},${row + stepY}`) ?? []).find((group) => Math.hypot(group.x - x, group.y - y) < radius);
-                    }
-                }
-                if (home) {
-                    home.members.push({ icon, x, y });
-                } else {
-                    const group = { x, y, members: [{ icon, x, y }] };
-                    groups.push(group);
-                    if (!seeds.has(`${column},${row}`)) seeds.set(`${column},${row}`, []);
-                    seeds.get(`${column},${row}`).push(group);
+        const loose = [];
+        const folds = state.zoom < maxZoom * 0.99;
+        const radius = clusterPixels / state.zoom;
+        const seeds = new Map();
+        points.forEach((point, index) => {
+            if (point.solo || !folds) {
+                loose.push(index);
+                return;
+            }
+            const column = Math.floor(point.x / radius);
+            const row = Math.floor(point.y / radius);
+            let home = null;
+            for (let stepX = -1; stepX <= 1 && !home; stepX++) {
+                for (let stepY = -1; stepY <= 1 && !home; stepY++) {
+                    home = seeds.get((column + stepX) * 65536 + row + stepY)?.find((group) => Math.hypot(group.x - point.x, group.y - point.y) < radius);
                 }
             }
-        }
-        const grouped = new Set();
+            if (home) {
+                home.members.push(index);
+                return;
+            }
+            const group = { x: point.x, y: point.y, members: [index] };
+            groups.push(group);
+            const cell = column * 65536 + row;
+            if (!seeds.has(cell)) seeds.set(cell, []);
+            seeds.get(cell).push(group);
+        });
         const bubbles = [];
-        for (const { members } of groups) {
-            if (members.length < 2) continue;
-            const xs = members.map((member) => member.x);
-            const ys = members.map((member) => member.y);
-            const bubble = document.createElement("span");
-            bubble.className = "map-cluster";
-            bubble.textContent = members.length;
-            bubble.style.setProperty("--x", xs.reduce((sum, value) => sum + value) / members.length);
-            bubble.style.setProperty("--y", ys.reduce((sum, value) => sum + value) / members.length);
-            // Whole Device Pixels Each Side Keep The Rim Sharp
-            const size = Math.min(28 + Math.log2(members.length) * 2, 36);
-            bubble.style.setProperty("--cluster-size", `${(Math.round((size * devicePixelRatio) / 2) * 2) / devicePixelRatio}px`);
-            bubble.members = members.flatMap((member) => [member.x, member.y]);
-            bubbles.push(bubble);
-            members.forEach((member) => grouped.add(member.icon));
+        for (const group of groups) {
+            if (group.members.length < 2) {
+                loose.push(group.members[0]);
+                continue;
+            }
+            group.x = group.members.reduce((sum, index) => sum + points[index].x, 0) / group.members.length;
+            group.y = group.members.reduce((sum, index) => sum + points[index].y, 0) / group.members.length;
+            bubbles.push(group);
         }
-        icons.forEach((icon) => icon.classList.toggle("clustered", grouped.has(icon)));
-        state.clusters.replaceChildren(...bubbles);
+        state.loose = loose.sort((first, second) => first - second);
+        state.groups = bubbles;
+        state.bubbles.forEach((bubble) => bubble.remove());
+        state.bubbles.clear();
+        state.zoomClustered = state.zoom;
+        draw();
     };
 
     const clusterSoon = () => {
@@ -177,10 +175,91 @@ window.sotfMap = (() => {
         clusterTimer = setTimeout(cluster, 120);
     };
 
-    // Icons That Land Fold Before Their First Paint, Never Loose First
-    const clusterNow = () => {
-        cancelAnimationFrame(clusterFrame);
-        clusterFrame = requestAnimationFrame(cluster);
+    // Map Pixels In View, A Cached Size Never Forces Layout
+    const viewOf = () => {
+        const { width, height, x, y, zoom } = state;
+        return { left: -x / zoom, top: -y / zoom, right: (width - x) / zoom, bottom: (height - y) / zoom };
+    };
+
+    const iconOf = (point, index) => {
+        const icon = document.createElement("img");
+        icon.src = point.icon;
+        icon.alt = point.title;
+        icon.className = "map-poi";
+        icon.setAttribute("role", "button");
+        icon.tabIndex = -1;
+        icon.dataset.keyclick = "";
+        icon.style.cssText = point.style;
+        icon.pointIndex = index;
+        return icon;
+    };
+
+    const bubbleOf = (group) => {
+        const { points } = sent;
+        const bubble = document.createElement("span");
+        bubble.className = "map-cluster";
+        bubble.textContent = group.members.length;
+        bubble.style.setProperty("--x", group.x);
+        bubble.style.setProperty("--y", group.y);
+        // Whole Device Pixels Each Side Keep The Rim Sharp
+        const size = Math.min(28 + Math.log2(group.members.length) * 2, 36);
+        bubble.style.setProperty("--cluster-size", `${(Math.round((size * devicePixelRatio) / 2) * 2) / devicePixelRatio}px`);
+        bubble.members = group.members.flatMap((index) => [points[index].x, points[index].y]);
+        return bubble;
+    };
+
+    // Only Marks Near The View Exist, Restyles Stay Small
+    const draw = () => {
+        if (!state?.loose || sent?.layer !== state.layer) return;
+        const view = viewOf();
+        const marginX = (view.right - view.left) / 2;
+        const marginY = (view.bottom - view.top) / 2;
+        const area = { left: view.left - marginX, top: view.top - marginY, right: view.right + marginX, bottom: view.bottom + marginY };
+        state.drawn = area;
+        const inside = ({ x, y }) => x >= area.left && x <= area.right && y >= area.top && y <= area.bottom;
+        const { points } = sent;
+        const icons = new Set(state.loose.filter((index) => inside(points[index])));
+        state.icons.forEach((icon, index) => {
+            if (icons.has(index)) return;
+            icon.remove();
+            state.icons.delete(index);
+        });
+        const added = document.createDocumentFragment();
+        icons.forEach((index) => {
+            if (state.icons.has(index)) return;
+            const icon = iconOf(points[index], index);
+            state.icons.set(index, icon);
+            added.append(icon);
+        });
+        state.layer.append(added);
+        const bubbles = document.createDocumentFragment();
+        state.groups.forEach((group) => {
+            const shown = state.bubbles.get(group);
+            if (!inside(group)) {
+                shown?.remove();
+                state.bubbles.delete(group);
+            } else if (!shown) {
+                const bubble = bubbleOf(group);
+                state.bubbles.set(group, bubble);
+                bubbles.append(bubble);
+            }
+        });
+        state.clusters.append(bubbles);
+        // An Arrow Key's Point Takes Focus Once It Exists
+        const focused = state.icons.get(state.focusNext);
+        if (focused) {
+            focused.focus({ preventScroll: true });
+            state.focusNext = undefined;
+        }
+    };
+
+    // Points From Blazor Replace The Last, Folded Before They Paint
+    const setPoints = (layer, points) => {
+        sent = { layer, points };
+        if (state?.layer !== layer) return;
+        state.icons.forEach((icon) => icon.remove());
+        state.icons.clear();
+        cluster();
     };
 
     // The Map Panel's Name Tag, Placed Over The Hovered Point
@@ -196,22 +275,13 @@ window.sotfMap = (() => {
         label.classList.remove("idle");
     };
 
-    // Bubbles And Lines Follow Every Frame, The Icon Layer Holds Its Own Zoom
-    const scaleIcons = (icons = true) => {
-        if (!state) return;
-        if (state.markZoom !== state.zoom || state.ratio !== devicePixelRatio) {
-            state.markZoom = state.zoom;
-            state.ratio = devicePixelRatio;
-            state.canvas.style.setProperty("--map-zoom", state.zoom);
-            state.canvas.style.setProperty("--dpr", state.ratio);
-        }
-        if (icons && (state.iconZoom !== state.zoom || state.iconRatio !== devicePixelRatio)) {
-            state.iconZoom = state.zoom;
-            state.iconRatio = devicePixelRatio;
-            state.layer.style.setProperty("--map-zoom", state.zoom);
-            state.layer.style.setProperty("--dpr", state.iconRatio);
-            clusterSoon();
-        }
+    // Few Marks Exist, All Follow The Zoom Each Frame
+    const scaleMarks = () => {
+        if (state.markZoom === state.zoom && state.ratio === devicePixelRatio) return;
+        state.markZoom = state.zoom;
+        state.ratio = devicePixelRatio;
+        state.canvas.style.setProperty("--map-zoom", state.zoom);
+        state.canvas.style.setProperty("--dpr", state.ratio);
     };
 
     // A Click In Map Pixels, Plus The Zoom
@@ -236,19 +306,22 @@ window.sotfMap = (() => {
         preview.ghost.style.setProperty("--y", y);
     };
 
-    // Thousands Of Icons Restyle Slowly, So They Catch Up Once The Map Settles
-    const apply = (moving = false) => {
+    // Draw When The View Leaves Its Area, Refold After Zooming
+    const apply = () => {
         hideLabel();
 
         // Whole Device Pixels Keep The Map And Its Icons Sharp
         const bounds = state.viewport.getBoundingClientRect();
         const snap = (value, origin) => Math.round((value + origin) * devicePixelRatio) / devicePixelRatio - origin;
         state.canvas.style.transform = `translate(${snap(state.x, bounds.left)}px, ${snap(state.y, bounds.top)}px) scale(${state.zoom})`;
-        clearTimeout(settle);
-        const many = moving && state.layer.childElementCount > manyPoints;
-        scaleIcons(!many);
-        if (many) {
-            settle = setTimeout(scaleIcons, 150);
+        scaleMarks();
+        const view = viewOf();
+        const area = state.drawn;
+        if (area && (view.left < area.left || view.top < area.top || view.right > area.right || view.bottom > area.bottom)) {
+            draw();
+        }
+        if (state.zoomClustered !== undefined && state.zoomClustered !== state.zoom) {
+            clusterSoon();
         }
         placePreview();
     };
@@ -273,7 +346,7 @@ window.sotfMap = (() => {
             const share = zooms ? (from.zoom - state.zoom) / (from.zoom - zoom) : eased;
             state.x = from.x + (x - from.x) * share;
             state.y = from.y + (y - from.y) * share;
-            apply(progress < 1);
+            apply();
             if (progress < 1) {
                 frame = requestAnimationFrame(step);
             } else {
@@ -293,32 +366,29 @@ window.sotfMap = (() => {
 
     // The Whole Map Fits, Centred
     const wholeMap = () => {
-        const { viewport } = state;
-        const zoom = Math.min(viewport.clientWidth, viewport.clientHeight) / mapSize;
+        const { width, height } = state;
+        const zoom = Math.min(width, height) / mapSize;
         state.minZoom = zoom / 2;
         state.fitted = true;
-        return { x: (viewport.clientWidth - mapSize * zoom) / 2, y: (viewport.clientHeight - mapSize * zoom) / 2, zoom };
+        return { x: (width - mapSize * zoom) / 2, y: (height - mapSize * zoom) / 2, zoom };
     };
 
-    const fit = (moving = false) => {
+    const fit = () => {
         stop();
         Object.assign(state, wholeMap());
-        apply(moving);
+        apply();
     };
 
     const init = (viewport, canvas, page) => {
         state?.observer.disconnect();
-        state?.points.disconnect();
-        state = { viewport, canvas, page, drag: null, moved: false, width: viewport.clientWidth, height: viewport.clientHeight };
+        state = { viewport, canvas, page, drag: null, moved: false, width: viewport.clientWidth, height: viewport.clientHeight, icons: new Map(), bubbles: new Map() };
         state.clusters = canvas.querySelector(".map-clusters");
-        state.layer = canvas.querySelector(".map-points") ?? canvas;
+        state.layer = canvas.querySelector(".map-points");
         state.label = viewport.parentElement.querySelector(".map-label");
         fit();
 
-        // New Or Removed Icons Group Again Once They Land
-        state.points = new MutationObserver(clusterNow);
-        state.points.observe(state.layer, { childList: true });
-        clusterNow();
+        // Points Sent Before The Map Was Ready Fold Now
+        cluster();
 
         // A Hovered Point Shows Its Name
         viewport.addEventListener("pointerover", (event) => {
@@ -337,16 +407,18 @@ window.sotfMap = (() => {
         // A Whole Map Stays Whole On Resize, Otherwise Its Middle Stays
         state.observer = new ResizeObserver(() => {
             if (!viewport.isConnected || state?.viewport !== viewport) return;
-            if (state.fitted) {
-                fit(true);
-            } else {
-                stop();
-                state.x += (viewport.clientWidth - state.width) / 2;
-                state.y += (viewport.clientHeight - state.height) / 2;
-                apply(true);
-            }
+            const grownX = viewport.clientWidth - state.width;
+            const grownY = viewport.clientHeight - state.height;
             state.width = viewport.clientWidth;
             state.height = viewport.clientHeight;
+            if (state.fitted) {
+                fit();
+            } else {
+                stop();
+                state.x += grownX / 2;
+                state.y += grownY / 2;
+                apply();
+            }
         });
         state.observer.observe(viewport);
 
@@ -375,12 +447,13 @@ window.sotfMap = (() => {
             const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[event.key];
             if (!step) return;
             event.preventDefault();
-            const points = [...canvas.querySelectorAll(".map-poi[data-keyclick]:not(.clustered)")];
-            if (points.length === 0) return;
-            const current = points.indexOf(document.activeElement);
-            const next = current < 0 ? (step > 0 ? 0 : points.length - 1) : (current + step + points.length) % points.length;
-            points[next].focus({ preventScroll: true });
-            panTo(...spotOf(points[next]));
+            const order = state.loose ?? [];
+            if (order.length === 0) return;
+            const current = order.indexOf(document.activeElement?.pointIndex);
+            const next = order[current < 0 ? (step > 0 ? 0 : order.length - 1) : (current + step + order.length) % order.length];
+            state.focusNext = next;
+            state.icons.get(next)?.focus({ preventScroll: true });
+            panTo(sent.points[next].x, sent.points[next].y);
         });
 
         // A Right Click Picks A Spot, No Browser Menu
@@ -433,7 +506,6 @@ window.sotfMap = (() => {
         // A Map That Left The Page Lets Its Elements Go
         if (state && !state.viewport.isConnected) {
             state.observer.disconnect();
-            state.points.disconnect();
             hideLabel();
             state = null;
         }
@@ -448,6 +520,22 @@ window.sotfMap = (() => {
         state.y = state.drag.y + deltaY;
         apply();
     });
+
+    // Another Monitor's Scaling Snaps Every Mark And Bubble Again
+    const watchScaling = () => {
+        matchMedia(`(resolution: ${devicePixelRatio}dppx)`).addEventListener(
+            "change",
+            () => {
+                if (state?.viewport.isConnected) {
+                    apply();
+                    cluster();
+                }
+                watchScaling();
+            },
+            { once: true }
+        );
+    };
+    watchScaling();
 
     // A Cancelled Pointer Ends The Drag Too, Or The Map Keeps Following
     const endDrag = () => {
@@ -472,15 +560,15 @@ window.sotfMap = (() => {
         stop();
         state.fitted = false;
         state.zoom = maxZoom / 2;
-        state.x = state.viewport.clientWidth / 2 - mapX * state.zoom;
-        state.y = state.viewport.clientHeight / 2 - mapY * state.zoom;
+        state.x = state.width / 2 - mapX * state.zoom;
+        state.y = state.height / 2 - mapY * state.zoom;
         apply();
     };
 
     const panTo = (mapX, mapY) => {
         const zoom = state.target?.zoom ?? state.zoom;
         state.fitted = false;
-        glideTo(state.viewport.clientWidth / 2 - mapX * zoom, state.viewport.clientHeight / 2 - mapY * zoom, zoom);
+        glideTo(state.width / 2 - mapX * zoom, state.height / 2 - mapY * zoom, zoom);
     };
 
     // Blazor Shows The Preview, JS Keeps It Under The Cursor
@@ -494,7 +582,7 @@ window.sotfMap = (() => {
 
     const zoomBy = (factor) => {
         if (!state) return;
-        zoomAt(state.viewport.clientWidth / 2, state.viewport.clientHeight / 2, factor);
+        zoomAt(state.width / 2, state.height / 2, factor);
     };
 
     const reset = () => {
@@ -503,5 +591,5 @@ window.sotfMap = (() => {
         glideTo(x, y, zoom);
     };
 
-    return { init, centerOn, toMap, zoomBy, reset, preview };
+    return { init, points: setPoints, centerOn, toMap, zoomBy, reset, preview };
 })();
