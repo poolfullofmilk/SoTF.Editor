@@ -119,6 +119,9 @@ window.sotfMap = (() => {
     let clusterTimer = 0;
     let clusterFrame = 0;
 
+    // Where A Mark Sits In Map Pixels
+    const spotOf = (element) => [parseFloat(element.style.getPropertyValue("--x")), parseFloat(element.style.getPropertyValue("--y"))];
+
     // Points Near A Group's First Point Join It, A Grid Finds Neighbours
     const cluster = () => {
         if (!state?.clusters?.isConnected) return;
@@ -129,8 +132,7 @@ window.sotfMap = (() => {
             const seeds = new Map();
             const cellOf = (x, y) => [Math.floor(x / radius), Math.floor(y / radius)];
             for (const icon of icons) {
-                const x = parseFloat(icon.style.left);
-                const y = parseFloat(icon.style.top);
+                const [x, y] = spotOf(icon);
                 const [column, row] = cellOf(x, y);
                 let home = null;
                 for (let stepX = -1; stepX <= 1 && !home; stepX++) {
@@ -157,9 +159,11 @@ window.sotfMap = (() => {
             const bubble = document.createElement("span");
             bubble.className = "map-cluster";
             bubble.textContent = members.length;
-            bubble.style.left = `${xs.reduce((sum, value) => sum + value) / members.length}px`;
-            bubble.style.top = `${ys.reduce((sum, value) => sum + value) / members.length}px`;
-            bubble.style.setProperty("--cluster-size", `${Math.min(28 + Math.log2(members.length) * 2, 36)}px`);
+            bubble.style.setProperty("--x", xs.reduce((sum, value) => sum + value) / members.length);
+            bubble.style.setProperty("--y", ys.reduce((sum, value) => sum + value) / members.length);
+            // Whole Device Pixels Each Side Keep The Rim Sharp
+            const size = Math.min(28 + Math.log2(members.length) * 2, 36);
+            bubble.style.setProperty("--cluster-size", `${(Math.round((size * devicePixelRatio) / 2) * 2) / devicePixelRatio}px`);
             bubble.members = members.flatMap((member) => [member.x, member.y]);
             bubbles.push(bubble);
             members.forEach((member) => grouped.add(member.icon));
@@ -193,9 +197,11 @@ window.sotfMap = (() => {
     };
 
     const scaleIcons = () => {
-        if (state && state.iconZoom !== state.zoom) {
+        if (state && (state.iconZoom !== state.zoom || state.ratio !== devicePixelRatio)) {
             state.iconZoom = state.zoom;
+            state.ratio = devicePixelRatio;
             state.canvas.style.setProperty("--map-zoom", state.zoom);
+            state.canvas.style.setProperty("--dpr", state.ratio);
             clusterSoon();
         }
     };
@@ -218,14 +224,18 @@ window.sotfMap = (() => {
         const [x, y] = toMap(state.pointer.x, state.pointer.y);
         preview.line.setAttribute("x2", x);
         preview.line.setAttribute("y2", y);
-        preview.ghost.style.left = `${x}px`;
-        preview.ghost.style.top = `${y}px`;
+        preview.ghost.style.setProperty("--x", x);
+        preview.ghost.style.setProperty("--y", y);
     };
 
     // Thousands Of Icons Restyle Slowly, So They Catch Up Once The Map Settles
     const apply = (moving = false) => {
         hideLabel();
-        state.canvas.style.transform = `translate(${state.x}px, ${state.y}px) scale(${state.zoom})`;
+
+        // Whole Device Pixels Keep The Map And Its Icons Sharp
+        const bounds = state.viewport.getBoundingClientRect();
+        const snap = (value, origin) => Math.round((value + origin) * devicePixelRatio) / devicePixelRatio - origin;
+        state.canvas.style.transform = `translate(${snap(state.x, bounds.left)}px, ${snap(state.y, bounds.top)}px) scale(${state.zoom})`;
         clearTimeout(settle);
         if (moving && state.canvas.childElementCount > manyPoints) {
             settle = setTimeout(scaleIcons, 150);
@@ -361,7 +371,7 @@ window.sotfMap = (() => {
             const current = points.indexOf(document.activeElement);
             const next = current < 0 ? (step > 0 ? 0 : points.length - 1) : (current + step + points.length) % points.length;
             points[next].focus({ preventScroll: true });
-            panTo(parseFloat(points[next].style.left), parseFloat(points[next].style.top));
+            panTo(...spotOf(points[next]));
         });
 
         // A Right Click Picks A Spot, No Browser Menu

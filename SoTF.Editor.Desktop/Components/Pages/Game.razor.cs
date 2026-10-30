@@ -3,6 +3,7 @@ using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Resources;
 using SoTF.Editor.Desktop.Components.Shared.Common;
+using SoTF.Editor.Desktop.Theming;
 using SoTF.Editor.Services.Pages;
 using static SoTF.Editor.Data.Helpers.Constants;
 using static SoTF.Editor.Services.Pages.GameSetupPageViewModel;
@@ -216,6 +217,12 @@ public partial class Game : EditorPageBase
     private static string SeasonClass(List<DayMark> marks)
     {
         return "rounded-panel pa-4" + (marks.Exists(mark => mark.IsNew) ? " card-changed" : "");
+    }
+
+    private static string SeasonStyle(int season)
+    {
+        // Each Season Takes Its Bar Colour
+        return $"min-width:0;--season-color:{StatColors.Season(season)}";
     }
 
     private bool IsPicked(SelectSetting setting, SettingOption option)

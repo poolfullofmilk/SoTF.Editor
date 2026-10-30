@@ -30,7 +30,7 @@ public static class AppTheme
 
     // Shared White Overlay Steps
     private const string TextStrong = "rgba(255,255,255, 0.85)";
-    private const string TextMuted = "rgba(255,255,255, 0.80)";
+    private const string TextMedium = "rgba(255,255,255, 0.60)";
     private const string TextFaint = "rgba(255,255,255, 0.35)";
     private const string LineStrong = "rgba(255,255,255, 0.15)";
     private const string LineFaint = "rgba(255,255,255, 0.10)";
@@ -50,7 +50,7 @@ public static class AppTheme
             // Core Colors
             Primary = Colors.Gray.Lighten1,
             Secondary = AccentBlue,
-            Tertiary = Colors.Gray.Default,
+            Tertiary = TextMedium,
 
             // Status Colors
             Info = AccentBlue,
@@ -61,8 +61,8 @@ public static class AppTheme
             AppbarBackground = ChromeSurface,
             AppbarText = TextStrong,
             DrawerBackground = ChromeSurface,
-            DrawerText = TextMuted,
-            DrawerIcon = TextMuted,
+            DrawerText = TextStrong,
+            DrawerIcon = TextStrong,
 
             // Content Areas
             Background = PageBackground,
@@ -71,8 +71,12 @@ public static class AppTheme
 
             // Text Colors
             TextPrimary = TextStrong,
-            TextSecondary = "rgba(255,255,255, 0.60)",
+            TextSecondary = TextMedium,
             TextDisabled = TextFaint,
+
+            // Icons And Disabled Controls Share The Text Greys
+            ActionDefault = TextMedium,
+            ActionDisabled = TextFaint,
 
             // Link Colors
             HoverOpacity = 0.12,

@@ -160,7 +160,7 @@
                                                    Variant="Variant.Outlined"
                                                    Value="_fillItem"
                                                    ValueChanged="SelectFillItem"
-                                                   Label="@AppText.Get("FillAllWith")"
+                                                   Placeholder="@AppText.Get("FillAllWith")"
                                                    ToStringFunc="item => item?.Name ?? string.Empty"
                                                    Dense
                                                    Margin="Margin.Dense">
@@ -182,7 +182,6 @@
                                     @* Fill Count *@
                                     <NumberField T="int"
                                                  @bind-Value="_fillCount"
-                                                 Label="@AppText.Get("Count")"
                                                  Min="1"
                                                  Max="_fillItem?.Max ?? 1000"
                                                  Margin="Margin.Dense"

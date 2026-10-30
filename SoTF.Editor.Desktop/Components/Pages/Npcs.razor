@@ -11,81 +11,85 @@
               Class="page-fill">
         <MudElement HtmlTag="div"
                     Class="side-panel fill-column">
-            <MudStack Spacing="2"
-                      Class="fill">
-                @* Grouping Buttons *@
-                <MudButtonGroup Variant="Variant.Filled"
-                                Size="Size.Small"
-                                OverrideStyles="false"
-                                Class="align-self-start">
-                    @* By Type *@
-                    <MudButton Variant="Variant.Filled"
-                               Color="@(_byFamily ? Color.Default : Color.Info)"
-                               Size="Size.Small"
-                               OnClick="() => SetByFamily(false)">
-                        @AppText.Get("ByType")
-                    </MudButton>
-                    @* By Family *@
-                    <MudButton Variant="Variant.Filled"
-                               Color="@(_byFamily ? Color.Info : Color.Default)"
-                               Size="Size.Small"
-                               OnClick="() => SetByFamily(true)">
-                        @AppText.Get("ByFamily")
-                    </MudButton>
-                </MudButtonGroup>
-                @* Npc Search *@
-                <SearchField @bind-Value="_filter"
-                             FullWidth />
-                <MudPaper Elevation="4"
-                          Class="rounded-panel panel-flush overflow-y-auto fit">
-                    @if (groupings.Count == 0)
-                    {
-                        <MudText Typo="Typo.body2"
-                                 Class="mud-text-secondary pa-4">
-                            @AppText.Get("NothingFound")
-                        </MudText>
-                    }
-                    @foreach (var grouping in groupings)
-                    {
-                        @if (grouping.Title is { } title)
+            <Header Title="@AppText.Get("Npcs")"
+                    Class="fill">
+                <TitleContent>
+                    <MudSpacer />
+                    @* Grouping Buttons *@
+                    <MudButtonGroup Variant="Variant.Filled"
+                                    Size="Size.Small"
+                                    OverrideStyles="false">
+                        @* By Type *@
+                        <MudButton Variant="Variant.Filled"
+                                   Color="@(_byFamily ? Color.Default : Color.Info)"
+                                   Size="Size.Small"
+                                   OnClick="() => SetByFamily(false)">
+                            @AppText.Get("ByType")
+                        </MudButton>
+                        @* By Family *@
+                        <MudButton Variant="Variant.Filled"
+                                   Color="@(_byFamily ? Color.Info : Color.Default)"
+                                   Size="Size.Small"
+                                   OnClick="() => SetByFamily(true)">
+                            @AppText.Get("ByFamily")
+                        </MudButton>
+                    </MudButtonGroup>
+                </TitleContent>
+                <ChildContent>
+                    @* Npc Search *@
+                    <SearchField @bind-Value="_filter"
+                                 FullWidth />
+                    <MudPaper Elevation="4"
+                              Class="rounded-panel panel-flush overflow-y-auto fit">
+                        @if (groupings.Count == 0)
                         {
-                            <GroupTitle Title="@title"
-                                        Count="grouping.Collections.Count"
-                                        Highlight="@_filter" />
+                            <MudText Typo="Typo.body2"
+                                     Class="mud-text-secondary pa-4">
+                                @AppText.Get("NothingFound")
+                            </MudText>
                         }
-                        @foreach (var collection in grouping.Collections)
+                        @foreach (var grouping in groupings)
                         {
-                            @* Collection Row *@
-                            <MudElement HtmlTag="div"
-                                        Class="@CollectionRowClass(collection)"
-                                        role="button"
-                                        tabindex="0"
-                                        aria-pressed="@(_selectedName == collection.Name ? "true" : "false")"
-                                        data-keyclick
-                                        @onclick="() => _selectedName = collection.Name">
-                                <MudStack Row
-                                          AlignItems="AlignItems.Center"
-                                          Spacing="2">
-                                    <MudElement HtmlTag="div"
-                                                Class="flex-grow-1"
-                                                Style="min-width:0">
-                                        <ItemLabel Name="@collection.Name"
-                                                   Detail="@DetailOf(collection.SharedType)"
-                                                   ImageUrl="@collection.Actors.FirstOrDefault()?.ActorType?.IconPath"
-                                                   Changed="@NpcsPage.IsChanged(collection)"
-                                                   Highlight="@_filter"
-                                                   Round />
-                                    </MudElement>
-                                    <MudText Typo="Typo.body2"
-                                             Class="mud-text-secondary">
-                                        @collection.Actors.Count
-                                    </MudText>
-                                </MudStack>
-                            </MudElement>
+                            @if (grouping.Title is { } title)
+                            {
+                                <GroupTitle Title="@title"
+                                            Count="grouping.Collections.Count"
+                                            Highlight="@_filter" />
+                            }
+                            @foreach (var collection in grouping.Collections)
+                            {
+                                @* Collection Row *@
+                                <MudElement HtmlTag="div"
+                                            Class="@CollectionRowClass(collection)"
+                                            role="button"
+                                            tabindex="0"
+                                            aria-pressed="@(_selectedName == collection.Name ? "true" : "false")"
+                                            data-keyclick
+                                            @onclick="() => _selectedName = collection.Name">
+                                    <MudStack Row
+                                              AlignItems="AlignItems.Center"
+                                              Spacing="2">
+                                        <MudElement HtmlTag="div"
+                                                    Class="flex-grow-1"
+                                                    Style="min-width:0">
+                                            <ItemLabel Name="@collection.Name"
+                                                       Detail="@DetailOf(collection.SharedType)"
+                                                       ImageUrl="@collection.Actors.FirstOrDefault()?.ActorType?.IconPath"
+                                                       Changed="@NpcsPage.IsChanged(collection)"
+                                                       Highlight="@_filter"
+                                                       Round />
+                                        </MudElement>
+                                        <MudText Typo="Typo.body2"
+                                                 Class="mud-text-secondary">
+                                            @collection.Actors.Count
+                                        </MudText>
+                                    </MudStack>
+                                </MudElement>
+                            }
                         }
-                    }
-                </MudPaper>
-            </MudStack>
+                    </MudPaper>
+                </ChildContent>
+            </Header>
         </MudElement>
         <MudElement HtmlTag="div"
                     Class="main-panel fill-column">

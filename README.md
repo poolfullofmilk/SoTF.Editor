@@ -9,6 +9,7 @@
 - Change the game settings, the weather and the season
 - Finish or remove structures
 - Teleport yourself or anyone else on the map, and search or filter every point on it
+- Teleport yourself in a friend's game too, from the save of a game you joined
 - Tools such as regrowing trees and calming cannibals
 - Duplicate and export your savegames
 - See every change before you save, and undo them page by page

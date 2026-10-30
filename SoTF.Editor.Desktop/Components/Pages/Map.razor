@@ -9,7 +9,7 @@
         @* Filter Panel *@
         <MudElement HtmlTag="div"
                     Class="side-panel fill-column">
-            <MudStack Spacing="3"
+            <MudStack Spacing="2"
                       Class="fill-column fit">
                 <MudStack Row
                           AlignItems="AlignItems.Center"
@@ -343,7 +343,7 @@
 
             @* Zoom Buttons *@
             <MudStack Spacing="2"
-                      Class="position-absolute ma-4"
+                      Class="absolute ma-4"
                       Style="top:0;left:0">
                 @* Zoom In *@
                 <MudIconButton Icon="@Icons.Material.Rounded.Add"
@@ -386,7 +386,7 @@
             @if (MapViewModel.StackedPois.Count > 0 || MapViewModel.SelectedPoi is BasePoi)
             {
                 <MudPaper Elevation="4"
-                          Class="rounded-panel pa-4 map-overlay position-absolute ma-4 overflow-y-auto"
+                          Class="rounded-panel pa-4 map-overlay absolute ma-4 overflow-y-auto"
                           Style="top:0;right:0;width:360px;max-height:calc(100% - 32px)">
                     @if (MapViewModel.SelectedPoi is BasePoi selectedPoi)
                     {

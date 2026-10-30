@@ -143,42 +143,50 @@
                                 Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Affection))"
                                 @bind-Value="Follower.Affection" />
 
-                    @* Outfit *@
-                    <ChangedBadge When="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Outfit))"
-                                  Class="d-block">
-                        <MudSelect T="Outfit"
-                                   Variant="Variant.Outlined"
-                                   @bind-Value="Follower.Outfit"
-                                   Label="@AppText.Get("Outfit")"
-                                   ToStringFunc="outfit => outfit?.Name ?? string.Empty"
-                                   Dense>
-                            @foreach (var outfit in Follower.Outfits.OrderBy(outfit => outfit.Name))
-                            {
-                                <MudSelectItem Value="outfit">@outfit.Name</MudSelectItem>
-                            }
-                        </MudSelect>
-                    </ChangedBadge>
+                    <MudStack Spacing="2"
+                              Class="mt-2">
+                        <MudText Typo="Typo.subtitle2">
+                            @AppText.Get("Outfit")
+                        </MudText>
+                        @* Outfit *@
+                        <ChangedBadge When="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Outfit))"
+                                      Class="d-block">
+                            <MudSelect T="Outfit"
+                                       Variant="Variant.Outlined"
+                                       @bind-Value="Follower.Outfit"
+                                       ToStringFunc="outfit => outfit?.Name ?? string.Empty"
+                                       Dense
+                                       Margin="Margin.Dense">
+                                @foreach (var outfit in Follower.Outfits.OrderBy(outfit => outfit.Name))
+                                {
+                                    <MudSelectItem Value="outfit">@outfit.Name</MudSelectItem>
+                                }
+                            </MudSelect>
+                        </ChangedBadge>
+                    </MudStack>
 
-                    <MudText Typo="Typo.subtitle2"
-                             Class="mt-2">
-                        @AppText.Get("Equipment")
-                    </MudText>
-                    @* Equipment Chips *@
-                    <MudChipSet T="string"
-                                SelectionMode="SelectionMode.MultiSelection"
-                                CheckMark
-                                Variant="Variant.Text"
-                                SelectedColor="Color.Info">
-                        @foreach (var equippableItem in Follower.Inventory.OrderBy(item => item.Name))
-                        {
-                            <MudChip T="string"
-                                     Value="@equippableItem.Name"
-                                     @bind-Selected="equippableItem.Selected">
-                                @equippableItem.Name
-                                <ChangedDot When="@FollowerPage.IsChanged(Follower, equippableItem)" />
-                            </MudChip>
-                        }
-                    </MudChipSet>
+                    <MudStack Spacing="2"
+                              Class="mt-2">
+                        <MudText Typo="Typo.subtitle2">
+                            @AppText.Get("Equipment")
+                        </MudText>
+                        @* Equipment Chips *@
+                        <MudChipSet T="string"
+                                    SelectionMode="SelectionMode.MultiSelection"
+                                    CheckMark
+                                    Variant="Variant.Text"
+                                    SelectedColor="Color.Info">
+                            @foreach (var equippableItem in Follower.Inventory.OrderBy(item => item.Name))
+                            {
+                                <MudChip T="string"
+                                         Value="@equippableItem.Name"
+                                         @bind-Selected="equippableItem.Selected">
+                                    @equippableItem.Name
+                                    <ChangedDot When="@FollowerPage.IsChanged(Follower, equippableItem)" />
+                                </MudChip>
+                            }
+                        </MudChipSet>
+                    </MudStack>
                 </MudStack>
             </MudPaper>
         </ChildContent>

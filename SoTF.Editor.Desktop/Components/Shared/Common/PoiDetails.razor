@@ -160,52 +160,54 @@
         </DetailsSection>
     }
 
-    <DetailsSection Title="@AppText.Get("Teleportation")"
-                    HostOnly="IsClientSave">
+    <DetailsSection Title="@AppText.Get("Teleportation")">
         @* Teleport Player *@
         <Tooltip Text="@AppText.Get("AlreadyThere")"
-                 Disabled="@(IsClientSave || !PlayerIsThere)"
+                 Disabled="@(!PlayerIsThere)"
                  RootClass="d-flex">
             <MudButton Variant="Variant.Filled"
                        Color="Color.Info"
                        Size="Size.Small"
                        StartIcon="@Icons.Material.Rounded.Person"
-                       Disabled="@(IsClientSave || Poi.Position is null || PlayerIsThere)"
+                       Disabled="@(Poi.Position is null || PlayerIsThere)"
                        OnClick="() => TeleportAsync(TeleportTarget.Player)">
                 @AppText.Get("TeleportPlayerHere")
             </MudButton>
         </Tooltip>
-        @* Teleport Kelvin *@
-        <Tooltip Text="@AppText.Get("AlreadyThere")"
-                 Disabled="@(IsClientSave || !IsThere(Constants.Actors.KelvinTypeId))"
-                 RootClass="d-flex">
+        @if (!IsClientSave)
+        {
+            @* Teleport Kelvin *@
+            <Tooltip Text="@AppText.Get("AlreadyThere")"
+                     Disabled="@(!IsThere(Constants.Actors.KelvinTypeId))"
+                     RootClass="d-flex">
+                <MudButton Variant="Variant.Text"
+                           Size="Size.Small"
+                           StartIcon="@Icons.Material.Rounded.NearMe"
+                           Disabled="@(!CanTeleport(Constants.Actors.KelvinTypeId))"
+                           OnClick="() => TeleportAsync(TeleportTarget.Kelvin)">
+                    @AppText.Get("TeleportKelvinHere")
+                </MudButton>
+            </Tooltip>
+            @* Teleport Virginia *@
+            <Tooltip Text="@AppText.Get("AlreadyThere")"
+                     Disabled="@(!IsThere(Constants.Actors.VirginiaTypeId))"
+                     RootClass="d-flex">
+                <MudButton Variant="Variant.Text"
+                           Size="Size.Small"
+                           StartIcon="@Icons.Material.Rounded.NearMe"
+                           Disabled="@(!CanTeleport(Constants.Actors.VirginiaTypeId))"
+                           OnClick="() => TeleportAsync(TeleportTarget.Virginia)">
+                    @AppText.Get("TeleportVirginiaHere")
+                </MudButton>
+            </Tooltip>
+            @* Spawn Actors *@
             <MudButton Variant="Variant.Text"
                        Size="Size.Small"
-                       StartIcon="@Icons.Material.Rounded.NearMe"
-                       Disabled="@(IsClientSave || !CanTeleport(Constants.Actors.KelvinTypeId))"
-                       OnClick="() => TeleportAsync(TeleportTarget.Kelvin)">
-                @AppText.Get("TeleportKelvinHere")
+                       StartIcon="@Icons.Material.Rounded.GroupAdd"
+                       Disabled="@(Poi.Position is null)"
+                       OnClick="SpawnActorsAsync">
+                @AppText.Get("SpawnActors")
             </MudButton>
-        </Tooltip>
-        @* Teleport Virginia *@
-        <Tooltip Text="@AppText.Get("AlreadyThere")"
-                 Disabled="@(IsClientSave || !IsThere(Constants.Actors.VirginiaTypeId))"
-                 RootClass="d-flex">
-            <MudButton Variant="Variant.Text"
-                       Size="Size.Small"
-                       StartIcon="@Icons.Material.Rounded.NearMe"
-                       Disabled="@(IsClientSave || !CanTeleport(Constants.Actors.VirginiaTypeId))"
-                       OnClick="() => TeleportAsync(TeleportTarget.Virginia)">
-                @AppText.Get("TeleportVirginiaHere")
-            </MudButton>
-        </Tooltip>
-        @* Spawn Actors *@
-        <MudButton Variant="Variant.Text"
-                   Size="Size.Small"
-                   StartIcon="@Icons.Material.Rounded.GroupAdd"
-                   Disabled="@(IsClientSave || Poi.Position is null)"
-                   OnClick="SpawnActorsAsync">
-            @AppText.Get("SpawnActors")
-        </MudButton>
+        }
     </DetailsSection>
 </MudStack>

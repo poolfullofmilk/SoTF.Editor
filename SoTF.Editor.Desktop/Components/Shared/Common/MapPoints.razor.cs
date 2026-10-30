@@ -80,7 +80,7 @@ public partial class MapPoints : IDisposable
     {
         // Most Icons Take The Stylesheet's Size And Stacking
         var style = new StringBuilder();
-        style.Append(CultureInfo.InvariantCulture, $"left:{left:0.#}px;top:{top:0.#}px");
+        style.Append(CultureInfo.InvariantCulture, $"--x:{left:0.#};--y:{top:0.#}");
         if (size != DefaultSize)
         {
             style.Append(CultureInfo.InvariantCulture, $";width:{size}px;height:{size}px");
@@ -106,21 +106,8 @@ public partial class MapPoints : IDisposable
 
     public static string RingStyle(float left, float top, int size, int zIndex)
     {
-        // The Ring Hugs Its Icon, Most Take The Stylesheet's Size
-        var style = new StringBuilder();
-        style.Append(
-            CultureInfo.InvariantCulture,
-            $"left:{left:0.#}px;top:{top:0.#}px;z-index:{zIndex + 100}"
-        );
-        if (size != DefaultSize)
-        {
-            style.Append(
-                CultureInfo.InvariantCulture,
-                $";width:{size + RingRoom}px;height:{size + RingRoom}px"
-            );
-        }
-
-        return style.ToString();
+        // The Ring Hugs Its Icon
+        return PoiStyle(left, top, size + RingRoom, zIndex);
     }
 
     public static string Pixel(float value)

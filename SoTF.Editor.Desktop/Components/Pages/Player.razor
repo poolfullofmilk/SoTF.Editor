@@ -125,21 +125,27 @@
                                         Max="1"
                                         Step="0.1f" />
 
-                            @* Outfit *@
-                            <ChangedBadge When="@PlayerPage.IsChanged(nameof(PlayerState.SelectedCloth))"
-                                          Class="d-block mt-2">
-                                <MudSelect T="Item"
-                                           Variant="Variant.Outlined"
-                                           @bind-Value="State.SelectedCloth"
-                                           Label="@AppText.Get("Outfit")"
-                                           ToStringFunc="item => item?.Name ?? string.Empty"
-                                           Dense>
-                                    @foreach (var cloth in PlayerPage.AvailableClothes)
-                                    {
-                                        <MudSelectItem Value="cloth">@cloth.Name</MudSelectItem>
-                                    }
-                                </MudSelect>
-                            </ChangedBadge>
+                            <MudStack Spacing="2"
+                                      Class="mt-2">
+                                <MudText Typo="Typo.subtitle2">
+                                    @AppText.Get("Outfit")
+                                </MudText>
+                                @* Outfit *@
+                                <ChangedBadge When="@PlayerPage.IsChanged(nameof(PlayerState.SelectedCloth))"
+                                              Class="d-block">
+                                    <MudSelect T="Item"
+                                               Variant="Variant.Outlined"
+                                               @bind-Value="State.SelectedCloth"
+                                               ToStringFunc="item => item?.Name ?? string.Empty"
+                                               Dense
+                                               Margin="Margin.Dense">
+                                        @foreach (var cloth in PlayerPage.AvailableClothes)
+                                        {
+                                            <MudSelectItem Value="cloth">@cloth.Name</MudSelectItem>
+                                        }
+                                    </MudSelect>
+                                </ChangedBadge>
+                            </MudStack>
                         </MudStack>
                     </MudPaper>
                 </ChildContent>
@@ -195,7 +201,27 @@
                                                    OnClick="() => ArmorPage.AddPiece(ArmorPage.ArmourTypes.FirstOrDefault())" />
                                 </Tooltip>
                             </MudStack>
-                            @foreach (var (index, armour) in ArmorPage.Armour.Index())
+                            @if (ArmorPage.Armour.Any())
+                            {
+                                <MudStack Row
+                                          Spacing="2"
+                                          Class="px-1">
+                                    <MudText Typo="Typo.caption"
+                                             Class="mud-text-secondary"
+                                             Style="@ArmourSelect.CaptionStyle">
+                                        @AppText.Get("Type")
+                                    </MudText>
+                                    <MudSpacer />
+                                    <MudText Typo="Typo.caption"
+                                             Class="mud-text-secondary"
+                                             Style="@DurabilityStyle">
+                                        @AppText.Get("Durability")
+                                    </MudText>
+                                    <MudElement HtmlTag="span"
+                                                Style="@ActionsStyle" />
+                                </MudStack>
+                            }
+                            @foreach (var armour in ArmorPage.Armour)
                             {
                                 <MudStack Row
                                           AlignItems="AlignItems.Center"
@@ -205,7 +231,6 @@
                                     <ArmourSelect Value="armour.Item"
                                                   ValueChanged="armour.ChangeType"
                                                   Types="ArmorPage.ArmourTypes"
-                                                  Label="@(index == 0 ? AppText.Get("Type") : null)"
                                                   Changed="@ArmorPage.IsTypeChanged(armour)" />
                                     <MudSpacer />
                                     @* Durability *@
@@ -216,46 +241,49 @@
                                                      Min="armour.MinDurability"
                                                      Max="armour.MaxDurability"
                                                      Margin="Margin.Dense"
-                                                     Label="@(index == 0 ? AppText.Get("Durability") : null)"
-                                                     Style="width:120px" />
+                                                     Style="@DurabilityStyle" />
                                     </ChangedBadge>
-                                    @* Default Button *@
-                                    <Tooltip Text="@AppText.Format("SetToDefaultDurabilityOf", armour.DefaultDurability)"
-                                             Disabled="@IsDefault(armour)">
-                                        <MudIconButton Icon="@Icons.Material.Rounded.SettingsBackupRestore"
-                                                       aria-label="@AppText.Get("SetToDefaultDurability")"
-                                                       Size="Size.Small"
-                                                       Class="hover-action"
-                                                       Disabled="@IsDefault(armour)"
-                                                       OnClick="() => armour.ArmourPiece.RemainingArmourpoints = armour.DefaultDurability" />
-                                    </Tooltip>
-                                    @* Max Button *@
-                                    <Tooltip Text="@AppText.Format("SetToMaxOf", armour.MaxDurability)"
-                                             Disabled="@(armour.ArmourPiece.RemainingArmourpoints >= armour.MaxDurability)">
-                                        <MudIconButton Icon="@Icons.Material.Rounded.KeyboardDoubleArrowUp"
-                                                       aria-label="@AppText.Get("SetToMax")"
-                                                       Size="Size.Small"
-                                                       Class="hover-action"
-                                                       Disabled="@(armour.ArmourPiece.RemainingArmourpoints >= armour.MaxDurability)"
-                                                       OnClick="() => armour.ArmourPiece.RemainingArmourpoints = armour.MaxDurability" />
-                                    </Tooltip>
-                                    @* Unequip Button *@
-                                    <Tooltip Text="@UnequipText(armour)">
-                                        <MudIconButton Icon="@Icons.Material.Rounded.Backpack"
-                                                       aria-label="@AppText.Get("Unequip")"
-                                                       Size="Size.Small"
-                                                       Class="hover-action"
-                                                       Disabled="@(!ArmorPage.CanMoveToInventory(armour))"
-                                                       OnClick="() => ArmorPage.MoveToInventory(armour)" />
-                                    </Tooltip>
-                                    @* Delete Button *@
-                                    <Tooltip Text="@AppText.Get("DeleteArmour")">
-                                        <MudIconButton Icon="@Icons.Material.Rounded.Delete"
-                                                       aria-label="@AppText.Get("DeleteArmour")"
-                                                       Size="Size.Small"
-                                                       Class="hover-action danger-hover"
-                                                       OnClick="() => DeleteArmourAsync(armour)" />
-                                    </Tooltip>
+                                    <MudStack Row
+                                              Spacing="2"
+                                              Style="@ActionsStyle">
+                                        @* Default Button *@
+                                        <Tooltip Text="@AppText.Format("SetToDefaultDurabilityOf", armour.DefaultDurability)"
+                                                 Disabled="@IsDefault(armour)">
+                                            <MudIconButton Icon="@Icons.Material.Rounded.SettingsBackupRestore"
+                                                           aria-label="@AppText.Get("SetToDefaultDurability")"
+                                                           Size="Size.Small"
+                                                           Class="hover-action"
+                                                           Disabled="@IsDefault(armour)"
+                                                           OnClick="() => armour.ArmourPiece.RemainingArmourpoints = armour.DefaultDurability" />
+                                        </Tooltip>
+                                        @* Max Button *@
+                                        <Tooltip Text="@AppText.Format("SetToMaxOf", armour.MaxDurability)"
+                                                 Disabled="@(armour.ArmourPiece.RemainingArmourpoints >= armour.MaxDurability)">
+                                            <MudIconButton Icon="@Icons.Material.Rounded.KeyboardDoubleArrowUp"
+                                                           aria-label="@AppText.Get("SetToMax")"
+                                                           Size="Size.Small"
+                                                           Class="hover-action"
+                                                           Disabled="@(armour.ArmourPiece.RemainingArmourpoints >= armour.MaxDurability)"
+                                                           OnClick="() => armour.ArmourPiece.RemainingArmourpoints = armour.MaxDurability" />
+                                        </Tooltip>
+                                        @* Unequip Button *@
+                                        <Tooltip Text="@UnequipText(armour)">
+                                            <MudIconButton Icon="@Icons.Material.Rounded.Backpack"
+                                                           aria-label="@AppText.Get("Unequip")"
+                                                           Size="Size.Small"
+                                                           Class="hover-action"
+                                                           Disabled="@(!ArmorPage.CanMoveToInventory(armour))"
+                                                           OnClick="() => ArmorPage.MoveToInventory(armour)" />
+                                        </Tooltip>
+                                        @* Delete Button *@
+                                        <Tooltip Text="@AppText.Get("DeleteArmour")">
+                                            <MudIconButton Icon="@Icons.Material.Rounded.Delete"
+                                                           aria-label="@AppText.Get("DeleteArmour")"
+                                                           Size="Size.Small"
+                                                           Class="hover-action danger-hover"
+                                                           OnClick="() => DeleteArmourAsync(armour)" />
+                                        </Tooltip>
+                                    </MudStack>
                                 </MudStack>
                             }
 

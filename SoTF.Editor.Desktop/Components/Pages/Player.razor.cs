@@ -12,6 +12,10 @@ public partial class Player : EditorPageBase
     // Strength 100 Gives 298 Max Health
     private const float DefaultMaxHealthCeiling = 300;
 
+    // Column Widths The Worn Captions Share With Their Rows
+    private const string DurabilityStyle = "width:120px;flex-shrink:0";
+    private const string ActionsStyle = "width:128px;flex-shrink:0";
+
     [Inject]
     public required PlayerPageViewModel PlayerPage { get; set; }
 

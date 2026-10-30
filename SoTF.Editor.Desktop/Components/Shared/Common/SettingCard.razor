@@ -11,11 +11,14 @@
                    ValueChanged="value => Setting.BoolValue = value"
                    Color="Color.Info"
                    Class="ma-0">
-            @AppText.Get(TextKeys.Setting(Setting.Name))
-            @if (Info is not null)
-            {
-                <InfoIcon Text="@Info" />
-            }
+            <MudText Typo="Typo.subtitle2"
+                     HtmlTag="span">
+                @AppText.Get(TextKeys.Setting(Setting.Name))
+                @if (Info is not null)
+                {
+                    <InfoIcon Text="@Info" />
+                }
+            </MudText>
         </MudSwitch>
     </MudPaper>
 }

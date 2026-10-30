@@ -243,7 +243,13 @@ public class StructuresPageViewModel
                         : 0;
                 unfinishedStructures.Add(
                     JToken.FromObject(
-                        new UnfinishedGenericScrewStructure(unfinishedId, position, rotation, added)
+                        new
+                        {
+                            Id = unfinishedId,
+                            Pos = position,
+                            Rot = rotation,
+                            Added = added,
+                        }
                     )
                 );
                 token.Remove();

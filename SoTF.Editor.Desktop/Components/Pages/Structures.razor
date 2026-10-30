@@ -11,71 +11,71 @@
               Class="page-fill">
         <MudElement HtmlTag="div"
                     Class="side-panel fill-column">
-            <MudStack Spacing="2"
-                      Class="fill">
-                @* Structure Search *@
-                <SearchField @bind-Value="_filter"
-                             FullWidth />
-                <MudPaper Elevation="4"
-                          Class="rounded-panel panel-flush overflow-y-auto fit">
-                    @* All Structures Row *@
-                    <MudElement HtmlTag="div"
-                                Class="@RowClass(_showAll)"
-                                role="button"
-                                tabindex="0"
-                                aria-pressed="@(_showAll ? "true" : "false")"
-                                data-keyclick
-                                @onclick="SelectAll">
-                        <MudStack Row
-                                  AlignItems="AlignItems.Center"
-                                  Spacing="2">
-                            <MudIcon Icon="@Icons.Material.Rounded.Cabin"
-                                     Class="thumb" />
-                            <MudStack Spacing="0"
-                                      Style="min-width:0">
-                                <MudText Typo="Typo.body2"
-                                         Class="mud-typography-nowrap">
-                                    @AppText.Get("AllStructures")
-                                    <ChangedDot When="@StructuresPage.HasChanges" />
-                                </MudText>
-                                <MudText Typo="Typo.caption"
-                                         Class="mud-text-secondary">
-                                    @CountsOf(types.SelectMany(type => type.Structures))
-                                </MudText>
+            <Header Title="@AppText.Get("Structures")"
+                    Class="fill">
+                    @* Structure Search *@
+                    <SearchField @bind-Value="_filter"
+                                 FullWidth />
+                    <MudPaper Elevation="4"
+                              Class="rounded-panel panel-flush overflow-y-auto fit">
+                        @* All Structures Row *@
+                        <MudElement HtmlTag="div"
+                                    Class="@RowClass(_showAll)"
+                                    role="button"
+                                    tabindex="0"
+                                    aria-pressed="@(_showAll ? "true" : "false")"
+                                    data-keyclick
+                                    @onclick="SelectAll">
+                            <MudStack Row
+                                      AlignItems="AlignItems.Center"
+                                      Spacing="2">
+                                <MudIcon Icon="@Icons.Material.Rounded.Cabin"
+                                         Class="thumb" />
+                                <MudStack Spacing="0"
+                                          Style="min-width:0">
+                                    <MudText Typo="Typo.body2"
+                                             Class="mud-typography-nowrap">
+                                        @AppText.Get("AllStructures")
+                                        <ChangedDot When="@StructuresPage.HasChanges" />
+                                    </MudText>
+                                    <MudText Typo="Typo.caption"
+                                             Class="mud-text-secondary">
+                                        @CountsOf(types.SelectMany(type => type.Structures))
+                                    </MudText>
+                                </MudStack>
                             </MudStack>
-                        </MudStack>
-                    </MudElement>
-                    @if (types.Count == 0)
-                    {
-                        <MudText Typo="Typo.body2"
-                                 Class="mud-text-secondary pa-4">
-                            @AppText.Get("NothingFound")
-                        </MudText>
-                    }
-                    @foreach (var category in types.GroupBy(type => type.Category))
-                    {
-                        <GroupTitle Title="@category.Key"
-                                    Highlight="@_filter" />
-                        @foreach (var type in category)
+                        </MudElement>
+                        @if (types.Count == 0)
                         {
-                            @* Structure Type Row *@
-                            <MudElement HtmlTag="div"
-                                        Class="@RowClass(!_showAll && _selectedName == type.Name)"
-                                        role="button"
-                                        tabindex="0"
-                                        aria-pressed="@((!_showAll && _selectedName == type.Name) ? "true" : "false")"
-                                        data-keyclick
-                                        @onclick="() => Select(type)">
-                                <ItemLabel Name="@type.Name"
-                                           Detail="@CountsOf(type.Structures)"
-                                           ImageUrl="@type.Icon"
-                                           Changed="@type.Structures.Exists(structure => structure.IsChanged)"
-                                           Highlight="@_filter" />
-                            </MudElement>
+                            <MudText Typo="Typo.body2"
+                                     Class="mud-text-secondary pa-4">
+                                @AppText.Get("NothingFound")
+                            </MudText>
                         }
-                    }
-                </MudPaper>
-            </MudStack>
+                        @foreach (var category in types.GroupBy(type => type.Category))
+                        {
+                            <GroupTitle Title="@category.Key"
+                                        Highlight="@_filter" />
+                            @foreach (var type in category)
+                            {
+                                @* Structure Type Row *@
+                                <MudElement HtmlTag="div"
+                                            Class="@RowClass(!_showAll && _selectedName == type.Name)"
+                                            role="button"
+                                            tabindex="0"
+                                            aria-pressed="@((!_showAll && _selectedName == type.Name) ? "true" : "false")"
+                                            data-keyclick
+                                            @onclick="() => Select(type)">
+                                    <ItemLabel Name="@type.Name"
+                                               Detail="@CountsOf(type.Structures)"
+                                               ImageUrl="@type.Icon"
+                                               Changed="@type.Structures.Exists(structure => structure.IsChanged)"
+                                               Highlight="@_filter" />
+                                </MudElement>
+                            }
+                        }
+                    </MudPaper>
+            </Header>
         </MudElement>
         <MudElement HtmlTag="div"
                     Class="main-panel fill-column">
@@ -131,7 +131,7 @@
                                       Hover
                                       FixedHeader
                                       Virtualize
-                                      OverscanCount="20"
+                                      OverscanCount="10"
                                       ItemSize="AppTheme.ListRowHeight"
                                       RowStyle="@AppTheme.ListRowStyle"
                                       Elevation="0"

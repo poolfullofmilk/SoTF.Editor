@@ -149,8 +149,11 @@
                                                            ValueChanged="value => GameSetup.SetBool(toggle.Key, value, toggle.Fallback)"
                                                            Color="Color.Info"
                                                            Class="ma-0">
-                                                    @AppText.Get(toggle.LabelKey)
-                                                    <InfoIcon Text="@AppText.Get(toggle.InfoKey)" />
+                                                    <MudText Typo="Typo.subtitle2"
+                                                             HtmlTag="span">
+                                                        @AppText.Get(toggle.LabelKey)
+                                                        <InfoIcon Text="@AppText.Get(toggle.InfoKey)" />
+                                                    </MudText>
                                                 </MudSwitch>
                                             </MudPaper>
                                         </MudItem>
@@ -167,7 +170,7 @@
                     <MudAlert Severity="Severity.Info"
                               Dense
                               Elevation="4"
-                              Class="rounded-panel">
+                              Class="rounded-panel mud-info-text">
                         @AppText.Get("CustomHint")
                     </MudAlert>
                 }
@@ -209,16 +212,22 @@
                                                               Spacing="2">
                                                         @foreach (var part in TimeParts)
                                                         {
-                                                            @* Time Part *@
-                                                            <ChangedBadge When="@GameState.IsChanged(part)"
-                                                                          Class="flex-grow-1">
-                                                                <NumberField T="int?"
-                                                                             @bind-Value="part.IntValue"
-                                                                             Label="@AppText.Get(TextKeys.Setting(part.Name))"
-                                                                             Min="part.MinInt"
-                                                                             Max="part.MaxInt"
-                                                                             Margin="Margin.Dense" />
-                                                            </ChangedBadge>
+                                                            <MudStack Spacing="1"
+                                                                      Class="flex-1">
+                                                                <MudText Typo="Typo.caption"
+                                                                         Class="mud-text-secondary">
+                                                                    @AppText.Get(TextKeys.Setting(part.Name))
+                                                                </MudText>
+                                                                @* Time Part *@
+                                                                <ChangedBadge When="@GameState.IsChanged(part)"
+                                                                              Class="d-block">
+                                                                    <NumberField T="int?"
+                                                                                 @bind-Value="part.IntValue"
+                                                                                 Min="part.MinInt"
+                                                                                 Max="part.MaxInt"
+                                                                                 Margin="Margin.Dense" />
+                                                                </ChangedBadge>
+                                                            </MudStack>
                                                         }
                                                     </MudStack>
                                                 </MudStack>
@@ -323,8 +332,7 @@
                                       AlignItems="AlignItems.Center"
                                       Wrap="Wrap.Wrap"
                                       Spacing="2">
-                                <MudText Typo="Typo.subtitle1"
-                                         Style="font-weight:700">
+                                <MudText Typo="Typo.subtitle2">
                                     @AppText.Get("Season")
                                 </MudText>
                                 <InfoIcon Text="@AppText.Get("SeasonInfo")" />
@@ -340,8 +348,8 @@
                                 @foreach (var (index, option) in s_seasons.Index())
                                 {
                                     <MudStack Spacing="1"
-                                              Class="@($"flex-grow-1 season-{index}")"
-                                              Style="flex-basis:0;min-width:0">
+                                              Class="flex-1"
+                                              Style="@SeasonStyle(index)">
                                         @* Season Marks *@
                                         <MudElement HtmlTag="div"
                                                     Class="season-marks">

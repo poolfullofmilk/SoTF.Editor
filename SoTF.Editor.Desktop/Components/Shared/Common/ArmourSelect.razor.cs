@@ -20,6 +20,6 @@ public partial class ArmourSelect
     [Parameter]
     public bool Disabled { get; set; }
 
-    [Parameter]
-    public string? Label { get; set; }
+    // Column Captions Start Where The Select Does
+    public const string CaptionStyle = "flex:0 1 250px;min-width:0;padding-left:48px";
 }
