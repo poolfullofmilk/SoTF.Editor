@@ -149,7 +149,8 @@
                                                            Color="Color.Info"
                                                            Class="ma-0">
                                                     <MudText Typo="Typo.subtitle2"
-                                                             HtmlTag="span">
+                                                             HtmlTag="span"
+                                                             Class="d-inline-flex align-center gap-1">
                                                         @AppText.Get(toggle.LabelKey)
                                                         <InfoIcon Text="@AppText.Get(toggle.InfoKey)" />
                                                     </MudText>
@@ -330,7 +331,7 @@
                             <MudStack Row
                                       AlignItems="AlignItems.Center"
                                       Wrap="Wrap.Wrap"
-                                      Spacing="2">
+                                      Spacing="1">
                                 <MudText Typo="Typo.subtitle2">
                                     @AppText.Get("Season")
                                 </MudText>

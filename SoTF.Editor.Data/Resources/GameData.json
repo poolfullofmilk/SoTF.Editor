@@ -1601,7 +1601,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 531,
@@ -1609,7 +1610,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 532,
@@ -1617,7 +1619,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 533,
@@ -1625,7 +1628,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 534,
@@ -1768,7 +1772,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 550,
@@ -1776,7 +1781,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 551,
@@ -1784,7 +1790,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 552,
@@ -2020,7 +2027,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 580,
@@ -2028,7 +2036,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 581,
@@ -2036,7 +2045,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 582,
@@ -2044,7 +2054,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 583,
@@ -2057,7 +2068,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 585,
@@ -2065,7 +2077,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 586,
@@ -2073,7 +2086,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 587,
@@ -2081,7 +2095,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 588,
@@ -2089,7 +2104,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 589,
@@ -2115,7 +2131,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 592,
@@ -2265,7 +2282,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 608,
@@ -2273,7 +2291,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 609,
@@ -2281,7 +2300,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 610,
@@ -2289,7 +2309,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 611,
@@ -2377,7 +2398,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 621,
@@ -2385,7 +2407,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 622,
@@ -2393,7 +2416,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 623,
@@ -2401,7 +2425,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 624,
@@ -2409,7 +2434,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 625,
@@ -2417,7 +2443,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 626,
@@ -2452,7 +2479,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 630,
@@ -2477,7 +2505,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 633,
@@ -2529,7 +2558,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 639,
@@ -2555,7 +2585,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 642,
@@ -2590,7 +2621,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 646,
@@ -2625,7 +2657,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 650,
@@ -2687,7 +2720,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 657,
@@ -2704,7 +2738,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 659,
@@ -2712,7 +2747,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 661,
@@ -2829,7 +2865,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 674,
@@ -2918,7 +2955,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 684,
@@ -3070,7 +3108,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 701,
@@ -3087,7 +3126,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 703,
@@ -3104,7 +3144,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 705,
@@ -3148,7 +3189,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 710,
@@ -3156,7 +3198,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 711,
@@ -3164,7 +3207,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 712,
@@ -3181,7 +3225,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 714,
@@ -3189,7 +3234,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 715,
@@ -3296,7 +3342,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 727,
@@ -3334,7 +3381,8 @@
       "storageMax": {
         "shelf": 0,
         "inventory": 1
-      }
+      },
+      "image": "Paper.png"
     },
     {
       "id": 749,

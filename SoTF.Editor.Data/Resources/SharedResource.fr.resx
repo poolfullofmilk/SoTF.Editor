@@ -1698,7 +1698,7 @@ Non les garde pour que vous puissiez enregistrer d'abord</value>
     <value>Les copies de secours ont dépassé {1}, les {0} plus anciennes ont donc été supprimées. La toute première reste</value>
   </data>
   <data name="ToolsHint" xml:space="preserve">
-    <value>Les outils modifient la partie ouverte et demandent un enregistrement, comme toute autre modification. La dorure et les déblocages enregistrent tout de suite</value>
+    <value>Les outils modifient la partie ouverte et demandent un enregistrement, comme toute autre modification. La dorure, les déblocages et la copie du joueur enregistrent tout de suite</value>
   </data>
   <data name="ToolsWorld" xml:space="preserve">
     <value>Monde</value>
@@ -2196,5 +2196,137 @@ Non garde l'éditeur ouvert pour que vous puissiez enregistrer d'abord</value>
   </data>
   <data name="ImportExport" xml:space="preserve">
     <value>Importer ou Exporter</value>
+  </data>
+  <data name="Progress" xml:space="preserve">
+    <value>Progression</value>
+  </data>
+  <data name="Collectibles" xml:space="preserve">
+    <value>Objets à Collectionner</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Statistiques</value>
+  </data>
+  <data name="Bunkers" xml:space="preserve">
+    <value>Bunkers</value>
+  </data>
+  <data name="ActionCameraVideos" xml:space="preserve">
+    <value>Vidéos de la Caméra</value>
+  </data>
+  <data name="MissingSoldiers" xml:space="preserve">
+    <value>Soldats Disparus</value>
+  </data>
+  <data name="SoldierBuried" xml:space="preserve">
+    <value>Enterré</value>
+  </data>
+  <data name="SoldierHanging" xml:space="preserve">
+    <value>Pendu</value>
+  </data>
+  <data name="SoldierRaft" xml:space="preserve">
+    <value>Sur le Radeau</value>
+  </data>
+  <data name="BlueprintPages" xml:space="preserve">
+    <value>Pages de Plans</value>
+  </data>
+  <data name="FoundOf" xml:space="preserve">
+    <value>{0} sur {1} Trouvés</value>
+  </data>
+  <data name="Found" xml:space="preserve">
+    <value>Trouvé</value>
+  </data>
+  <data name="NotFoundYet" xml:space="preserve">
+    <value>Pas Encore Trouvé</value>
+  </data>
+  <data name="DaysSurvived" xml:space="preserve">
+    <value>Jours Survécus</value>
+  </data>
+  <data name="Kills" xml:space="preserve">
+    <value>Éliminations</value>
+  </data>
+  <data name="TreesCut" xml:space="preserve">
+    <value>Arbres Coupés</value>
+  </data>
+  <data name="ItemsCrafted" xml:space="preserve">
+    <value>Fabriqués</value>
+  </data>
+  <data name="ItemsUsed" xml:space="preserve">
+    <value>Consommés</value>
+  </data>
+  <data name="Stats" xml:space="preserve">
+    <value>Statistiques</value>
+  </data>
+  <data name="Armor" xml:space="preserve">
+    <value>Armure</value>
+  </data>
+  <data name="CopyPlayer" xml:space="preserve">
+    <value>Copier le Joueur</value>
+  </data>
+  <data name="CopyPlayerText" xml:space="preserve">
+    <value>Vos statistiques, votre inventaire, votre armure et votre tenue passent dans une autre partie, même une partie rejointe</value>
+  </data>
+  <data name="CopyPlayerHint" xml:space="preserve">
+    <value>Copie votre joueur tel qu'enregistré la dernière fois. L'autre partie reçoit d'abord une copie de secours</value>
+  </data>
+  <data name="WhatToCopy" xml:space="preserve">
+    <value>Quoi Copier</value>
+  </data>
+  <data name="CopyIntoSavegame" xml:space="preserve">
+    <value>Dans la Partie</value>
+  </data>
+  <data name="ReadingSavegames" xml:space="preserve">
+    <value>Lecture des parties</value>
+  </data>
+  <data name="NoOtherSavegames" xml:space="preserve">
+    <value>Aucune autre partie où copier</value>
+  </data>
+  <data name="Copy" xml:space="preserve">
+    <value>Copier</value>
+  </data>
+  <data name="CopyPlayerConfirm" xml:space="preserve">
+    <value>Le joueur de {0} est remplacé. Une copie de secours est faite d'abord</value>
+  </data>
+  <data name="PlayerCopied" xml:space="preserve">
+    <value>Joueur copié dans {0}</value>
+  </data>
+  <data name="NothingCopied" xml:space="preserve">
+    <value>Rien n'a été copié, {0} n'a aucun de ces fichiers de joueur</value>
+  </data>
+  <data name="UnableToCopyPlayer" xml:space="preserve">
+    <value>Impossible de copier le joueur</value>
+  </data>
+  <data name="CopiedPlayerFrom" xml:space="preserve">
+    <value>Joueur Copié depuis {0}</value>
+  </data>
+  <data name="RipenGardens" xml:space="preserve">
+    <value>Faire Mûrir les Jardins</value>
+  </data>
+  <data name="RipenGardensText" xml:space="preserve">
+    <value>Chaque plante encore en croissance dans vos potagers est prête à cueillir</value>
+  </data>
+  <data name="FillPrinters" xml:space="preserve">
+    <value>Remplir les Imprimantes 3D</value>
+  </data>
+  <data name="FillPrintersText" xml:space="preserve">
+    <value>Chaque imprimante 3D reçoit 1 000 ml de résine, assez pour toute impression</value>
+  </data>
+  <data name="GardensRipened" xml:space="preserve">
+    <value>{0} plantes sont prêtes à cueillir</value>
+  </data>
+  <data name="NothingGrowing" xml:space="preserve">
+    <value>Rien ne pousse</value>
+  </data>
+  <data name="PrintersFilled" xml:space="preserve">
+    <value>{0} imprimantes remplies</value>
+  </data>
+  <data name="PrintersFull" xml:space="preserve">
+    <value>Chaque imprimante a déjà assez de résine</value>
+  </data>
+  <data name="GardenPlots" xml:space="preserve">
+    <value>Potagers</value>
+  </data>
+  <data name="PrinterResin" xml:space="preserve">
+    <value>Résine d'Imprimante 3D</value>
+  </data>
+  <data name="GameRunningWarning" xml:space="preserve">
+    <value>Sons Of The Forest est lancé, enregistrez pendant qu'il est au menu principal</value>
   </data>
 </root>

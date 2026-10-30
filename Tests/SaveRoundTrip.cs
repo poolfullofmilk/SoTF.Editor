@@ -312,6 +312,17 @@ try
     ToolCheck("Reset Fires", main.ResetFires);
     ToolCheck("Reset Structure Damage", main.ResetStructureDamage);
     ToolCheck("Reset Traps", main.ResetTraps);
+    ToolCheck("Ripen Gardens", main.RipenGardens);
+    Check(main.RipenGardens() == AppText.Get("NothingGrowing"), "Ripe Gardens Ripen No More");
+    ToolCheck("Fill Printers", main.FillPrinters);
+    const SavegameStore.FileType printer = SavegameStore.FileType.Resin3dPrinterBunkerASaveData;
+    Check(
+        main.SelectedSavegame!.SavegameStore.LoadJsonRaw(printer)
+            ?.GetJsonBasedToken(MainViewModel.PrinterKeyOf(printer))
+            ?["CurrentResinVolume"]?.Value<float>() == MainViewModel.PrinterResin
+            && main.FillPrinters() == AppText.Get("PrintersFull"),
+        "Printers Hold A Sled's Resin"
+    );
     ToolCheck("Reset Containers", gameState.ResetContainers);
     ToolCheck("Calm Cannibals", () => main.SetCannibalAnger(0));
     ToolCheck("Cannibal Anger To Half", () => main.SetCannibalAnger(50));
@@ -593,6 +604,8 @@ try
             ("EternalFires", () => main.EternalFires()),
             ("CannibalAnger", () => main.SetCannibalAnger(45)),
             ("ResetContainers", () => gameState.ResetContainers()),
+            ("RipenGardens", () => main.RipenGardens()),
+            ("FillPrinters", () => main.FillPrinters()),
         }
     )
     {
@@ -707,6 +720,10 @@ try
     // An Exported Inventory Imports Back With Nothing Changed
     var exportedInventory = inventory.ExportText();
     inventory.RemoveAllEquipped();
+    Check(
+        inventory.Inventory.All(item => item.IsEquipped) && !inventory.CanRemoveAll(),
+        "Remove All Keeps The Item In Hand"
+    );
     var importedCount = inventory.Import(exportedInventory + "\nnot a line\n999999 5 Unknown");
     Check(
         importedCount == inventory.Inventory.Count && !main.HasChanges("Inventory"),
@@ -919,6 +936,44 @@ try
         "Copy To Singleplayer Matches The Save"
     );
 
+    // Progress Reads Every Collectible Group And The Counts
+    var progress = ProgressReader.Read(main.SelectedSavegame!, gameData);
+    Check(
+        progress.Collectibles.Count == 4
+            && progress.Collectibles[0].Items.Count == 7
+            && progress.Days > 0
+            && progress.Kills is not null
+            && progress.Crafted.Count > 0,
+        "Progress Reads Collectibles And Counts"
+    );
+
+    // A Copied Player Fills The Other Save After A Backup
+    var emptied = new SavegameStore(copied);
+    var emptiedInventory = emptied.LoadJsonRaw(SavegameStore.FileType.PlayerInventorySaveData)!;
+    emptiedInventory.GetJsonBasedToken(Constants.JsonKeys.PlayerInventory)![
+        "ItemInstanceManagerData"
+    ]!["ItemBlocks"] = new JArray();
+    emptiedInventory.MarkAsModified(Constants.JsonKeys.PlayerInventory);
+    emptied.SaveWrappers(
+        new() { [SavegameStore.FileType.PlayerInventorySaveData] = emptiedInventory }
+    );
+    var backupsBeforeCopy = BackupManager.Count(copied);
+    var copiedParts = PlayerCopier.Copy(
+        savegamePath,
+        copied,
+        Enum.GetValues<PlayerPart>(),
+        "Sample"
+    );
+    Check(
+        copiedParts.Count == 4
+            && JToken.DeepEquals(
+                InventoryOf(new SavegameStore(savegamePath)),
+                InventoryOf(new SavegameStore(copied))
+            )
+            && BackupManager.Count(copied) == backupsBeforeCopy + 1,
+        "Copied Player Matches, After A Backup"
+    );
+
     // Only A Copy The Editor Made Can Be Deleted
     var multiplayerCopy = SavegameManager.Load(
         SavegameManager.Duplicate(main.SelectedSavegame!, SavegameManager.MultiplayerFolder)
@@ -972,6 +1027,13 @@ try
                 ),
             $"{name} Holds Every Text"
         );
+    }
+
+    static JToken? InventoryOf(SavegameStore store)
+    {
+        return store
+            .LoadJsonRaw(SavegameStore.FileType.PlayerInventorySaveData)
+            ?.GetJsonBasedToken(Constants.JsonKeys.PlayerInventory);
     }
 
     void ToolCheck(string tool, Func<string> run)

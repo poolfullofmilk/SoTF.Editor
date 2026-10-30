@@ -27,7 +27,6 @@ public class MapViewModel
         nameof(PoiGroupType.Villages),
         nameof(PoiGroupType.ZipLines),
         PoiGroupKeys.Actors + "_followers",
-        PoiGroupKeys.WorldItems + "Knight V",
     ];
 
     private readonly MainViewModel _mainViewModel;

@@ -196,12 +196,20 @@ window.sotfMap = (() => {
         label.classList.remove("idle");
     };
 
-    const scaleIcons = () => {
-        if (state && (state.iconZoom !== state.zoom || state.ratio !== devicePixelRatio)) {
-            state.iconZoom = state.zoom;
+    // Bubbles And Lines Follow Every Frame, The Icon Layer Holds Its Own Zoom
+    const scaleIcons = (icons = true) => {
+        if (!state) return;
+        if (state.markZoom !== state.zoom || state.ratio !== devicePixelRatio) {
+            state.markZoom = state.zoom;
             state.ratio = devicePixelRatio;
             state.canvas.style.setProperty("--map-zoom", state.zoom);
             state.canvas.style.setProperty("--dpr", state.ratio);
+        }
+        if (icons && (state.iconZoom !== state.zoom || state.iconRatio !== devicePixelRatio)) {
+            state.iconZoom = state.zoom;
+            state.iconRatio = devicePixelRatio;
+            state.layer.style.setProperty("--map-zoom", state.zoom);
+            state.layer.style.setProperty("--dpr", state.iconRatio);
             clusterSoon();
         }
     };
@@ -237,10 +245,10 @@ window.sotfMap = (() => {
         const snap = (value, origin) => Math.round((value + origin) * devicePixelRatio) / devicePixelRatio - origin;
         state.canvas.style.transform = `translate(${snap(state.x, bounds.left)}px, ${snap(state.y, bounds.top)}px) scale(${state.zoom})`;
         clearTimeout(settle);
-        if (moving && state.canvas.childElementCount > manyPoints) {
+        const many = moving && state.layer.childElementCount > manyPoints;
+        scaleIcons(!many);
+        if (many) {
             settle = setTimeout(scaleIcons, 150);
-        } else {
-            scaleIcons();
         }
         placePreview();
     };
@@ -303,12 +311,13 @@ window.sotfMap = (() => {
         state?.points.disconnect();
         state = { viewport, canvas, page, drag: null, moved: false, width: viewport.clientWidth, height: viewport.clientHeight };
         state.clusters = canvas.querySelector(".map-clusters");
+        state.layer = canvas.querySelector(".map-points") ?? canvas;
         state.label = viewport.parentElement.querySelector(".map-label");
         fit();
 
         // New Or Removed Icons Group Again Once They Land
         state.points = new MutationObserver(clusterNow);
-        state.points.observe(canvas.querySelector(".map-points") ?? canvas, { childList: true });
+        state.points.observe(state.layer, { childList: true });
         clusterNow();
 
         // A Hovered Point Shows Its Name

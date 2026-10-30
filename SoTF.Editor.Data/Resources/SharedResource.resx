@@ -1698,7 +1698,7 @@ No keeps them so you can save first</value>
     <value>Backups passed {1}, so the {0} oldest were deleted. The very first stays</value>
   </data>
   <data name="ToolsHint" xml:space="preserve">
-    <value>Tools change the open save and need Save, like any other edit. The Plater and Unlocks save at once</value>
+    <value>Tools change the open save and need Save, like any other edit. The Plater, Unlocks and Copy Player save at once</value>
   </data>
   <data name="ToolsWorld" xml:space="preserve">
     <value>World</value>
@@ -2196,5 +2196,137 @@ No keeps the editor open so you can save first</value>
   </data>
   <data name="ImportExport" xml:space="preserve">
     <value>Import or Export</value>
+  </data>
+  <data name="Progress" xml:space="preserve">
+    <value>Progress</value>
+  </data>
+  <data name="Collectibles" xml:space="preserve">
+    <value>Collectibles</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Statistics</value>
+  </data>
+  <data name="Bunkers" xml:space="preserve">
+    <value>Bunkers</value>
+  </data>
+  <data name="ActionCameraVideos" xml:space="preserve">
+    <value>Action Camera Videos</value>
+  </data>
+  <data name="MissingSoldiers" xml:space="preserve">
+    <value>Missing Soldiers</value>
+  </data>
+  <data name="SoldierBuried" xml:space="preserve">
+    <value>Buried</value>
+  </data>
+  <data name="SoldierHanging" xml:space="preserve">
+    <value>Hanging</value>
+  </data>
+  <data name="SoldierRaft" xml:space="preserve">
+    <value>On the Raft</value>
+  </data>
+  <data name="BlueprintPages" xml:space="preserve">
+    <value>Blueprint Pages</value>
+  </data>
+  <data name="FoundOf" xml:space="preserve">
+    <value>{0} of {1} Found</value>
+  </data>
+  <data name="Found" xml:space="preserve">
+    <value>Found</value>
+  </data>
+  <data name="NotFoundYet" xml:space="preserve">
+    <value>Not Found Yet</value>
+  </data>
+  <data name="DaysSurvived" xml:space="preserve">
+    <value>Days Survived</value>
+  </data>
+  <data name="Kills" xml:space="preserve">
+    <value>Kills</value>
+  </data>
+  <data name="TreesCut" xml:space="preserve">
+    <value>Trees Cut</value>
+  </data>
+  <data name="ItemsCrafted" xml:space="preserve">
+    <value>Crafted</value>
+  </data>
+  <data name="ItemsUsed" xml:space="preserve">
+    <value>Used</value>
+  </data>
+  <data name="Stats" xml:space="preserve">
+    <value>Stats</value>
+  </data>
+  <data name="Armor" xml:space="preserve">
+    <value>Armor</value>
+  </data>
+  <data name="CopyPlayer" xml:space="preserve">
+    <value>Copy Player</value>
+  </data>
+  <data name="CopyPlayerText" xml:space="preserve">
+    <value>Your stats, inventory, armor and outfit go into another savegame, a game you joined too</value>
+  </data>
+  <data name="CopyPlayerHint" xml:space="preserve">
+    <value>Copies your player as last saved. The other savegame gets a backup first</value>
+  </data>
+  <data name="WhatToCopy" xml:space="preserve">
+    <value>What to Copy</value>
+  </data>
+  <data name="CopyIntoSavegame" xml:space="preserve">
+    <value>Into Savegame</value>
+  </data>
+  <data name="ReadingSavegames" xml:space="preserve">
+    <value>Reading the savegames</value>
+  </data>
+  <data name="NoOtherSavegames" xml:space="preserve">
+    <value>No other savegame to copy into</value>
+  </data>
+  <data name="Copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="CopyPlayerConfirm" xml:space="preserve">
+    <value>The player in {0} is replaced. It gets a backup first</value>
+  </data>
+  <data name="PlayerCopied" xml:space="preserve">
+    <value>Player copied into {0}</value>
+  </data>
+  <data name="NothingCopied" xml:space="preserve">
+    <value>Nothing copied, {0} has none of those player files</value>
+  </data>
+  <data name="UnableToCopyPlayer" xml:space="preserve">
+    <value>Unable to copy the player</value>
+  </data>
+  <data name="CopiedPlayerFrom" xml:space="preserve">
+    <value>Copied Player From {0}</value>
+  </data>
+  <data name="RipenGardens" xml:space="preserve">
+    <value>Ripen Gardens</value>
+  </data>
+  <data name="RipenGardensText" xml:space="preserve">
+    <value>Every plant still growing in your garden plots is ready to pick</value>
+  </data>
+  <data name="FillPrinters" xml:space="preserve">
+    <value>Fill 3D Printers</value>
+  </data>
+  <data name="FillPrintersText" xml:space="preserve">
+    <value>Every 3D printer gets 1,000 ml of resin, enough for any print</value>
+  </data>
+  <data name="GardensRipened" xml:space="preserve">
+    <value>{0} plants are ready to pick</value>
+  </data>
+  <data name="NothingGrowing" xml:space="preserve">
+    <value>Nothing is growing</value>
+  </data>
+  <data name="PrintersFilled" xml:space="preserve">
+    <value>{0} printers filled</value>
+  </data>
+  <data name="PrintersFull" xml:space="preserve">
+    <value>Every printer already holds enough resin</value>
+  </data>
+  <data name="GardenPlots" xml:space="preserve">
+    <value>Garden Plots</value>
+  </data>
+  <data name="PrinterResin" xml:space="preserve">
+    <value>3D Printer Resin</value>
+  </data>
+  <data name="GameRunningWarning" xml:space="preserve">
+    <value>Sons Of The Forest is running, save while it sits in the main menu</value>
   </data>
 </root>

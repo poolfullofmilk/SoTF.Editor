@@ -1,0 +1,86 @@
+<MudDialog>
+
+    <TitleContent>
+        <MudText Typo="Typo.h6">@AppText.Get("CopyPlayer")</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudStack Spacing="4">
+            <MudText Typo="Typo.body2"
+                     Class="text-relaxed">
+                @AppText.Get("CopyPlayerHint")
+            </MudText>
+            <MudStack Spacing="2">
+                <MudText Typo="Typo.subtitle2">@AppText.Get("WhatToCopy")</MudText>
+                @* Part Chips *@
+                <MudChipSet T="PlayerPart"
+                            SelectionMode="SelectionMode.MultiSelection"
+                            CheckMark
+                            Variant="Variant.Text"
+                            SelectedColor="Color.Info"
+                            @bind-SelectedValues="_parts">
+                    @foreach (var part in s_parts)
+                    {
+                        <MudChip T="PlayerPart"
+                                 Value="part"
+                                 Text="@AppText.Get(LabelKeyOf(part))" />
+                    }
+                </MudChipSet>
+            </MudStack>
+            <MudStack Spacing="2">
+                <MudText Typo="Typo.subtitle2">@AppText.Get("CopyIntoSavegame")</MudText>
+                @* Savegame List *@
+                <MudPaper Elevation="0"
+                          Class="inset rounded-panel panel-flush overflow-y-auto"
+                          Style="max-height:320px">
+                    @if (_savegames is null || _savegames.Count == 0)
+                    {
+                        <MudText Typo="Typo.body2"
+                                 Class="mud-text-secondary px-4 py-3">
+                            @AppText.Get(_savegames is null ? "ReadingSavegames" : "NoOtherSavegames")
+                        </MudText>
+                    }
+                    @foreach (var savegame in _savegames ?? [])
+                    {
+                        @* Savegame Row *@
+                        <MudElement HtmlTag="div"
+                                    Class="@RowClass(savegame)"
+                                    role="button"
+                                    tabindex="0"
+                                    aria-pressed="@(savegame == _target ? "true" : "false")"
+                                    title="@savegame.FullPath"
+                                    data-keyclick
+                                    @onclick="() => _target = savegame">
+                            <MudStack Spacing="0">
+                                <MudText Typo="Typo.body2">@savegame.Name</MudText>
+                                <MudText Typo="Typo.caption"
+                                         Class="mud-text-secondary">
+                                    @DetailOf(savegame)
+                                </MudText>
+                            </MudStack>
+                        </MudElement>
+                    }
+                </MudPaper>
+            </MudStack>
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        @if (_gameRunning)
+        {
+            <MudText Typo="Typo.caption"
+                     Color="Color.Warning"
+                     Class="px-2">
+                @AppText.Get("GameRunningWarning")
+            </MudText>
+        }
+        <MudSpacer />
+        @* Copy Button *@
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Info"
+                   StartIcon="@Icons.Material.Rounded.SwitchAccount"
+                   Disabled="@(_target is null || _parts.Count == 0)"
+                   OnClick="CopyAsync">
+            @AppText.Get("Copy")
+        </MudButton>
+    </DialogActions>
+
+</MudDialog>

@@ -53,6 +53,16 @@ public partial class Tools : EditorPageBase
                     "WorldItemCloner",
                     Icons.Material.Rounded.ContentCopy
                 ),
+                ConfirmedTool(
+                    "RipenGardens",
+                    Icons.Material.Rounded.Grass,
+                    page => page.MainViewModel.RipenGardens()
+                ),
+                ConfirmedTool(
+                    "FillPrinters",
+                    Icons.Material.Rounded.Print,
+                    page => page.MainViewModel.FillPrinters()
+                ),
             ]
         ),
         new(
@@ -71,6 +81,14 @@ public partial class Tools : EditorPageBase
                     SavesAtOnce = true,
                 },
                 DialogTool<UnlocksDialog>("Unlocks", Icons.Material.Rounded.LockOpen) with
+                {
+                    NeedsWorld = false,
+                    SavesAtOnce = true,
+                },
+                DialogTool<CopyPlayerDialog>(
+                    "CopyPlayer",
+                    Icons.Material.Rounded.SwitchAccount
+                ) with
                 {
                     NeedsWorld = false,
                     SavesAtOnce = true,

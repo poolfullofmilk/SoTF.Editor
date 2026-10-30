@@ -29,6 +29,12 @@ public class SavegameStore
         ZipLineManagerSaveData,
         ScrewTrapsSaveData,
         ConstructionsSaveData,
+        GardenPlotManagerSaveData,
+        Resin3dPrinterBunkerASaveData,
+        Resin3dPrinterBunkerBSaveData,
+        Resin3dPrinterEntertainmentSaveData,
+        Resin3dPrinterResidentialSaveData,
+        Resin3dPrinterResistanceSaveData,
     }
 
     private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
@@ -267,6 +273,9 @@ public static class FileTypeExtensions
         {
             SavegameStore.FileType.SaveDataThumbnail => fileType + ".png",
             SavegameStore.FileType.SaveDataArchive => "SaveData.zip",
+            // The Game Names Each Printer With An Underscore
+            _ when fileType.ToString().StartsWith("Resin3dPrinter", StringComparison.Ordinal) =>
+                fileType.ToString().Insert("Resin3dPrinter".Length, "_") + ".json",
             _ => fileType + ".json",
         };
     }

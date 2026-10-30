@@ -25,6 +25,15 @@
         </MudStack>
     </DialogContent>
     <DialogActions>
+        @if (_gameRunning && !Revert)
+        {
+            <MudText Typo="Typo.caption"
+                     Color="Color.Warning"
+                     Class="px-2">
+                @AppText.Get("GameRunningWarning")
+            </MudText>
+        }
+        <MudSpacer />
         @* Save Or Revert Button *@
         <MudButton Variant="Variant.Filled"
                    Color="@(Revert ? Color.Error : Color.Info)"

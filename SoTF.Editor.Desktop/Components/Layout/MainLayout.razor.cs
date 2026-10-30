@@ -24,6 +24,7 @@ public partial class MainLayout : IDisposable
         [
             new("Player", "Player", Icons.Material.Rounded.Person, true),
             new("Inventory", "Inventory", Icons.Material.Rounded.Backpack, true),
+            new("Progress", "Progress", Icons.Material.Rounded.EmojiEvents, true),
             new("Followers", "Followers", Icons.Material.Rounded.Group, true, true),
         ],
         [

@@ -51,30 +51,44 @@
         </MudPaper>
         @if (_selected is not null && !_deleting)
         {
-            <MudStack Spacing="4"
+            @* Change Views *@
+            <MudButtonGroup OverrideStyles="false"
+                            Size="Size.Small"
+                            Class="setting-choices flex-shrink-0">
+                <MudButton Variant="Variant.Filled"
+                           Size="Size.Small"
+                           Color="@(_showDifferences ? Color.Default : Color.Info)"
+                           OnClick="() => _showDifferences = false">
+                    @AppText.Get("SavedAfterBackup")
+                    <MudElement HtmlTag="span"
+                                Class="mud-text-secondary ml-2">
+                        @CountOf(_savedChanges)
+                    </MudElement>
+                </MudButton>
+                <MudButton Variant="Variant.Filled"
+                           Size="Size.Small"
+                           Color="@(_showDifferences ? Color.Info : Color.Default)"
+                           OnClick="() => _showDifferences = true">
+                    @AppText.Get("DiffersFromNow")
+                    @if (_differences is not null)
+                    {
+                        <MudElement HtmlTag="span"
+                                    Class="mud-text-secondary ml-2">
+                            @CountOf(_differences)
+                        </MudElement>
+                    }
+                </MudButton>
+            </MudButtonGroup>
+            <MudStack Spacing="2"
                       Class="inset rounded-panel pa-4 fit overflow-y-auto">
-                <MudStack Spacing="2">
-                    <MudText Typo="Typo.subtitle2">@AppText.Get("SavedAfterBackup")</MudText>
-                    @if (_savedChanges.Count == 0)
-                    {
-                        <MudText Typo="Typo.caption"
-                                 Class="mud-text-secondary">
-                            @AppText.Get("ChangesNotRecorded")
-                        </MudText>
-                    }
-                    <DifferenceList Changes="_savedChanges" />
-                </MudStack>
-                <MudStack Spacing="2">
-                    <MudText Typo="Typo.subtitle2">@AppText.Get("DiffersFromNow")</MudText>
-                    @if (DifferencesText is { } text)
-                    {
-                        <MudText Typo="Typo.caption"
-                                 Class="mud-text-secondary">
-                            @text
-                        </MudText>
-                    }
-                    <DifferenceList Changes="@(_differences ?? [])" />
-                </MudStack>
+                @if (ViewText is { } text)
+                {
+                    <MudText Typo="Typo.caption"
+                             Class="mud-text-secondary">
+                        @text
+                    </MudText>
+                }
+                <DifferenceList Changes="@ShownChanges" />
             </MudStack>
         }
         <MudText Typo="Typo.caption"

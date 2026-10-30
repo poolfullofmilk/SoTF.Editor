@@ -13,7 +13,7 @@ namespace SoTF.Editor.Services.Pages;
 
 public class InventoryPageViewModel
 {
-    private const string BlueprintPagePrefix = "DiscoverablePageUnlocked_";
+    public const string BlueprintPagePrefix = "DiscoverablePageUnlocked_";
     private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
 
     // Blueprints, From Item Plating To Gold Armor Plater
@@ -37,6 +37,8 @@ public class InventoryPageViewModel
         714,
         726,
     ];
+
+    public static IReadOnlyList<int> BlueprintItemIds => s_blueprintItemIds;
 
     private readonly List<InventoryItem> _inventory = [];
     private readonly ItemList _itemList;
@@ -316,8 +318,16 @@ public class InventoryPageViewModel
 
     public void RemoveAllEquipped()
     {
-        _unassignedItems.AddRange(_inventory);
-        _inventory.Clear();
+        // The Item In Hand Stays, Like Import Leaves It
+        foreach (var inventoryItem in CountableItems.ToList())
+        {
+            RemoveItemFromInventory(inventoryItem);
+        }
+    }
+
+    public bool CanRemoveAll()
+    {
+        return CountableItems.Any();
     }
 
     public bool HasUnassignedItems()

@@ -96,6 +96,7 @@ public static class Constants
         public const string ZipLineManager = "Data.ZipLineManager";
         public const string ScrewTraps = "Data.ScrewTraps";
         public const string Constructions = "Data.Constructions";
+        public const string GardenPlotManager = "Data.GardenPlotManager";
     }
 
     public static class Items

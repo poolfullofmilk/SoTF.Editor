@@ -35,7 +35,7 @@
                 <MudButton Variant="Variant.Text"
                            Color="Color.Error"
                            Size="Size.Small"
-                           Disabled="@(!InventoryPage.HasInventoryItems())"
+                           Disabled="@(!InventoryPage.CanRemoveAll())"
                            OnClick="RemoveAllAsync"
                            StartIcon="@Icons.Material.Rounded.DeleteSweep">
                     @AppText.Get("RemoveAll")

@@ -1698,7 +1698,7 @@ Hayır onları tutar, böylece önce kaydedebilirsiniz</value>
     <value>Yedekler {1} sınırını aştı, bu yüzden en eski {0} yedek silindi. İlk yedek kalır</value>
   </data>
   <data name="ToolsHint" xml:space="preserve">
-    <value>Araçlar açık kaydı değiştirir ve diğer her değişiklik gibi Kaydet gerektirir. Altın Kaplama ve Kilit Açma hemen kaydeder</value>
+    <value>Araçlar açık kaydı değiştirir ve diğer her değişiklik gibi Kaydet gerektirir. Altın Kaplama, Kilit Açma ve Oyuncuyu Kopyala hemen kaydeder</value>
   </data>
   <data name="ToolsWorld" xml:space="preserve">
     <value>Dünya</value>
@@ -2196,5 +2196,137 @@ Hayır düzenleyiciyi açık tutar, böylece önce kaydedebilirsiniz</value>
   </data>
   <data name="ImportExport" xml:space="preserve">
     <value>İçe veya Dışa Aktar</value>
+  </data>
+  <data name="Progress" xml:space="preserve">
+    <value>İlerleme</value>
+  </data>
+  <data name="Collectibles" xml:space="preserve">
+    <value>Koleksiyon</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>İstatistikler</value>
+  </data>
+  <data name="Bunkers" xml:space="preserve">
+    <value>Sığınaklar</value>
+  </data>
+  <data name="ActionCameraVideos" xml:space="preserve">
+    <value>Aksiyon Kamerası Videoları</value>
+  </data>
+  <data name="MissingSoldiers" xml:space="preserve">
+    <value>Kayıp Askerler</value>
+  </data>
+  <data name="SoldierBuried" xml:space="preserve">
+    <value>Gömülü</value>
+  </data>
+  <data name="SoldierHanging" xml:space="preserve">
+    <value>Asılı</value>
+  </data>
+  <data name="SoldierRaft" xml:space="preserve">
+    <value>Salda</value>
+  </data>
+  <data name="BlueprintPages" xml:space="preserve">
+    <value>Plan Sayfaları</value>
+  </data>
+  <data name="FoundOf" xml:space="preserve">
+    <value>{1} İçinden {0} Bulundu</value>
+  </data>
+  <data name="Found" xml:space="preserve">
+    <value>Bulundu</value>
+  </data>
+  <data name="NotFoundYet" xml:space="preserve">
+    <value>Henüz Bulunmadı</value>
+  </data>
+  <data name="DaysSurvived" xml:space="preserve">
+    <value>Hayatta Kalınan Gün</value>
+  </data>
+  <data name="Kills" xml:space="preserve">
+    <value>Öldürmeler</value>
+  </data>
+  <data name="TreesCut" xml:space="preserve">
+    <value>Kesilen Ağaçlar</value>
+  </data>
+  <data name="ItemsCrafted" xml:space="preserve">
+    <value>Üretilenler</value>
+  </data>
+  <data name="ItemsUsed" xml:space="preserve">
+    <value>Kullanılanlar</value>
+  </data>
+  <data name="Stats" xml:space="preserve">
+    <value>Değerler</value>
+  </data>
+  <data name="Armor" xml:space="preserve">
+    <value>Zırh</value>
+  </data>
+  <data name="CopyPlayer" xml:space="preserve">
+    <value>Oyuncuyu Kopyala</value>
+  </data>
+  <data name="CopyPlayerText" xml:space="preserve">
+    <value>Değerleriniz, envanteriniz, zırhınız ve kıyafetiniz başka bir kayda geçer, katıldığınız bir oyuna da</value>
+  </data>
+  <data name="CopyPlayerHint" xml:space="preserve">
+    <value>Oyuncunuzu en son kaydedildiği haliyle kopyalar. Diğer kayıt önce bir yedek alır</value>
+  </data>
+  <data name="WhatToCopy" xml:space="preserve">
+    <value>Kopyalanacaklar</value>
+  </data>
+  <data name="CopyIntoSavegame" xml:space="preserve">
+    <value>Hedef Kayıt</value>
+  </data>
+  <data name="ReadingSavegames" xml:space="preserve">
+    <value>Kayıtlar okunuyor</value>
+  </data>
+  <data name="NoOtherSavegames" xml:space="preserve">
+    <value>Kopyalanacak başka kayıt yok</value>
+  </data>
+  <data name="Copy" xml:space="preserve">
+    <value>Kopyala</value>
+  </data>
+  <data name="CopyPlayerConfirm" xml:space="preserve">
+    <value>{0} içindeki oyuncu değiştirilir. Önce bir yedek alınır</value>
+  </data>
+  <data name="PlayerCopied" xml:space="preserve">
+    <value>Oyuncu kopyalandı: {0}</value>
+  </data>
+  <data name="NothingCopied" xml:space="preserve">
+    <value>Hiçbir şey kopyalanmadı, şu kayıtta bu oyuncu dosyaları yok: {0}</value>
+  </data>
+  <data name="UnableToCopyPlayer" xml:space="preserve">
+    <value>Oyuncu kopyalanamadı</value>
+  </data>
+  <data name="CopiedPlayerFrom" xml:space="preserve">
+    <value>Oyuncu Kopyalandı: {0}</value>
+  </data>
+  <data name="RipenGardens" xml:space="preserve">
+    <value>Bahçeleri Olgunlaştır</value>
+  </data>
+  <data name="RipenGardensText" xml:space="preserve">
+    <value>Bahçelerinizde hâlâ büyüyen her bitki toplanmaya hazır olur</value>
+  </data>
+  <data name="FillPrinters" xml:space="preserve">
+    <value>3D Yazıcıları Doldur</value>
+  </data>
+  <data name="FillPrintersText" xml:space="preserve">
+    <value>Her 3D yazıcı 1.000 ml reçine alır, her baskı için yeterli</value>
+  </data>
+  <data name="GardensRipened" xml:space="preserve">
+    <value>{0} bitki toplanmaya hazır</value>
+  </data>
+  <data name="NothingGrowing" xml:space="preserve">
+    <value>Büyüyen bir şey yok</value>
+  </data>
+  <data name="PrintersFilled" xml:space="preserve">
+    <value>{0} yazıcı dolduruldu</value>
+  </data>
+  <data name="PrintersFull" xml:space="preserve">
+    <value>Her yazıcıda zaten yeterli reçine var</value>
+  </data>
+  <data name="GardenPlots" xml:space="preserve">
+    <value>Bahçe Alanları</value>
+  </data>
+  <data name="PrinterResin" xml:space="preserve">
+    <value>3D Yazıcı Reçinesi</value>
+  </data>
+  <data name="GameRunningWarning" xml:space="preserve">
+    <value>Sons Of The Forest açık, ana menüdeyken kaydedin</value>
   </data>
 </root>

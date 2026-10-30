@@ -19,7 +19,10 @@
                             <MudImage Src="@_viewModel.Actor.ImageUrl"
                                       Alt="@_viewModel.Actor.ActorType?.Name"
                                       Width="120"
-                                      Class="rounded-inner flex-shrink-0" />
+                                      Height="120"
+                                      ObjectFit="ObjectFit.Contain"
+                                      Class="rounded-inner flex-shrink-0"
+                                      Style="background-color:var(--inset-fill)" />
                             <MudGrid Spacing="2"
                                      Class="flex-grow-1">
 
@@ -185,8 +188,11 @@
                                 <MudSwitch T="bool"
                                            @bind-Value="_viewModel.ModifyOptions.RemoveSpawner"
                                            Color="Color.Info">
-                                    @AppText.Get("RemoveSpawner")
-                                    <InfoIcon Text="@AppText.Get("RemoveSpawnerTooltip")" />
+                                    <MudElement HtmlTag="span"
+                                                Class="d-inline-flex align-center gap-1">
+                                        @AppText.Get("RemoveSpawner")
+                                        <InfoIcon Text="@AppText.Get("RemoveSpawnerTooltip")" />
+                                    </MudElement>
                                 </MudSwitch>
                             }
                         </MudStack>

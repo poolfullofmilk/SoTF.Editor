@@ -580,9 +580,14 @@ html, body {
     border-radius: var(--radius-panel) !important;
 }
 
+    /* Raised Sections Keep Their Shadow Clear Of The Actions */
+    .mud-dialog .mud-dialog-content {
+        padding-bottom: 24px;
+    }
+
     /* Actions Line Up With The Content's Edges */
     .mud-dialog .mud-dialog-actions {
-        padding: 8px 24px 20px;
+        padding: 0 24px 20px;
     }
 
 /* A Question Keeps Its Line Breaks, Yes And No Each On Their Own Line */

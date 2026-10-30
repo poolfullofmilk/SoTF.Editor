@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics;
+using System.Globalization;
 using System.IO.Compression;
 using Microsoft.VisualBasic.FileIO;
 using NLog;
@@ -59,6 +60,18 @@ public static class SavegameManager
             s_logger.Error(exception, $"Failed To Read Savegame {path}");
             return null;
         }
+    }
+
+    public static bool IsGameRunning()
+    {
+        // Its Next Save Would Write Over What The Editor Saved
+        var processes = Process.GetProcessesByName("SonsOfTheForest");
+        foreach (var process in processes)
+        {
+            process.Dispose();
+        }
+
+        return processes.Length > 0;
     }
 
     public static string GetSavePath()

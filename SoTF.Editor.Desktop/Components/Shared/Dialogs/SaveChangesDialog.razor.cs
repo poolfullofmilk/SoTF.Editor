@@ -54,6 +54,9 @@ public partial class SaveChangesDialog
     [Parameter]
     public bool Revert { get; set; }
 
+    // A Running Game Saves Over Edits Outside Its Menu
+    private readonly bool _gameRunning = SavegameManager.IsGameRunning();
+
     // Worked Out Once, The Backup Keeps The Same List
     private Dictionary<string, List<Change>> _changes = [];
 

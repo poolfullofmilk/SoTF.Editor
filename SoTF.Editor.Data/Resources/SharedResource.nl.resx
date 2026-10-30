@@ -1698,7 +1698,7 @@ Nee houdt ze zodat je eerst kunt opslaan</value>
     <value>Back-ups gingen over {1}, dus de {0} oudste zijn verwijderd. De allereerste blijft</value>
   </data>
   <data name="ToolsHint" xml:space="preserve">
-    <value>Hulpmiddelen wijzigen de open save en hebben Opslaan nodig, zoals elke andere wijziging. Vergulden en Ontgrendelingen slaan meteen op</value>
+    <value>Hulpmiddelen wijzigen de open save en hebben Opslaan nodig, zoals elke andere wijziging. Vergulden, Ontgrendelingen en Speler Kopiëren slaan meteen op</value>
   </data>
   <data name="ToolsWorld" xml:space="preserve">
     <value>Wereld</value>
@@ -2196,5 +2196,137 @@ Nee houdt de editor open zodat je eerst kunt opslaan</value>
   </data>
   <data name="ImportExport" xml:space="preserve">
     <value>Importeren of Exporteren</value>
+  </data>
+  <data name="Progress" xml:space="preserve">
+    <value>Voortgang</value>
+  </data>
+  <data name="Collectibles" xml:space="preserve">
+    <value>Verzamelobjecten</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Statistieken</value>
+  </data>
+  <data name="Bunkers" xml:space="preserve">
+    <value>Bunkers</value>
+  </data>
+  <data name="ActionCameraVideos" xml:space="preserve">
+    <value>Actiecameravideo's</value>
+  </data>
+  <data name="MissingSoldiers" xml:space="preserve">
+    <value>Vermiste Soldaten</value>
+  </data>
+  <data name="SoldierBuried" xml:space="preserve">
+    <value>Begraven</value>
+  </data>
+  <data name="SoldierHanging" xml:space="preserve">
+    <value>Opgehangen</value>
+  </data>
+  <data name="SoldierRaft" xml:space="preserve">
+    <value>Op het Vlot</value>
+  </data>
+  <data name="BlueprintPages" xml:space="preserve">
+    <value>Blauwdrukpagina's</value>
+  </data>
+  <data name="FoundOf" xml:space="preserve">
+    <value>{0} van {1} Gevonden</value>
+  </data>
+  <data name="Found" xml:space="preserve">
+    <value>Gevonden</value>
+  </data>
+  <data name="NotFoundYet" xml:space="preserve">
+    <value>Nog Niet Gevonden</value>
+  </data>
+  <data name="DaysSurvived" xml:space="preserve">
+    <value>Dagen Overleefd</value>
+  </data>
+  <data name="Kills" xml:space="preserve">
+    <value>Kills</value>
+  </data>
+  <data name="TreesCut" xml:space="preserve">
+    <value>Gekapte Bomen</value>
+  </data>
+  <data name="ItemsCrafted" xml:space="preserve">
+    <value>Gemaakt</value>
+  </data>
+  <data name="ItemsUsed" xml:space="preserve">
+    <value>Gebruikt</value>
+  </data>
+  <data name="Stats" xml:space="preserve">
+    <value>Waarden</value>
+  </data>
+  <data name="Armor" xml:space="preserve">
+    <value>Pantser</value>
+  </data>
+  <data name="CopyPlayer" xml:space="preserve">
+    <value>Speler Kopiëren</value>
+  </data>
+  <data name="CopyPlayerText" xml:space="preserve">
+    <value>Je waarden, inventaris, pantser en outfit gaan naar een andere save, ook een spel waar je aan meedeed</value>
+  </data>
+  <data name="CopyPlayerHint" xml:space="preserve">
+    <value>Kopieert je speler zoals die het laatst is opgeslagen. De andere save krijgt eerst een back-up</value>
+  </data>
+  <data name="WhatToCopy" xml:space="preserve">
+    <value>Wat Kopiëren</value>
+  </data>
+  <data name="CopyIntoSavegame" xml:space="preserve">
+    <value>Naar Save</value>
+  </data>
+  <data name="ReadingSavegames" xml:space="preserve">
+    <value>Saves worden gelezen</value>
+  </data>
+  <data name="NoOtherSavegames" xml:space="preserve">
+    <value>Geen andere save om naar te kopiëren</value>
+  </data>
+  <data name="Copy" xml:space="preserve">
+    <value>Kopiëren</value>
+  </data>
+  <data name="CopyPlayerConfirm" xml:space="preserve">
+    <value>De speler in {0} wordt vervangen. Er komt eerst een back-up</value>
+  </data>
+  <data name="PlayerCopied" xml:space="preserve">
+    <value>Speler gekopieerd naar {0}</value>
+  </data>
+  <data name="NothingCopied" xml:space="preserve">
+    <value>Niets gekopieerd, {0} heeft geen van deze spelerbestanden</value>
+  </data>
+  <data name="UnableToCopyPlayer" xml:space="preserve">
+    <value>Kan de speler niet kopiëren</value>
+  </data>
+  <data name="CopiedPlayerFrom" xml:space="preserve">
+    <value>Speler Gekopieerd uit {0}</value>
+  </data>
+  <data name="RipenGardens" xml:space="preserve">
+    <value>Tuinen Laten Rijpen</value>
+  </data>
+  <data name="RipenGardensText" xml:space="preserve">
+    <value>Elke plant die nog groeit in je moestuinen is klaar om te plukken</value>
+  </data>
+  <data name="FillPrinters" xml:space="preserve">
+    <value>3D-printers Vullen</value>
+  </data>
+  <data name="FillPrintersText" xml:space="preserve">
+    <value>Elke 3D-printer krijgt 1.000 ml hars, genoeg voor elke afdruk</value>
+  </data>
+  <data name="GardensRipened" xml:space="preserve">
+    <value>{0} planten zijn klaar om te plukken</value>
+  </data>
+  <data name="NothingGrowing" xml:space="preserve">
+    <value>Er groeit niets</value>
+  </data>
+  <data name="PrintersFilled" xml:space="preserve">
+    <value>{0} printers gevuld</value>
+  </data>
+  <data name="PrintersFull" xml:space="preserve">
+    <value>Elke printer heeft al genoeg hars</value>
+  </data>
+  <data name="GardenPlots" xml:space="preserve">
+    <value>Moestuinen</value>
+  </data>
+  <data name="PrinterResin" xml:space="preserve">
+    <value>3D-printerhars</value>
+  </data>
+  <data name="GameRunningWarning" xml:space="preserve">
+    <value>Sons Of The Forest draait, sla op terwijl het in het hoofdmenu staat</value>
   </data>
 </root>

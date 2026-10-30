@@ -1,0 +1,137 @@
+@page "/Progress"
+@inherits EditorPageBase
+
+<RequiresSavegame>
+    <MudTabs Elevation="4"
+             SliderColor="Color.Info"
+             TabHeaderClass="mb-6"
+             AlwaysShowScrollButtons
+             Rounded>
+
+        @* Collectibles Tab *@
+        <MudTabPanel Text="@AppText.Get("Collectibles")"
+                     Icon="@Icons.Material.Rounded.EmojiEvents"
+                     IconColor="Color.Tertiary">
+            <MudStack Spacing="6">
+                @foreach (var group in PlayerProgress.Collectibles)
+                {
+                    <Header Title="@AppText.Get(group.TitleKey)"
+                            Icon="@IconOf(group)">
+                        <TitleContent>
+                            <MudSpacer />
+                            <MudText Typo="Typo.body2"
+                                     Class="mud-text-secondary mud-typography-nowrap">
+                                @AppText.Format("FoundOf", group.FoundCount, group.Items.Count)
+                            </MudText>
+                        </TitleContent>
+                        <ChildContent>
+                            <MudGrid Spacing="3">
+
+                                @foreach (var collectible in group.Items)
+                                {
+                                    <MudItem xs="12"
+                                             sm="6"
+                                             md="4"
+                                             lg="3"
+                                             Class="d-flex">
+                                        @* Collectible Card *@
+                                        <MudPaper Elevation="4"
+                                                  Class="@CardClass(collectible)">
+                                            <MudStack Row
+                                                      AlignItems="AlignItems.Center"
+                                                      Spacing="3"
+                                                      Class="flex-grow-1">
+                                                @if (collectible.ImageUrl is { } imageUrl)
+                                                {
+                                                    <MudImage Src="@imageUrl"
+                                                              Alt="@collectible.Name"
+                                                              Class="thumb rounded-thumb" />
+                                                }
+                                                <MudText Typo="Typo.body2"
+                                                         Class="flex-grow-1">
+                                                    @collectible.Name
+                                                </MudText>
+                                                <MudIcon Icon="@(collectible.Found ? Icons.Material.Rounded.CheckCircle : Icons.Material.Rounded.RadioButtonUnchecked)"
+                                                         Color="@(collectible.Found ? Color.Success : Color.Default)"
+                                                         Size="Size.Small"
+                                                         Title="@AppText.Get(collectible.Found ? "Found" : "NotFoundYet")" />
+                                            </MudStack>
+                                        </MudPaper>
+                                    </MudItem>
+                                }
+
+                            </MudGrid>
+                        </ChildContent>
+                    </Header>
+                }
+            </MudStack>
+        </MudTabPanel>
+
+        @* Statistics Tab *@
+        <MudTabPanel Text="@AppText.Get("Statistics")"
+                     Icon="@Icons.Material.Rounded.BarChart"
+                     IconColor="Color.Tertiary">
+            <MudStack Spacing="6">
+                <MudGrid Spacing="3">
+
+                    @foreach (var total in Totals)
+                    {
+                        <MudItem xs="12"
+                                 sm="6"
+                                 md="3"
+                                 Class="d-flex">
+                            @* Total Card *@
+                            <MudPaper Elevation="4"
+                                      Class="rounded-panel pa-4 flex-grow-1">
+                                <MudStack Spacing="2">
+                                    <MudText Typo="Typo.subtitle2">@AppText.Get(total.LabelKey)</MudText>
+                                    <MudText Typo="Typo.h5">@total.Value</MudText>
+                                </MudStack>
+                            </MudPaper>
+                        </MudItem>
+                    }
+
+                </MudGrid>
+                <MudGrid>
+
+                    @foreach (var list in Lists)
+                    {
+                        <MudItem xs="12"
+                                 md="4">
+                            <Header Title="@AppText.Get(list.TitleKey)">
+                                @* Tally List *@
+                                <MudPaper Elevation="4"
+                                          Class="rounded-panel panel-flush py-2">
+                                    @if (list.Tallies is null || list.Tallies.Count == 0)
+                                    {
+                                        <MudText Typo="Typo.body2"
+                                                 Class="mud-text-secondary px-4 py-2">
+                                            @AppText.Get(list.Tallies is null ? "ClientSaveHasNoWorld" : "NothingFound")
+                                        </MudText>
+                                    }
+                                    @foreach (var tally in list.Tallies ?? [])
+                                    {
+                                        <MudStack Row
+                                                  AlignItems="AlignItems.Center"
+                                                  Spacing="3"
+                                                  Class="px-4 py-2">
+                                            <ItemLabel Name="@tally.Name"
+                                                       ImageUrl="@tally.ImageUrl" />
+                                            <MudSpacer />
+                                            <MudText Typo="Typo.body2"
+                                                     Class="mud-text-secondary">
+                                                @tally.Count.ToString("N0")
+                                            </MudText>
+                                        </MudStack>
+                                    }
+                                </MudPaper>
+                            </Header>
+                        </MudItem>
+                    }
+
+                </MudGrid>
+            </MudStack>
+        </MudTabPanel>
+
+    </MudTabs>
+</RequiresSavegame>

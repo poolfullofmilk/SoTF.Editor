@@ -39,6 +39,27 @@ public class SaveDataWrapper(JToken parent)
         return _loadedNodes.GetValueOrDefault(selector)?.DeepClone();
     }
 
+    public bool Replace(string selector, JToken document)
+    {
+        // A Whole Document From Elsewhere, Like A Copied Player
+        if (GetJsonBasedToken(selector) is not { } current)
+        {
+            return false;
+        }
+
+        if (_jsonStringNodes.ContainsKey(selector))
+        {
+            _jsonStringNodes[selector] = document;
+        }
+        else
+        {
+            current.Replace(document);
+        }
+
+        MarkAsModified(selector);
+        return true;
+    }
+
     public void Revert(string selector)
     {
         // Only Pages That Read The Document Again Afterwards

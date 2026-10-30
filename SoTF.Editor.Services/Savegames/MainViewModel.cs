@@ -333,7 +333,11 @@ public class MainViewModel(
                     Constants.JsonKeys.WorldObjectLocatorManager
                 ),
                 (SavegameStore.FileType.PlayerStateSaveData, Constants.JsonKeys.PlayerState),
-            }
+                (
+                    SavegameStore.FileType.GardenPlotManagerSaveData,
+                    Constants.JsonKeys.GardenPlotManager
+                ),
+            }.Concat(s_printers.Select(printer => (printer, PrinterKeyOf(printer))))
         )
         {
             savegame.SavegameStore.LoadJsonRaw(fileType)?.Revert(jsonKey);
@@ -735,6 +739,85 @@ public class MainViewModel(
         saveDataWrapper.MarkAsModified(Constants.JsonKeys.StructureDestruction);
 
         return AppText.Format("StructureDamageRepaired", entryCount);
+    }
+
+    // A Sled Takes 1,000 Ml, Every Printer Holds That
+    public const float PrinterResin = 1000;
+
+    private static readonly SavegameStore.FileType[] s_printers =
+    [
+        SavegameStore.FileType.Resin3dPrinterBunkerASaveData,
+        SavegameStore.FileType.Resin3dPrinterBunkerBSaveData,
+        SavegameStore.FileType.Resin3dPrinterEntertainmentSaveData,
+        SavegameStore.FileType.Resin3dPrinterResidentialSaveData,
+        SavegameStore.FileType.Resin3dPrinterResistanceSaveData,
+    ];
+
+    public static string PrinterKeyOf(SavegameStore.FileType printer)
+    {
+        return "Data." + printer.GetFilename().Replace("SaveData.json", "");
+    }
+
+    public string RipenGardens()
+    {
+        if (
+            SelectedSavegame?.SavegameStore.LoadJsonRaw(
+                SavegameStore.FileType.GardenPlotManagerSaveData
+            )
+                is not { } saveDataWrapper
+            || saveDataWrapper
+                .GetJsonBasedToken(Constants.JsonKeys.GardenPlotManager)
+                ?["_gardenPlotsData"]
+                is not JArray plots
+        )
+        {
+            return AppText.Get("NothingGrowing");
+        }
+
+        // Time Left Counts Down, A Plant Below Zero Is Ripe
+        var ripened = 0;
+        foreach (var plot in plots)
+        {
+            if (
+                plot["SeedId"]?.Value<int>() > 0
+                && plot["GrowTimeSecondsRemaining"]?.Value<float>() > 0
+            )
+            {
+                plot["GrowTimeSecondsRemaining"] = -1f;
+                ripened++;
+            }
+        }
+
+        if (ripened == 0)
+        {
+            return AppText.Get("NothingGrowing");
+        }
+
+        saveDataWrapper.MarkAsModified(Constants.JsonKeys.GardenPlotManager);
+        return AppText.Format("GardensRipened", ripened);
+    }
+
+    public string FillPrinters()
+    {
+        var filled = 0;
+        foreach (var printer in s_printers)
+        {
+            var key = PrinterKeyOf(printer);
+            if (
+                SelectedSavegame?.SavegameStore.LoadJsonRaw(printer) is not { } saveDataWrapper
+                || saveDataWrapper.GetJsonBasedToken(key) is not JObject state
+                || (state["CurrentResinVolume"]?.Value<float>() ?? 0) >= PrinterResin
+            )
+            {
+                continue;
+            }
+
+            state["CurrentResinVolume"] = PrinterResin;
+            saveDataWrapper.MarkAsModified(key);
+            filled++;
+        }
+
+        return filled == 0 ? AppText.Get("PrintersFull") : AppText.Format("PrintersFilled", filled);
     }
 
     public string EternalFires()

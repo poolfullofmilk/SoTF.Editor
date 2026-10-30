@@ -193,6 +193,15 @@ public static partial class BackupDiff
                     (nowDocument, thenDocument) =>
                         Structures(nowDocument?["_structures"], thenDocument?["_structures"])
                 ),
+                SavegameStore.FileType.GardenPlotManagerSaveData => Each(
+                    Constants.JsonKeys.GardenPlotManager,
+                    (_, _) => [("Tools", AppText.Get("GardenPlots"), ChangeKind.Changed)]
+                ),
+                _ when fileType.ToString().StartsWith("Resin3dPrinter", StringComparison.Ordinal) =>
+                    Each(
+                        MainViewModel.PrinterKeyOf(fileType),
+                        (_, _) => [("Tools", AppText.Get("PrinterResin"), ChangeKind.Changed)]
+                    ),
                 SavegameStore.FileType.ZipLineManagerSaveData => Each(
                     Constants.JsonKeys.ZipLineManager,
                     (nowDocument, thenDocument) =>
@@ -275,13 +284,13 @@ public static partial class BackupDiff
 
         private static ChangeKind KindOf(JToken? now, JToken? then)
         {
-            // Restoring Brings Back What Only The Backup Has
-            if (now is null)
+            // Since The Backup, Like The List Saved With It
+            if (then is null)
             {
                 return ChangeKind.Added;
             }
 
-            return then is null ? ChangeKind.Removed : ChangeKind.Changed;
+            return now is null ? ChangeKind.Removed : ChangeKind.Changed;
         }
 
         private static Dictionary<string, JToken> ByKey(
@@ -358,13 +367,19 @@ public static partial class BackupDiff
             JToken? then
         )
         {
-            // Storages Are Numbered Per Type In Save Order, As On Their Page
-            var nowById = ByKey(now, entry => entry["Id"]?.ToString());
-            var thenById = ByKey(then, entry => entry["Id"]?.ToString());
-            foreach (var key in thenById.Keys.Union(nowById.Keys))
+            // Matched By Type And Spot, A Removal Moves No Neighbour
+            static string? SpotOf(JToken entry)
             {
-                var nowEntry = nowById.GetValueOrDefault(key);
-                var thenEntry = thenById.GetValueOrDefault(key);
+                return $"{entry["Id"]}@{entry["Pos"]?.ToString(Newtonsoft.Json.Formatting.None)}";
+            }
+
+            var nowBySpot = ByKey(now, SpotOf);
+            var thenBySpot = ByKey(then, SpotOf);
+            var numbers = NumbersOf(now);
+            foreach (var key in thenBySpot.Keys.Union(nowBySpot.Keys))
+            {
+                var nowEntry = nowBySpot.GetValueOrDefault(key);
+                var thenEntry = thenBySpot.GetValueOrDefault(key);
                 if (JToken.DeepEquals(nowEntry, thenEntry))
                 {
                     continue;
@@ -375,11 +390,25 @@ public static partial class BackupDiff
                 var isStorage =
                     nowEntry?["Storages"] is JArray { Count: > 0 }
                     || thenEntry?["Storages"] is JArray { Count: > 0 };
-                var number = int.Parse(key[(key.IndexOf('#') + 1)..]) + 1;
                 yield return isStorage && nowEntry != null && thenEntry != null
-                    ? ("Storage", $"{name} #{number}", ChangeKind.Changed)
+                    ? ("Storage", $"{name} #{numbers[nowEntry]}", ChangeKind.Changed)
                     : ("Structures", name, KindOf(nowEntry, thenEntry));
             }
+        }
+
+        private static Dictionary<JToken, int> NumbersOf(JToken? entries)
+        {
+            // Storages Numbered Per Type In Save Order, Like Their Page
+            var numbers = new Dictionary<JToken, int>(ReferenceEqualityComparer.Instance);
+            var perType = new Dictionary<string, int>();
+            foreach (var entry in entries as JArray ?? [])
+            {
+                var type = entry["Id"]?.ToString() ?? "";
+                perType[type] = perType.GetValueOrDefault(type) + 1;
+                numbers[entry] = perType[type];
+            }
+
+            return numbers;
         }
     }
 }

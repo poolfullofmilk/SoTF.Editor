@@ -110,7 +110,7 @@ public static partial class BackupManager
         string backup
     )
     {
-        // What Restoring Would Add, Change Or Remove, Entry By Entry
+        // What Came, Changed Or Went Since The Backup
         var now = ContentsOf(savegamePath);
         var then = ContentsOf(backup);
         var differences = new List<(string Key, ChangeKind Kind)>();
@@ -126,8 +126,8 @@ public static partial class BackupManager
             differences.Add(
                 (
                     key,
-                    !isNow ? ChangeKind.Added
-                    : !isThen ? ChangeKind.Removed
+                    !isThen ? ChangeKind.Added
+                    : !isNow ? ChangeKind.Removed
                     : ChangeKind.Changed
                 )
             );

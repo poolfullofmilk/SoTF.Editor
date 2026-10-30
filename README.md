@@ -3,6 +3,8 @@
 ## Features
 - Edit your stats, armour, outfit and inventory
 - Export your inventory to a small text file and import it into any save
+- See which bunkers, videos, missing soldiers and blueprints you found, plus your kills and crafting
+- Copy your player into another save, a friend's game you joined too
 - Fill every storage to the max in one click
 - Edit, revive or spawn Kelvin and Virginia
 - Edit NPCs one at a time or all at once
@@ -10,7 +12,7 @@
 - Finish or remove structures
 - Teleport yourself or anyone else on the map, and search or filter every point on it
 - Teleport yourself in a friend's game too, from the save of a game you joined
-- Tools such as regrowing trees and calming cannibals
+- Tools such as regrowing trees, calming cannibals, ripening gardens and filling 3D printers
 - Duplicate and export your savegames
 - See every change before you save, and undo them page by page
 - English, Dutch, German, French and Turkish, and it updates itself
@@ -36,6 +38,9 @@
 
 ### Inventory
 ![Inventory](Screenshots/Inventory.png)
+
+### Progress
+![Progress](Screenshots/Progress.png)
 
 ### Storage
 ![Storage](Screenshots/Storage.png)

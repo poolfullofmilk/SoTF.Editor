@@ -39,6 +39,22 @@ public partial class RestoreBackupDialog
 
     private bool _compareFailed;
 
+    // Two Views: What Was Saved And What Differs
+    private bool _showDifferences;
+
+    private Dictionary<string, List<Change>> ShownChanges =>
+        _showDifferences ? _differences ?? [] : _savedChanges;
+
+    private string? ViewText =>
+        _showDifferences ? DifferencesText
+        : _savedChanges.Count == 0 ? AppText.Get("ChangesNotRecorded")
+        : null;
+
+    private static int CountOf(Dictionary<string, List<Change>> changes)
+    {
+        return changes.Values.Sum(list => list.Sum(change => change.Count ?? 1));
+    }
+
     private string? DifferencesText
     {
         get
@@ -61,6 +77,7 @@ public partial class RestoreBackupDialog
     {
         _selected = backup;
         _savedChanges = BackupManager.ChangesOf(backup.Path);
+        _showDifferences = _savedChanges.Count == 0;
         _differences = null;
         _compareFailed = false;
 
