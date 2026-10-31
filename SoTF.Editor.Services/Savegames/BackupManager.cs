@@ -18,6 +18,10 @@ public static class BackupManager
     // Kept Beside The Copied Files, Never Restored Into The Savegame
     public const string ChangesFileName = "SoTF.Editor.Changes.json";
 
+    // Its Presence Pins The Backup, Its Text Labels It
+    private const string LabelFileName = "SoTF.Editor.Label.txt";
+    private const string EditorFilePrefix = "SoTF.Editor.";
+
     // A Restore's Change List Key, Beside The Page Routes
     public const string RestoreKey = "Backups";
 
@@ -141,7 +145,7 @@ public static class BackupManager
         foreach (var file in Directory.GetFiles(folder, "*", SearchOption.AllDirectories))
         {
             var name = Path.GetRelativePath(folder, file);
-            if (name == ChangesFileName)
+            if (IsEditorFile(name))
             {
                 continue;
             }
@@ -275,7 +279,7 @@ public static class BackupManager
         // A Missing Or Empty Backup Fails Before Anything Is Touched
         var files = Directory
             .GetFiles(backup, "*", SearchOption.AllDirectories)
-            .Where(file => Path.GetFileName(file) != ChangesFileName)
+            .Where(file => !IsEditorFile(Path.GetFileName(file)))
             .ToArray();
         if (files.Length == 0)
         {
@@ -334,9 +338,53 @@ public static class BackupManager
                 .. Directory
                     .GetDirectories(folder)
                     .OrderDescending(StringComparer.Ordinal)
-                    .Select(path => new SavegameBackup(path, TakenAt(path), SizeOf(path))),
+                    .Select(path => new SavegameBackup(
+                        path,
+                        TakenAt(path),
+                        SizeOf(path),
+                        LabelOf(path)
+                    )),
             ]
             : [];
+    }
+
+    private static bool IsEditorFile(string name)
+    {
+        return name.StartsWith(EditorFilePrefix, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static string? LabelOf(string backup)
+    {
+        var path = Path.Combine(backup, LabelFileName);
+        try
+        {
+            return File.Exists(path) ? File.ReadAllText(path).Trim() : null;
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+        {
+            // An Unreadable Label Still Pins
+            s_logger.Warn(exception, $"Failed To Read Label Of {backup}");
+            return "";
+        }
+    }
+
+    public static SavegameBackup Pin(SavegameBackup backup, string? label)
+    {
+        // No Label Unpins, An Empty One Pins Without Text
+        var path = Path.Combine(backup.Path, LabelFileName);
+        if (label is null)
+        {
+            File.Delete(path);
+        }
+        else
+        {
+            File.WriteAllText(path, label.Trim());
+        }
+
+        return backup with
+        {
+            Label = label?.Trim(),
+        };
     }
 
     public static int Count(string savegamePath)
@@ -376,13 +424,13 @@ public static class BackupManager
             return;
         }
 
-        // The Oldest Go First, Each Savegame Keeps Its First Backup
+        // The Oldest Go First, First And Pinned Backups Stay
         var candidates = Directory
             .EnumerateDirectories(BackupDirectory, "*", SearchOption.AllDirectories)
             .Where(IsBackupFolder)
             .GroupBy(Path.GetDirectoryName)
             .SelectMany(group => group.OrderBy(TakenAt).Skip(1))
-            .Where(folder => folder != newest)
+            .Where(folder => folder != newest && LabelOf(folder) is null)
             .OrderBy(TakenAt)
             .ToList();
         var removed = 0;

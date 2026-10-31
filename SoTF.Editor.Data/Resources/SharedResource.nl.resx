@@ -700,7 +700,7 @@
     <value>Objecten</value>
   </data>
   <data name="PointsOfInterest" xml:space="preserve">
-    <value>Bezienswaardigheden</value>
+    <value>Kaartpunten</value>
   </data>
   <data name="Requirements" xml:space="preserve">
     <value>Vereisten</value>
@@ -1692,7 +1692,7 @@ Nee houdt ze zodat je eerst kunt opslaan</value>
     <value>Kan de back-up niet verwijderen</value>
   </data>
   <data name="BackupUsage" xml:space="preserve">
-    <value>Back-ups gebruiken {0} van {1}. Daarboven worden de oudste verwijderd, behalve de allereerste</value>
+    <value>Back-ups gebruiken {0} van {1}. Daarboven worden de oudste verwijderd, behalve de allereerste en vastgezette</value>
   </data>
   <data name="BackupsPruned" xml:space="preserve">
     <value>Back-ups gingen over {1}, dus de {0} oudste zijn verwijderd. De allereerste blijft</value>
@@ -2328,5 +2328,74 @@ Nee houdt de editor open zodat je eerst kunt opslaan</value>
   </data>
   <data name="GameRunningWarning" xml:space="preserve">
     <value>Sons Of The Forest draait, sla op terwijl het in het hoofdmenu staat</value>
+  </data>
+  <data name="GameRunning" xml:space="preserve">
+    <value>Spel Draait</value>
+  </data>
+  <data name="GameSavedOverEdits" xml:space="preserve">
+    <value>Het spel heeft deze savegame opgeslagen. Herladen toont die save en gooit je niet-opgeslagen wijzigingen weg</value>
+  </data>
+  <data name="ReloadedAfterGameSave" xml:space="preserve">
+    <value>Herladen, het spel heeft deze savegame opgeslagen</value>
+  </data>
+  <data name="Reload" xml:space="preserve">
+    <value>Herladen</value>
+  </data>
+  <data name="PinBackup" xml:space="preserve">
+    <value>Back-up Vastzetten</value>
+  </data>
+  <data name="UnpinBackup" xml:space="preserve">
+    <value>Back-up Losmaken</value>
+  </data>
+  <data name="BackupLabel" xml:space="preserve">
+    <value>Label</value>
+  </data>
+  <data name="PinBackupInfo" xml:space="preserve">
+    <value>Een vastgezette back-up wordt nooit verwijderd om ruimte te maken. Een label zet hem ook vast</value>
+  </data>
+  <data name="UnableToPinBackup" xml:space="preserve">
+    <value>Kan de back-up niet vastzetten</value>
+  </data>
+  <data name="SaveLoadout" xml:space="preserve">
+    <value>Opslaan als Uitrusting</value>
+  </data>
+  <data name="Loadout" xml:space="preserve">
+    <value>Uitrusting</value>
+  </data>
+  <data name="ApplyLoadout" xml:space="preserve">
+    <value>Uitrusting Toepassen</value>
+  </data>
+  <data name="LoadoutSaved" xml:space="preserve">
+    <value>Uitrusting opgeslagen</value>
+  </data>
+  <data name="UnableToSaveLoadout" xml:space="preserve">
+    <value>Kan de uitrusting niet opslaan, zie het logbestand</value>
+  </data>
+  <data name="GuestRoles" xml:space="preserve">
+    <value>Rollen van Gasten</value>
+  </data>
+  <data name="GuestRolesText" xml:space="preserve">
+    <value>Maak een speler die je spel heeft bezocht gast, vertrouwd, admin of verban hem</value>
+  </data>
+  <data name="GuestRolesDialogText" xml:space="preserve">
+    <value>Elke speler die dit gehoste spel heeft bezocht, de host staat er niet bij</value>
+  </data>
+  <data name="NoGuests" xml:space="preserve">
+    <value>Nog niemand heeft dit spel bezocht</value>
+  </data>
+  <data name="GuestRolesChanged" xml:space="preserve">
+    <value>Rol van {0} spelers gewijzigd, sla op om ze te houden</value>
+  </data>
+  <data name="GuestRoleGuest" xml:space="preserve">
+    <value>Gast</value>
+  </data>
+  <data name="GuestRoleTrusted" xml:space="preserve">
+    <value>Vertrouwd</value>
+  </data>
+  <data name="GuestRoleAdmin" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="GuestRoleBanned" xml:space="preserve">
+    <value>Verbannen</value>
   </data>
 </root>

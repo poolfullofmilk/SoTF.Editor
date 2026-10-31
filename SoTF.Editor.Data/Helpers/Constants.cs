@@ -97,6 +97,7 @@ public static class Constants
         public const string ScrewTraps = "Data.ScrewTraps";
         public const string Constructions = "Data.Constructions";
         public const string GardenPlotManager = "Data.GardenPlotManager";
+        public const string MultiplayerPlayerRoles = "Data.MultiplayerPlayerRoles";
     }
 
     public static class Items

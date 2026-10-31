@@ -4,22 +4,23 @@ using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Resources;
 using SoTF.Editor.Data.ViewModels.Progress;
+using SoTF.Editor.Services.Map;
 using SoTF.Editor.Services.Savegames;
 
 namespace SoTF.Editor.Services.Pages;
 
 public static class ProgressReader
 {
-    // The Game's Own Names, From Its Assets
-    private static readonly string[] s_bunkers =
+    // The Game's Own Names, With Their Map Point
+    private static readonly (string Flag, string Place)[] s_bunkers =
     [
-        "Bunker A",
-        "Bunker B",
-        "Bunker C",
-        "Bunker Entertainment",
-        "Bunker Food",
-        "Bunker Luxury",
-        "Bunker Residential",
+        ("Bunker A", "Maintenance A"),
+        ("Bunker B", "Maintenance B"),
+        ("Bunker C", "Maintenance C"),
+        ("Bunker Entertainment", "Cave leading to Entertainment Bunker"),
+        ("Bunker Food", "Food and Dining Bunker"),
+        ("Bunker Luxury", "Luxury Bunker"),
+        ("Bunker Residential", "Residential Bunker"),
     ];
 
     private static readonly (string Flag, string Name)[] s_videos =
@@ -30,14 +31,15 @@ public static class ProgressReader
         ("Sahara Confidential", "Sahara Confidential"),
     ];
 
-    private static readonly (string Flag, string NameKey)[] s_soldiers =
+    // The Map Knows Items Lying On Two Of Them
+    private static readonly (string Flag, string NameKey, string? Spot)[] s_soldiers =
     [
-        ("Buried", "SoldierBuried"),
-        ("Hanging", "SoldierHanging"),
-        ("Raft", "SoldierRaft"),
+        ("Buried", "SoldierBuried", null),
+        ("Hanging", "SoldierHanging", "On hanging soldier"),
+        ("Raft", "SoldierRaft", "On Emergency Raft"),
     ];
 
-    public static PlayerProgress Read(Savegame savegame, GameData gameData)
+    public static PlayerProgress Read(Savegame savegame, GameData gameData, PoiLoader poiLoader)
     {
         // The Newest Entry Wins When The Game Repeats A Name
         var entries = new Dictionary<string, JToken>();
@@ -93,8 +95,9 @@ public static class ProgressReader
                     "Bunkers",
                     [
                         .. s_bunkers.Select(bunker => new Collectible(
-                            bunker,
-                            IsSet("PointOfInterestFound_" + bunker)
+                            bunker.Flag,
+                            IsSet("PointOfInterestFound_" + bunker.Flag),
+                            Position: poiLoader.PlacePosition(bunker.Place)
                         )),
                     ]
                 ),
@@ -112,7 +115,10 @@ public static class ProgressReader
                     [
                         .. s_soldiers.Select(soldier => new Collectible(
                             AppText.Get(soldier.NameKey),
-                            IsSet("MissingTacticalFound_" + soldier.Flag)
+                            IsSet("MissingTacticalFound_" + soldier.Flag),
+                            Position: soldier.Spot is null
+                                ? null
+                                : poiLoader.ItemPositionAt(soldier.Spot)
                         )),
                     ]
                 ),
@@ -126,7 +132,8 @@ public static class ProgressReader
                             .Select(item => new Collectible(
                                 item.Name,
                                 IsSet(InventoryPageViewModel.BlueprintPagePrefix + item.Id),
-                                item.ImageUrl
+                                item.ImageUrl,
+                                poiLoader.ItemPosition(item.Id)
                             )),
                     ]
                 ),

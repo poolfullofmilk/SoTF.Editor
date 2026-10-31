@@ -1692,7 +1692,7 @@ No keeps them so you can save first</value>
     <value>Unable to delete the backup</value>
   </data>
   <data name="BackupUsage" xml:space="preserve">
-    <value>Backups use {0} of {1}. Past that, the oldest are deleted, except the very first</value>
+    <value>Backups use {0} of {1}. Past that, the oldest are deleted, except the very first and pinned ones</value>
   </data>
   <data name="BackupsPruned" xml:space="preserve">
     <value>Backups passed {1}, so the {0} oldest were deleted. The very first stays</value>
@@ -2328,5 +2328,74 @@ No keeps the editor open so you can save first</value>
   </data>
   <data name="GameRunningWarning" xml:space="preserve">
     <value>Sons Of The Forest is running, save while it sits in the main menu</value>
+  </data>
+  <data name="GameRunning" xml:space="preserve">
+    <value>Game Running</value>
+  </data>
+  <data name="GameSavedOverEdits" xml:space="preserve">
+    <value>The game saved this savegame. Reload shows its save and drops your unsaved edits</value>
+  </data>
+  <data name="ReloadedAfterGameSave" xml:space="preserve">
+    <value>Reloaded, the game saved this savegame</value>
+  </data>
+  <data name="Reload" xml:space="preserve">
+    <value>Reload</value>
+  </data>
+  <data name="PinBackup" xml:space="preserve">
+    <value>Pin Backup</value>
+  </data>
+  <data name="UnpinBackup" xml:space="preserve">
+    <value>Unpin Backup</value>
+  </data>
+  <data name="BackupLabel" xml:space="preserve">
+    <value>Label</value>
+  </data>
+  <data name="PinBackupInfo" xml:space="preserve">
+    <value>A pinned backup is never removed to make room. A label pins it too</value>
+  </data>
+  <data name="UnableToPinBackup" xml:space="preserve">
+    <value>Unable to pin the backup</value>
+  </data>
+  <data name="SaveLoadout" xml:space="preserve">
+    <value>Save as Loadout</value>
+  </data>
+  <data name="Loadout" xml:space="preserve">
+    <value>Loadout</value>
+  </data>
+  <data name="ApplyLoadout" xml:space="preserve">
+    <value>Apply Loadout</value>
+  </data>
+  <data name="LoadoutSaved" xml:space="preserve">
+    <value>Loadout saved</value>
+  </data>
+  <data name="UnableToSaveLoadout" xml:space="preserve">
+    <value>Unable to save the loadout, see the log</value>
+  </data>
+  <data name="GuestRoles" xml:space="preserve">
+    <value>Guest Roles</value>
+  </data>
+  <data name="GuestRolesText" xml:space="preserve">
+    <value>Make a player who joined your game a guest, trusted, an admin or banned</value>
+  </data>
+  <data name="GuestRolesDialogText" xml:space="preserve">
+    <value>Every player who joined this hosted game, the host is not listed</value>
+  </data>
+  <data name="NoGuests" xml:space="preserve">
+    <value>Nobody has joined this game yet</value>
+  </data>
+  <data name="GuestRolesChanged" xml:space="preserve">
+    <value>Changed the role of {0} players, save to keep them</value>
+  </data>
+  <data name="GuestRoleGuest" xml:space="preserve">
+    <value>Guest</value>
+  </data>
+  <data name="GuestRoleTrusted" xml:space="preserve">
+    <value>Trusted</value>
+  </data>
+  <data name="GuestRoleAdmin" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="GuestRoleBanned" xml:space="preserve">
+    <value>Banned</value>
   </data>
 </root>

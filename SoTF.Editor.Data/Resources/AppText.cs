@@ -19,9 +19,13 @@ public static class AppText
     [
         ("de", "Deutsch"),
         ("en", "English"),
+        ("es", "Español"),
         ("fr", "Français"),
         ("nl", "Nederlands"),
+        ("pl", "Polski"),
+        ("pt-BR", "Português"),
         ("tr", "Türkçe"),
+        ("ru", "Русский"),
     ];
 
     // The Picked Language, WPF Pins The Thread Culture At Startup

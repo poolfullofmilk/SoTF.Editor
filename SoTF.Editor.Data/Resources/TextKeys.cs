@@ -43,6 +43,8 @@ public static class TextKeys
 
     public static string TeleportTarget(TeleportTarget target) => $"TeleportTarget{target}";
 
+    public static string GuestRole(GuestRole role) => $"GuestRole{role}";
+
     public static string PoiGroup(PoiGroupType type) => $"PoiGroup{type}";
 
     public static string StructureMode(ScrewStructureModificationMode mode) =>
@@ -169,6 +171,7 @@ public static class TextKeys
             .Concat(Enum.GetValues<MapFilter.RequirementsFilterType>().Select(RequirementsFilter))
             .Concat(Enum.GetValues<SpawnPattern>().Select(SpawnPattern))
             .Concat(Enum.GetValues<TeleportTarget>().Select(TeleportTarget))
+            .Concat(Enum.GetValues<GuestRole>().Select(GuestRole))
             .Concat(Enum.GetValues<ScrewStructureModificationMode>().Select(StructureMode))
             .Concat(Enum.GetValues<ElementProfileCategory>().Select(Construction))
             .Concat(SettingNames.Select(Setting))

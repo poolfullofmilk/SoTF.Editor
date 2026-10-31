@@ -1,0 +1,2397 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Close" xml:space="preserve">
+    <value>Закрыть</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Изменить</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Нет</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Да</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Позиция</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Неизвестно</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Значение</value>
+  </data>
+  <data name="About" xml:space="preserve">
+    <value>О Программе</value>
+  </data>
+  <data name="AboutText" xml:space="preserve">
+    <value>Редактируйте свои сохранения Sons Of The Forest</value>
+  </data>
+  <data name="Backups" xml:space="preserve">
+    <value>Бэкапы</value>
+  </data>
+  <data name="ChangesAdded" xml:space="preserve">
+    <value>Изменения добавлены, сохраните, чтобы их оставить</value>
+  </data>
+  <data name="Disclaimer" xml:space="preserve">
+    <value>Фанатский проект, не связан с Endnight Games</value>
+  </data>
+  <data name="MapDataNotice" xml:space="preserve">
+    <value>Точки карты из Sons Of The Forest Map от Leon Machens, лицензия MIT</value>
+  </data>
+  <data name="DropHint" xml:space="preserve">
+    <value>Перетащите папку сохранения в любое место окна, чтобы открыть её</value>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>Справка</value>
+  </data>
+  <data name="Items" xml:space="preserve">
+    <value>Предметы</value>
+  </data>
+  <data name="NoSavegames" xml:space="preserve">
+    <value>В этой папке нет сохранений</value>
+  </data>
+  <data name="NothingFound" xml:space="preserve">
+    <value>Ничего Не Найдено</value>
+  </data>
+  <data name="OpenSavegameFirst" xml:space="preserve">
+    <value>Сначала Откройте Сохранение</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Убрать</value>
+  </data>
+  <data name="Saved" xml:space="preserve">
+    <value>Сохранено</value>
+  </data>
+  <data name="Savegames" xml:space="preserve">
+    <value>Сохранения</value>
+  </data>
+  <data name="SelectGroup" xml:space="preserve">
+    <value>Выберите Группу</value>
+  </data>
+  <data name="ShowOnMap" xml:space="preserve">
+    <value>Показать на Карте</value>
+  </data>
+  <data name="UpdateAvailable" xml:space="preserve">
+    <value>Доступна Версия {0}</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Версия</value>
+  </data>
+  <data name="ZoomIn" xml:space="preserve">
+    <value>Приблизить</value>
+  </data>
+  <data name="ZoomOut" xml:space="preserve">
+    <value>Отдалить</value>
+  </data>
+  <data name="CenterMap" xml:space="preserve">
+    <value>Вся Карта</value>
+  </data>
+  <data name="Area" xml:space="preserve">
+    <value>Область</value>
+  </data>
+  <data name="Classification" xml:space="preserve">
+    <value>Класс</value>
+  </data>
+  <data name="Family" xml:space="preserve">
+    <value>Семья</value>
+  </data>
+  <data name="FamilyTitle" xml:space="preserve">
+    <value>Семья {0}</value>
+  </data>
+  <data name="Gender" xml:space="preserve">
+    <value>Пол</value>
+  </data>
+  <data name="KilledByPlayer" xml:space="preserve">
+    <value>Убит Игроком</value>
+  </data>
+  <data name="LastSpawnTime" xml:space="preserve">
+    <value>Последнее Появление</value>
+  </data>
+  <data name="LastVisitTime" xml:space="preserve">
+    <value>Последний Визит</value>
+  </data>
+  <data name="SpawnedCount" xml:space="preserve">
+    <value>Число Появлений</value>
+  </data>
+  <data name="State" xml:space="preserve">
+    <value>Состояние</value>
+  </data>
+  <data name="UniqueId" xml:space="preserve">
+    <value>Уник. ID</value>
+  </data>
+  <data name="GroupAnimals" xml:space="preserve">
+    <value>Животные</value>
+  </data>
+  <data name="GroupCreeps" xml:space="preserve">
+    <value>Мутанты</value>
+  </data>
+  <data name="GroupFemaleCannibals" xml:space="preserve">
+    <value>Каннибалы Женщины</value>
+  </data>
+  <data name="GroupFemaleMuddyCannibals" xml:space="preserve">
+    <value>Грязные Каннибалы Женщины</value>
+  </data>
+  <data name="GroupMaleCannibals" xml:space="preserve">
+    <value>Каннибалы Мужчины</value>
+  </data>
+  <data name="GroupMaleMuddyCannibals" xml:space="preserve">
+    <value>Грязные Каннибалы Мужчины</value>
+  </data>
+  <data name="GroupMisc" xml:space="preserve">
+    <value>Другое</value>
+  </data>
+  <data name="GroupMixed" xml:space="preserve">
+    <value>Смешанные</value>
+  </data>
+  <data name="GroupMixedCannibals" xml:space="preserve">
+    <value>Смешанные Каннибалы</value>
+  </data>
+  <data name="GroupMixedMuddyCannibals" xml:space="preserve">
+    <value>Смешанные Грязные</value>
+  </data>
+  <data name="GroupNoFamily" xml:space="preserve">
+    <value>Без Семьи</value>
+  </data>
+  <data name="Influences" xml:space="preserve">
+    <value>Влияния</value>
+  </data>
+  <data name="OnlySameArea" xml:space="preserve">
+    <value>Только в Той Же Области</value>
+  </data>
+  <data name="RemoveSpawner" xml:space="preserve">
+    <value>Убрать Спавнер</value>
+  </data>
+  <data name="RemoveSpawnerTooltip" xml:space="preserve">
+    <value>NPC больше не появится</value>
+  </data>
+  <data name="ReplaceType" xml:space="preserve">
+    <value>Сменить Тип</value>
+  </data>
+  <data name="TeleportManyWarning" xml:space="preserve">
+    <value>Телепорт множества персонажей в одно место может обрушить игру</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Нет</value>
+  </data>
+  <data name="TeleportNpcToPlayer" xml:space="preserve">
+    <value>NPC к Игроку</value>
+  </data>
+  <data name="TeleportPlayerToNpc" xml:space="preserve">
+    <value>Игрок к NPC</value>
+  </data>
+  <data name="Teleport" xml:space="preserve">
+    <value>Телепорт</value>
+  </data>
+  <data name="Affection" xml:space="preserve">
+    <value>Привязанность</value>
+  </data>
+  <data name="Anger" xml:space="preserve">
+    <value>Гнев</value>
+  </data>
+  <data name="Energy" xml:space="preserve">
+    <value>Энергия</value>
+  </data>
+  <data name="Fear" xml:space="preserve">
+    <value>Страх</value>
+  </data>
+  <data name="Fullness" xml:space="preserve">
+    <value>Сытость</value>
+  </data>
+  <data name="FullnessBuff" xml:space="preserve">
+    <value>Бонус Сытости</value>
+  </data>
+  <data name="Health" xml:space="preserve">
+    <value>Здоровье</value>
+  </data>
+  <data name="Hydration" xml:space="preserve">
+    <value>Жажда</value>
+  </data>
+  <data name="HydrationBuff" xml:space="preserve">
+    <value>Бонус Жажды</value>
+  </data>
+  <data name="Rest" xml:space="preserve">
+    <value>Отдых</value>
+  </data>
+  <data name="RestBuff" xml:space="preserve">
+    <value>Бонус Отдыха</value>
+  </data>
+  <data name="Stamina" xml:space="preserve">
+    <value>Выносливость</value>
+  </data>
+  <data name="Kelvin" xml:space="preserve">
+    <value>Kelvin</value>
+  </data>
+  <data name="Virginia" xml:space="preserve">
+    <value>Virginia</value>
+  </data>
+  <data name="SetAllToDefault" xml:space="preserve">
+    <value>Всё по Умолчанию</value>
+  </data>
+  <data name="SetAllToDefaultTooltip" xml:space="preserve">
+    <value>Ставит каждой части прочность по умолчанию</value>
+  </data>
+  <data name="SetAllToMax" xml:space="preserve">
+    <value>Всё на Максимум</value>
+  </data>
+  <data name="SetAllToMaxTooltip" xml:space="preserve">
+    <value>Ставит каждой части максимальную прочность</value>
+  </data>
+  <data name="SetToDefaultDurability" xml:space="preserve">
+    <value>Прочность по Умолчанию</value>
+  </data>
+  <data name="Durability" xml:space="preserve">
+    <value>Прочность</value>
+  </data>
+  <data name="UnknownItem" xml:space="preserve">
+    <value>Неизвестный Предмет</value>
+  </data>
+  <data name="ChangeTypeWarning" xml:space="preserve">
+    <value>Позиция и поворот сохраняются, это может вызвать сбои или вылеты</value>
+  </data>
+  <data name="SpawnFollowersWarning" xml:space="preserve">
+    <value>Создавайте на открытом месте, много спутников снижают производительность</value>
+  </data>
+  <data name="SpawnFollower" xml:space="preserve">
+    <value>Создать {0}</value>
+  </data>
+  <data name="NoFiresFound" xml:space="preserve">
+    <value>Костры не найдены</value>
+  </data>
+  <data name="FiresChanged" xml:space="preserve">
+    <value>Изменено костров: {0}, сохраните, чтобы их оставить</value>
+  </data>
+  <data name="NoStructureDamage" xml:space="preserve">
+    <value>Повреждений построек нет</value>
+  </data>
+  <data name="StructureDamageRepaired" xml:space="preserve">
+    <value>Отремонтировано построек: {0}, сохраните, чтобы их оставить</value>
+  </data>
+  <data name="FillAllBars" xml:space="preserve">
+    <value>Заполнить Все Шкалы</value>
+  </data>
+  <data name="MoveToKelvin" xml:space="preserve">
+    <value>К Kelvin</value>
+  </data>
+  <data name="MoveToPlayer" xml:space="preserve">
+    <value>К Игроку</value>
+  </data>
+  <data name="MoveToVirginia" xml:space="preserve">
+    <value>К Virginia</value>
+  </data>
+  <data name="Revive" xml:space="preserve">
+    <value>Оживить</value>
+  </data>
+  <data name="Spawn" xml:space="preserve">
+    <value>Создать</value>
+  </data>
+  <data name="RemoveCopy" xml:space="preserve">
+    <value>Убрать Копию</value>
+  </data>
+  <data name="RemoveCopyText" xml:space="preserve">
+    <value>Эта копия уходит из сохранения вместе с предметами и чувствами</value>
+  </data>
+  <data name="Equipment" xml:space="preserve">
+    <value>Снаряжение</value>
+  </data>
+  <data name="Outfit" xml:space="preserve">
+    <value>Одежда</value>
+  </data>
+  <data name="ReviveTooltip" xml:space="preserve">
+    <value>Возвращает спутника с заданными здесь предметами и одеждой. Спутник, удалённый игрой, появляется рядом с вами, а когда вы под землёй, рядом со спутником снаружи</value>
+  </data>
+  <data name="Alive" xml:space="preserve">
+    <value>Жив</value>
+  </data>
+  <data name="Dead" xml:space="preserve">
+    <value>Мёртв</value>
+  </data>
+  <data name="NotInSave" xml:space="preserve">
+    <value>Нет в Сохранении</value>
+  </data>
+  <data name="AnimalSpawnRate" xml:space="preserve">
+    <value>Появление Животных</value>
+  </data>
+  <data name="BuildingResistance" xml:space="preserve">
+    <value>Прочность Построек</value>
+  </data>
+  <data name="ColdPenalties" xml:space="preserve">
+    <value>Штраф за Холод</value>
+  </data>
+  <data name="ConsumableEffects" xml:space="preserve">
+    <value>Действие Расходников</value>
+  </data>
+  <data name="CreativeMode" xml:space="preserve">
+    <value>Творческий Режим</value>
+  </data>
+  <data name="CustomSettings" xml:space="preserve">
+    <value>Свои Настройки</value>
+  </data>
+  <data name="CustomHint" xml:space="preserve">
+    <value>Выберите режим Свой, чтобы менять отдельные настройки, или загрузите пресет, чтобы начать с режима</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>По Умолчанию</value>
+  </data>
+  <data name="Long" xml:space="preserve">
+    <value>Длинный</value>
+  </data>
+  <data name="Realistic" xml:space="preserve">
+    <value>Реалистичный</value>
+  </data>
+  <data name="Short" xml:space="preserve">
+    <value>Короткий</value>
+  </data>
+  <data name="DayLength" xml:space="preserve">
+    <value>Длина Дня</value>
+  </data>
+  <data name="EnemyAggression" xml:space="preserve">
+    <value>Агрессия Врагов</value>
+  </data>
+  <data name="EnemyArmor" xml:space="preserve">
+    <value>Броня Врагов</value>
+  </data>
+  <data name="EnemyDamage" xml:space="preserve">
+    <value>Урон Врагов</value>
+  </data>
+  <data name="EnemyHealth" xml:space="preserve">
+    <value>Здоровье Врагов</value>
+  </data>
+  <data name="EnemySearchParties" xml:space="preserve">
+    <value>Поисковые Отряды</value>
+  </data>
+  <data name="InstantBuilding" xml:space="preserve">
+    <value>Мгновенная Стройка</value>
+  </data>
+  <data name="GameSetup" xml:space="preserve">
+    <value>Настройки Игры</value>
+  </data>
+  <data name="Enemies" xml:space="preserve">
+    <value>Враги</value>
+  </data>
+  <data name="Multiplayer" xml:space="preserve">
+    <value>Мультиплеер</value>
+  </data>
+  <data name="Weather" xml:space="preserve">
+    <value>Погода</value>
+  </data>
+  <data name="GodMode" xml:space="preserve">
+    <value>Режим Бога</value>
+  </data>
+  <data name="InventoryPause" xml:space="preserve">
+    <value>Пауза в Инвентаре</value>
+  </data>
+  <data name="ModeCreative" xml:space="preserve">
+    <value>Творческий</value>
+  </data>
+  <data name="ModeCustom" xml:space="preserve">
+    <value>Свой</value>
+  </data>
+  <data name="Hard" xml:space="preserve">
+    <value>Сложный</value>
+  </data>
+  <data name="HardSurvival" xml:space="preserve">
+    <value>Сложное Выживание</value>
+  </data>
+  <data name="Normal" xml:space="preserve">
+    <value>Обычный</value>
+  </data>
+  <data name="Peaceful" xml:space="preserve">
+    <value>Мирный</value>
+  </data>
+  <data name="Mode" xml:space="preserve">
+    <value>Режим</value>
+  </data>
+  <data name="NoCuttingsSpawn" xml:space="preserve">
+    <value>Без Обрезков</value>
+  </data>
+  <data name="OneHitTrees" xml:space="preserve">
+    <value>Деревья с Одного Удара</value>
+  </data>
+  <data name="PlayerStatsDamage" xml:space="preserve">
+    <value>Урон от Показателей</value>
+  </data>
+  <data name="PlayersTriggerTraps" xml:space="preserve">
+    <value>Игроки Включают Ловушки</value>
+  </data>
+  <data name="PrecipitationFrequency" xml:space="preserve">
+    <value>Частота Осадков</value>
+  </data>
+  <data name="PvpDamage" xml:space="preserve">
+    <value>Урон PvP</value>
+  </data>
+  <data name="ReducedAmmo" xml:space="preserve">
+    <value>Меньше Патронов в Ящиках</value>
+  </data>
+  <data name="ReducedFood" xml:space="preserve">
+    <value>Меньше Еды в Ящиках</value>
+  </data>
+  <data name="SeasonLength" xml:space="preserve">
+    <value>Длина Сезона</value>
+  </data>
+  <data name="High" xml:space="preserve">
+    <value>Высокий</value>
+  </data>
+  <data name="Low" xml:space="preserve">
+    <value>Низкий</value>
+  </data>
+  <data name="Off" xml:space="preserve">
+    <value>Выключено</value>
+  </data>
+  <data name="Reduced" xml:space="preserve">
+    <value>Сниженный</value>
+  </data>
+  <data name="SingleUseContainers" xml:space="preserve">
+    <value>Одноразовые Ящики</value>
+  </data>
+  <data name="SpawnEnemies" xml:space="preserve">
+    <value>Враги</value>
+  </data>
+  <data name="Autumn" xml:space="preserve">
+    <value>Осень</value>
+  </data>
+  <data name="Spring" xml:space="preserve">
+    <value>Весна</value>
+  </data>
+  <data name="Summer" xml:space="preserve">
+    <value>Лето</value>
+  </data>
+  <data name="Winter" xml:space="preserve">
+    <value>Зима</value>
+  </data>
+  <data name="StartingSeason" xml:space="preserve">
+    <value>Начальный Сезон</value>
+  </data>
+  <data name="StatRegenerationPenalties" xml:space="preserve">
+    <value>Штраф Восстановления</value>
+  </data>
+  <data name="Uid" xml:space="preserve">
+    <value>UID</value>
+  </data>
+  <data name="GameState" xml:space="preserve">
+    <value>Состояние Игры</value>
+  </data>
+  <data name="WorldObjectStatesInfo" xml:space="preserve">
+    <value>0 обычно значит закрыто или ещё не случилось, 1 или 3 открыто или случилось. Очищенное значение уходит из сохранения, и игра считает его нетронутым</value>
+  </data>
+  <data name="WorldObjectStates" xml:space="preserve">
+    <value>Состояния Объектов Мира</value>
+  </data>
+  <data name="ClearValue" xml:space="preserve">
+    <value>Очистить Значение</value>
+  </data>
+  <data name="InfluencesInfo" xml:space="preserve">
+    <value>Сильный страх заставляет врагов бежать, сильный гнев нападать</value>
+  </data>
+  <data name="Sentiment" xml:space="preserve">
+    <value>Симпатия</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Открыть</value>
+  </data>
+  <data name="AddAll" xml:space="preserve">
+    <value>Добавить Всё</value>
+  </data>
+  <data name="Max" xml:space="preserve">
+    <value>Макс</value>
+  </data>
+  <data name="RemoveAll" xml:space="preserve">
+    <value>Убрать Всё</value>
+  </data>
+  <data name="SetAllToMin" xml:space="preserve">
+    <value>Всё на Минимум</value>
+  </data>
+  <data name="ItemsInInventory" xml:space="preserve">
+    <value>Предметы в Инвентаре</value>
+  </data>
+  <data name="Count" xml:space="preserve">
+    <value>Количество</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Тип</value>
+  </data>
+  <data name="Actors" xml:space="preserve">
+    <value>Персонажи</value>
+  </data>
+  <data name="AlternativeItems" xml:space="preserve">
+    <value>Замена Предметов</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>Все</value>
+  </data>
+  <data name="SurfaceOnly" xml:space="preserve">
+    <value>Только Поверхность</value>
+  </data>
+  <data name="UndergroundOnly" xml:space="preserve">
+    <value>Только Пещеры и Бункеры</value>
+  </data>
+  <data name="NewZiplineFromHere" xml:space="preserve">
+    <value>Новый Зиплайн Отсюда</value>
+  </data>
+  <data name="SelectAll" xml:space="preserve">
+    <value>Выбрать Все</value>
+  </data>
+  <data name="SpawnActors" xml:space="preserve">
+    <value>Создать Персонажей</value>
+  </data>
+  <data name="TeleportKelvinHere" xml:space="preserve">
+    <value>Kelvin Сюда</value>
+  </data>
+  <data name="TeleportPlayerHere" xml:space="preserve">
+    <value>Игрока Сюда</value>
+  </data>
+  <data name="TeleportVirginiaHere" xml:space="preserve">
+    <value>Virginia Сюда</value>
+  </data>
+  <data name="Coordinates" xml:space="preserve">
+    <value>Координаты</value>
+  </data>
+  <data name="Distance" xml:space="preserve">
+    <value>Расстояние</value>
+  </data>
+  <data name="CopyCoordinates" xml:space="preserve">
+    <value>Копировать Координаты</value>
+  </data>
+  <data name="CoordinatesCopied" xml:space="preserve">
+    <value>Координаты скопированы</value>
+  </data>
+  <data name="Followers" xml:space="preserve">
+    <value>Спутники</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Поиск</value>
+  </data>
+  <data name="Results" xml:space="preserve">
+    <value>Результаты</value>
+  </data>
+  <data name="UncollectedOnly" xml:space="preserve">
+    <value>Только Несобранные Предметы</value>
+  </data>
+  <data name="Owned" xml:space="preserve">
+    <value>Есть</value>
+  </data>
+  <data name="IsCopy" xml:space="preserve">
+    <value>Копия</value>
+  </data>
+  <data name="Underground" xml:space="preserve">
+    <value>Под Землёй</value>
+  </data>
+  <data name="ItemId" xml:space="preserve">
+    <value>ID Предмета</value>
+  </data>
+  <data name="Objects" xml:space="preserve">
+    <value>Объекты</value>
+  </data>
+  <data name="PointsOfInterest" xml:space="preserve">
+    <value>Точки Карты</value>
+  </data>
+  <data name="Requirements" xml:space="preserve">
+    <value>Требования</value>
+  </data>
+  <data name="ActorType" xml:space="preserve">
+    <value>Тип Персонажа</value>
+  </data>
+  <data name="SpawnActorsWarning" xml:space="preserve">
+    <value>Слишком много врагов или плохое место могут обрушить игру</value>
+  </data>
+  <data name="DestinationFamily" xml:space="preserve">
+    <value>Как у Цели</value>
+  </data>
+  <data name="SpaceBetween" xml:space="preserve">
+    <value>Промежуток</value>
+  </data>
+  <data name="SpaceBetweenTooltip" xml:space="preserve">
+    <value>Расстояние между персонажами, больше 0 ставит их сеткой</value>
+  </data>
+  <data name="SpawnPattern" xml:space="preserve">
+    <value>Схема Появления</value>
+  </data>
+  <data name="Structures" xml:space="preserve">
+    <value>Постройки</value>
+  </data>
+  <data name="Teleportation" xml:space="preserve">
+    <value>Телепорт</value>
+  </data>
+  <data name="Actor" xml:space="preserve">
+    <value>Персонаж</value>
+  </data>
+  <data name="Zipline" xml:space="preserve">
+    <value>Зиплайн</value>
+  </data>
+  <data name="Destination" xml:space="preserve">
+    <value>Цель</value>
+  </data>
+  <data name="TeleportHint" xml:space="preserve">
+    <value>X и Z задают место, Y высоту, выберите нужную область</value>
+  </data>
+  <data name="Offset" xml:space="preserve">
+    <value>Смещение</value>
+  </data>
+  <data name="ToTeleport" xml:space="preserve">
+    <value>Кого Телепортировать</value>
+  </data>
+  <data name="Wiki" xml:space="preserve">
+    <value>Вики</value>
+  </data>
+  <data name="ZiplineAnchor" xml:space="preserve">
+    <value>Опора Зиплайна</value>
+  </data>
+  <data name="Ziplines" xml:space="preserve">
+    <value>Зиплайны</value>
+  </data>
+  <data name="OpenSavegameFolder" xml:space="preserve">
+    <value>Открыть Папку Сохранения</value>
+  </data>
+  <data name="ReloadSavegame" xml:space="preserve">
+    <value>Перезагрузить Сохранение</value>
+  </data>
+  <data name="GitHubProject" xml:space="preserve">
+    <value>Проект на GitHub</value>
+  </data>
+  <data name="CheckForUpdates" xml:space="preserve">
+    <value>Проверить Обновления</value>
+  </data>
+  <data name="WorldItemCloner" xml:space="preserve">
+    <value>Клонирование Предметов</value>
+  </data>
+  <data name="EternalFires" xml:space="preserve">
+    <value>Вечные Костры</value>
+  </data>
+  <data name="ItemPlater" xml:space="preserve">
+    <value>Позолота Предметов и Построек</value>
+  </data>
+  <data name="ConsumedItems" xml:space="preserve">
+    <value>Использованные Предметы</value>
+  </data>
+  <data name="RegrowTrees" xml:space="preserve">
+    <value>Вырастить Деревья</value>
+  </data>
+  <data name="CannibalAnger" xml:space="preserve">
+    <value>Гнев Каннибалов</value>
+  </data>
+  <data name="ResetContainers" xml:space="preserve">
+    <value>Сбросить Ящики</value>
+  </data>
+  <data name="ResetFires" xml:space="preserve">
+    <value>Сбросить Костры</value>
+  </data>
+  <data name="ResetStructureDamage" xml:space="preserve">
+    <value>Починить Постройки</value>
+  </data>
+  <data name="ResetTraps" xml:space="preserve">
+    <value>Сбросить Ловушки</value>
+  </data>
+  <data name="SetToEndgame" xml:space="preserve">
+    <value>Отметить Финал</value>
+  </data>
+  <data name="Tools" xml:space="preserve">
+    <value>Инструменты</value>
+  </data>
+  <data name="Unlocks" xml:space="preserve">
+    <value>Разблокировки</value>
+  </data>
+  <data name="ByFamily" xml:space="preserve">
+    <value>По Семьям</value>
+  </data>
+  <data name="ByType" xml:space="preserve">
+    <value>По Типам</value>
+  </data>
+  <data name="CurrentHealth" xml:space="preserve">
+    <value>Текущее Здоровье</value>
+  </data>
+  <data name="Player" xml:space="preserve">
+    <value>Игрок</value>
+  </data>
+  <data name="MaxHealth" xml:space="preserve">
+    <value>Макс. Здоровье</value>
+  </data>
+  <data name="Sickness" xml:space="preserve">
+    <value>Болезнь</value>
+  </data>
+  <data name="StrengthLevel" xml:space="preserve">
+    <value>Уровень Силы</value>
+  </data>
+  <data name="PoiGroupItems" xml:space="preserve">
+    <value>Предметы</value>
+  </data>
+  <data name="FillFittingSlots" xml:space="preserve">
+    <value>Заполнить Подходящие</value>
+  </data>
+  <data name="FillFittingSlotsTooltip" xml:space="preserve">
+    <value>Заполняет каждую ячейку, куда подходит этот предмет, остальные не меняются</value>
+  </data>
+  <data name="ClearAll" xml:space="preserve">
+    <value>Очистить Всё</value>
+  </data>
+  <data name="FillAllWith" xml:space="preserve">
+    <value>Заполнить Всё</value>
+  </data>
+  <data name="FillAllStorages" xml:space="preserve">
+    <value>Заполнить Все Хранилища</value>
+  </data>
+  <data name="SelectStorage" xml:space="preserve">
+    <value>Выберите Хранилище</value>
+  </data>
+  <data name="StorageTypes" xml:space="preserve">
+    <value>Типы Хранилищ</value>
+  </data>
+  <data name="Storage" xml:space="preserve">
+    <value>Хранилище</value>
+  </data>
+  <data name="ApplyToSameType" xml:space="preserve">
+    <value>Применить ко Всем Такого Типа</value>
+  </data>
+  <data name="ApplyToSameTypeTooltip" xml:space="preserve">
+    <value>Копирует эти предметы и количества в каждое хранилище этого типа</value>
+  </data>
+  <data name="ChangeType" xml:space="preserve">
+    <value>Сменить Тип</value>
+  </data>
+  <data name="SetAllToRemove" xml:space="preserve">
+    <value>Убрать Все</value>
+  </data>
+  <data name="StructureCategoryFurniture" xml:space="preserve">
+    <value>Мебель</value>
+  </data>
+  <data name="StructureCategoryGardening" xml:space="preserve">
+    <value>Садоводство</value>
+  </data>
+  <data name="StructureCategoryMisc" xml:space="preserve">
+    <value>Другое</value>
+  </data>
+  <data name="StructureCategoryStorage" xml:space="preserve">
+    <value>Хранилище</value>
+  </data>
+  <data name="StructureCategoryTraps" xml:space="preserve">
+    <value>Ловушки</value>
+  </data>
+  <data name="StructureCategoryUtility" xml:space="preserve">
+    <value>Полезное</value>
+  </data>
+  <data name="StructureCategoryRaft" xml:space="preserve">
+    <value>Плот</value>
+  </data>
+  <data name="StructureCategoryShelter" xml:space="preserve">
+    <value>Укрытие</value>
+  </data>
+  <data name="StructureCategoryTreeShelter" xml:space="preserve">
+    <value>Домик на Дереве</value>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>Категория</value>
+  </data>
+  <data name="PercentDone" xml:space="preserve">
+    <value>Готовность</value>
+  </data>
+  <data name="StructureModeNone" xml:space="preserve">
+    <value>Оставить</value>
+  </data>
+  <data name="StructureModeRemove" xml:space="preserve">
+    <value>Убрать</value>
+  </data>
+  <data name="StructureModeAlmostFinish" xml:space="preserve">
+    <value>Почти Достроить</value>
+  </data>
+  <data name="StructureModeFinish" xml:space="preserve">
+    <value>Достроить</value>
+  </data>
+  <data name="StructureModeUnfinish" xml:space="preserve">
+    <value>Сделать Недостроенной</value>
+  </data>
+  <data name="Game" xml:space="preserve">
+    <value>Игра</value>
+  </data>
+  <data name="Inventory" xml:space="preserve">
+    <value>Инвентарь</value>
+  </data>
+  <data name="Npcs" xml:space="preserve">
+    <value>NPC</value>
+  </data>
+  <data name="WeatherState" xml:space="preserve">
+    <value>Состояние Погоды</value>
+  </data>
+  <data name="AddPlating" xml:space="preserve">
+    <value>Добавить Позолоту</value>
+  </data>
+  <data name="RemovePlating" xml:space="preserve">
+    <value>Убрать Позолоту</value>
+  </data>
+  <data name="ConstructionItem" xml:space="preserve">
+    <value>Предмет</value>
+  </data>
+  <data name="ConstructionLog" xml:space="preserve">
+    <value>Бревно</value>
+  </data>
+  <data name="ConstructionLogPlank" xml:space="preserve">
+    <value>Доска</value>
+  </data>
+  <data name="ConstructionStick" xml:space="preserve">
+    <value>Палка</value>
+  </data>
+  <data name="ConstructionStone" xml:space="preserve">
+    <value>Камень</value>
+  </data>
+  <data name="Constructions" xml:space="preserve">
+    <value>Строительные Элементы</value>
+  </data>
+  <data name="ItemPlaterWarning" xml:space="preserve">
+    <value>Этот инструмент сразу сохраняет и перезагружает, сначала сохраните другие изменения</value>
+  </data>
+  <data name="FollowerItems" xml:space="preserve">
+    <value>Предметы Спутников</value>
+  </data>
+  <data name="ItemsInWeaponRacks" xml:space="preserve">
+    <value>Предметы на Стойках</value>
+  </data>
+  <data name="PlatingAdded" xml:space="preserve">
+    <value>Позолочено предметов: {0}</value>
+  </data>
+  <data name="PlatingRemoved" xml:space="preserve">
+    <value>Позолота снята с предметов: {0}</value>
+  </data>
+  <data name="UnableToCheckForUpdates" xml:space="preserve">
+    <value>Не удалось проверить обновления</value>
+  </data>
+  <data name="Map" xml:space="preserve">
+    <value>Карта</value>
+  </data>
+  <data name="AlreadyLatestVersion" xml:space="preserve">
+    <value>У вас уже последняя версия</value>
+  </data>
+  <data name="ChangesSaved" xml:space="preserve">
+    <value>Изменения сохранены</value>
+  </data>
+  <data name="OverwriteExternalChangesText" xml:space="preserve">
+    <value>Игра сохранила это сохранение после того, как вы его открыли. Сохранение сейчас может отменить этот прогресс, сначала перезагрузите, чтобы его оставить</value>
+  </data>
+  <data name="OverwriteExternalChangesTitle" xml:space="preserve">
+    <value>Перезаписать Изменения</value>
+  </data>
+  <data name="RestoreBackupText" xml:space="preserve">
+    <value>Текущие файлы сначала получают бэкап, так что это можно отменить</value>
+  </data>
+  <data name="RestoreBackupTitle" xml:space="preserve">
+    <value>Восстановить Бэкап</value>
+  </data>
+  <data name="SaveChangesTitle" xml:space="preserve">
+    <value>Сохранить Изменения</value>
+  </data>
+  <data name="SaveChangesText" xml:space="preserve">
+    <value>На этих страницах есть изменения</value>
+  </data>
+  <data name="SaveChangesBackup" xml:space="preserve">
+    <value>Сначала делается бэкап всего сохранения</value>
+  </data>
+  <data name="FollowerAlreadyAlive" xml:space="preserve">
+    <value>{0} уже жив</value>
+  </data>
+  <data name="FollowerRevived" xml:space="preserve">
+    <value>Оживлён: {0}, сохраните, чтобы оставить</value>
+  </data>
+  <data name="FollowerSpawned" xml:space="preserve">
+    <value>Создана копия: {0}, сохраните, чтобы оставить</value>
+  </data>
+  <data name="NoChanges" xml:space="preserve">
+    <value>Нет изменений, ничего не сохранено</value>
+  </data>
+  <data name="UnableToSpawnFollowers" xml:space="preserve">
+    <value>Не удалось создать спутников</value>
+  </data>
+  <data name="Gone" xml:space="preserve">
+    <value>Нет</value>
+  </data>
+  <data name="HalfChopped" xml:space="preserve">
+    <value>Подрублено</value>
+  </data>
+  <data name="NoTreesRegrown" xml:space="preserve">
+    <value>Нет деревьев в состоянии {0} для роста</value>
+  </data>
+  <data name="TreesRegrown" xml:space="preserve">
+    <value>Выросло деревьев в состоянии {1}: {0}, сохраните, чтобы их оставить</value>
+  </data>
+  <data name="RegrowPercent" xml:space="preserve">
+    <value>Процент Роста</value>
+  </data>
+  <data name="Stumps" xml:space="preserve">
+    <value>Пни</value>
+  </data>
+  <data name="ContainersReset" xml:space="preserve">
+    <value>Сброшено ящиков: {0}, сохраните, чтобы их оставить</value>
+  </data>
+  <data name="NothingToReset" xml:space="preserve">
+    <value>Нечего сбрасывать</value>
+  </data>
+  <data name="TrapsReset" xml:space="preserve">
+    <value>Сброшено ловушек: {0}, сохраните, чтобы их оставить</value>
+  </data>
+  <data name="ChangeFolder" xml:space="preserve">
+    <value>Сменить Папку</value>
+  </data>
+  <data name="UseDefaultFolder" xml:space="preserve">
+    <value>Папка по Умолчанию</value>
+  </data>
+  <data name="SelectSavesFolder" xml:space="preserve">
+    <value>Выберите Папку Saves Игры Sons Of The Forest</value>
+  </data>
+  <data name="Location" xml:space="preserve">
+    <value>Расположение</value>
+  </data>
+  <data name="Singleplayer" xml:space="preserve">
+    <value>Одиночная Игра</value>
+  </data>
+  <data name="UnableToCopySavegame" xml:space="preserve">
+    <value>Не удалось скопировать сохранение, см. журнал</value>
+  </data>
+  <data name="CoreGameCompleted" xml:space="preserve">
+    <value>Сюжет Пройден</value>
+  </data>
+  <data name="CreativeModeItem" xml:space="preserve">
+    <value>Предмет Творческого Режима</value>
+  </data>
+  <data name="EscapedIsland" xml:space="preserve">
+    <value>Сбежал с Острова</value>
+  </data>
+  <data name="PlayerProfileNotFound" xml:space="preserve">
+    <value>Нет профиля игрока в {0}</value>
+  </data>
+  <data name="CloneAtPlayer" xml:space="preserve">
+    <value>Клонировать у Игрока</value>
+  </data>
+  <data name="CloneAtPlayerTooltip" xml:space="preserve">
+    <value>Создаёт копию там, где стоит игрок</value>
+  </data>
+  <data name="RemoveAllCopies" xml:space="preserve">
+    <value>Убрать Все Копии</value>
+  </data>
+  <data name="RemoveAllCopiesTooltip" xml:space="preserve">
+    <value>Убирает с карты каждую копию этого типа</value>
+  </data>
+  <data name="ClonesRemoved" xml:space="preserve">
+    <value>Убрано копий {1}: {0}</value>
+  </data>
+  <data name="NothingToRemove" xml:space="preserve">
+    <value>Нечего убирать</value>
+  </data>
+  <data name="NothingToMove" xml:space="preserve">
+    <value>Нечего перемещать</value>
+  </data>
+  <data name="ObjectCloned" xml:space="preserve">
+    <value>{0} скопирован к игроку, сохраните, чтобы оставить</value>
+  </data>
+  <data name="UnknownWorldItem" xml:space="preserve">
+    <value>Неизвестный Предмет {0}</value>
+  </data>
+  <data name="WorldItem" xml:space="preserve">
+    <value>Предмет Мира</value>
+  </data>
+  <data name="UnableToSave" xml:space="preserve">
+    <value>Не удалось сохранить: {0}</value>
+  </data>
+  <data name="DiscardChangesTitle" xml:space="preserve">
+    <value>Отменить Несохранённые Изменения</value>
+  </data>
+  <data name="DiscardChangesText" xml:space="preserve">
+    <value>Часть изменений ещё не сохранена.\nДа отменяет их.\nНет оставляет их, чтобы вы сначала сохранили</value>
+  </data>
+  <data name="OpenBackupFolder" xml:space="preserve">
+    <value>Открыть Папку Бэкапов</value>
+  </data>
+  <data name="RestoredBackup" xml:space="preserve">
+    <value>Восстановлен Бэкап от {0}</value>
+  </data>
+  <data name="UnableToOpen" xml:space="preserve">
+    <value>Не удалось открыть сохранение, см. журнал</value>
+  </data>
+  <data name="UnableToRestoreBackup" xml:space="preserve">
+    <value>Не удалось восстановить бэкап. Сначала закройте игру или см. журнал</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Язык</value>
+  </data>
+  <data name="ClassificationAnimal" xml:space="preserve">
+    <value>Животное</value>
+  </data>
+  <data name="ClassificationCannibal" xml:space="preserve">
+    <value>Каннибал</value>
+  </data>
+  <data name="ClassificationCreep" xml:space="preserve">
+    <value>Мутант</value>
+  </data>
+  <data name="ClassificationHuman" xml:space="preserve">
+    <value>Человек</value>
+  </data>
+  <data name="ClassificationMuddyCannibal" xml:space="preserve">
+    <value>Грязный Каннибал</value>
+  </data>
+  <data name="ClassificationMisc" xml:space="preserve">
+    <value>Другое</value>
+  </data>
+  <data name="GenderFemale" xml:space="preserve">
+    <value>Женский</value>
+  </data>
+  <data name="GenderMale" xml:space="preserve">
+    <value>Мужской</value>
+  </data>
+  <data name="InfluenceCannibal" xml:space="preserve">
+    <value>NPC Каннибалы</value>
+  </data>
+  <data name="InfluenceCreepy" xml:space="preserve">
+    <value>NPC Мутанты</value>
+  </data>
+  <data name="InfluencePlayer" xml:space="preserve">
+    <value>Игрок</value>
+  </data>
+  <data name="ActorState0" xml:space="preserve">
+    <value>Любое</value>
+  </data>
+  <data name="ActorState1" xml:space="preserve">
+    <value>Бой</value>
+  </data>
+  <data name="ActorState2" xml:space="preserve">
+    <value>Мир</value>
+  </data>
+  <data name="ActorState3" xml:space="preserve">
+    <value>Спит</value>
+  </data>
+  <data name="ActorState4" xml:space="preserve">
+    <value>Умирает</value>
+  </data>
+  <data name="ActorState5" xml:space="preserve">
+    <value>Ранен</value>
+  </data>
+  <data name="ActorState6" xml:space="preserve">
+    <value>Мёртв</value>
+  </data>
+  <data name="ActorState7" xml:space="preserve">
+    <value>Летит</value>
+  </data>
+  <data name="ActorState8" xml:space="preserve">
+    <value>Выслеживает</value>
+  </data>
+  <data name="ActorState20" xml:space="preserve">
+    <value>Горит</value>
+  </data>
+  <data name="ActorState21" xml:space="preserve">
+    <value>Под Током</value>
+  </data>
+  <data name="ActorState22" xml:space="preserve">
+    <value>Плывёт</value>
+  </data>
+  <data name="ActorState23" xml:space="preserve">
+    <value>Оглушён или Ударен</value>
+  </data>
+  <data name="ActorState24" xml:space="preserve">
+    <value>Тонет или Брошен</value>
+  </data>
+  <data name="ActorState25" xml:space="preserve">
+    <value>В Гольф-Каре</value>
+  </data>
+  <data name="ActorState40" xml:space="preserve">
+    <value>На Скале</value>
+  </data>
+  <data name="ActorState41" xml:space="preserve">
+    <value>На Дереве</value>
+  </data>
+  <data name="ActorState42" xml:space="preserve">
+    <value>Под Листьями</value>
+  </data>
+  <data name="ActorState43" xml:space="preserve">
+    <value>Ходит по Стенам</value>
+  </data>
+  <data name="ActorState44" xml:space="preserve">
+    <value>Пойман</value>
+  </data>
+  <data name="ActorState45" xml:space="preserve">
+    <value>Появление Босса</value>
+  </data>
+  <data name="ActorState46" xml:space="preserve">
+    <value>Вступление</value>
+  </data>
+  <data name="ActorState47" xml:space="preserve">
+    <value>На Потолке</value>
+  </data>
+  <data name="ActorState48" xml:space="preserve">
+    <value>В Пещере</value>
+  </data>
+  <data name="ActorState50" xml:space="preserve">
+    <value>Выходит из Боя</value>
+  </data>
+  <data name="ActorState51" xml:space="preserve">
+    <value>Исчез</value>
+  </data>
+  <data name="ActorStateNone" xml:space="preserve">
+    <value>Нет</value>
+  </data>
+  <data name="ItemTypeAmmo" xml:space="preserve">
+    <value>Патроны</value>
+  </data>
+  <data name="ItemTypeArmor" xml:space="preserve">
+    <value>Броня</value>
+  </data>
+  <data name="ItemTypeAttachment" xml:space="preserve">
+    <value>Обвес</value>
+  </data>
+  <data name="ItemTypeBlueprint" xml:space="preserve">
+    <value>Чертёж</value>
+  </data>
+  <data name="ItemTypeBodyPart" xml:space="preserve">
+    <value>Часть Тела</value>
+  </data>
+  <data name="ItemTypeBook" xml:space="preserve">
+    <value>Книга</value>
+  </data>
+  <data name="ItemTypeClothes" xml:space="preserve">
+    <value>Одежда</value>
+  </data>
+  <data name="ItemTypeConsumable" xml:space="preserve">
+    <value>Расходник</value>
+  </data>
+  <data name="ItemTypeContainer" xml:space="preserve">
+    <value>Ёмкость</value>
+  </data>
+  <data name="ItemTypeDocument" xml:space="preserve">
+    <value>Документ</value>
+  </data>
+  <data name="ItemTypeElectricity" xml:space="preserve">
+    <value>Электричество</value>
+  </data>
+  <data name="ItemTypeEquipment" xml:space="preserve">
+    <value>Снаряжение</value>
+  </data>
+  <data name="ItemTypeFood" xml:space="preserve">
+    <value>Еда</value>
+  </data>
+  <data name="ItemTypeKey" xml:space="preserve">
+    <value>Ключ</value>
+  </data>
+  <data name="ItemTypeLog" xml:space="preserve">
+    <value>Бревно</value>
+  </data>
+  <data name="ItemTypeMisc" xml:space="preserve">
+    <value>Другое</value>
+  </data>
+  <data name="ItemTypePlant" xml:space="preserve">
+    <value>Растение</value>
+  </data>
+  <data name="ItemTypePrinted" xml:space="preserve">
+    <value>Печатное</value>
+  </data>
+  <data name="ItemTypeSeed" xml:space="preserve">
+    <value>Семя</value>
+  </data>
+  <data name="ItemTypeTool" xml:space="preserve">
+    <value>Инструмент</value>
+  </data>
+  <data name="ItemTypeTrophy" xml:space="preserve">
+    <value>Трофей</value>
+  </data>
+  <data name="ItemTypeWeapon" xml:space="preserve">
+    <value>Оружие</value>
+  </data>
+  <data name="ItemTypeWeaponMod" xml:space="preserve">
+    <value>Модуль Оружия</value>
+  </data>
+  <data name="RequirementsFilterAll" xml:space="preserve">
+    <value>Все</value>
+  </data>
+  <data name="RequirementsFilterAccessibleOnly" xml:space="preserve">
+    <value>Только Доступные</value>
+  </data>
+  <data name="RequirementsFilterInaccessibleOnly" xml:space="preserve">
+    <value>Только Недоступные</value>
+  </data>
+  <data name="SpawnPatternCross" xml:space="preserve">
+    <value>Крест</value>
+  </data>
+  <data name="SpawnPatternGrid" xml:space="preserve">
+    <value>Сетка</value>
+  </data>
+  <data name="SpawnPatternHorizontalLine" xml:space="preserve">
+    <value>Горизонтальная Линия</value>
+  </data>
+  <data name="SpawnPatternRandom" xml:space="preserve">
+    <value>Случайно</value>
+  </data>
+  <data name="SpawnPatternRectangle" xml:space="preserve">
+    <value>Прямоугольник</value>
+  </data>
+  <data name="SpawnPatternVerticalLine" xml:space="preserve">
+    <value>Вертикальная Линия</value>
+  </data>
+  <data name="TeleportTargetPlayer" xml:space="preserve">
+    <value>Игрок</value>
+  </data>
+  <data name="TeleportTargetKelvin" xml:space="preserve">
+    <value>Kelvin</value>
+  </data>
+  <data name="TeleportTargetVirginia" xml:space="preserve">
+    <value>Virginia</value>
+  </data>
+  <data name="PoiGroupAmmo" xml:space="preserve">
+    <value>Патроны</value>
+  </data>
+  <data name="PoiGroupBunkers" xml:space="preserve">
+    <value>Бункеры</value>
+  </data>
+  <data name="PoiGroupCamps" xml:space="preserve">
+    <value>Лагеря</value>
+  </data>
+  <data name="PoiGroupCannibalVillages" xml:space="preserve">
+    <value>Деревни Каннибалов</value>
+  </data>
+  <data name="PoiGroupCaves" xml:space="preserve">
+    <value>Пещеры</value>
+  </data>
+  <data name="PoiGroupCrates" xml:space="preserve">
+    <value>Ящики</value>
+  </data>
+  <data name="PoiGroupDoors" xml:space="preserve">
+    <value>Двери</value>
+  </data>
+  <data name="PoiGroupHelicopters" xml:space="preserve">
+    <value>Вертолёты</value>
+  </data>
+  <data name="PoiGroupInfo" xml:space="preserve">
+    <value>Инфо</value>
+  </data>
+  <data name="PoiGroupLakes" xml:space="preserve">
+    <value>Озёра</value>
+  </data>
+  <data name="PoiGroupLaptops" xml:space="preserve">
+    <value>Ноутбуки</value>
+  </data>
+  <data name="PoiGroupPonds" xml:space="preserve">
+    <value>Пруды</value>
+  </data>
+  <data name="PoiGroupPrinters" xml:space="preserve">
+    <value>3D-Принтеры</value>
+  </data>
+  <data name="PoiGroupSupply" xml:space="preserve">
+    <value>Припасы</value>
+  </data>
+  <data name="PoiGroupVillages" xml:space="preserve">
+    <value>Деревни</value>
+  </data>
+  <data name="SettingGameName" xml:space="preserve">
+    <value>Название Игры</value>
+  </data>
+  <data name="SettingSaveTime" xml:space="preserve">
+    <value>Время Сохранения</value>
+  </data>
+  <data name="SettingGameType" xml:space="preserve">
+    <value>Тип Игры</value>
+  </data>
+  <data name="SettingGameDays" xml:space="preserve">
+    <value>Дни</value>
+  </data>
+  <data name="SettingGameHours" xml:space="preserve">
+    <value>Часы</value>
+  </data>
+  <data name="SettingGameMinutes" xml:space="preserve">
+    <value>Минуты</value>
+  </data>
+  <data name="SettingGameSeconds" xml:space="preserve">
+    <value>Секунды</value>
+  </data>
+  <data name="SettingGameMilliseconds" xml:space="preserve">
+    <value>Миллисекунды</value>
+  </data>
+  <data name="SettingIsVirginiaDead" xml:space="preserve">
+    <value>Virginia Мертва</value>
+  </data>
+  <data name="SettingIsRobbyDead" xml:space="preserve">
+    <value>Kelvin Мёртв</value>
+  </data>
+  <data name="SettingCrashSite" xml:space="preserve">
+    <value>Место Крушения</value>
+  </data>
+  <data name="SettingIsRaining" xml:space="preserve">
+    <value>Идёт Дождь</value>
+  </data>
+  <data name="SettingRainBlocked" xml:space="preserve">
+    <value>Дождь Заблокирован</value>
+  </data>
+  <data name="SettingCloudState" xml:space="preserve">
+    <value>Облака</value>
+  </data>
+  <data name="SettingCurrentRainType" xml:space="preserve">
+    <value>Тип Дождя</value>
+  </data>
+  <data name="CrashSiteTree" xml:space="preserve">
+    <value>Дерево</value>
+  </data>
+  <data name="CrashSiteOcean" xml:space="preserve">
+    <value>Океан</value>
+  </data>
+  <data name="CrashSiteSnow" xml:space="preserve">
+    <value>Снег</value>
+  </data>
+  <data name="CloudsClear" xml:space="preserve">
+    <value>Ясно</value>
+  </data>
+  <data name="CloudsGrowing" xml:space="preserve">
+    <value>Сгущаются</value>
+  </data>
+  <data name="CloudsClearing" xml:space="preserve">
+    <value>Рассеиваются</value>
+  </data>
+  <data name="CloudsRaining" xml:space="preserve">
+    <value>Дождь</value>
+  </data>
+  <data name="RainLight" xml:space="preserve">
+    <value>Слабый</value>
+  </data>
+  <data name="RainMedium" xml:space="preserve">
+    <value>Средний</value>
+  </data>
+  <data name="RainHeavy" xml:space="preserve">
+    <value>Сильный</value>
+  </data>
+  <data name="StructureType" xml:space="preserve">
+    <value>Тип Постройки</value>
+  </data>
+  <data name="Restore" xml:space="preserve">
+    <value>Восстановить</value>
+  </data>
+  <data name="Newest" xml:space="preserve">
+    <value>Новейший</value>
+  </data>
+  <data name="Oldest" xml:space="preserve">
+    <value>Старейший</value>
+  </data>
+  <data name="ItemPlaterText" xml:space="preserve">
+    <value>Позолота делает выбранные предметы, постройки и строительные элементы золотыми. Убрать Позолоту возвращает их</value>
+  </data>
+  <data name="EternalFiresText" xml:space="preserve">
+    <value>Каждый костёр в мире горит топливом, которое никогда не кончается</value>
+  </data>
+  <data name="ResetFiresText" xml:space="preserve">
+    <value>Каждый костёр в мире горит свежим топливом</value>
+  </data>
+  <data name="ResetStructureDamageText" xml:space="preserve">
+    <value>Все повреждения ваших построек исправлены</value>
+  </data>
+  <data name="CannibalAngerText" xml:space="preserve">
+    <value>Насколько каждый живой каннибал зол на вас</value>
+  </data>
+  <data name="ResetContainersText" xml:space="preserve">
+    <value>Открытые ящики, кейсы и припасы в мире снова закрыты и полны</value>
+  </data>
+  <data name="ResetTrapsText" xml:space="preserve">
+    <value>Сработавшие ловушки снова взведены</value>
+  </data>
+  <data name="SetToEndgameText" xml:space="preserve">
+    <value>Сюжет считается пройденным, как будто вы решили остаться на острове</value>
+  </data>
+  <data name="AddAllText" xml:space="preserve">
+    <value>Каждый предмет, которого у вас нет, добавляется в инвентарь</value>
+  </data>
+  <data name="RemoveAllText" xml:space="preserve">
+    <value>Каждый предмет уходит из инвентаря</value>
+  </data>
+  <data name="FillAllStoragesText" xml:space="preserve">
+    <value>Каждое хранилище заполняется до максимума</value>
+  </data>
+  <data name="SetAllToRemoveText" xml:space="preserve">
+    <value>Каждая постройка в списке помечается на снос, сохранение их убирает</value>
+  </data>
+  <data name="RemoveConsumedItemsText" xml:space="preserve">
+    <value>Каждая запись этого списка убирается, и эти предметы могут появиться снова</value>
+  </data>
+  <data name="SettingStartingDayOffset" xml:space="preserve">
+    <value>Сдвиг Дней Сезона</value>
+  </data>
+  <data name="UpdateNow" xml:space="preserve">
+    <value>Обновить Сейчас</value>
+  </data>
+  <data name="Downloading" xml:space="preserve">
+    <value>Загрузка</value>
+  </data>
+  <data name="UpdateText" xml:space="preserve">
+    <value>У вас версия {0}. Обновление загружает новую и перезапускает редактор</value>
+  </data>
+  <data name="UpdateFailed" xml:space="preserve">
+    <value>Обновление не удалось, попробуйте позже</value>
+  </data>
+  <data name="MultiplayerCheats" xml:space="preserve">
+    <value>Читы Консоли</value>
+  </data>
+  <data name="MaxHealthFollowsStrength" xml:space="preserve">
+    <value>Игра задаёт макс. здоровье по уровню силы</value>
+  </data>
+  <data name="ClientSaveHasNoWorld" xml:space="preserve">
+    <value>Сохранение клиента хранит только вашего игрока, мир лежит в сохранении хоста</value>
+  </data>
+  <data name="Season" xml:space="preserve">
+    <value>Сезон</value>
+  </data>
+  <data name="WhatChanged" xml:space="preserve">
+    <value>Что Нового</value>
+  </data>
+  <data name="UpdateFolderProtected" xml:space="preserve">
+    <value>Папка редактора защищена, поэтому открывается страница выпуска, чтобы скачать его самому</value>
+  </data>
+  <data name="HeldOnly" xml:space="preserve">
+    <value>Только Имеющиеся</value>
+  </data>
+  <data name="AddToInventory" xml:space="preserve">
+    <value>В Инвентарь</value>
+  </data>
+  <data name="StrengthLevelInfo" xml:space="preserve">
+    <value>Сила повышает урон в ближнем бою и макс. здоровье. Макс. здоровье равно 100 плюс 2 за каждый уровень выше 1</value>
+  </data>
+  <data name="MultiplayerClientInfo" xml:space="preserve">
+    <value>Сохранения игр, к которым вы присоединились на чужом сервере. Они хранят только вашего игрока, мир лежит в сохранении хоста</value>
+  </data>
+  <data name="ModeInfo" xml:space="preserve">
+    <value>Сложность, с которой создана игра. Свой открывает каждую настройку ниже</value>
+  </data>
+  <data name="UidInfo" xml:space="preserve">
+    <value>ID, который игра дала этому сохранению. Он никогда не меняется</value>
+  </data>
+  <data name="ConsumableEffectsInfo" xml:space="preserve">
+    <value>Насколько помогают еда, напитки и лекарства. Сложный даёт меньше</value>
+  </data>
+  <data name="PlayerStatsDamageInfo" xml:space="preserve">
+    <value>Сколько урона наносят голод, жажда и усталость</value>
+  </data>
+  <data name="AnimalSpawnRateInfo" xml:space="preserve">
+    <value>Сколько животных живёт на острове</value>
+  </data>
+  <data name="ColdPenaltiesInfo" xml:space="preserve">
+    <value>Насколько вредит холод</value>
+  </data>
+  <data name="BuildingResistanceInfo" xml:space="preserve">
+    <value>Сколько урона выдерживают ваши постройки</value>
+  </data>
+  <data name="StatRegenerationPenaltiesInfo" xml:space="preserve">
+    <value>Мало еды, воды или отдыха замедляет восстановление здоровья</value>
+  </data>
+  <data name="InventoryPauseInfo" xml:space="preserve">
+    <value>Мир замирает, пока открыт инвентарь</value>
+  </data>
+  <data name="ReducedFoodInfo" xml:space="preserve">
+    <value>Меньше еды в мире</value>
+  </data>
+  <data name="ReducedAmmoInfo" xml:space="preserve">
+    <value>Меньше патронов в мире</value>
+  </data>
+  <data name="SingleUseContainersInfo" xml:space="preserve">
+    <value>Ящики и кейсы остаются пустыми после открытия</value>
+  </data>
+  <data name="PlayersTriggerTrapsInfo" xml:space="preserve">
+    <value>Ловушки срабатывают и на игроков</value>
+  </data>
+  <data name="CreativeModeInfo" xml:space="preserve">
+    <value>Стройте без сбора материалов</value>
+  </data>
+  <data name="GodModeInfo" xml:space="preserve">
+    <value>Игроки не получают урон</value>
+  </data>
+  <data name="OneHitTreesInfo" xml:space="preserve">
+    <value>Деревья падают с одного удара</value>
+  </data>
+  <data name="InstantBuildingInfo" xml:space="preserve">
+    <value>Поставленные постройки готовы сразу</value>
+  </data>
+  <data name="NoCuttingsSpawnInfo" xml:space="preserve">
+    <value>Срубленные деревья и кусты ничего не оставляют</value>
+  </data>
+  <data name="EnemyHealthInfo" xml:space="preserve">
+    <value>Сколько здоровья у врагов</value>
+  </data>
+  <data name="EnemyDamageInfo" xml:space="preserve">
+    <value>Как сильно бьют враги</value>
+  </data>
+  <data name="EnemyArmorInfo" xml:space="preserve">
+    <value>Сколько урона блокирует броня врагов</value>
+  </data>
+  <data name="EnemyAggressionInfo" xml:space="preserve">
+    <value>Как быстро враги нападают, а не наблюдают</value>
+  </data>
+  <data name="EnemySearchPartiesInfo" xml:space="preserve">
+    <value>Как часто отряды врагов приходят искать вас</value>
+  </data>
+  <data name="SpawnEnemiesInfo" xml:space="preserve">
+    <value>Выключите, чтобы играть без врагов</value>
+  </data>
+  <data name="StartingSeasonInfo" xml:space="preserve">
+    <value>Сезон, в котором началась игра. Текущий определяет сдвиг дней</value>
+  </data>
+  <data name="SeasonLengthInfo" xml:space="preserve">
+    <value>Сколько дней длится сезон. Все сезоны одной длины</value>
+  </data>
+  <data name="DayLengthInfo" xml:space="preserve">
+    <value>Сколько длится день в реальном времени</value>
+  </data>
+  <data name="PrecipitationFrequencyInfo" xml:space="preserve">
+    <value>Как часто идёт дождь или снег</value>
+  </data>
+  <data name="PvpDamageInfo" xml:space="preserve">
+    <value>Могут ли игроки ранить друг друга в мультиплеере</value>
+  </data>
+  <data name="MultiplayerCheatsInfo" xml:space="preserve">
+    <value>Позволяет игрокам использовать читы консоли в мультиплеере</value>
+  </data>
+  <data name="SettingGameNameInfo" xml:space="preserve">
+    <value>Название в списке сохранений игры</value>
+  </data>
+  <data name="SettingGameTypeInfo" xml:space="preserve">
+    <value>Сложность, с которой начато это сохранение</value>
+  </data>
+  <data name="SettingSaveTimeInfo" xml:space="preserve">
+    <value>Когда игра последний раз сохранялась</value>
+  </data>
+  <data name="SettingGameDaysInfo" xml:space="preserve">
+    <value>Прожитые дни. От них зависит сезон</value>
+  </data>
+  <data name="SettingCrashSiteInfo" xml:space="preserve">
+    <value>Где в начале разбился вертолёт</value>
+  </data>
+  <data name="SettingIsVirginiaDeadInfo" xml:space="preserve">
+    <value>Считает ли сюжет Virginia мёртвой</value>
+  </data>
+  <data name="SettingIsRobbyDeadInfo" xml:space="preserve">
+    <value>Считает ли сюжет Kelvin мёртвым. Игра зовёт его Robby</value>
+  </data>
+  <data name="SettingIsRainingInfo" xml:space="preserve">
+    <value>Идёт ли сейчас дождь</value>
+  </data>
+  <data name="SettingRainBlockedInfo" xml:space="preserve">
+    <value>Не даёт начаться дождю</value>
+  </data>
+  <data name="SettingCloudStateInfo" xml:space="preserve">
+    <value>Насколько облачно небо</value>
+  </data>
+  <data name="SettingCurrentRainTypeInfo" xml:space="preserve">
+    <value>Насколько силён текущий дождь</value>
+  </data>
+  <data name="SettingStartingDayOffsetInfo" xml:space="preserve">
+    <value>Лишние дни, которые игра учитывает при расчёте сезона. Больше приближает следующий сезон, меньше продлевает текущий</value>
+  </data>
+  <data name="UnableToDeleteBackup" xml:space="preserve">
+    <value>Не удалось удалить бэкап</value>
+  </data>
+  <data name="BackupUsage" xml:space="preserve">
+    <value>Бэкапы занимают {0} из {1}. Сверх этого старейшие удаляются, кроме самого первого и закреплённых</value>
+  </data>
+  <data name="BackupsPruned" xml:space="preserve">
+    <value>Бэкапы превысили {1}, поэтому удалены старейшие: {0}. Самый первый остаётся</value>
+  </data>
+  <data name="ToolsHint" xml:space="preserve">
+    <value>Инструменты меняют открытое сохранение и требуют Сохранить, как любая правка. Позолота, Разблокировки и Копировать Игрока сохраняют сразу</value>
+  </data>
+  <data name="ToolsWorld" xml:space="preserve">
+    <value>Мир</value>
+  </data>
+  <data name="ToolsPlayer" xml:space="preserve">
+    <value>Игрок</value>
+  </data>
+  <data name="SavesAtOnce" xml:space="preserve">
+    <value>Сохраняет Сразу</value>
+  </data>
+  <data name="HostSaveOnly" xml:space="preserve">
+    <value>Только Сохранение Хоста</value>
+  </data>
+  <data name="RegrowTreesText" xml:space="preserve">
+    <value>Срубленные деревья вырастают снова, столько, сколько вы выберете</value>
+  </data>
+  <data name="WorldItemClonerText" xml:space="preserve">
+    <value>Копирует гольф-кар, дельтаплан, Knight V или рацию туда, где вы стоите</value>
+  </data>
+  <data name="ConsumedItemsText" xml:space="preserve">
+    <value>Игра помнит использованные одноразовые предметы. Убрав их, можно использовать их снова</value>
+  </data>
+  <data name="UnlocksText" xml:space="preserve">
+    <value>Разблокировки профиля, например концовка и Творческий Режим, для всех сохранений</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Применить</value>
+  </data>
+  <data name="RemoveSelected" xml:space="preserve">
+    <value>Убрать Выбранные</value>
+  </data>
+  <data name="LoadPreset" xml:space="preserve">
+    <value>Загрузить Пресет</value>
+  </data>
+  <data name="LoadPresetText" xml:space="preserve">
+    <value>Каждая настройка берёт значения этого режима. Режим становится Свой, так что каждую можно менять</value>
+  </data>
+  <data name="SavegameDay" xml:space="preserve">
+    <value>День {0}</value>
+  </data>
+  <data name="SavegameCrashSite" xml:space="preserve">
+    <value>Крушение: {0}</value>
+  </data>
+  <data name="SavegameStrength" xml:space="preserve">
+    <value>Сила {0}</value>
+  </data>
+  <data name="SavegameItems" xml:space="preserve">
+    <value>Предметы: {0}</value>
+  </data>
+  <data name="MapKeyboardHint" xml:space="preserve">
+    <value>Карта, стрелки переходят по точкам</value>
+  </data>
+  <data name="HostedMultiplayer" xml:space="preserve">
+    <value>Свой Мультиплеер</value>
+  </data>
+  <data name="JoinedMultiplayer" xml:space="preserve">
+    <value>Чужой Мультиплеер</value>
+  </data>
+  <data name="AndMore" xml:space="preserve">
+    <value>И Ещё {0}</value>
+  </data>
+  <data name="ChangeCopies" xml:space="preserve">
+    <value>{0}, Копий: {1}</value>
+  </data>
+  <data name="ChangeRemoved" xml:space="preserve">
+    <value>{0} Убран</value>
+  </data>
+  <data name="CurrentHealthAtMax" xml:space="preserve">
+    <value>Ограничено макс. здоровьем, поднимите уровень силы, чтобы выше</value>
+  </data>
+  <data name="SetToMax" xml:space="preserve">
+    <value>На Максимум</value>
+  </data>
+  <data name="ResetToDefault" xml:space="preserve">
+    <value>Сбросить</value>
+  </data>
+  <data name="NothingToChange" xml:space="preserve">
+    <value>Нечего менять</value>
+  </data>
+  <data name="UpdateNotVerified" xml:space="preserve">
+    <value>Загрузку не удалось проверить, поэтому открывается страница выпуска, чтобы скачать его самому</value>
+  </data>
+  <data name="SavedAfterBackup" xml:space="preserve">
+    <value>Сохранено После Этого Бэкапа</value>
+  </data>
+  <data name="ChangesNotRecorded" xml:space="preserve">
+    <value>Для этого бэкапа не записано</value>
+  </data>
+  <data name="DiffersFromNow" xml:space="preserve">
+    <value>Отличия от Текущего</value>
+  </data>
+  <data name="Comparing" xml:space="preserve">
+    <value>Сравнение с текущим сохранением</value>
+  </data>
+  <data name="SameAsNow" xml:space="preserve">
+    <value>Совпадает с текущим сохранением</value>
+  </data>
+  <data name="UnableToCompare" xml:space="preserve">
+    <value>Не удалось сравнить, файл занят</value>
+  </data>
+  <data name="SaveName" xml:space="preserve">
+    <value>Имя Сохранения</value>
+  </data>
+  <data name="Thumbnail" xml:space="preserve">
+    <value>Миниатюра</value>
+  </data>
+  <data name="RevertPage" xml:space="preserve">
+    <value>Откатить Страницу</value>
+  </data>
+  <data name="RevertPageText" xml:space="preserve">
+    <value>Каждая несохранённая правка на странице {0} возвращается к загруженной</value>
+  </data>
+  <data name="AngerLevel" xml:space="preserve">
+    <value>Гнев</value>
+  </data>
+  <data name="CannibalAngerNow" xml:space="preserve">
+    <value>Сейчас в среднем {0}%</value>
+  </data>
+  <data name="HideMenus" xml:space="preserve">
+    <value>Скрыть Меню</value>
+  </data>
+  <data name="ShowMenus" xml:space="preserve">
+    <value>Показать Меню</value>
+  </data>
+  <data name="TeleportCopies" xml:space="preserve">
+    <value>{0}, Копий: {1}</value>
+  </data>
+  <data name="Filters" xml:space="preserve">
+    <value>Фильтры</value>
+  </data>
+  <data name="Changes" xml:space="preserve">
+    <value>Изменения</value>
+  </data>
+  <data name="ApplyTo" xml:space="preserve">
+    <value>Применить К</value>
+  </data>
+  <data name="ApplyToThis" xml:space="preserve">
+    <value>Этому</value>
+  </data>
+  <data name="ApplyToFamily" xml:space="preserve">
+    <value>Семье</value>
+  </data>
+  <data name="ApplyToType" xml:space="preserve">
+    <value>Тому Же Типу</value>
+  </data>
+  <data name="ApplyToEveryone" xml:space="preserve">
+    <value>Всем</value>
+  </data>
+  <data name="SkipFollowers" xml:space="preserve">
+    <value>Не Трогать Kelvin и Virginia</value>
+  </data>
+  <data name="ApplyCount" xml:space="preserve">
+    <value>Применить к {0}</value>
+  </data>
+  <data name="RemoveCount" xml:space="preserve">
+    <value>Убрать {0}</value>
+  </data>
+  <data name="RemoveActorsText" xml:space="preserve">
+    <value>Они уходят из сохранения вместе с памятью и предметами, которые несут</value>
+  </data>
+  <data name="CloseUnsavedTitle" xml:space="preserve">
+    <value>Закрыть без Сохранения</value>
+  </data>
+  <data name="CloseUnsavedText" xml:space="preserve">
+    <value>Часть изменений ещё не сохранена.\nДа закрывает редактор и отменяет их.\nНет оставляет редактор открытым, чтобы вы сначала сохранили</value>
+  </data>
+  <data name="AllStructures" xml:space="preserve">
+    <value>Все Постройки</value>
+  </data>
+  <data name="SelectStructure" xml:space="preserve">
+    <value>Выберите Тип Постройки</value>
+  </data>
+  <data name="StructuresInfo" xml:space="preserve">
+    <value>Выберите, что сохранение сделает с каждой постройкой. Оставить ничего не меняет</value>
+  </data>
+  <data name="SetAllTo" xml:space="preserve">
+    <value>Всем Задать</value>
+  </data>
+  <data name="StructureCountBuilt" xml:space="preserve">
+    <value>Построено: {0}</value>
+  </data>
+  <data name="StructureCountUnfinished" xml:space="preserve">
+    <value>Недостроено: {0}</value>
+  </data>
+  <data name="Built" xml:space="preserve">
+    <value>Построена</value>
+  </data>
+  <data name="UnfinishedState" xml:space="preserve">
+    <value>{0} · {1} / {2}</value>
+  </data>
+  <data name="OnSave" xml:space="preserve">
+    <value>При Сохранении</value>
+  </data>
+  <data name="MoodFriendly" xml:space="preserve">
+    <value>Дружелюбен</value>
+  </data>
+  <data name="MoodNeutral" xml:space="preserve">
+    <value>Нейтрален</value>
+  </data>
+  <data name="MoodHostile" xml:space="preserve">
+    <value>Враждебен</value>
+  </data>
+  <data name="MoodAfraid" xml:space="preserve">
+    <value>Напуган</value>
+  </data>
+  <data name="SentimentInfo" xml:space="preserve">
+    <value>Насколько им нравится игрок или группа с этой карточки, от -100 ненависть до 100 любовь</value>
+  </data>
+  <data name="SeasonInfo" xml:space="preserve">
+    <value>Каждый сезон длится столько дней, сколько указано в Длине Сезона на вкладке Настройки Игры, так что ни один не длится дольше другого. Нажмите на день на шкале, чтобы он стал сегодняшним, редактор рассчитает сдвиг</value>
+  </data>
+  <data name="DaysUntilSeasonOf" xml:space="preserve">
+    <value>Дней до {0}: {1}</value>
+  </data>
+  <data name="SeasonCurrent" xml:space="preserve">
+    <value>Сейчас</value>
+  </data>
+  <data name="SeasonNew" xml:space="preserve">
+    <value>Новый</value>
+  </data>
+  <data name="SeasonClickHint" xml:space="preserve">
+    <value>Нажмите на день, чтобы он стал сегодняшним</value>
+  </data>
+  <data name="JoinedGameName" xml:space="preserve">
+    <value>{0} {1} Дней</value>
+  </data>
+  <data name="Files" xml:space="preserve">
+    <value>Другие Файлы</value>
+  </data>
+  <data name="BringToPlayer" xml:space="preserve">
+    <value>К Игроку</value>
+  </data>
+  <data name="SpawnWhat" xml:space="preserve">
+    <value>Кого Создать</value>
+  </data>
+  <data name="SpawnWhere" xml:space="preserve">
+    <value>Где</value>
+  </data>
+  <data name="SpawnOffsetInfo" xml:space="preserve">
+    <value>Прибавляется к цели, в метрах. Немного выше не даёт уйти в землю</value>
+  </data>
+  <data name="SpawnCount" xml:space="preserve">
+    <value>Создать {0} {1}</value>
+  </data>
+  <data name="ArmourInInventory" xml:space="preserve">
+    <value>В Инвентаре</value>
+  </data>
+  <data name="ArmourWorn" xml:space="preserve">
+    <value>Надето</value>
+  </data>
+  <data name="InInventoryCount" xml:space="preserve">
+    <value>{0} в Инвентаре</value>
+  </data>
+  <data name="WearArmour" xml:space="preserve">
+    <value>Надеть</value>
+  </data>
+  <data name="Revert" xml:space="preserve">
+    <value>Откатить</value>
+  </data>
+  <data name="ArmorCount" xml:space="preserve">
+    <value>Броня, {0} из 10</value>
+  </data>
+  <data name="ArmorInfo" xml:space="preserve">
+    <value>Игра сама размещает каждую надетую часть на теле, до 10, поэтому часть тела не выбирается. Снять возвращает часть в инвентарь, Удалить убирает её навсегда</value>
+  </data>
+  <data name="SetToDefaultDurabilityOf" xml:space="preserve">
+    <value>Прочность по Умолчанию: {0}</value>
+  </data>
+  <data name="SetToMaxOf" xml:space="preserve">
+    <value>На Максимум: {0}</value>
+  </data>
+  <data name="Unequip" xml:space="preserve">
+    <value>Снять</value>
+  </data>
+  <data name="UnequipText" xml:space="preserve">
+    <value>Снять в Инвентарь</value>
+  </data>
+  <data name="UnequipFull" xml:space="preserve">
+    <value>В Инвентаре Уже {0}</value>
+  </data>
+  <data name="UnequipUnknown" xml:space="preserve">
+    <value>Нет Предмета Инвентаря для Этой Части</value>
+  </data>
+  <data name="WearText" xml:space="preserve">
+    <value>Надеть Одну Часть</value>
+  </data>
+  <data name="WearNoneLeft" xml:space="preserve">
+    <value>В Инвентаре Нет</value>
+  </data>
+  <data name="WearAllWorn" xml:space="preserve">
+    <value>Уже Надето 10 Частей</value>
+  </data>
+  <data name="DeleteArmour" xml:space="preserve">
+    <value>Удалить Часть</value>
+  </data>
+  <data name="DeleteArmourText" xml:space="preserve">
+    <value>Часть исчезает навсегда, её нет ни на теле, ни в инвентаре</value>
+  </data>
+  <data name="AddArmour" xml:space="preserve">
+    <value>Добавить Часть</value>
+  </data>
+  <data name="DeleteBackups" xml:space="preserve">
+    <value>Удалить Бэкапы</value>
+  </data>
+  <data name="DeleteBackupsText" xml:space="preserve">
+    <value>Выберите бэкапы для удаления. Новейший всегда остаётся</value>
+  </data>
+  <data name="AllButNewest" xml:space="preserve">
+    <value>Все Кроме Новейшего</value>
+  </data>
+  <data name="DeleteCount" xml:space="preserve">
+    <value>Удалить {0}</value>
+  </data>
+  <data name="DeleteBackupsConfirm" xml:space="preserve">
+    <value>Бэкапы будут удалены навсегда: {0}</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Назад</value>
+  </data>
+  <data name="CannibalAngerDialogText" xml:space="preserve">
+    <value>Каждый живой каннибал получает этот гнев к вам и настолько же вас не любит. При 0 они также забывают ваши убийства, срубленные деревья и визиты в деревни, так что по-настоящему успокаиваются</value>
+  </data>
+  <data name="FollowersStayOutside" xml:space="preserve">
+    <value>Спутники не могут идти за вами в пещеры, сначала выйдите из пещеры</value>
+  </data>
+  <data name="NoArrival" xml:space="preserve">
+    <value>Негде создать: вы в пещере, и ни одного спутника снаружи</value>
+  </data>
+  <data name="ResetFilters" xml:space="preserve">
+    <value>Сбросить Фильтры</value>
+  </data>
+  <data name="AlreadyThere" xml:space="preserve">
+    <value>Уже Там</value>
+  </data>
+  <data name="MoveAnchor" xml:space="preserve">
+    <value>Переместить Опору</value>
+  </data>
+  <data name="RemoveZipline" xml:space="preserve">
+    <value>Убрать Зиплайн</value>
+  </data>
+  <data name="ClickAnchorSpot" xml:space="preserve">
+    <value>Нажмите на карте, где будет опора</value>
+  </data>
+  <data name="ClickZiplineEnd" xml:space="preserve">
+    <value>Нажмите на карте, где кончается зиплайн</value>
+  </data>
+  <data name="PointsHere" xml:space="preserve">
+    <value>Точек Здесь: {0}</value>
+  </data>
+  <data name="MorePointsHere" xml:space="preserve">
+    <value>Ещё {0}, приблизьте, чтобы до них добраться</value>
+  </data>
+  <data name="HeightGuessed" xml:space="preserve">
+    <value>Карта не знает высот, поэтому эта взята из ближайшей известной точки</value>
+  </data>
+  <data name="UnfinishedAdded" xml:space="preserve">
+    <value>Недостроено · Добавлено {0}</value>
+  </data>
+  <data name="ZiplinesOnMap" xml:space="preserve">
+    <value>Зиплайны меняются на карте</value>
+  </data>
+  <data name="StructureUnknown" xml:space="preserve">
+    <value>Редактор не знает, что для этого нужно, поэтому не может это менять</value>
+  </data>
+  <data name="GameFollowersStay" xml:space="preserve">
+    <value>Kelvin и Virginia Игры Остаются</value>
+  </data>
+  <data name="StartingUpdate" xml:space="preserve">
+    <value>Запуск Обновления</value>
+  </data>
+  <data name="DownloadedOf" xml:space="preserve">
+    <value>{0} из {1}</value>
+  </data>
+  <data name="UpdatingTitle" xml:space="preserve">
+    <value>Идёт Обновление</value>
+  </data>
+  <data name="UpdatingText" xml:space="preserve">
+    <value>Редактор закроется сам, когда обновление загрузится</value>
+  </data>
+  <data name="Duplicate" xml:space="preserve">
+    <value>Дублировать</value>
+  </data>
+  <data name="DuplicateToSingleplayer" xml:space="preserve">
+    <value>Дублировать в Одиночную</value>
+  </data>
+  <data name="DuplicateToSingleplayerText" xml:space="preserve">
+    <value>Этот мир, как он был сохранён последним, копируется в ваши одиночные сохранения. Оригинал остаётся как есть</value>
+  </data>
+  <data name="DuplicateToMultiplayer" xml:space="preserve">
+    <value>Дублировать в Свой Мультиплеер</value>
+  </data>
+  <data name="DuplicateToMultiplayerText" xml:space="preserve">
+    <value>Этот мир, как он был сохранён последним, копируется в ваши сохранения своего мультиплеера. Оригинал остаётся как есть</value>
+  </data>
+  <data name="SavegameDuplicated" xml:space="preserve">
+    <value>Сохранение продублировано</value>
+  </data>
+  <data name="OneBackup" xml:space="preserve">
+    <value>{0} Бэкап</value>
+  </data>
+  <data name="BackupCount" xml:space="preserve">
+    <value>Бэкапов: {0}</value>
+  </data>
+  <data name="DeleteCopy" xml:space="preserve">
+    <value>Удалить Копию</value>
+  </data>
+  <data name="DeleteCopyText" xml:space="preserve">
+    <value>Эта копия уходит в Корзину вместе с собственными бэкапами игры. Удаляйте при запущенной игре, иначе Steam Cloud может вернуть её</value>
+  </data>
+  <data name="CopyDeleted" xml:space="preserve">
+    <value>Копия перемещена в Корзину</value>
+  </data>
+  <data name="UnableToDeleteCopy" xml:space="preserve">
+    <value>Не удалось удалить копию, см. журнал</value>
+  </data>
+  <data name="SavegameGone" xml:space="preserve">
+    <value>Этого сохранения больше нет, список обновлён</value>
+  </data>
+  <data name="NearPlayer" xml:space="preserve">
+    <value>Рядом с Игроком</value>
+  </data>
+  <data name="AnyDistance" xml:space="preserve">
+    <value>Любое Расстояние</value>
+  </data>
+  <data name="ExportZip" xml:space="preserve">
+    <value>Экспорт в Zip</value>
+  </data>
+  <data name="SavegameExported" xml:space="preserve">
+    <value>Сохранение экспортировано</value>
+  </data>
+  <data name="UnableToExport" xml:space="preserve">
+    <value>Не удалось экспортировать сохранение, см. журнал</value>
+  </data>
+  <data name="NormalText" xml:space="preserve">
+    <value>Игра такой, какой она задумана</value>
+  </data>
+  <data name="HardText" xml:space="preserve">
+    <value>Враги крепче, выживание суровее</value>
+  </data>
+  <data name="HardSurvivalText" xml:space="preserve">
+    <value>Сложный, с суровым выживанием и меньшими припасами</value>
+  </data>
+  <data name="PeacefulText" xml:space="preserve">
+    <value>Без врагов, только выживание</value>
+  </data>
+  <data name="ModeCreativeText" xml:space="preserve">
+    <value>Стройте свободно без сбора</value>
+  </data>
+  <data name="ModeCustomText" xml:space="preserve">
+    <value>Выберите каждую настройку сами</value>
+  </data>
+  <data name="RestoreBackupOf" xml:space="preserve">
+    <value>Восстановить Бэкап: {0}</value>
+  </data>
+  <data name="TimeOfDay" xml:space="preserve">
+    <value>Время Суток</value>
+  </data>
+  <data name="EmptySlot" xml:space="preserve">
+    <value>Пусто</value>
+  </data>
+  <data name="ScrollToTop" xml:space="preserve">
+    <value>Наверх</value>
+  </data>
+  <data name="LockedCount" xml:space="preserve">
+    <value>Заблокировано: {0}</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Экспорт</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Импорт</value>
+  </data>
+  <data name="ImportInventory" xml:space="preserve">
+    <value>Импорт Инвентаря</value>
+  </data>
+  <data name="ImportInventoryText" xml:space="preserve">
+    <value>Инвентарь становится списком из файла, недостающие предметы убираются. Ничего не записывается до Сохранить</value>
+  </data>
+  <data name="ImportedItems" xml:space="preserve">
+    <value>Импортировано предметов: {0}</value>
+  </data>
+  <data name="NothingToImport" xml:space="preserve">
+    <value>В файле нет известных предметов</value>
+  </data>
+  <data name="InventoryExported" xml:space="preserve">
+    <value>Инвентарь экспортирован</value>
+  </data>
+  <data name="UnableToExportInventory" xml:space="preserve">
+    <value>Не удалось экспортировать инвентарь, см. журнал</value>
+  </data>
+  <data name="UnableToReadFile" xml:space="preserve">
+    <value>Не удалось прочитать файл</value>
+  </data>
+  <data name="ImportExport" xml:space="preserve">
+    <value>Импорт или Экспорт</value>
+  </data>
+  <data name="Progress" xml:space="preserve">
+    <value>Прогресс</value>
+  </data>
+  <data name="Collectibles" xml:space="preserve">
+    <value>Коллекция</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Статистика</value>
+  </data>
+  <data name="Bunkers" xml:space="preserve">
+    <value>Бункеры</value>
+  </data>
+  <data name="ActionCameraVideos" xml:space="preserve">
+    <value>Видео с Экшн-Камеры</value>
+  </data>
+  <data name="MissingSoldiers" xml:space="preserve">
+    <value>Пропавшие Солдаты</value>
+  </data>
+  <data name="SoldierBuried" xml:space="preserve">
+    <value>Закопан</value>
+  </data>
+  <data name="SoldierHanging" xml:space="preserve">
+    <value>Повешен</value>
+  </data>
+  <data name="SoldierRaft" xml:space="preserve">
+    <value>На Плоту</value>
+  </data>
+  <data name="BlueprintPages" xml:space="preserve">
+    <value>Страницы Чертежей</value>
+  </data>
+  <data name="FoundOf" xml:space="preserve">
+    <value>Найдено {0} из {1}</value>
+  </data>
+  <data name="Found" xml:space="preserve">
+    <value>Найдено</value>
+  </data>
+  <data name="NotFoundYet" xml:space="preserve">
+    <value>Ещё Не Найдено</value>
+  </data>
+  <data name="DaysSurvived" xml:space="preserve">
+    <value>Прожито Дней</value>
+  </data>
+  <data name="Kills" xml:space="preserve">
+    <value>Убийства</value>
+  </data>
+  <data name="TreesCut" xml:space="preserve">
+    <value>Срублено Деревьев</value>
+  </data>
+  <data name="ItemsCrafted" xml:space="preserve">
+    <value>Создано</value>
+  </data>
+  <data name="ItemsUsed" xml:space="preserve">
+    <value>Использовано</value>
+  </data>
+  <data name="Stats" xml:space="preserve">
+    <value>Показатели</value>
+  </data>
+  <data name="Armor" xml:space="preserve">
+    <value>Броня</value>
+  </data>
+  <data name="CopyPlayer" xml:space="preserve">
+    <value>Копировать Игрока</value>
+  </data>
+  <data name="CopyPlayerText" xml:space="preserve">
+    <value>Ваши показатели, инвентарь, броня и одежда переходят в другое сохранение, в том числе чужой игры</value>
+  </data>
+  <data name="CopyPlayerHint" xml:space="preserve">
+    <value>Копирует вашего игрока из последнего сохранения. Другое сохранение сначала получает бэкап</value>
+  </data>
+  <data name="WhatToCopy" xml:space="preserve">
+    <value>Что Копировать</value>
+  </data>
+  <data name="CopyIntoSavegame" xml:space="preserve">
+    <value>В Сохранение</value>
+  </data>
+  <data name="ReadingSavegames" xml:space="preserve">
+    <value>Чтение сохранений</value>
+  </data>
+  <data name="NoOtherSavegames" xml:space="preserve">
+    <value>Нет другого сохранения для копирования</value>
+  </data>
+  <data name="Copy" xml:space="preserve">
+    <value>Копировать</value>
+  </data>
+  <data name="CopyPlayerConfirm" xml:space="preserve">
+    <value>Игрок в {0} будет заменён. Сначала делается бэкап</value>
+  </data>
+  <data name="PlayerCopied" xml:space="preserve">
+    <value>Игрок скопирован в {0}</value>
+  </data>
+  <data name="NothingCopied" xml:space="preserve">
+    <value>Ничего не скопировано, в {0} нет ни одного из этих файлов игрока</value>
+  </data>
+  <data name="UnableToCopyPlayer" xml:space="preserve">
+    <value>Не удалось скопировать игрока</value>
+  </data>
+  <data name="CopiedPlayerFrom" xml:space="preserve">
+    <value>Игрок Скопирован из {0}</value>
+  </data>
+  <data name="RipenGardens" xml:space="preserve">
+    <value>Созревшие Грядки</value>
+  </data>
+  <data name="RipenGardensText" xml:space="preserve">
+    <value>Каждое растение, которое ещё растёт на ваших грядках, готово к сбору</value>
+  </data>
+  <data name="FillPrinters" xml:space="preserve">
+    <value>Заполнить 3D-Принтеры</value>
+  </data>
+  <data name="FillPrintersText" xml:space="preserve">
+    <value>Каждый 3D-принтер получает 1000 мл смолы, хватит на любую печать</value>
+  </data>
+  <data name="GardensRipened" xml:space="preserve">
+    <value>Готово к сбору растений: {0}</value>
+  </data>
+  <data name="NothingGrowing" xml:space="preserve">
+    <value>Ничего не растёт</value>
+  </data>
+  <data name="PrintersFilled" xml:space="preserve">
+    <value>Заполнено принтеров: {0}</value>
+  </data>
+  <data name="PrintersFull" xml:space="preserve">
+    <value>Во всех принтерах уже хватает смолы</value>
+  </data>
+  <data name="GardenPlots" xml:space="preserve">
+    <value>Грядки</value>
+  </data>
+  <data name="PrinterResin" xml:space="preserve">
+    <value>Смола 3D-Принтера</value>
+  </data>
+  <data name="GameRunningWarning" xml:space="preserve">
+    <value>Sons Of The Forest запущена, сохраняйте, пока она в главном меню</value>
+  </data>
+  <data name="GameRunning" xml:space="preserve">
+    <value>Игра Запущена</value>
+  </data>
+  <data name="GameSavedOverEdits" xml:space="preserve">
+    <value>Игра сохранила это сохранение. Перезагрузка покажет его и отменит ваши несохранённые изменения</value>
+  </data>
+  <data name="ReloadedAfterGameSave" xml:space="preserve">
+    <value>Перезагружено, игра сохранила это сохранение</value>
+  </data>
+  <data name="Reload" xml:space="preserve">
+    <value>Перезагрузить</value>
+  </data>
+  <data name="PinBackup" xml:space="preserve">
+    <value>Закрепить Бэкап</value>
+  </data>
+  <data name="UnpinBackup" xml:space="preserve">
+    <value>Открепить Бэкап</value>
+  </data>
+  <data name="BackupLabel" xml:space="preserve">
+    <value>Метка</value>
+  </data>
+  <data name="PinBackupInfo" xml:space="preserve">
+    <value>Закреплённый бэкап никогда не удаляется ради места. Метка тоже закрепляет его</value>
+  </data>
+  <data name="UnableToPinBackup" xml:space="preserve">
+    <value>Не удалось закрепить бэкап</value>
+  </data>
+  <data name="SaveLoadout" xml:space="preserve">
+    <value>Сохранить как Набор</value>
+  </data>
+  <data name="Loadout" xml:space="preserve">
+    <value>Набор</value>
+  </data>
+  <data name="ApplyLoadout" xml:space="preserve">
+    <value>Применить Набор</value>
+  </data>
+  <data name="LoadoutSaved" xml:space="preserve">
+    <value>Набор сохранён</value>
+  </data>
+  <data name="UnableToSaveLoadout" xml:space="preserve">
+    <value>Не удалось сохранить набор, см. журнал</value>
+  </data>
+  <data name="GuestRoles" xml:space="preserve">
+    <value>Роли Гостей</value>
+  </data>
+  <data name="GuestRolesText" xml:space="preserve">
+    <value>Сделайте игрока, который заходил в вашу игру, гостем, доверенным, админом или забаньте</value>
+  </data>
+  <data name="GuestRolesDialogText" xml:space="preserve">
+    <value>Каждый игрок, который заходил в эту игру, хоста в списке нет</value>
+  </data>
+  <data name="NoGuests" xml:space="preserve">
+    <value>В эту игру ещё никто не заходил</value>
+  </data>
+  <data name="GuestRolesChanged" xml:space="preserve">
+    <value>Изменена роль игроков: {0}, сохраните, чтобы оставить</value>
+  </data>
+  <data name="GuestRoleGuest" xml:space="preserve">
+    <value>Гость</value>
+  </data>
+  <data name="GuestRoleTrusted" xml:space="preserve">
+    <value>Доверенный</value>
+  </data>
+  <data name="GuestRoleAdmin" xml:space="preserve">
+    <value>Админ</value>
+  </data>
+  <data name="GuestRoleBanned" xml:space="preserve">
+    <value>Забанен</value>
+  </data>
+</root>

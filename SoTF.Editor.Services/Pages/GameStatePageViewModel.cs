@@ -94,8 +94,9 @@ public partial class GameStatePageViewModel
             : AppText.Format("ContainersReset", numFixed);
     }
 
-    public void SetToEndgame()
+    public bool SetToEndgame()
     {
+        var hasChanges = false;
         foreach (var name in new[] { "Endgame.StayedOnIsland", "Endgame.CoreGameCompleted" })
         {
             var matches = NamedIntDatas.Where(setting => setting.Name == name).ToList();
@@ -106,8 +107,14 @@ public partial class GameStatePageViewModel
                 matches.Add(setting);
             }
 
-            matches.ForEach(setting => setting.IntValue = 1);
+            foreach (var setting in matches.Where(setting => setting.IntValue != 1))
+            {
+                setting.IntValue = 1;
+                hasChanges = true;
+            }
         }
+
+        return hasChanges;
     }
 
     public void Load(Savegame? savegame)

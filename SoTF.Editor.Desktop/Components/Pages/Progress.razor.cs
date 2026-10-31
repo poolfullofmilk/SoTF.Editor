@@ -3,6 +3,7 @@ using MudBlazor;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.ViewModels.Progress;
 using SoTF.Editor.Desktop.Components.Shared.Common;
+using SoTF.Editor.Services.Map;
 using SoTF.Editor.Services.Pages;
 using SoTF.Editor.Services.Savegames;
 
@@ -12,6 +13,9 @@ public partial class Progress : EditorPageBase
 {
     [Inject]
     public required GameData GameData { get; set; }
+
+    [Inject]
+    public required PoiLoader PoiLoader { get; set; }
 
     // Read Only, Nothing Here Edits The Savegame
     protected override bool EditsSavegame => false;
@@ -30,7 +34,11 @@ public partial class Progress : EditorPageBase
                 || read.Revision != MainViewModel.Revision
             )
             {
-                read = (savegame, MainViewModel.Revision, ProgressReader.Read(savegame, GameData));
+                read = (
+                    savegame,
+                    MainViewModel.Revision,
+                    ProgressReader.Read(savegame, GameData, PoiLoader)
+                );
                 _read = read;
             }
 

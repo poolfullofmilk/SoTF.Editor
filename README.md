@@ -3,7 +3,8 @@
 ## Features
 - Edit your stats, armour, outfit and inventory
 - Export your inventory to a small text file and import it into any save
-- See which bunkers, videos, missing soldiers and blueprints you found, plus your kills and crafting
+- Save your inventory as a loadout and put it back in one click
+- See which bunkers, videos, missing soldiers and blueprints you found and where the rest are, plus your kills and crafting
 - Copy your player into another save, a friend's game you joined too
 - Fill every storage to the max in one click
 - Edit, revive or spawn Kelvin and Virginia
@@ -13,9 +14,12 @@
 - Teleport yourself or anyone else on the map, and search or filter every point on it
 - Teleport yourself in a friend's game too, from the save of a game you joined
 - Tools such as regrowing trees, calming cannibals, ripening gardens and filling 3D printers
+- Set the roles of players who joined your hosted game
 - Duplicate and export your savegames
 - See every change before you save, and undo them page by page
-- English, Dutch, German, French and Turkish, and it updates itself
+- Pin and label the backups you want to keep
+- Reloads by itself when the game saves, and shows when the game is running
+- English, Dutch, German, French, Spanish, Brazilian Portuguese, Polish, Russian and Turkish, and it updates itself
 
 ## Quick start
 1. Download the exe from the [latest release](https://github.com/poolfullofmilk/SoTF.Editor/releases/latest)

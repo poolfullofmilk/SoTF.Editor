@@ -96,6 +96,13 @@ document.addEventListener("click", (event) => {
     }
 });
 
+// Auto Reload Waits While A Dialog, Menu Or Text Field Is In Use
+window.sotfShell = {
+    isInUse: () =>
+        document.querySelector(".mud-dialog, .mud-popover-open:not(.mud-tooltip)") !== null ||
+        document.activeElement?.matches("input:not([type=checkbox], [type=radio]), textarea") === true,
+};
+
 // A Dropped Folder Opens, The Host Reads Its Path
 document.addEventListener("dragover", (event) => event.preventDefault());
 document.addEventListener("drop", (event) => {

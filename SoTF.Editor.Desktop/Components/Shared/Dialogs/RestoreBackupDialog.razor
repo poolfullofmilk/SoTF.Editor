@@ -45,12 +45,43 @@
                                 @DetailOf(backup)
                             </MudText>
                         </MudStack>
+                        @if (backup.IsPinned)
+                        {
+                            <MudIcon Icon="@Icons.Material.Rounded.PushPin"
+                                     Size="Size.Small"
+                                     Style="color:var(--tonal-info-text)" />
+                        }
                     </MudStack>
                 </MudElement>
             }
         </MudPaper>
-        @if (_selected is not null && !_deleting)
+        @if (_selected is { } selected && !_deleting)
         {
+            @* Pin Row *@
+            <MudStack Row
+                      AlignItems="AlignItems.Center"
+                      Spacing="2"
+                      Class="flex-shrink-0">
+                @* Pin Button *@
+                <Tooltip Text="@AppText.Get(selected.IsPinned ? "UnpinBackup" : "PinBackup")"
+                         RootClass="d-flex">
+                    <MudIconButton Icon="@Icons.Material.Rounded.PushPin"
+                                   aria-label="@AppText.Get(selected.IsPinned ? "UnpinBackup" : "PinBackup")"
+                                   Size="Size.Small"
+                                   Style="@PinStyle"
+                                   OnClick="TogglePin" />
+                </Tooltip>
+                @* Label Field *@
+                <MudTextField T="string"
+                              Value="@selected.Label"
+                              ValueChanged="SetLabel"
+                              Placeholder="@AppText.Get("BackupLabel")"
+                              Variant="Variant.Outlined"
+                              Margin="Margin.Dense"
+                              MaxLength="60"
+                              Class="flex-grow-1" />
+                <InfoIcon Text="@AppText.Get("PinBackupInfo")" />
+            </MudStack>
             @* Change Views *@
             <MudButtonGroup OverrideStyles="false"
                             Size="Size.Small"
@@ -107,7 +138,7 @@
             </MudButton>
             @* All But Newest Button *@
             <MudButton Variant="Variant.Text"
-                       Disabled="@(_marked.Count == Backups.Count - 1)"
+                       Disabled="@AllButNewestMarked"
                        OnClick="MarkAllButNewest">
                 @AppText.Get("AllButNewest")
             </MudButton>

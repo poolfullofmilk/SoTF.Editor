@@ -1,0 +1,2397 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Close" xml:space="preserve">
+    <value>Fechar</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Editar</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Não</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Sim</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Posição</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Salvar</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Desconhecido</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Valor</value>
+  </data>
+  <data name="About" xml:space="preserve">
+    <value>Sobre</value>
+  </data>
+  <data name="AboutText" xml:space="preserve">
+    <value>Edite seus saves de Sons Of The Forest</value>
+  </data>
+  <data name="Backups" xml:space="preserve">
+    <value>Backups</value>
+  </data>
+  <data name="ChangesAdded" xml:space="preserve">
+    <value>Alterações adicionadas, salve para mantê-las</value>
+  </data>
+  <data name="Disclaimer" xml:space="preserve">
+    <value>Um projeto de fãs, sem ligação com a Endnight Games</value>
+  </data>
+  <data name="MapDataNotice" xml:space="preserve">
+    <value>Pontos do mapa do Sons Of The Forest Map de Leon Machens, licença MIT</value>
+  </data>
+  <data name="DropHint" xml:space="preserve">
+    <value>Solte uma pasta de save em qualquer lugar da janela para abri-la</value>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>Ajuda</value>
+  </data>
+  <data name="Items" xml:space="preserve">
+    <value>Itens</value>
+  </data>
+  <data name="NoSavegames" xml:space="preserve">
+    <value>Nenhum save encontrado nesta pasta</value>
+  </data>
+  <data name="NothingFound" xml:space="preserve">
+    <value>Nada Encontrado</value>
+  </data>
+  <data name="OpenSavegameFirst" xml:space="preserve">
+    <value>Abra um Save Primeiro</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Remover</value>
+  </data>
+  <data name="Saved" xml:space="preserve">
+    <value>Salvo</value>
+  </data>
+  <data name="Savegames" xml:space="preserve">
+    <value>Saves</value>
+  </data>
+  <data name="SelectGroup" xml:space="preserve">
+    <value>Escolha um Grupo</value>
+  </data>
+  <data name="ShowOnMap" xml:space="preserve">
+    <value>Ver no Mapa</value>
+  </data>
+  <data name="UpdateAvailable" xml:space="preserve">
+    <value>A Versão {0} Está Disponível</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Versão</value>
+  </data>
+  <data name="ZoomIn" xml:space="preserve">
+    <value>Aproximar</value>
+  </data>
+  <data name="ZoomOut" xml:space="preserve">
+    <value>Afastar</value>
+  </data>
+  <data name="CenterMap" xml:space="preserve">
+    <value>Ver o Mapa Inteiro</value>
+  </data>
+  <data name="Area" xml:space="preserve">
+    <value>Área</value>
+  </data>
+  <data name="Classification" xml:space="preserve">
+    <value>Classificação</value>
+  </data>
+  <data name="Family" xml:space="preserve">
+    <value>Família</value>
+  </data>
+  <data name="FamilyTitle" xml:space="preserve">
+    <value>Família {0}</value>
+  </data>
+  <data name="Gender" xml:space="preserve">
+    <value>Gênero</value>
+  </data>
+  <data name="KilledByPlayer" xml:space="preserve">
+    <value>Morto pelo Jogador</value>
+  </data>
+  <data name="LastSpawnTime" xml:space="preserve">
+    <value>Último Surgimento</value>
+  </data>
+  <data name="LastVisitTime" xml:space="preserve">
+    <value>Última Visita</value>
+  </data>
+  <data name="SpawnedCount" xml:space="preserve">
+    <value>Vezes Surgido</value>
+  </data>
+  <data name="State" xml:space="preserve">
+    <value>Estado</value>
+  </data>
+  <data name="UniqueId" xml:space="preserve">
+    <value>ID Único</value>
+  </data>
+  <data name="GroupAnimals" xml:space="preserve">
+    <value>Animais</value>
+  </data>
+  <data name="GroupCreeps" xml:space="preserve">
+    <value>Mutantes</value>
+  </data>
+  <data name="GroupFemaleCannibals" xml:space="preserve">
+    <value>Canibais Mulheres</value>
+  </data>
+  <data name="GroupFemaleMuddyCannibals" xml:space="preserve">
+    <value>Canibais Enlameadas</value>
+  </data>
+  <data name="GroupMaleCannibals" xml:space="preserve">
+    <value>Canibais Homens</value>
+  </data>
+  <data name="GroupMaleMuddyCannibals" xml:space="preserve">
+    <value>Canibais Enlameados</value>
+  </data>
+  <data name="GroupMisc" xml:space="preserve">
+    <value>Outros</value>
+  </data>
+  <data name="GroupMixed" xml:space="preserve">
+    <value>Misto</value>
+  </data>
+  <data name="GroupMixedCannibals" xml:space="preserve">
+    <value>Canibais Mistos</value>
+  </data>
+  <data name="GroupMixedMuddyCannibals" xml:space="preserve">
+    <value>Enlameados Mistos</value>
+  </data>
+  <data name="GroupNoFamily" xml:space="preserve">
+    <value>Sem Família</value>
+  </data>
+  <data name="Influences" xml:space="preserve">
+    <value>Influências</value>
+  </data>
+  <data name="OnlySameArea" xml:space="preserve">
+    <value>Só na Mesma Área</value>
+  </data>
+  <data name="RemoveSpawner" xml:space="preserve">
+    <value>Remover Gerador</value>
+  </data>
+  <data name="RemoveSpawnerTooltip" xml:space="preserve">
+    <value>Impede que o NPC surja de novo</value>
+  </data>
+  <data name="ReplaceType" xml:space="preserve">
+    <value>Trocar Tipo</value>
+  </data>
+  <data name="TeleportManyWarning" xml:space="preserve">
+    <value>Teleportar muitos atores para um só lugar pode travar o jogo</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Nenhum</value>
+  </data>
+  <data name="TeleportNpcToPlayer" xml:space="preserve">
+    <value>NPC ao Jogador</value>
+  </data>
+  <data name="TeleportPlayerToNpc" xml:space="preserve">
+    <value>Jogador ao NPC</value>
+  </data>
+  <data name="Teleport" xml:space="preserve">
+    <value>Teleportar</value>
+  </data>
+  <data name="Affection" xml:space="preserve">
+    <value>Afeto</value>
+  </data>
+  <data name="Anger" xml:space="preserve">
+    <value>Raiva</value>
+  </data>
+  <data name="Energy" xml:space="preserve">
+    <value>Energia</value>
+  </data>
+  <data name="Fear" xml:space="preserve">
+    <value>Medo</value>
+  </data>
+  <data name="Fullness" xml:space="preserve">
+    <value>Saciedade</value>
+  </data>
+  <data name="FullnessBuff" xml:space="preserve">
+    <value>Bônus de Saciedade</value>
+  </data>
+  <data name="Health" xml:space="preserve">
+    <value>Vida</value>
+  </data>
+  <data name="Hydration" xml:space="preserve">
+    <value>Hidratação</value>
+  </data>
+  <data name="HydrationBuff" xml:space="preserve">
+    <value>Bônus de Hidratação</value>
+  </data>
+  <data name="Rest" xml:space="preserve">
+    <value>Descanso</value>
+  </data>
+  <data name="RestBuff" xml:space="preserve">
+    <value>Bônus de Descanso</value>
+  </data>
+  <data name="Stamina" xml:space="preserve">
+    <value>Vigor</value>
+  </data>
+  <data name="Kelvin" xml:space="preserve">
+    <value>Kelvin</value>
+  </data>
+  <data name="Virginia" xml:space="preserve">
+    <value>Virginia</value>
+  </data>
+  <data name="SetAllToDefault" xml:space="preserve">
+    <value>Tudo no Padrão</value>
+  </data>
+  <data name="SetAllToDefaultTooltip" xml:space="preserve">
+    <value>Põe cada peça na durabilidade padrão</value>
+  </data>
+  <data name="SetAllToMax" xml:space="preserve">
+    <value>Tudo no Máximo</value>
+  </data>
+  <data name="SetAllToMaxTooltip" xml:space="preserve">
+    <value>Põe cada peça na durabilidade máxima</value>
+  </data>
+  <data name="SetToDefaultDurability" xml:space="preserve">
+    <value>Durabilidade Padrão</value>
+  </data>
+  <data name="Durability" xml:space="preserve">
+    <value>Durabilidade</value>
+  </data>
+  <data name="UnknownItem" xml:space="preserve">
+    <value>Item Desconhecido</value>
+  </data>
+  <data name="ChangeTypeWarning" xml:space="preserve">
+    <value>Posição e rotação continuam, o que pode causar falhas ou travamentos</value>
+  </data>
+  <data name="SpawnFollowersWarning" xml:space="preserve">
+    <value>Faça surgir num espaço aberto, muitos companheiros podem pesar no desempenho</value>
+  </data>
+  <data name="SpawnFollower" xml:space="preserve">
+    <value>Fazer Surgir {0}</value>
+  </data>
+  <data name="NoFiresFound" xml:space="preserve">
+    <value>Nenhuma fogueira encontrada</value>
+  </data>
+  <data name="FiresChanged" xml:space="preserve">
+    <value>{0} fogueiras alteradas, salve para mantê-las</value>
+  </data>
+  <data name="NoStructureDamage" xml:space="preserve">
+    <value>Nenhum dano nas estruturas</value>
+  </data>
+  <data name="StructureDamageRepaired" xml:space="preserve">
+    <value>{0} estruturas danificadas reparadas, salve para mantê-las</value>
+  </data>
+  <data name="FillAllBars" xml:space="preserve">
+    <value>Encher Todas as Barras</value>
+  </data>
+  <data name="MoveToKelvin" xml:space="preserve">
+    <value>Mover para Kelvin</value>
+  </data>
+  <data name="MoveToPlayer" xml:space="preserve">
+    <value>Mover para o Jogador</value>
+  </data>
+  <data name="MoveToVirginia" xml:space="preserve">
+    <value>Mover para Virginia</value>
+  </data>
+  <data name="Revive" xml:space="preserve">
+    <value>Reviver</value>
+  </data>
+  <data name="Spawn" xml:space="preserve">
+    <value>Fazer Surgir</value>
+  </data>
+  <data name="RemoveCopy" xml:space="preserve">
+    <value>Remover Cópia</value>
+  </data>
+  <data name="RemoveCopyText" xml:space="preserve">
+    <value>Esta cópia sai do save com seus itens e sentimentos</value>
+  </data>
+  <data name="Equipment" xml:space="preserve">
+    <value>Equipamento</value>
+  </data>
+  <data name="Outfit" xml:space="preserve">
+    <value>Roupa</value>
+  </data>
+  <data name="ReviveTooltip" xml:space="preserve">
+    <value>Traz o companheiro de volta com os itens e a roupa definidos aqui. Um companheiro que o jogo removeu volta ao seu lado, ou junto de um companheiro lá fora enquanto você está no subsolo</value>
+  </data>
+  <data name="Alive" xml:space="preserve">
+    <value>Vivo</value>
+  </data>
+  <data name="Dead" xml:space="preserve">
+    <value>Morto</value>
+  </data>
+  <data name="NotInSave" xml:space="preserve">
+    <value>Fora do Save</value>
+  </data>
+  <data name="AnimalSpawnRate" xml:space="preserve">
+    <value>Surgimento de Animais</value>
+  </data>
+  <data name="BuildingResistance" xml:space="preserve">
+    <value>Resistência das Construções</value>
+  </data>
+  <data name="ColdPenalties" xml:space="preserve">
+    <value>Penalidade do Frio</value>
+  </data>
+  <data name="ConsumableEffects" xml:space="preserve">
+    <value>Efeito dos Consumíveis</value>
+  </data>
+  <data name="CreativeMode" xml:space="preserve">
+    <value>Modo Criativo</value>
+  </data>
+  <data name="CustomSettings" xml:space="preserve">
+    <value>Configurações Personalizadas</value>
+  </data>
+  <data name="CustomHint" xml:space="preserve">
+    <value>Escolha o modo Personalizado para mudar configurações soltas, ou carregue uma predefinição para partir de um modo</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>Padrão</value>
+  </data>
+  <data name="Long" xml:space="preserve">
+    <value>Longo</value>
+  </data>
+  <data name="Realistic" xml:space="preserve">
+    <value>Realista</value>
+  </data>
+  <data name="Short" xml:space="preserve">
+    <value>Curto</value>
+  </data>
+  <data name="DayLength" xml:space="preserve">
+    <value>Duração do Dia</value>
+  </data>
+  <data name="EnemyAggression" xml:space="preserve">
+    <value>Agressividade Inimiga</value>
+  </data>
+  <data name="EnemyArmor" xml:space="preserve">
+    <value>Armadura Inimiga</value>
+  </data>
+  <data name="EnemyDamage" xml:space="preserve">
+    <value>Dano Inimigo</value>
+  </data>
+  <data name="EnemyHealth" xml:space="preserve">
+    <value>Vida Inimiga</value>
+  </data>
+  <data name="EnemySearchParties" xml:space="preserve">
+    <value>Grupos de Busca</value>
+  </data>
+  <data name="InstantBuilding" xml:space="preserve">
+    <value>Construção Instantânea</value>
+  </data>
+  <data name="GameSetup" xml:space="preserve">
+    <value>Configuração</value>
+  </data>
+  <data name="Enemies" xml:space="preserve">
+    <value>Inimigos</value>
+  </data>
+  <data name="Multiplayer" xml:space="preserve">
+    <value>Multijogador</value>
+  </data>
+  <data name="Weather" xml:space="preserve">
+    <value>Clima</value>
+  </data>
+  <data name="GodMode" xml:space="preserve">
+    <value>Modo Deus</value>
+  </data>
+  <data name="InventoryPause" xml:space="preserve">
+    <value>Pausa no Inventário</value>
+  </data>
+  <data name="ModeCreative" xml:space="preserve">
+    <value>Criativo</value>
+  </data>
+  <data name="ModeCustom" xml:space="preserve">
+    <value>Personalizado</value>
+  </data>
+  <data name="Hard" xml:space="preserve">
+    <value>Difícil</value>
+  </data>
+  <data name="HardSurvival" xml:space="preserve">
+    <value>Sobrevivência Difícil</value>
+  </data>
+  <data name="Normal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="Peaceful" xml:space="preserve">
+    <value>Pacífico</value>
+  </data>
+  <data name="Mode" xml:space="preserve">
+    <value>Modo</value>
+  </data>
+  <data name="NoCuttingsSpawn" xml:space="preserve">
+    <value>Sem Restos ao Cortar</value>
+  </data>
+  <data name="OneHitTrees" xml:space="preserve">
+    <value>Árvores de um Golpe</value>
+  </data>
+  <data name="PlayerStatsDamage" xml:space="preserve">
+    <value>Dano dos Status</value>
+  </data>
+  <data name="PlayersTriggerTraps" xml:space="preserve">
+    <value>Jogadores Ativam Armadilhas</value>
+  </data>
+  <data name="PrecipitationFrequency" xml:space="preserve">
+    <value>Frequência de Chuva</value>
+  </data>
+  <data name="PvpDamage" xml:space="preserve">
+    <value>Dano PvP</value>
+  </data>
+  <data name="ReducedAmmo" xml:space="preserve">
+    <value>Menos Munição em Caixas</value>
+  </data>
+  <data name="ReducedFood" xml:space="preserve">
+    <value>Menos Comida em Caixas</value>
+  </data>
+  <data name="SeasonLength" xml:space="preserve">
+    <value>Duração da Estação</value>
+  </data>
+  <data name="High" xml:space="preserve">
+    <value>Alto</value>
+  </data>
+  <data name="Low" xml:space="preserve">
+    <value>Baixo</value>
+  </data>
+  <data name="Off" xml:space="preserve">
+    <value>Desligado</value>
+  </data>
+  <data name="Reduced" xml:space="preserve">
+    <value>Reduzido</value>
+  </data>
+  <data name="SingleUseContainers" xml:space="preserve">
+    <value>Caixas de Uso Único</value>
+  </data>
+  <data name="SpawnEnemies" xml:space="preserve">
+    <value>Inimigos</value>
+  </data>
+  <data name="Autumn" xml:space="preserve">
+    <value>Outono</value>
+  </data>
+  <data name="Spring" xml:space="preserve">
+    <value>Primavera</value>
+  </data>
+  <data name="Summer" xml:space="preserve">
+    <value>Verão</value>
+  </data>
+  <data name="Winter" xml:space="preserve">
+    <value>Inverno</value>
+  </data>
+  <data name="StartingSeason" xml:space="preserve">
+    <value>Estação Inicial</value>
+  </data>
+  <data name="StatRegenerationPenalties" xml:space="preserve">
+    <value>Penalidade de Regeneração</value>
+  </data>
+  <data name="Uid" xml:space="preserve">
+    <value>UID</value>
+  </data>
+  <data name="GameState" xml:space="preserve">
+    <value>Estado do Jogo</value>
+  </data>
+  <data name="WorldObjectStatesInfo" xml:space="preserve">
+    <value>0 geralmente significa fechado ou ainda não ocorrido, 1 ou 3 aberto ou ocorrido. Um valor limpo sai do save, então o jogo o trata como nunca tocado</value>
+  </data>
+  <data name="WorldObjectStates" xml:space="preserve">
+    <value>Estados dos Objetos do Mundo</value>
+  </data>
+  <data name="ClearValue" xml:space="preserve">
+    <value>Limpar Valor</value>
+  </data>
+  <data name="InfluencesInfo" xml:space="preserve">
+    <value>Muito medo faz os inimigos fugirem, muita raiva faz eles atacarem</value>
+  </data>
+  <data name="Sentiment" xml:space="preserve">
+    <value>Simpatia</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Abrir</value>
+  </data>
+  <data name="AddAll" xml:space="preserve">
+    <value>Adicionar Tudo</value>
+  </data>
+  <data name="Max" xml:space="preserve">
+    <value>Máx</value>
+  </data>
+  <data name="RemoveAll" xml:space="preserve">
+    <value>Remover Tudo</value>
+  </data>
+  <data name="SetAllToMin" xml:space="preserve">
+    <value>Tudo no Mínimo</value>
+  </data>
+  <data name="ItemsInInventory" xml:space="preserve">
+    <value>Itens no Inventário</value>
+  </data>
+  <data name="Count" xml:space="preserve">
+    <value>Quantidade</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Tipo</value>
+  </data>
+  <data name="Actors" xml:space="preserve">
+    <value>Atores</value>
+  </data>
+  <data name="AlternativeItems" xml:space="preserve">
+    <value>Itens Alternativos</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>Tudo</value>
+  </data>
+  <data name="SurfaceOnly" xml:space="preserve">
+    <value>Só Superfície</value>
+  </data>
+  <data name="UndergroundOnly" xml:space="preserve">
+    <value>Só Cavernas e Bunkers</value>
+  </data>
+  <data name="NewZiplineFromHere" xml:space="preserve">
+    <value>Nova Tirolesa Daqui</value>
+  </data>
+  <data name="SelectAll" xml:space="preserve">
+    <value>Selecionar Tudo</value>
+  </data>
+  <data name="SpawnActors" xml:space="preserve">
+    <value>Fazer Surgir Atores</value>
+  </data>
+  <data name="TeleportKelvinHere" xml:space="preserve">
+    <value>Trazer Kelvin Aqui</value>
+  </data>
+  <data name="TeleportPlayerHere" xml:space="preserve">
+    <value>Trazer o Jogador Aqui</value>
+  </data>
+  <data name="TeleportVirginiaHere" xml:space="preserve">
+    <value>Trazer Virginia Aqui</value>
+  </data>
+  <data name="Coordinates" xml:space="preserve">
+    <value>Coordenadas</value>
+  </data>
+  <data name="Distance" xml:space="preserve">
+    <value>Distância</value>
+  </data>
+  <data name="CopyCoordinates" xml:space="preserve">
+    <value>Copiar Coordenadas</value>
+  </data>
+  <data name="CoordinatesCopied" xml:space="preserve">
+    <value>Coordenadas copiadas</value>
+  </data>
+  <data name="Followers" xml:space="preserve">
+    <value>Companheiros</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Buscar</value>
+  </data>
+  <data name="Results" xml:space="preserve">
+    <value>Resultados</value>
+  </data>
+  <data name="UncollectedOnly" xml:space="preserve">
+    <value>Só Itens Não Coletados</value>
+  </data>
+  <data name="Owned" xml:space="preserve">
+    <value>Em Posse</value>
+  </data>
+  <data name="IsCopy" xml:space="preserve">
+    <value>Clonado</value>
+  </data>
+  <data name="Underground" xml:space="preserve">
+    <value>Subsolo</value>
+  </data>
+  <data name="ItemId" xml:space="preserve">
+    <value>ID do Item</value>
+  </data>
+  <data name="Objects" xml:space="preserve">
+    <value>Objetos</value>
+  </data>
+  <data name="PointsOfInterest" xml:space="preserve">
+    <value>Pontos do Mapa</value>
+  </data>
+  <data name="Requirements" xml:space="preserve">
+    <value>Requisitos</value>
+  </data>
+  <data name="ActorType" xml:space="preserve">
+    <value>Tipo de Ator</value>
+  </data>
+  <data name="SpawnActorsWarning" xml:space="preserve">
+    <value>Inimigos demais ou um lugar ruim podem travar o jogo</value>
+  </data>
+  <data name="DestinationFamily" xml:space="preserve">
+    <value>Igual ao Destino</value>
+  </data>
+  <data name="SpaceBetween" xml:space="preserve">
+    <value>Espaçamento</value>
+  </data>
+  <data name="SpaceBetweenTooltip" xml:space="preserve">
+    <value>Espaço entre cada ator, acima de 0 os põe numa grade</value>
+  </data>
+  <data name="SpawnPattern" xml:space="preserve">
+    <value>Padrão de Surgimento</value>
+  </data>
+  <data name="Structures" xml:space="preserve">
+    <value>Estruturas</value>
+  </data>
+  <data name="Teleportation" xml:space="preserve">
+    <value>Teleporte</value>
+  </data>
+  <data name="Actor" xml:space="preserve">
+    <value>Ator</value>
+  </data>
+  <data name="Zipline" xml:space="preserve">
+    <value>Tirolesa</value>
+  </data>
+  <data name="Destination" xml:space="preserve">
+    <value>Destino</value>
+  </data>
+  <data name="TeleportHint" xml:space="preserve">
+    <value>X e Z marcam o lugar, Y a altura, escolha a área certa</value>
+  </data>
+  <data name="Offset" xml:space="preserve">
+    <value>Deslocamento</value>
+  </data>
+  <data name="ToTeleport" xml:space="preserve">
+    <value>A Teleportar</value>
+  </data>
+  <data name="Wiki" xml:space="preserve">
+    <value>Wiki</value>
+  </data>
+  <data name="ZiplineAnchor" xml:space="preserve">
+    <value>Âncora da Tirolesa</value>
+  </data>
+  <data name="Ziplines" xml:space="preserve">
+    <value>Tirolesas</value>
+  </data>
+  <data name="OpenSavegameFolder" xml:space="preserve">
+    <value>Abrir Pasta do Save</value>
+  </data>
+  <data name="ReloadSavegame" xml:space="preserve">
+    <value>Recarregar Save</value>
+  </data>
+  <data name="GitHubProject" xml:space="preserve">
+    <value>Projeto no GitHub</value>
+  </data>
+  <data name="CheckForUpdates" xml:space="preserve">
+    <value>Procurar Atualizações</value>
+  </data>
+  <data name="WorldItemCloner" xml:space="preserve">
+    <value>Clonador de Itens</value>
+  </data>
+  <data name="EternalFires" xml:space="preserve">
+    <value>Fogueiras Eternas</value>
+  </data>
+  <data name="ItemPlater" xml:space="preserve">
+    <value>Revestimento de Itens e Estruturas</value>
+  </data>
+  <data name="ConsumedItems" xml:space="preserve">
+    <value>Itens Consumidos</value>
+  </data>
+  <data name="RegrowTrees" xml:space="preserve">
+    <value>Regenerar Árvores</value>
+  </data>
+  <data name="CannibalAnger" xml:space="preserve">
+    <value>Raiva Canibal</value>
+  </data>
+  <data name="ResetContainers" xml:space="preserve">
+    <value>Reiniciar Caixas</value>
+  </data>
+  <data name="ResetFires" xml:space="preserve">
+    <value>Reiniciar Fogueiras</value>
+  </data>
+  <data name="ResetStructureDamage" xml:space="preserve">
+    <value>Reparar Estruturas</value>
+  </data>
+  <data name="ResetTraps" xml:space="preserve">
+    <value>Reiniciar Armadilhas</value>
+  </data>
+  <data name="SetToEndgame" xml:space="preserve">
+    <value>Marcar Final</value>
+  </data>
+  <data name="Tools" xml:space="preserve">
+    <value>Ferramentas</value>
+  </data>
+  <data name="Unlocks" xml:space="preserve">
+    <value>Desbloqueios</value>
+  </data>
+  <data name="ByFamily" xml:space="preserve">
+    <value>Por Família</value>
+  </data>
+  <data name="ByType" xml:space="preserve">
+    <value>Por Tipo</value>
+  </data>
+  <data name="CurrentHealth" xml:space="preserve">
+    <value>Vida Atual</value>
+  </data>
+  <data name="Player" xml:space="preserve">
+    <value>Jogador</value>
+  </data>
+  <data name="MaxHealth" xml:space="preserve">
+    <value>Vida Máxima</value>
+  </data>
+  <data name="Sickness" xml:space="preserve">
+    <value>Doença</value>
+  </data>
+  <data name="StrengthLevel" xml:space="preserve">
+    <value>Nível de Força</value>
+  </data>
+  <data name="PoiGroupItems" xml:space="preserve">
+    <value>Itens</value>
+  </data>
+  <data name="FillFittingSlots" xml:space="preserve">
+    <value>Encher Espaços Válidos</value>
+  </data>
+  <data name="FillFittingSlotsTooltip" xml:space="preserve">
+    <value>Enche cada espaço onde este item cabe, os outros ficam como estão</value>
+  </data>
+  <data name="ClearAll" xml:space="preserve">
+    <value>Esvaziar Tudo</value>
+  </data>
+  <data name="FillAllWith" xml:space="preserve">
+    <value>Encher Tudo Com</value>
+  </data>
+  <data name="FillAllStorages" xml:space="preserve">
+    <value>Encher Todos os Armazenamentos</value>
+  </data>
+  <data name="SelectStorage" xml:space="preserve">
+    <value>Escolha um Armazenamento</value>
+  </data>
+  <data name="StorageTypes" xml:space="preserve">
+    <value>Armazenamentos</value>
+  </data>
+  <data name="Storage" xml:space="preserve">
+    <value>Armazenamento</value>
+  </data>
+  <data name="ApplyToSameType" xml:space="preserve">
+    <value>Aplicar a Todos do Mesmo Tipo</value>
+  </data>
+  <data name="ApplyToSameTypeTooltip" xml:space="preserve">
+    <value>Copia estes itens e quantidades para cada armazenamento deste tipo</value>
+  </data>
+  <data name="ChangeType" xml:space="preserve">
+    <value>Trocar Tipo</value>
+  </data>
+  <data name="SetAllToRemove" xml:space="preserve">
+    <value>Remover Tudo</value>
+  </data>
+  <data name="StructureCategoryFurniture" xml:space="preserve">
+    <value>Móveis</value>
+  </data>
+  <data name="StructureCategoryGardening" xml:space="preserve">
+    <value>Jardinagem</value>
+  </data>
+  <data name="StructureCategoryMisc" xml:space="preserve">
+    <value>Outros</value>
+  </data>
+  <data name="StructureCategoryStorage" xml:space="preserve">
+    <value>Armazenamento</value>
+  </data>
+  <data name="StructureCategoryTraps" xml:space="preserve">
+    <value>Armadilhas</value>
+  </data>
+  <data name="StructureCategoryUtility" xml:space="preserve">
+    <value>Utilidade</value>
+  </data>
+  <data name="StructureCategoryRaft" xml:space="preserve">
+    <value>Jangada</value>
+  </data>
+  <data name="StructureCategoryShelter" xml:space="preserve">
+    <value>Abrigo</value>
+  </data>
+  <data name="StructureCategoryTreeShelter" xml:space="preserve">
+    <value>Abrigo na Árvore</value>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>Categoria</value>
+  </data>
+  <data name="PercentDone" xml:space="preserve">
+    <value>Porcentagem Feita</value>
+  </data>
+  <data name="StructureModeNone" xml:space="preserve">
+    <value>Manter</value>
+  </data>
+  <data name="StructureModeRemove" xml:space="preserve">
+    <value>Remover</value>
+  </data>
+  <data name="StructureModeAlmostFinish" xml:space="preserve">
+    <value>Quase Terminar</value>
+  </data>
+  <data name="StructureModeFinish" xml:space="preserve">
+    <value>Terminar</value>
+  </data>
+  <data name="StructureModeUnfinish" xml:space="preserve">
+    <value>Desfazer Término</value>
+  </data>
+  <data name="Game" xml:space="preserve">
+    <value>Jogo</value>
+  </data>
+  <data name="Inventory" xml:space="preserve">
+    <value>Inventário</value>
+  </data>
+  <data name="Npcs" xml:space="preserve">
+    <value>NPCs</value>
+  </data>
+  <data name="WeatherState" xml:space="preserve">
+    <value>Estado do Clima</value>
+  </data>
+  <data name="AddPlating" xml:space="preserve">
+    <value>Adicionar Revestimento</value>
+  </data>
+  <data name="RemovePlating" xml:space="preserve">
+    <value>Remover Revestimento</value>
+  </data>
+  <data name="ConstructionItem" xml:space="preserve">
+    <value>Item</value>
+  </data>
+  <data name="ConstructionLog" xml:space="preserve">
+    <value>Tronco</value>
+  </data>
+  <data name="ConstructionLogPlank" xml:space="preserve">
+    <value>Tábua</value>
+  </data>
+  <data name="ConstructionStick" xml:space="preserve">
+    <value>Graveto</value>
+  </data>
+  <data name="ConstructionStone" xml:space="preserve">
+    <value>Pedra</value>
+  </data>
+  <data name="Constructions" xml:space="preserve">
+    <value>Peças de Construção</value>
+  </data>
+  <data name="ItemPlaterWarning" xml:space="preserve">
+    <value>Esta ferramenta salva na hora e recarrega, salve antes as outras alterações</value>
+  </data>
+  <data name="FollowerItems" xml:space="preserve">
+    <value>Itens dos Companheiros</value>
+  </data>
+  <data name="ItemsInWeaponRacks" xml:space="preserve">
+    <value>Itens nos Suportes de Armas</value>
+  </data>
+  <data name="PlatingAdded" xml:space="preserve">
+    <value>Revestimento adicionado a {0} itens</value>
+  </data>
+  <data name="PlatingRemoved" xml:space="preserve">
+    <value>Revestimento removido de {0} itens</value>
+  </data>
+  <data name="UnableToCheckForUpdates" xml:space="preserve">
+    <value>Não foi possível procurar atualizações</value>
+  </data>
+  <data name="Map" xml:space="preserve">
+    <value>Mapa</value>
+  </data>
+  <data name="AlreadyLatestVersion" xml:space="preserve">
+    <value>Você já tem a versão mais recente</value>
+  </data>
+  <data name="ChangesSaved" xml:space="preserve">
+    <value>Alterações salvas</value>
+  </data>
+  <data name="OverwriteExternalChangesText" xml:space="preserve">
+    <value>O jogo salvou este save depois que você o abriu. Salvar agora pode desfazer esse progresso, recarregue antes para mantê-lo</value>
+  </data>
+  <data name="OverwriteExternalChangesTitle" xml:space="preserve">
+    <value>Sobrescrever Alterações</value>
+  </data>
+  <data name="RestoreBackupText" xml:space="preserve">
+    <value>Os arquivos atuais recebem um backup antes, então isso pode ser desfeito</value>
+  </data>
+  <data name="RestoreBackupTitle" xml:space="preserve">
+    <value>Restaurar Backup</value>
+  </data>
+  <data name="SaveChangesTitle" xml:space="preserve">
+    <value>Salvar Alterações</value>
+  </data>
+  <data name="SaveChangesText" xml:space="preserve">
+    <value>Estas páginas têm alterações</value>
+  </data>
+  <data name="SaveChangesBackup" xml:space="preserve">
+    <value>Antes é feito um backup do save inteiro</value>
+  </data>
+  <data name="FollowerAlreadyAlive" xml:space="preserve">
+    <value>{0} já está vivo</value>
+  </data>
+  <data name="FollowerRevived" xml:space="preserve">
+    <value>{0} revivido, salve para mantê-lo</value>
+  </data>
+  <data name="FollowerSpawned" xml:space="preserve">
+    <value>Cópia de {0} criada, salve para mantê-la</value>
+  </data>
+  <data name="NoChanges" xml:space="preserve">
+    <value>Sem alterações, nada foi salvo</value>
+  </data>
+  <data name="UnableToSpawnFollowers" xml:space="preserve">
+    <value>Não foi possível criar companheiros</value>
+  </data>
+  <data name="Gone" xml:space="preserve">
+    <value>Sumido</value>
+  </data>
+  <data name="HalfChopped" xml:space="preserve">
+    <value>Meio Cortado</value>
+  </data>
+  <data name="NoTreesRegrown" xml:space="preserve">
+    <value>Nenhuma árvore no estado {0} para regenerar</value>
+  </data>
+  <data name="TreesRegrown" xml:space="preserve">
+    <value>{0} árvores no estado {1} regeneradas, salve para mantê-las</value>
+  </data>
+  <data name="RegrowPercent" xml:space="preserve">
+    <value>Porcentagem a Regenerar</value>
+  </data>
+  <data name="Stumps" xml:space="preserve">
+    <value>Tocos</value>
+  </data>
+  <data name="ContainersReset" xml:space="preserve">
+    <value>{0} caixas reiniciadas, salve para mantê-las</value>
+  </data>
+  <data name="NothingToReset" xml:space="preserve">
+    <value>Nada para reiniciar</value>
+  </data>
+  <data name="TrapsReset" xml:space="preserve">
+    <value>{0} armadilhas reiniciadas, salve para mantê-las</value>
+  </data>
+  <data name="ChangeFolder" xml:space="preserve">
+    <value>Trocar Pasta</value>
+  </data>
+  <data name="UseDefaultFolder" xml:space="preserve">
+    <value>Pasta Padrão</value>
+  </data>
+  <data name="SelectSavesFolder" xml:space="preserve">
+    <value>Escolha a Pasta Saves do Sons Of The Forest</value>
+  </data>
+  <data name="Location" xml:space="preserve">
+    <value>Local</value>
+  </data>
+  <data name="Singleplayer" xml:space="preserve">
+    <value>Um Jogador</value>
+  </data>
+  <data name="UnableToCopySavegame" xml:space="preserve">
+    <value>Não foi possível copiar o save, veja o log</value>
+  </data>
+  <data name="CoreGameCompleted" xml:space="preserve">
+    <value>História Concluída</value>
+  </data>
+  <data name="CreativeModeItem" xml:space="preserve">
+    <value>Item do Modo Criativo</value>
+  </data>
+  <data name="EscapedIsland" xml:space="preserve">
+    <value>Escapou da Ilha</value>
+  </data>
+  <data name="PlayerProfileNotFound" xml:space="preserve">
+    <value>Nenhum perfil de jogador em {0}</value>
+  </data>
+  <data name="CloneAtPlayer" xml:space="preserve">
+    <value>Clonar no Jogador</value>
+  </data>
+  <data name="CloneAtPlayerTooltip" xml:space="preserve">
+    <value>Cria uma cópia onde o jogador está</value>
+  </data>
+  <data name="RemoveAllCopies" xml:space="preserve">
+    <value>Remover Todas as Cópias</value>
+  </data>
+  <data name="RemoveAllCopiesTooltip" xml:space="preserve">
+    <value>Remove do mapa cada cópia deste tipo</value>
+  </data>
+  <data name="ClonesRemoved" xml:space="preserve">
+    <value>{0} cópias de {1} removidas</value>
+  </data>
+  <data name="NothingToRemove" xml:space="preserve">
+    <value>Nada para remover</value>
+  </data>
+  <data name="NothingToMove" xml:space="preserve">
+    <value>Nada para mover</value>
+  </data>
+  <data name="ObjectCloned" xml:space="preserve">
+    <value>{0} copiado para o jogador, salve para mantê-lo</value>
+  </data>
+  <data name="UnknownWorldItem" xml:space="preserve">
+    <value>Item Desconhecido {0}</value>
+  </data>
+  <data name="WorldItem" xml:space="preserve">
+    <value>Item do Mundo</value>
+  </data>
+  <data name="UnableToSave" xml:space="preserve">
+    <value>Não foi possível salvar: {0}</value>
+  </data>
+  <data name="DiscardChangesTitle" xml:space="preserve">
+    <value>Descartar Alterações Não Salvas</value>
+  </data>
+  <data name="DiscardChangesText" xml:space="preserve">
+    <value>Há alterações não salvas.\nSim as descarta.\nNão as mantém para você salvar antes</value>
+  </data>
+  <data name="OpenBackupFolder" xml:space="preserve">
+    <value>Abrir Pasta de Backups</value>
+  </data>
+  <data name="RestoredBackup" xml:space="preserve">
+    <value>Backup de {0} Restaurado</value>
+  </data>
+  <data name="UnableToOpen" xml:space="preserve">
+    <value>Não foi possível abrir o save, veja o log</value>
+  </data>
+  <data name="UnableToRestoreBackup" xml:space="preserve">
+    <value>Não foi possível restaurar o backup. Feche o jogo antes ou veja o log</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Idioma</value>
+  </data>
+  <data name="ClassificationAnimal" xml:space="preserve">
+    <value>Animal</value>
+  </data>
+  <data name="ClassificationCannibal" xml:space="preserve">
+    <value>Canibal</value>
+  </data>
+  <data name="ClassificationCreep" xml:space="preserve">
+    <value>Mutante</value>
+  </data>
+  <data name="ClassificationHuman" xml:space="preserve">
+    <value>Humano</value>
+  </data>
+  <data name="ClassificationMuddyCannibal" xml:space="preserve">
+    <value>Canibal Enlameado</value>
+  </data>
+  <data name="ClassificationMisc" xml:space="preserve">
+    <value>Outros</value>
+  </data>
+  <data name="GenderFemale" xml:space="preserve">
+    <value>Mulher</value>
+  </data>
+  <data name="GenderMale" xml:space="preserve">
+    <value>Homem</value>
+  </data>
+  <data name="InfluenceCannibal" xml:space="preserve">
+    <value>NPCs Canibais</value>
+  </data>
+  <data name="InfluenceCreepy" xml:space="preserve">
+    <value>NPCs Mutantes</value>
+  </data>
+  <data name="InfluencePlayer" xml:space="preserve">
+    <value>Jogador</value>
+  </data>
+  <data name="ActorState0" xml:space="preserve">
+    <value>Qualquer</value>
+  </data>
+  <data name="ActorState1" xml:space="preserve">
+    <value>Combate</value>
+  </data>
+  <data name="ActorState2" xml:space="preserve">
+    <value>Mundo</value>
+  </data>
+  <data name="ActorState3" xml:space="preserve">
+    <value>Dormindo</value>
+  </data>
+  <data name="ActorState4" xml:space="preserve">
+    <value>Morrendo</value>
+  </data>
+  <data name="ActorState5" xml:space="preserve">
+    <value>Ferido</value>
+  </data>
+  <data name="ActorState6" xml:space="preserve">
+    <value>Morto</value>
+  </data>
+  <data name="ActorState7" xml:space="preserve">
+    <value>Voando</value>
+  </data>
+  <data name="ActorState8" xml:space="preserve">
+    <value>Espreitando</value>
+  </data>
+  <data name="ActorState20" xml:space="preserve">
+    <value>Queimando</value>
+  </data>
+  <data name="ActorState21" xml:space="preserve">
+    <value>Eletrocutado</value>
+  </data>
+  <data name="ActorState22" xml:space="preserve">
+    <value>Nadando</value>
+  </data>
+  <data name="ActorState23" xml:space="preserve">
+    <value>Atordoado ou Atingido</value>
+  </data>
+  <data name="ActorState24" xml:space="preserve">
+    <value>Afogando ou Arremessado</value>
+  </data>
+  <data name="ActorState25" xml:space="preserve">
+    <value>No Carrinho de Golfe</value>
+  </data>
+  <data name="ActorState40" xml:space="preserve">
+    <value>Numa Pedra</value>
+  </data>
+  <data name="ActorState41" xml:space="preserve">
+    <value>Numa Árvore</value>
+  </data>
+  <data name="ActorState42" xml:space="preserve">
+    <value>Sob as Folhas</value>
+  </data>
+  <data name="ActorState43" xml:space="preserve">
+    <value>Andando na Parede</value>
+  </data>
+  <data name="ActorState44" xml:space="preserve">
+    <value>Capturado</value>
+  </data>
+  <data name="ActorState45" xml:space="preserve">
+    <value>Intro de Chefe</value>
+  </data>
+  <data name="ActorState46" xml:space="preserve">
+    <value>Intro de Surgimento</value>
+  </data>
+  <data name="ActorState47" xml:space="preserve">
+    <value>No Teto</value>
+  </data>
+  <data name="ActorState48" xml:space="preserve">
+    <value>Numa Caverna</value>
+  </data>
+  <data name="ActorState50" xml:space="preserve">
+    <value>Saindo do Combate</value>
+  </data>
+  <data name="ActorState51" xml:space="preserve">
+    <value>Removido</value>
+  </data>
+  <data name="ActorStateNone" xml:space="preserve">
+    <value>Nenhum</value>
+  </data>
+  <data name="ItemTypeAmmo" xml:space="preserve">
+    <value>Munição</value>
+  </data>
+  <data name="ItemTypeArmor" xml:space="preserve">
+    <value>Armadura</value>
+  </data>
+  <data name="ItemTypeAttachment" xml:space="preserve">
+    <value>Acessório</value>
+  </data>
+  <data name="ItemTypeBlueprint" xml:space="preserve">
+    <value>Planta</value>
+  </data>
+  <data name="ItemTypeBodyPart" xml:space="preserve">
+    <value>Parte do Corpo</value>
+  </data>
+  <data name="ItemTypeBook" xml:space="preserve">
+    <value>Livro</value>
+  </data>
+  <data name="ItemTypeClothes" xml:space="preserve">
+    <value>Roupas</value>
+  </data>
+  <data name="ItemTypeConsumable" xml:space="preserve">
+    <value>Consumível</value>
+  </data>
+  <data name="ItemTypeContainer" xml:space="preserve">
+    <value>Recipiente</value>
+  </data>
+  <data name="ItemTypeDocument" xml:space="preserve">
+    <value>Documento</value>
+  </data>
+  <data name="ItemTypeElectricity" xml:space="preserve">
+    <value>Eletricidade</value>
+  </data>
+  <data name="ItemTypeEquipment" xml:space="preserve">
+    <value>Equipamento</value>
+  </data>
+  <data name="ItemTypeFood" xml:space="preserve">
+    <value>Comida</value>
+  </data>
+  <data name="ItemTypeKey" xml:space="preserve">
+    <value>Chave</value>
+  </data>
+  <data name="ItemTypeLog" xml:space="preserve">
+    <value>Tronco</value>
+  </data>
+  <data name="ItemTypeMisc" xml:space="preserve">
+    <value>Outros</value>
+  </data>
+  <data name="ItemTypePlant" xml:space="preserve">
+    <value>Planta</value>
+  </data>
+  <data name="ItemTypePrinted" xml:space="preserve">
+    <value>Impresso</value>
+  </data>
+  <data name="ItemTypeSeed" xml:space="preserve">
+    <value>Semente</value>
+  </data>
+  <data name="ItemTypeTool" xml:space="preserve">
+    <value>Ferramenta</value>
+  </data>
+  <data name="ItemTypeTrophy" xml:space="preserve">
+    <value>Troféu</value>
+  </data>
+  <data name="ItemTypeWeapon" xml:space="preserve">
+    <value>Arma</value>
+  </data>
+  <data name="ItemTypeWeaponMod" xml:space="preserve">
+    <value>Melhoria de Arma</value>
+  </data>
+  <data name="RequirementsFilterAll" xml:space="preserve">
+    <value>Tudo</value>
+  </data>
+  <data name="RequirementsFilterAccessibleOnly" xml:space="preserve">
+    <value>Só Acessíveis</value>
+  </data>
+  <data name="RequirementsFilterInaccessibleOnly" xml:space="preserve">
+    <value>Só Inacessíveis</value>
+  </data>
+  <data name="SpawnPatternCross" xml:space="preserve">
+    <value>Cruz</value>
+  </data>
+  <data name="SpawnPatternGrid" xml:space="preserve">
+    <value>Grade</value>
+  </data>
+  <data name="SpawnPatternHorizontalLine" xml:space="preserve">
+    <value>Linha Horizontal</value>
+  </data>
+  <data name="SpawnPatternRandom" xml:space="preserve">
+    <value>Aleatório</value>
+  </data>
+  <data name="SpawnPatternRectangle" xml:space="preserve">
+    <value>Retângulo</value>
+  </data>
+  <data name="SpawnPatternVerticalLine" xml:space="preserve">
+    <value>Linha Vertical</value>
+  </data>
+  <data name="TeleportTargetPlayer" xml:space="preserve">
+    <value>Jogador</value>
+  </data>
+  <data name="TeleportTargetKelvin" xml:space="preserve">
+    <value>Kelvin</value>
+  </data>
+  <data name="TeleportTargetVirginia" xml:space="preserve">
+    <value>Virginia</value>
+  </data>
+  <data name="PoiGroupAmmo" xml:space="preserve">
+    <value>Munição</value>
+  </data>
+  <data name="PoiGroupBunkers" xml:space="preserve">
+    <value>Bunkers</value>
+  </data>
+  <data name="PoiGroupCamps" xml:space="preserve">
+    <value>Acampamentos</value>
+  </data>
+  <data name="PoiGroupCannibalVillages" xml:space="preserve">
+    <value>Aldeias Canibais</value>
+  </data>
+  <data name="PoiGroupCaves" xml:space="preserve">
+    <value>Cavernas</value>
+  </data>
+  <data name="PoiGroupCrates" xml:space="preserve">
+    <value>Caixas</value>
+  </data>
+  <data name="PoiGroupDoors" xml:space="preserve">
+    <value>Portas</value>
+  </data>
+  <data name="PoiGroupHelicopters" xml:space="preserve">
+    <value>Helicópteros</value>
+  </data>
+  <data name="PoiGroupInfo" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="PoiGroupLakes" xml:space="preserve">
+    <value>Lagos</value>
+  </data>
+  <data name="PoiGroupLaptops" xml:space="preserve">
+    <value>Laptops</value>
+  </data>
+  <data name="PoiGroupPonds" xml:space="preserve">
+    <value>Lagoas</value>
+  </data>
+  <data name="PoiGroupPrinters" xml:space="preserve">
+    <value>Impressoras 3D</value>
+  </data>
+  <data name="PoiGroupSupply" xml:space="preserve">
+    <value>Suprimentos</value>
+  </data>
+  <data name="PoiGroupVillages" xml:space="preserve">
+    <value>Aldeias</value>
+  </data>
+  <data name="SettingGameName" xml:space="preserve">
+    <value>Nome do Jogo</value>
+  </data>
+  <data name="SettingSaveTime" xml:space="preserve">
+    <value>Hora do Save</value>
+  </data>
+  <data name="SettingGameType" xml:space="preserve">
+    <value>Tipo de Jogo</value>
+  </data>
+  <data name="SettingGameDays" xml:space="preserve">
+    <value>Dias</value>
+  </data>
+  <data name="SettingGameHours" xml:space="preserve">
+    <value>Horas</value>
+  </data>
+  <data name="SettingGameMinutes" xml:space="preserve">
+    <value>Minutos</value>
+  </data>
+  <data name="SettingGameSeconds" xml:space="preserve">
+    <value>Segundos</value>
+  </data>
+  <data name="SettingGameMilliseconds" xml:space="preserve">
+    <value>Milissegundos</value>
+  </data>
+  <data name="SettingIsVirginiaDead" xml:space="preserve">
+    <value>Virginia Morta</value>
+  </data>
+  <data name="SettingIsRobbyDead" xml:space="preserve">
+    <value>Kelvin Morto</value>
+  </data>
+  <data name="SettingCrashSite" xml:space="preserve">
+    <value>Local da Queda</value>
+  </data>
+  <data name="SettingIsRaining" xml:space="preserve">
+    <value>Chovendo</value>
+  </data>
+  <data name="SettingRainBlocked" xml:space="preserve">
+    <value>Chuva Bloqueada</value>
+  </data>
+  <data name="SettingCloudState" xml:space="preserve">
+    <value>Nuvens</value>
+  </data>
+  <data name="SettingCurrentRainType" xml:space="preserve">
+    <value>Tipo de Chuva</value>
+  </data>
+  <data name="CrashSiteTree" xml:space="preserve">
+    <value>Árvore</value>
+  </data>
+  <data name="CrashSiteOcean" xml:space="preserve">
+    <value>Oceano</value>
+  </data>
+  <data name="CrashSiteSnow" xml:space="preserve">
+    <value>Neve</value>
+  </data>
+  <data name="CloudsClear" xml:space="preserve">
+    <value>Limpo</value>
+  </data>
+  <data name="CloudsGrowing" xml:space="preserve">
+    <value>Aumentando</value>
+  </data>
+  <data name="CloudsClearing" xml:space="preserve">
+    <value>Abrindo</value>
+  </data>
+  <data name="CloudsRaining" xml:space="preserve">
+    <value>Chovendo</value>
+  </data>
+  <data name="RainLight" xml:space="preserve">
+    <value>Fraca</value>
+  </data>
+  <data name="RainMedium" xml:space="preserve">
+    <value>Média</value>
+  </data>
+  <data name="RainHeavy" xml:space="preserve">
+    <value>Forte</value>
+  </data>
+  <data name="StructureType" xml:space="preserve">
+    <value>Tipo de Estrutura</value>
+  </data>
+  <data name="Restore" xml:space="preserve">
+    <value>Restaurar</value>
+  </data>
+  <data name="Newest" xml:space="preserve">
+    <value>Mais Novo</value>
+  </data>
+  <data name="Oldest" xml:space="preserve">
+    <value>Mais Antigo</value>
+  </data>
+  <data name="ItemPlaterText" xml:space="preserve">
+    <value>O revestimento deixa douradas as estruturas, peças e itens escolhidos. Remover Revestimento desfaz isso</value>
+  </data>
+  <data name="EternalFiresText" xml:space="preserve">
+    <value>Cada fogueira do mundo acende com combustível que nunca acaba</value>
+  </data>
+  <data name="ResetFiresText" xml:space="preserve">
+    <value>Cada fogueira do mundo acende com combustível novo</value>
+  </data>
+  <data name="ResetStructureDamageText" xml:space="preserve">
+    <value>Todos os danos das suas estruturas são reparados</value>
+  </data>
+  <data name="CannibalAngerText" xml:space="preserve">
+    <value>Quanta raiva cada canibal vivo sente de você</value>
+  </data>
+  <data name="ResetContainersText" xml:space="preserve">
+    <value>Caixas, maletas e suprimentos abertos no mundo voltam fechados e cheios</value>
+  </data>
+  <data name="ResetTrapsText" xml:space="preserve">
+    <value>Armadilhas disparadas são armadas de novo</value>
+  </data>
+  <data name="SetToEndgameText" xml:space="preserve">
+    <value>A história conta como concluída, como se você escolhesse ficar na ilha</value>
+  </data>
+  <data name="AddAllText" xml:space="preserve">
+    <value>Cada item que você não tem é adicionado ao inventário</value>
+  </data>
+  <data name="RemoveAllText" xml:space="preserve">
+    <value>Cada item sai do inventário</value>
+  </data>
+  <data name="FillAllStoragesText" xml:space="preserve">
+    <value>Cada armazenamento enche até o máximo</value>
+  </data>
+  <data name="SetAllToRemoveText" xml:space="preserve">
+    <value>Cada estrutura da lista é marcada para remoção, salvar as remove</value>
+  </data>
+  <data name="RemoveConsumedItemsText" xml:space="preserve">
+    <value>Cada entrada desta lista é removida, então esses itens podem aparecer de novo</value>
+  </data>
+  <data name="SettingStartingDayOffset" xml:space="preserve">
+    <value>Deslocamento de Dias da Estação</value>
+  </data>
+  <data name="UpdateNow" xml:space="preserve">
+    <value>Atualizar Agora</value>
+  </data>
+  <data name="Downloading" xml:space="preserve">
+    <value>Baixando</value>
+  </data>
+  <data name="UpdateText" xml:space="preserve">
+    <value>Você tem a versão {0}. Atualizar baixa a nova e reinicia o editor</value>
+  </data>
+  <data name="UpdateFailed" xml:space="preserve">
+    <value>A atualização falhou, tente mais tarde</value>
+  </data>
+  <data name="MultiplayerCheats" xml:space="preserve">
+    <value>Trapaças de Console</value>
+  </data>
+  <data name="MaxHealthFollowsStrength" xml:space="preserve">
+    <value>O jogo define a vida máxima pelo nível de força</value>
+  </data>
+  <data name="ClientSaveHasNoWorld" xml:space="preserve">
+    <value>Um save de cliente só guarda seu jogador, o mundo fica no save do anfitrião</value>
+  </data>
+  <data name="Season" xml:space="preserve">
+    <value>Estação</value>
+  </data>
+  <data name="WhatChanged" xml:space="preserve">
+    <value>Novidades</value>
+  </data>
+  <data name="UpdateFolderProtected" xml:space="preserve">
+    <value>A pasta do editor é protegida, então a página da versão abre para você baixá-la</value>
+  </data>
+  <data name="HeldOnly" xml:space="preserve">
+    <value>Só em Posse</value>
+  </data>
+  <data name="AddToInventory" xml:space="preserve">
+    <value>Adicionar ao Inventário</value>
+  </data>
+  <data name="StrengthLevelInfo" xml:space="preserve">
+    <value>A força aumenta o dano corpo a corpo e a vida máxima. A vida máxima é 100 mais 2 por nível acima de 1</value>
+  </data>
+  <data name="MultiplayerClientInfo" xml:space="preserve">
+    <value>Saves de jogos em que você entrou no servidor de outra pessoa. Só guardam seu próprio jogador, o mundo fica no save do anfitrião</value>
+  </data>
+  <data name="ModeInfo" xml:space="preserve">
+    <value>A dificuldade com que o jogo foi criado. Personalizado libera cada configuração abaixo</value>
+  </data>
+  <data name="UidInfo" xml:space="preserve">
+    <value>O ID que o jogo dá a este save. Ele nunca muda</value>
+  </data>
+  <data name="ConsumableEffectsInfo" xml:space="preserve">
+    <value>Quanto ajudam comida, bebida e remédios. Difícil dá menos</value>
+  </data>
+  <data name="PlayerStatsDamageInfo" xml:space="preserve">
+    <value>Quanto dano fome, sede e cansaço causam</value>
+  </data>
+  <data name="AnimalSpawnRateInfo" xml:space="preserve">
+    <value>Quantos animais vivem na ilha</value>
+  </data>
+  <data name="ColdPenaltiesInfo" xml:space="preserve">
+    <value>Quanto o frio machuca você</value>
+  </data>
+  <data name="BuildingResistanceInfo" xml:space="preserve">
+    <value>Quanto dano suas estruturas aguentam</value>
+  </data>
+  <data name="StatRegenerationPenaltiesInfo" xml:space="preserve">
+    <value>Pouca comida, água ou descanso atrasam a volta da vida</value>
+  </data>
+  <data name="InventoryPauseInfo" xml:space="preserve">
+    <value>O mundo para enquanto o inventário está aberto</value>
+  </data>
+  <data name="ReducedFoodInfo" xml:space="preserve">
+    <value>Menos comida para achar no mundo</value>
+  </data>
+  <data name="ReducedAmmoInfo" xml:space="preserve">
+    <value>Menos munição para achar no mundo</value>
+  </data>
+  <data name="SingleUseContainersInfo" xml:space="preserve">
+    <value>Caixas e maletas ficam vazias depois de abertas</value>
+  </data>
+  <data name="PlayersTriggerTrapsInfo" xml:space="preserve">
+    <value>Armadilhas também disparam com jogadores</value>
+  </data>
+  <data name="CreativeModeInfo" xml:space="preserve">
+    <value>Construa sem coletar materiais</value>
+  </data>
+  <data name="GodModeInfo" xml:space="preserve">
+    <value>Jogadores não sofrem dano</value>
+  </data>
+  <data name="OneHitTreesInfo" xml:space="preserve">
+    <value>Árvores caem com um golpe</value>
+  </data>
+  <data name="InstantBuildingInfo" xml:space="preserve">
+    <value>Estruturas colocadas ficam prontas na hora</value>
+  </data>
+  <data name="NoCuttingsSpawnInfo" xml:space="preserve">
+    <value>Árvores e arbustos cortados não deixam nada</value>
+  </data>
+  <data name="EnemyHealthInfo" xml:space="preserve">
+    <value>Quanta vida os inimigos têm</value>
+  </data>
+  <data name="EnemyDamageInfo" xml:space="preserve">
+    <value>Com que força os inimigos batem</value>
+  </data>
+  <data name="EnemyArmorInfo" xml:space="preserve">
+    <value>Quanto dano a armadura inimiga bloqueia</value>
+  </data>
+  <data name="EnemyAggressionInfo" xml:space="preserve">
+    <value>A rapidez com que os inimigos atacam em vez de observar</value>
+  </data>
+  <data name="EnemySearchPartiesInfo" xml:space="preserve">
+    <value>Com que frequência grupos de inimigos vêm atrás de você</value>
+  </data>
+  <data name="SpawnEnemiesInfo" xml:space="preserve">
+    <value>Desligue para jogar sem inimigos</value>
+  </data>
+  <data name="StartingSeasonInfo" xml:space="preserve">
+    <value>A estação em que o jogo começou. O deslocamento de dias decide a atual</value>
+  </data>
+  <data name="SeasonLengthInfo" xml:space="preserve">
+    <value>Quantos dias dura uma estação. Todas têm a mesma duração</value>
+  </data>
+  <data name="DayLengthInfo" xml:space="preserve">
+    <value>Quanto dura um dia em tempo real</value>
+  </data>
+  <data name="PrecipitationFrequencyInfo" xml:space="preserve">
+    <value>Com que frequência chove ou neva</value>
+  </data>
+  <data name="PvpDamageInfo" xml:space="preserve">
+    <value>Se os jogadores podem se ferir no multijogador</value>
+  </data>
+  <data name="MultiplayerCheatsInfo" xml:space="preserve">
+    <value>Deixa os jogadores usarem trapaças de console no multijogador</value>
+  </data>
+  <data name="SettingGameNameInfo" xml:space="preserve">
+    <value>O nome na lista de saves do jogo</value>
+  </data>
+  <data name="SettingGameTypeInfo" xml:space="preserve">
+    <value>A dificuldade com que este save começou</value>
+  </data>
+  <data name="SettingSaveTimeInfo" xml:space="preserve">
+    <value>Quando o jogo salvou pela última vez</value>
+  </data>
+  <data name="SettingGameDaysInfo" xml:space="preserve">
+    <value>Dias sobrevividos. A estação vem deles</value>
+  </data>
+  <data name="SettingCrashSiteInfo" xml:space="preserve">
+    <value>Onde o helicóptero caiu no começo</value>
+  </data>
+  <data name="SettingIsVirginiaDeadInfo" xml:space="preserve">
+    <value>Se a história trata Virginia como morta</value>
+  </data>
+  <data name="SettingIsRobbyDeadInfo" xml:space="preserve">
+    <value>Se a história trata Kelvin como morto. O jogo o chama de Robby</value>
+  </data>
+  <data name="SettingIsRainingInfo" xml:space="preserve">
+    <value>Se está chovendo agora</value>
+  </data>
+  <data name="SettingRainBlockedInfo" xml:space="preserve">
+    <value>Impede a chuva de começar</value>
+  </data>
+  <data name="SettingCloudStateInfo" xml:space="preserve">
+    <value>O quanto o céu está nublado</value>
+  </data>
+  <data name="SettingCurrentRainTypeInfo" xml:space="preserve">
+    <value>A força da chuva atual</value>
+  </data>
+  <data name="SettingStartingDayOffsetInfo" xml:space="preserve">
+    <value>Dias extras que o jogo conta ao calcular a estação. Mais traz a próxima estação antes, menos mantém esta por mais tempo</value>
+  </data>
+  <data name="UnableToDeleteBackup" xml:space="preserve">
+    <value>Não foi possível apagar o backup</value>
+  </data>
+  <data name="BackupUsage" xml:space="preserve">
+    <value>Os backups usam {0} de {1}. Passando disso, os mais antigos são apagados, menos o primeiro e os fixados</value>
+  </data>
+  <data name="BackupsPruned" xml:space="preserve">
+    <value>Os backups passaram de {1}, então os {0} mais antigos foram apagados. O primeiro fica</value>
+  </data>
+  <data name="ToolsHint" xml:space="preserve">
+    <value>As ferramentas mudam o save aberto e precisam de Salvar, como qualquer edição. O Revestimento, os Desbloqueios e Copiar Jogador salvam na hora</value>
+  </data>
+  <data name="ToolsWorld" xml:space="preserve">
+    <value>Mundo</value>
+  </data>
+  <data name="ToolsPlayer" xml:space="preserve">
+    <value>Jogador</value>
+  </data>
+  <data name="SavesAtOnce" xml:space="preserve">
+    <value>Salva na Hora</value>
+  </data>
+  <data name="HostSaveOnly" xml:space="preserve">
+    <value>Só Save do Anfitrião</value>
+  </data>
+  <data name="RegrowTreesText" xml:space="preserve">
+    <value>Árvores cortadas crescem de novo, tantas quanto a parte que você escolher</value>
+  </data>
+  <data name="WorldItemClonerText" xml:space="preserve">
+    <value>Copia um carrinho de golfe, planador, Knight V ou rádio para onde você está</value>
+  </data>
+  <data name="ConsumedItemsText" xml:space="preserve">
+    <value>O jogo lembra os itens de uso único que você usou. Removê-los deixa usar de novo</value>
+  </data>
+  <data name="UnlocksText" xml:space="preserve">
+    <value>Desbloqueios do perfil como o final e o Modo Criativo, para todos os saves</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Aplicar</value>
+  </data>
+  <data name="RemoveSelected" xml:space="preserve">
+    <value>Remover Selecionados</value>
+  </data>
+  <data name="LoadPreset" xml:space="preserve">
+    <value>Carregar Predefinição</value>
+  </data>
+  <data name="LoadPresetText" xml:space="preserve">
+    <value>Cada configuração recebe os valores desse modo. O modo vira Personalizado, então você ainda pode mudar cada uma</value>
+  </data>
+  <data name="SavegameDay" xml:space="preserve">
+    <value>Dia {0}</value>
+  </data>
+  <data name="SavegameCrashSite" xml:space="preserve">
+    <value>Queda: {0}</value>
+  </data>
+  <data name="SavegameStrength" xml:space="preserve">
+    <value>Força {0}</value>
+  </data>
+  <data name="SavegameItems" xml:space="preserve">
+    <value>{0} Itens</value>
+  </data>
+  <data name="MapKeyboardHint" xml:space="preserve">
+    <value>Mapa, as setas passam pelos pontos</value>
+  </data>
+  <data name="HostedMultiplayer" xml:space="preserve">
+    <value>Multijogador Hospedado</value>
+  </data>
+  <data name="JoinedMultiplayer" xml:space="preserve">
+    <value>Multijogador Entrado</value>
+  </data>
+  <data name="AndMore" xml:space="preserve">
+    <value>E Mais {0}</value>
+  </data>
+  <data name="ChangeCopies" xml:space="preserve">
+    <value>{0}, {1} Cópias</value>
+  </data>
+  <data name="ChangeRemoved" xml:space="preserve">
+    <value>{0} Removido</value>
+  </data>
+  <data name="CurrentHealthAtMax" xml:space="preserve">
+    <value>A vida máxima limita, suba o nível de força para ir além</value>
+  </data>
+  <data name="SetToMax" xml:space="preserve">
+    <value>No Máximo</value>
+  </data>
+  <data name="ResetToDefault" xml:space="preserve">
+    <value>Restaurar Padrão</value>
+  </data>
+  <data name="NothingToChange" xml:space="preserve">
+    <value>Nada para mudar</value>
+  </data>
+  <data name="UpdateNotVerified" xml:space="preserve">
+    <value>Não deu para verificar o download, então a página da versão abre para você baixá-lo</value>
+  </data>
+  <data name="SavedAfterBackup" xml:space="preserve">
+    <value>Salvo Após Este Backup</value>
+  </data>
+  <data name="ChangesNotRecorded" xml:space="preserve">
+    <value>Não registrado neste backup</value>
+  </data>
+  <data name="DiffersFromNow" xml:space="preserve">
+    <value>Difere de Agora</value>
+  </data>
+  <data name="Comparing" xml:space="preserve">
+    <value>Comparando com o save atual</value>
+  </data>
+  <data name="SameAsNow" xml:space="preserve">
+    <value>Igual ao save atual</value>
+  </data>
+  <data name="UnableToCompare" xml:space="preserve">
+    <value>Não foi possível comparar, um arquivo está em uso</value>
+  </data>
+  <data name="SaveName" xml:space="preserve">
+    <value>Nome do Save</value>
+  </data>
+  <data name="Thumbnail" xml:space="preserve">
+    <value>Miniatura</value>
+  </data>
+  <data name="RevertPage" xml:space="preserve">
+    <value>Reverter Página</value>
+  </data>
+  <data name="RevertPageText" xml:space="preserve">
+    <value>Cada edição não salva em {0} volta a como foi carregada</value>
+  </data>
+  <data name="AngerLevel" xml:space="preserve">
+    <value>Raiva</value>
+  </data>
+  <data name="CannibalAngerNow" xml:space="preserve">
+    <value>Agora {0}% em média</value>
+  </data>
+  <data name="HideMenus" xml:space="preserve">
+    <value>Ocultar Menus</value>
+  </data>
+  <data name="ShowMenus" xml:space="preserve">
+    <value>Mostrar Menus</value>
+  </data>
+  <data name="TeleportCopies" xml:space="preserve">
+    <value>{0}, {1} Cópias</value>
+  </data>
+  <data name="Filters" xml:space="preserve">
+    <value>Filtros</value>
+  </data>
+  <data name="Changes" xml:space="preserve">
+    <value>Alterações</value>
+  </data>
+  <data name="ApplyTo" xml:space="preserve">
+    <value>Aplicar A</value>
+  </data>
+  <data name="ApplyToThis" xml:space="preserve">
+    <value>Este</value>
+  </data>
+  <data name="ApplyToFamily" xml:space="preserve">
+    <value>Família</value>
+  </data>
+  <data name="ApplyToType" xml:space="preserve">
+    <value>Mesmo Tipo</value>
+  </data>
+  <data name="ApplyToEveryone" xml:space="preserve">
+    <value>Todos</value>
+  </data>
+  <data name="SkipFollowers" xml:space="preserve">
+    <value>Deixar Kelvin e Virginia em Paz</value>
+  </data>
+  <data name="ApplyCount" xml:space="preserve">
+    <value>Aplicar a {0}</value>
+  </data>
+  <data name="RemoveCount" xml:space="preserve">
+    <value>Remover {0}</value>
+  </data>
+  <data name="RemoveActorsText" xml:space="preserve">
+    <value>Eles saem do save com suas memórias e os itens que carregam</value>
+  </data>
+  <data name="CloseUnsavedTitle" xml:space="preserve">
+    <value>Fechar sem Salvar</value>
+  </data>
+  <data name="CloseUnsavedText" xml:space="preserve">
+    <value>Há alterações não salvas.\nSim fecha o editor e as descarta.\nNão mantém o editor aberto para você salvar antes</value>
+  </data>
+  <data name="AllStructures" xml:space="preserve">
+    <value>Todas as Estruturas</value>
+  </data>
+  <data name="SelectStructure" xml:space="preserve">
+    <value>Escolha um Tipo de Estrutura</value>
+  </data>
+  <data name="StructuresInfo" xml:space="preserve">
+    <value>Escolha o que salvar faz com cada estrutura. Manter a deixa como está</value>
+  </data>
+  <data name="SetAllTo" xml:space="preserve">
+    <value>Pôr Tudo Em</value>
+  </data>
+  <data name="StructureCountBuilt" xml:space="preserve">
+    <value>{0} Construídas</value>
+  </data>
+  <data name="StructureCountUnfinished" xml:space="preserve">
+    <value>{0} Inacabadas</value>
+  </data>
+  <data name="Built" xml:space="preserve">
+    <value>Construída</value>
+  </data>
+  <data name="UnfinishedState" xml:space="preserve">
+    <value>{0} · {1} / {2}</value>
+  </data>
+  <data name="OnSave" xml:space="preserve">
+    <value>Ao Salvar</value>
+  </data>
+  <data name="MoodFriendly" xml:space="preserve">
+    <value>Amigável</value>
+  </data>
+  <data name="MoodNeutral" xml:space="preserve">
+    <value>Neutro</value>
+  </data>
+  <data name="MoodHostile" xml:space="preserve">
+    <value>Hostil</value>
+  </data>
+  <data name="MoodAfraid" xml:space="preserve">
+    <value>Assustado</value>
+  </data>
+  <data name="SentimentInfo" xml:space="preserve">
+    <value>O quanto gostam do jogador ou do grupo deste cartão, de -100 ódio a 100 amor</value>
+  </data>
+  <data name="SeasonInfo" xml:space="preserve">
+    <value>Cada estação dura os dias que Duração da Estação diz na aba Configuração, então nenhuma dura mais que outra. Clique num dia da barra para torná-lo hoje, o editor calcula o deslocamento</value>
+  </data>
+  <data name="DaysUntilSeasonOf" xml:space="preserve">
+    <value>Dias Até {0}: {1}</value>
+  </data>
+  <data name="SeasonCurrent" xml:space="preserve">
+    <value>Atual</value>
+  </data>
+  <data name="SeasonNew" xml:space="preserve">
+    <value>Novo</value>
+  </data>
+  <data name="SeasonClickHint" xml:space="preserve">
+    <value>Clique num dia para torná-lo hoje</value>
+  </data>
+  <data name="JoinedGameName" xml:space="preserve">
+    <value>{0} {1} Dias</value>
+  </data>
+  <data name="Files" xml:space="preserve">
+    <value>Outros Arquivos</value>
+  </data>
+  <data name="BringToPlayer" xml:space="preserve">
+    <value>Trazer ao Jogador</value>
+  </data>
+  <data name="SpawnWhat" xml:space="preserve">
+    <value>O Que Fazer Surgir</value>
+  </data>
+  <data name="SpawnWhere" xml:space="preserve">
+    <value>Onde</value>
+  </data>
+  <data name="SpawnOffsetInfo" xml:space="preserve">
+    <value>Somado ao destino, em metros. Um pouco acima os mantém fora do chão</value>
+  </data>
+  <data name="SpawnCount" xml:space="preserve">
+    <value>Fazer Surgir {0} {1}</value>
+  </data>
+  <data name="ArmourInInventory" xml:space="preserve">
+    <value>No Inventário</value>
+  </data>
+  <data name="ArmourWorn" xml:space="preserve">
+    <value>Vestida</value>
+  </data>
+  <data name="InInventoryCount" xml:space="preserve">
+    <value>{0} no Inventário</value>
+  </data>
+  <data name="WearArmour" xml:space="preserve">
+    <value>Vestir</value>
+  </data>
+  <data name="Revert" xml:space="preserve">
+    <value>Reverter</value>
+  </data>
+  <data name="ArmorCount" xml:space="preserve">
+    <value>Armadura, {0} de 10</value>
+  </data>
+  <data name="ArmorInfo" xml:space="preserve">
+    <value>O jogo põe cada peça vestida no corpo sozinho, até 10, então não há parte do corpo para escolher. Desequipar devolve uma peça ao inventário, Apagar a remove de vez</value>
+  </data>
+  <data name="SetToDefaultDurabilityOf" xml:space="preserve">
+    <value>Durabilidade Padrão: {0}</value>
+  </data>
+  <data name="SetToMaxOf" xml:space="preserve">
+    <value>No Máximo: {0}</value>
+  </data>
+  <data name="Unequip" xml:space="preserve">
+    <value>Desequipar</value>
+  </data>
+  <data name="UnequipText" xml:space="preserve">
+    <value>Desequipar para o Inventário</value>
+  </data>
+  <data name="UnequipFull" xml:space="preserve">
+    <value>O Inventário Já Tem {0}</value>
+  </data>
+  <data name="UnequipUnknown" xml:space="preserve">
+    <value>Sem Item de Inventário para Esta Peça</value>
+  </data>
+  <data name="WearText" xml:space="preserve">
+    <value>Vestir uma Peça</value>
+  </data>
+  <data name="WearNoneLeft" xml:space="preserve">
+    <value>Nenhuma no Inventário</value>
+  </data>
+  <data name="WearAllWorn" xml:space="preserve">
+    <value>Já Vestindo 10 Peças</value>
+  </data>
+  <data name="DeleteArmour" xml:space="preserve">
+    <value>Apagar Peça</value>
+  </data>
+  <data name="DeleteArmourText" xml:space="preserve">
+    <value>A peça some de vez, nem vestida nem no inventário</value>
+  </data>
+  <data name="AddArmour" xml:space="preserve">
+    <value>Adicionar Peça</value>
+  </data>
+  <data name="DeleteBackups" xml:space="preserve">
+    <value>Apagar Backups</value>
+  </data>
+  <data name="DeleteBackupsText" xml:space="preserve">
+    <value>Escolha os backups a apagar. O mais novo sempre fica</value>
+  </data>
+  <data name="AllButNewest" xml:space="preserve">
+    <value>Todos Menos o Mais Novo</value>
+  </data>
+  <data name="DeleteCount" xml:space="preserve">
+    <value>Apagar {0}</value>
+  </data>
+  <data name="DeleteBackupsConfirm" xml:space="preserve">
+    <value>{0} backups são apagados de vez</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Voltar</value>
+  </data>
+  <data name="CannibalAngerDialogText" xml:space="preserve">
+    <value>Cada canibal vivo recebe esta raiva de você e não gosta de você na mesma medida. Em 0 eles também esquecem suas mortes, as árvores que você cortou e suas visitas às aldeias, então se acalmam de verdade</value>
+  </data>
+  <data name="FollowersStayOutside" xml:space="preserve">
+    <value>Companheiros não podem seguir você em cavernas, saia da caverna antes</value>
+  </data>
+  <data name="NoArrival" xml:space="preserve">
+    <value>Nenhum lugar para surgir: você está numa caverna e nenhum companheiro está lá fora</value>
+  </data>
+  <data name="ResetFilters" xml:space="preserve">
+    <value>Limpar Filtros</value>
+  </data>
+  <data name="AlreadyThere" xml:space="preserve">
+    <value>Já Está Lá</value>
+  </data>
+  <data name="MoveAnchor" xml:space="preserve">
+    <value>Mover Âncora</value>
+  </data>
+  <data name="RemoveZipline" xml:space="preserve">
+    <value>Remover Tirolesa</value>
+  </data>
+  <data name="ClickAnchorSpot" xml:space="preserve">
+    <value>Clique no mapa onde vai a âncora</value>
+  </data>
+  <data name="ClickZiplineEnd" xml:space="preserve">
+    <value>Clique no mapa onde a tirolesa termina</value>
+  </data>
+  <data name="PointsHere" xml:space="preserve">
+    <value>{0} Pontos Aqui</value>
+  </data>
+  <data name="MorePointsHere" xml:space="preserve">
+    <value>Mais {0}, aproxime para alcançá-los</value>
+  </data>
+  <data name="HeightGuessed" xml:space="preserve">
+    <value>O mapa não conhece alturas, então esta vem do ponto conhecido mais próximo</value>
+  </data>
+  <data name="UnfinishedAdded" xml:space="preserve">
+    <value>Inacabada · {0} Adicionado</value>
+  </data>
+  <data name="ZiplinesOnMap" xml:space="preserve">
+    <value>As tirolesas mudam no mapa</value>
+  </data>
+  <data name="StructureUnknown" xml:space="preserve">
+    <value>O editor não sabe do que isto precisa, então não pode mudá-lo</value>
+  </data>
+  <data name="GameFollowersStay" xml:space="preserve">
+    <value>Kelvin e Virginia do Jogo Ficam</value>
+  </data>
+  <data name="StartingUpdate" xml:space="preserve">
+    <value>Iniciando a Atualização</value>
+  </data>
+  <data name="DownloadedOf" xml:space="preserve">
+    <value>{0} de {1}</value>
+  </data>
+  <data name="UpdatingTitle" xml:space="preserve">
+    <value>Atualizando</value>
+  </data>
+  <data name="UpdatingText" xml:space="preserve">
+    <value>O editor fecha sozinho quando a atualização terminar de baixar</value>
+  </data>
+  <data name="Duplicate" xml:space="preserve">
+    <value>Duplicar</value>
+  </data>
+  <data name="DuplicateToSingleplayer" xml:space="preserve">
+    <value>Duplicar para Um Jogador</value>
+  </data>
+  <data name="DuplicateToSingleplayerText" xml:space="preserve">
+    <value>Este mundo, como foi salvo por último, é copiado para seus saves de um jogador. O original fica como está</value>
+  </data>
+  <data name="DuplicateToMultiplayer" xml:space="preserve">
+    <value>Duplicar para Multijogador Hospedado</value>
+  </data>
+  <data name="DuplicateToMultiplayerText" xml:space="preserve">
+    <value>Este mundo, como foi salvo por último, é copiado para seus saves multijogador hospedados. O original fica como está</value>
+  </data>
+  <data name="SavegameDuplicated" xml:space="preserve">
+    <value>Save duplicado</value>
+  </data>
+  <data name="OneBackup" xml:space="preserve">
+    <value>{0} Backup</value>
+  </data>
+  <data name="BackupCount" xml:space="preserve">
+    <value>{0} Backups</value>
+  </data>
+  <data name="DeleteCopy" xml:space="preserve">
+    <value>Apagar Cópia</value>
+  </data>
+  <data name="DeleteCopyText" xml:space="preserve">
+    <value>Esta cópia vai para a Lixeira com os backups do próprio jogo. Apague com o jogo aberto, ou o Steam Cloud pode trazê-la de volta</value>
+  </data>
+  <data name="CopyDeleted" xml:space="preserve">
+    <value>Cópia movida para a Lixeira</value>
+  </data>
+  <data name="UnableToDeleteCopy" xml:space="preserve">
+    <value>Não foi possível apagar a cópia, veja o log</value>
+  </data>
+  <data name="SavegameGone" xml:space="preserve">
+    <value>Este save não existe mais, a lista foi atualizada</value>
+  </data>
+  <data name="NearPlayer" xml:space="preserve">
+    <value>Perto do Jogador</value>
+  </data>
+  <data name="AnyDistance" xml:space="preserve">
+    <value>Qualquer Distância</value>
+  </data>
+  <data name="ExportZip" xml:space="preserve">
+    <value>Exportar como Zip</value>
+  </data>
+  <data name="SavegameExported" xml:space="preserve">
+    <value>Save exportado</value>
+  </data>
+  <data name="UnableToExport" xml:space="preserve">
+    <value>Não foi possível exportar o save, veja o log</value>
+  </data>
+  <data name="NormalText" xml:space="preserve">
+    <value>O jogo como deve ser jogado</value>
+  </data>
+  <data name="HardText" xml:space="preserve">
+    <value>Inimigos mais duros e sobrevivência mais dura</value>
+  </data>
+  <data name="HardSurvivalText" xml:space="preserve">
+    <value>Difícil, com sobrevivência mais dura e menos suprimentos</value>
+  </data>
+  <data name="PeacefulText" xml:space="preserve">
+    <value>Sem inimigos, só sobrevivência</value>
+  </data>
+  <data name="ModeCreativeText" xml:space="preserve">
+    <value>Construa livre sem coletar</value>
+  </data>
+  <data name="ModeCustomText" xml:space="preserve">
+    <value>Escolha cada configuração você mesmo</value>
+  </data>
+  <data name="RestoreBackupOf" xml:space="preserve">
+    <value>Restaurar Backup: {0}</value>
+  </data>
+  <data name="TimeOfDay" xml:space="preserve">
+    <value>Hora do Dia</value>
+  </data>
+  <data name="EmptySlot" xml:space="preserve">
+    <value>Vazio</value>
+  </data>
+  <data name="ScrollToTop" xml:space="preserve">
+    <value>Voltar ao Topo</value>
+  </data>
+  <data name="LockedCount" xml:space="preserve">
+    <value>Travadas: {0}</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Exportar</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Importar</value>
+  </data>
+  <data name="ImportInventory" xml:space="preserve">
+    <value>Importar Inventário</value>
+  </data>
+  <data name="ImportInventoryText" xml:space="preserve">
+    <value>O inventário vira a lista do arquivo, itens que faltam são removidos. Nada é gravado até Salvar</value>
+  </data>
+  <data name="ImportedItems" xml:space="preserve">
+    <value>{0} itens importados</value>
+  </data>
+  <data name="NothingToImport" xml:space="preserve">
+    <value>O arquivo não lista itens conhecidos</value>
+  </data>
+  <data name="InventoryExported" xml:space="preserve">
+    <value>Inventário exportado</value>
+  </data>
+  <data name="UnableToExportInventory" xml:space="preserve">
+    <value>Não foi possível exportar o inventário, veja o log</value>
+  </data>
+  <data name="UnableToReadFile" xml:space="preserve">
+    <value>Não foi possível ler o arquivo</value>
+  </data>
+  <data name="ImportExport" xml:space="preserve">
+    <value>Importar ou Exportar</value>
+  </data>
+  <data name="Progress" xml:space="preserve">
+    <value>Progresso</value>
+  </data>
+  <data name="Collectibles" xml:space="preserve">
+    <value>Colecionáveis</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Estatísticas</value>
+  </data>
+  <data name="Bunkers" xml:space="preserve">
+    <value>Bunkers</value>
+  </data>
+  <data name="ActionCameraVideos" xml:space="preserve">
+    <value>Vídeos da Câmera de Ação</value>
+  </data>
+  <data name="MissingSoldiers" xml:space="preserve">
+    <value>Soldados Desaparecidos</value>
+  </data>
+  <data name="SoldierBuried" xml:space="preserve">
+    <value>Enterrado</value>
+  </data>
+  <data name="SoldierHanging" xml:space="preserve">
+    <value>Pendurado</value>
+  </data>
+  <data name="SoldierRaft" xml:space="preserve">
+    <value>Na Jangada</value>
+  </data>
+  <data name="BlueprintPages" xml:space="preserve">
+    <value>Páginas de Plantas</value>
+  </data>
+  <data name="FoundOf" xml:space="preserve">
+    <value>{0} de {1} Encontrados</value>
+  </data>
+  <data name="Found" xml:space="preserve">
+    <value>Encontrado</value>
+  </data>
+  <data name="NotFoundYet" xml:space="preserve">
+    <value>Ainda Não Encontrado</value>
+  </data>
+  <data name="DaysSurvived" xml:space="preserve">
+    <value>Dias Sobrevividos</value>
+  </data>
+  <data name="Kills" xml:space="preserve">
+    <value>Mortes</value>
+  </data>
+  <data name="TreesCut" xml:space="preserve">
+    <value>Árvores Cortadas</value>
+  </data>
+  <data name="ItemsCrafted" xml:space="preserve">
+    <value>Fabricados</value>
+  </data>
+  <data name="ItemsUsed" xml:space="preserve">
+    <value>Usados</value>
+  </data>
+  <data name="Stats" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Armor" xml:space="preserve">
+    <value>Armadura</value>
+  </data>
+  <data name="CopyPlayer" xml:space="preserve">
+    <value>Copiar Jogador</value>
+  </data>
+  <data name="CopyPlayerText" xml:space="preserve">
+    <value>Seus status, inventário, armadura e roupa vão para outro save, também um jogo em que você entrou</value>
+  </data>
+  <data name="CopyPlayerHint" xml:space="preserve">
+    <value>Copia seu jogador como foi salvo por último. O outro save recebe um backup antes</value>
+  </data>
+  <data name="WhatToCopy" xml:space="preserve">
+    <value>O Que Copiar</value>
+  </data>
+  <data name="CopyIntoSavegame" xml:space="preserve">
+    <value>Para o Save</value>
+  </data>
+  <data name="ReadingSavegames" xml:space="preserve">
+    <value>Lendo os saves</value>
+  </data>
+  <data name="NoOtherSavegames" xml:space="preserve">
+    <value>Nenhum outro save para copiar</value>
+  </data>
+  <data name="Copy" xml:space="preserve">
+    <value>Copiar</value>
+  </data>
+  <data name="CopyPlayerConfirm" xml:space="preserve">
+    <value>O jogador em {0} é substituído. Ele recebe um backup antes</value>
+  </data>
+  <data name="PlayerCopied" xml:space="preserve">
+    <value>Jogador copiado para {0}</value>
+  </data>
+  <data name="NothingCopied" xml:space="preserve">
+    <value>Nada copiado, {0} não tem nenhum desses arquivos de jogador</value>
+  </data>
+  <data name="UnableToCopyPlayer" xml:space="preserve">
+    <value>Não foi possível copiar o jogador</value>
+  </data>
+  <data name="CopiedPlayerFrom" xml:space="preserve">
+    <value>Jogador Copiado de {0}</value>
+  </data>
+  <data name="RipenGardens" xml:space="preserve">
+    <value>Amadurecer Hortas</value>
+  </data>
+  <data name="RipenGardensText" xml:space="preserve">
+    <value>Cada planta ainda crescendo nas suas hortas fica pronta para colher</value>
+  </data>
+  <data name="FillPrinters" xml:space="preserve">
+    <value>Encher Impressoras 3D</value>
+  </data>
+  <data name="FillPrintersText" xml:space="preserve">
+    <value>Cada impressora 3D recebe 1.000 ml de resina, o bastante para qualquer impressão</value>
+  </data>
+  <data name="GardensRipened" xml:space="preserve">
+    <value>{0} plantas prontas para colher</value>
+  </data>
+  <data name="NothingGrowing" xml:space="preserve">
+    <value>Nada está crescendo</value>
+  </data>
+  <data name="PrintersFilled" xml:space="preserve">
+    <value>{0} impressoras enchidas</value>
+  </data>
+  <data name="PrintersFull" xml:space="preserve">
+    <value>Todas as impressoras já têm resina suficiente</value>
+  </data>
+  <data name="GardenPlots" xml:space="preserve">
+    <value>Hortas</value>
+  </data>
+  <data name="PrinterResin" xml:space="preserve">
+    <value>Resina da Impressora 3D</value>
+  </data>
+  <data name="GameRunningWarning" xml:space="preserve">
+    <value>Sons Of The Forest está aberto, salve enquanto ele está no menu principal</value>
+  </data>
+  <data name="GameRunning" xml:space="preserve">
+    <value>Jogo Aberto</value>
+  </data>
+  <data name="GameSavedOverEdits" xml:space="preserve">
+    <value>O jogo salvou este save. Recarregar mostra o save dele e descarta suas alterações não salvas</value>
+  </data>
+  <data name="ReloadedAfterGameSave" xml:space="preserve">
+    <value>Recarregado, o jogo salvou este save</value>
+  </data>
+  <data name="Reload" xml:space="preserve">
+    <value>Recarregar</value>
+  </data>
+  <data name="PinBackup" xml:space="preserve">
+    <value>Fixar Backup</value>
+  </data>
+  <data name="UnpinBackup" xml:space="preserve">
+    <value>Desafixar Backup</value>
+  </data>
+  <data name="BackupLabel" xml:space="preserve">
+    <value>Rótulo</value>
+  </data>
+  <data name="PinBackupInfo" xml:space="preserve">
+    <value>Um backup fixado nunca é apagado para liberar espaço. Um rótulo também o fixa</value>
+  </data>
+  <data name="UnableToPinBackup" xml:space="preserve">
+    <value>Não foi possível fixar o backup</value>
+  </data>
+  <data name="SaveLoadout" xml:space="preserve">
+    <value>Salvar como Kit</value>
+  </data>
+  <data name="Loadout" xml:space="preserve">
+    <value>Kit</value>
+  </data>
+  <data name="ApplyLoadout" xml:space="preserve">
+    <value>Aplicar Kit</value>
+  </data>
+  <data name="LoadoutSaved" xml:space="preserve">
+    <value>Kit salvo</value>
+  </data>
+  <data name="UnableToSaveLoadout" xml:space="preserve">
+    <value>Não foi possível salvar o kit, veja o log</value>
+  </data>
+  <data name="GuestRoles" xml:space="preserve">
+    <value>Papéis dos Convidados</value>
+  </data>
+  <data name="GuestRolesText" xml:space="preserve">
+    <value>Torne um jogador que entrou no seu jogo convidado, confiável, admin ou banido</value>
+  </data>
+  <data name="GuestRolesDialogText" xml:space="preserve">
+    <value>Cada jogador que entrou neste jogo hospedado, o anfitrião não aparece</value>
+  </data>
+  <data name="NoGuests" xml:space="preserve">
+    <value>Ninguém entrou neste jogo ainda</value>
+  </data>
+  <data name="GuestRolesChanged" xml:space="preserve">
+    <value>Papel de {0} jogadores alterado, salve para mantê-lo</value>
+  </data>
+  <data name="GuestRoleGuest" xml:space="preserve">
+    <value>Convidado</value>
+  </data>
+  <data name="GuestRoleTrusted" xml:space="preserve">
+    <value>Confiável</value>
+  </data>
+  <data name="GuestRoleAdmin" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="GuestRoleBanned" xml:space="preserve">
+    <value>Banido</value>
+  </data>
+</root>

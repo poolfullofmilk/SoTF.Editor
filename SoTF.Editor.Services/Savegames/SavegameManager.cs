@@ -19,6 +19,13 @@ public static class SavegameManager
 
     private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
 
+    // One Unreadable Folder Never Empties The Whole List
+    private static readonly EnumerationOptions s_saveDataSearch = new()
+    {
+        RecurseSubdirectories = true,
+        IgnoreInaccessible = true,
+    };
+
     public static List<Savegame> GetSavegames()
     {
         var savesPath = GetSavePath();
@@ -28,25 +35,30 @@ public static class SavegameManager
             return [];
         }
 
-        // One Unreadable Folder Never Empties The Whole List
         return
         [
             .. Directory
-                .EnumerateFiles(
-                    savesPath,
-                    "SaveData.*",
-                    new EnumerationOptions
-                    {
-                        RecurseSubdirectories = true,
-                        IgnoreInaccessible = true,
-                    }
-                )
+                .EnumerateFiles(savesPath, "SaveData.*", s_saveDataSearch)
                 .Select(Path.GetDirectoryName)
                 .Distinct(StringComparer.OrdinalIgnoreCase)
                 .Select(TryLoad)
                 .OfType<Savegame>()
                 .OrderByDescending(savegame => savegame.LastSaveTime),
         ];
+    }
+
+    public static string SaveDataStamps()
+    {
+        // Every Game Save Rewrites A SaveData File
+        var savesPath = GetSavePath();
+        return Directory.Exists(savesPath)
+            ? string.Join(
+                "|",
+                new DirectoryInfo(savesPath)
+                    .EnumerateFiles("SaveData.*", s_saveDataSearch)
+                    .Select(file => $"{file.FullName} {file.Length} {file.LastWriteTimeUtc.Ticks}")
+            )
+            : "";
     }
 
     private static Savegame? TryLoad(string? path)

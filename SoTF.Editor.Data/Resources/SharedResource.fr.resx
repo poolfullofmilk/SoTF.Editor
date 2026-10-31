@@ -1692,7 +1692,7 @@ Non les garde pour que vous puissiez enregistrer d'abord</value>
     <value>Impossible de supprimer la copie de secours</value>
   </data>
   <data name="BackupUsage" xml:space="preserve">
-    <value>Les copies de secours utilisent {0} sur {1}. Au-delà, les plus anciennes sont supprimées, sauf la toute première</value>
+    <value>Les copies de secours occupent {0} sur {1}. Au-delà, les plus anciennes sont supprimées, sauf la toute première et les épinglées</value>
   </data>
   <data name="BackupsPruned" xml:space="preserve">
     <value>Les copies de secours ont dépassé {1}, les {0} plus anciennes ont donc été supprimées. La toute première reste</value>
@@ -2328,5 +2328,74 @@ Non garde l'éditeur ouvert pour que vous puissiez enregistrer d'abord</value>
   </data>
   <data name="GameRunningWarning" xml:space="preserve">
     <value>Sons Of The Forest est lancé, enregistrez pendant qu'il est au menu principal</value>
+  </data>
+  <data name="GameRunning" xml:space="preserve">
+    <value>Jeu Lancé</value>
+  </data>
+  <data name="GameSavedOverEdits" xml:space="preserve">
+    <value>Le jeu a enregistré cette partie. Recharger affiche sa sauvegarde et abandonne vos modifications non enregistrées</value>
+  </data>
+  <data name="ReloadedAfterGameSave" xml:space="preserve">
+    <value>Rechargée, le jeu a enregistré cette partie</value>
+  </data>
+  <data name="Reload" xml:space="preserve">
+    <value>Recharger</value>
+  </data>
+  <data name="PinBackup" xml:space="preserve">
+    <value>Épingler la Copie de Secours</value>
+  </data>
+  <data name="UnpinBackup" xml:space="preserve">
+    <value>Désépingler la Copie de Secours</value>
+  </data>
+  <data name="BackupLabel" xml:space="preserve">
+    <value>Libellé</value>
+  </data>
+  <data name="PinBackupInfo" xml:space="preserve">
+    <value>Une copie de secours épinglée n'est jamais supprimée pour faire de la place. Un libellé l'épingle aussi</value>
+  </data>
+  <data name="UnableToPinBackup" xml:space="preserve">
+    <value>Impossible d'épingler la copie de secours</value>
+  </data>
+  <data name="SaveLoadout" xml:space="preserve">
+    <value>Enregistrer comme Équipement</value>
+  </data>
+  <data name="Loadout" xml:space="preserve">
+    <value>Équipement</value>
+  </data>
+  <data name="ApplyLoadout" xml:space="preserve">
+    <value>Appliquer l'Équipement</value>
+  </data>
+  <data name="LoadoutSaved" xml:space="preserve">
+    <value>Équipement enregistré</value>
+  </data>
+  <data name="UnableToSaveLoadout" xml:space="preserve">
+    <value>Impossible d'enregistrer l'équipement, voir le journal</value>
+  </data>
+  <data name="GuestRoles" xml:space="preserve">
+    <value>Rôles des Invités</value>
+  </data>
+  <data name="GuestRolesText" xml:space="preserve">
+    <value>Faites d'un joueur qui a rejoint votre partie un invité, un joueur de confiance, un admin ou bannissez-le</value>
+  </data>
+  <data name="GuestRolesDialogText" xml:space="preserve">
+    <value>Chaque joueur qui a rejoint cette partie hébergée, l'hôte n'y figure pas</value>
+  </data>
+  <data name="NoGuests" xml:space="preserve">
+    <value>Personne n'a encore rejoint cette partie</value>
+  </data>
+  <data name="GuestRolesChanged" xml:space="preserve">
+    <value>Rôle de {0} joueurs modifié, enregistrez pour le garder</value>
+  </data>
+  <data name="GuestRoleGuest" xml:space="preserve">
+    <value>Invité</value>
+  </data>
+  <data name="GuestRoleTrusted" xml:space="preserve">
+    <value>De Confiance</value>
+  </data>
+  <data name="GuestRoleAdmin" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="GuestRoleBanned" xml:space="preserve">
+    <value>Banni</value>
   </data>
 </root>

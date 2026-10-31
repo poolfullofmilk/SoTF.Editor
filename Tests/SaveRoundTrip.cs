@@ -309,8 +309,13 @@ try
     // Every Tool Runs Once, Saves, And Leaves Nothing Unsaved
     ToolCheck("Regrow Trees", () => new RegrowTreesViewModel(main.SelectedSavegame!).Save());
     ToolCheck("Eternal Fires", main.EternalFires);
+    Check(main.EternalFires() == AppText.Get("NothingToChange"), "Eternal Fires Change No More");
     ToolCheck("Reset Fires", main.ResetFires);
     ToolCheck("Reset Structure Damage", main.ResetStructureDamage);
+    Check(
+        main.ResetStructureDamage() == AppText.Get("NoStructureDamage"),
+        "Repaired Structures Repair No More"
+    );
     ToolCheck("Reset Traps", main.ResetTraps);
     ToolCheck("Ripen Gardens", main.RipenGardens);
     Check(main.RipenGardens() == AppText.Get("NothingGrowing"), "Ripe Gardens Ripen No More");
@@ -338,6 +343,7 @@ try
             return "";
         }
     );
+    Check(!gameState.SetToEndgame(), "Endgame Twice Changes Nothing");
     ToolCheck(
         "World Item Cloner",
         () =>
@@ -618,6 +624,58 @@ try
     main.RevertPage("Tools");
     Check(!main.HasUnsavedChanges(), "Reverted Tools Leave Nothing Unsaved");
 
+    // Guest Roles Change Only Who Moved, Revert Takes Them Back
+    var rolesPath = Path.Combine(savegamePath, "MultiplayerPlayerRolesSaveData.json");
+    File.WriteAllText(
+        rolesPath,
+        JsonConvert.SerializeObject(
+            new
+            {
+                Version = "0.0.0",
+                Data = new
+                {
+                    MultiplayerPlayerRoles = JsonConvert.SerializeObject(
+                        new
+                        {
+                            Version = "0.0.0",
+                            PlayerList = new[]
+                            {
+                                new
+                                {
+                                    PlayerId = 76561190000000001,
+                                    LastKnownPlayerName = "Bravo",
+                                    PlayerRole = 1,
+                                },
+                                new
+                                {
+                                    PlayerId = 76561190000000002,
+                                    LastKnownPlayerName = "Alpha",
+                                    PlayerRole = 16,
+                                },
+                            },
+                        }
+                    ),
+                },
+            }
+        )
+    );
+    main.ReloadSavegame();
+    var guests = main.ReadGuests();
+    Check(guests is [{ Name: "Alpha", Role: 16 }, { Name: "Bravo" }], "Guests Read By Name");
+    var rolesBefore = main.ToolState();
+    Check(
+        main.SetGuestRoles(new Dictionary<long, int> { [guests[0].SteamId] = 16 })
+            == AppText.Get("NothingToChange"),
+        "Same Role Changes Nothing"
+    );
+    main.SetGuestRoles(new Dictionary<long, int> { [guests[1].SteamId] = 4 });
+    main.FinishTool("GuestRoles", rolesBefore);
+    Check(main.HasChanges("Tools") && main.ReadGuests()[1].Role == 4, "Guest Role Changes");
+    main.RevertPage("Tools");
+    Check(!main.HasUnsavedChanges() && main.ReadGuests()[1].Role == 1, "Reverted Guest Role");
+    File.Delete(rolesPath);
+    main.ReloadSavegame();
+
     // A Clone Shows On The Next Map Visit
     map.Open();
     var worldItems = map.AllPois().OfType<WorldItemPoi>().Count();
@@ -872,6 +930,13 @@ try
         "Backup Difference Names The Setting"
     );
 
+    // A Pinned Backup Keeps Its Label, Never Restored
+    BackupManager.Pin(BackupManager.List(savegamePath)[^1], " Before Boss ");
+    Check(
+        BackupManager.List(savegamePath)[^1].Label == "Before Boss",
+        "Pinned Backup Keeps Its Label"
+    );
+
     // Restore Oldest Brings Back The Sample, Without The List
     var oldest = BackupManager.List(savegamePath)[^1];
     BackupManager.Restore(savegamePath, oldest.Path);
@@ -937,7 +1002,11 @@ try
     );
 
     // Progress Reads Every Collectible Group And The Counts
-    var progress = ProgressReader.Read(main.SelectedSavegame!, gameData);
+    var progress = ProgressReader.Read(
+        main.SelectedSavegame!,
+        gameData,
+        provider.GetRequiredService<PoiLoader>()
+    );
     Check(
         progress.Collectibles.Count == 4
             && progress.Collectibles[0].Items.Count == 7
@@ -945,6 +1014,22 @@ try
             && progress.Kills is not null
             && progress.Crafted.Count > 0,
         "Progress Reads Collectibles And Counts"
+    );
+
+    // Every Bunker And Most Pages Open On Their Map Point
+    var located = progress
+        .Collectibles.SelectMany(group => group.Items)
+        .Where(collectible => collectible.Position is not null)
+        .ToList();
+    Check(
+        progress.Collectibles[0].Items.All(bunker => bunker.Position is not null)
+            && located.Count >= 25
+            && located.All(collectible =>
+            {
+                map.FocusPosition = collectible.Position;
+                return map.TakeFocus() is not null;
+            }),
+        "Progress Collectibles Show On Map"
     );
 
     // A Copied Player Fills The Other Save After A Backup
@@ -985,6 +1070,32 @@ try
             && Throws(() => SavegameManager.DeleteCopy(main.SelectedSavegame!)),
         "Only Copies Count As Copies"
     );
+    // A Repeated Stat Copies Once, The Newest Wins
+    var repeated = new SavegameStore(copied);
+    var repeatedState = repeated.LoadJsonRaw(SavegameStore.FileType.PlayerStateSaveData)!;
+    var repeatedEntries = (JArray)
+        repeatedState.GetJsonBasedToken(Constants.JsonKeys.PlayerState)!["_entries"]!;
+    repeatedEntries.Add(
+        new JObject
+        {
+            ["Name"] = "StrengthLevel",
+            ["SettingType"] = 1,
+            ["IntValue"] = 77,
+        }
+    );
+    repeatedState.MarkAsModified(Constants.JsonKeys.PlayerState);
+    repeated.SaveWrappers(new() { [SavegameStore.FileType.PlayerStateSaveData] = repeatedState });
+    PlayerCopier.Copy(copied, multiplayerCopy.FullPath, [PlayerPart.Stats], "Repeated");
+    var strengthLevels = new SavegameStore(multiplayerCopy.FullPath)
+        .LoadJsonRaw(SavegameStore.FileType.PlayerStateSaveData)!
+        .GetJsonBasedToken(Constants.JsonKeys.PlayerState)!["_entries"]!
+        .Where(entry => entry["Name"]?.ToString() == "StrengthLevel")
+        .ToList();
+    Check(
+        strengthLevels is [var strengthLevel] && strengthLevel["IntValue"]?.Value<int>() == 77,
+        "Repeated Stat Copies Once"
+    );
+
     SavegameManager.DeleteCopy(multiplayerCopy);
     Check(
         !Directory.Exists(multiplayerCopy.FullPath) && Directory.Exists(savegamePath),

@@ -337,6 +337,10 @@ public sealed class MainViewModel(
                     SavegameStore.FileType.GardenPlotManagerSaveData,
                     Constants.JsonKeys.GardenPlotManager
                 ),
+                (
+                    SavegameStore.FileType.MultiplayerPlayerRolesSaveData,
+                    Constants.JsonKeys.MultiplayerPlayerRoles
+                ),
             }.Concat(s_printers.Select(printer => (printer, PrinterKeyOf(printer))))
         )
         {
@@ -728,7 +732,7 @@ public sealed class MainViewModel(
                 is not { } saveDataWrapper
             || saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.StructureDestruction)
                 is not { } structureDestruction
-            || structureDestruction["Data"] is not JArray destructionData
+            || structureDestruction["Data"] is not JArray { Count: > 0 } destructionData
         )
         {
             return AppText.Get("NoStructureDamage");
@@ -797,6 +801,54 @@ public sealed class MainViewModel(
         return AppText.Format("GardensRipened", ripened);
     }
 
+    private JArray? GuestList =>
+        SelectedSavegame
+            ?.SavegameStore.LoadJsonRaw(SavegameStore.FileType.MultiplayerPlayerRolesSaveData)
+            ?.GetJsonBasedToken(Constants.JsonKeys.MultiplayerPlayerRoles)
+            ?["PlayerList"] as JArray;
+
+    // Players Who Joined The Host, The Host Not Among Them
+    public List<Guest> ReadGuests()
+    {
+        return
+        [
+            .. (GuestList ?? [])
+                .Select(player => new Guest(
+                    player["PlayerId"]?.Value<long>() ?? 0,
+                    player["LastKnownPlayerName"]?.ToString() ?? "",
+                    player["PlayerRole"]?.Value<int>() ?? 0
+                ))
+                .OrderBy(guest => guest.Name, StringComparer.CurrentCultureIgnoreCase),
+        ];
+    }
+
+    public string SetGuestRoles(IReadOnlyDictionary<long, int> roles)
+    {
+        var changed = 0;
+        foreach (var player in GuestList ?? [])
+        {
+            if (
+                player["PlayerId"]?.Value<long>() is { } steamId
+                && roles.TryGetValue(steamId, out var role)
+                && player["PlayerRole"]?.Value<int>() != role
+            )
+            {
+                player["PlayerRole"] = role;
+                changed++;
+            }
+        }
+
+        if (changed == 0)
+        {
+            return AppText.Get("NothingToChange");
+        }
+
+        SelectedSavegame!
+            .SavegameStore.LoadJsonRaw(SavegameStore.FileType.MultiplayerPlayerRolesSaveData)!
+            .MarkAsModified(Constants.JsonKeys.MultiplayerPlayerRoles);
+        return AppText.Format("GuestRolesChanged", changed);
+    }
+
     public string FillPrinters()
     {
         var filled = 0;
@@ -843,6 +895,7 @@ public sealed class MainViewModel(
             return AppText.Get("NoFiresFound");
         }
 
+        var countFound = 0;
         var countChanged = 0;
         foreach (
             var fire in firesPerStructureType
@@ -850,15 +903,29 @@ public sealed class MainViewModel(
                 .SelectMany(fires => fires)
         )
         {
+            countFound++;
+
+            // A Fire Already Burning That Way Is Not A Change
+            var wasChanged = fire["IsLit"]?.Value<bool>() != true;
             fire["IsLit"] = true;
-            fire["Fuel"] = fuel;
-            fire["FuelDrainRate"] = fuelDrainRate;
-            countChanged++;
+            wasChanged |= JsonModifier.CompareAndModify(fire, "Fuel", value => value != fuel, fuel);
+            wasChanged |= JsonModifier.CompareAndModify(
+                fire,
+                "FuelDrainRate",
+                value => value != fuelDrainRate,
+                fuelDrainRate
+            );
+            countChanged += wasChanged ? 1 : 0;
+        }
+
+        if (countFound == 0)
+        {
+            return AppText.Get("NoFiresFound");
         }
 
         if (countChanged == 0)
         {
-            return AppText.Get("NoFiresFound");
+            return AppText.Get("NothingToChange");
         }
 
         saveDataWrapper.MarkAsModified(Constants.JsonKeys.Fires);

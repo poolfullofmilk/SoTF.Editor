@@ -47,4 +47,6 @@ public static class AppInfo
     );
 
     public static readonly string ExportsDirectory = Path.Combine(DocumentsDirectory, "Exports");
+
+    public static readonly string LoadoutsDirectory = Path.Combine(DocumentsDirectory, "Loadouts");
 }

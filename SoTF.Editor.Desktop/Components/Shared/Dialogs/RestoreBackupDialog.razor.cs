@@ -144,13 +144,16 @@ public partial class RestoreBackupDialog
 
     private string DetailOf(SavegameBackup backup)
     {
-        // Size, Then Newest Or Oldest Where It Is One
+        // Size, Age And Label, Each Where It Is One
         var age =
             backup == Backups[0] ? AppText.Get("Newest")
             : backup == Backups[^1] ? AppText.Get("Oldest")
             : null;
-        var size = Formatter.FormatSize(backup.Size);
-        return age is null ? size : $"{size} · {age}";
+        return Formatter.JoinParts(
+            Formatter.FormatSize(backup.Size),
+            age,
+            string.IsNullOrEmpty(backup.Label) ? null : backup.Label
+        );
     }
 
     private async Task ClickAsync(SavegameBackup backup)
@@ -186,9 +189,15 @@ public partial class RestoreBackupDialog
         _marked.Clear();
     }
 
+    // Pinned Backups Stay Out Of The Bulk Pick
+    private IEnumerable<SavegameBackup> AllButNewest =>
+        Backups.Skip(1).Where(backup => !backup.IsPinned);
+
+    private bool AllButNewestMarked => AllButNewest.All(_marked.Contains);
+
     private void MarkAllButNewest()
     {
-        _marked.UnionWith(Backups.Skip(1));
+        _marked.UnionWith(AllButNewest);
     }
 
     private async Task DeleteMarkedAsync()
@@ -230,6 +239,40 @@ public partial class RestoreBackupDialog
         if (failed > 0)
         {
             Snackbar.Add(AppText.Get("UnableToDeleteBackup"), Severity.Error);
+        }
+    }
+
+    private string? PinStyle => _selected?.IsPinned == true ? "color:var(--tonal-info-text)" : null;
+
+    private void TogglePin()
+    {
+        if (_selected is { } selected)
+        {
+            SetPin(selected, selected.IsPinned ? null : "");
+        }
+    }
+
+    private void SetLabel(string? label)
+    {
+        // A Label Pins, Clearing It Keeps The Pin
+        if (_selected is { } selected && (label ?? "") != (selected.Label ?? ""))
+        {
+            SetPin(selected, label ?? "");
+        }
+    }
+
+    private void SetPin(SavegameBackup backup, string? label)
+    {
+        try
+        {
+            var pinned = BackupManager.Pin(backup, label);
+            Backups[Backups.IndexOf(backup)] = pinned;
+            _selected = pinned;
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+        {
+            s_logger.Error(exception, "Failed To Pin Backup");
+            Snackbar.Add(AppText.Get("UnableToPinBackup"), Severity.Error);
         }
     }
 

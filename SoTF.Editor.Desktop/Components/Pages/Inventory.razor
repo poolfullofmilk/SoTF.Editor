@@ -58,6 +58,19 @@
                         <MudMenuItem Icon="@Icons.Material.Rounded.FileUpload"
                                      Label="@AppText.Get("Import")"
                                      OnClick="ImportAsync" />
+                        <MudDivider />
+                        @* Save Loadout *@
+                        <MudMenuItem Icon="@Icons.Material.Rounded.BookmarkAdd"
+                                     Label="@AppText.Get("SaveLoadout")"
+                                     Disabled="@(!InventoryPage.HasInventoryItems())"
+                                     OnClick="SaveLoadout" />
+                        @* Loadouts *@
+                        @foreach (var loadout in _loadouts)
+                        {
+                            <MudMenuItem Icon="@Icons.Material.Rounded.Bookmark"
+                                         Label="@Path.GetFileNameWithoutExtension(loadout)"
+                                         OnClick="() => ApplyLoadoutAsync(loadout)" />
+                        }
                     </MudMenu>
                 </Tooltip>
             </TitleContent>
@@ -136,8 +149,7 @@
                                                      Style="width:110px" />
                                     </ChangedBadge>
                                 </MudTd>
-                                <MudTd Class="hover-action"
-                                       Style="text-align:right">
+                                <MudTd Style="text-align:right">
                                     @* Max Button *@
                                     <MaxButton Max="context.Max"
                                                Disabled="@(context.IsEquipped || context.TotalCount >= context.Max)"

@@ -32,6 +32,31 @@ public sealed class PoiLoader(
         return [.. LoadRawPois(inventoryItems), LoadItemPois(inventoryItems)];
     }
 
+    public Position? PlacePosition(string title)
+    {
+        return _rawPois
+            .Values.SelectMany(group => group.Pois)
+            .FirstOrDefault(poi => poi.Title == title)
+            ?.Teleport?.ToPosition(_areaMaskManager);
+    }
+
+    public Position? ItemPosition(int itemId)
+    {
+        return _rawItemPois
+            .Items.GetValueOrDefault(itemId)
+            ?.Pois.FirstOrDefault()
+            ?.Teleport.ToPosition(_areaMaskManager);
+    }
+
+    // An Item Lying Where The Description Says
+    public Position? ItemPositionAt(string description)
+    {
+        return _rawItemPois
+            .Items.Values.SelectMany(group => group.Pois)
+            .FirstOrDefault(poi => poi.Description == description)
+            ?.Teleport.ToPosition(_areaMaskManager);
+    }
+
     // Owned Items, The Map Rebuilds When They Change
     public HashSet<int> OwnedItemIds()
     {

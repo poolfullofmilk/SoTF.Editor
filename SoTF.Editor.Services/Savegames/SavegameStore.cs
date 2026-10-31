@@ -35,6 +35,7 @@ public sealed class SavegameStore
         Resin3dPrinterEntertainmentSaveData,
         Resin3dPrinterResidentialSaveData,
         Resin3dPrinterResistanceSaveData,
+        MultiplayerPlayerRolesSaveData,
     }
 
     private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
@@ -49,7 +50,7 @@ public sealed class SavegameStore
     {
         _path = path;
         LastWriteTime = Directory.GetLastWriteTime(_path);
-        _loadedFiles = FileStamps();
+        _loadedFiles = Stamps();
     }
 
     public DateTime LastWriteTime { get; }
@@ -98,10 +99,15 @@ public sealed class SavegameStore
 
     public bool HasChanged()
     {
-        return FileStamps() != _loadedFiles;
+        return HasChanged(Stamps());
     }
 
-    private string FileStamps()
+    public bool HasChanged(string stamps)
+    {
+        return stamps != _loadedFiles;
+    }
+
+    public string Stamps()
     {
         // A File Rewritten In Place Leaves The Folder Time Alone
         return string.Join(

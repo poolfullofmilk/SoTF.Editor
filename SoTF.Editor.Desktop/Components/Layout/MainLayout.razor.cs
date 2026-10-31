@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
 using MudBlazor;
 using NLog;
 using SoTF.Editor.Data.Helpers;
@@ -55,9 +56,16 @@ public partial class MainLayout : IDisposable
     [Inject]
     public required ISnackbar Snackbar { get; set; }
 
+    [Inject]
+    public required IJSRuntime JavaScript { get; set; }
+
     private ErrorBoundary? _errorBoundary;
     private bool _isBusy;
     private ReleaseInfo? _availableUpdate;
+    private readonly CancellationTokenSource _watching = new();
+    private bool _isGameRunning;
+    private string? _seenStamps;
+    private string? _handledStamps;
 
     private bool HasSavegame => MainViewModel.SelectedSavegame != null;
 
@@ -114,9 +122,73 @@ public partial class MainLayout : IDisposable
     {
         if (firstRender)
         {
+            var token = _watching.Token;
+            _ = Task.Run(() => Polling.EveryTwoSecondsAsync(() => WatchAsync(token), token));
             await CheckForUpdatesAsync(false);
         }
     }
+
+    #region Watch Methods
+    private async Task WatchAsync(CancellationToken token)
+    {
+        var isGameRunning = SavegameManager.IsGameRunning();
+        var savegame = MainViewModel.SelectedSavegame;
+        var stamps = savegame?.SavegameStore.Stamps();
+        await InvokeAsync(() => OnWatchedAsync(isGameRunning, savegame, stamps, token));
+    }
+
+    private async Task OnWatchedAsync(
+        bool isGameRunning,
+        Savegame? savegame,
+        string? stamps,
+        CancellationToken token
+    )
+    {
+        if (isGameRunning != _isGameRunning)
+        {
+            _isGameRunning = isGameRunning;
+            StateHasChanged();
+        }
+
+        // The Game Writes Several Files, Wait Until They Settle
+        var hasSettled = stamps == _seenStamps;
+        _seenStamps = stamps;
+        if (
+            _isBusy
+            || !hasSettled
+            || stamps is null
+            || stamps == _handledStamps
+            || savegame != MainViewModel.SelectedSavegame
+            || savegame?.SavegameStore.HasChanged(stamps) != true
+            || await JavaScript.InvokeAsync<bool>("sotfShell.isInUse", cancellationToken: token)
+        )
+        {
+            return;
+        }
+
+        _handledStamps = stamps;
+        if (MainViewModel.HasUnsavedChanges())
+        {
+            Snackbar.Add(
+                AppText.Get("GameSavedOverEdits"),
+                Severity.Warning,
+                options =>
+                {
+                    options.RequireInteraction = true;
+                    options.Action = AppText.Get("Reload");
+                    options.OnClick = _ => ReloadAsync();
+                }
+            );
+            return;
+        }
+
+        if (await TryBusyAsync(savegame, MainViewModel.ReloadSavegame, "UnableToOpen"))
+        {
+            s_logger.Info($"Reloaded {savegame.FullPath} After The Game Saved");
+            Snackbar.Add(AppText.Get("ReloadedAfterGameSave"), Severity.Info);
+        }
+    }
+    #endregion
 
     private void OnChanged()
     {
@@ -441,6 +513,8 @@ public partial class MainLayout : IDisposable
         MainViewModel.OpenRequested -= OnOpenRequested;
         MainViewModel.RestoreRequested -= OnRestoreRequested;
         BackupManager.Pruned -= OnBackupsPruned;
+        _watching.Cancel();
+        _watching.Dispose();
         GC.SuppressFinalize(this);
     }
 

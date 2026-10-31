@@ -1692,7 +1692,7 @@ Hayır onları tutar, böylece önce kaydedebilirsiniz</value>
     <value>Yedek silinemedi</value>
   </data>
   <data name="BackupUsage" xml:space="preserve">
-    <value>Yedekler {1} alanın {0} kadarını kullanıyor. Bu aşılırsa en eskiler silinir, ilk yedek hariç</value>
+    <value>Yedekler {1} alanın {0} kadarını kullanıyor. Bunu aşınca en eskiler silinir, ilki ve sabitlenenler hariç</value>
   </data>
   <data name="BackupsPruned" xml:space="preserve">
     <value>Yedekler {1} sınırını aştı, bu yüzden en eski {0} yedek silindi. İlk yedek kalır</value>
@@ -2328,5 +2328,74 @@ Hayır düzenleyiciyi açık tutar, böylece önce kaydedebilirsiniz</value>
   </data>
   <data name="GameRunningWarning" xml:space="preserve">
     <value>Sons Of The Forest açık, ana menüdeyken kaydedin</value>
+  </data>
+  <data name="GameRunning" xml:space="preserve">
+    <value>Oyun Açık</value>
+  </data>
+  <data name="GameSavedOverEdits" xml:space="preserve">
+    <value>Oyun bu kaydı kaydetti. Yeniden yüklemek onun kaydını gösterir ve kaydedilmemiş değişikliklerinizi siler</value>
+  </data>
+  <data name="ReloadedAfterGameSave" xml:space="preserve">
+    <value>Yeniden yüklendi, oyun bu kaydı kaydetti</value>
+  </data>
+  <data name="Reload" xml:space="preserve">
+    <value>Yeniden Yükle</value>
+  </data>
+  <data name="PinBackup" xml:space="preserve">
+    <value>Yedeği Sabitle</value>
+  </data>
+  <data name="UnpinBackup" xml:space="preserve">
+    <value>Yedeğin Sabitlemesini Kaldır</value>
+  </data>
+  <data name="BackupLabel" xml:space="preserve">
+    <value>Etiket</value>
+  </data>
+  <data name="PinBackupInfo" xml:space="preserve">
+    <value>Sabitlenmiş bir yedek yer açmak için asla silinmez. Bir etiket de onu sabitler</value>
+  </data>
+  <data name="UnableToPinBackup" xml:space="preserve">
+    <value>Yedek sabitlenemedi</value>
+  </data>
+  <data name="SaveLoadout" xml:space="preserve">
+    <value>Donanım Olarak Kaydet</value>
+  </data>
+  <data name="Loadout" xml:space="preserve">
+    <value>Donanım</value>
+  </data>
+  <data name="ApplyLoadout" xml:space="preserve">
+    <value>Donanımı Uygula</value>
+  </data>
+  <data name="LoadoutSaved" xml:space="preserve">
+    <value>Donanım kaydedildi</value>
+  </data>
+  <data name="UnableToSaveLoadout" xml:space="preserve">
+    <value>Donanım kaydedilemedi, günlüğe bakın</value>
+  </data>
+  <data name="GuestRoles" xml:space="preserve">
+    <value>Misafir Rolleri</value>
+  </data>
+  <data name="GuestRolesText" xml:space="preserve">
+    <value>Oyununuza katılan bir oyuncuyu misafir, güvenilir, yönetici yapın veya yasaklayın</value>
+  </data>
+  <data name="GuestRolesDialogText" xml:space="preserve">
+    <value>Bu barındırılan oyuna katılan her oyuncu, kurucu listede yok</value>
+  </data>
+  <data name="NoGuests" xml:space="preserve">
+    <value>Bu oyuna henüz kimse katılmadı</value>
+  </data>
+  <data name="GuestRolesChanged" xml:space="preserve">
+    <value>{0} oyuncunun rolü değiştirildi, korumak için kaydedin</value>
+  </data>
+  <data name="GuestRoleGuest" xml:space="preserve">
+    <value>Misafir</value>
+  </data>
+  <data name="GuestRoleTrusted" xml:space="preserve">
+    <value>Güvenilir</value>
+  </data>
+  <data name="GuestRoleAdmin" xml:space="preserve">
+    <value>Yönetici</value>
+  </data>
+  <data name="GuestRoleBanned" xml:space="preserve">
+    <value>Yasaklı</value>
   </data>
 </root>

@@ -76,6 +76,21 @@
 
             <MudSpacer />
 
+            @* Game Running Chip *@
+            @if (_isGameRunning)
+            {
+                <Tooltip Text="@AppText.Get("GameRunningWarning")"
+                         RootClass="d-flex mr-2">
+                    <MudChip T="string"
+                             Icon="@Icons.Material.Rounded.SportsEsports"
+                             Color="Color.Warning"
+                             Size="Size.Small"
+                             Variant="Variant.Text">
+                        @AppText.Get("GameRunning")
+                    </MudChip>
+                </Tooltip>
+            }
+
             @* Savegame Actions *@
             <MudStack Row
                       AlignItems="AlignItems.Center"

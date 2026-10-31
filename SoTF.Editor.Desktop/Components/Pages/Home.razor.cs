@@ -25,6 +25,11 @@ public partial class Home : EditorPageBase
     private List<Savegame>? _savegames;
     private Dictionary<string, int> _backupCounts = [];
     private int _scan;
+    private readonly CancellationTokenSource _watching = new();
+
+    // The Files When Last Listed And When Last Polled
+    private string? _listedStamps;
+    private string? _seenStamps;
     private MudMenu? _duplicateMenu;
     private Savegame? _menuSavegame;
 
@@ -60,13 +65,39 @@ public partial class Home : EditorPageBase
         await LoadSavegamesAsync();
     }
 
-    private async Task LoadSavegamesAsync()
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var token = _watching.Token;
+            _ = Task.Run(() => Polling.EveryTwoSecondsAsync(RefreshAfterGameSaveAsync, token));
+        }
+    }
+
+    private async Task RefreshAfterGameSaveAsync()
+    {
+        // Settled For A Tick, So The Game Finished Writing
+        var stamps = SavegameManager.SaveDataStamps();
+        if (stamps == _seenStamps && stamps != _listedStamps)
+        {
+            await InvokeAsync(() => LoadSavegamesAsync(true));
+        }
+
+        _seenStamps = stamps;
+    }
+
+    private async Task LoadSavegamesAsync(bool keepCards = false)
     {
         // A Slow Disk Never Holds The Window, Newer Scans Win
         var scan = ++_scan;
-        _savegames = null;
+        if (!keepCards)
+        {
+            _savegames = null;
+        }
+
         var (savegames, backupCounts) = await Task.Run(() =>
         {
+            _listedStamps = SavegameManager.SaveDataStamps();
             var found = SavegameManager.GetSavegames();
             found.ForEach(savegame => _ = savegame.Summary);
             return (
@@ -81,6 +112,7 @@ public partial class Home : EditorPageBase
         {
             _savegames = savegames;
             _backupCounts = backupCounts;
+            StateHasChanged();
         }
     }
 
@@ -93,7 +125,14 @@ public partial class Home : EditorPageBase
     {
         // The Open Savegame Gets The Accent Ring
         var selected = IsOpen(savegame) ? " card-open" : "";
-        return "rounded-panel hover-card hover-host" + selected;
+        return "rounded-panel hover-card" + selected;
+    }
+
+    private static string PlaceholderClass(Savegame savegame)
+    {
+        // A Joined Save Has No Picture, Its Tile Fills
+        var fill = savegame.IsMultiPlayerClient() ? " thumb-fill" : "";
+        return "savegame-thumb rounded-inner inset d-flex align-center justify-center" + fill;
     }
 
     private static string WorldText(SavegameSummary summary)
@@ -262,6 +301,14 @@ public partial class Home : EditorPageBase
         UserSettings.Current.SavegamePath = "";
         UserSettings.Current.Save();
         await LoadSavegamesAsync();
+    }
+
+    public override void Dispose()
+    {
+        _watching.Cancel();
+        _watching.Dispose();
+        base.Dispose();
+        GC.SuppressFinalize(this);
     }
 
     private sealed record SavegameGroup(

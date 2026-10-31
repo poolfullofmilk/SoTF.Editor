@@ -1,0 +1,52 @@
+<MudDialog>
+
+    <TitleContent>
+        <MudText Typo="Typo.h6">@AppText.Get("GuestRoles")</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudStack Spacing="4">
+            <MudText Typo="Typo.body2"
+                     Class="mud-text-secondary">
+                @AppText.Get(_guests.Count == 0 ? "NoGuests" : "GuestRolesDialogText")
+            </MudText>
+            @foreach (var guest in _guests)
+            {
+                <MudStack Spacing="2">
+                    <MudStack Row
+                              AlignItems="AlignItems.Center"
+                              Spacing="2">
+                        <MudText Typo="Typo.subtitle2">@guest.Name</MudText>
+                        <MudText Typo="Typo.caption"
+                                 Class="mud-text-secondary">
+                            @guest.SteamId
+                        </MudText>
+                    </MudStack>
+                    @* Role Choices *@
+                    <MudButtonGroup OverrideStyles="false"
+                                    Size="Size.Small"
+                                    Class="setting-choices">
+                        @foreach (var role in Enum.GetValues<GuestRole>())
+                        {
+                            <MudButton Variant="Variant.Filled"
+                                       Size="Size.Small"
+                                       Color="@(_roles[guest.SteamId] == (int)role ? Color.Info : Color.Default)"
+                                       OnClick="() => _roles[guest.SteamId] = (int)role">
+                                @AppText.Get(TextKeys.GuestRole(role))
+                            </MudButton>
+                        }
+                    </MudButtonGroup>
+                </MudStack>
+            }
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        @* Apply Button *@
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Info"
+                   Disabled="@(!HasChanges)"
+                   OnClick="Apply">
+            @AppText.Get("Apply")
+        </MudButton>
+    </DialogActions>
+
+</MudDialog>

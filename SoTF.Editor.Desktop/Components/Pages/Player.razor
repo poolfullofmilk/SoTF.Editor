@@ -156,31 +156,6 @@
                  lg="6">
             <Header Title="@AppText.Format("ArmorCount", ArmorPage.Armour.Count())"
                     Info="@AppText.Get("ArmorInfo")">
-                <TitleContent>
-                    <MudSpacer />
-                    @* Default Durability *@
-                    <Tooltip Text="@AppText.Get("SetAllToDefaultTooltip")"
-                             Disabled="@(!ArmorPage.CanSetAllToDefault())">
-                        <MudButton Variant="Variant.Text"
-                                   Size="Size.Small"
-                                   Disabled="@(!ArmorPage.CanSetAllToDefault())"
-                                   OnClick="ArmorPage.SetAllToDefault"
-                                   StartIcon="@Icons.Material.Rounded.SettingsBackupRestore">
-                            @AppText.Get("SetAllToDefault")
-                        </MudButton>
-                    </Tooltip>
-                    @* Max Durability *@
-                    <Tooltip Text="@AppText.Get("SetAllToMaxTooltip")"
-                             Disabled="@(!ArmorPage.CanSetAllToMax())">
-                        <MudButton Variant="Variant.Text"
-                                   Size="Size.Small"
-                                   Disabled="@(!ArmorPage.CanSetAllToMax())"
-                                   OnClick="ArmorPage.SetAllToMax"
-                                   StartIcon="@Icons.Material.Rounded.KeyboardDoubleArrowUp">
-                            @AppText.Get("SetAllToMax")
-                        </MudButton>
-                    </Tooltip>
-                </TitleContent>
                 <ChildContent>
                     <MudPaper Elevation="4"
                               Class="rounded-panel pa-4">
@@ -190,6 +165,28 @@
                                       Spacing="2">
                                 <MudText Typo="Typo.subtitle2">@AppText.Get("ArmourWorn")</MudText>
                                 <MudSpacer />
+                                @* Default Durability *@
+                                <Tooltip Text="@AppText.Get("SetAllToDefaultTooltip")"
+                                         Disabled="@(!ArmorPage.CanSetAllToDefault())">
+                                    <MudButton Variant="Variant.Text"
+                                               Size="Size.Small"
+                                               Disabled="@(!ArmorPage.CanSetAllToDefault())"
+                                               OnClick="ArmorPage.SetAllToDefault"
+                                               StartIcon="@Icons.Material.Rounded.SettingsBackupRestore">
+                                        @AppText.Get("SetAllToDefault")
+                                    </MudButton>
+                                </Tooltip>
+                                @* Max Durability *@
+                                <Tooltip Text="@AppText.Get("SetAllToMaxTooltip")"
+                                         Disabled="@(!ArmorPage.CanSetAllToMax())">
+                                    <MudButton Variant="Variant.Text"
+                                               Size="Size.Small"
+                                               Disabled="@(!ArmorPage.CanSetAllToMax())"
+                                               OnClick="ArmorPage.SetAllToMax"
+                                               StartIcon="@Icons.Material.Rounded.KeyboardDoubleArrowUp">
+                                        @AppText.Get("SetAllToMax")
+                                    </MudButton>
+                                </Tooltip>
                                 @* Add Piece *@
                                 <Tooltip Text="@AppText.Get("AddArmour")"
                                          Disabled="@(!CanAddPiece)"
@@ -211,12 +208,12 @@
                                              Style="@ArmourSelect.CaptionStyle">
                                         @AppText.Get("Type")
                                     </MudText>
-                                    <MudSpacer />
                                     <MudText Typo="Typo.caption"
                                              Class="mud-text-secondary"
                                              Style="@DurabilityStyle">
                                         @AppText.Get("Durability")
                                     </MudText>
+                                    <MudSpacer />
                                     <MudElement HtmlTag="span"
                                                 Style="@ActionsStyle" />
                                 </MudStack>
@@ -226,13 +223,12 @@
                                 <MudStack Row
                                           AlignItems="AlignItems.Center"
                                           Spacing="2"
-                                          Class="hover-host pa-1">
+                                          Class="pa-1">
                                     @* Armour Type *@
                                     <ArmourSelect Value="armour.Item"
                                                   ValueChanged="armour.ChangeType"
                                                   Types="ArmorPage.ArmourTypes"
                                                   Changed="@ArmorPage.IsTypeChanged(armour)" />
-                                    <MudSpacer />
                                     @* Durability *@
                                     <ChangedBadge When="@ArmorPage.IsDurabilityChanged(armour)"
                                                   Class="flex-shrink-0">
@@ -243,6 +239,7 @@
                                                      Margin="Margin.Dense"
                                                      Style="@DurabilityStyle" />
                                     </ChangedBadge>
+                                    <MudSpacer />
                                     <MudStack Row
                                               Spacing="2"
                                               Style="@ActionsStyle">
@@ -252,7 +249,6 @@
                                             <MudIconButton Icon="@Icons.Material.Rounded.SettingsBackupRestore"
                                                            aria-label="@AppText.Get("SetToDefaultDurability")"
                                                            Size="Size.Small"
-                                                           Class="hover-action"
                                                            Disabled="@IsDefault(armour)"
                                                            OnClick="() => armour.ArmourPiece.RemainingArmourpoints = armour.DefaultDurability" />
                                         </Tooltip>
@@ -262,7 +258,6 @@
                                             <MudIconButton Icon="@Icons.Material.Rounded.KeyboardDoubleArrowUp"
                                                            aria-label="@AppText.Get("SetToMax")"
                                                            Size="Size.Small"
-                                                           Class="hover-action"
                                                            Disabled="@(armour.ArmourPiece.RemainingArmourpoints >= armour.MaxDurability)"
                                                            OnClick="() => armour.ArmourPiece.RemainingArmourpoints = armour.MaxDurability" />
                                         </Tooltip>
@@ -271,7 +266,6 @@
                                             <MudIconButton Icon="@Icons.Material.Rounded.Backpack"
                                                            aria-label="@AppText.Get("Unequip")"
                                                            Size="Size.Small"
-                                                           Class="hover-action"
                                                            Disabled="@(!ArmorPage.CanMoveToInventory(armour))"
                                                            OnClick="() => ArmorPage.MoveToInventory(armour)" />
                                         </Tooltip>
@@ -280,7 +274,7 @@
                                             <MudIconButton Icon="@Icons.Material.Rounded.Delete"
                                                            aria-label="@AppText.Get("DeleteArmour")"
                                                            Size="Size.Small"
-                                                           Class="hover-action danger-hover"
+                                                           Class="danger-hover"
                                                            OnClick="() => DeleteArmourAsync(armour)" />
                                         </Tooltip>
                                     </MudStack>
@@ -296,7 +290,7 @@
                                     <MudStack Row
                                               AlignItems="AlignItems.Center"
                                               Spacing="2"
-                                              Class="@(InventoryPage.IsHeld(item) ? "hover-host pa-1" : "hover-host pa-1 not-held")">
+                                              Class="@(InventoryPage.IsHeld(item) ? "pa-1" : "pa-1 not-held")">
                                         @* Inventory Armour Type *@
                                         <ArmourSelect Value="item.Item"
                                                       ValueChanged="type => ArmorPage.ChangeType(item, type)"
@@ -313,7 +307,6 @@
                                             <MudIconButton Icon="@Icons.Material.Rounded.Shield"
                                                            aria-label="@AppText.Get("WearArmour")"
                                                            Size="Size.Small"
-                                                           Class="hover-action"
                                                            Disabled="@(!ArmorPage.CanWear(item))"
                                                            OnClick="() => ArmorPage.Wear(item)" />
                                         </Tooltip>
@@ -323,7 +316,7 @@
                                             <MudIconButton Icon="@Icons.Material.Rounded.Delete"
                                                            aria-label="@AppText.Get("DeleteArmour")"
                                                            Size="Size.Small"
-                                                           Class="hover-action danger-hover"
+                                                           Class="danger-hover"
                                                            Disabled="@(!InventoryPage.IsHeld(item))"
                                                            OnClick="() => DeleteFromInventoryAsync(item)" />
                                         </Tooltip>

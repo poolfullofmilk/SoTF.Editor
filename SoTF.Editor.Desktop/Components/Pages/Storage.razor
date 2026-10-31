@@ -16,14 +16,17 @@
                 <TitleContent>
                     <MudSpacer />
                     @* Fill All Storages *@
-                    <MudButton Variant="Variant.Filled"
-                               Color="Color.Info"
-                               Size="Size.Small"
-                               StartIcon="@Icons.Material.Rounded.AllInbox"
-                               Disabled="@(!StoragePage.CanFillAllStorages())"
-                               OnClick="FillAllStoragesAsync">
-                        @AppText.Get("FillAllStorages")
-                    </MudButton>
+                    <Tooltip Text="@AppText.Get("FillAllStorages")"
+                             Disabled="@(!StoragePage.CanFillAllStorages())"
+                             RootClass="d-flex">
+                        <MudIconButton Icon="@Icons.Material.Rounded.AllInbox"
+                                       aria-label="@AppText.Get("FillAllStorages")"
+                                       Variant="Variant.Filled"
+                                       Color="Color.Info"
+                                       Size="Size.Small"
+                                       Disabled="@(!StoragePage.CanFillAllStorages())"
+                                       OnClick="FillAllStoragesAsync" />
+                    </Tooltip>
                 </TitleContent>
                 <ChildContent>
                     @* Storage Search *@
@@ -124,14 +127,13 @@
                         </MudButton>
                         @* Apply To Same Type *@
                         <Tooltip Text="@AppText.Get("ApplyToSameTypeTooltip")"
-                                 Disabled="@(!StoragePage.HasSameTypeStorages(selected))">
-                            <MudButton Variant="Variant.Text"
-                                       Size="Size.Small"
-                                       Disabled="@(!StoragePage.HasSameTypeStorages(selected))"
-                                       OnClick="() => ApplyToSameTypeAsync(selected)"
-                                       StartIcon="@Icons.Material.Rounded.CopyAll">
-                                @AppText.Get("ApplyToSameType")
-                            </MudButton>
+                                 Disabled="@(!StoragePage.HasSameTypeStorages(selected))"
+                                 RootClass="d-flex">
+                            <MudIconButton Icon="@Icons.Material.Rounded.CopyAll"
+                                           aria-label="@AppText.Get("ApplyToSameType")"
+                                           Size="Size.Small"
+                                           Disabled="@(!StoragePage.HasSameTypeStorages(selected))"
+                                           OnClick="() => ApplyToSameTypeAsync(selected)" />
                         </Tooltip>
                         @* Clear All *@
                         <MudButton Variant="Variant.Text"
@@ -205,8 +207,7 @@
                                 {
                                     <MudStack Row
                                               AlignItems="AlignItems.Center"
-                                              Spacing="3"
-                                              Class="hover-host">
+                                              Spacing="3">
                                         @if (storedItem.SelectedItem is { } slotItem)
                                         {
                                             <MudImage Src="@PictureOf(slotItem)"
@@ -241,14 +242,13 @@
                                         @* Slot Max *@
                                         <MaxButton Max="storedItem.Max"
                                                    Disabled="@(!storedItem.HasItem() || storedItem.Count >= storedItem.Max)"
-                                                   Class="hover-action"
                                                    OnClick="storedItem.SetToMax" />
                                         @* Slot Remove *@
                                         <MudIconButton Icon="@Icons.Material.Rounded.Delete"
                                                        aria-label="@AppText.Get("Remove")"
                                                        title="@(storedItem.HasItem() ? AppText.Get("Remove") : null)"
                                                        Size="Size.Small"
-                                                       Class="hover-action danger-hover"
+                                                       Class="danger-hover"
                                                        Disabled="@(!storedItem.HasItem())"
                                                        OnClick="storedItem.Clear" />
                                     </MudStack>

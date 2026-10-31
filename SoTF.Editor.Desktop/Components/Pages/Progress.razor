@@ -55,6 +55,7 @@
                                                          Color="@(collectible.Found ? Color.Success : Color.Default)"
                                                          Size="Size.Small"
                                                          Title="@AppText.Get(collectible.Found ? "Found" : "NotFoundYet")" />
+                                                <ShowOnMapButton Position="@collectible.Position" />
                                             </MudStack>
                                         </MudPaper>
                                     </MudItem>

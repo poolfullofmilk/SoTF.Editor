@@ -118,7 +118,7 @@
                                     else
                                     {
                                         <MudElement HtmlTag="span"
-                                                    Class="savegame-thumb rounded-inner inset d-flex align-center justify-center">
+                                                    Class="@PlaceholderClass(savegame)">
                                             <MudIcon Icon="@(savegame.IsMultiPlayerClient() ? Icons.Material.Rounded.Groups : Icons.Material.Rounded.Image)"
                                                      Color="Color.Default" />
                                         </MudElement>
@@ -170,7 +170,7 @@
                                             </MudText>
                                             <MudSpacer />
                                             @* Card Buttons *@
-                                            <span class="d-flex align-center my-n1 hover-action"
+                                            <span class="d-flex align-center my-n1"
                                                   @onclick:stopPropagation="true">
                                                 @if (BackupCountOf(savegame) is > 0 and var backupCount)
                                                 {

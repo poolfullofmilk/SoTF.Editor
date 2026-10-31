@@ -700,7 +700,7 @@
     <value>Objekte</value>
   </data>
   <data name="PointsOfInterest" xml:space="preserve">
-    <value>Interessante Orte</value>
+    <value>Kartenpunkte</value>
   </data>
   <data name="Requirements" xml:space="preserve">
     <value>Voraussetzungen</value>
@@ -1692,7 +1692,7 @@ Nein behält sie, damit du zuerst speichern kannst</value>
     <value>Das Backup konnte nicht gelöscht werden</value>
   </data>
   <data name="BackupUsage" xml:space="preserve">
-    <value>Backups belegen {0} von {1}. Darüber hinaus werden die ältesten gelöscht, außer dem allerersten</value>
+    <value>Backups belegen {0} von {1}. Darüber werden die ältesten gelöscht, außer dem allerersten und angehefteten</value>
   </data>
   <data name="BackupsPruned" xml:space="preserve">
     <value>Backups haben {1} überschritten, daher wurden die {0} ältesten gelöscht. Das allererste bleibt</value>
@@ -2328,5 +2328,74 @@ Nein lässt den Editor offen, damit du zuerst speichern kannst</value>
   </data>
   <data name="GameRunningWarning" xml:space="preserve">
     <value>Sons Of The Forest läuft, speichere, während es im Hauptmenü ist</value>
+  </data>
+  <data name="GameRunning" xml:space="preserve">
+    <value>Spiel Läuft</value>
+  </data>
+  <data name="GameSavedOverEdits" xml:space="preserve">
+    <value>Das Spiel hat diesen Spielstand gespeichert. Neu Laden zeigt seinen Stand und verwirft deine ungespeicherten Änderungen</value>
+  </data>
+  <data name="ReloadedAfterGameSave" xml:space="preserve">
+    <value>Neu geladen, das Spiel hat diesen Spielstand gespeichert</value>
+  </data>
+  <data name="Reload" xml:space="preserve">
+    <value>Neu Laden</value>
+  </data>
+  <data name="PinBackup" xml:space="preserve">
+    <value>Backup Anheften</value>
+  </data>
+  <data name="UnpinBackup" xml:space="preserve">
+    <value>Backup Lösen</value>
+  </data>
+  <data name="BackupLabel" xml:space="preserve">
+    <value>Bezeichnung</value>
+  </data>
+  <data name="PinBackupInfo" xml:space="preserve">
+    <value>Ein angeheftetes Backup wird nie entfernt, um Platz zu schaffen. Eine Bezeichnung heftet es auch an</value>
+  </data>
+  <data name="UnableToPinBackup" xml:space="preserve">
+    <value>Das Backup konnte nicht angeheftet werden</value>
+  </data>
+  <data name="SaveLoadout" xml:space="preserve">
+    <value>Als Ausrüstung Speichern</value>
+  </data>
+  <data name="Loadout" xml:space="preserve">
+    <value>Ausrüstung</value>
+  </data>
+  <data name="ApplyLoadout" xml:space="preserve">
+    <value>Ausrüstung Anwenden</value>
+  </data>
+  <data name="LoadoutSaved" xml:space="preserve">
+    <value>Ausrüstung gespeichert</value>
+  </data>
+  <data name="UnableToSaveLoadout" xml:space="preserve">
+    <value>Die Ausrüstung konnte nicht gespeichert werden, siehe das Protokoll</value>
+  </data>
+  <data name="GuestRoles" xml:space="preserve">
+    <value>Gastrollen</value>
+  </data>
+  <data name="GuestRolesText" xml:space="preserve">
+    <value>Mach einen Spieler, der deinem Spiel beigetreten ist, zum Gast, Vertrauten, Admin oder sperre ihn</value>
+  </data>
+  <data name="GuestRolesDialogText" xml:space="preserve">
+    <value>Jeder Spieler, der diesem gehosteten Spiel beigetreten ist, der Host steht nicht dabei</value>
+  </data>
+  <data name="NoGuests" xml:space="preserve">
+    <value>Noch niemand ist diesem Spiel beigetreten</value>
+  </data>
+  <data name="GuestRolesChanged" xml:space="preserve">
+    <value>Rolle von {0} Spielern geändert, speichere, um sie zu behalten</value>
+  </data>
+  <data name="GuestRoleGuest" xml:space="preserve">
+    <value>Gast</value>
+  </data>
+  <data name="GuestRoleTrusted" xml:space="preserve">
+    <value>Vertraut</value>
+  </data>
+  <data name="GuestRoleAdmin" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="GuestRoleBanned" xml:space="preserve">
+    <value>Gesperrt</value>
   </data>
 </root>

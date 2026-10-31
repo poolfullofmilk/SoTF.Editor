@@ -63,6 +63,10 @@ public partial class Tools : EditorPageBase
                     Icons.Material.Rounded.Print,
                     page => page.MainViewModel.FillPrinters()
                 ),
+                DialogTool<GuestRolesDialog>(
+                    "GuestRoles",
+                    Icons.Material.Rounded.AdminPanelSettings
+                ),
             ]
         ),
         new(
@@ -173,8 +177,7 @@ public partial class Tools : EditorPageBase
 
     private string SetToEndgame()
     {
-        GameStatePage.SetToEndgame();
-        return AppText.Get("ChangesAdded");
+        return AppText.Get(GameStatePage.SetToEndgame() ? "ChangesAdded" : "NothingToChange");
     }
 
     private async Task ShowDialogAsync<TDialog>()

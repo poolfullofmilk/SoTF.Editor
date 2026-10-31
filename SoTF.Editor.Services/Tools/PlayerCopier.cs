@@ -136,9 +136,15 @@ public static class PlayerCopier
         }
 
         // In Place, A Zero Left Out Here Goes There Too
-        var copiesByName = sourceEntries
-            .Where(entry => copies(entry["Name"]?.ToString() ?? ""))
-            .ToDictionary(entry => entry["Name"]!.ToString());
+        var copiesByName = new Dictionary<string, JToken>();
+        foreach (var entry in sourceEntries)
+        {
+            // The Game Can Repeat A Name, The Newest Wins
+            if (entry["Name"]?.ToString() is { } name && copies(name))
+            {
+                copiesByName[name] = entry;
+            }
+        }
         foreach (
             var entry in targetEntries
                 .Where(entry => copies(entry["Name"]?.ToString() ?? ""))
