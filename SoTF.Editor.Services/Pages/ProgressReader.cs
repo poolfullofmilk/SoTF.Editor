@@ -41,21 +41,7 @@ public static class ProgressReader
 
     public static PlayerProgress Read(Savegame savegame, GameData gameData, PoiLoader poiLoader)
     {
-        // The Newest Entry Wins When The Game Repeats A Name
-        var entries = new Dictionary<string, JToken>();
-        foreach (
-            var entry in savegame
-                .SavegameStore.LoadJsonRaw(SavegameStore.FileType.PlayerStateSaveData)
-                ?.GetJsonBasedToken(Constants.JsonKeys.PlayerState)
-                ?["_entries"] as JArray
-                ?? []
-        )
-        {
-            if (entry["Name"]?.ToString() is { } name)
-            {
-                entries[name] = entry;
-            }
-        }
+        var entries = PlayerEntries.ByName(PlayerEntries.Of(savegame.SavegameStore)?.Entries);
 
         bool IsSet(string name)
         {
@@ -141,7 +127,7 @@ public static class ProgressReader
             savegame
                 .SavegameStore.LoadJsonRaw(SavegameStore.FileType.GameStateSaveData)
                 ?.GetJsonBasedToken(Constants.JsonKeys.GameState)
-                ?["GameDays"]?.Value<int>()
+                ?[Constants.GameStateKeys.GameDays]?.Value<int>()
                 ?? 0,
             vailWorldSim is null
                 ? null

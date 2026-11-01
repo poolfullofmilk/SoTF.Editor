@@ -5,6 +5,7 @@ using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Resources;
 using SoTF.Editor.Data.ViewModels;
+using SoTF.Editor.Services.Tools;
 
 namespace SoTF.Editor.Services.Savegames;
 
@@ -199,7 +200,7 @@ public static partial class BackupDiff
                 ),
                 _ when fileType.ToString().StartsWith("Resin3dPrinter", StringComparison.Ordinal) =>
                     Each(
-                        MainViewModel.PrinterKeyOf(fileType),
+                        WorldTools.PrinterKeyOf(fileType),
                         (_, _) => [("Tools", AppText.Get("PrinterResin"), ChangeKind.Changed)]
                     ),
                 SavegameStore.FileType.ZipLineManagerSaveData => Each(

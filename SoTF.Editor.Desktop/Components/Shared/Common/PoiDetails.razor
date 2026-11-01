@@ -92,6 +92,18 @@
         </MudButton>
     }
 
+    @if (Poi is StructurePoi structurePoi && !IsClientSave)
+    {
+        @* Show Structure Page *@
+        <MudButton Variant="Variant.Text"
+                   Size="Size.Small"
+                   StartIcon="@Icons.Material.Rounded.OpenInNew"
+                   Class="align-self-center"
+                   OnClick="() => ShowStructure(structurePoi)">
+            @AppText.Format("ShowIn", AppText.Get(StorageAt(structurePoi) is null ? "Structures" : "Storage"))
+        </MudButton>
+    }
+
     @if (Poi is ActorPoi actorPoi)
     {
         <DetailsSection Title="@AppText.Get("Actor")"
@@ -117,6 +129,17 @@
                        OnClick="() => EditActorAsync(actorPoi)">
                 @AppText.Get("Edit")
             </MudButton>
+            @if (actorPoi.IsFollower)
+            {
+                @* Show Followers Page *@
+                <MudButton Variant="Variant.Text"
+                           Size="Size.Small"
+                           StartIcon="@Icons.Material.Rounded.OpenInNew"
+                           Disabled="IsClientSave"
+                           OnClick="() => ShowFollower(actorPoi)">
+                    @AppText.Format("ShowIn", AppText.Get("Followers"))
+                </MudButton>
+            }
         </DetailsSection>
     }
 

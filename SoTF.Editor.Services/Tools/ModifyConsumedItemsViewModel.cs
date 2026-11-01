@@ -15,7 +15,7 @@ public sealed class ModifyConsumedItemsViewModel
         _savegame = savegame;
         ConsumedItems =
         [
-            .. (LoadEntries()?.Entries ?? [])
+            .. (PlayerEntries.Of(_savegame.SavegameStore)?.Entries ?? [])
                 .Select(entry => entry["Name"]?.Value<string>())
                 .OfType<string>()
                 .Where(name => name.StartsWith(Prefix, StringComparison.Ordinal))
@@ -41,20 +41,9 @@ public sealed class ModifyConsumedItemsViewModel
         Remove(ConsumedItems.Where(wrapper => wrapper.Remove));
     }
 
-    private (SaveDataWrapper Wrapper, JArray Entries)? LoadEntries()
-    {
-        return
-            _savegame.SavegameStore.LoadJsonRaw(SavegameStore.FileType.PlayerStateSaveData)
-                is { } saveDataWrapper
-            && saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.PlayerState)?["_entries"]
-                is JArray entries
-            ? (saveDataWrapper, entries)
-            : null;
-    }
-
     private void Remove(IEnumerable<ConsumedItemWrapper> wrappers)
     {
-        if (LoadEntries() is not (var saveDataWrapper, var entries))
+        if (PlayerEntries.Of(_savegame.SavegameStore) is not (var saveDataWrapper, var entries))
         {
             return;
         }

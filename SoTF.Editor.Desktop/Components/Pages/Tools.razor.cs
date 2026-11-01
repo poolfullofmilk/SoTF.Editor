@@ -3,6 +3,7 @@ using MudBlazor;
 using SoTF.Editor.Desktop.Components.Shared.Common;
 using SoTF.Editor.Desktop.Components.Shared.Dialogs;
 using SoTF.Editor.Services.Pages;
+using SoTF.Editor.Services.Tools;
 
 namespace SoTF.Editor.Desktop.Components.Pages;
 
@@ -18,22 +19,22 @@ public partial class Tools : EditorPageBase
                 ConfirmedTool(
                     "EternalFires",
                     Icons.Material.Rounded.LocalFireDepartment,
-                    page => page.MainViewModel.EternalFires()
+                    page => WorldTools.EternalFires(page.MainViewModel.SelectedSavegame)
                 ),
                 ConfirmedTool(
                     "ResetFires",
                     Icons.Material.Rounded.Fireplace,
-                    page => page.MainViewModel.ResetFires()
+                    page => WorldTools.ResetFires(page.MainViewModel.SelectedSavegame)
                 ),
                 ConfirmedTool(
                     "ResetStructureDamage",
                     Icons.Material.Rounded.HomeRepairService,
-                    page => page.MainViewModel.ResetStructureDamage()
+                    page => WorldTools.ResetStructureDamage(page.MainViewModel.SelectedSavegame)
                 ),
                 ConfirmedTool(
                     "ResetTraps",
                     Icons.Material.Rounded.PestControl,
-                    page => page.MainViewModel.ResetTraps()
+                    page => WorldTools.ResetTraps(page.MainViewModel.SelectedSavegame)
                 ),
                 ConfirmedTool(
                     "ResetContainers",
@@ -56,12 +57,12 @@ public partial class Tools : EditorPageBase
                 ConfirmedTool(
                     "RipenGardens",
                     Icons.Material.Rounded.Grass,
-                    page => page.MainViewModel.RipenGardens()
+                    page => WorldTools.RipenGardens(page.MainViewModel.SelectedSavegame)
                 ),
                 ConfirmedTool(
                     "FillPrinters",
                     Icons.Material.Rounded.Print,
-                    page => page.MainViewModel.FillPrinters()
+                    page => WorldTools.FillPrinters(page.MainViewModel.SelectedSavegame)
                 ),
                 DialogTool<GuestRolesDialog>(
                     "GuestRoles",

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
+using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Models.Storage;
 using SoTF.Editor.Desktop.Components.Shared.Common;
@@ -42,12 +43,13 @@ public partial class Storage : EditorPageBase
                 .StorageCollections.Select(collection =>
                     (
                         Title: collection.Name,
-                        Storages: Matches(collection.Name)
+                        Storages: Formatter.Matches(collection.Name, _filter)
                             ? collection.Storages
                             :
                             [
                                 .. collection.Storages.Where(storage =>
-                                    Matches(storage.Description)
+                                    Formatter.Matches(storage.Description, _filter)
+                                    || HoldsMatch(storage)
                                 ),
                             ]
                     )
@@ -87,10 +89,14 @@ public partial class Storage : EditorPageBase
             : item.Item.ImageUrl;
     }
 
-    private bool Matches(string text)
+    // Arrows Finds Every Storage Holding Some
+    private bool HoldsMatch(IStorage storage)
     {
-        return string.IsNullOrWhiteSpace(_filter)
-            || text.Contains(_filter, StringComparison.OrdinalIgnoreCase);
+        return StoragePageViewModel
+            .StoredItemsOf(storage)
+            .Any(storedItem =>
+                storedItem.SelectedItem is { } item && Formatter.Matches(item.Name, _filter)
+            );
     }
 
     private void SelectStorage(IStorage storage)

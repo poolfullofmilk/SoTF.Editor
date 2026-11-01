@@ -18,16 +18,16 @@ public partial class GameStatePageViewModel
     private static readonly string[] s_settingNames =
     [
         "GameName",
-        "GameType",
+        Constants.GameStateKeys.GameType,
         "SaveTime",
-        "GameDays",
-        "GameHours",
-        "GameMinutes",
-        "GameSeconds",
-        "GameMilliseconds",
-        "CrashSite",
-        "IsRobbyDead",
-        "IsVirginiaDead",
+        Constants.GameStateKeys.GameDays,
+        Constants.GameStateKeys.GameHours,
+        Constants.GameStateKeys.GameMinutes,
+        Constants.GameStateKeys.GameSeconds,
+        Constants.GameStateKeys.GameMilliseconds,
+        Constants.GameStateKeys.CrashSite,
+        Constants.GameStateKeys.IsRobbyDead,
+        Constants.GameStateKeys.IsVirginiaDead,
     ];
 
     public GameStatePageViewModel(GameData gameData)
@@ -58,6 +58,14 @@ public partial class GameStatePageViewModel
     public bool IsChanged(GenericSetting setting)
     {
         return _loaded.IsChanged(setting.Name, setting.GetValue());
+    }
+
+    public void Revert(GenericSetting setting)
+    {
+        if (_loaded.TryGetLoaded(setting.Name, out var value))
+        {
+            setting.SetValue(value);
+        }
     }
 
     private void Remember()
@@ -139,7 +147,9 @@ public partial class GameStatePageViewModel
         for (var index = 0; index < Settings.Count; index++)
         {
             if (
-                Settings[index].Name is "IsRobbyDead" or "IsVirginiaDead"
+                Settings[index].Name
+                    is Constants.GameStateKeys.IsRobbyDead
+                        or Constants.GameStateKeys.IsVirginiaDead
                 && CreateSetting(Settings[index].Name, gameState[Settings[index].Name])
                     is { } refreshed
             )
@@ -185,7 +195,7 @@ public partial class GameStatePageViewModel
             {
                 StringValue = value.ToString(),
             },
-            "GameType" or "SaveTime" when value != null => new GenericSetting(
+            Constants.GameStateKeys.GameType or "SaveTime" when value != null => new GenericSetting(
                 name,
                 GenericSetting.DataType.ReadOnly,
                 name
@@ -193,19 +203,17 @@ public partial class GameStatePageViewModel
             {
                 StringValue = ReadOnlyText(value),
             },
-            "IsRobbyDead" or "IsVirginiaDead" => new GenericSetting(
-                name,
-                GenericSetting.DataType.ReadOnly,
-                name
-            )
-            {
-                StringValue = AppText.Get(value?.Value<bool>() == true ? "Yes" : "No"),
-            },
-            "GameDays" => IntegerSetting(name, value, 999999),
-            "GameHours" => IntegerSetting(name, value, 23),
-            "GameMinutes" or "GameSeconds" => IntegerSetting(name, value, 59),
-            "GameMilliseconds" => IntegerSetting(name, value, 999),
-            "CrashSite" when value != null => new GenericSetting(
+            Constants.GameStateKeys.IsRobbyDead or Constants.GameStateKeys.IsVirginiaDead =>
+                new GenericSetting(name, GenericSetting.DataType.ReadOnly, name)
+                {
+                    StringValue = AppText.Get(value?.Value<bool>() == true ? "Yes" : "No"),
+                },
+            Constants.GameStateKeys.GameDays => IntegerSetting(name, value, 999999),
+            Constants.GameStateKeys.GameHours => IntegerSetting(name, value, 23),
+            Constants.GameStateKeys.GameMinutes or Constants.GameStateKeys.GameSeconds =>
+                IntegerSetting(name, value, 59),
+            Constants.GameStateKeys.GameMilliseconds => IntegerSetting(name, value, 999),
+            Constants.GameStateKeys.CrashSite when value != null => new GenericSetting(
                 name,
                 GenericSetting.DataType.Enum,
                 name

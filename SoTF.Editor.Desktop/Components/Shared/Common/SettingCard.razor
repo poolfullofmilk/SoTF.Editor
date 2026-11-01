@@ -5,6 +5,9 @@
     @* Setting Card *@
     <MudPaper Elevation="4"
               Class="@(CardClass + " d-flex align-center")">
+        <ChangedDot When="Changed"
+                    CardCorner
+                    OnRevert="OnRevert" />
         @* Setting Switch *@
         <MudSwitch T="bool"
                    Value="Setting.BoolValue ?? false"
@@ -28,6 +31,9 @@ else
     @* Setting Card *@
     <MudPaper Elevation="4"
               Class="@CardClass">
+        <ChangedDot When="Changed"
+                    CardCorner
+                    OnRevert="OnRevert" />
         <MudStack Spacing="2">
             <MudStack Row
                       AlignItems="AlignItems.Center"
@@ -42,6 +48,13 @@ else
                 }
             </MudStack>
             <GenericSettingEditor Setting="Setting" />
+            @if (Caption is not null)
+            {
+                <MudText Typo="Typo.caption"
+                         Class="mud-text-secondary">
+                    @Caption
+                </MudText>
+            }
         </MudStack>
     </MudPaper>
 }

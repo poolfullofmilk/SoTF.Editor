@@ -63,7 +63,6 @@ public partial class MainLayout : IDisposable
     private bool _isBusy;
     private ReleaseInfo? _availableUpdate;
     private readonly CancellationTokenSource _watching = new();
-    private bool _isGameRunning;
     private string? _seenStamps;
     private string? _handledStamps;
 
@@ -144,9 +143,9 @@ public partial class MainLayout : IDisposable
         CancellationToken token
     )
     {
-        if (isGameRunning != _isGameRunning)
+        if (isGameRunning != MainViewModel.IsGameRunning)
         {
-            _isGameRunning = isGameRunning;
+            MainViewModel.IsGameRunning = isGameRunning;
             StateHasChanged();
         }
 

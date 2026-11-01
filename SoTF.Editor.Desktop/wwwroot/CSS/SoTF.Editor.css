@@ -246,9 +246,10 @@
     filter: drop-shadow(0 3px 12px rgba(0,0,0, 0.22));
 }
 
-/* Top Right Text Dots: Red For Updates, Amber For Changes */
+/* Top Right Dots: Red For Updates, Amber For Changes */
 .update-dot .mud-menu-item-text::after,
-.changed-dot {
+.changed-dot,
+.card-changed::before {
     content: "";
     display: inline-block;
     flex-shrink: 0;
@@ -257,44 +258,67 @@
     height: 9px;
     margin-left: 4px;
     border-radius: 50%;
-    background-color: var(--mud-palette-error);
+    background-color: var(--mud-palette-warning);
+    box-shadow: var(--mud-elevation-1);
     vertical-align: top;
 }
 
-.changed-dot,
-.card-changed::before {
-    background-color: var(--mud-palette-warning);
+.update-dot .mud-menu-item-text::after {
+    background-color: var(--mud-palette-error);
 }
 
-/* A Card Holding One Setting Wears Its Dot In The Top Right Corner */
-.card-changed {
+/* An Input's Dot Sits On Its Top Right Corner Like A MudBadge Dot */
+.changed-host {
     position: relative;
+    display: inline-block;
 }
 
-    .card-changed::before {
-        content: "";
+    .changed-dot.corner {
         position: absolute;
-        top: 6px;
-        right: 6px;
-        width: 9px;
-        height: 9px;
-        border-radius: 50%;
-        pointer-events: none;
+        top: 3px;
+        right: 3px;
+        z-index: 1;
+        margin: 0;
     }
-
-/* Badges Lift Off Their Surface Like Chips */
-.mud-badge,
-.update-dot .mud-menu-item-text::after,
-.changed-dot,
-.card-changed::before {
-    box-shadow: var(--mud-elevation-1);
-}
 
     .changed-dot.centered {
         align-self: center;
         vertical-align: middle;
         margin-left: 0;
     }
+
+/* A Card Holding One Setting Wears Its Dot In The Top Right Corner */
+.card-changed {
+    position: relative;
+}
+
+    .changed-dot.card-corner,
+    .card-changed::before {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        margin: 0;
+    }
+
+    .card-changed::before {
+        pointer-events: none;
+    }
+
+/* A Dot That Puts Its Value Back Rings On Hover */
+.revert-dot {
+    cursor: pointer;
+    transition: box-shadow var(--quick);
+}
+
+    .revert-dot:is(:hover, :focus-visible) {
+        box-shadow: 0 0 0 4px color-mix(in srgb, var(--mud-palette-warning) 40%, transparent);
+        outline: none;
+    }
+
+/* Badges Lift Off Their Surface Like Chips */
+.mud-badge {
+    box-shadow: var(--mud-elevation-1);
+}
 
 /* Inside A Switch Label The Button Follows The Text Line */
 .mud-switch .mud-tooltip-root {

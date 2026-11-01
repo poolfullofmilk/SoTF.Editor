@@ -138,7 +138,7 @@ public sealed class ModifyOptions
 
     public ActorType? ReplaceType { get; set; }
 
-    public string TeleportMode { get; set; } = "";
+    public ActorTeleport TeleportMode { get; set; }
 
     public bool UpdateEnergy { get; private set; }
 
@@ -152,5 +152,5 @@ public sealed class ModifyOptions
         || UpdateInfluences
         || RemoveSpawner
         || ReplaceType != null
-        || TeleportMode != "";
+        || TeleportMode != ActorTeleport.None;
 }

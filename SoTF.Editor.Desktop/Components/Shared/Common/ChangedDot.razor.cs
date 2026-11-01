@@ -10,4 +10,24 @@ public partial class ChangedDot
     // A Lone Dot In A Cell Sits Centered
     [Parameter]
     public bool Centered { get; set; }
+
+    // On An Input's Corner, Or A Card's Corner
+    [Parameter]
+    public bool Corner { get; set; }
+
+    [Parameter]
+    public bool CardCorner { get; set; }
+
+    // A Click Puts The Loaded Value Back
+    [Parameter]
+    public EventCallback OnRevert { get; set; }
+
+    [Parameter]
+    public bool CanRevert { get; set; } = true;
+
+    private string DotClass =>
+        "changed-dot"
+        + (Centered ? " centered" : "")
+        + (Corner ? " corner" : "")
+        + (CardCorner ? " card-corner" : "");
 }

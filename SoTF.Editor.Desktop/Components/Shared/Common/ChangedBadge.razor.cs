@@ -11,5 +11,11 @@ public partial class ChangedBadge
     public string? Class { get; set; }
 
     [Parameter]
+    public EventCallback OnRevert { get; set; }
+
+    [Parameter]
+    public bool CanRevert { get; set; } = true;
+
+    [Parameter]
     public RenderFragment? ChildContent { get; set; }
 }

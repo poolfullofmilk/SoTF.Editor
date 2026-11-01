@@ -139,7 +139,9 @@
                                 <MudTd>
                                     @* Count *@
                                     <ChangedBadge When="@InventoryPage.IsChanged(context)"
-                                                  Class="d-inline-block">
+                                                  Class="d-inline-block"
+                                                  OnRevert="() => InventoryPage.Revert(context)"
+                                                  CanRevert="@(!ArmorPage.LocksInventory(context))">
                                         <NumberField T="int"
                                                      @bind-Value="context.TotalCount"
                                                      Min="1"
@@ -173,7 +175,9 @@
                                 </MudTd>
                                 <MudTd>
                                     <ChangedDot When="@InventoryPage.IsChanged(context)"
-                                                Centered />
+                                                Centered
+                                                OnRevert="() => InventoryPage.Revert(context)"
+                                                CanRevert="@(!ArmorPage.LocksInventory(context))" />
                                 </MudTd>
                                 <MudTd Style="text-align:right">
                                     @* Add Button *@

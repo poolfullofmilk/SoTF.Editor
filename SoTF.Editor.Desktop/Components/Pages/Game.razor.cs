@@ -203,20 +203,24 @@ public partial class Game : EditorPageBase
     private string ModeClass(ModeCard mode)
     {
         // The Picked Mode Wears The Accent Ring
-        return "rounded-panel pa-4 hover-card flex-grow-1 d-flex flex-column"
-            + (IsMode(mode) ? " card-open" : "")
-            + (IsModeChanged(mode) ? " card-changed" : "");
+        return "rounded-panel pa-4 hover-card flex-grow-1 d-flex flex-column relative"
+            + (IsMode(mode) ? " card-open" : "");
     }
 
-    private static string SettingClass(bool changed)
+    // One Setting Per Card, Its Dot Sits On The Corner
+    private const string SettingClass = "rounded-panel pa-4 flex-grow-1 relative";
+
+    private string? CaptionOf(GenericSetting setting)
     {
-        // One Setting Per Card, Its Dot Sits On The Corner
-        return "rounded-panel pa-4 flex-grow-1" + (changed ? " card-changed" : "");
+        // The Day Count Shows The Season It Lands In
+        return setting.Name == GameStateKeys.GameDays && Calendar is { } calendar
+            ? DayTitle(calendar.Season, calendar.Length - calendar.DaysLeft + 1)
+            : null;
     }
 
-    private static string SeasonClass(List<DayMark> marks)
+    private void RevertSeason()
     {
-        return "rounded-panel pa-4" + (marks.Exists(mark => mark.IsNew) ? " card-changed" : "");
+        Weather.Offset?.DecimalValue = Weather.LoadedOffset;
     }
 
     private static string SeasonStyle(int season)
@@ -240,11 +244,17 @@ public partial class Game : EditorPageBase
 
     private bool IsCustom => GameSetup.SelectedMode == CustomGameMode;
 
+    private static string ReadableOf(GenericSetting setting)
+    {
+        var (place, name) = Formatter.ReadableId(setting.Name);
+        return $"{place} · {name}";
+    }
+
     private IEnumerable<GenericSetting> FilteredNamedIntDatas =>
         GameState
             .NamedIntDatas.Where(setting =>
-                string.IsNullOrWhiteSpace(_namedIntFilter)
-                || setting.Name.Contains(_namedIntFilter, StringComparison.OrdinalIgnoreCase)
+                Formatter.Matches(setting.Name, _namedIntFilter)
+                || Formatter.Matches(ReadableOf(setting), _namedIntFilter)
             )
             .OrderBy(setting => setting.Name, StringComparer.OrdinalIgnoreCase);
 
@@ -261,7 +271,8 @@ public partial class Game : EditorPageBase
         );
 
     private double DaysPlayed =>
-        (GameStateValue("GameDays") ?? 0) + ((GameStateValue("GameHours") ?? 0) / 24.0);
+        (GameStateValue(GameStateKeys.GameDays) ?? 0)
+        + ((GameStateValue(GameStateKeys.GameHours) ?? 0) / 24.0);
 
     // Season Follows Days Plus Offset, The Panel Moves It
     private SeasonState? Calendar => CalendarAt(Weather.Offset?.DecimalValue);
@@ -281,7 +292,7 @@ public partial class Game : EditorPageBase
             return null;
         }
 
-        var days = GameStateValue("GameDays") ?? 0;
+        var days = GameStateValue(GameStateKeys.GameDays) ?? 0;
         return new SeasonState(
             SeasonCalendar.SeasonAt(DaysPlayed, dayOffset, daysPerSeason),
             SeasonCalendar.DaysLeft(days, dayOffset, daysPerSeason),
@@ -303,10 +314,10 @@ public partial class Game : EditorPageBase
     // The Clock's Parts Share One Card In Place Of Hours
     private static readonly string[] s_timeSettingNames =
     [
-        "GameHours",
-        "GameMinutes",
-        "GameSeconds",
-        "GameMilliseconds",
+        GameStateKeys.GameHours,
+        GameStateKeys.GameMinutes,
+        GameStateKeys.GameSeconds,
+        GameStateKeys.GameMilliseconds,
     ];
 
     private IEnumerable<GenericSetting> StateCards =>

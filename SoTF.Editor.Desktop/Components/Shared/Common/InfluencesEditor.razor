@@ -47,18 +47,24 @@
                 <StatSlider Label="@AppText.Get("Sentiment")"
                             Info="@AppText.Get("SentimentInfo")"
                             Changed="@IsChanged(influence, nameof(influence.Sentiment))"
+                            OnRevert="() => Change(() => RevertWith?.Invoke(influence, nameof(influence.Sentiment)))"
+                            CanRevert="@(RevertWith is not null)"
                             Value="influence.Sentiment"
                             ValueChanged="value => Change(() => influence.Sentiment = value)"
                             Min="-100" />
                 @* Anger *@
                 <StatSlider Label="@AppText.Get("Anger")"
                             Changed="@IsChanged(influence, nameof(influence.Anger))"
+                            OnRevert="() => Change(() => RevertWith?.Invoke(influence, nameof(influence.Anger)))"
+                            CanRevert="@(RevertWith is not null)"
                             Value="influence.Anger"
                             ValueChanged="value => Change(() => influence.Anger = value)"
                             Min="-100" />
                 @* Fear *@
                 <StatSlider Label="@AppText.Get("Fear")"
                             Changed="@IsChanged(influence, nameof(influence.Fear))"
+                            OnRevert="() => Change(() => RevertWith?.Invoke(influence, nameof(influence.Fear)))"
+                            CanRevert="@(RevertWith is not null)"
                             Value="influence.Fear"
                             ValueChanged="value => Change(() => influence.Fear = value)"
                             Min="-100" />

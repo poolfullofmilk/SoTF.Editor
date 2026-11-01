@@ -30,6 +30,7 @@ public partial class Home : EditorPageBase
     // The Files When Last Listed And When Last Polled
     private string? _listedStamps;
     private string? _seenStamps;
+    private int _ticksToWatch;
     private MudMenu? _duplicateMenu;
     private Savegame? _menuSavegame;
 
@@ -76,6 +77,13 @@ public partial class Home : EditorPageBase
 
     private async Task RefreshAfterGameSaveAsync()
     {
+        // Only The Game Writes Saves, Watch While It Runs
+        _ticksToWatch = MainViewModel.IsGameRunning ? 3 : _ticksToWatch - 1;
+        if (_ticksToWatch <= 0)
+        {
+            return;
+        }
+
         // Settled For A Tick, So The Game Finished Writing
         var stamps = SavegameManager.SaveDataStamps();
         if (stamps == _seenStamps && stamps != _listedStamps)

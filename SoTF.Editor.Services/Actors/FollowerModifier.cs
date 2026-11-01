@@ -99,33 +99,19 @@ public sealed class FollowerModifier(SaveDataWrapper saveDataWrapper)
         if (
             saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.VailWorldSim)
                 is not { } vailWorldSim
-            || !RemoveEntryOf(vailWorldSim["Actors"], uniqueId)
+            || !JsonModifier.RemoveByUniqueId(vailWorldSim["Actors"], [uniqueId])
         )
         {
             return false;
         }
 
         // Its Feelings And Carried Items Go With It
-        RemoveEntryOf(vailWorldSim["InfluenceMemory"], uniqueId);
-        var npcItemInstancesChanged = RemoveEntryOf(
+        JsonModifier.RemoveByUniqueId(vailWorldSim["InfluenceMemory"], [uniqueId]);
+        var npcItemInstancesChanged = JsonModifier.RemoveByUniqueId(
             saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.NpcItemInstances)?["ActorItems"],
-            uniqueId
+            [uniqueId]
         );
         return MarkModified(true, npcItemInstancesChanged);
-    }
-
-    private static bool RemoveEntryOf(JToken? entries, int uniqueId)
-    {
-        if (
-            entries?.Children().FirstOrDefault(entry => entry["UniqueId"]?.Value<int>() == uniqueId)
-            is not { } entry
-        )
-        {
-            return false;
-        }
-
-        entry.Remove();
-        return true;
     }
 
     private bool MarkModified(bool vailWorldSimChanged, bool npcItemInstancesChanged)

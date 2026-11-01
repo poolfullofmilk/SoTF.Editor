@@ -2398,4 +2398,10 @@ Non garde l'éditeur ouvert pour que vous puissiez enregistrer d'abord</value>
   <data name="GuestRoleBanned" xml:space="preserve">
     <value>Banni</value>
   </data>
+  <data name="PutBack" xml:space="preserve">
+    <value>Rétablir</value>
+  </data>
+  <data name="ShowIn" xml:space="preserve">
+    <value>Ouvrir la Page : {0}</value>
+  </data>
 </root>

@@ -2394,4 +2394,10 @@
   <data name="GuestRoleBanned" xml:space="preserve">
     <value>Zbanowany</value>
   </data>
+  <data name="PutBack" xml:space="preserve">
+    <value>Przywróć</value>
+  </data>
+  <data name="ShowIn" xml:space="preserve">
+    <value>Otwórz Stronę: {0}</value>
+  </data>
 </root>

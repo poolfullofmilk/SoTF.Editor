@@ -82,6 +82,17 @@ public sealed class PlayerPageViewModel
         return _loaded.IsPropertyChanged(nameof(PlayerState), PlayerState, propertyName);
     }
 
+    public void Revert(string propertyName)
+    {
+        _loaded.RevertProperty(nameof(PlayerState), PlayerState, propertyName);
+
+        // Max Health Follows The Strength Level Back
+        if (propertyName == nameof(PlayerState.StrengthLevel))
+        {
+            _loaded.RevertProperty(nameof(PlayerState), PlayerState, nameof(PlayerState.MaxHealth));
+        }
+    }
+
     public void Load(Savegame? savegame)
     {
         if (savegame is { } selectedSavegame)
@@ -135,11 +146,7 @@ public sealed class PlayerPageViewModel
 
     private static JArray? EntriesOf(Savegame? savegame)
     {
-        return (
-                savegame
-                    ?.SavegameStore.LoadJsonRaw(SavegameStore.FileType.PlayerStateSaveData)
-                    ?.GetJsonBasedToken(Constants.JsonKeys.PlayerState) as JObject
-            )?["_entries"] as JArray;
+        return savegame is null ? null : PlayerEntries.Of(savegame.SavegameStore)?.Entries;
     }
 
     private Item? OutfitOf(int itemId)

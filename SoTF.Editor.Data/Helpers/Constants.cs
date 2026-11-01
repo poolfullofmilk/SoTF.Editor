@@ -67,6 +67,19 @@ public static class Constants
         public const string MultiplayerCheats = "GameSetting.Multiplayer.Cheats";
     }
 
+    public static class GameStateKeys
+    {
+        public const string GameType = "GameType";
+        public const string GameDays = "GameDays";
+        public const string GameHours = "GameHours";
+        public const string GameMinutes = "GameMinutes";
+        public const string GameSeconds = "GameSeconds";
+        public const string GameMilliseconds = "GameMilliseconds";
+        public const string CrashSite = "CrashSite";
+        public const string IsRobbyDead = "IsRobbyDead";
+        public const string IsVirginiaDead = "IsVirginiaDead";
+    }
+
     public static class SettingValueKeys
     {
         public const string IntValue = "IntValue";

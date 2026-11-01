@@ -118,6 +118,24 @@ public sealed class FollowerPageViewModel
         return _loaded.IsPropertyChanged(ScopeOf(follower, influence), influence, propertyName);
     }
 
+    public void Revert(FollowerState follower, string propertyName)
+    {
+        _loaded.RevertProperty(ScopeOf(follower), follower, propertyName);
+    }
+
+    public void Revert(FollowerState follower, EquippableItem item)
+    {
+        if (_loaded.TryGetLoaded($"{ScopeOf(follower)}.Item.{item.ItemId}", out var selected))
+        {
+            item.Selected = selected is true;
+        }
+    }
+
+    public void Revert(FollowerState follower, Influence influence, string propertyName)
+    {
+        _loaded.RevertProperty(ScopeOf(follower, influence), influence, propertyName);
+    }
+
     private bool InfluencesChanged(FollowerState follower)
     {
         return _loaded.IsChanged($"{ScopeOf(follower)}.Influences", InfluencesOf(follower));
@@ -245,8 +263,9 @@ public sealed class FollowerPageViewModel
         var gameState = savegame
             ?.SavegameStore.LoadJsonRaw(SavegameStore.FileType.GameStateSaveData)
             ?.GetJsonBasedToken(Constants.JsonKeys.GameState);
-        var kelvinDead = gameState?["IsRobbyDead"]?.Value<bool>() ?? false;
-        var virginiaDead = gameState?["IsVirginiaDead"]?.Value<bool>() ?? false;
+        var kelvinDead = gameState?[Constants.GameStateKeys.IsRobbyDead]?.Value<bool>() ?? false;
+        var virginiaDead =
+            gameState?[Constants.GameStateKeys.IsVirginiaDead]?.Value<bool>() ?? false;
         foreach (var follower in _followers.Append(KelvinState).Append(VirginiaState))
         {
             follower.IsMarkedDead = follower.TypeId == KelvinTypeId ? kelvinDead : virginiaDead;

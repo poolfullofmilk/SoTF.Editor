@@ -20,19 +20,15 @@ public sealed class RegrowTreesViewModel
     };
 
     private readonly Dictionary<VegetationState, int> _counts;
-    private readonly Savegame _savegame;
+    private readonly SaveDataWrapper? _wrapper;
 
     public RegrowTreesViewModel(Savegame savegame)
     {
-        _savegame = savegame;
-        _counts = (
-            savegame
-                .SavegameStore.LoadJsonRaw(SavegameStore.FileType.WorldObjectLocatorManagerSaveData)
-                ?.GetJsonBasedToken(Constants.JsonKeys.WorldObjectLocatorManager)
-                ?["SerializedStates"]
-            ?? Enumerable.Empty<JToken>()
-        )
-            .GroupBy(Savegame.VegetationStateOf)
+        _wrapper = savegame.SavegameStore.LoadJsonRaw(
+            SavegameStore.FileType.WorldObjectLocatorManagerSaveData
+        );
+        _counts = SerializedStates()
+            .GroupBy(VegetationStateOf)
             .ToDictionary(group => group.Key, group => group.Count());
     }
 
@@ -54,7 +50,7 @@ public sealed class RegrowTreesViewModel
 
     public string Save()
     {
-        var countRegrown = _savegame.RegrowTrees(VegetationStateSelected, PctRegrow);
+        var countRegrown = Regrow();
         var states = string.Join(
             ", ",
             States
@@ -69,5 +65,47 @@ public sealed class RegrowTreesViewModel
     public bool CanRegrowTrees()
     {
         return VegetationStateSelected != VegetationState.None;
+    }
+
+    private IEnumerable<JToken> SerializedStates()
+    {
+        return _wrapper
+                ?.GetJsonBasedToken(Constants.JsonKeys.WorldObjectLocatorManager)
+                ?["SerializedStates"]
+            ?? Enumerable.Empty<JToken>();
+    }
+
+    private int Regrow()
+    {
+        var candidates = SerializedStates()
+            .Where(serializedState =>
+                VegetationStateOf(serializedState) is var state and not VegetationState.None
+                && VegetationStateSelected.HasFlag(state)
+            )
+            .ToArray();
+
+        // Only The Requested Share Regrows, Spread Over The Island
+        var countRegrown = (int)Math.Round(PctRegrow / 100.0 * candidates.Length);
+        if (countRegrown == 0)
+        {
+            return 0;
+        }
+
+        Random.Shared.Shuffle(candidates);
+        foreach (var candidate in candidates.Take(countRegrown))
+        {
+            candidate.Remove();
+        }
+
+        _wrapper!.MarkAsModified(Constants.JsonKeys.WorldObjectLocatorManager);
+        return countRegrown;
+    }
+
+    private static VegetationState VegetationStateOf(JToken serializedState)
+    {
+        // Saved Values Run From 1 To 3, One Flag Each
+        return serializedState["Value"]?.Value<short>() is short value and >= 1 and <= 3
+            ? (VegetationState)(1 << (value - 1))
+            : VegetationState.None;
     }
 }

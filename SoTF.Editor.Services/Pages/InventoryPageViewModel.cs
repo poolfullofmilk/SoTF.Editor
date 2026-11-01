@@ -116,6 +116,24 @@ public sealed class InventoryPageViewModel
         return !_loadedCounts.TryGetValue(item, out var loaded) || loaded != CountOf(item);
     }
 
+    public void Revert(InventoryItem item)
+    {
+        // Its Count At Load, Or Out When Not Held
+        if (!_loadedCounts.TryGetValue(item, out var loaded))
+        {
+            return;
+        }
+
+        if (loaded is not { } count)
+        {
+            RemoveItemFromInventory(item);
+            return;
+        }
+
+        AddUnassignedItem(item);
+        item.TotalCount = count;
+    }
+
     private int? CountOf(InventoryItem item)
     {
         return IsHeld(item) ? item.TotalCount : null;
@@ -226,12 +244,7 @@ public sealed class InventoryPageViewModel
 
     private bool UpdateBlueprintPages(SavegameStore savegameStore)
     {
-        if (
-            savegameStore.LoadJsonRaw(SavegameStore.FileType.PlayerStateSaveData)
-                is not { } saveDataWrapper
-            || saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.PlayerState)?["_entries"]
-                is not JArray entries
-        )
+        if (PlayerEntries.Of(savegameStore) is not (var saveDataWrapper, var entries))
         {
             return false;
         }

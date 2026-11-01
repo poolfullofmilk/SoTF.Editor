@@ -1,8 +1,9 @@
 @* Changed Badge *@
-<MudBadge Dot
-          Overlap
-          Color="Color.Warning"
-          Visible="When"
-          Class="@Class">
+<MudElement HtmlTag="span"
+            Class="@($"changed-host {Class}")">
     @ChildContent
-</MudBadge>
+    <ChangedDot When="When"
+                Corner
+                OnRevert="OnRevert"
+                CanRevert="CanRevert" />
+</MudElement>

@@ -22,7 +22,6 @@ public static class EditorServices
         typeof(MainViewModel),
         typeof(MapViewModel),
         typeof(ActorModifier),
-        typeof(MapManager),
         typeof(PoiLoader),
     ];
 }

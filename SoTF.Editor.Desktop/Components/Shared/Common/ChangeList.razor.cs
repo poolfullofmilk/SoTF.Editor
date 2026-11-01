@@ -25,6 +25,16 @@ public partial class ChangeList
     [Parameter]
     public bool ShowAll { get; set; }
 
+    // The Save Dialog Opens Or Reverts A Page
+    [Parameter]
+    public EventCallback OnOpen { get; set; }
+
+    [Parameter]
+    public EventCallback OnRevert { get; set; }
+
+    [Parameter]
+    public bool Actions { get; set; } = true;
+
     private bool IsCut => !ShowAll && Changes.Count > ShownChanges;
 
     private IEnumerable<Change> Shown => IsCut ? Changes.Take(ShownChanges - 1) : Changes;

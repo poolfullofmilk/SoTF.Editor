@@ -2398,4 +2398,10 @@ Nee houdt de editor open zodat je eerst kunt opslaan</value>
   <data name="GuestRoleBanned" xml:space="preserve">
     <value>Verbannen</value>
   </data>
+  <data name="PutBack" xml:space="preserve">
+    <value>Terugzetten</value>
+  </data>
+  <data name="ShowIn" xml:space="preserve">
+    <value>Pagina Openen: {0}</value>
+  </data>
 </root>

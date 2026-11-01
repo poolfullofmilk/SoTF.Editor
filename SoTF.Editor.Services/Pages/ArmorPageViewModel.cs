@@ -75,6 +75,31 @@ public sealed class ArmorPageViewModel
             && loaded.Durability != armourData.ArmourPiece.RemainingArmourpoints;
     }
 
+    // Armour Moved Through The Inventory Goes Back With Revert Page
+    public bool LocksInventory(InventoryItem item)
+    {
+        return MovedThroughInventory && ArmourTypes.Exists(type => type.Id == item.Id);
+    }
+
+    // Only A Piece Worn At Load Goes Back
+    public bool CanRevert(ArmourData armourData)
+    {
+        return _loaded.TryGetValue(armourData, out var loaded) && loaded.Slot == armourData.Slot;
+    }
+
+    public void Revert(ArmourData armourData)
+    {
+        if (!CanRevert(armourData))
+        {
+            return;
+        }
+
+        // Its Type Back First, Since A Type Change Resets Durability
+        var (itemId, durability, _) = _loaded[armourData];
+        armourData.ChangeType(ArmourTypes.Find(type => type.Id == itemId));
+        armourData.ArmourPiece.RemainingArmourpoints = durability;
+    }
+
     private static (int ItemId, float Durability, int Slot) ValueOf(ArmourData armourData)
     {
         return (armourData.Id, armourData.ArmourPiece.RemainingArmourpoints, armourData.Slot);

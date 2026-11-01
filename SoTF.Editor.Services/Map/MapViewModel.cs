@@ -30,7 +30,6 @@ public sealed class MapViewModel
     ];
 
     private readonly MainViewModel _mainViewModel;
-    private readonly MapManager _mapManager;
     private readonly PoiLoader _poiLoader;
     private readonly PlayerPageViewModel _playerPage;
     private readonly FollowerPageViewModel _followerPage;
@@ -45,7 +44,6 @@ public sealed class MapViewModel
 
     public MapViewModel(
         MainViewModel mainViewModel,
-        MapManager mapManager,
         PoiLoader poiLoader,
         PlayerPageViewModel playerPage,
         FollowerPageViewModel followerPage,
@@ -54,7 +52,6 @@ public sealed class MapViewModel
     )
     {
         _mainViewModel = mainViewModel;
-        _mapManager = mapManager;
         _poiLoader = poiLoader;
         _playerPage = playerPage;
         _followerPage = followerPage;
@@ -129,7 +126,7 @@ public sealed class MapViewModel
         _builtRevision = _mainViewModel.Revision;
         _builtStructures = StructuresStamp();
         _builtOwnedItems = ownedItems;
-        _poiGroups = _mapManager.BuildPoiGroups(_mainViewModel.SelectedSavegame, ownedItems);
+        _poiGroups = _poiLoader.BuildPoiGroups(_mainViewModel.SelectedSavegame, ownedItems);
         LoadSavedSelectedPois();
         SelectPoi(null);
         ApplyFilterToAllPois();
@@ -475,7 +472,7 @@ public sealed class MapViewModel
             is not { } ziplineGroup
         )
         {
-            ziplineGroup = MapManager.ZiplineGroup([]);
+            ziplineGroup = PoiLoader.ZiplineGroup([]);
             _poiGroups.Add(ziplineGroup);
         }
 

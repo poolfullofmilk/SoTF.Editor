@@ -14,6 +14,12 @@ public partial class SettingCard : EditorPageBase
     [Parameter]
     public string? Info { get; set; }
 
+    [Parameter]
+    public EventCallback OnRevert { get; set; }
+
+    [Parameter]
+    public string? Caption { get; set; }
+
     // One Setting Per Card, Its Dot Sits On The Corner
-    private string CardClass => "rounded-panel pa-4 flex-grow-1" + (Changed ? " card-changed" : "");
+    private const string CardClass = "rounded-panel pa-4 flex-grow-1 relative";
 }

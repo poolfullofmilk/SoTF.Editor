@@ -44,7 +44,7 @@ public partial class Npcs : EditorPageBase
                     : [new CollectionGroup(null, NpcsPage.ActorsByType)]
             )
                 .Select(group =>
-                    group.Title is { } title && Matches(title)
+                    group.Title is { } title && Formatter.Matches(title, _filter)
                         ? group
                         : group with
                         {
@@ -58,15 +58,11 @@ public partial class Npcs : EditorPageBase
     private bool Matches(ActorCollection collection)
     {
         // A Family Row Also Matches The Creatures In It
-        return Matches(collection.Name)
-            || Matches(DetailOf(collection.SharedType))
-            || collection.Actors.Any(actor => Matches(actor.ActorType?.Name ?? ""));
-    }
-
-    private bool Matches(string text)
-    {
-        return string.IsNullOrWhiteSpace(_filter)
-            || text.Contains(_filter, StringComparison.OrdinalIgnoreCase);
+        return Formatter.Matches(collection.Name, _filter)
+            || Formatter.Matches(DetailOf(collection.SharedType), _filter)
+            || collection.Actors.Any(actor =>
+                Formatter.Matches(actor.ActorType?.Name ?? "", _filter)
+            );
     }
 
     // Only A Shown Row, A Search Can Hide It

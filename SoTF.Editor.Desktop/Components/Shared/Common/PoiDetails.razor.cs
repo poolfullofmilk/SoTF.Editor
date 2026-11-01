@@ -5,6 +5,7 @@ using SoTF.Editor.Data.Enums;
 using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Models.Map;
+using SoTF.Editor.Data.Models.Storage;
 using SoTF.Editor.Data.ViewModels;
 using SoTF.Editor.Desktop.Components.Shared.Dialogs;
 using SoTF.Editor.Services.Actors;
@@ -49,6 +50,15 @@ public partial class PoiDetails
 
     [Inject]
     public required IJsApiService JsApiService { get; set; }
+
+    [Inject]
+    public required StoragePageViewModel StoragePage { get; set; }
+
+    [Inject]
+    public required StructuresPageViewModel StructuresPage { get; set; }
+
+    [Inject]
+    public required NavigationManager NavigationManager { get; set; }
 
     // Within This Many Metres Someone Is Already There
     private const float NearbyMetres = 10;
@@ -265,12 +275,46 @@ public partial class PoiDetails
         {
             // One Actor, Through The Same Change The NPC Dialog Makes
             var edit = new EditActorViewModel(actorPoi.Actor, GameData.ActorTypes);
-            edit.ModifyOptions.TeleportMode = "NpcToPlayer";
+            edit.ModifyOptions.TeleportMode = ActorTeleport.NpcToPlayer;
             MainViewModel.ModifyActors(savegame => ActorModifier.Modify(savegame, edit));
             MapViewModel.SelectPoi(null);
         }
 
         await OnMapChanged.InvokeAsync();
+    }
+
+    // A Storage Opens On Storage, Any Other Structure On Structures
+    private IStorage? StorageAt(StructurePoi structurePoi)
+    {
+        return StoragePage
+            .StorageCollections.SelectMany(collection => collection.Storages)
+            .FirstOrDefault(storage =>
+                storage.Pos is { } position
+                && structurePoi.Position?.HasSameCoordinates(position) == true
+            );
+    }
+
+    private void ShowStructure(StructurePoi structurePoi)
+    {
+        if (StorageAt(structurePoi) is { } storage)
+        {
+            StoragePage.SelectedStorage = storage;
+            NavigationManager.NavigateTo("Storage");
+            return;
+        }
+
+        StructuresPage.FocusName = structurePoi.ScrewStructureWrapper.Name;
+        NavigationManager.NavigateTo("Structures");
+    }
+
+    private void ShowFollower(ActorPoi actorPoi)
+    {
+        if (FollowerPage.StateOfActor(actorPoi.Actor.UniqueId) is { } follower)
+        {
+            FollowerPage.Select(follower);
+        }
+
+        NavigationManager.NavigateTo("Followers");
     }
 
     private async Task EditActorAsync(ActorPoi actorPoi)

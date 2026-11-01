@@ -31,6 +31,16 @@ public static class JsonModifier
         return CompareAndModify(token, key, value => Math.Abs(value - newValue) >= 0.001, newValue);
     }
 
+    public static bool RemoveByUniqueId(JToken? entries, HashSet<int> uniqueIds)
+    {
+        // Every Match Goes, The Game Can Repeat A Memory
+        var removed = (entries ?? Enumerable.Empty<JToken>())
+            .Where(entry => UniqueIdOf(entry) is { } uniqueId && uniqueIds.Contains(uniqueId))
+            .ToList();
+        removed.ForEach(entry => entry.Remove());
+        return removed.Count > 0;
+    }
+
     public static int? UniqueIdOf(JToken entry)
     {
         return entry["UniqueId"]?.Value<int>();

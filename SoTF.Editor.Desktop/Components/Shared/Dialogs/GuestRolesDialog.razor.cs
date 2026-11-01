@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using SoTF.Editor.Data.ViewModels;
 using SoTF.Editor.Services.Savegames;
+using SoTF.Editor.Services.Tools;
 
 namespace SoTF.Editor.Desktop.Components.Shared.Dialogs;
 
@@ -23,7 +24,7 @@ public partial class GuestRolesDialog
 
     protected override void OnInitialized()
     {
-        _guests = MainViewModel.ReadGuests();
+        _guests = WorldTools.ReadGuests(MainViewModel.SelectedSavegame);
         _roles = _guests
             .DistinctBy(guest => guest.SteamId)
             .ToDictionary(guest => guest.SteamId, guest => guest.Role);
@@ -31,7 +32,10 @@ public partial class GuestRolesDialog
 
     private void Apply()
     {
-        Snackbar.Add(MainViewModel.SetGuestRoles(_roles), Severity.Info);
+        Snackbar.Add(
+            WorldTools.SetGuestRoles(MainViewModel.SelectedSavegame, _roles),
+            Severity.Info
+        );
         MudDialog.Close(DialogResult.Ok(true));
     }
 }

@@ -6,7 +6,7 @@
 - Save your inventory as a loadout and put it back in one click
 - See which bunkers, videos, missing soldiers and blueprints you found and where the rest are, plus your kills and crafting
 - Copy your player into another save, a friend's game you joined too
-- Fill every storage to the max in one click
+- Fill every storage to the max in one click, or search for the storages that hold an item
 - Edit, revive or spawn Kelvin and Virginia
 - Edit NPCs one at a time or all at once
 - Change the game settings, the weather and the season
@@ -16,7 +16,7 @@
 - Tools such as regrowing trees, calming cannibals, ripening gardens and filling 3D printers
 - Set the roles of players who joined your hosted game
 - Duplicate and export your savegames
-- See every change before you save, and undo them page by page
+- See every change before you save, undo a page, or click a change dot to put one value back
 - Pin and label the backups you want to keep
 - Reloads by itself when the game saves, and shows when the game is running
 - English, Dutch, German, French, Spanish, Brazilian Portuguese, Polish, Russian and Turkish, and it updates itself

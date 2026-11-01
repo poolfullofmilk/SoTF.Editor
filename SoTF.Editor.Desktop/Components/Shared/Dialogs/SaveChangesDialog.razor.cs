@@ -47,6 +47,9 @@ public partial class SaveChangesDialog
     [Inject]
     public required StructuresPageViewModel StructuresPage { get; set; }
 
+    [Inject]
+    public required NavigationManager NavigationManager { get; set; }
+
     [Parameter]
     public required List<MainLayout.PageLink> Pages { get; set; }
 
@@ -60,9 +63,32 @@ public partial class SaveChangesDialog
     // Worked Out Once, The Backup Keeps The Same List
     private Dictionary<string, List<Change>> _changes = [];
 
+    // A Page Reverted Here Leaves The List
+    private List<MainLayout.PageLink> _pages = [];
+
     protected override void OnInitialized()
     {
+        _pages = [.. Pages];
         _changes = Pages.ToDictionary(link => link.Href, link => ChangesOf(link.Href));
+    }
+
+    private void Open(MainLayout.PageLink link)
+    {
+        MudDialog.Cancel();
+        NavigationManager.NavigateTo(link.Href);
+    }
+
+    private void RevertPage(MainLayout.PageLink link)
+    {
+        // Its Edits Go Back Now, The Rest Still Saves
+        MainViewModel.RevertPage(link.Href);
+        _pages.Remove(link);
+        _changes.Remove(link.Href);
+        MainViewModel.NotifyChanged();
+        if (_pages.Count == 0)
+        {
+            MudDialog.Cancel();
+        }
     }
 
     private List<Change> ChangesOf(string page)

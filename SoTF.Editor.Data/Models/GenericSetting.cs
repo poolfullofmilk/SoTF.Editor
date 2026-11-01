@@ -50,6 +50,28 @@ public sealed class GenericSetting(
         };
     }
 
+    public void SetValue(object? value)
+    {
+        switch (Type)
+        {
+            case DataType.ReadOnly or DataType.String:
+                StringValue = (string?)value;
+                break;
+            case DataType.Boolean:
+                BoolValue = (bool?)value;
+                break;
+            case DataType.Integer:
+                IntValue = (int?)value;
+                break;
+            case DataType.Decimal:
+                DecimalValue = (double?)value;
+                break;
+            default:
+                SelectedItem = value;
+                break;
+        }
+    }
+
     public bool MergeTo(JToken target)
     {
         if (Type == DataType.ReadOnly || DataPath == null || target is not JObject targetObject)

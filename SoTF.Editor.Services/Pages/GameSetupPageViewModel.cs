@@ -169,6 +169,29 @@ public sealed class GameSetupPageViewModel
             != (_loadedBools.TryGetValue(key, out var loaded) ? loaded : fallback);
     }
 
+    public void Revert(string key)
+    {
+        // As Loaded, Or Left Out When The Save Lacked It
+        RevertEntry(_stringSettings, _loadedStrings, key);
+        RevertEntry(_boolSettings, _loadedBools, key);
+    }
+
+    private static void RevertEntry<TValue>(
+        Dictionary<string, TValue> current,
+        Dictionary<string, TValue> loaded,
+        string key
+    )
+    {
+        if (loaded.TryGetValue(key, out var value))
+        {
+            current[key] = value;
+        }
+        else
+        {
+            current.Remove(key);
+        }
+    }
+
     private static bool SameEntries<TValue>(
         Dictionary<string, TValue> current,
         Dictionary<string, TValue> loaded
@@ -243,8 +266,9 @@ public sealed class GameSetupPageViewModel
             return hasChanges;
         }
 
-        return savegame.ModifyGameState(new Dictionary<string, object> { { "GameType", mode } })
-            || hasChanges;
+        return savegame.ModifyGameState(
+                new Dictionary<string, object> { { GameStateKeys.GameType, mode } }
+            ) || hasChanges;
     }
 
     private void PrepareSettingsBeforeMerge()

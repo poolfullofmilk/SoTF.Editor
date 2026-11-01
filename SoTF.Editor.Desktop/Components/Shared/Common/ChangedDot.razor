@@ -1,6 +1,18 @@
-@if (When)
+@if (When && CanRevert && OnRevert.HasDelegate)
+{
+    @* Put Back Dot *@
+    <span class="@($"{DotClass} revert-dot")"
+          role="button"
+          tabindex="0"
+          data-keyclick
+          title="@AppText.Get("PutBack")"
+          aria-label="@AppText.Get("PutBack")"
+          @onclick="OnRevert"
+          @onclick:stopPropagation="true" />
+}
+else if (When)
 {
     @* Changed Dot *@
     <MudElement HtmlTag="span"
-                Class="@(Centered ? "changed-dot centered" : "changed-dot")" />
+                Class="@DotClass" />
 }

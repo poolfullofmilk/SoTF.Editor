@@ -27,6 +27,9 @@ public sealed class StructuresPageViewModel
 
     public List<ScrewStructureWrapper> Structures { get; } = [];
 
+    // The Type The Map Asks The Page To Open On
+    public string? FocusName { get; set; }
+
     public bool HasChanges => Structures.Any(structure => structure.IsChanged);
 
     public IEnumerable<string> ChangedNames =>

@@ -1,16 +1,48 @@
+using System.Diagnostics;
 using System.Globalization;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace SoTF.Editor.Data.Helpers;
 
-public static class Formatter
+public static partial class Formatter
 {
+    static Formatter()
+    {
+        Debug.Assert(SelfTestPasses());
+    }
+
     // One Date Format Everywhere, Day First
     private const string DisplayDateTimeFormat = "dd-MM-yyyy HH:mm";
     private const string DisplayDateTimeSecondsFormat = "dd-MM-yyyy HH:mm:ss";
 
     // Keeps An Axis Letter With Its Number
     private const char NoBreakSpace = '\u00A0';
+
+    public static bool Matches(string text, string? filter)
+    {
+        return string.IsNullOrWhiteSpace(filter)
+            || text.Contains(filter, StringComparison.OrdinalIgnoreCase);
+    }
+
+    public static (string Place, string Name) ReadableId(string id)
+    {
+        // CaveA.BoardsA Reads Cave A, Then Boards A
+        var parts = id.Split('.').Select(part => WordBreak().Replace(part, " ")).ToArray();
+        return parts.Length > 1 ? (parts[0], string.Join(" · ", parts[1..])) : ("", parts[0]);
+    }
+
+    [GeneratedRegex("(?<=[a-z0-9])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])|(?<=[A-Za-z])(?=[0-9])")]
+    private static partial Regex WordBreak();
+
+    private static bool SelfTestPasses()
+    {
+        return ReadableId("CaveA.BoardsA") == ("Cave A", "Boards A")
+            && ReadableId("BunkerEntertainment.AmmoCase.AAD")
+                == ("Bunker Entertainment", "Ammo Case · AAD")
+            && ReadableId("LightningPOI.12") == ("Lightning POI", "12")
+            && ReadableId("RaftTacticalFound") == ("", "Raft Tactical Found");
+    }
 
     public static string FormatDateTime(DateTime value)
     {

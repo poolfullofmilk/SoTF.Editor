@@ -11,6 +11,11 @@ public sealed class StoredItem
     private int _loadedCount;
     private List<UniqueItem> _uniqueItems = [];
 
+    // As Built, A Put Back Brings It Back
+    private readonly ItemWrapper? _builtItem;
+    private readonly int _builtCount;
+    private readonly List<UniqueItem> _builtUniqueItems;
+
     public int Count { get; set; }
 
     public StoredItem(
@@ -27,6 +32,9 @@ public sealed class StoredItem
         SupportedItems = supportedItems;
         _uniqueItems = uniqueItems ?? [];
         _loadedCount = count;
+        _builtItem = item;
+        _builtCount = count;
+        _builtUniqueItems = _uniqueItems;
     }
 
     public List<ItemWrapper> SupportedItems { get; }
@@ -78,6 +86,17 @@ public sealed class StoredItem
         }
 
         return _uniqueItems.Count > 0 ? new UniqueItem { Modules = _uniqueItems[0].Modules } : null;
+    }
+
+    // Ponytail: Slots Rebuilt By Apply To All Put Back Nothing
+    public bool CanRevert => !Equals(SelectedItem, _builtItem) || Count != _builtCount;
+
+    public void Revert()
+    {
+        SelectedItem = _builtItem;
+        _uniqueItems = _builtUniqueItems;
+        _loadedCount = _builtCount;
+        Count = _builtCount;
     }
 
     public void Clear()

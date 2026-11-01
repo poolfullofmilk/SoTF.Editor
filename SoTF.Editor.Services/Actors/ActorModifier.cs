@@ -42,7 +42,7 @@ public sealed class ActorModifier(PlayerPageViewModel playerPageViewModel)
         }
 
         // Spawners Go Only When Asked, Either Way
-        RemoveWhere(
+        JsonModifier.RemoveByUniqueId(
             vailWorldSim["Spawners"],
             data.ModifyOptions.RemoveSpawner
                 ? [.. matchedActors.Select(actor => actor["SpawnerId"]?.Value<int>()).OfType<int>()]
@@ -55,13 +55,13 @@ public sealed class ActorModifier(PlayerPageViewModel playerPageViewModel)
 
             // Their Feelings And Carried Items Go With Them
             var uniqueIds = UniqueIdsOf(matchedActors);
-            RemoveWhere(vailWorldSim["InfluenceMemory"], uniqueIds);
+            JsonModifier.RemoveByUniqueId(vailWorldSim["InfluenceMemory"], uniqueIds);
             if (
                 saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.NpcItemInstances) is
                 { } npcItemInstances
             )
             {
-                RemoveWhere(npcItemInstances["ActorItems"], uniqueIds);
+                JsonModifier.RemoveByUniqueId(npcItemInstances["ActorItems"], uniqueIds);
                 saveDataWrapper.MarkAsModified(Constants.JsonKeys.NpcItemInstances);
             }
         }
@@ -101,7 +101,7 @@ public sealed class ActorModifier(PlayerPageViewModel playerPageViewModel)
                 actor["TypeId"] = replaceType.Id;
             }
 
-            if (options.TeleportMode == "NpcToPlayer")
+            if (options.TeleportMode == ActorTeleport.NpcToPlayer)
             {
                 var newPos = playerPageViewModel.PlayerState.Pos.ForTeleport();
                 actor["Position"] = JToken.FromObject(newPos);
@@ -114,7 +114,7 @@ public sealed class ActorModifier(PlayerPageViewModel playerPageViewModel)
             UpdateInfluences(vailWorldSim, data.Influences, UniqueIdsOf(matchedActors));
         }
 
-        if (options.TeleportMode == "PlayerToNpc")
+        if (options.TeleportMode == ActorTeleport.PlayerToNpc)
         {
             // The Player Takes The Spot, The Actor Steps Up Beside
             var actorPos = data.Actor.Position!;
@@ -161,20 +161,6 @@ public sealed class ActorModifier(PlayerPageViewModel playerPageViewModel)
         foreach (var uniqueId in uniqueIds.Where(uniqueId => !handled.Contains(uniqueId)))
         {
             influenceMemories.Add(JToken.FromObject(new InfluenceMemory(uniqueId, influences)));
-        }
-    }
-
-    private static void RemoveWhere(JToken? entries, HashSet<int> uniqueIds)
-    {
-        foreach (
-            var entry in (entries ?? Enumerable.Empty<JToken>())
-                .Where(entry =>
-                    entry["UniqueId"]?.Value<int>() is { } uniqueId && uniqueIds.Contains(uniqueId)
-                )
-                .ToList()
-        )
-        {
-            entry.Remove();
         }
     }
 

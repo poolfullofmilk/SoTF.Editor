@@ -11,7 +11,36 @@
               Class="flex-grow-1">
         @if (Label is not null)
         {
-            <MudText Typo="Typo.body2">@Label</MudText>
+            <MudStack Row
+                      AlignItems="AlignItems.Center"
+                      Spacing="1">
+                @if (Actions && OnOpen.HasDelegate)
+                {
+                    @* Open Page *@
+                    <MudLink Typo="Typo.body2"
+                             Color="Color.Info"
+                             Underline="Underline.Hover"
+                             OnClick="OnOpen">
+                        @Label
+                    </MudLink>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2">@Label</MudText>
+                }
+                @if (Actions && OnRevert.HasDelegate)
+                {
+                    <MudSpacer />
+                    @* Revert Page *@
+                    <Tooltip Text="@AppText.Get("RevertPage")"
+                             RootClass="d-flex">
+                        <MudIconButton Icon="@Icons.Material.Rounded.Undo"
+                                       aria-label="@AppText.Get("RevertPage")"
+                                       Size="Size.Small"
+                                       OnClick="OnRevert" />
+                    </Tooltip>
+                }
+            </MudStack>
         }
         @foreach (var change in Shown)
         {

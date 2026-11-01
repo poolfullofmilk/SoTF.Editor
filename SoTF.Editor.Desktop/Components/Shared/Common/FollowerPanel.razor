@@ -63,8 +63,9 @@
                             </MudText>
                             <MudText Typo="Typo.body2"
                                      Class="mud-text-secondary selectable-text">
-                                @($"{AppText.Get("Position")}: {Follower.Pos.PrintableShort}")
-                                <ChangedDot When="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Pos))" />
+                                @($"{AppText.Get("Position")}: {Follower.Pos.PrintableShort} · {AppText.Get("Area")}: {Follower.Pos.Area.Name}")
+                                <ChangedDot When="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Pos))"
+                                            OnRevert="() => FollowerPage.Revert(Follower, nameof(FollowerState.Pos))" />
                             </MudText>
                         </MudStack>
                     </MudStack>
@@ -113,34 +114,41 @@
                     <StatSlider Label="@AppText.Get("Health")"
                                 Tint="@StatColors.Health"
                                 Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Health))"
+                                OnRevert="() => FollowerPage.Revert(Follower, nameof(FollowerState.Health))"
                                 @bind-Value="Follower.Health" />
                     @* Anger *@
                     <StatSlider Label="@AppText.Get("Anger")"
                                 Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Anger))"
+                                OnRevert="() => FollowerPage.Revert(Follower, nameof(FollowerState.Anger))"
                                 @bind-Value="Follower.Anger" />
                     @* Fear *@
                     <StatSlider Label="@AppText.Get("Fear")"
                                 Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Fear))"
+                                OnRevert="() => FollowerPage.Revert(Follower, nameof(FollowerState.Fear))"
                                 @bind-Value="Follower.Fear" />
                     @* Fullness *@
                     <StatSlider Label="@AppText.Get("Fullness")"
                                 Tint="@StatColors.Fullness"
                                 Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Fullness))"
+                                OnRevert="() => FollowerPage.Revert(Follower, nameof(FollowerState.Fullness))"
                                 @bind-Value="Follower.Fullness" />
                     @* Hydration *@
                     <StatSlider Label="@AppText.Get("Hydration")"
                                 Tint="@StatColors.Hydration"
                                 Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Hydration))"
+                                OnRevert="() => FollowerPage.Revert(Follower, nameof(FollowerState.Hydration))"
                                 @bind-Value="Follower.Hydration" />
                     @* Energy *@
                     <StatSlider Label="@AppText.Get("Energy")"
                                 Tint="@StatColors.Stamina"
                                 Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Energy))"
+                                OnRevert="() => FollowerPage.Revert(Follower, nameof(FollowerState.Energy))"
                                 @bind-Value="Follower.Energy" />
                     @* Affection *@
                     <StatSlider Label="@AppText.Get("Affection")"
                                 Tint="@StatColors.Affection"
                                 Changed="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Affection))"
+                                OnRevert="() => FollowerPage.Revert(Follower, nameof(FollowerState.Affection))"
                                 @bind-Value="Follower.Affection" />
 
                     <MudStack Spacing="2"
@@ -150,7 +158,8 @@
                         </MudText>
                         @* Outfit *@
                         <ChangedBadge When="@FollowerPage.IsChanged(Follower, nameof(FollowerState.Outfit))"
-                                      Class="d-block">
+                                      Class="d-block"
+                                      OnRevert="() => FollowerPage.Revert(Follower, nameof(FollowerState.Outfit))">
                             <MudSelect T="Outfit"
                                        Variant="Variant.Outlined"
                                        @bind-Value="Follower.Outfit"
@@ -182,7 +191,8 @@
                                          Value="@equippableItem.Name"
                                          @bind-Selected="equippableItem.Selected">
                                     @equippableItem.Name
-                                    <ChangedDot When="@FollowerPage.IsChanged(Follower, equippableItem)" />
+                                    <ChangedDot When="@FollowerPage.IsChanged(Follower, equippableItem)"
+                                                OnRevert="() => FollowerPage.Revert(Follower, equippableItem)" />
                                 </MudChip>
                             }
                         </MudChipSet>
@@ -197,6 +207,7 @@
             Info="@AppText.Get("InfluencesInfo")">
         <InfluencesEditor Influences="Follower.Influences"
                           ChangedWhen="IsInfluenceChanged"
+                          RevertWith="RevertInfluence"
                           OnChanged="StateHasChanged" />
     </Header>
 </MudStack>

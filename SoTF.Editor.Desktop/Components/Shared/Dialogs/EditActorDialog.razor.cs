@@ -23,9 +23,9 @@ public partial class EditActorDialog
 
     private static readonly TeleportOption[] s_teleports =
     [
-        new("", "None"),
-        new("NpcToPlayer", "TeleportNpcToPlayer"),
-        new("PlayerToNpc", "TeleportPlayerToNpc"),
+        new(ActorTeleport.None, "None"),
+        new(ActorTeleport.NpcToPlayer, "TeleportNpcToPlayer"),
+        new(ActorTeleport.PlayerToNpc, "TeleportPlayerToNpc"),
     ];
 
     [CascadingParameter]
@@ -173,5 +173,5 @@ public partial class EditActorDialog
 
     private sealed record Selection(short Value, string LabelKey);
 
-    private sealed record TeleportOption(string Mode, string LabelKey);
+    private sealed record TeleportOption(ActorTeleport Mode, string LabelKey);
 }

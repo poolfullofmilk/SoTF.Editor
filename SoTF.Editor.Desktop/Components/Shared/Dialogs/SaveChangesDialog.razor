@@ -9,11 +9,14 @@
                      Class="mud-text-secondary">
                 @(Revert ? AppText.Format("RevertPageText", AppText.Get(Pages[0].LabelKey)) : AppText.Get("SaveChangesText"))
             </MudText>
-            @foreach (var link in Pages)
+            @foreach (var link in _pages)
             {
                 <ChangeList Icon="@link.Icon"
                             Label="@AppText.Get(link.LabelKey)"
-                            Changes="_changes[link.Href]" />
+                            Changes="_changes[link.Href]"
+                            OnOpen="() => Open(link)"
+                            OnRevert="() => RevertPage(link)"
+                            Actions="!Revert" />
             }
             @if (!Revert)
             {

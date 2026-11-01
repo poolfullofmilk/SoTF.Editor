@@ -50,7 +50,10 @@ public partial class Structures : EditorPageBase
                     group.First().ScrewStructure?.IconUrl,
                     [.. group.OrderBy(wrapper => wrapper.Origin).ThenBy(wrapper => wrapper.PctDone)]
                 ))
-                .Where(type => Matches(type.Name) || Matches(type.Category))
+                .Where(type =>
+                    Formatter.Matches(type.Name, _filter)
+                    || Formatter.Matches(type.Category, _filter)
+                )
                 .OrderBy(type => type.Category)
                 .ThenBy(type => type.Name),
         ];
@@ -66,10 +69,17 @@ public partial class Structures : EditorPageBase
 
     private string ShownTitle => _showAll ? AppText.Get("AllStructures") : _selectedName ?? "";
 
-    private bool Matches(string text)
+    protected override void OnInitialized()
     {
-        return string.IsNullOrWhiteSpace(_filter)
-            || text.Contains(_filter, StringComparison.OrdinalIgnoreCase);
+        base.OnInitialized();
+
+        // The Map Opens On A Structure's Own Type
+        if (StructuresPage.FocusName is { } name)
+        {
+            _showAll = false;
+            _selectedName = name;
+            StructuresPage.FocusName = null;
+        }
     }
 
     private void SelectAll()

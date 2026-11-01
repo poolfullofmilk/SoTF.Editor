@@ -48,12 +48,14 @@
                             <MudText Typo="Typo.body2"
                                      Class="mud-text-secondary selectable-text">
                                 @($"{AppText.Get("Position")}: {State.Pos.PrintableShort} · {AppText.Get("Area")}: {State.Pos.Area.Name}")
-                                <ChangedDot When="@PlayerPage.IsChanged(nameof(PlayerState.Pos))" />
+                                <ChangedDot When="@PlayerPage.IsChanged(nameof(PlayerState.Pos))"
+                                            OnRevert="() => PlayerPage.Revert(nameof(PlayerState.Pos))" />
                             </MudText>
 
                             @* Strength *@
                             <StatSlider Label="@AppText.Get("StrengthLevel")"
                                         Changed="@PlayerPage.IsChanged(nameof(PlayerState.StrengthLevel))"
+                                        OnRevert="() => PlayerPage.Revert(nameof(PlayerState.StrengthLevel))"
                                         Value="State.StrengthLevel"
                                         ValueChanged="value => State.ChangeStrengthLevel((int)value)"
                                         Info="@AppText.Get("StrengthLevelInfo")"
@@ -71,6 +73,7 @@
                             <StatSlider Label="@AppText.Get("CurrentHealth")"
                                         Tint="@StatColors.Health"
                                         Changed="@PlayerPage.IsChanged(nameof(PlayerState.CurrentHealth))"
+                                        OnRevert="() => PlayerPage.Revert(nameof(PlayerState.CurrentHealth))"
                                         Warning="@CurrentHealthWarning"
                                         @bind-Value="State.CurrentHealth"
                                         Min="0.1f"
@@ -80,6 +83,7 @@
                             <StatSlider Label="@AppText.Get("Sickness")"
                                         Tint="@StatColors.Sickness"
                                         Changed="@PlayerPage.IsChanged(nameof(PlayerState.Sickness))"
+                                        OnRevert="() => PlayerPage.Revert(nameof(PlayerState.Sickness))"
                                         @bind-Value="State.Sickness"
                                         Max="State.MaxHealth"
                                         Step="0.1f" />
@@ -87,26 +91,31 @@
                             <StatSlider Label="@AppText.Get("Fullness")"
                                         Tint="@StatColors.Fullness"
                                         Changed="@PlayerPage.IsChanged(nameof(PlayerState.Fullness))"
+                                        OnRevert="() => PlayerPage.Revert(nameof(PlayerState.Fullness))"
                                         @bind-Value="State.Fullness" />
                             @* Hydration *@
                             <StatSlider Label="@AppText.Get("Hydration")"
                                         Tint="@StatColors.Hydration"
                                         Changed="@PlayerPage.IsChanged(nameof(PlayerState.Hydration))"
+                                        OnRevert="() => PlayerPage.Revert(nameof(PlayerState.Hydration))"
                                         @bind-Value="State.Hydration" />
                             @* Rest *@
                             <StatSlider Label="@AppText.Get("Rest")"
                                         Tint="@StatColors.Rest"
                                         Changed="@PlayerPage.IsChanged(nameof(PlayerState.Rest))"
+                                        OnRevert="() => PlayerPage.Revert(nameof(PlayerState.Rest))"
                                         @bind-Value="State.Rest" />
                             @* Stamina *@
                             <StatSlider Label="@AppText.Get("Stamina")"
                                         Tint="@StatColors.Stamina"
                                         Changed="@PlayerPage.IsChanged(nameof(PlayerState.Stamina))"
+                                        OnRevert="() => PlayerPage.Revert(nameof(PlayerState.Stamina))"
                                         @bind-Value="State.Stamina" />
                             @* Fullness Buff *@
                             <StatSlider Label="@AppText.Get("FullnessBuff")"
                                         Tint="@StatColors.Fullness"
                                         Changed="@PlayerPage.IsChanged(nameof(PlayerState.FullnessBuff))"
+                                        OnRevert="() => PlayerPage.Revert(nameof(PlayerState.FullnessBuff))"
                                         @bind-Value="State.FullnessBuff"
                                         Min="-100"
                                         Max="65535" />
@@ -114,6 +123,7 @@
                             <StatSlider Label="@AppText.Get("HydrationBuff")"
                                         Tint="@StatColors.Hydration"
                                         Changed="@PlayerPage.IsChanged(nameof(PlayerState.HydrationBuff))"
+                                        OnRevert="() => PlayerPage.Revert(nameof(PlayerState.HydrationBuff))"
                                         @bind-Value="State.HydrationBuff"
                                         Min="-100"
                                         Max="65535" />
@@ -121,6 +131,7 @@
                             <StatSlider Label="@AppText.Get("RestBuff")"
                                         Tint="@StatColors.Rest"
                                         Changed="@PlayerPage.IsChanged(nameof(PlayerState.RestBuff))"
+                                        OnRevert="() => PlayerPage.Revert(nameof(PlayerState.RestBuff))"
                                         @bind-Value="State.RestBuff"
                                         Max="1"
                                         Step="0.1f" />
@@ -132,7 +143,8 @@
                                 </MudText>
                                 @* Outfit *@
                                 <ChangedBadge When="@PlayerPage.IsChanged(nameof(PlayerState.SelectedCloth))"
-                                              Class="d-block">
+                                              Class="d-block"
+                                              OnRevert="() => PlayerPage.Revert(nameof(PlayerState.SelectedCloth))">
                                     <MudSelect T="Item"
                                                Variant="Variant.Outlined"
                                                @bind-Value="State.SelectedCloth"
@@ -228,10 +240,14 @@
                                     <ArmourSelect Value="armour.Item"
                                                   ValueChanged="armour.ChangeType"
                                                   Types="ArmorPage.ArmourTypes"
-                                                  Changed="@ArmorPage.IsTypeChanged(armour)" />
+                                                  Changed="@ArmorPage.IsTypeChanged(armour)"
+                                                  OnRevert="() => ArmorPage.Revert(armour)"
+                                                  CanRevert="@ArmorPage.CanRevert(armour)" />
                                     @* Durability *@
                                     <ChangedBadge When="@ArmorPage.IsDurabilityChanged(armour)"
-                                                  Class="flex-shrink-0">
+                                                  Class="flex-shrink-0"
+                                                  OnRevert="() => ArmorPage.Revert(armour)"
+                                                  CanRevert="@ArmorPage.CanRevert(armour)">
                                         <NumberField T="float"
                                                      @bind-Value="armour.ArmourPiece.RemainingArmourpoints"
                                                      Min="armour.MinDurability"
@@ -299,7 +315,9 @@
                                         <MudText Typo="Typo.body2"
                                                  Class="mud-text-secondary">
                                             @AppText.Format("InInventoryCount", InventoryPage.IsHeld(item) ? item.TotalCount : 0)
-                                            <ChangedDot When="@InventoryPage.IsChanged(item)" />
+                                            <ChangedDot When="@InventoryPage.IsChanged(item)"
+                                                        OnRevert="() => InventoryPage.Revert(item)"
+                                                        CanRevert="@(!ArmorPage.LocksInventory(item))" />
                                         </MudText>
                                         <MudSpacer />
                                         @* Wear Button *@

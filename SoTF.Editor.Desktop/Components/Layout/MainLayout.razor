@@ -77,7 +77,7 @@
             <MudSpacer />
 
             @* Game Running Chip *@
-            @if (_isGameRunning)
+            @if (MainViewModel.IsGameRunning)
             {
                 <Tooltip Text="@AppText.Get("GameRunningWarning")"
                          RootClass="d-flex mr-2">

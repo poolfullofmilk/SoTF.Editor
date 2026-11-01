@@ -1,6 +1,6 @@
 #:project ../SoTF.Editor.Services/SoTF.Editor.Services.csproj
 #:package Microsoft.Extensions.DependencyInjection@10.0.14
-#:property NoWarn=$(NoWarn);IL2026;IL3050
+#:property NoWarn=$(NoWarn);IL2026;IL3050;IL2072
 using System.IO.Compression;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
@@ -12,6 +12,7 @@ using Newtonsoft.Json.Linq;
 using SoTF.Editor.Data.Enums;
 using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
+using SoTF.Editor.Data.Models.Actors;
 using SoTF.Editor.Data.Models.Map;
 using SoTF.Editor.Data.Models.SaveData.Actor;
 using SoTF.Editor.Data.Models.Storage;
@@ -176,12 +177,12 @@ try
         () => setup.GetString(Constants.GameSetupKeys.EnemyHealth, "") == "High"
     );
 
-    var days = SettingOf(gameState.Settings, "GameDays").IntValue ?? 0;
+    var days = SettingOf(gameState.Settings, Constants.GameStateKeys.GameDays).IntValue ?? 0;
     EditAndCheck(
         "Game State",
         "Game",
-        () => SettingOf(gameState.Settings, "GameDays").IntValue = days + 1,
-        () => SettingOf(gameState.Settings, "GameDays").IntValue == days + 1
+        () => SettingOf(gameState.Settings, Constants.GameStateKeys.GameDays).IntValue = days + 1,
+        () => SettingOf(gameState.Settings, Constants.GameStateKeys.GameDays).IntValue == days + 1
     );
 
     var offset = SettingOf(weather.Settings, "_startingDayOffset").DecimalValue ?? 0;
@@ -308,24 +309,33 @@ try
 
     // Every Tool Runs Once, Saves, And Leaves Nothing Unsaved
     ToolCheck("Regrow Trees", () => new RegrowTreesViewModel(main.SelectedSavegame!).Save());
-    ToolCheck("Eternal Fires", main.EternalFires);
-    Check(main.EternalFires() == AppText.Get("NothingToChange"), "Eternal Fires Change No More");
-    ToolCheck("Reset Fires", main.ResetFires);
-    ToolCheck("Reset Structure Damage", main.ResetStructureDamage);
+    ToolCheck("Eternal Fires", () => WorldTools.EternalFires(main.SelectedSavegame));
     Check(
-        main.ResetStructureDamage() == AppText.Get("NoStructureDamage"),
+        WorldTools.EternalFires(main.SelectedSavegame) == AppText.Get("NothingToChange"),
+        "Eternal Fires Change No More"
+    );
+    ToolCheck("Reset Fires", () => WorldTools.ResetFires(main.SelectedSavegame));
+    ToolCheck(
+        "Reset Structure Damage",
+        () => WorldTools.ResetStructureDamage(main.SelectedSavegame)
+    );
+    Check(
+        WorldTools.ResetStructureDamage(main.SelectedSavegame) == AppText.Get("NoStructureDamage"),
         "Repaired Structures Repair No More"
     );
-    ToolCheck("Reset Traps", main.ResetTraps);
-    ToolCheck("Ripen Gardens", main.RipenGardens);
-    Check(main.RipenGardens() == AppText.Get("NothingGrowing"), "Ripe Gardens Ripen No More");
-    ToolCheck("Fill Printers", main.FillPrinters);
+    ToolCheck("Reset Traps", () => WorldTools.ResetTraps(main.SelectedSavegame));
+    ToolCheck("Ripen Gardens", () => WorldTools.RipenGardens(main.SelectedSavegame));
+    Check(
+        WorldTools.RipenGardens(main.SelectedSavegame) == AppText.Get("NothingGrowing"),
+        "Ripe Gardens Ripen No More"
+    );
+    ToolCheck("Fill Printers", () => WorldTools.FillPrinters(main.SelectedSavegame));
     const SavegameStore.FileType printer = SavegameStore.FileType.Resin3dPrinterBunkerASaveData;
     Check(
         main.SelectedSavegame!.SavegameStore.LoadJsonRaw(printer)
-            ?.GetJsonBasedToken(MainViewModel.PrinterKeyOf(printer))
-            ?["CurrentResinVolume"]?.Value<float>() == MainViewModel.PrinterResin
-            && main.FillPrinters() == AppText.Get("PrintersFull"),
+            ?.GetJsonBasedToken(WorldTools.PrinterKeyOf(printer))
+            ?["CurrentResinVolume"]?.Value<float>() == WorldTools.PrinterResin
+            && WorldTools.FillPrinters(main.SelectedSavegame) == AppText.Get("PrintersFull"),
         "Printers Hold A Sled's Resin"
     );
     ToolCheck("Reset Containers", gameState.ResetContainers);
@@ -607,11 +617,11 @@ try
     foreach (
         var (tool, run) in new (string, Action)[]
         {
-            ("EternalFires", () => main.EternalFires()),
+            ("EternalFires", () => WorldTools.EternalFires(main.SelectedSavegame)),
             ("CannibalAnger", () => main.SetCannibalAnger(45)),
             ("ResetContainers", () => gameState.ResetContainers()),
-            ("RipenGardens", () => main.RipenGardens()),
-            ("FillPrinters", () => main.FillPrinters()),
+            ("RipenGardens", () => WorldTools.RipenGardens(main.SelectedSavegame)),
+            ("FillPrinters", () => WorldTools.FillPrinters(main.SelectedSavegame)),
         }
     )
     {
@@ -623,6 +633,35 @@ try
     Check(main.HasChanges("Tools") && main.HasChanges("Npcs"), "Tool Edits Are Seen");
     main.RevertPage("Tools");
     Check(!main.HasUnsavedChanges(), "Reverted Tools Leave Nothing Unsaved");
+
+    // A Dot Puts Back Just Its Own Value
+    player.PlayerState.Sickness = 42;
+    player.PlayerState.ChangeStrengthLevel(3);
+    player.Revert(nameof(PlayerState.Sickness));
+    player.Revert(nameof(PlayerState.StrengthLevel));
+    var heldItem = inventory.Inventory.First(item => !item.IsEquipped);
+    heldItem.TotalCount = heldItem.TotalCount == 1 ? 2 : 1;
+    inventory.Revert(heldItem);
+    var filledSlot = storage
+        .StorageCollections.SelectMany(collection => collection.Storages)
+        .SelectMany(StoragePageViewModel.StoredItemsOf)
+        .First(storedItem => storedItem.HasItem());
+    filledSlot.Clear();
+    filledSlot.Revert();
+    var piece = armor.Armour.First();
+    piece.ChangeType(armor.ArmourTypes.First(type => type.Id != piece.Id));
+    armor.Revert(piece);
+    var dayCount = gameState.Settings.First(setting =>
+        setting.Name == Constants.GameStateKeys.GameDays
+    );
+    dayCount.IntValue += 5;
+    gameState.Revert(dayCount);
+    var firstKelvin = followers.CopiesOf(Constants.Actors.KelvinTypeId)[0];
+    firstKelvin.Health = 1;
+    followers.Revert(firstKelvin, nameof(FollowerState.Health));
+    setup.SelectedMode = setup.SelectedMode == "Peaceful" ? "Hard" : "Peaceful";
+    setup.Revert(Constants.GameSetupKeys.Mode);
+    Check(!main.HasUnsavedChanges(), "Dots Put Their Values Back");
 
     // Guest Roles Change Only Who Moved, Revert Takes Them Back
     var rolesPath = Path.Combine(savegamePath, "MultiplayerPlayerRolesSaveData.json");
@@ -660,19 +699,30 @@ try
         )
     );
     main.ReloadSavegame();
-    var guests = main.ReadGuests();
+    var guests = WorldTools.ReadGuests(main.SelectedSavegame);
     Check(guests is [{ Name: "Alpha", Role: 16 }, { Name: "Bravo" }], "Guests Read By Name");
     var rolesBefore = main.ToolState();
     Check(
-        main.SetGuestRoles(new Dictionary<long, int> { [guests[0].SteamId] = 16 })
-            == AppText.Get("NothingToChange"),
+        WorldTools.SetGuestRoles(
+            main.SelectedSavegame,
+            new Dictionary<long, int> { [guests[0].SteamId] = 16 }
+        ) == AppText.Get("NothingToChange"),
         "Same Role Changes Nothing"
     );
-    main.SetGuestRoles(new Dictionary<long, int> { [guests[1].SteamId] = 4 });
+    WorldTools.SetGuestRoles(
+        main.SelectedSavegame,
+        new Dictionary<long, int> { [guests[1].SteamId] = 4 }
+    );
     main.FinishTool("GuestRoles", rolesBefore);
-    Check(main.HasChanges("Tools") && main.ReadGuests()[1].Role == 4, "Guest Role Changes");
+    Check(
+        main.HasChanges("Tools") && WorldTools.ReadGuests(main.SelectedSavegame)[1].Role == 4,
+        "Guest Role Changes"
+    );
     main.RevertPage("Tools");
-    Check(!main.HasUnsavedChanges() && main.ReadGuests()[1].Role == 1, "Reverted Guest Role");
+    Check(
+        !main.HasUnsavedChanges() && WorldTools.ReadGuests(main.SelectedSavegame)[1].Role == 1,
+        "Reverted Guest Role"
+    );
     File.Delete(rolesPath);
     main.ReloadSavegame();
 
@@ -867,8 +917,8 @@ try
     // Picking A Day, Then The Loaded One, Leaves No Change
     var dayOffset = SettingOf(weather.Settings, "_startingDayOffset");
     var playedDays =
-        (SettingOf(gameState.Settings, "GameDays").IntValue ?? 0)
-        + ((SettingOf(gameState.Settings, "GameHours").IntValue ?? 0) / 24.0);
+        (SettingOf(gameState.Settings, Constants.GameStateKeys.GameDays).IntValue ?? 0)
+        + ((SettingOf(gameState.Settings, Constants.GameStateKeys.GameHours).IntValue ?? 0) / 24.0);
     var loadedSeason = SeasonCalendar.SeasonAt(playedDays, weather.LoadedOffset, 5);
     var loadedDay = 5 - SeasonCalendar.DaysLeft((int)playedDays, weather.LoadedOffset, 5) + 1;
     var pickedSeason = (loadedSeason + 2) % 4;

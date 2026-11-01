@@ -120,31 +120,19 @@ public static class PlayerCopier
         Func<string, bool> copies
     )
     {
-        const SavegameStore.FileType fileType = SavegameStore.FileType.PlayerStateSaveData;
         if (
-            source
-                .LoadJsonRaw(fileType)
-                ?.GetJsonBasedToken(Constants.JsonKeys.PlayerState)
-                ?["_entries"]
-                is not JArray sourceEntries
-            || target.LoadJsonRaw(fileType) is not { } targetWrapper
-            || targetWrapper.GetJsonBasedToken(Constants.JsonKeys.PlayerState)?["_entries"]
-                is not JArray targetEntries
+            PlayerEntries.Of(source)?.Entries is not { } sourceEntries
+            || PlayerEntries.Of(target) is not (var targetWrapper, var targetEntries)
         )
         {
             return false;
         }
 
         // In Place, A Zero Left Out Here Goes There Too
-        var copiesByName = new Dictionary<string, JToken>();
-        foreach (var entry in sourceEntries)
-        {
-            // The Game Can Repeat A Name, The Newest Wins
-            if (entry["Name"]?.ToString() is { } name && copies(name))
-            {
-                copiesByName[name] = entry;
-            }
-        }
+        var copiesByName = PlayerEntries
+            .ByName(sourceEntries)
+            .Where(pair => copies(pair.Key))
+            .ToDictionary();
         foreach (
             var entry in targetEntries
                 .Where(entry => copies(entry["Name"]?.ToString() ?? ""))
@@ -167,7 +155,7 @@ public static class PlayerCopier
         }
 
         targetWrapper.MarkAsModified(Constants.JsonKeys.PlayerState);
-        wrappers[fileType] = targetWrapper;
+        wrappers[SavegameStore.FileType.PlayerStateSaveData] = targetWrapper;
         return true;
     }
 }
