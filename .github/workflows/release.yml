@@ -42,7 +42,7 @@ jobs:
           path: ${{ env.PUBLISH_DIRECTORY }}/SoTF.Editor_v*.exe
           if-no-files-found: error
 
-      # The Tag Must Match The Version In SoTF.Editor.Desktop.csproj
+      # The Tag Must Match The Version In SoTF.Editor.Desktop.csproj, Only The Newest Release Stays
       - name: Create Release
         if: github.ref_type == 'tag'
         env:
@@ -51,3 +51,6 @@ jobs:
           previous=$(git describe --tags --abbrev=0 "$GITHUB_REF_NAME^" 2>/dev/null || true)
           git log --format="- %s" "${previous:+$previous..}$GITHUB_REF_NAME" > notes.md
           gh release create "$GITHUB_REF_NAME" "$PUBLISH_DIRECTORY/SoTF.Editor_$GITHUB_REF_NAME.exe" --title "SoTF Editor $GITHUB_REF_NAME" --notes-file notes.md
+          if [ -n "$previous" ] && gh release view "$previous" > /dev/null 2>&1; then
+            gh release delete "$previous" --yes --cleanup-tag
+          fi

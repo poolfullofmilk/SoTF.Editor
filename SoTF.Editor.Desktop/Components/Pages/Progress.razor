@@ -72,7 +72,8 @@
         <MudTabPanel Text="@AppText.Get("Statistics")"
                      Icon="@Icons.Material.Rounded.BarChart"
                      IconColor="Color.Tertiary">
-            <MudStack Spacing="6">
+            <MudStack Spacing="6"
+                      Class="fill">
                 <MudGrid Spacing="3">
 
                     @foreach (var total in Totals)
@@ -93,16 +94,18 @@
                     }
 
                 </MudGrid>
-                <MudGrid>
-
+                <MudStack Row
+                          Spacing="6"
+                          Class="fill">
                     @foreach (var list in Lists)
                     {
-                        <MudItem xs="12"
-                                 md="4">
-                            <Header Title="@AppText.Get(list.TitleKey)">
+                        <MudElement HtmlTag="div"
+                                    Class="main-panel fill-column">
+                            <Header Title="@AppText.Get(list.TitleKey)"
+                                    Class="fit">
                                 @* Tally List *@
                                 <MudPaper Elevation="4"
-                                          Class="rounded-panel panel-flush py-2">
+                                          Class="rounded-panel panel-flush overflow-y-auto fit">
                                     @if (list.Tallies is null || list.Tallies.Count == 0)
                                     {
                                         <MudText Typo="Typo.body2"
@@ -127,10 +130,9 @@
                                     }
                                 </MudPaper>
                             </Header>
-                        </MudItem>
+                        </MudElement>
                     }
-
-                </MudGrid>
+                </MudStack>
             </MudStack>
         </MudTabPanel>
 
