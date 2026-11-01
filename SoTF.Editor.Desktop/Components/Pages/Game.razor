@@ -42,8 +42,7 @@
                                               data-keyclick
                                               @onclick="() => GameSetup.SelectedMode = mode.Value">
                                         <ChangedDot When="@IsModeChanged(mode)"
-                                                    CardCorner
-                                                    OnRevert="() => GameSetup.Revert(Constants.GameSetupKeys.Mode)" />
+                                                    CardCorner />
                                         <MudStack Row
                                                   AlignItems="AlignItems.Center"
                                                   Spacing="2">
@@ -110,8 +109,7 @@
                                             <MudPaper Elevation="4"
                                                       Class="@SettingClass">
                                                 <ChangedDot When="@GameSetup.IsChanged(setting.Key, setting.Fallback)"
-                                                            CardCorner
-                                                            OnRevert="() => GameSetup.Revert(setting.Key)" />
+                                                            CardCorner />
                                                 <MudStack Spacing="2">
                                                     <MudStack Row
                                                               AlignItems="AlignItems.Center"
@@ -149,8 +147,7 @@
                                             <MudPaper Elevation="4"
                                                       Class="@(SettingClass + " d-flex align-center")">
                                                 <ChangedDot When="@GameSetup.IsChanged(toggle.Key, toggle.Fallback)"
-                                                            CardCorner
-                                                            OnRevert="() => GameSetup.Revert(toggle.Key)" />
+                                                            CardCorner />
                                                 @* Setup Switch *@
                                                 <MudSwitch T="bool"
                                                            Value="GameSetup.GetBool(toggle.Key, toggle.Fallback)"
@@ -229,7 +226,6 @@
                                                                 </MudText>
                                                                 @* Time Part *@
                                                                 <ChangedBadge When="@GameState.IsChanged(part)"
-                                                                              OnRevert="() => GameState.Revert(part)"
                                                                               Class="d-block">
                                                                     <NumberField T="int?"
                                                                                  @bind-Value="part.IntValue"
@@ -247,7 +243,6 @@
                                         {
                                             <SettingCard Setting="setting"
                                                          Changed="@GameState.IsChanged(setting)"
-                                                         OnRevert="() => GameState.Revert(setting)"
                                                          Caption="@CaptionOf(setting)"
                                                          Info="@InfoOf(setting.Name)" />
                                         }
@@ -307,8 +302,7 @@
                                     </MudTd>
                                     <MudTd>
                                         <GenericSettingEditor Setting="context"
-                                                              Changed="@GameState.IsChanged(context)"
-                                                              OnRevert="() => GameState.Revert(context)" />
+                                                              Changed="@GameState.IsChanged(context)" />
                                     </MudTd>
                                     <MudTd Style="text-align:right">
                                         @* Clear Value *@
@@ -351,8 +345,7 @@
                     <MudPaper Elevation="4"
                               Class="rounded-panel pa-4 relative">
                         <ChangedDot When="@marks.Exists(mark => mark.IsNew)"
-                                    CardCorner
-                                    OnRevert="RevertSeason" />
+                                    CardCorner />
                         <MudStack Spacing="2">
                             <MudStack Row
                                       AlignItems="AlignItems.Center"
@@ -429,7 +422,6 @@
                                  Class="d-flex">
                             <SettingCard Setting="setting"
                                          Changed="@Weather.IsChanged(setting)"
-                                         OnRevert="() => Weather.Revert(setting)"
                                          Info="@InfoOf(setting.Name)" />
                         </MudItem>
                     }

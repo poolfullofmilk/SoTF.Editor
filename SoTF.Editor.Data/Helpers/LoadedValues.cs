@@ -7,8 +7,7 @@ namespace SoTF.Editor.Data.Helpers;
 
 public sealed class LoadedValues
 {
-    // The Text Compares, The Value Is Put Back
-    private readonly Dictionary<string, (string Text, object? Value)> _values = [];
+    private readonly Dictionary<string, string> _values = [];
 
     public void Clear()
     {
@@ -17,7 +16,7 @@ public sealed class LoadedValues
 
     public void Remember(string key, object? value)
     {
-        _values[key] = (Format(value), value);
+        _values[key] = Format(value);
     }
 
     public void RememberProperties(string scope, object model)
@@ -31,22 +30,7 @@ public sealed class LoadedValues
     public bool IsChanged(string key, object? value)
     {
         // Never Remembered Means Added Since The Load
-        return !_values.TryGetValue(key, out var loaded) || loaded.Text != Format(value);
-    }
-
-    public bool TryGetLoaded(string key, out object? value)
-    {
-        var found = _values.TryGetValue(key, out var loaded);
-        value = loaded.Value;
-        return found;
-    }
-
-    public void RevertProperty(string scope, object model, string propertyName)
-    {
-        if (TryGetLoaded($"{scope}.{propertyName}", out var value))
-        {
-            model.GetType().GetProperty(propertyName)?.SetValue(model, value);
-        }
+        return !_values.TryGetValue(key, out var loaded) || loaded != Format(value);
     }
 
     public bool IsPropertyChanged(string scope, object model, string propertyName)

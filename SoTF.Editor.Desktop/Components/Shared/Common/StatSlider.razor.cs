@@ -36,10 +36,4 @@ public partial class StatSlider
 
     [Parameter]
     public string? Tint { get; set; }
-
-    [Parameter]
-    public EventCallback OnRevert { get; set; }
-
-    [Parameter]
-    public bool CanRevert { get; set; } = true;
 }

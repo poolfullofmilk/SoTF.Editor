@@ -18,13 +18,6 @@ public partial class ChangedDot
     [Parameter]
     public bool CardCorner { get; set; }
 
-    // A Click Puts The Loaded Value Back
-    [Parameter]
-    public EventCallback OnRevert { get; set; }
-
-    [Parameter]
-    public bool CanRevert { get; set; } = true;
-
     private string DotClass =>
         "changed-dot"
         + (Centered ? " centered" : "")

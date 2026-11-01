@@ -27,7 +27,8 @@ public sealed class UserSettings
             return JsonConvert.DeserializeObject<UserSettings>(File.ReadAllText(s_filePath))
                 ?? new UserSettings();
         }
-        catch (Exception exception) when (exception is IOException or JsonException)
+        catch (Exception exception)
+            when (exception is IOException or UnauthorizedAccessException or JsonException)
         {
             // A Missing Or Damaged File Means Defaults
             return new UserSettings();

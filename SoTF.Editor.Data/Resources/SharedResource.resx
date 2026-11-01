@@ -2329,6 +2329,9 @@ No keeps the editor open so you can save first</value>
   <data name="GameRunningWarning" xml:space="preserve">
     <value>Sons Of The Forest is running, save while it sits in the main menu</value>
   </data>
+  <data name="GameRunningRestoreWarning" xml:space="preserve">
+    <value>Sons Of The Forest is running, restore while it sits in the main menu</value>
+  </data>
   <data name="GameRunning" xml:space="preserve">
     <value>Game Running</value>
   </data>
@@ -2397,9 +2400,6 @@ No keeps the editor open so you can save first</value>
   </data>
   <data name="GuestRoleBanned" xml:space="preserve">
     <value>Banned</value>
-  </data>
-  <data name="PutBack" xml:space="preserve">
-    <value>Put Back</value>
   </data>
   <data name="ShowIn" xml:space="preserve">
     <value>Show in {0}</value>

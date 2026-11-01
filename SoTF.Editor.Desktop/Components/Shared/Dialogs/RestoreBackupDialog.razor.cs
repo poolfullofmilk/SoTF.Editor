@@ -40,6 +40,9 @@ public partial class RestoreBackupDialog
 
     private bool _compareFailed;
 
+    // A Running Game Saves Over A Restore Outside Its Menu
+    private readonly bool _gameRunning = SavegameManager.IsGameRunning();
+
     // Two Views: What Was Saved And What Differs
     private bool _showDifferences;
 

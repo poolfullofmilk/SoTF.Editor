@@ -10,7 +10,4 @@ public partial class GenericSettingEditor : EditorPageBase
 
     [Parameter]
     public bool Changed { get; set; }
-
-    [Parameter]
-    public EventCallback OnRevert { get; set; }
 }

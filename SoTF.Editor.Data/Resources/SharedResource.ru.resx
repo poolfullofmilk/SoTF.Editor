@@ -2325,6 +2325,9 @@
   <data name="GameRunningWarning" xml:space="preserve">
     <value>Sons Of The Forest запущена, сохраняйте, пока она в главном меню</value>
   </data>
+  <data name="GameRunningRestoreWarning" xml:space="preserve">
+    <value>Sons Of The Forest запущена, восстанавливайте, пока она в главном меню</value>
+  </data>
   <data name="GameRunning" xml:space="preserve">
     <value>Игра Запущена</value>
   </data>
@@ -2393,9 +2396,6 @@
   </data>
   <data name="GuestRoleBanned" xml:space="preserve">
     <value>Забанен</value>
-  </data>
-  <data name="PutBack" xml:space="preserve">
-    <value>Вернуть</value>
   </data>
   <data name="ShowIn" xml:space="preserve">
     <value>Открыть Страницу: {0}</value>

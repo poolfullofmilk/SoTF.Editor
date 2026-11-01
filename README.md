@@ -16,7 +16,7 @@
 - Tools such as regrowing trees, calming cannibals, ripening gardens and filling 3D printers
 - Set the roles of players who joined your hosted game
 - Duplicate and export your savegames
-- See every change before you save, undo a page, or click a change dot to put one value back
+- See every change before you save, and undo a whole page
 - Pin and label the backups you want to keep
 - Reloads by itself when the game saves, and shows when the game is running
 - English, Dutch, German, French, Spanish, Brazilian Portuguese, Polish, Russian and Turkish, and it updates itself
@@ -28,7 +28,7 @@
 
 ## ⚠️ Important
 - Start the game and stay in the main menu while you edit, then load the save, so Steam Cloud cannot overwrite your changes
-- Every save makes a backup first, which you can restore from the app
+- Every save makes a backup first, which you can restore from the app, even when the save no longer opens
 - Windows may warn on the first run because the app is not signed: click More info, then Run anyway
 
 ## Technical details

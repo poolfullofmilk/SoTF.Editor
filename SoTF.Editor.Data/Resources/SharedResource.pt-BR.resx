@@ -2325,6 +2325,9 @@
   <data name="GameRunningWarning" xml:space="preserve">
     <value>Sons Of The Forest está aberto, salve enquanto ele está no menu principal</value>
   </data>
+  <data name="GameRunningRestoreWarning" xml:space="preserve">
+    <value>Sons Of The Forest está aberto, restaure enquanto ele está no menu principal</value>
+  </data>
   <data name="GameRunning" xml:space="preserve">
     <value>Jogo Aberto</value>
   </data>
@@ -2393,9 +2396,6 @@
   </data>
   <data name="GuestRoleBanned" xml:space="preserve">
     <value>Banido</value>
-  </data>
-  <data name="PutBack" xml:space="preserve">
-    <value>Restaurar</value>
   </data>
   <data name="ShowIn" xml:space="preserve">
     <value>Abrir Página: {0}</value>

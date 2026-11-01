@@ -60,14 +60,6 @@ public partial class GameStatePageViewModel
         return _loaded.IsChanged(setting.Name, setting.GetValue());
     }
 
-    public void Revert(GenericSetting setting)
-    {
-        if (_loaded.TryGetLoaded(setting.Name, out var value))
-        {
-            setting.SetValue(value);
-        }
-    }
-
     private void Remember()
     {
         _loaded.Clear();

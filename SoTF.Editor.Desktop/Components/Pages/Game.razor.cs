@@ -218,11 +218,6 @@ public partial class Game : EditorPageBase
             : null;
     }
 
-    private void RevertSeason()
-    {
-        Weather.Offset?.DecimalValue = Weather.LoadedOffset;
-    }
-
     private static string SeasonStyle(int season)
     {
         // Each Season Takes Its Bar Colour

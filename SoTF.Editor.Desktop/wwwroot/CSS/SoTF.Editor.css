@@ -304,17 +304,6 @@
         pointer-events: none;
     }
 
-/* A Dot That Puts Its Value Back Rings On Hover */
-.revert-dot {
-    cursor: pointer;
-    transition: box-shadow var(--quick);
-}
-
-    .revert-dot:is(:hover, :focus-visible) {
-        box-shadow: 0 0 0 4px color-mix(in srgb, var(--mud-palette-warning) 40%, transparent);
-        outline: none;
-    }
-
 /* Badges Lift Off Their Surface Like Chips */
 .mud-badge {
     box-shadow: var(--mud-elevation-1);

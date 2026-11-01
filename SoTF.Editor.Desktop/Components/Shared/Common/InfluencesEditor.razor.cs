@@ -28,10 +28,6 @@ public partial class InfluencesEditor
     [Parameter]
     public Func<Influence, string, bool>? ChangedWhen { get; set; }
 
-    // Puts One Value Back, Only Where The Owner Knows It
-    [Parameter]
-    public Action<Influence, string>? RevertWith { get; set; }
-
     // The Player First, Then The Others By Name
     private IEnumerable<Influence> SortedInfluences =>
         Influences

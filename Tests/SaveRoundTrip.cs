@@ -634,35 +634,6 @@ try
     main.RevertPage("Tools");
     Check(!main.HasUnsavedChanges(), "Reverted Tools Leave Nothing Unsaved");
 
-    // A Dot Puts Back Just Its Own Value
-    player.PlayerState.Sickness = 42;
-    player.PlayerState.ChangeStrengthLevel(3);
-    player.Revert(nameof(PlayerState.Sickness));
-    player.Revert(nameof(PlayerState.StrengthLevel));
-    var heldItem = inventory.Inventory.First(item => !item.IsEquipped);
-    heldItem.TotalCount = heldItem.TotalCount == 1 ? 2 : 1;
-    inventory.Revert(heldItem);
-    var filledSlot = storage
-        .StorageCollections.SelectMany(collection => collection.Storages)
-        .SelectMany(StoragePageViewModel.StoredItemsOf)
-        .First(storedItem => storedItem.HasItem());
-    filledSlot.Clear();
-    filledSlot.Revert();
-    var piece = armor.Armour.First();
-    piece.ChangeType(armor.ArmourTypes.First(type => type.Id != piece.Id));
-    armor.Revert(piece);
-    var dayCount = gameState.Settings.First(setting =>
-        setting.Name == Constants.GameStateKeys.GameDays
-    );
-    dayCount.IntValue += 5;
-    gameState.Revert(dayCount);
-    var firstKelvin = followers.CopiesOf(Constants.Actors.KelvinTypeId)[0];
-    firstKelvin.Health = 1;
-    followers.Revert(firstKelvin, nameof(FollowerState.Health));
-    setup.SelectedMode = setup.SelectedMode == "Peaceful" ? "Hard" : "Peaceful";
-    setup.Revert(Constants.GameSetupKeys.Mode);
-    Check(!main.HasUnsavedChanges(), "Dots Put Their Values Back");
-
     // Guest Roles Change Only Who Moved, Revert Takes Them Back
     var rolesPath = Path.Combine(savegamePath, "MultiplayerPlayerRolesSaveData.json");
     File.WriteAllText(
@@ -1012,6 +983,26 @@ try
     }
 
     Check(BackupManager.List(savegamePath).Count == backupCount, "Failed Backup Leaves No Folder");
+
+    // A Savegame Too Damaged To Open Still Restores
+    File.WriteAllText(archivePath, "Not A Zip");
+    var damagedOpened = true;
+    try
+    {
+        main.SelectSavegame(SavegameManager.Load(savegamePath));
+    }
+    catch (InvalidDataException)
+    {
+        damagedOpened = false;
+    }
+
+    Check(!damagedOpened && main.SelectedSavegame is null, "Damaged Savegame Closes Itself");
+    BackupManager.Restore(savegamePath, oldest.Path);
+    main.SelectSavegame(SavegameManager.Load(savegamePath));
+    Check(
+        SameHashes(pristine, HashFiles(savegamePath)) && main.SelectedSavegame is not null,
+        "Damaged Savegame Restores And Opens"
+    );
 
     // A File Rewritten In Place Counts As An Outside Change
     main.ReloadSavegame();

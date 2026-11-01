@@ -15,9 +15,6 @@ public partial class SettingCard : EditorPageBase
     public string? Info { get; set; }
 
     [Parameter]
-    public EventCallback OnRevert { get; set; }
-
-    [Parameter]
     public string? Caption { get; set; }
 
     // One Setting Per Card, Its Dot Sits On The Corner

@@ -9,6 +9,13 @@
                  Class="mud-text-secondary">
             @AppText.Get(_deleting ? "DeleteBackupsText" : "RestoreBackupText")
         </MudText>
+        @if (_gameRunning && !_deleting)
+        {
+            <MudText Typo="Typo.caption"
+                     Color="Color.Warning">
+                @AppText.Get("GameRunningRestoreWarning")
+            </MudText>
+        }
         @* Backup List *@
         <MudPaper Elevation="0"
                   Class="inset rounded-panel panel-flush overflow-y-auto fit"

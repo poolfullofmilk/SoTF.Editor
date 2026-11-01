@@ -118,24 +118,6 @@ public sealed class FollowerPageViewModel
         return _loaded.IsPropertyChanged(ScopeOf(follower, influence), influence, propertyName);
     }
 
-    public void Revert(FollowerState follower, string propertyName)
-    {
-        _loaded.RevertProperty(ScopeOf(follower), follower, propertyName);
-    }
-
-    public void Revert(FollowerState follower, EquippableItem item)
-    {
-        if (_loaded.TryGetLoaded($"{ScopeOf(follower)}.Item.{item.ItemId}", out var selected))
-        {
-            item.Selected = selected is true;
-        }
-    }
-
-    public void Revert(FollowerState follower, Influence influence, string propertyName)
-    {
-        _loaded.RevertProperty(ScopeOf(follower, influence), influence, propertyName);
-    }
-
     private bool InfluencesChanged(FollowerState follower)
     {
         return _loaded.IsChanged($"{ScopeOf(follower)}.Influences", InfluencesOf(follower));

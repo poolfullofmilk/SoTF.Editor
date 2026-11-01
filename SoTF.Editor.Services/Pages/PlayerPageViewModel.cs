@@ -82,17 +82,6 @@ public sealed class PlayerPageViewModel
         return _loaded.IsPropertyChanged(nameof(PlayerState), PlayerState, propertyName);
     }
 
-    public void Revert(string propertyName)
-    {
-        _loaded.RevertProperty(nameof(PlayerState), PlayerState, propertyName);
-
-        // Max Health Follows The Strength Level Back
-        if (propertyName == nameof(PlayerState.StrengthLevel))
-        {
-            _loaded.RevertProperty(nameof(PlayerState), PlayerState, nameof(PlayerState.MaxHealth));
-        }
-    }
-
     public void Load(Savegame? savegame)
     {
         if (savegame is { } selectedSavegame)

@@ -6,8 +6,7 @@
     <MudPaper Elevation="4"
               Class="@(CardClass + " d-flex align-center")">
         <ChangedDot When="Changed"
-                    CardCorner
-                    OnRevert="OnRevert" />
+                    CardCorner />
         @* Setting Switch *@
         <MudSwitch T="bool"
                    Value="Setting.BoolValue ?? false"
@@ -32,8 +31,7 @@ else
     <MudPaper Elevation="4"
               Class="@CardClass">
         <ChangedDot When="Changed"
-                    CardCorner
-                    OnRevert="OnRevert" />
+                    CardCorner />
         <MudStack Spacing="2">
             <MudStack Row
                       AlignItems="AlignItems.Center"

@@ -2329,6 +2329,9 @@ Nein lässt den Editor offen, damit du zuerst speichern kannst</value>
   <data name="GameRunningWarning" xml:space="preserve">
     <value>Sons Of The Forest läuft, speichere, während es im Hauptmenü ist</value>
   </data>
+  <data name="GameRunningRestoreWarning" xml:space="preserve">
+    <value>Sons Of The Forest läuft, stelle wieder her, während es im Hauptmenü ist</value>
+  </data>
   <data name="GameRunning" xml:space="preserve">
     <value>Spiel Läuft</value>
   </data>
@@ -2397,9 +2400,6 @@ Nein lässt den Editor offen, damit du zuerst speichern kannst</value>
   </data>
   <data name="GuestRoleBanned" xml:space="preserve">
     <value>Gesperrt</value>
-  </data>
-  <data name="PutBack" xml:space="preserve">
-    <value>Zurücksetzen</value>
   </data>
   <data name="ShowIn" xml:space="preserve">
     <value>Seite Öffnen: {0}</value>

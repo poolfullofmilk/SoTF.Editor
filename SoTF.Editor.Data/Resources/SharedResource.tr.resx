@@ -2329,6 +2329,9 @@ Hayır düzenleyiciyi açık tutar, böylece önce kaydedebilirsiniz</value>
   <data name="GameRunningWarning" xml:space="preserve">
     <value>Sons Of The Forest açık, ana menüdeyken kaydedin</value>
   </data>
+  <data name="GameRunningRestoreWarning" xml:space="preserve">
+    <value>Sons Of The Forest açık, ana menüdeyken geri yükleyin</value>
+  </data>
   <data name="GameRunning" xml:space="preserve">
     <value>Oyun Açık</value>
   </data>
@@ -2397,9 +2400,6 @@ Hayır düzenleyiciyi açık tutar, böylece önce kaydedebilirsiniz</value>
   </data>
   <data name="GuestRoleBanned" xml:space="preserve">
     <value>Yasaklı</value>
-  </data>
-  <data name="PutBack" xml:space="preserve">
-    <value>Geri Al</value>
   </data>
   <data name="ShowIn" xml:space="preserve">
     <value>Sayfayı Aç: {0}</value>

@@ -230,9 +230,7 @@
                                         </MudButton>
                                         <MudSpacer />
                                         @* Slot Count *@
-                                        <ChangedBadge When="@StoragePage.IsChanged(selected, storedItem)"
-                                                      OnRevert="storedItem.Revert"
-                                                      CanRevert="@storedItem.CanRevert">
+                                        <ChangedBadge When="@StoragePage.IsChanged(selected, storedItem)">
                                             <NumberField T="int"
                                                          @bind-Value="storedItem.Count"
                                                          Min="0"

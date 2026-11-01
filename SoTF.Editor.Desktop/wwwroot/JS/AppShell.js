@@ -89,9 +89,9 @@ window.addEventListener(
     true
 );
 
-// An Info Icon Or Put Back Dot Inside A Switch Label Never Toggles The Switch
+// An Info Icon Inside A Switch Label Never Toggles The Switch
 document.addEventListener("click", (event) => {
-    if (event.target instanceof Element && event.target.closest(".info-icon, .revert-dot")) {
+    if (event.target instanceof Element && event.target.closest(".info-icon")) {
         event.preventDefault();
     }
 });

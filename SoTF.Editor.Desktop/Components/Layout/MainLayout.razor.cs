@@ -298,13 +298,22 @@ public partial class MainLayout : IDisposable
     private async Task RestoreFromCardAsync(Savegame savegame)
     {
         // A Card's Backups Belong To Its Savegame, It Opens First
-        if (
-            MainViewModel.SelectedSavegame?.FullPath == savegame.FullPath
-            || await TryOpenAsync(savegame)
-        )
+        if (MainViewModel.SelectedSavegame?.FullPath != savegame.FullPath)
         {
-            await RestoreBackupAsync();
+            if (!await DialogService.ConfirmDiscardAsync(MainViewModel))
+            {
+                return;
+            }
+
+            // A Savegame Too Damaged To Open Can Still Be Restored
+            await TryBusyAsync(
+                savegame,
+                () => MainViewModel.SelectSavegame(savegame),
+                "UnableToOpen"
+            );
         }
+
+        await RestoreBackupAsync(savegame);
     }
 
     private async Task RevertPageAsync(PageLink page)
@@ -416,11 +425,14 @@ public partial class MainLayout : IDisposable
 
     private async Task RestoreBackupAsync()
     {
-        if (MainViewModel.SelectedSavegame is not { } savegame)
+        if (MainViewModel.SelectedSavegame is { } savegame)
         {
-            return;
+            await RestoreBackupAsync(savegame);
         }
+    }
 
+    private async Task RestoreBackupAsync(Savegame savegame)
+    {
         var backups = BackupManager.List(savegame.FullPath);
         if (backups.Count == 0)
         {
@@ -450,7 +462,7 @@ public partial class MainLayout : IDisposable
                 () =>
                 {
                     BackupManager.Restore(savegame.FullPath, backup.Path);
-                    MainViewModel.ReloadSavegame();
+                    MainViewModel.SelectSavegame(SavegameManager.Load(savegame.FullPath));
                 },
                 "UnableToRestoreBackup"
             )

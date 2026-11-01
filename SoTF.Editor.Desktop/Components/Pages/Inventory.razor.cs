@@ -20,9 +20,6 @@ public partial class Inventory : EditorPageBase
     [Inject]
     public required ISnackbar Snackbar { get; set; }
 
-    [Inject]
-    public required ArmorPageViewModel ArmorPage { get; set; }
-
     // Page State
     private string? _filter;
     private Category? _category;

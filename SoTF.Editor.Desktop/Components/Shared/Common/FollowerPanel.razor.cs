@@ -68,11 +68,6 @@ public partial class FollowerPanel : EditorPageBase
         return FollowerPage.IsChanged(Follower, influence, propertyName);
     }
 
-    private void RevertInfluence(Influence influence, string propertyName)
-    {
-        FollowerPage.Revert(Follower, influence, propertyName);
-    }
-
     private string CopyLabel(FollowerState copy)
     {
         return $"{Name} {Copies.IndexOf(copy) + 1}";
