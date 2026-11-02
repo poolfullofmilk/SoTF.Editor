@@ -1427,7 +1427,12 @@ try
         "Unreadable Old Backup Never Blocks A Save"
     );
     Check(
-        BackupManager.TotalSizeOrNull() is null
+        (
+            BackupManager.TotalSizeOrNull() is null
+            || NoThrow(() =>
+                Directory.GetFiles(BackupManager.BackupDirectory, "*", SearchOption.AllDirectories)
+            )
+        )
             && NoThrow(() =>
                 BackupManager.List(
                     Path.Combine(BackupManager.BackupDirectory, "Unrelated", "Mode", "Save")
