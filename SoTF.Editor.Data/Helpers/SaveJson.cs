@@ -1,6 +1,5 @@
 using System.Text;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
 namespace SoTF.Editor.Data.Helpers;
@@ -29,11 +28,6 @@ public static class SaveJson
     public static object? DeserializeObject(string json, Type objectType)
     {
         return JsonConvert.DeserializeObject(json, objectType, s_settings);
-    }
-
-    public static JToken DeserializeJObjectFromFile(string path)
-    {
-        return JObject.Parse(File.ReadAllText(path, Encoding));
     }
 
     public static string Serialize(object? model)

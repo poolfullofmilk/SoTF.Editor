@@ -1093,9 +1093,9 @@ try
     // A File Rewritten In Place Counts As An Outside Change
     main.ReloadSavegame();
     var store = main.SelectedSavegame!.SavegameStore;
-    Check(!store.HasChanged(), "Fresh Load Shows No Outside Change");
+    Check(!store.HasChanged(store.Stamps()), "Fresh Load Shows No Outside Change");
     File.SetLastWriteTimeUtc(archivePath, File.GetLastWriteTimeUtc(archivePath).AddMinutes(1));
-    Check(store.HasChanged(), "Rewritten File Shows As Outside Change");
+    Check(store.HasChanged(store.Stamps()), "Rewritten File Shows As Outside Change");
 
     // A Missing File Fails The Save And Keeps The Edit
     var fullnessBefore = player.PlayerState.Fullness;

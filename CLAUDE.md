@@ -58,6 +58,7 @@ The workflow releases, not a hand: `.github/workflows/release.yml` runs the roun
 | Real savegames | `%UserProfile%\AppData\LocalLow\Endnight\SonsOfTheForest\Saves\<steam id>\<mode>\<save id>` |
 | The game's own backups | `<save id>_backup_<yyyyMMddHHmmss>.zip` beside the save folder; the editor ignores them |
 | Test sample | `Tests\Sample\76561190000000000\Multiplayer\1000000001`, a real save with a made-up Steam id and no thumbnail |
+| Test save | `Tests\Test\76561190000000000\SinglePlayer\1019037398`, a copy of the owner's real 42 day singleplayer save with a made-up Steam id and `MultiplayerPlayerRolesSaveData.json` removed (it named friends); point Savegames at a copy of `Tests\Test`, never at the folder itself |
 
 A Debug build uses `SoTF.Editor Debug` for all of these folders (`AppInfo.FolderName`).
 

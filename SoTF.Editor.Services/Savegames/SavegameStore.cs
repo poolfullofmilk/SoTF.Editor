@@ -140,12 +140,6 @@ public sealed class SavegameStore
         return Path.Combine(_path, fileName);
     }
 
-    public bool HasChanged()
-    {
-        // A Folder Gone Since The Load Changed Too
-        return !Directory.Exists(_path) || HasChanged(Stamps());
-    }
-
     public bool HasChanged(string stamps)
     {
         return stamps != _loadedFiles;

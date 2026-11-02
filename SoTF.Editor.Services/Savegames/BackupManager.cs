@@ -466,7 +466,7 @@ public static class BackupManager
         return Directory.Exists(folder) ? Directory.EnumerateDirectories(folder).Count() : 0;
     }
 
-    public static long TotalSize()
+    private static long TotalSize()
     {
         return Directory.Exists(BackupDirectory) ? SizeOf(BackupDirectory) : 0;
     }
