@@ -108,6 +108,11 @@ public partial class GameStatePageViewModel
         return s_endgameNames.Contains(name);
     }
 
+    public bool NamedIntsChanged(Func<string, bool> owned)
+    {
+        return NamedIntDatas.Any(setting => owned(setting.Name) && IsChanged(setting));
+    }
+
     public void RevertNamedIntDatas(Func<string, bool> owned)
     {
         // Only The Rows A Tool Owns, Other Game Edits Stay

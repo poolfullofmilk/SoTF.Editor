@@ -52,7 +52,9 @@ public partial class App : Application
         _showSignal = new EventWaitHandle(
             false,
             EventResetMode.AutoReset,
-            $"{AppInfo.FolderName}.Show",
+            AppInfo.SandboxRoot is { } sandbox
+                ? $"{AppInfo.FolderName}.{Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(sandbox.ToUpperInvariant())))[..16]}.Show"
+                : $"{AppInfo.FolderName}.Show",
             out var isFirstInstance
         );
         if (!isFirstInstance)

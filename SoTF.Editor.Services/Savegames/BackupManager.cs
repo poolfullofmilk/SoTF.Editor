@@ -155,7 +155,7 @@ public static class BackupManager
     private static Dictionary<string, string> ContentsOf(string folder)
     {
         var contents = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        foreach (var file in Directory.GetFiles(folder, "*", SearchOption.AllDirectories))
+        foreach (var file in Directory.GetFiles(folder, "*", s_saveFiles))
         {
             var name = Path.GetRelativePath(folder, file);
             if (IsEditorFile(name))
@@ -223,9 +223,7 @@ public static class BackupManager
             FolderOf(savegamePath),
             target =>
             {
-                foreach (
-                    var file in Directory.GetFiles(savegamePath, "*", SearchOption.AllDirectories)
-                )
+                foreach (var file in Directory.GetFiles(savegamePath, "*", s_saveFiles))
                 {
                     CopyVerified(
                         file,
@@ -301,6 +299,12 @@ public static class BackupManager
             throw new IOException($"Found No Files In Backup {backup}");
         }
 
+        // A Linked Folder Inside The Save Could Send Writes Elsewhere
+        foreach (var name in files)
+        {
+            RefuseLinks(savegamePath, Path.Combine(savegamePath, name));
+        }
+
         // Kept So Restores Can Be Undone, Noting What Came After
         var safetyCopy = CopyAll(savegamePath);
         WriteChanges(
@@ -332,6 +336,7 @@ public static class BackupManager
                 .. files.Select(name =>
                     (
                         Path.Combine(savegamePath, name),
+                        File.Exists(Path.Combine(savegamePath, name)),
                         (Action<string>)(
                             temporary => CopyVerified(Path.Combine(backup, name), temporary)
                         )
@@ -360,16 +365,65 @@ public static class BackupManager
                     .Select(path => new SavegameBackup(
                         path,
                         TakenAt(path),
-                        SizeOf(path),
+                        SizeOrZero(path),
                         LabelOf(path)
                     )),
             ]
             : [];
     }
 
+    private static long SizeOrZero(string backup)
+    {
+        try
+        {
+            return SizeOf(backup);
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+        {
+            // An Unreadable Backup Still Lists, Its Size Unknown
+            s_logger.Warn(exception, $"Failed To Measure {backup}");
+            return 0;
+        }
+    }
+
+    public static long? TotalSizeOrNull()
+    {
+        try
+        {
+            return TotalSize();
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+        {
+            // Usage Is Extra, The Restore Dialog Opens Without It
+            s_logger.Warn(exception, "Failed To Measure Backups");
+            return null;
+        }
+    }
+
     private static bool IsEditorFile(string name)
     {
-        return name.StartsWith(EditorFilePrefix, StringComparison.OrdinalIgnoreCase);
+        // Root Editor Files Only, Nested Ones Are Save Data
+        return !name.Contains(Path.DirectorySeparatorChar)
+            && name.StartsWith(EditorFilePrefix, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static void RefuseLinks(string root, string target)
+    {
+        // The File And Each Folder Up To The Save
+        for (
+            var path = target;
+            path != null && path.Length > root.TrimEnd(Path.DirectorySeparatorChar).Length;
+            path = Path.GetDirectoryName(path)
+        )
+        {
+            if (
+                (File.Exists(path) || Directory.Exists(path))
+                && File.GetAttributes(path).HasFlag(FileAttributes.ReparsePoint)
+            )
+            {
+                throw new IOException($"Found A Link At {path}, Restore Refused");
+            }
+        }
     }
 
     private static string? LabelOf(string backup)
@@ -437,23 +491,39 @@ public static class BackupManager
 
     private static void TryPrune(params string[] kept)
     {
+        var removed = 0;
         try
         {
-            Prune(kept);
+            removed = Prune(kept);
         }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
         {
             // Cleanup Is Extra, Saves And Restores Never Fail Over It
             s_logger.Warn(exception, "Failed To Prune Old Backups");
         }
+
+        if (removed == 0)
+        {
+            return;
+        }
+
+        try
+        {
+            Pruned?.Invoke(removed);
+        }
+        catch (Exception exception)
+        {
+            // A Failing Notice Never Fails The Save That Pruned
+            s_logger.Warn(exception, "Failed To Report Pruned Backups");
+        }
     }
 
-    private static void Prune(string[] kept)
+    private static int Prune(string[] kept)
     {
         var total = TotalSize();
         if (total <= SizeLimit)
         {
-            return;
+            return 0;
         }
 
         // The Oldest Go First, First, Pinned And Kept Backups Stay
@@ -491,8 +561,9 @@ public static class BackupManager
             s_logger.Warn(
                 $"Removed {removed} Old Backups, Backups Passed {SizeLimit / 1048576} MB"
             );
-            Pruned?.Invoke(removed);
         }
+
+        return removed;
     }
 
     private static long SizeOf(string folder)

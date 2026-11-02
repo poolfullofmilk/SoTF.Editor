@@ -213,8 +213,10 @@ public partial class MainLayout : IDisposable
         // The Outside Change Check Can Fail, Edits Stay Either Way
         try
         {
+            // Files As When Asked, Checked Again At The Write
+            var stamps = savegame.SavegameStore.Stamps();
             if (
-                savegame.SavegameStore.HasChanged()
+                savegame.SavegameStore.HasChanged(stamps)
                 && !await DialogService.ConfirmAsync(
                     AppText.Get("OverwriteExternalChangesTitle"),
                     AppText.Get("OverwriteExternalChangesText")
@@ -234,7 +236,7 @@ public partial class MainLayout : IDisposable
             }
 
             var saved = false;
-            await RunBusyAsync(() => saved = MainViewModel.SaveChanges(changes));
+            await RunBusyAsync(() => saved = MainViewModel.SaveChanges(changes, stamps));
             if (saved)
             {
                 Snackbar.Add(AppText.Get("ChangesSaved"), Severity.Success);

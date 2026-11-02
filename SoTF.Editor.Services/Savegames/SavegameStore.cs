@@ -46,6 +46,9 @@ public sealed class SavegameStore
 
     private readonly string _loadedFiles;
 
+    // Where Each Document Was Read, Its Only Write Target
+    private readonly Dictionary<FileType, bool> _fromLooseFile = [];
+
     public SavegameStore(string path)
     {
         _path = path;
@@ -61,6 +64,11 @@ public sealed class SavegameStore
         foreach (var (fileType, saveDataWrapper) in loaded._rawData)
         {
             _rawData[fileType] = saveDataWrapper?.Copy();
+        }
+
+        foreach (var (fileType, fromLooseFile) in loaded._fromLooseFile)
+        {
+            _fromLooseFile[fileType] = fromLooseFile;
         }
     }
 
@@ -90,6 +98,7 @@ public sealed class SavegameStore
         var path = ResolvePath(fileName);
         if (File.Exists(path))
         {
+            _fromLooseFile[fileType] = true;
             return SaveJson.DeserializeFromFile<JToken>(path);
         }
 
@@ -105,8 +114,25 @@ public sealed class SavegameStore
             return null;
         }
 
+        _fromLooseFile[fileType] = false;
         using var streamReader = new StreamReader(fileEntry.Open());
         return SaveJson.DeserializeFromString<JToken>(streamReader.ReadToEnd());
+    }
+
+    private void CheckSource(FileType fileType)
+    {
+        // Gone Since Loading, Or A Loose Copy Hides The Archive
+        var fileName = fileType.GetFilename();
+        var hasLooseFile = File.Exists(ResolvePath(fileName));
+        if (_fromLooseFile.GetValueOrDefault(fileType) ? !hasLooseFile : hasLooseFile)
+        {
+            throw new IOException($"Found {fileName} Moved Since Loading");
+        }
+
+        if (!hasLooseFile && !File.Exists(ResolvePath(FileType.SaveDataArchive.GetFilename())))
+        {
+            throw new IOException($"Found No {fileName} To Write");
+        }
     }
 
     private string ResolvePath(string fileName)
@@ -172,8 +198,14 @@ public sealed class SavegameStore
         BackupManager.Create(_path, changes);
     }
 
-    public bool SaveAllModified()
+    public bool SaveAllModified(string? acceptedStamps = null)
     {
+        // The Version Someone Agreed To Overwrite, Checked At The Write
+        if (acceptedStamps != null && Stamps() != acceptedStamps)
+        {
+            throw new IOException("Found The Savegame Changed Since Saving Was Confirmed");
+        }
+
         return Write(
             _rawData
                 .Where(pair => pair.Value?.HasModified() == true)
@@ -202,14 +234,10 @@ public sealed class SavegameStore
 
     private void CheckFilesExist(IEnumerable<FileType> fileTypes)
     {
-        // A File Gone Since Loading Fails Before Any Write
-        var archivePath = ResolvePath(FileType.SaveDataArchive.GetFilename());
-        foreach (var fileName in fileTypes.Select(fileType => fileType.GetFilename()))
+        // A File Gone Or Moved Since Loading Fails First
+        foreach (var fileType in fileTypes)
         {
-            if (!File.Exists(ResolvePath(fileName)) && !File.Exists(archivePath))
-            {
-                throw new IOException($"Found No {fileName} To Write");
-            }
+            CheckSource(fileType);
         }
     }
 
@@ -222,36 +250,40 @@ public sealed class SavegameStore
         }
 
         var archivePath = ResolvePath(FileType.SaveDataArchive.GetFilename());
-        var writes = new List<(string Target, Action<string> Write)>();
+        var writes = new List<(string Target, bool Replaces, Action<string> Write)>();
         var archiveEntries = new List<(string FileName, string Json)>();
         foreach (var (fileType, saveDataWrapper) in changedWrappers)
         {
+            // Written Only Where Read, Never Moved To The Archive
+            CheckSource(fileType);
             s_logger.Info($"Marked {fileType} As Modified");
             saveDataWrapper.SerializeAllModified();
             var fileName = fileType.GetFilename();
             var json = SaveJson.Serialize(saveDataWrapper.Parent);
-            var fullPath = ResolvePath(fileName);
-            if (File.Exists(fullPath))
+            if (_fromLooseFile.GetValueOrDefault(fileType))
             {
                 writes.Add(
-                    (fullPath, temporary => File.WriteAllText(temporary, json, SaveJson.Encoding))
+                    (
+                        ResolvePath(fileName),
+                        true,
+                        temporary => File.WriteAllText(temporary, json, SaveJson.Encoding)
+                    )
                 );
-            }
-            else if (File.Exists(archivePath))
-            {
-                archiveEntries.Add((fileName, json));
             }
             else
             {
-                // A File Gone Since Loading Is Never Skipped Silently
-                throw new IOException($"Found No {fileName} To Write");
+                archiveEntries.Add((fileName, json));
             }
         }
 
         if (archiveEntries.Count > 0)
         {
             writes.Add(
-                (archivePath, temporary => WriteArchive(archivePath, temporary, archiveEntries))
+                (
+                    archivePath,
+                    true,
+                    temporary => WriteArchive(archivePath, temporary, archiveEntries)
+                )
             );
         }
 

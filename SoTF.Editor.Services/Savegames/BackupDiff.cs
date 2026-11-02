@@ -34,10 +34,25 @@ public static partial class BackupDiff
                     .Where(fileType => fileType.GetFilename() == Path.GetFileName(key))
             )
             {
-                foreach (var (page, name, entryKind) in describer.Describe(fileType, now, then))
+                try
                 {
-                    found = true;
-                    Add(changes, page, (name, entryKind));
+                    foreach (var (page, name, entryKind) in describer.Describe(fileType, now, then))
+                    {
+                        found = true;
+                        Add(changes, page, (name, entryKind));
+                    }
+                }
+                catch (Exception exception)
+                    when (exception
+                            is ArgumentException
+                                or InvalidOperationException
+                                or InvalidCastException
+                                or FormatException
+                                or OverflowException
+                    )
+                {
+                    // An Unexpected Document Shape Reads As Unable To Compare
+                    throw new InvalidDataException($"Found An Unexpected {fileType}", exception);
                 }
             }
 

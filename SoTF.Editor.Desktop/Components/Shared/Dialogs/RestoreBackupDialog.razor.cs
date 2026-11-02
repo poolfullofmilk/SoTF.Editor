@@ -114,15 +114,17 @@ public partial class RestoreBackupDialog
         }
     }
 
-    // Measured Once, Every Row Click Renders Again
-    private long _totalSize = BackupManager.TotalSize();
+    // Measured Once, Unknown When An Unrelated Backup Cannot Be Read
+    private long? _totalSize = BackupManager.TotalSizeOrNull();
 
-    private string UsageText =>
-        AppText.Format(
-            "BackupUsage",
-            Formatter.FormatSize(_totalSize),
-            Formatter.FormatSize(BackupManager.SizeLimit)
-        );
+    private string? UsageText =>
+        _totalSize is { } totalSize
+            ? AppText.Format(
+                "BackupUsage",
+                Formatter.FormatSize(totalSize),
+                Formatter.FormatSize(BackupManager.SizeLimit)
+            )
+            : null;
 
     // Picking Backups To Delete, The Newest Never Among Them
     private bool _deleting;
@@ -243,7 +245,7 @@ public partial class RestoreBackupDialog
         }
 
         Backups = BackupManager.List(SavegamePath);
-        _totalSize = BackupManager.TotalSize();
+        _totalSize = BackupManager.TotalSizeOrNull();
         if (_selected is { } selected && !Backups.Exists(backup => backup.Path == selected.Path))
         {
             _selected = null;

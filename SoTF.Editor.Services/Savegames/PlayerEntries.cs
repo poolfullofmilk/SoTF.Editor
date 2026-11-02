@@ -9,7 +9,7 @@ public static class PlayerEntries
     {
         return
             store.LoadJsonRaw(SavegameStore.FileType.PlayerStateSaveData) is { } wrapper
-            && wrapper.GetJsonBasedToken(Constants.JsonKeys.PlayerState)?["_entries"]
+            && (wrapper.GetJsonBasedToken(Constants.JsonKeys.PlayerState) as JObject)?["_entries"]
                 is JArray entries
             ? (wrapper, entries)
             : null;
@@ -21,9 +21,10 @@ public static class PlayerEntries
         var byName = new Dictionary<string, JToken>();
         foreach (var entry in entries ?? [])
         {
-            if (entry["Name"]?.ToString() is { } name)
+            // Entries Without An Object Shape Or Text Name Are Skipped
+            if (entry is JObject && entry["Name"] is { Type: JTokenType.String } name)
             {
-                byName[name] = entry;
+                byName[name.ToString()] = entry;
             }
         }
 

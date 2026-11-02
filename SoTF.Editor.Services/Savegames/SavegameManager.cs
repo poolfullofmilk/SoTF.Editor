@@ -88,9 +88,20 @@ public static class SavegameManager
 
     public static string GetSavePath()
     {
-        return !string.IsNullOrWhiteSpace(UserSettings.Current.SavegamePath)
-            ? UserSettings.Current.SavegamePath
-            : GetSavegamePathFromAppData();
+        var custom = UserSettings.Current.SavegamePath;
+        if (string.IsNullOrWhiteSpace(custom))
+        {
+            return GetSavegamePathFromAppData();
+        }
+
+        // A Sandbox Never Reads A Folder Picked Outside It
+        if (AppInfo.SandboxRoot != null && !AppInfo.IsInSandbox(custom))
+        {
+            s_logger.Warn($"Ignored Saves Folder Outside The Sandbox {custom}");
+            return GetSavegamePathFromAppData();
+        }
+
+        return custom;
     }
 
     public static Savegame? Load(string? path)
@@ -240,8 +251,16 @@ public static class SavegameManager
             throw new IOException($"Not A Copy {savegame.FullPath}");
         }
 
-        // To The Recycle Bin, With The Game's Own Backups
+        // A Sandbox Deletes For Good, Never Touching The Recycle Bin
         var directory = new DirectoryInfo(savegame.FullPath);
+        if (AppInfo.SandboxRoot != null)
+        {
+            directory.Delete(true);
+            s_logger.Info($"Deleted Copy {directory.FullName}");
+            return;
+        }
+
+        // To The Recycle Bin, With The Game's Own Backups
         FileSystem.DeleteDirectory(
             directory.FullName,
             UIOption.OnlyErrorDialogs,

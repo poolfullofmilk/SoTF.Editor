@@ -24,7 +24,8 @@ public sealed class UnlocksViewModel
     public UnlocksViewModel(string playerProfilePath)
     {
         _playerProfilePath = playerProfilePath;
-        foreach (var (key, value) in ValuesOn(ReadProfile()))
+        _existedAtLoad = File.Exists(playerProfilePath);
+        foreach (var (key, value) in ValuesOn(ReadProfile().Profile))
         {
             Values[key] = value;
         }
@@ -37,16 +38,20 @@ public sealed class UnlocksViewModel
 
     private readonly Dictionary<string, bool> _loaded;
 
+    // A Profile Gone By Save Time Fails, Not Recreated
+    private readonly bool _existedAtLoad;
+
     public bool HasChanges => Values.Any(pair => _loaded[pair.Key] != pair.Value);
 
-    private JObject ReadProfile()
+    private (JObject Profile, string? Text) ReadProfile()
     {
         // A Missing Profile Reads As Every Unlock Off
-        var profile = File.Exists(_playerProfilePath)
-            ? SaveJson.DeserializeJObjectFromFile(_playerProfilePath)
-            : new JObject();
+        var text = File.Exists(_playerProfilePath)
+            ? File.ReadAllText(_playerProfilePath, SaveJson.Encoding)
+            : null;
+        var profile = text is null ? [] : JObject.Parse(text);
         SettingsOf(profile);
-        return (JObject)profile;
+        return (profile, text);
     }
 
     private static JArray SettingsOf(JToken profile)
@@ -102,7 +107,13 @@ public sealed class UnlocksViewModel
         }
 
         // The Profile On Disk Now, Checked Again And Merged Into
-        var model = ReadProfile();
+        var (model, readText) = ReadProfile();
+        if (_existedAtLoad && readText is null)
+        {
+            throw new IOException("Found The Profile Gone Since It Was Opened");
+        }
+
+        var before = model.DeepClone();
         if (model[SettingsKey] is not JArray settings)
         {
             settings = [];
@@ -120,20 +131,45 @@ public sealed class UnlocksViewModel
             }
         }
 
-        // A Verified Copy First, Then A Write That Cannot Tear
-        if (File.Exists(_playerProfilePath))
+        // Already As Wanted On Disk, Nothing Is Backed Up
+        if (!JToken.DeepEquals(before, model))
         {
-            BackupManager.CreateForFile(_playerProfilePath);
+            // A Verified Copy First, Then A Write That Cannot Tear
+            if (readText != null)
+            {
+                BackupManager.CreateForFile(_playerProfilePath);
+            }
+
+            FileTransaction.ReplaceSingle(
+                _playerProfilePath,
+                readText != null,
+                temporary =>
+                {
+                    // Changed Since The Read, The Newer Profile Wins
+                    if (
+                        (
+                            File.Exists(_playerProfilePath)
+                                ? File.ReadAllText(_playerProfilePath, SaveJson.Encoding)
+                                : null
+                        ) != readText
+                    )
+                    {
+                        throw new IOException("Found The Profile Changed While Saving");
+                    }
+
+                    File.WriteAllText(
+                        temporary,
+                        JsonConvert.SerializeObject(model, Formatting.Indented),
+                        SaveJson.Encoding
+                    );
+                }
+            );
         }
 
-        FileTransaction.Replace(
-            _playerProfilePath,
-            temporary =>
-                File.WriteAllText(
-                    temporary,
-                    JsonConvert.SerializeObject(model, Formatting.Indented),
-                    SaveJson.Encoding
-                )
-        );
+        // Saved, So The Toggles Are No Longer Pending
+        foreach (var (key, value) in changed)
+        {
+            _loaded[key] = value;
+        }
     }
 }

@@ -95,23 +95,29 @@ public partial class Savegame
         var store = SavegameStore;
         try
         {
-            var gameState = store
-                .LoadJsonRaw(SavegameStore.FileType.GameStateSaveData)
-                ?.GetJsonBasedToken(Constants.JsonKeys.GameState);
+            // Only Shapes The Game Writes, Anything Else Marks It Damaged
+            var gameState = ObjectOf(
+                store
+                    .LoadJsonRaw(SavegameStore.FileType.GameStateSaveData)
+                    ?.GetJsonBasedToken(Constants.JsonKeys.GameState)
+            );
             var strengthLevel = PlayerEntries
                 .ByName(PlayerEntries.Of(store)?.Entries)
                 .GetValueOrDefault("StrengthLevel")
                 ?["IntValue"];
-            var itemBlocks = store
-                .LoadJsonRaw(SavegameStore.FileType.PlayerInventorySaveData)
-                ?.GetJsonBasedToken(Constants.JsonKeys.PlayerInventory)
-                ?["ItemInstanceManagerData"]?["ItemBlocks"];
+            var itemBlocks =
+                ObjectOf(
+                    store
+                        .LoadJsonRaw(SavegameStore.FileType.PlayerInventorySaveData)
+                        ?.GetJsonBasedToken(Constants.JsonKeys.PlayerInventory)
+                )
+                    ?.SelectToken("ItemInstanceManagerData.ItemBlocks") as JArray;
             return new SavegameSummary(
-                gameState?[Constants.GameStateKeys.GameDays]?.Value<int>() ?? 0,
-                gameState?[Constants.GameStateKeys.GameType]?.Value<string>(),
-                gameState?[Constants.GameStateKeys.CrashSite]?.Value<string>(),
-                strengthLevel?.Value<int>() ?? 0,
-                itemBlocks?.Count(block => block["TotalCount"]?.Value<int>() > 0) ?? 0
+                IntOf(gameState?[Constants.GameStateKeys.GameDays]) ?? 0,
+                TextOf(gameState?[Constants.GameStateKeys.GameType]),
+                TextOf(gameState?[Constants.GameStateKeys.CrashSite]),
+                IntOf(strengthLevel) ?? 0,
+                itemBlocks?.Count(block => block is JObject && IntOf(block["TotalCount"]) > 0) ?? 0
             );
         }
         catch (Exception exception)
@@ -123,6 +129,7 @@ public partial class Savegame
                         or FormatException
                         or InvalidCastException
                         or InvalidOperationException
+                        or ArgumentException
                         or OverflowException
             )
         {
@@ -130,6 +137,28 @@ public partial class Savegame
             s_logger.Warn(exception, $"Failed To Read Summary Of {FullPath}");
             return null;
         }
+    }
+
+    private static int? IntOf(JToken? token)
+    {
+        // Missing Reads As Absent, Other Types Mark The Save Damaged
+        return token is null || token.Type == JTokenType.Null ? null
+            : token.Type == JTokenType.Integer ? token.Value<int>()
+            : throw new InvalidDataException($"Found An Unexpected {token.Path}");
+    }
+
+    private static string? TextOf(JToken? token)
+    {
+        return token is null || token.Type == JTokenType.Null ? null
+            : token.Type == JTokenType.String ? token.Value<string>()
+            : throw new InvalidDataException($"Found An Unexpected {token.Path}");
+    }
+
+    private static JObject? ObjectOf(JToken? token)
+    {
+        return token is null or JObject
+            ? (JObject?)token
+            : throw new InvalidDataException($"Found An Unexpected {token.Path}");
     }
 
     private string? FindGameName()

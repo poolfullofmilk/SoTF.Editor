@@ -103,8 +103,10 @@ public static class Updater
         return JObject.Parse(await response.Content.ReadAsStringAsync());
     }
 
+    // A Sandboxed Run Never Replaces Or Deletes An Exe
     public static bool CanInstall =>
-        Path.GetFileName(Environment.ProcessPath)
+        AppInfo.SandboxRoot == null
+        && Path.GetFileName(Environment.ProcessPath)
             ?.StartsWith(ExecutablePrefix, StringComparison.OrdinalIgnoreCase) == true;
 
     public static Task<string> DownloadAsync(
@@ -226,7 +228,8 @@ public static class Updater
     {
         var index = Array.IndexOf(arguments, AfterUpdateArgument);
         if (
-            index < 0
+            AppInfo.SandboxRoot != null
+            || index < 0
             || index + 1 >= arguments.Length
             || !int.TryParse(arguments[index + 1], out var processId)
         )

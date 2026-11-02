@@ -51,8 +51,9 @@ public sealed class UserSettings
         try
         {
             Directory.CreateDirectory(AppInfo.DataDirectory);
-            FileTransaction.Replace(
+            FileTransaction.ReplaceSingle(
                 s_filePath,
+                false,
                 temporary =>
                     File.WriteAllText(
                         temporary,

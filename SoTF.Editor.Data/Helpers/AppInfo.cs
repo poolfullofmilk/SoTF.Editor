@@ -43,6 +43,17 @@ public static class AppInfo
         ? Path.GetFullPath(root)
         : null;
 
+    public static bool IsInSandbox(string path)
+    {
+        // A Plain Prefix Check, The Sandbox Is Checked For Links
+        return SandboxRoot is { } sandbox
+            && Path.GetFullPath(path)
+                .StartsWith(
+                    sandbox.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar,
+                    StringComparison.OrdinalIgnoreCase
+                );
+    }
+
     public static readonly string DataDirectory = Path.Combine(
         SandboxRoot is { } sandbox
             ? Path.Combine(sandbox, "AppData")

@@ -19,6 +19,7 @@ using SoTF.Editor.Data.Models.Storage;
 using SoTF.Editor.Data.Resources;
 using SoTF.Editor.Data.ViewModels;
 using SoTF.Editor.Services.Actors;
+using SoTF.Editor.Services.Integration;
 using SoTF.Editor.Services.Map;
 using SoTF.Editor.Services.Pages;
 using SoTF.Editor.Services.Savegames;
@@ -31,7 +32,16 @@ var testsRoot = Path.Combine(Path.GetTempPath(), "SoTF.Editor.Tests");
 RemoveAbandonedRuns(testsRoot, OwnerFile);
 var sandbox = Path.Combine(testsRoot, Guid.NewGuid().ToString("N"));
 Directory.CreateDirectory(sandbox);
-File.WriteAllText(Path.Combine(sandbox, OwnerFile), OwnerStamp(Environment.ProcessId));
+if (HasLinkedAncestor(sandbox))
+{
+    Console.WriteLine("Refused To Run, The Sandbox Sits Behind A Linked Folder");
+    Directory.Delete(sandbox);
+    return 2;
+}
+
+// Written Whole, A Half Marker Never Reads As Ended
+File.WriteAllText(Path.Combine(sandbox, OwnerFile + ".new"), OwnerStamp(Environment.ProcessId));
+File.Move(Path.Combine(sandbox, OwnerFile + ".new"), Path.Combine(sandbox, OwnerFile));
 Environment.SetEnvironmentVariable("SOTF_EDITOR_ROOT", sandbox);
 var ownerFolders = OwnerManifest();
 
@@ -1268,7 +1278,7 @@ try
     )
     {
         Check(
-            Fails(() => BackupManager.Restore(restoreSave, oddBackup))
+            Refused(() => BackupManager.Restore(restoreSave, oddBackup))
                 && SameHashes(restoreStart, HashTree(restoreSave)),
             "Unreadable Backup File Keeps Live Temporaries"
         );
@@ -1284,7 +1294,7 @@ try
     )
     {
         Check(
-            Fails(() => BackupManager.Restore(restoreSave, oddBackup))
+            Refused(() => BackupManager.Restore(restoreSave, oddBackup))
                 && SameHashes(restoreStart, HashTree(restoreSave)),
             "Locked Save File Mid Restore Puts Every File Back"
         );
@@ -1321,7 +1331,7 @@ try
         FileAccess.Read,
         FileShare.Read
     );
-    var saveFailed = Fails(() => main.SaveChanges());
+    var saveFailed = Refused(() => main.SaveChanges());
     var keptFiles = SameHashes(mixedStart, HashTree(mixedSave));
     archiveLock.Dispose();
     Check(
@@ -1359,7 +1369,7 @@ try
     );
     EditArchive(mixedSave, archive => archive.GetEntry("PlayerStateSaveData.json")!.Delete());
     Check(
-        Fails(() => mixedStore.SaveAllModified()) && mixedStore.HasModified(),
+        Refused(() => mixedStore.SaveAllModified()) && mixedStore.HasModified(),
         "Vanished Target Fails And Stays Marked"
     );
 
@@ -1412,7 +1422,19 @@ try
     deniedFolders.Add(unreadableBackup);
     SetDenied(unreadableBackup, true);
     player.PlayerState.Fullness = 44;
-    Check(NoThrow(() => main.SaveChanges()), "Unreadable Old Backup Never Blocks A Save");
+    Check(
+        NoThrow(() => main.SaveChanges()) && Math.Abs(player.PlayerState.Fullness - 44) < 0.01,
+        "Unreadable Old Backup Never Blocks A Save"
+    );
+    Check(
+        BackupManager.TotalSizeOrNull() is null
+            && NoThrow(() =>
+                BackupManager.List(
+                    Path.Combine(BackupManager.BackupDirectory, "Unrelated", "Mode", "Save")
+                )
+            ),
+        "Unreadable Backups Leave Usage Unknown And Still List"
+    );
     SetDenied(unreadableBackup, false);
     deniedFolders.Remove(unreadableBackup);
 
@@ -1547,6 +1569,236 @@ try
     );
     main.SelectSavegame(SavegameManager.Load(savegamePath));
 
+    // A Linked Folder Inside The Save Refuses The Restore
+    var linkedSave = FreshSample(sandbox, "Linked");
+    var outside = Path.Combine(sandbox, "Outside");
+    Directory.CreateDirectory(outside);
+    File.WriteAllText(Path.Combine(outside, "x.json"), "outside sentinel");
+    var linkedBackup = Path.Combine(sandbox, "LinkedBackup");
+    CopyDirectory(linkedSave, linkedBackup);
+    Directory.CreateDirectory(Path.Combine(linkedBackup, "nested"));
+    File.WriteAllText(Path.Combine(linkedBackup, "nested", "x.json"), "from the backup");
+    Junction(Path.Combine(linkedSave, "nested"), outside);
+    var outsideBefore = HashTree(outside);
+    var linkedBefore = HashFiles(linkedSave);
+    Check(
+        Refused(() => BackupManager.Restore(linkedSave, linkedBackup))
+            && SameHashes(outsideBefore, HashTree(outside))
+            && SameHashes(linkedBefore, HashFiles(linkedSave)),
+        "Linked Folder In The Save Refuses The Restore"
+    );
+
+    // Editor Files Count Only At The Backup's Root
+    var metadataSave = FreshSample(sandbox, "MetadataSave");
+    var metadataBackup = Path.Combine(sandbox, "MetadataBackup");
+    CopyDirectory(metadataSave, metadataBackup);
+    File.WriteAllText(Path.Combine(metadataBackup, "SoTF.Editor.Label.txt"), "root label");
+    Directory.CreateDirectory(Path.Combine(metadataBackup, "nested"));
+    File.WriteAllText(Path.Combine(metadataBackup, "nested", "SoTF.Editor.Label.txt"), "data");
+    BackupManager.Restore(metadataSave, metadataBackup);
+    Check(
+        !File.Exists(Path.Combine(metadataSave, "SoTF.Editor.Label.txt"))
+            && File.Exists(Path.Combine(metadataSave, "nested", "SoTF.Editor.Label.txt")),
+        "Only Root Editor Files Stay Out Of A Restore"
+    );
+
+    // A Loose File Document Is Never Written Into The Archive
+    var sourceSave = FreshSample(sandbox, "Source");
+    EditArchive(
+        sourceSave,
+        archive =>
+            archive
+                .GetEntry("PlayerStateSaveData.json")!
+                .ExtractToFile(Path.Combine(sourceSave, "PlayerStateSaveData.json"))
+    );
+    main.SelectSavegame(SavegameManager.Load(sourceSave));
+    player.PlayerState.Fullness = 12;
+    File.Delete(Path.Combine(sourceSave, "PlayerStateSaveData.json"));
+    var archiveEntryBefore = EntryHash(sourceSave, "PlayerStateSaveData.json");
+    Check(
+        Refused(() => main.SaveChanges())
+            && EntryHash(sourceSave, "PlayerStateSaveData.json") == archiveEntryBefore
+            && main.HasChanges("Player"),
+        "Loose File Gone Since Loading Fails Instead Of Moving Into The Archive"
+    );
+
+    // A Target Gone After Staging Fails, Never Created Anew
+    var transaction = Path.Combine(sandbox, "Transaction");
+    Directory.CreateDirectory(transaction);
+    var firstFile = Path.Combine(transaction, "A.json");
+    var secondFile = Path.Combine(transaction, "B.json");
+    File.WriteAllText(firstFile, "old a");
+    File.WriteAllText(secondFile, "old b");
+    Check(
+        Refused(() =>
+            FileTransaction.Commit(
+                [
+                    (firstFile, true, temporary => File.WriteAllText(temporary, "new a")),
+                    (
+                        secondFile,
+                        true,
+                        temporary =>
+                        {
+                            File.Delete(firstFile);
+                            File.WriteAllText(temporary, "new b");
+                        }
+                    ),
+                ],
+                []
+            )
+        )
+            && !File.Exists(firstFile)
+            && File.ReadAllText(secondFile) == "old b"
+            && Directory.GetFiles(transaction).Length == 1,
+        "Target Gone After Staging Fails And Is Not Recreated"
+    );
+
+    // A Failure After The First Replacement Puts It Back
+    File.WriteAllText(firstFile, "old a");
+    using (File.Open(secondFile, FileMode.Open, FileAccess.Read, FileShare.Read))
+    {
+        Check(
+            Refused(() =>
+                FileTransaction.Commit(
+                    [
+                        (firstFile, true, temporary => File.WriteAllText(temporary, "new a")),
+                        (secondFile, true, temporary => File.WriteAllText(temporary, "new b")),
+                    ],
+                    []
+                )
+            )
+                && File.ReadAllText(firstFile) == "old a"
+                && File.ReadAllText(secondFile) == "old b"
+                && Directory.GetFiles(transaction).Length == 2,
+            "Failure After A Placed File Rolls It Back"
+        );
+    }
+
+    // Saving Over A Version Changed Since It Was Confirmed Fails
+    var confirmSave = FreshSample(sandbox, "Confirm");
+    main.SelectSavegame(SavegameManager.Load(confirmSave));
+    player.PlayerState.Fullness = 13;
+    var confirmedStamps = main.SelectedSavegame!.SavegameStore.Stamps();
+    var confirmArchive = Path.Combine(confirmSave, "SaveData.zip");
+    File.SetLastWriteTimeUtc(
+        confirmArchive,
+        File.GetLastWriteTimeUtc(confirmArchive).AddMinutes(1)
+    );
+    var confirmFiles = HashFiles(confirmSave);
+    Check(
+        Refused(() => main.SaveChanges(null, confirmedStamps))
+            && SameHashes(confirmFiles, HashFiles(confirmSave))
+            && main.HasChanges("Player"),
+        "Save Confirmed For An Older Version Writes Nothing"
+    );
+
+    // Cannibal Anger Revert Keeps An Independent Fear Edit
+    var angerSave = FreshSample(sandbox, "Anger");
+    main.SelectSavegame(SavegameManager.Load(angerSave));
+    var cannibal = npcs.AllActors.First(npc =>
+        npc.ActorType?.IsCannibal == true
+        && npc.State != Constants.Actors.StateDead
+        && npc.Influences?.Any(influence => influence.TypeId == Influence.Type.Player) == true
+    );
+    var cannibalId = cannibal.UniqueId;
+    var angerBeforeTool = cannibal
+        .Influences!.First(influence => influence.TypeId == Influence.Type.Player)
+        .Anger;
+    var angerBefore = main.ToolState();
+    main.SetCannibalAnger(70);
+    main.FinishTool("CannibalAnger", angerBefore);
+    main.ModifyActors(save =>
+    {
+        var wrapper = save.SavegameStore.LoadJsonRaw(SavegameStore.FileType.SaveData)!;
+        var memory = wrapper.GetJsonBasedToken(Constants.JsonKeys.VailWorldSim)![
+            "InfluenceMemory"
+        ]!.Last(entry => entry["UniqueId"]?.Value<int>() == cannibalId);
+        memory["Influences"]!.First(influence =>
+            influence["TypeId"]?.ToString() == Influence.Type.Player
+        )["Fear"] = 33f;
+        wrapper.MarkAsModified(Constants.JsonKeys.VailWorldSim);
+    });
+    main.RevertPage("Tools");
+    var playerFeeling = npcs
+        .AllActors.First(npc => npc.UniqueId == cannibalId)
+        .Influences!.First(influence => influence.TypeId == Influence.Type.Player);
+    Check(
+        Math.Abs(playerFeeling.Fear - 33) < 0.01
+            && Math.Abs(playerFeeling.Anger - angerBeforeTool) < 0.01,
+        "Cannibal Anger Revert Keeps An Independent Fear Edit"
+    );
+
+    // A Tool Undone By Hand Stays Clean Beside Game Edits
+    var dotSave = FreshSample(sandbox, "Dot");
+    main.SelectSavegame(SavegameManager.Load(dotSave));
+    var dotValues = gameState.NamedIntDatas.Select(setting => (setting, setting.IntValue)).ToList();
+    var dotBefore = main.ToolState();
+    gameState.ResetContainers();
+    main.FinishTool("ResetContainers", dotBefore);
+    dotValues.ForEach(pair => pair.setting.IntValue = pair.IntValue);
+    SettingOf(gameState.Settings, Constants.GameStateKeys.GameDays).IntValue += 2;
+    Check(
+        !main.IsToolChanged("ResetContainers")
+            && !main.HasChanges("Tools")
+            && main.HasChanges("Game"),
+        "Undone Tool Stays Clean Beside A Game Edit"
+    );
+    main.RevertPage("Game");
+
+    // A Sandbox Ignores Outside Save Folders And Never Installs
+    UserSettings.Current.SavegamePath = Path.GetPathRoot(Path.GetTempPath())!;
+    var ignoredOutside = IsInside(SavegameManager.GetSavePath(), sandbox);
+    UserSettings.Current.SavegamePath = "";
+    Check(ignoredOutside && !Updater.CanInstall, "Sandbox Ignores Outside Folders And Updates");
+
+    // A Malformed Owner Marker Never Counts As An Ended Run
+    var strangerRun = Path.Combine(testsRoot, Guid.NewGuid().ToString("N"));
+    Directory.CreateDirectory(strangerRun);
+    File.WriteAllText(Path.Combine(strangerRun, OwnerFile), "not a marker");
+    RemoveAbandonedRuns(testsRoot, OwnerFile);
+    Check(Directory.Exists(strangerRun), "Malformed Owner Marker Keeps Its Folder");
+    Directory.Delete(strangerRun, true);
+
+    // Array Shaped Game State Lists And Compares As Damaged
+    var arrayShaped = Path.Combine(savesRoot, SampleSteamId, "Multiplayer", "1000000004");
+    CopyDirectory(Path.Combine(savesRoot, SampleSteamId, "Multiplayer", "1000000001"), arrayShaped);
+    File.WriteAllText(
+        Path.Combine(arrayShaped, "GameStateSaveData.json"),
+        """{ "Data": { "GameState": "[]" } }"""
+    );
+    Check(
+        NoThrow(() => SavegameManager.GetSavegames().ForEach(savegame => _ = savegame.Summary))
+            && SavegameManager.Load(arrayShaped)!.Summary is null
+            && Refused(() =>
+                BackupDiff.Describe(
+                    arrayShaped,
+                    Path.Combine(savesRoot, SampleSteamId, "Multiplayer", "1000000001"),
+                    gameData,
+                    key => key
+                )
+            ),
+        "Array Shaped Game State Lists And Compares As Damaged"
+    );
+
+    // Vanished Or Already Satisfied Profiles Write Nothing
+    File.WriteAllText(profile, """{ "_settings": [] }""");
+    var goneUnlocks = new UnlocksViewModel(profile);
+    goneUnlocks.Values["Stats.EscapedIsland"] = true;
+    File.Delete(profile);
+    var goneRefused = Refused(goneUnlocks.Save) && !File.Exists(profile);
+    File.WriteAllText(profile, """{ "_settings": [] }""");
+    var convergedUnlocks = new UnlocksViewModel(profile);
+    convergedUnlocks.Values["Stats.EscapedIsland"] = true;
+    const string Converged =
+        """{ "_settings": [{ "Name": "Stats.EscapedIsland", "BoolValue": true }] }""";
+    File.WriteAllText(profile, Converged);
+    convergedUnlocks.Save();
+    Check(
+        goneRefused && File.ReadAllText(profile) == Converged && !convergedUnlocks.HasChanges,
+        "Unlocks Refuse A Vanished Profile And Skip An Effective No Op"
+    );
+    main.SelectSavegame(SavegameManager.Load(savegamePath));
+
     // Every Language Reads Back As Picked, Brazilian Portuguese Too
     Check(
         AppText.Languages.All(language =>
@@ -1611,7 +1863,15 @@ finally
 {
     // Only This Run's Sandbox Goes, Readable Again First
     deniedFolders.ForEach(folder => SetDenied(folder, false));
-    Directory.Delete(sandbox, true);
+    try
+    {
+        Directory.Delete(sandbox, true);
+    }
+    catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+    {
+        // A Junction Can Report Denied Once While Its Removal Lands
+        Directory.Delete(sandbox, true);
+    }
 }
 
 // The Owner's Own Folders Never Saw This Run
@@ -1744,29 +2004,38 @@ static string OwnerStamp(int processId)
 
 static void RemoveAbandonedRuns(string testsRoot, string ownerFile)
 {
-    // Only Sandboxes Whose Run Has Ended, Never Unmarked Folders
+    // Only Ended Runs' Sandboxes, Never Unmarked Or Unreadable Ones
     foreach (var folder in Directory.Exists(testsRoot) ? Directory.GetDirectories(testsRoot) : [])
     {
         var owner = Path.Combine(folder, ownerFile);
-        if (!File.Exists(owner))
+        string[] parts;
+        try
+        {
+            parts = File.Exists(owner) ? File.ReadAllText(owner).Split(' ') : [];
+        }
+        catch (IOException)
         {
             continue;
         }
 
-        var stamp = File.ReadAllText(owner);
-        var isRunning =
-            int.TryParse(stamp.Split(' ')[0], out var processId) && Alive(processId, stamp);
-        if (!isRunning)
+        // A Whole Marker Whose Process Is Verifiably Gone Or Replaced
+        if (
+            parts.Length != 2
+            || !int.TryParse(parts[0], out var processId)
+            || !long.TryParse(parts[1], out _)
+            || Alive(processId, string.Join(' ', parts))
+        )
         {
-            try
-            {
-                Directory.Delete(folder, true);
-            }
-            catch (Exception exception)
-                when (exception is IOException or UnauthorizedAccessException)
-            {
-                Console.WriteLine($"Left Abandoned Run {Path.GetFileName(folder)}");
-            }
+            continue;
+        }
+
+        try
+        {
+            Directory.Delete(folder, true);
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+        {
+            Console.WriteLine($"Left Abandoned Run {Path.GetFileName(folder)}");
         }
     }
 
@@ -1785,28 +2054,55 @@ static void RemoveAbandonedRuns(string testsRoot, string ownerFile)
 
 static Dictionary<string, string> OwnerManifest()
 {
-    // The Owner's Debug Folders, Read Only, Browser Cache Aside
+    // Owner Debug And Release Folders Plus Game Saves, Hashed
     var manifest = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-    foreach (
-        var root in new[]
-        {
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-        }.Select(parent => Path.Combine(parent, "SoTF.Editor Debug"))
-    )
+    var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+    var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+    string[] roots =
+    [
+        Path.Combine(appData, "SoTF.Editor Debug"),
+        Path.Combine(appData, "SoTF.Editor"),
+        Path.Combine(documents, "SoTF.Editor Debug"),
+        Path.Combine(documents, "SoTF.Editor"),
+        Path.Combine(
+            Path.GetDirectoryName(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)
+            )!,
+            "LocalLow",
+            "Endnight",
+            "SonsOfTheForest",
+            "Saves"
+        ),
+    ];
+    foreach (var root in roots.Where(Directory.Exists))
     {
-        if (!Directory.Exists(root))
-        {
-            continue;
-        }
-
+        manifest[root] = "present";
         foreach (
             var file in new DirectoryInfo(root).EnumerateFiles("*", SearchOption.AllDirectories)
         )
         {
-            if (!file.FullName.Contains(@"\WebView2\", StringComparison.OrdinalIgnoreCase))
+            if (
+                file.FullName.Contains(@"\WebView2\", StringComparison.OrdinalIgnoreCase)
+                || file.FullName.Contains(@"\Logs\", StringComparison.OrdinalIgnoreCase)
+            )
             {
-                manifest[file.FullName] = $"{file.Length} {file.LastWriteTimeUtc.Ticks}";
+                continue;
+            }
+
+            try
+            {
+                using var stream = new FileStream(
+                    file.FullName,
+                    FileMode.Open,
+                    FileAccess.Read,
+                    FileShare.ReadWrite | FileShare.Delete
+                );
+                manifest[file.FullName] =
+                    $"{file.Length} {file.LastWriteTimeUtc.Ticks} {Convert.ToHexString(SHA256.HashData(stream))}";
+            }
+            catch (IOException)
+            {
+                manifest[file.FullName] = $"{file.Length} {file.LastWriteTimeUtc.Ticks} unreadable";
             }
         }
     }
@@ -1814,19 +2110,31 @@ static Dictionary<string, string> OwnerManifest()
     return manifest;
 }
 
-static bool Fails(Action action)
+static bool HasLinkedAncestor(string folder)
 {
-    // Any Failure Counts, Older Code Threw Other Types
-    try
+    // The Sandbox And Every Folder Above It, None A Link
+    for (var current = new DirectoryInfo(folder); current != null; current = current.Parent)
     {
-        action();
-        return false;
+        if (current.Attributes.HasFlag(FileAttributes.ReparsePoint))
+        {
+            return true;
+        }
     }
-    catch (Exception exception)
-    {
-        Console.WriteLine($"Threw {exception.GetType().Name}");
-        return true;
-    }
+
+    return false;
+}
+
+static void Junction(string link, string target)
+{
+    using var process = System.Diagnostics.Process.Start(
+        new System.Diagnostics.ProcessStartInfo("cmd", $"/c mklink /J \"{link}\" \"{target}\"")
+        {
+            UseShellExecute = false,
+            RedirectStandardOutput = true,
+        }
+    )!;
+    process.StandardOutput.ReadToEnd();
+    process.WaitForExit();
 }
 
 static bool NoThrow(Action action)
@@ -1865,6 +2173,11 @@ static bool Refused(Action action)
 
 static void SetDenied(string folder, bool denied)
 {
+    if (!OperatingSystem.IsWindows())
+    {
+        throw new PlatformNotSupportedException("Folder Permissions Need Windows");
+    }
+
     // Listing Denied To This Account, Through The Windows Tool
     var account = $"*{System.Security.Principal.WindowsIdentity.GetCurrent().User!.Value}";
     using var process = System.Diagnostics.Process.Start(

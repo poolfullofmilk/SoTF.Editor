@@ -54,6 +54,63 @@ public sealed class MainViewModel(
 
     private readonly HashSet<string> _changedTools = [];
 
+    // Each Cannibal Anger Change With Its Undo, Cleared On Load
+    private readonly List<(Func<bool> IsOutstanding, Action Undo)> _cannibalUndo = [];
+
+    // Documents Each Tool Owns, For Its Dot And Revert
+    private static readonly Dictionary<
+        string,
+        (SavegameStore.FileType FileType, string JsonKey)[]
+    > s_toolDocuments = new()
+    {
+        ["RegrowTrees"] =
+        [
+            (
+                SavegameStore.FileType.WorldObjectLocatorManagerSaveData,
+                Constants.JsonKeys.WorldObjectLocatorManager
+            ),
+        ],
+        ["EternalFires"] = [(SavegameStore.FileType.FiresSaveData, Constants.JsonKeys.Fires)],
+        ["ResetFires"] = [(SavegameStore.FileType.FiresSaveData, Constants.JsonKeys.Fires)],
+        ["ResetStructureDamage"] =
+        [
+            (
+                SavegameStore.FileType.StructureDestructionSaveData,
+                Constants.JsonKeys.StructureDestruction
+            ),
+        ],
+        ["ResetTraps"] =
+        [
+            (SavegameStore.FileType.ScrewTrapsSaveData, Constants.JsonKeys.ScrewTraps),
+        ],
+        ["WorldItemCloner"] =
+        [
+            (SavegameStore.FileType.WorldItemManagerSaveData, Constants.JsonKeys.WorldItemManager),
+        ],
+        ["RipenGardens"] =
+        [
+            (
+                SavegameStore.FileType.GardenPlotManagerSaveData,
+                Constants.JsonKeys.GardenPlotManager
+            ),
+        ],
+        ["FillPrinters"] =
+        [
+            .. WorldTools.Printers.Select(printer => (printer, WorldTools.PrinterKeyOf(printer))),
+        ],
+        ["GuestRoles"] =
+        [
+            (
+                SavegameStore.FileType.MultiplayerPlayerRolesSaveData,
+                Constants.JsonKeys.MultiplayerPlayerRoles
+            ),
+        ],
+        ["ConsumedItems"] =
+        [
+            (SavegameStore.FileType.PlayerStateSaveData, Constants.JsonKeys.PlayerState),
+        ],
+    };
+
     public event Action? Changed;
 
     public event Action<Savegame>? OpenRequested;
@@ -91,6 +148,7 @@ public sealed class MainViewModel(
         SelectedSavegame = savegame;
         Revision++;
         _changedTools.Clear();
+        _cannibalUndo.Clear();
 
         playerPage.Load(savegame);
         armorPage.Load(savegame);
@@ -326,43 +384,26 @@ public sealed class MainViewModel(
     {
         // Documents Only Tools Change Before A Save
         foreach (
-            var (fileType, jsonKey) in new[]
-            {
-                (SavegameStore.FileType.FiresSaveData, Constants.JsonKeys.Fires),
-                (SavegameStore.FileType.ScrewTrapsSaveData, Constants.JsonKeys.ScrewTraps),
-                (
-                    SavegameStore.FileType.StructureDestructionSaveData,
-                    Constants.JsonKeys.StructureDestruction
-                ),
-                (
-                    SavegameStore.FileType.WorldItemManagerSaveData,
-                    Constants.JsonKeys.WorldItemManager
-                ),
-                (
-                    SavegameStore.FileType.WorldObjectLocatorManagerSaveData,
-                    Constants.JsonKeys.WorldObjectLocatorManager
-                ),
-                (SavegameStore.FileType.PlayerStateSaveData, Constants.JsonKeys.PlayerState),
-                (
-                    SavegameStore.FileType.GardenPlotManagerSaveData,
-                    Constants.JsonKeys.GardenPlotManager
-                ),
-                (
-                    SavegameStore.FileType.MultiplayerPlayerRolesSaveData,
-                    Constants.JsonKeys.MultiplayerPlayerRoles
-                ),
-            }.Concat(
-                WorldTools.Printers.Select(printer => (printer, WorldTools.PrinterKeyOf(printer)))
-            )
+            var (fileType, jsonKey) in s_toolDocuments
+                .Values.SelectMany(documents => documents)
+                .Distinct()
         )
         {
             savegame.SavegameStore.LoadJsonRaw(fileType)?.Revert(jsonKey);
         }
 
-        // Anger And Game State Tools Share Data, Only When Run
-        if (_changedTools.Contains("CannibalAnger"))
+        // Only Fields Cannibal Anger Changed, Newest First, NPC Edits Stay
+        if (_cannibalUndo.Count > 0)
         {
-            ModifyActors(_ => RevertCannibalAnger(savegame));
+            ModifyActors(_ =>
+            {
+                for (var index = _cannibalUndo.Count - 1; index >= 0; index--)
+                {
+                    _cannibalUndo[index].Undo();
+                }
+
+                _cannibalUndo.Clear();
+            });
         }
 
         // Only The Rows These Tools Own, Other Game Edits Stay
@@ -378,42 +419,6 @@ public sealed class MainViewModel(
 
         _changedTools.Clear();
         Revision++;
-    }
-
-    private void RevertCannibalAnger(Savegame savegame)
-    {
-        if (
-            savegame.SavegameStore.LoadJsonRaw(SavegameStore.FileType.SaveData)
-                is not { } saveDataWrapper
-            || saveDataWrapper.GetJsonBasedToken(Constants.JsonKeys.VailWorldSim)
-                is not JObject vailWorldSim
-            || saveDataWrapper.LoadedCopy(Constants.JsonKeys.VailWorldSim) is not { } loaded
-        )
-        {
-            return;
-        }
-
-        // Kills, World Counts And Cannibal Memories
-        var cannibalIds = LivingCannibalIds(vailWorldSim)
-            .Concat(LivingCannibalIds(loaded))
-            .ToHashSet();
-        JsonModifier.RestoreEntries(
-            vailWorldSim["InfluenceMemory"],
-            loaded["InfluenceMemory"],
-            memory =>
-                JsonModifier.UniqueIdOf(memory) is { } uniqueId && cannibalIds.Contains(uniqueId),
-            JsonModifier.UniqueIdOf
-        );
-        JsonModifier.RestoreEntries(
-            vailWorldSim["KillStatsList"],
-            loaded["KillStatsList"],
-            _ => true,
-            killStat => killStat["TypeId"]?.Value<int>()
-        );
-        if (loaded["PlayerStats"] is { } playerStats)
-        {
-            vailWorldSim["PlayerStats"] = playerStats;
-        }
     }
 
     public bool HasChanges(string page)
@@ -439,8 +444,7 @@ public sealed class MainViewModel(
             "Map" => SelectedSavegame.SavegameStore.HasModified(
                 SavegameStore.FileType.ZipLineManagerSaveData
             ),
-            "Tools" => _changedTools.Count > 0
-                && (SelectedSavegame.SavegameStore.HasModified() || gameStatePage.HasChanges),
+            "Tools" => _changedTools.Any(HasOutstanding),
             _ => false,
         };
     }
@@ -454,7 +458,10 @@ public sealed class MainViewModel(
             && (s_routes.Any(HasChanges) || selectedSavegame.SavegameStore.HasModified());
     }
 
-    public bool SaveChanges(Dictionary<string, List<Change>>? changes = null)
+    public bool SaveChanges(
+        Dictionary<string, List<Change>>? changes = null,
+        string? acceptedStamps = null
+    )
     {
         if (SelectedSavegame is not { } selectedSavegame || !HasUnsavedChanges())
         {
@@ -473,7 +480,7 @@ public sealed class MainViewModel(
         }
 
         draft.SavegameStore.BackUpLoaded(changes);
-        draft.SavegameStore.SaveAllModified();
+        draft.SavegameStore.SaveAllModified(acceptedStamps);
         ReloadSavegame();
         return true;
     }
@@ -517,7 +524,67 @@ public sealed class MainViewModel(
     public bool IsToolChanged(string tool)
     {
         // A Tool Whose Changes Were All Put Back Shows Clean
-        return _changedTools.Contains(tool) && HasChanges("Tools");
+        return _changedTools.Contains(tool) && HasOutstanding(tool);
+    }
+
+    private bool HasOutstanding(string tool)
+    {
+        // Each Tool Counts Only While Its Own Changes Remain
+        return tool switch
+        {
+            "ResetContainers" => gameStatePage.NamedIntsChanged(GameStatePageViewModel.IsContainer),
+            "SetToEndgame" => gameStatePage.NamedIntsChanged(GameStatePageViewModel.IsEndgame),
+            "CannibalAnger" => _cannibalUndo.Exists(entry => entry.IsOutstanding()),
+            _ => SelectedSavegame is { } savegame
+                && s_toolDocuments
+                    .GetValueOrDefault(tool, [])
+                    .Any(document => savegame.SavegameStore.HasModified(document.FileType)),
+        };
+    }
+
+    private void RememberField(JObject owner, string name)
+    {
+        // A Field Counts While Live And Changed
+        var before = owner[name]?.DeepClone();
+        _cannibalUndo.Add(
+            (
+                () => IsLive(owner) && !JToken.DeepEquals(owner[name], before),
+                () =>
+                {
+                    if (before is null)
+                    {
+                        owner.Remove(name);
+                    }
+                    else
+                    {
+                        owner[name] = before.DeepClone();
+                    }
+                }
+            )
+        );
+    }
+
+    private void RememberAdded(JToken added)
+    {
+        _cannibalUndo.Add(
+            (
+                () => added.Parent != null && IsLive(added),
+                () =>
+                {
+                    if (added.Parent != null)
+                    {
+                        added.Remove();
+                    }
+                }
+            )
+        );
+    }
+
+    private bool IsLive(JToken token)
+    {
+        // Page Reverts Swap In Copies, Old Entries No Longer Count
+        return SelectedSavegame is { } savegame
+            && ReferenceEquals(token.Root, VailWorldSimOf(savegame));
     }
 
     public void FinishTool(string tool, string stateBefore)
@@ -526,7 +593,7 @@ public sealed class MainViewModel(
         {
             // A Tool Can Add Or Move What The Map Shows
             Revision++;
-            if (SelectedSavegame?.SavegameStore.HasModified() == true || gameStatePage.HasChanges)
+            if (HasOutstanding(tool))
             {
                 _changedTools.Add(tool);
             }
@@ -594,22 +661,32 @@ public sealed class MainViewModel(
             {
                 memory = new JObject { ["UniqueId"] = uniqueId };
                 influenceMemories.Add(memory);
+                RememberAdded(memory);
                 hasChanges = true;
             }
 
-            if (PlayerInfluenceOf(memory) is not { } playerInfluence)
+            if (memory is not JObject memoryObject)
             {
-                if (memory["Influences"] is not JArray influences)
+                continue;
+            }
+
+            if (PlayerInfluenceOf(memoryObject) is not JObject playerInfluence)
+            {
+                if (memoryObject["Influences"] is not JArray influences)
                 {
+                    RememberField(memoryObject, "Influences");
                     influences = [];
-                    memory["Influences"] = influences;
+                    memoryObject["Influences"] = influences;
                 }
 
                 playerInfluence = new JObject { ["TypeId"] = Influence.Type.Player };
                 influences.Add(playerInfluence);
+                RememberAdded(playerInfluence);
                 hasChanges = true;
             }
 
+            RememberField(playerInfluence, "Sentiment");
+            RememberField(playerInfluence, "Anger");
             hasChanges |= JsonModifier.SetFloat(playerInfluence, "Sentiment", -level);
             hasChanges |= JsonModifier.SetFloat(playerInfluence, "Anger", level);
         }
@@ -617,8 +694,15 @@ public sealed class MainViewModel(
         // Calm Also Forgets Kills, Cut Trees And Village Visits
         if (level == 0)
         {
-            foreach (var count in WorldCountsOf(vailWorldSim).Where(count => !IsZero(count)))
+            foreach (
+                var count in WorldCountsOf(vailWorldSim).Where(count => !IsZero(count)).ToList()
+            )
             {
+                if (count.Parent is JProperty { Parent: JObject owner } property)
+                {
+                    RememberField(owner, property.Name);
+                }
+
                 if (count is JObject killedOnDay)
                 {
                     killedOnDay.RemoveAll();

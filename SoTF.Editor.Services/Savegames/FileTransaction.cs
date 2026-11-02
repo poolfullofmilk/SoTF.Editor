@@ -7,18 +7,18 @@ public static class FileTransaction
     private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
 
     public static void Commit(
-        IReadOnlyList<(string Target, Action<string> Write)> writes,
+        IReadOnlyList<(string Target, bool Replaces, Action<string> Write)> writes,
         IReadOnlyList<string> removals
     )
     {
         // New Files Go To Names Only This Commit Owns
-        var staged = new List<(string Temporary, string Target)>();
+        var staged = new List<(string Temporary, string Target, bool Replaces)>();
         try
         {
-            foreach (var (target, write) in writes)
+            foreach (var (target, replaces, write) in writes)
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(target)!);
-                staged.Add((OwnedName(target, "staged"), target));
+                staged.Add((OwnedName(target, "staged"), target, replaces));
                 write(staged[^1].Temporary);
             }
         }
@@ -28,42 +28,64 @@ public static class FileTransaction
             throw;
         }
 
-        // Old Files Step Aside, So A Failure Puts Them Back
-        var asides = new List<(string Aside, string Original)>();
-        var placed = new List<string>();
+        // One File At A Time, Old Ones Kept Aside
+        var done = new List<(string Target, string? Aside)>();
         try
         {
-            foreach (
-                var original in staged
-                    .Select(pair => pair.Target)
-                    .Concat(removals)
-                    .Where(File.Exists)
-            )
+            foreach (var (temporary, target, replaces) in staged)
+            {
+                if (replaces)
+                {
+                    // A Replaced File Gone Since Loading Fails Here
+                    var aside = OwnedName(target, "replaced");
+                    done.Add((target, aside));
+                    File.Replace(temporary, target, aside);
+                }
+                else
+                {
+                    // A New File Never Lands On One That Appeared Meanwhile
+                    File.Move(temporary, target);
+                    done.Add((target, null));
+                }
+            }
+
+            foreach (var original in removals)
             {
                 var aside = OwnedName(original, "replaced");
                 File.Move(original, aside);
-                asides.Add((aside, original));
-            }
-
-            foreach (var (temporary, target) in staged)
-            {
-                File.Move(temporary, target);
-                placed.Add(target);
+                done.Add((original, aside));
             }
         }
         catch (Exception exception)
         {
-            RollBack(placed, asides, exception);
+            RollBack(done, exception);
             Discard(staged.Select(pair => pair.Temporary));
             throw;
         }
 
-        Discard(asides.Select(pair => pair.Aside));
+        Discard(done.Select(pair => pair.Aside).OfType<string>());
     }
 
-    public static void Replace(string target, Action<string> write)
+    public static void ReplaceSingle(string target, bool mustExist, Action<string> write)
     {
-        Commit([(target, write)], []);
+        // One Rename Swaps It, The Name Never Points At Nothing
+        Directory.CreateDirectory(Path.GetDirectoryName(target)!);
+        var temporary = OwnedName(target, "staged");
+        try
+        {
+            write(temporary);
+            if (mustExist && !File.Exists(target))
+            {
+                throw new IOException($"Found No {Path.GetFileName(target)} To Replace");
+            }
+
+            File.Move(temporary, target, true);
+        }
+        catch
+        {
+            Discard([temporary]);
+            throw;
+        }
     }
 
     private static string OwnedName(string path, string purpose)
@@ -72,24 +94,42 @@ public static class FileTransaction
         return $"{path}.{Guid.NewGuid():N}.{purpose}";
     }
 
-    private static void RollBack(
-        List<string> placed,
-        List<(string Aside, string Original)> asides,
-        Exception failure
-    )
+    private static void RollBack(List<(string Target, string? Aside)> done, Exception failure)
     {
-        try
+        // Newest First, Every Step Tried Even After One Fails
+        var failures = new List<Exception>();
+        var kept = new List<string>();
+        foreach (var (target, aside) in Enumerable.Reverse(done))
         {
-            placed.ForEach(File.Delete);
-            asides.ForEach(pair => File.Move(pair.Aside, pair.Original));
+            try
+            {
+                if (aside is null)
+                {
+                    File.Delete(target);
+                }
+                else if (File.Exists(aside))
+                {
+                    File.Move(aside, target, true);
+                }
+            }
+            catch (Exception rollbackFailure)
+                when (rollbackFailure is IOException or UnauthorizedAccessException)
+            {
+                failures.Add(rollbackFailure);
+                kept.Add($"{Path.GetFileName(target)} <- {aside ?? "(delete)"}");
+            }
         }
-        catch (Exception rollbackFailure)
+
+        if (failures.Count > 0)
         {
-            // The Aside Files Stay, They Hold The Old Contents
-            s_logger.Error(rollbackFailure, "Failed To Undo A Partial Write");
+            // The Aside Files Stay, The Message Maps Each Back
+            s_logger.Error(
+                failures[0],
+                $"Failed To Undo A Partial Write: {string.Join("; ", kept)}"
+            );
             throw new IOException(
-                $"Failed To Undo A Partial Write, Old Files Kept As {string.Join(", ", asides.Select(pair => Path.GetFileName(pair.Aside)))}",
-                new AggregateException(failure, rollbackFailure)
+                $"Failed To Undo A Partial Write, Recover By Hand: {string.Join("; ", kept)}",
+                new AggregateException([failure, .. failures])
             );
         }
     }
