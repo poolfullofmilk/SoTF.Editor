@@ -33,6 +33,7 @@ public partial class UpdateDialog
     public required ReleaseInfo Release { get; set; }
 
     private bool _isInstalling;
+    private bool _isAttempting;
     private List<string> _notes = [];
 
     // Bytes So Far, Zero Total While No Length Is Sent
@@ -68,28 +69,37 @@ public partial class UpdateDialog
 
     private async Task InstallAsync()
     {
-        // The Button Stays Blue, So Ignore A Second Click
-        if (_isInstalling || !await DialogService.ConfirmDiscardAsync(MainViewModel))
+        // Taken Before The First Question, A Second Click Waits
+        if (_isAttempting)
         {
             return;
         }
 
-        // A Debug Build Has No Release Exe To Replace
-        if (!Updater.CanInstall)
-        {
-            OpenReleasePage();
-            return;
-        }
-
-        // A Running Update Cannot Be Closed Halfway
-        _isInstalling = true;
-        Window?.IsUpdating = true;
-        await SetClosableAsync(false);
+        _isAttempting = true;
+        var finished = false;
         try
         {
+            if (!await DialogService.ConfirmDiscardAsync(MainViewModel))
+            {
+                return;
+            }
+
+            // A Debug Build Has No Release Exe To Replace
+            if (!Updater.CanInstall)
+            {
+                OpenReleasePage();
+                finished = true;
+                return;
+            }
+
+            // A Running Update Cannot Be Closed Halfway
+            _isInstalling = true;
+            Window?.IsUpdating = true;
+            await SetClosableAsync(false);
             Updater.Launch(
                 await Updater.DownloadAsync(Release, new Progress<(long, long)>(ShowProgress))
             );
+            finished = true;
 
             // The New Exe Waits, Edits Were Already Discarded
             if (Window is { } window)
@@ -104,6 +114,7 @@ public partial class UpdateDialog
             s_logger.Error(exception, "Failed To Verify Update");
             Snackbar.Add(AppText.Get("UpdateNotVerified"), Severity.Warning);
             OpenReleasePage();
+            finished = true;
         }
         catch (UnauthorizedAccessException exception)
         {
@@ -111,23 +122,29 @@ public partial class UpdateDialog
             s_logger.Error(exception, "Failed To Update, The App Folder Is Protected");
             Snackbar.Add(AppText.Get("UpdateFolderProtected"), Severity.Warning);
             OpenReleasePage();
+            finished = true;
         }
         catch (Exception exception)
             when (exception
                     is HttpRequestException
                         or IOException
-                        or TaskCanceledException
+                        or OperationCanceledException
                         or Win32Exception
             )
         {
             s_logger.Error(exception, "Failed To Update");
             Snackbar.Add(AppText.Get("UpdateFailed"), Severity.Error);
-            _isInstalling = false;
-            await SetClosableAsync(true);
         }
         finally
         {
+            // Every Way Out But Launching Leaves A Usable Dialog
             Window?.IsUpdating = false;
+            _isAttempting = false;
+            if (!finished && _isInstalling)
+            {
+                _isInstalling = false;
+                await SetClosableAsync(true);
+            }
         }
     }
 

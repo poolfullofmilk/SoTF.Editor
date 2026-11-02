@@ -35,14 +35,26 @@ public static class AppInfo
     public const string FolderName = "SoTF.Editor";
 #endif
 
+    // Tests And Sandboxed Runs Keep Every Write Under This Folder
+    public static readonly string? SandboxRoot = Environment.GetEnvironmentVariable(
+        "SOTF_EDITOR_ROOT"
+    )
+        is { Length: > 0 } root
+        ? Path.GetFullPath(root)
+        : null;
+
     public static readonly string DataDirectory = Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+        SandboxRoot is { } sandbox
+            ? Path.Combine(sandbox, "AppData")
+            : Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
         FolderName
     );
 
     // Logs And Backups Sit Where People Look For Them
     public static readonly string DocumentsDirectory = Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+        SandboxRoot is { } sandbox
+            ? Path.Combine(sandbox, "Documents")
+            : Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
         FolderName
     );
 

@@ -40,6 +40,7 @@ public partial class RestoreBackupDialog
     private Dictionary<string, List<Change>>? _differences;
 
     private bool _compareFailed;
+    private int _comparison;
 
     // A Running Game Saves Over A Restore Outside Its Menu
     private readonly bool _gameRunning = SavegameManager.IsGameRunning();
@@ -80,6 +81,8 @@ public partial class RestoreBackupDialog
 
     private async Task SelectAsync(SavegameBackup backup)
     {
+        // Only The Latest Pick Shows Its Result, Pinned Or Not
+        var comparison = ++_comparison;
         _selected = backup;
         _savedChanges = BackupManager.ChangesOf(backup.Path);
         _showDifferences = _savedChanges.Count == 0;
@@ -92,7 +95,7 @@ public partial class RestoreBackupDialog
             var differences = await Task.Run(() =>
                 DifferenceList.Describe(SavegamePath, backup.Path, GameData)
             );
-            if (_selected == backup)
+            if (comparison == _comparison)
             {
                 _differences = differences;
             }
@@ -107,7 +110,7 @@ public partial class RestoreBackupDialog
         {
             // A Damaged Save Still Restores, It Just Cannot Compare
             s_logger.Warn(exception, "Failed To Compare Backup");
-            _compareFailed = _selected == backup;
+            _compareFailed |= comparison == _comparison;
         }
     }
 
@@ -174,6 +177,7 @@ public partial class RestoreBackupDialog
             if (backup == _selected)
             {
                 _selected = null;
+                _comparison++;
                 return;
             }
 

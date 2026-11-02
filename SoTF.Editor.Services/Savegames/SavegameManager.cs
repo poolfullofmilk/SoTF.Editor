@@ -169,7 +169,7 @@ public static class SavegameManager
         return target;
     }
 
-    public static string NewExportPath(string name, string extension)
+    public static string CreateExport(string name, string extension, Action<Stream> write)
     {
         // An Export Never Overwrites, A Second One Gets A Number
         Directory.CreateDirectory(AppInfo.ExportsDirectory);
@@ -183,35 +183,52 @@ public static class SavegameManager
             AppInfo.ExportsDirectory,
             $"{safeName} {DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture)}"
         );
-        var target = stem + extension;
-        for (var number = 2; File.Exists(target); number++)
+        for (var number = 1; ; number++)
         {
-            target = $"{stem} {number}{extension}";
-        }
+            // Created Exclusively, So Two Exports Never Share A Name
+            var target = number == 1 ? stem + extension : $"{stem} {number}{extension}";
+            FileStream stream;
+            try
+            {
+                stream = new FileStream(target, FileMode.CreateNew, FileAccess.ReadWrite);
+            }
+            catch (IOException) when (File.Exists(target))
+            {
+                continue;
+            }
 
-        return target;
+            try
+            {
+                using (stream)
+                {
+                    write(stream);
+                }
+
+                return target;
+            }
+            catch
+            {
+                // Only The File This Export Created Goes
+                File.Delete(target);
+                throw;
+            }
+        }
     }
 
     public static string Export(Savegame savegame)
     {
         // The Save Id Folder Inside, Ready For A Mode Folder
-        var target = NewExportPath(savegame.Name, ".zip");
-        try
-        {
-            ZipFile.CreateFromDirectory(
-                savegame.FullPath,
-                target,
-                CompressionLevel.Optimal,
-                includeBaseDirectory: true
-            );
-        }
-        catch
-        {
-            // A Half Written Zip Never Passes For An Export
-            File.Delete(target);
-            throw;
-        }
-
+        var target = CreateExport(
+            savegame.Name,
+            ".zip",
+            stream =>
+                ZipFile.CreateFromDirectory(
+                    savegame.FullPath,
+                    stream,
+                    CompressionLevel.Optimal,
+                    includeBaseDirectory: true
+                )
+        );
         s_logger.Info($"Exported {savegame.FullPath} To {target}");
         return target;
     }
@@ -247,6 +264,12 @@ public static class SavegameManager
 
     private static string GetSavegamePathFromAppData()
     {
+        // A Sandbox Never Falls Back To The Game's Real Saves
+        if (AppInfo.SandboxRoot is { } sandbox)
+        {
+            return Path.Combine(sandbox, "Saves");
+        }
+
         // LocalLow Sits Beside Local, Windows Names No Folder For It
         var appDataPath = Path.GetDirectoryName(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)

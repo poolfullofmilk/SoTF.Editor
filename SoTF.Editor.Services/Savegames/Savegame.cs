@@ -27,6 +27,11 @@ public partial class Savegame
 
     private readonly Lazy<SavegameSummary?> _summary;
 
+    public Savegame WithStore(SavegameStore savegameStore)
+    {
+        return new Savegame(FullPath, Id, savegameStore);
+    }
+
     // Read Once, On The Thread That Lists The Savegames
     public SavegameSummary? Summary => _summary.Value;
 
@@ -110,7 +115,16 @@ public partial class Savegame
             );
         }
         catch (Exception exception)
-            when (exception is JsonException or IOException or InvalidDataException)
+            when (exception
+                    is JsonException
+                        or IOException
+                        or UnauthorizedAccessException
+                        or InvalidDataException
+                        or FormatException
+                        or InvalidCastException
+                        or InvalidOperationException
+                        or OverflowException
+            )
         {
             // A Damaged Savegame Still Lists, Opening It Shows The Error
             s_logger.Warn(exception, $"Failed To Read Summary Of {FullPath}");

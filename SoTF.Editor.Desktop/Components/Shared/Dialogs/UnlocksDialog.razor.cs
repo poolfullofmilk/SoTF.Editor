@@ -22,6 +22,23 @@ public partial class UnlocksDialog
 
     private UnlocksViewModel? _viewModel;
 
+    // A Profile That Cannot Be Read Is Never Written
+    private bool _unreadable;
+
+    private string EmptyText =>
+        _unreadable
+            ? AppText.Get("UnableToReadFile")
+            : AppText.Format("PlayerProfileNotFound", SavegameManager.GetSavePath());
+
+    private static bool IsProfileFailure(Exception exception)
+    {
+        return exception
+            is IOException
+                or UnauthorizedAccessException
+                or InvalidDataException
+                or JsonException;
+    }
+
     protected override void OnInitialized()
     {
         // The Steam Account That Owns The Open Savegame
@@ -39,11 +56,10 @@ public partial class UnlocksDialog
                 Path.Combine(steamFolder.FullName, "PlayerProfile.json")
             );
         }
-        catch (Exception exception)
-            when (exception is IOException or UnauthorizedAccessException or JsonException)
+        catch (Exception exception) when (IsProfileFailure(exception))
         {
-            // A Locked Or Damaged Profile Is Never Written Over
             s_logger.Error(exception, "Failed To Read Player Profile");
+            _unreadable = true;
             Snackbar.Add(AppText.Get("UnableToReadFile"), Severity.Error);
         }
     }
@@ -56,10 +72,9 @@ public partial class UnlocksDialog
             Snackbar.Add(AppText.Get("Saved"), Severity.Success);
             MudDialog.Close(DialogResult.Ok(true));
         }
-        catch (Exception exception)
-            when (exception is IOException or UnauthorizedAccessException or JsonException)
+        catch (Exception exception) when (IsProfileFailure(exception))
         {
-            // The Game Can Hold The Profile Open
+            // The Game Can Hold The Profile, Or It Changed Since
             s_logger.Error(exception, "Failed To Save Player Profile");
             Snackbar.Add(AppText.Format("UnableToSave", exception.Message), Severity.Error);
         }

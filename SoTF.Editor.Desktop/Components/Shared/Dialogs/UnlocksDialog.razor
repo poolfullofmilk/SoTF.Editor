@@ -7,7 +7,7 @@
         @if (_viewModel is null)
         {
             <EmptyState Icon="@Icons.Material.Rounded.PersonOff"
-                        Text="@AppText.Format("PlayerProfileNotFound", SavegameManager.GetSavePath())" />
+                        Text="@EmptyText" />
         }
         else
         {

@@ -157,15 +157,27 @@ public sealed class StructuresPageViewModel
             return false;
         }
 
-        // Edits Change The Live Arrays, So Zipline Anchors Stay
+        // Rows Found By Place In The Copy Before Removals
+        var targets = modified
+            .Select(wrapper =>
+                (
+                    Wrapper: wrapper,
+                    Token: (
+                        wrapper.Origin == ScrewStructureOrigin.Unfinished
+                            ? unfinishedStructures
+                            : finishedStructures
+                    )[((JArray)wrapper.Token.Parent!).IndexOf(wrapper.Token)]
+                )
+            )
+            .ToList();
         var unfinishedChanged = false;
         var finishedChanged = false;
-        foreach (var wrapper in modified)
+        foreach (var (wrapper, token) in targets)
         {
             var (unfinished, finished) =
                 wrapper.Origin == ScrewStructureOrigin.Unfinished
-                    ? ApplyToUnfinished(wrapper, finishedStructures)
-                    : ApplyToFinished(wrapper, unfinishedStructures);
+                    ? ApplyToUnfinished(wrapper, token, finishedStructures)
+                    : ApplyToFinished(wrapper, token, unfinishedStructures);
             unfinishedChanged |= unfinished;
             finishedChanged |= finished;
         }
@@ -187,10 +199,10 @@ public sealed class StructuresPageViewModel
 
     private static (bool Unfinished, bool Finished) ApplyToUnfinished(
         ScrewStructureWrapper wrapper,
+        JToken token,
         JArray finishedStructures
     )
     {
-        var token = wrapper.Token;
         var id = wrapper.ChangedTypeId ?? token["Id"]?.Value<int>();
         switch (wrapper.ModificationMode)
         {
@@ -225,10 +237,10 @@ public sealed class StructuresPageViewModel
 
     private static (bool Unfinished, bool Finished) ApplyToFinished(
         ScrewStructureWrapper wrapper,
+        JToken token,
         JArray unfinishedStructures
     )
     {
-        var token = wrapper.Token;
         var id = wrapper.ChangedTypeId ?? token["Id"]?.Value<int>();
         switch (wrapper.ModificationMode)
         {

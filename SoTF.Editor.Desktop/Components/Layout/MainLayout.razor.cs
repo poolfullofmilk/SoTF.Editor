@@ -210,24 +210,29 @@ public partial class MainLayout : IDisposable
             return;
         }
 
-        if (
-            savegame.SavegameStore.HasChanged()
-            && !await DialogService.ConfirmAsync(
-                AppText.Get("OverwriteExternalChangesTitle"),
-                AppText.Get("OverwriteExternalChangesText")
-            )
-        )
-        {
-            return;
-        }
-
-        if (await ConfirmSaveAsync() is not { } changes)
-        {
-            return;
-        }
-
+        // The Outside Change Check Can Fail, Edits Stay Either Way
         try
         {
+            if (
+                savegame.SavegameStore.HasChanged()
+                && !await DialogService.ConfirmAsync(
+                    AppText.Get("OverwriteExternalChangesTitle"),
+                    AppText.Get("OverwriteExternalChangesText")
+                )
+            )
+            {
+                return;
+            }
+
+            // Answers Count Only For The Savegame They Were Asked About
+            if (
+                await ConfirmSaveAsync() is not { } changes
+                || MainViewModel.SelectedSavegame != savegame
+            )
+            {
+                return;
+            }
+
             var saved = false;
             await RunBusyAsync(() => saved = MainViewModel.SaveChanges(changes));
             if (saved)

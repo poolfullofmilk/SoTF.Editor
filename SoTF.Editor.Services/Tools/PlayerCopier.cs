@@ -47,13 +47,16 @@ public static class PlayerCopier
             var done = part switch
             {
                 PlayerPart.Stats => CopyEntries(source, target, wrappers, s_statEntries.Contains),
-                PlayerPart.Inventory => CopyDocument(
-                    source,
-                    target,
-                    wrappers,
-                    SavegameStore.FileType.PlayerInventorySaveData,
-                    Constants.JsonKeys.PlayerInventory
-                )
+                // Blueprint Pages Need Both Players' Entries, Checked Before Copying
+                PlayerPart.Inventory => PlayerEntries.Of(source) != null
+                    && PlayerEntries.Of(target) != null
+                    && CopyDocument(
+                        source,
+                        target,
+                        wrappers,
+                        SavegameStore.FileType.PlayerInventorySaveData,
+                        Constants.JsonKeys.PlayerInventory
+                    )
                     && CopyEntries(
                         source,
                         target,

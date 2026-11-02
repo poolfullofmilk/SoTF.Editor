@@ -365,9 +365,15 @@ public sealed class MainViewModel(
             ModifyActors(_ => RevertCannibalAnger(savegame));
         }
 
-        if (_changedTools.Contains("ResetContainers") || _changedTools.Contains("SetToEndgame"))
+        // Only The Rows These Tools Own, Other Game Edits Stay
+        if (_changedTools.Contains("ResetContainers"))
         {
-            gameStatePage.Load(savegame);
+            gameStatePage.RevertNamedIntDatas(GameStatePageViewModel.IsContainer);
+        }
+
+        if (_changedTools.Contains("SetToEndgame"))
+        {
+            gameStatePage.RevertNamedIntDatas(GameStatePageViewModel.IsEndgame);
         }
 
         _changedTools.Clear();
@@ -433,7 +439,8 @@ public sealed class MainViewModel(
             "Map" => SelectedSavegame.SavegameStore.HasModified(
                 SavegameStore.FileType.ZipLineManagerSaveData
             ),
-            "Tools" => _changedTools.Count > 0,
+            "Tools" => _changedTools.Count > 0
+                && (SelectedSavegame.SavegameStore.HasModified() || gameStatePage.HasChanges),
             _ => false,
         };
     }
@@ -454,17 +461,21 @@ public sealed class MainViewModel(
             return false;
         }
 
-        // Only Content That Differs From The Load Is Written
-        selectedSavegame.SavegameStore.BackUpLoaded(changes);
-        MergePages(selectedSavegame);
-        var hasChanges = selectedSavegame.SavegameStore.SaveAllModified();
+        // Pages Merge Into A Draft, Failed Saves Keep The Load
+        var draft = selectedSavegame.WithStore(selectedSavegame.SavegameStore.Draft());
+        MergePages(draft);
 
-        if (hasChanges)
+        // Only Real Differences Are Backed Up And Written
+        if (!draft.SavegameStore.HasModified())
         {
-            ReloadSavegame();
+            s_logger.Info("Found No Changes");
+            return false;
         }
 
-        return hasChanges;
+        draft.SavegameStore.BackUpLoaded(changes);
+        draft.SavegameStore.SaveAllModified();
+        ReloadSavegame();
+        return true;
     }
 
     private void MergePages(Savegame selectedSavegame)
@@ -505,7 +516,8 @@ public sealed class MainViewModel(
 
     public bool IsToolChanged(string tool)
     {
-        return _changedTools.Contains(tool);
+        // A Tool Whose Changes Were All Put Back Shows Clean
+        return _changedTools.Contains(tool) && HasChanges("Tools");
     }
 
     public void FinishTool(string tool, string stateBefore)

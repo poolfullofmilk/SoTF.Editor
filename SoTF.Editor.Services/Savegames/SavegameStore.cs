@@ -53,6 +53,23 @@ public sealed class SavegameStore
         _loadedFiles = Stamps();
     }
 
+    private SavegameStore(SavegameStore loaded)
+    {
+        _path = loaded._path;
+        LastWriteTime = loaded.LastWriteTime;
+        _loadedFiles = loaded._loadedFiles;
+        foreach (var (fileType, saveDataWrapper) in loaded._rawData)
+        {
+            _rawData[fileType] = saveDataWrapper?.Copy();
+        }
+    }
+
+    public SavegameStore Draft()
+    {
+        // Pages Merge Into A Copy, A Failed Save Changes Nothing
+        return new SavegameStore(this);
+    }
+
     public DateTime LastWriteTime { get; }
 
     public SaveDataWrapper? LoadJsonRaw(FileType fileType)
@@ -110,11 +127,12 @@ public sealed class SavegameStore
 
     public string Stamps()
     {
-        // A File Rewritten In Place Leaves The Folder Time Alone
+        // Each File Sorted, Rewrites Keep The Folder Time
         return string.Join(
             "|",
             new DirectoryInfo(_path)
                 .EnumerateFiles("*", SearchOption.AllDirectories)
+                .OrderBy(file => file.FullName, StringComparer.OrdinalIgnoreCase)
                 .Select(file => $"{file.FullName} {file.Length} {file.LastWriteTimeUtc.Ticks}")
         );
     }
@@ -204,7 +222,7 @@ public sealed class SavegameStore
         }
 
         var archivePath = ResolvePath(FileType.SaveDataArchive.GetFilename());
-
+        var writes = new List<(string Target, Action<string> Write)>();
         var archiveEntries = new List<(string FileName, string Json)>();
         foreach (var (fileType, saveDataWrapper) in changedWrappers)
         {
@@ -215,38 +233,30 @@ public sealed class SavegameStore
             var fullPath = ResolvePath(fileName);
             if (File.Exists(fullPath))
             {
-                WriteReplacing(
-                    fullPath,
-                    temporary => File.WriteAllText(temporary, json, SaveJson.Encoding)
+                writes.Add(
+                    (fullPath, temporary => File.WriteAllText(temporary, json, SaveJson.Encoding))
                 );
             }
             else if (File.Exists(archivePath))
             {
                 archiveEntries.Add((fileName, json));
             }
+            else
+            {
+                // A File Gone Since Loading Is Never Skipped Silently
+                throw new IOException($"Found No {fileName} To Write");
+            }
         }
 
         if (archiveEntries.Count > 0)
         {
-            WriteReplacing(
-                archivePath,
-                temporary =>
-                {
-                    File.Copy(archivePath, temporary, true);
-                    using var archive = ZipFile.Open(temporary, ZipArchiveMode.Update);
-                    foreach (var (fileName, json) in archiveEntries)
-                    {
-                        archive.GetEntry(fileName)?.Delete();
-                        using var streamWriter = new StreamWriter(
-                            archive.CreateEntry(fileName).Open()
-                        );
-                        streamWriter.Write(json);
-                    }
-                }
+            writes.Add(
+                (archivePath, temporary => WriteArchive(archivePath, temporary, archiveEntries))
             );
         }
 
-        // A Failed Write Keeps Edits Marked, Saving Again Retries
+        // Every File Or None, A Failure Keeps Edits Marked
+        FileTransaction.Commit(writes, []);
         foreach (var saveDataWrapper in changedWrappers.Values)
         {
             saveDataWrapper.ClearModified();
@@ -255,19 +265,23 @@ public sealed class SavegameStore
         return true;
     }
 
-    internal static void WriteReplacing(string path, Action<string> write)
+    private static void WriteArchive(
+        string archivePath,
+        string temporary,
+        List<(string FileName, string Json)> entries
+    )
     {
-        // A Crash Mid Write Leaves The Old File Whole
-        var temporary = path + ".tmp";
-        try
+        File.Copy(archivePath, temporary);
+        using var archive = ZipFile.Open(temporary, ZipArchiveMode.Update);
+        foreach (var (fileName, json) in entries)
         {
-            write(temporary);
-            File.Move(temporary, path, true);
-        }
-        catch
-        {
-            File.Delete(temporary);
-            throw;
+            // An Entry Gone Since Loading Fails, Never Added Anew
+            var entry =
+                archive.GetEntry(fileName)
+                ?? throw new IOException($"Found No {fileName} In The Archive");
+            entry.Delete();
+            using var streamWriter = new StreamWriter(archive.CreateEntry(fileName).Open());
+            streamWriter.Write(json);
         }
     }
 }

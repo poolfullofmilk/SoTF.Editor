@@ -99,7 +99,8 @@ public partial class ItemPlaterDialog
                 return;
             }
 
-            var result = plate(savegame);
+            // Plated In A Draft, A Failed Write Leaves Nothing Behind
+            var result = plate(savegame.WithStore(savegame.SavegameStore.Draft()));
             MainViewModel.SaveWrappers(
                 result.WrappersToSave,
                 new() { ["Tools"] = [new Change(AppText.Get("ItemPlater"))] }

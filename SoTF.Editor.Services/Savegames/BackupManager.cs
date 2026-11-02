@@ -34,6 +34,14 @@ public static class BackupManager
 
     private static readonly Logger s_logger = LogManager.GetCurrentClassLogger();
 
+    // Every File, Hidden Ones Too, Never Through A Linked Folder
+    private static readonly EnumerationOptions s_saveFiles = new()
+    {
+        RecurseSubdirectories = true,
+        AttributesToSkip = FileAttributes.ReparsePoint,
+        IgnoreInaccessible = false,
+    };
+
     // Outside The Game Folder, Steam Cloud Never Touches It
     public static readonly string BackupDirectory = Path.Combine(
         AppInfo.DocumentsDirectory,
@@ -60,7 +68,7 @@ public static class BackupManager
             WriteChanges(backup, changes);
         }
 
-        Prune(backup);
+        TryPrune(backup);
     }
 
     private static void WriteChanges(string backup, Dictionary<string, List<Change>> changes)
@@ -84,10 +92,15 @@ public static class BackupManager
         var path = Path.Combine(backup, ChangesFileName);
         try
         {
+            // Null Lists And Entries Are Dropped, Never Shown
             return File.Exists(path)
-                ? JsonConvert.DeserializeObject<Dictionary<string, List<Change>>>(
-                    File.ReadAllText(path)
-                ) ?? []
+                ? (
+                    JsonConvert.DeserializeObject<Dictionary<string, List<Change>?>>(
+                        File.ReadAllText(path)
+                    ) ?? []
+                )
+                    .Where(pair => pair.Value != null)
+                    .ToDictionary(pair => pair.Key, pair => pair.Value!.OfType<Change>().ToList())
                 : [];
         }
         catch (Exception exception)
@@ -226,7 +239,7 @@ public static class BackupManager
     public static void CreateForFile(string filePath)
     {
         // Steam Id And File Name, For Files Beside The Savegames
-        Prune(
+        TryPrune(
             NewBackup(
                 Path.Combine(
                     BackupDirectory,
@@ -278,8 +291,10 @@ public static class BackupManager
     {
         // A Missing Or Empty Backup Fails Before Anything Is Touched
         var files = Directory
-            .GetFiles(backup, "*", SearchOption.AllDirectories)
-            .Where(file => !IsEditorFile(Path.GetFileName(file)))
+            .GetFiles(backup, "*", s_saveFiles)
+            .Select(file => Path.GetRelativePath(backup, file))
+            .Where(name => !IsEditorFile(name))
+            .Order(StringComparer.OrdinalIgnoreCase)
             .ToArray();
         if (files.Length == 0)
         {
@@ -304,63 +319,44 @@ public static class BackupManager
             }
         );
 
-        // Files The Backup Lacks Stay In That Safety Copy
-        var lacked = Directory
-            .GetFiles(savegamePath)
-            .Where(current => !File.Exists(Path.Combine(backup, Path.GetFileName(current))))
+        // Nested Files Too, Extras Stay In The Safety Copy
+        var wanted = files.ToHashSet(StringComparer.OrdinalIgnoreCase);
+        var removals = Directory
+            .GetFiles(savegamePath, "*", s_saveFiles)
+            .Where(current => !wanted.Contains(Path.GetRelativePath(savegamePath, current)))
             .ToList();
 
-        // Staged Beside Their Targets First, A Failure Changes Nothing
-        var staged = new List<(string Temporary, string Target)>();
-        try
-        {
-            foreach (var file in files)
-            {
-                var target = Path.Combine(savegamePath, Path.GetRelativePath(backup, file));
-                Directory.CreateDirectory(Path.GetDirectoryName(target)!);
-                staged.Add((target + ".tmp", target));
-                File.Copy(file, staged[^1].Temporary, true);
-            }
-        }
-        catch
-        {
-            staged.ForEach(pair => File.Delete(pair.Temporary));
-            throw;
-        }
-
-        // A Leftover Temporary File May Now Hold A Staged Copy
-        foreach (
-            var current in lacked.Where(path =>
-                !staged.Exists(pair =>
-                    string.Equals(pair.Temporary, path, StringComparison.OrdinalIgnoreCase)
-                )
-            )
-        )
-        {
-            File.Delete(current);
-        }
-
-        foreach (var (temporary, target) in staged)
-        {
-            File.Move(temporary, target, true);
-        }
-
+        // All Files Or None, A Failure Puts Old Files Back
+        FileTransaction.Commit(
+            [
+                .. files.Select(name =>
+                    (
+                        Path.Combine(savegamePath, name),
+                        (Action<string>)(
+                            temporary => CopyVerified(Path.Combine(backup, name), temporary)
+                        )
+                    )
+                ),
+            ],
+            removals
+        );
         s_logger.Info($"Restored Backup {backup}");
 
-        // Pruning Waits, Or It Could Remove The Chosen Backup
-        Prune(safetyCopy);
+        // Pruning Waits, Sparing The Chosen Backup And Safety Copy
+        TryPrune(safetyCopy, backup);
     }
 
     public static List<SavegameBackup> List(string savegamePath)
     {
-        // Newest First, A Suffixed Name Sorts After Its Twin
+        // Newest First, Same Second Twins By Their Number
         var folder = FolderOf(savegamePath);
         return Directory.Exists(folder)
             ?
             [
                 .. Directory
                     .GetDirectories(folder)
-                    .OrderDescending(StringComparer.Ordinal)
+                    .OrderByDescending(TakenAt)
+                    .ThenByDescending(CopyNumberOf)
                     .Select(path => new SavegameBackup(
                         path,
                         TakenAt(path),
@@ -439,7 +435,20 @@ public static class BackupManager
         s_logger.Info($"Deleted Backup {fullPath}");
     }
 
-    private static void Prune(string newest)
+    private static void TryPrune(params string[] kept)
+    {
+        try
+        {
+            Prune(kept);
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+        {
+            // Cleanup Is Extra, Saves And Restores Never Fail Over It
+            s_logger.Warn(exception, "Failed To Prune Old Backups");
+        }
+    }
+
+    private static void Prune(string[] kept)
     {
         var total = TotalSize();
         if (total <= SizeLimit)
@@ -447,14 +456,17 @@ public static class BackupManager
             return;
         }
 
-        // The Oldest Go First, First And Pinned Backups Stay
+        // The Oldest Go First, First, Pinned And Kept Backups Stay
         var candidates = Directory
             .EnumerateDirectories(BackupDirectory, "*", SearchOption.AllDirectories)
             .Where(IsBackupFolder)
             .GroupBy(Path.GetDirectoryName)
-            .SelectMany(group => group.OrderBy(TakenAt).Skip(1))
-            .Where(folder => folder != newest && LabelOf(folder) is null)
+            .SelectMany(group => group.OrderBy(TakenAt).ThenBy(CopyNumberOf).Skip(1))
+            .Where(folder =>
+                !kept.Contains(folder, StringComparer.OrdinalIgnoreCase) && LabelOf(folder) is null
+            )
             .OrderBy(TakenAt)
+            .ThenBy(CopyNumberOf)
             .ToList();
         var removed = 0;
         foreach (var folder in candidates.TakeWhile(_ => total > SizeLimit))
@@ -493,6 +505,22 @@ public static class BackupManager
     private static bool IsBackupFolder(string folder)
     {
         return TryParseTakenAt(Path.GetFileName(folder), out _);
+    }
+
+    private static int CopyNumberOf(string backup)
+    {
+        // Same Second Backups Are Named (2), Then (3)
+        var name = Path.GetFileName(backup);
+        return
+            name.Length > FolderTimeFormat.Length
+            && int.TryParse(
+                name[FolderTimeFormat.Length..].Trim().Trim('(', ')'),
+                NumberStyles.None,
+                CultureInfo.InvariantCulture,
+                out var number
+            )
+            ? number
+            : 1;
     }
 
     private static DateTime TakenAt(string backup)

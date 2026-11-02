@@ -30,6 +30,7 @@ public static class Updater
         Timeout = TimeSpan.FromMinutes(5),
     };
     private static readonly TimeSpan s_previousExitWait = TimeSpan.FromSeconds(15);
+    private static readonly TimeSpan s_stallTimeout = TimeSpan.FromMinutes(1);
 
     public static async Task<ReleaseInfo?> CheckAsync()
     {
@@ -125,20 +126,24 @@ public static class Updater
             Path.GetDirectoryName(Environment.ProcessPath)!,
             $"SoTF.Editor_{release.Tag}.exe"
         );
-        var partialPath = targetPath + ".download";
+        // A Name Only This Attempt Owns, Removed If It Fails
+        var partialPath = $"{targetPath}.{Guid.NewGuid():N}.download";
         var expectedDigest = await ExpectedDigestAsync(release.Tag);
 
+        // A Body Stalled For A Minute Is Given Up
+        using var stall = new CancellationTokenSource(s_stallTimeout);
         try
         {
             using var response = await s_downloadClient.GetAsync(
                 string.Format(AssetUrlFormat, release.Tag),
-                HttpCompletionOption.ResponseHeadersRead
+                HttpCompletionOption.ResponseHeadersRead,
+                stall.Token
             );
             response.EnsureSuccessStatusCode();
             await using (
                 var file = new FileStream(
                     partialPath,
-                    FileMode.Create,
+                    FileMode.CreateNew,
                     FileAccess.Write,
                     FileShare.None,
                     81920,
@@ -148,13 +153,14 @@ public static class Updater
             {
                 // Zero Total Means GitHub Sent No Length
                 var total = response.Content.Headers.ContentLength ?? 0;
-                await using var download = await response.Content.ReadAsStreamAsync();
+                await using var download = await response.Content.ReadAsStreamAsync(stall.Token);
                 var buffer = new byte[81920];
                 long received = 0;
                 int read;
-                while ((read = await download.ReadAsync(buffer)) > 0)
+                while ((read = await download.ReadAsync(buffer, stall.Token)) > 0)
                 {
-                    await file.WriteAsync(buffer.AsMemory(0, read));
+                    await file.WriteAsync(buffer.AsMemory(0, read), stall.Token);
+                    stall.CancelAfter(s_stallTimeout);
                     received += read;
                     progress.Report((received, total));
                 }
@@ -230,8 +236,13 @@ public static class Updater
 
         try
         {
+            // Still Running After The Wait, Old Exes Stay
             using var previous = Process.GetProcessById(processId);
-            previous.WaitForExit(s_previousExitWait);
+            if (!previous.WaitForExit(s_previousExitWait))
+            {
+                s_logger.Warn($"Found Previous Version {processId} Still Running");
+                return;
+            }
         }
         catch (ArgumentException)
         {

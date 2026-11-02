@@ -354,11 +354,15 @@ public sealed class InventoryPageViewModel
 
     public string Export(string savegameName)
     {
-        var target = SavegameManager.NewExportPath(
+        var target = SavegameManager.CreateExport(
             $"{savegameName} {AppText.Get("Inventory")}",
-            ".txt"
+            ".txt",
+            stream =>
+            {
+                using var writer = new StreamWriter(stream);
+                writer.Write(ExportText());
+            }
         );
-        File.WriteAllText(target, ExportText());
         s_logger.Info($"Exported Inventory To {target}");
         return target;
     }

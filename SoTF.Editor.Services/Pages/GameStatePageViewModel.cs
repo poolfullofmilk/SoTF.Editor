@@ -43,6 +43,15 @@ public partial class GameStatePageViewModel
 
     private readonly LoadedValues _loaded = new();
 
+    // World Object Values As Loaded, Tools Revert Only Their Rows
+    private readonly Dictionary<string, int?> _loadedNamedInts = [];
+
+    private static readonly string[] s_endgameNames =
+    [
+        "Endgame.StayedOnIsland",
+        "Endgame.CoreGameCompleted",
+    ];
+
     public bool HasChanges => AllSettings.Any(IsChanged);
 
     // Known Fields By Label, World Objects By Raw Name
@@ -67,6 +76,12 @@ public partial class GameStatePageViewModel
         {
             _loaded.Remember(setting.Name, setting.GetValue());
         }
+
+        _loadedNamedInts.Clear();
+        foreach (var setting in NamedIntDatas)
+        {
+            _loadedNamedInts[setting.Name] = setting.IntValue;
+        }
     }
 
     private void PrefillNamedIntDatas(List<string> namedIntKeys)
@@ -83,13 +98,33 @@ public partial class GameStatePageViewModel
         }
     }
 
+    public static bool IsContainer(string name)
+    {
+        return ResetCrateNameIdPattern().IsMatch(name);
+    }
+
+    public static bool IsEndgame(string name)
+    {
+        return s_endgameNames.Contains(name);
+    }
+
+    public void RevertNamedIntDatas(Func<string, bool> owned)
+    {
+        // Only The Rows A Tool Owns, Other Game Edits Stay
+        NamedIntDatas.RemoveAll(setting =>
+            owned(setting.Name) && !_loadedNamedInts.ContainsKey(setting.Name)
+        );
+        foreach (var setting in NamedIntDatas.Where(setting => owned(setting.Name)))
+        {
+            setting.IntValue = _loadedNamedInts[setting.Name];
+        }
+    }
+
     public string ResetContainers()
     {
         // A Container Without A State Is Closed And Full Again
         var containers = NamedIntDatas
-            .Where(setting =>
-                setting.IntValue != null && ResetCrateNameIdPattern().IsMatch(setting.Name)
-            )
+            .Where(setting => setting.IntValue != null && IsContainer(setting.Name))
             .ToList();
 
         // Cleared Like The Clear Button, Removed Rows Never Saved
@@ -102,7 +137,7 @@ public partial class GameStatePageViewModel
     public bool SetToEndgame()
     {
         var hasChanges = false;
-        foreach (var name in new[] { "Endgame.StayedOnIsland", "Endgame.CoreGameCompleted" })
+        foreach (var name in s_endgameNames)
         {
             var matches = NamedIntDatas.Where(setting => setting.Name == name).ToList();
             if (matches.Count == 0)

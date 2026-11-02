@@ -22,9 +22,31 @@ public partial class App : Application
     protected override void OnStartup(StartupEventArgs eventArgs)
     {
         base.OnStartup(eventArgs);
+        var logDirectory = Path.Combine(AppInfo.DocumentsDirectory, "Logs");
+        LogManager
+            .Setup()
+            .LoadConfiguration(configuration =>
+                configuration
+                    .ForLogger()
+                    .FilterMinLevel(NLog.LogLevel.Info)
+                    .WriteToFile(Path.Combine(logDirectory, "log-${shortdate}.txt"))
+            );
 
-        // An Update Waits For The Old Exe First
-        Updater.FinishPreviousVersion(eventArgs.Args);
+        // Updates Wait For The Old Exe, Failures Only Skip Cleanup
+        try
+        {
+            Updater.FinishPreviousVersion(eventArgs.Args);
+        }
+        catch (Exception exception)
+            when (exception
+                    is IOException
+                        or UnauthorizedAccessException
+                        or InvalidOperationException
+                        or System.ComponentModel.Win32Exception
+            )
+        {
+            s_logger.Error(exception, "Failed To Finish The Previous Version");
+        }
 
         // Two Editors On One Save Could Overwrite Each Other
         _showSignal = new EventWaitHandle(
@@ -39,16 +61,6 @@ public partial class App : Application
             Shutdown();
             return;
         }
-
-        var logDirectory = Path.Combine(AppInfo.DocumentsDirectory, "Logs");
-        LogManager
-            .Setup()
-            .LoadConfiguration(configuration =>
-                configuration
-                    .ForLogger()
-                    .FilterMinLevel(NLog.LogLevel.Info)
-                    .WriteToFile(Path.Combine(logDirectory, "log-${shortdate}.txt"))
-            );
 
         try
         {

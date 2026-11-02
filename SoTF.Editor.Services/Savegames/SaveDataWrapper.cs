@@ -15,6 +15,29 @@ public sealed class SaveDataWrapper(JToken parent)
 
     public JToken Parent { get; } = parent;
 
+    public SaveDataWrapper Copy()
+    {
+        // Edited Documents Cloned, The Loaded Ones Are Never Changed
+        var copy = new SaveDataWrapper(Parent.DeepClone());
+        foreach (var (selector, node) in _jsonStringNodes)
+        {
+            copy._jsonStringNodes[selector] = node.DeepClone();
+        }
+
+        foreach (var (selector, text) in _loadedTexts)
+        {
+            copy._loadedTexts[selector] = text;
+        }
+
+        foreach (var (selector, node) in _loadedNodes)
+        {
+            copy._loadedNodes[selector] = node;
+        }
+
+        copy._modified.UnionWith(_modified);
+        return copy;
+    }
+
     public JToken? GetJsonBasedToken(string selector)
     {
         if (_jsonStringNodes.TryGetValue(selector, out var jsonBasedToken))
