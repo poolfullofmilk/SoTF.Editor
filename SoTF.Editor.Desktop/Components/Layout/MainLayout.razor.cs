@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
@@ -7,6 +6,7 @@ using NLog;
 using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.ViewModels;
 using SoTF.Editor.Desktop.Components.Shared.Dialogs;
+using SoTF.Editor.Desktop.Interop;
 using SoTF.Editor.Services.Integration;
 using SoTF.Editor.Services.Pages;
 using SoTF.Editor.Services.Savegames;
@@ -123,6 +123,9 @@ public partial class MainLayout : IDisposable
         {
             var token = _watching.Token;
             _ = Task.Run(() => Polling.EveryTwoSecondsAsync(() => WatchAsync(token), token));
+
+            // Screen Readers And Spelling Follow The Picked Language
+            await JavaScript.InvokeVoidAsync("sotfShell.setLanguage", AppText.Culture.Name);
             await CheckForUpdatesAsync(false);
         }
     }
@@ -397,7 +400,7 @@ public partial class MainLayout : IDisposable
     {
         if (MainViewModel.SelectedSavegame is { } savegame)
         {
-            OpenInExplorer(savegame.FullPath);
+            Explorer.OpenFolder(savegame.FullPath);
         }
     }
 
@@ -413,14 +416,7 @@ public partial class MainLayout : IDisposable
     {
         var folder = BackupManager.FolderOf(savegamePath);
         Directory.CreateDirectory(folder);
-        OpenInExplorer(folder);
-    }
-
-    private static void OpenInExplorer(string folder)
-    {
-        Process.Start(
-            new ProcessStartInfo("explorer.exe", $"\"{folder}\"") { UseShellExecute = true }
-        );
+        Explorer.OpenFolder(folder);
     }
 
     private async Task RestoreBackupAsync()

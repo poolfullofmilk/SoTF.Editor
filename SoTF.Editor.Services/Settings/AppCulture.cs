@@ -5,7 +5,8 @@ namespace SoTF.Editor.Services.Settings;
 
 public static class AppCulture
 {
-    public static string Current => AppText.Culture.TwoLetterISOLanguageName;
+    // The Full Name, pt-BR Would Read As pt
+    public static string Current => AppText.Culture.Name;
 
     public static void Apply(string culture)
     {

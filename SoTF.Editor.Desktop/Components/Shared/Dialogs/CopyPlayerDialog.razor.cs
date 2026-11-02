@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using Newtonsoft.Json;
 using NLog;
 using SoTF.Editor.Data.Enums;
 using SoTF.Editor.Data.Helpers;
@@ -101,7 +102,12 @@ public partial class CopyPlayerDialog
             MudDialog.Close();
         }
         catch (Exception exception)
-            when (exception is IOException or UnauthorizedAccessException or InvalidDataException)
+            when (exception
+                    is IOException
+                        or UnauthorizedAccessException
+                        or InvalidDataException
+                        or JsonException
+            )
         {
             s_logger.Error(exception, "Failed To Copy Player");
             Snackbar.Add(AppText.Get("UnableToCopyPlayer"), Severity.Error);

@@ -107,12 +107,14 @@ public sealed class UnlocksViewModel
             BackupManager.CreateForFile(_playerProfilePath);
         }
 
-        var temporary = _playerProfilePath + ".tmp";
-        File.WriteAllText(
-            temporary,
-            JsonConvert.SerializeObject(model, Formatting.Indented),
-            SaveJson.Encoding
+        SavegameStore.WriteReplacing(
+            _playerProfilePath,
+            temporary =>
+                File.WriteAllText(
+                    temporary,
+                    JsonConvert.SerializeObject(model, Formatting.Indented),
+                    SaveJson.Encoding
+                )
         );
-        File.Move(temporary, _playerProfilePath, true);
     }
 }

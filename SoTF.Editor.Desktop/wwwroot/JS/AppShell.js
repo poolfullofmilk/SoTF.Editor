@@ -101,6 +101,9 @@ window.sotfShell = {
     isInUse: () =>
         document.querySelector(".mud-dialog, .mud-popover-open:not(.mud-tooltip)") !== null ||
         document.activeElement?.matches("input:not([type=checkbox], [type=radio]), textarea") === true,
+    setLanguage: (culture) => {
+        document.documentElement.lang = culture;
+    },
 };
 
 // A Dropped Folder Opens, The Host Reads Its Path

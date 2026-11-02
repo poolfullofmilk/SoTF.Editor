@@ -22,6 +22,7 @@ using SoTF.Editor.Services.Actors;
 using SoTF.Editor.Services.Map;
 using SoTF.Editor.Services.Pages;
 using SoTF.Editor.Services.Savegames;
+using SoTF.Editor.Services.Settings;
 using SoTF.Editor.Services.Tools;
 
 // The Sample Save, Copied So The Test Never Touches It
@@ -338,7 +339,6 @@ try
             && WorldTools.FillPrinters(main.SelectedSavegame) == AppText.Get("PrintersFull"),
         "Printers Hold A Sled's Resin"
     );
-    ToolCheck("Reset Containers", gameState.ResetContainers);
     ToolCheck("Calm Cannibals", () => main.SetCannibalAnger(0));
     ToolCheck("Cannibal Anger To Half", () => main.SetCannibalAnger(50));
     Check(
@@ -630,9 +630,20 @@ try
         main.FinishTool(tool, toolBefore);
     }
 
-    Check(main.HasChanges("Tools") && main.HasChanges("Npcs"), "Tool Edits Are Seen");
+    Check(
+        main.HasChanges("Tools") && main.HasChanges("Npcs") && main.HasChanges("Game"),
+        "Tool Edits Are Seen"
+    );
     main.RevertPage("Tools");
     Check(!main.HasUnsavedChanges(), "Reverted Tools Leave Nothing Unsaved");
+
+    // Reset Containers Saves, Every Cleared State Reads Back
+    EditAndCheck(
+        "Reset Containers",
+        "Game",
+        () => gameState.ResetContainers(),
+        () => gameState.ResetContainers() == AppText.Get("NothingToReset")
+    );
 
     // Guest Roles Change Only Who Moved, Revert Takes Them Back
     var rolesPath = Path.Combine(savegamePath, "MultiplayerPlayerRolesSaveData.json");
@@ -974,6 +985,20 @@ try
         "Missing Backup Changes Nothing"
     );
 
+    // An Unreadable Backup File Leaves The Save Untouched
+    var partialBackup = Path.Combine(work, "PartialBackup");
+    CopyDirectory(BackupManager.List(savegamePath)[0].Path, partialBackup);
+    var unreadable = Path.Combine(partialBackup, "Unreadable.json");
+    File.WriteAllText(unreadable, "{}");
+    using (File.Open(unreadable, FileMode.Open, FileAccess.Read, FileShare.None))
+    {
+        Check(
+            Throws(() => BackupManager.Restore(savegamePath, partialBackup))
+                && SameHashes(pristine, HashFiles(savegamePath)),
+            "Failed Restore Changes Nothing"
+        );
+    }
+
     // A Failed Copy Leaves No Backup Behind
     var archivePath = Path.Combine(savegamePath, "SaveData.zip");
     var backupCount = BackupManager.List(savegamePath).Count;
@@ -1159,6 +1184,28 @@ try
 
     File.Delete(exported);
     File.Delete(exportedAgain);
+
+    // A Failed Export Leaves No Half Zip Behind
+    var exportsBefore = Directory.GetFiles(AppInfo.ExportsDirectory).Length;
+    using (File.Open(archivePath, FileMode.Open, FileAccess.Read, FileShare.None))
+    {
+        Check(
+            Throws(() => SavegameManager.Export(main.SelectedSavegame!))
+                && Directory.GetFiles(AppInfo.ExportsDirectory).Length == exportsBefore,
+            "Failed Export Leaves No File"
+        );
+    }
+
+    // Every Language Reads Back As Picked, Brazilian Portuguese Too
+    Check(
+        AppText.Languages.All(language =>
+        {
+            AppCulture.Apply(language.Culture);
+            return AppCulture.Current == language.Culture;
+        }),
+        "Every Language Reads Back As Picked"
+    );
+    AppCulture.Apply(AppText.DefaultCulture);
 
     // Every Language Holds Every Text With English Placeholders
     var resources = Path.Combine(SourceDirectory(), "..", "SoTF.Editor.Data", "Resources");

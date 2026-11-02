@@ -1,5 +1,4 @@
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Windows;
@@ -8,6 +7,7 @@ using MudBlazor;
 using NLog;
 using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.ViewModels;
+using SoTF.Editor.Desktop.Interop;
 using SoTF.Editor.Services.Integration;
 using SoTF.Editor.Services.Savegames;
 
@@ -162,7 +162,7 @@ public partial class UpdateDialog
 
     private void OpenReleasePage()
     {
-        Process.Start(new ProcessStartInfo(AppInfo.LatestReleaseUrl) { UseShellExecute = true });
+        Explorer.OpenLink(AppInfo.LatestReleaseUrl);
         MudDialog.Close();
     }
 }

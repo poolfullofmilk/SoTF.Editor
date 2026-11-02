@@ -10,14 +10,29 @@ public static class Explorer
 
     public static void ShowFile(string path)
     {
+        Start(new ProcessStartInfo("explorer.exe", $"/select,\"{path}\""));
+    }
+
+    public static void OpenFolder(string folder)
+    {
+        Start(new ProcessStartInfo("explorer.exe", $"\"{folder}\""));
+    }
+
+    public static void OpenLink(string url)
+    {
+        Start(new ProcessStartInfo(url) { UseShellExecute = true });
+    }
+
+    private static void Start(ProcessStartInfo startInfo)
+    {
         try
         {
-            Process.Start(new ProcessStartInfo("explorer.exe", $"/select,\"{path}\""));
+            Process.Start(startInfo)?.Dispose();
         }
         catch (Win32Exception exception)
         {
-            // A Shell That Fails To Open Never Fails The Export
-            s_logger.Warn(exception, "Failed To Show Export");
+            // A Failed Shell Launch Never Fails What Asked
+            s_logger.Warn(exception, "Failed To Open Shell");
         }
     }
 }

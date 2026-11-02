@@ -305,20 +305,43 @@ public static class BackupManager
         );
 
         // Files The Backup Lacks Stay In That Safety Copy
-        foreach (var current in Directory.GetFiles(savegamePath))
+        var lacked = Directory
+            .GetFiles(savegamePath)
+            .Where(current => !File.Exists(Path.Combine(backup, Path.GetFileName(current))))
+            .ToList();
+
+        // Staged Beside Their Targets First, A Failure Changes Nothing
+        var staged = new List<(string Temporary, string Target)>();
+        try
         {
-            if (!File.Exists(Path.Combine(backup, Path.GetFileName(current))))
+            foreach (var file in files)
             {
-                File.Delete(current);
+                var target = Path.Combine(savegamePath, Path.GetRelativePath(backup, file));
+                Directory.CreateDirectory(Path.GetDirectoryName(target)!);
+                staged.Add((target + ".tmp", target));
+                File.Copy(file, staged[^1].Temporary, true);
             }
         }
-
-        foreach (var file in files)
+        catch
         {
-            var target = Path.Combine(savegamePath, Path.GetRelativePath(backup, file));
-            Directory.CreateDirectory(Path.GetDirectoryName(target)!);
-            var temporary = target + ".tmp";
-            File.Copy(file, temporary, true);
+            staged.ForEach(pair => File.Delete(pair.Temporary));
+            throw;
+        }
+
+        // A Leftover Temporary File May Now Hold A Staged Copy
+        foreach (
+            var current in lacked.Where(path =>
+                !staged.Exists(pair =>
+                    string.Equals(pair.Temporary, path, StringComparison.OrdinalIgnoreCase)
+                )
+            )
+        )
+        {
+            File.Delete(current);
+        }
+
+        foreach (var (temporary, target) in staged)
+        {
             File.Move(temporary, target, true);
         }
 

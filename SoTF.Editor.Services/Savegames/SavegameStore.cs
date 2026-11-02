@@ -99,7 +99,8 @@ public sealed class SavegameStore
 
     public bool HasChanged()
     {
-        return HasChanged(Stamps());
+        // A Folder Gone Since The Load Changed Too
+        return !Directory.Exists(_path) || HasChanged(Stamps());
     }
 
     public bool HasChanged(string stamps)
@@ -254,7 +255,7 @@ public sealed class SavegameStore
         return true;
     }
 
-    private static void WriteReplacing(string path, Action<string> write)
+    internal static void WriteReplacing(string path, Action<string> write)
     {
         // A Crash Mid Write Leaves The Old File Whole
         var temporary = path + ".tmp";

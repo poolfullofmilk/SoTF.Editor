@@ -86,12 +86,17 @@ public partial class GameStatePageViewModel
     public string ResetContainers()
     {
         // A Container Without A State Is Closed And Full Again
-        var numFixed = NamedIntDatas.RemoveAll(setting =>
-            ResetCrateNameIdPattern().IsMatch(setting.Name)
-        );
-        return numFixed < 1
+        var containers = NamedIntDatas
+            .Where(setting =>
+                setting.IntValue != null && ResetCrateNameIdPattern().IsMatch(setting.Name)
+            )
+            .ToList();
+
+        // Cleared Like The Clear Button, Removed Rows Never Saved
+        containers.ForEach(setting => setting.IntValue = null);
+        return containers.Count < 1
             ? AppText.Get("NothingToReset")
-            : AppText.Format("ContainersReset", numFixed);
+            : AppText.Format("ContainersReset", containers.Count);
     }
 
     public bool SetToEndgame()

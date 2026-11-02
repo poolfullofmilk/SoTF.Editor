@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using Newtonsoft.Json;
 using NLog;
 using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
@@ -97,8 +98,14 @@ public partial class RestoreBackupDialog
             }
         }
         catch (Exception exception)
-            when (exception is IOException or UnauthorizedAccessException or InvalidDataException)
+            when (exception
+                    is IOException
+                        or UnauthorizedAccessException
+                        or InvalidDataException
+                        or JsonException
+            )
         {
+            // A Damaged Save Still Restores, It Just Cannot Compare
             s_logger.Warn(exception, "Failed To Compare Backup");
             _compareFailed = _selected == backup;
         }

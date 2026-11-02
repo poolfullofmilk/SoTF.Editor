@@ -196,12 +196,22 @@ public static class SavegameManager
     {
         // The Save Id Folder Inside, Ready For A Mode Folder
         var target = NewExportPath(savegame.Name, ".zip");
-        ZipFile.CreateFromDirectory(
-            savegame.FullPath,
-            target,
-            CompressionLevel.Optimal,
-            includeBaseDirectory: true
-        );
+        try
+        {
+            ZipFile.CreateFromDirectory(
+                savegame.FullPath,
+                target,
+                CompressionLevel.Optimal,
+                includeBaseDirectory: true
+            );
+        }
+        catch
+        {
+            // A Half Written Zip Never Passes For An Export
+            File.Delete(target);
+            throw;
+        }
+
         s_logger.Info($"Exported {savegame.FullPath} To {target}");
         return target;
     }
