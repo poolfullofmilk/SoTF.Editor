@@ -150,6 +150,12 @@ public sealed class PlayerPageViewModel
         followerState.Pos = followerState.Pos.ForTeleport();
     }
 
+    public void TeleportTo(Position position)
+    {
+        // The Exact Spot And Area, No Lift, Someone Stood There
+        PlayerState.Pos = position;
+    }
+
     public void FillAllBars()
     {
         // Strength First, Then Health Fills To Its New Max

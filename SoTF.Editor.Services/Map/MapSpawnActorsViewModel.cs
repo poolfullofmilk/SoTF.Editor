@@ -15,8 +15,7 @@ public sealed class MapSpawnActorsViewModel
     public MapSpawnActorsViewModel(
         BasePoi destination,
         IList<int> allFamilyIds,
-        List<ActorType> allActorTypes,
-        AreaMaskManager areaMaskManager
+        List<ActorType> allActorTypes
     )
     {
         // Minus One Means No Family, Inserted Into Our Own Copy
@@ -25,7 +24,7 @@ public sealed class MapSpawnActorsViewModel
             ? [.. allActorTypes.Where(actorType => !actorType.IsFollower())]
             : allActorTypes;
         _destination = destination;
-        Landing = new Landing(destination, 1, areaMaskManager);
+        Landing = new Landing(destination, 1);
 
         if (destination is ActorPoi actorPoi)
         {

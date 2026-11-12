@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
+using SoTF.Editor.Data.Helpers;
 using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Models.Actors;
 using SoTF.Editor.Data.ViewModels;
@@ -27,6 +29,12 @@ public partial class Player : EditorPageBase
 
     [Inject]
     public required InventoryPageViewModel InventoryPage { get; set; }
+
+    [Inject]
+    public required IJsApiService JsApiService { get; set; }
+
+    [Inject]
+    public required ISnackbar Snackbar { get; set; }
 
     private PlayerState State => PlayerPage.PlayerState;
 
@@ -66,6 +74,13 @@ public partial class Player : EditorPageBase
         }
 
         return ArmorPage.FreeSlots.Any() ? AppText.Get("WearText") : AppText.Get("WearAllWorn");
+    }
+
+    private async Task CopyCoordinatesAsync()
+    {
+        // The Line Teleport To Coordinates Reads, Area Included
+        await JsApiService.CopyToClipboardAsync(PositionText.Format(State.Pos));
+        Snackbar.Add(AppText.Get("CoordinatesCopied"), Severity.Info);
     }
 
     private async Task DeleteArmourAsync(ArmourData armour)

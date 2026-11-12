@@ -739,10 +739,31 @@
     <value>Hedef</value>
   </data>
   <data name="TeleportHint" xml:space="preserve">
-    <value>X ve Z yeri, Y yüksekliği belirler, doğru bölgeyi seçin</value>
+    <value>Tam bu noktaya, gösterilen bölgeye iner. Kaydedin, sonra oraya varmak için oyunu yükleyin</value>
   </data>
-  <data name="Offset" xml:space="preserve">
-    <value>Kaydırma</value>
+  <data name="TeleportToCoordinates" xml:space="preserve">
+    <value>Koordinatlara Işınla</value>
+  </data>
+  <data name="TeleportToCoordinatesHint" xml:space="preserve">
+    <value>Bu düzenleyicide kopyalanan bir konumu yapıştırın veya yazın. Mağarada veya sığınakta yükseklik ve bölge birlikte doğru olmalı, yoksa oyuncu haritanın altına düşer</value>
+  </data>
+  <data name="PasteCoordinates" xml:space="preserve">
+    <value>Koordinatları Yapıştır</value>
+  </data>
+  <data name="CoordinatesNotRead" xml:space="preserve">
+    <value>Bu metinde konum yok</value>
+  </data>
+  <data name="TeleportPlayer" xml:space="preserve">
+    <value>Oyuncuyu Işınla</value>
+  </data>
+  <data name="HeightFromFar" xml:space="preserve">
+    <value>Buradaki yükseklik {0} uzaktaki bir noktadan gelir, bu yüzden iniş havada veya yerin altında bitebilir. Mağara veya sığınak için içindeki bir noktayı seçin veya Koordinatlara Işınla kullanın</value>
+  </data>
+  <data name="PickCave" xml:space="preserve">
+    <value>Hangi Mağara</value>
+  </data>
+  <data name="PickCaveText" xml:space="preserve">
+    <value>Kayıt bu NPC için bu mağaraları ayırt etmez. İçinde durduğu mağarayı seçin, yoksa oyuncu haritanın altına düşer</value>
   </data>
   <data name="ToTeleport" xml:space="preserve">
     <value>Işınlanacak</value>
@@ -1939,9 +1960,6 @@ Hayır düzenleyiciyi açık tutar, böylece önce kaydedebilirsiniz</value>
   <data name="SpawnWhere" xml:space="preserve">
     <value>Nereye</value>
   </data>
-  <data name="SpawnOffsetInfo" xml:space="preserve">
-    <value>Hedefe eklenir, metre olarak. Biraz yukarısı onları yerin dışında tutar</value>
-  </data>
   <data name="SpawnCount" xml:space="preserve">
     <value>{0} {1} Oluştur</value>
   </data>
@@ -2400,6 +2418,9 @@ Hayır düzenleyiciyi açık tutar, böylece önce kaydedebilirsiniz</value>
   </data>
   <data name="GuestRoleBanned" xml:space="preserve">
     <value>Yasaklı</value>
+  </data>
+  <data name="GuestRoleUnknown" xml:space="preserve">
+    <value>Bilinmiyor: {0}</value>
   </data>
   <data name="ShowIn" xml:space="preserve">
     <value>Sayfayı Aç: {0}</value>

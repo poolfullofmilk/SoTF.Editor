@@ -332,6 +332,67 @@ try
         () => player.PlayerState.Pos.HasSameCoordinates(target)
     );
 
+    // A Copied Position Pastes Back With Its Area
+    var areas = gameData.AreaManager;
+    var caveD = areas.GetAreaForAreaMask(16);
+    var inCave = new Position(-64.12f, 152.96f, -374.81f) { Area = caveD };
+    Check(
+        PositionText.Format(inCave) == "-64.12 152.96 -374.81 16"
+            && PositionText.Format(target) == "-900 120 850"
+            && inCave.Equals(PositionText.Parse(PositionText.Format(inCave), areas))
+            && inCave.Equals(PositionText.Parse(inCave.PrintableShort + " 16", areas))
+            && target.Equals(PositionText.Parse("-900, 120, 850", areas))
+            && PositionText.Parse("-64.12 152.96", areas) is null
+            && PositionText.Parse("-64.12 152.96 -374.81 17", areas) is null
+            && PositionText.Parse("somewhere in the cave", areas) is null,
+        "Copied Position Reads Back With Its Area"
+    );
+
+    // Teleport To Coordinates Lands On The Pasted Spot
+    var coordinates = new TeleportToCoordinatesViewModel(player, areas);
+    Check(!coordinates.CanTeleport, "Coordinates Start Where The Player Stands");
+    coordinates.Paste("somewhere in the cave");
+    Check(
+        coordinates.PasteFailed && !coordinates.CanTeleport,
+        "Unreadable Coordinates Change Nothing"
+    );
+    EditAndCheck(
+        "Teleport To Coordinates",
+        "Player",
+        () =>
+        {
+            coordinates.Paste(PositionText.Format(inCave));
+            coordinates.Teleport();
+        },
+        () => player.PlayerState.Pos.Equals(inCave)
+    );
+
+    // Three Numbers Are Surface, Revert Page Undoes It
+    coordinates = new TeleportToCoordinatesViewModel(player, areas);
+    coordinates.Paste("-910.58 88.22 856.4");
+    Check(
+        !coordinates.PasteFailed
+            && coordinates.Area.Equals(AreaMaskManager.Surface)
+            && coordinates.CanTeleport,
+        "Coordinates Without An Area Are The Surface"
+    );
+    coordinates.Teleport();
+    main.RevertPage("Player");
+    Check(
+        player.PlayerState.Pos.Equals(inCave) && !main.HasUnsavedChanges(),
+        "Reverted Teleport Leaves The Player In The Cave"
+    );
+    EditAndCheck(
+        "Teleport Back To The Surface",
+        "Player",
+        () =>
+        {
+            coordinates.Paste(PositionText.Format(target));
+            coordinates.Teleport();
+        },
+        () => player.PlayerState.Pos.Equals(target)
+    );
+
     // A Removed Zipline Lights The Map And Saves
     map.Build();
     var ziplineCount = map.AllPois().OfType<ZiplinePoi>().Count();
@@ -662,6 +723,102 @@ try
     main.RevertPage("Map");
     Check(!main.HasUnsavedChanges(), "Reverted Zipline Group Leaves Nothing Unsaved");
 
+    // A Clicked Spot Is Surface With A Borrowed Height
+    map.Build();
+    var (caveLeft, caveTop) = CoordinateConverter.IngameToPixel(-61, -377);
+    map.Click(caveLeft, caveTop, 1, true);
+    Check(
+        map.SelectedPoi is LocationPoi { HeightSourceMetres: > 0 } clicked
+            && !clicked.IsUnderground
+            && new Landing(clicked, clicked.LandingLift).Area.Equals(AreaMaskManager.Surface),
+        "Clicked Spot Is Surface With A Borrowed Height"
+    );
+    var farSpot = new LocationPoi(new Position(-61, 524, -377)) { HeightSourceMetres = 251 };
+    var nearSpot = new LocationPoi(new Position(-61, 300, -377)) { HeightSourceMetres = 12 };
+    Check(
+        new Landing(farSpot, 1).FarHeightSourceMetres is 251
+            && new Landing(nearSpot, 1).FarHeightSourceMetres is null
+            && new Landing(new LocationPoi(new Position(0, 0, 0)), 1).FarHeightSourceMetres is null,
+        "Only A Far Height Source Warns"
+    );
+
+    // A Map Teleport Lands Right On The Point, Never Sideways
+    var itemPoint = map.AllPois().OfType<ItemPoi>().First(poi => poi.IsUnderground);
+    new MapTeleportWindowViewModel(itemPoint, TeleportTarget.Player, areas, followers).DoTeleport(
+        player.PlayerState
+    );
+    Check(
+        player.PlayerState.Pos.Equals(itemPoint.Position),
+        "Item Teleport Lands On The Item, In Its Area"
+    );
+    var place = map.AllPois().OfType<CaveOrBunkerPoi>().First(poi => poi.Position != null);
+    new MapTeleportWindowViewModel(place, TeleportTarget.Player, areas, followers).DoTeleport(
+        player.PlayerState
+    );
+    Check(
+        player.PlayerState.Pos.Equals(
+            new Position(place.Position!.X, place.Position.Y + 1, place.Position.Z)
+            {
+                Area = place.Position.Area,
+            }
+        ),
+        "Place Teleport Lands On The Point, One Metre Up"
+    );
+
+    // Caves F And G Share A Graph Mask
+    var sharedCaves = areas.CavesSharingGraphMask(areas.GetAreaForGraphMask(4096));
+    Check(
+        sharedCaves.Count == 2
+            && areas.CavesSharingGraphMask(caveD).Count == 0
+            && areas.CavesSharingGraphMask(AreaMaskManager.Surface).Count == 0,
+        "Caves F And G Share A Graph Mask"
+    );
+    var caveActor = npcs.AllActors.FirstOrDefault(actor =>
+        actor is { GraphMask: 4096, Position: not null }
+    );
+    if (caveActor != null)
+    {
+        var toActor = new MapTeleportWindowViewModel(
+            new ActorPoi(caveActor),
+            TeleportTarget.Player,
+            areas,
+            followers
+        );
+        var before = player.PlayerState.Pos;
+        toActor.DoTeleport(player.PlayerState);
+        var waited = !toActor.IsAreaPicked && ReferenceEquals(before, player.PlayerState.Pos);
+        toActor.PickArea(sharedCaves[1]);
+        toActor.DoTeleport(player.PlayerState);
+        Check(
+            waited && player.PlayerState.Pos.Area.Equals(sharedCaves[1]),
+            "Teleport To A Cave F Or G Actor Waits For The Cave"
+        );
+    }
+
+    Check(caveActor != null, "Sample Holds An Actor In Cave F Or G");
+    main.RevertPage("Player");
+    Check(
+        player.PlayerState.Pos.Equals(target) && !main.HasUnsavedChanges(),
+        "Reverted Map Teleports Leave Nothing Unsaved"
+    );
+
+    // Actor Dialog Player To NPC Takes The Picked Cave
+    if (caveActor != null)
+    {
+        var toNpc = new EditActorViewModel(caveActor, gameData.ActorTypes);
+        toNpc.ModifyOptions.TeleportMode = ActorTeleport.PlayerToNpc;
+        toNpc.ModifyOptions.PlayerArea = sharedCaves[1];
+        main.ModifyActors(save => actorModifier.Modify(save, toNpc));
+        Check(
+            player.PlayerState.Pos.Area.Equals(sharedCaves[1])
+                && player.PlayerState.Pos.HasSameCoordinates(caveActor.Position!),
+            "Player To NPC Lands In The Picked Cave"
+        );
+        main.RevertPage("Player");
+        main.RevertPage("Npcs");
+        Check(!main.HasUnsavedChanges(), "Reverted Player To NPC Leaves Nothing Unsaved");
+    }
+
     // An Unknown Build Cost Never Reads As Done
     var platform = new ScrewStructureWrapper(
         gameData.ScrewStructures.First(structure => structure.Id == 98),
@@ -734,6 +891,12 @@ try
                                     LastKnownPlayerName = "Alpha",
                                     PlayerRole = 16,
                                 },
+                                new
+                                {
+                                    PlayerId = 76561190000000003,
+                                    LastKnownPlayerName = "Charlie",
+                                    PlayerRole = 32,
+                                },
                             },
                         }
                     ),
@@ -743,7 +906,10 @@ try
     );
     main.ReloadSavegame();
     var guests = WorldTools.ReadGuests(main.SelectedSavegame);
-    Check(guests is [{ Name: "Alpha", Role: 16 }, { Name: "Bravo" }], "Guests Read By Name");
+    Check(
+        guests is [{ Name: "Alpha", Role: 16 }, { Name: "Bravo" }, { Name: "Charlie", Role: 32 }],
+        "Guests Read By Name"
+    );
     var rolesBefore = main.ToolState();
     Check(
         WorldTools.SetGuestRoles(
@@ -754,12 +920,17 @@ try
     );
     WorldTools.SetGuestRoles(
         main.SelectedSavegame,
-        new Dictionary<long, int> { [guests[1].SteamId] = 4 }
+        guests.ToDictionary(
+            guest => guest.SteamId,
+            guest => guest.Name == "Bravo" ? (int)GuestRole.Trusted : guest.Role
+        )
     );
     main.FinishTool("GuestRoles", rolesBefore);
     Check(
-        main.HasChanges("Tools") && WorldTools.ReadGuests(main.SelectedSavegame)[1].Role == 4,
-        "Guest Role Changes"
+        main.HasChanges("Tools")
+            && WorldTools.ReadGuests(main.SelectedSavegame)
+                is [{ Role: 16 }, { Role: 4 }, { Role: 32 }],
+        "Guest Role Changes, Unknown Role Kept"
     );
     main.RevertPage("Tools");
     Check(

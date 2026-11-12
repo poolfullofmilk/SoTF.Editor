@@ -18,7 +18,17 @@
                        OnClick="CloseAsync" />
     </MudStack>
 
-    @if (!string.IsNullOrEmpty(Poi.Description))
+    @if (Poi is LocationPoi { HeightIsFarGuess: true, HeightSourceMetres: { } metres })
+    {
+        @* Guessed Height Warning *@
+        <MudAlert Severity="Severity.Warning"
+                  Dense
+                  Elevation="4"
+                  Class="rounded-panel mud-warning-text">
+            @AppText.Format("HeightFromFar", Formatter.FormatDistance(metres))
+        </MudAlert>
+    }
+    else if (!string.IsNullOrEmpty(Poi.Description))
     {
         <MudText Typo="Typo.body2"
                  Class="text-relaxed">
@@ -184,19 +194,33 @@
     }
 
     <DetailsSection Title="@AppText.Get("Teleportation")">
-        @* Teleport Player *@
-        <Tooltip Text="@AppText.Get("AlreadyThere")"
-                 Disabled="@(!PlayerIsThere)"
-                 RootClass="d-flex">
+        @if (Poi is PlayerPoi)
+        {
+            @* Teleport To Coordinates *@
             <MudButton Variant="Variant.Filled"
                        Color="Color.Info"
                        Size="Size.Small"
-                       StartIcon="@Icons.Material.Rounded.Person"
-                       Disabled="@(Poi.Position is null || PlayerIsThere)"
-                       OnClick="() => TeleportAsync(TeleportTarget.Player)">
-                @AppText.Get("TeleportPlayerHere")
+                       StartIcon="@Icons.Material.Rounded.PinDrop"
+                       OnClick="TeleportToCoordinatesAsync">
+                @AppText.Get("TeleportToCoordinates")
             </MudButton>
-        </Tooltip>
+        }
+        else
+        {
+            @* Teleport Player *@
+            <Tooltip Text="@AppText.Get("AlreadyThere")"
+                     Disabled="@(!PlayerIsThere)"
+                     RootClass="d-flex">
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Info"
+                           Size="Size.Small"
+                           StartIcon="@Icons.Material.Rounded.Person"
+                           Disabled="@(Poi.Position is null || PlayerIsThere)"
+                           OnClick="() => TeleportAsync(TeleportTarget.Player)">
+                    @AppText.Get("TeleportPlayerHere")
+                </MudButton>
+            </Tooltip>
+        }
         @if (!IsClientSave)
         {
             @* Teleport Kelvin *@

@@ -364,7 +364,7 @@ public sealed class MapViewModel
                 hits.FirstOrDefault(poi =>
                     poi != from && poi != PickLineStart && poi.Position != null
                 )?.Position
-                ?? SpotAt(left, top);
+                ?? SpotAt(left, top).Spot;
 
             // Both Ends On One Spot Is No Zipline, Keep Waiting
             if (PickLineStart?.Position?.GroundDistanceTo(spot) < MinimumZiplineMetres)
@@ -380,10 +380,7 @@ public sealed class MapViewModel
         SelectPoi(
             hits.Count switch
             {
-                0 => new LocationPoi(SpotAt(left, top))
-                {
-                    Description = AppText.Get("HeightGuessed"),
-                },
+                0 => ClickedSpot(left, top),
                 1 => hits[0],
                 _ => null,
             }
@@ -446,7 +443,18 @@ public sealed class MapViewModel
         _mainViewModel.NotifyChanged();
     }
 
-    private Position SpotAt(float left, float top)
+    private LocationPoi ClickedSpot(float left, float top)
+    {
+        // A Clicked Spot Is Surface, Its Height Borrowed From Elsewhere
+        var (spot, heightSourceMetres) = SpotAt(left, top);
+        return new LocationPoi(spot)
+        {
+            Description = AppText.Get("HeightGuessed"),
+            HeightSourceMetres = heightSourceMetres,
+        };
+    }
+
+    private (Position Spot, float HeightSourceMetres) SpotAt(float left, float top)
     {
         var (x, z) = CoordinateConverter.PixelToIngame(left, top);
 
@@ -459,7 +467,10 @@ public sealed class MapViewModel
             .MinBy(position =>
                 (position.X - x) * (position.X - x) + (position.Z - z) * (position.Z - z)
             );
-        return new Position(x, nearest?.Y ?? 0, z);
+        var spot = new Position(x, nearest?.Y ?? 0, z);
+
+        // No Known Point At All Counts As Endlessly Far
+        return (spot, nearest?.GroundDistanceTo(spot) ?? float.MaxValue);
     }
 
     private void AddZipline(ZiplinePoi zipline)

@@ -38,20 +38,33 @@ public partial class TeleportDialog
 
     private MapTeleportWindowViewModel _viewModel = null!;
 
-    // Who Goes Where, As Caption And Value Pairs
-    private IEnumerable<(string Label, string Value)> Details =>
-        [
-            (AppText.Get("ToTeleport"), _viewModel.Target),
-            (AppText.Get("Destination"), _viewModel.Destination),
-            (
-                AppText.Get("Position"),
-                Formatter.FormatPosition(
-                    _viewModel.Landing.X,
-                    _viewModel.Landing.Y,
-                    _viewModel.Landing.Z
-                )
-            ),
-        ];
+    // Who Lands Where, As Caption And Value Rows
+    private IEnumerable<(string Label, string Value, bool Wide)> Details
+    {
+        get
+        {
+            var landing = _viewModel.Landing.At();
+            List<(string Label, string Value, bool Wide)> details =
+            [
+                (AppText.Get("ToTeleport"), _viewModel.Target, false),
+                (AppText.Get("Destination"), _viewModel.Destination, false),
+                (AppText.Get("Position"), landing.PrintableShort, true),
+            ];
+
+            // Two Possible Caves Show As Buttons Below Instead
+            if (_viewModel.AreaChoices.Count == 0)
+            {
+                details.Add((AppText.Get("Area"), landing.Area.Name, true));
+            }
+
+            return details;
+        }
+    }
+
+    private bool IsPicked(Area area)
+    {
+        return _viewModel.IsAreaPicked && _viewModel.Landing.Area.Equals(area);
+    }
 
     protected override void OnInitialized()
     {

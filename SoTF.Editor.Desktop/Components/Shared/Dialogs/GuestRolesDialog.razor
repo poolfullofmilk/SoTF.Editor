@@ -20,12 +20,19 @@
                                  Class="mud-text-secondary">
                             @guest.SteamId
                         </MudText>
+                        @if (UnknownRoleOf(guest) is { } unknownRole)
+                        {
+                            <MudText Typo="Typo.caption"
+                                     Class="mud-text-secondary">
+                                @AppText.Format("GuestRoleUnknown", unknownRole)
+                            </MudText>
+                        }
                     </MudStack>
                     @* Role Choices *@
                     <MudButtonGroup OverrideStyles="false"
                                     Size="Size.Small"
                                     Class="setting-choices">
-                        @foreach (var role in Enum.GetValues<GuestRole>())
+                        @foreach (var role in s_roles)
                         {
                             <MudButton Variant="Variant.Filled"
                                        Size="Size.Small"

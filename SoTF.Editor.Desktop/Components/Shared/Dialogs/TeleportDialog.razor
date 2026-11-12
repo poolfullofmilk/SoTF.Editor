@@ -7,14 +7,25 @@
                 @AppText.Get("TeleportHint")
             </MudText>
 
+            @if (_viewModel.Landing.FarHeightSourceMetres is { } metres)
+            {
+                @* Guessed Height Warning *@
+                <MudAlert Severity="Severity.Warning"
+                          Dense
+                          Elevation="4"
+                          Class="rounded-panel mud-warning-text">
+                    @AppText.Format("HeightFromFar", Formatter.FormatDistance(metres))
+                </MudAlert>
+            }
+
             @* Teleport Section *@
             <MudPaper Elevation="0"
                       Class="inset rounded-panel pa-4">
                 <MudGrid Spacing="2">
 
-                    @foreach (var (label, value) in Details)
+                    @foreach (var (label, value, wide) in Details)
                     {
-                        <MudItem xs="@(label == AppText.Get("Position") ? 12 : 6)">
+                        <MudItem xs="@(wide ? 12 : 6)">
                             <MudStack Spacing="0">
                                 <MudText Typo="Typo.caption"
                                          Class="mud-text-secondary">
@@ -31,14 +42,34 @@
                 </MudGrid>
             </MudPaper>
 
-            @* Landing Section *@
-            <MudPaper Elevation="0"
-                      Class="inset rounded-panel pa-4">
-                <MudStack Spacing="3">
-                    <MudText Typo="Typo.subtitle2">@AppText.Get("SpawnWhere")</MudText>
-                    <LandingFields Landing="_viewModel.Landing" />
-                </MudStack>
-            </MudPaper>
+            @if (_viewModel.AreaChoices.Count > 0)
+            {
+                @* Cave Section *@
+                <MudPaper Elevation="0"
+                          Class="inset rounded-panel pa-4">
+                    <MudStack Spacing="3">
+                        <MudText Typo="Typo.subtitle2">@AppText.Get("PickCave")</MudText>
+                        <MudText Typo="Typo.body2"
+                                 Class="mud-text-secondary">
+                            @AppText.Get("PickCaveText")
+                        </MudText>
+                        @* Cave Choices *@
+                        <MudButtonGroup OverrideStyles="false"
+                                        Size="Size.Small"
+                                        Class="setting-choices">
+                            @foreach (var area in _viewModel.AreaChoices)
+                            {
+                                <MudButton Variant="Variant.Filled"
+                                           Size="Size.Small"
+                                           Color="@(IsPicked(area) ? Color.Info : Color.Default)"
+                                           OnClick="() => _viewModel.PickArea(area)">
+                                    @area.Name
+                                </MudButton>
+                            }
+                        </MudButtonGroup>
+                    </MudStack>
+                </MudPaper>
+            }
         </MudStack>
     </DialogContent>
     <DialogActions>
@@ -47,6 +78,7 @@
         <MudButton Variant="Variant.Filled"
                    Color="Color.Info"
                    StartIcon="@Icons.Material.Rounded.NearMe"
+                   Disabled="@(!_viewModel.IsAreaPicked)"
                    OnClick="Teleport">
             @AppText.Get("Teleport")
         </MudButton>

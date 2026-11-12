@@ -1,0 +1,77 @@
+<MudDialog Class="dialog-page">
+
+    <DialogContent>
+        <MudStack Spacing="4">
+            <MudText Typo="Typo.body2"
+                     Class="text-relaxed">
+                @AppText.Get("TeleportToCoordinatesHint")
+            </MudText>
+
+            @* Paste Section *@
+            <MudPaper Elevation="0"
+                      Class="inset rounded-panel pa-4">
+                @* Pasted Coordinates *@
+                <MudTextField T="string"
+                              Variant="Variant.Outlined"
+                              Value="_viewModel.Pasted"
+                              ValueChanged="_viewModel.Paste"
+                              Label="@AppText.Get("PasteCoordinates")"
+                              Placeholder="-64.12 152.96 -374.81 16"
+                              Error="_viewModel.PasteFailed"
+                              ErrorText="@AppText.Get("CoordinatesNotRead")"
+                              Immediate
+                              AutoFocus />
+            </MudPaper>
+
+            @* Where Section *@
+            <MudPaper Elevation="0"
+                      Class="inset rounded-panel pa-4">
+                <MudStack Spacing="3">
+                    <MudText Typo="Typo.subtitle2">@AppText.Get("SpawnWhere")</MudText>
+                    <MudStack Row
+                              Spacing="2">
+                        @* Position X *@
+                        <NumberField T="float"
+                                     @bind-Value="_viewModel.X"
+                                     Label="X"
+                                     Format="F2" />
+                        @* Position Y *@
+                        <NumberField T="float"
+                                     @bind-Value="_viewModel.Y"
+                                     Label="Y"
+                                     Format="F2" />
+                        @* Position Z *@
+                        <NumberField T="float"
+                                     @bind-Value="_viewModel.Z"
+                                     Label="Z"
+                                     Format="F2" />
+                    </MudStack>
+                    @* Area *@
+                    <MudSelect T="Area"
+                               Variant="Variant.Outlined"
+                               @bind-Value="_viewModel.Area"
+                               Label="@AppText.Get("Area")"
+                               ToStringFunc="area => area?.Name ?? string.Empty"
+                               Dense>
+                        @foreach (var area in _viewModel.Areas)
+                        {
+                            <MudSelectItem Value="area">@area.Name</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudStack>
+            </MudPaper>
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        <MudSpacer />
+        @* Teleport Button *@
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Info"
+                   StartIcon="@Icons.Material.Rounded.NearMe"
+                   Disabled="@(!_viewModel.CanTeleport)"
+                   OnClick="Teleport">
+            @AppText.Get("TeleportPlayer")
+        </MudButton>
+    </DialogActions>
+
+</MudDialog>

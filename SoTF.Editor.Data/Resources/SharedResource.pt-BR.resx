@@ -739,10 +739,31 @@
     <value>Destino</value>
   </data>
   <data name="TeleportHint" xml:space="preserve">
-    <value>X e Z marcam o lugar, Y a altura, escolha a área certa</value>
+    <value>Pousa exatamente neste ponto, na área mostrada. Salve e depois carregue o jogo para chegar lá</value>
   </data>
-  <data name="Offset" xml:space="preserve">
-    <value>Deslocamento</value>
+  <data name="TeleportToCoordinates" xml:space="preserve">
+    <value>Teleportar para Coordenadas</value>
+  </data>
+  <data name="TeleportToCoordinatesHint" xml:space="preserve">
+    <value>Cole uma posição copiada neste editor ou digite. Em uma caverna ou bunker a altura e a área precisam bater, ou o jogador cai embaixo do mapa</value>
+  </data>
+  <data name="PasteCoordinates" xml:space="preserve">
+    <value>Colar Coordenadas</value>
+  </data>
+  <data name="CoordinatesNotRead" xml:space="preserve">
+    <value>Nenhuma posição neste texto</value>
+  </data>
+  <data name="TeleportPlayer" xml:space="preserve">
+    <value>Teleportar o Jogador</value>
+  </data>
+  <data name="HeightFromFar" xml:space="preserve">
+    <value>A altura aqui vem de um ponto a {0}, então um pouso pode acabar no ar ou embaixo do chão. Para uma caverna ou bunker, escolha um ponto dentro ou use Teleportar para Coordenadas</value>
+  </data>
+  <data name="PickCave" xml:space="preserve">
+    <value>Qual Caverna</value>
+  </data>
+  <data name="PickCaveText" xml:space="preserve">
+    <value>O save não diferencia estas cavernas para este NPC. Escolha a em que ele está, ou o jogador cai embaixo do mapa</value>
   </data>
   <data name="ToTeleport" xml:space="preserve">
     <value>A Teleportar</value>
@@ -1935,9 +1956,6 @@
   <data name="SpawnWhere" xml:space="preserve">
     <value>Onde</value>
   </data>
-  <data name="SpawnOffsetInfo" xml:space="preserve">
-    <value>Somado ao destino, em metros. Um pouco acima os mantém fora do chão</value>
-  </data>
   <data name="SpawnCount" xml:space="preserve">
     <value>Fazer Surgir {0} {1}</value>
   </data>
@@ -2396,6 +2414,9 @@
   </data>
   <data name="GuestRoleBanned" xml:space="preserve">
     <value>Banido</value>
+  </data>
+  <data name="GuestRoleUnknown" xml:space="preserve">
+    <value>Desconhecido: {0}</value>
   </data>
   <data name="ShowIn" xml:space="preserve">
     <value>Abrir Página: {0}</value>

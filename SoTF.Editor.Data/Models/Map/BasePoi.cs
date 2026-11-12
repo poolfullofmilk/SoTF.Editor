@@ -82,8 +82,8 @@ public abstract class BasePoi : IPoi
 
     public string? Description { get; init; }
 
-    // Teleports Land One Step Away, Items Right On The Point
-    public virtual float TeleportationOffset => 1;
+    // Teleports Land Slightly Above, Items Right On It
+    public virtual float LandingLift => 1;
 
     protected virtual bool ShouldFilter(MapFilter mapFilter)
     {

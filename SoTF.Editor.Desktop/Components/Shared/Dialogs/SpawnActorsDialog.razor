@@ -70,7 +70,26 @@
                                     @_viewModel.Destination
                                 </MudText>
                             </MudStack>
-                            <LandingFields Landing="_viewModel.Landing" />
+                            <MudStack Spacing="0">
+                                <MudText Typo="Typo.caption"
+                                         Class="mud-text-secondary">
+                                    @AppText.Get("Area")
+                                </MudText>
+                                <MudText Typo="Typo.body2"
+                                         Class="selectable-text">
+                                    @_viewModel.Landing.Area.Name
+                                </MudText>
+                            </MudStack>
+                            @if (_viewModel.Landing.FarHeightSourceMetres is { } metres)
+                            {
+                                @* Guessed Height Warning *@
+                                <MudAlert Severity="Severity.Warning"
+                                          Dense
+                                          Elevation="4"
+                                          Class="rounded-panel mud-warning-text">
+                                    @AppText.Format("HeightFromFar", Formatter.FormatDistance(metres))
+                                </MudAlert>
+                            }
                         </MudStack>
                     </MudPaper>
 

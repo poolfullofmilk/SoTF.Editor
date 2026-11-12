@@ -1,5 +1,6 @@
 using SoTF.Editor.Data.Enums;
 using SoTF.Editor.Data.Helpers;
+using SoTF.Editor.Data.Models;
 using SoTF.Editor.Data.Models.Actors;
 using SoTF.Editor.Data.Models.SaveData.Actor;
 
@@ -139,6 +140,9 @@ public sealed class ModifyOptions
     public ActorType? ReplaceType { get; set; }
 
     public ActorTeleport TeleportMode { get; set; }
+
+    // The Player's Cave Where The Actor's Graph Mask Names Two
+    public Area? PlayerArea { get; set; }
 
     public bool UpdateEnergy { get; private set; }
 

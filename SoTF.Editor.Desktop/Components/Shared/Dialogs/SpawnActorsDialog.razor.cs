@@ -41,12 +41,7 @@ public partial class SpawnActorsDialog
             .OrderBy(id => id)
             .ToList();
         var allActorTypes = GameData.ActorTypes.OrderBy(type => type.Name).ToList();
-        _viewModel = new MapSpawnActorsViewModel(
-            Destination,
-            allFamilyIds,
-            allActorTypes,
-            GameData.AreaManager
-        );
+        _viewModel = new MapSpawnActorsViewModel(Destination, allFamilyIds, allActorTypes);
     }
 
     private string FamilyName(int? familyId)

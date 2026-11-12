@@ -37,7 +37,7 @@ public sealed class ItemPoi : InformationalPoi
 
     public override string Icon => _item.ImageUrl ?? BaseIcon("treasure.svg");
 
-    public override float TeleportationOffset => 0;
+    public override float LandingLift => 0;
 
     public static ItemPoi? Of(
         int itemId,

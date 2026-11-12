@@ -131,6 +131,27 @@
                                     @AppText.Get("TeleportManyWarning")
                                 </MudText>
                             }
+                            @if (NeedsCave)
+                            {
+                                <MudText Typo="Typo.body2"
+                                         Class="mud-text-secondary">
+                                    @AppText.Get("PickCaveText")
+                                </MudText>
+                                @* Cave Choices *@
+                                <MudButtonGroup OverrideStyles="false"
+                                                Size="Size.Small"
+                                                Class="setting-choices">
+                                    @foreach (var area in _caveChoices)
+                                    {
+                                        <MudButton Variant="Variant.Filled"
+                                                   Size="Size.Small"
+                                                   Color="@(area.Equals(_viewModel.ModifyOptions.PlayerArea) ? Color.Info : Color.Default)"
+                                                   OnClick="() => _viewModel.ModifyOptions.PlayerArea = area">
+                                            @area.Name
+                                        </MudButton>
+                                    }
+                                </MudButtonGroup>
+                            }
                         </MudStack>
                     </MudPaper>
 
@@ -233,7 +254,7 @@
         @* Apply Button *@
         <MudButton Variant="Variant.Filled"
                    Color="Color.Info"
-                   Disabled="@(MatchCount == 0 || !_viewModel.ModifyOptions.HasChanges)"
+                   Disabled="@(MatchCount == 0 || !_viewModel.ModifyOptions.HasChanges || MissesCave)"
                    OnClick="Apply">
             @CountLabel("Apply")
         </MudButton>

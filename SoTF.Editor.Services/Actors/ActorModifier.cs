@@ -121,7 +121,9 @@ public sealed class ActorModifier(PlayerPageViewModel playerPageViewModel)
             matchedActors
                 .LastOrDefault(actor => actor["UniqueId"]?.Value<int>() == data.Actor.UniqueId)
                 ?["Position"] = JToken.FromObject(actorPos.ForTeleport());
-            playerPageViewModel.PlayerState.Pos = actorPos.WithoutOffset();
+            playerPageViewModel.PlayerState.Pos = actorPos.WithoutOffset(
+                options.PlayerArea ?? actorPos.Area
+            );
         }
     }
 

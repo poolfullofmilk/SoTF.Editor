@@ -43,13 +43,32 @@
                                            OnClick="() => PlayerPage.MoveToFollower(FollowerPage.VirginiaState)">
                                     @AppText.Get("MoveToVirginia")
                                 </MudButton>
+                                @* Teleport To Coordinates *@
+                                <MudButton Variant="Variant.Text"
+                                           Size="Size.Small"
+                                           StartIcon="@Icons.Material.Rounded.PinDrop"
+                                           OnClick="() => TeleportToCoordinatesDialog.ShowAsync(DialogService)">
+                                    @AppText.Get("TeleportToCoordinates")
+                                </MudButton>
                             </MudStack>
 
-                            <MudText Typo="Typo.body2"
-                                     Class="mud-text-secondary selectable-text">
-                                @($"{AppText.Get("Position")}: {State.Pos.PrintableShort} · {AppText.Get("Area")}: {State.Pos.Area.Name}")
-                                <ChangedDot When="@PlayerPage.IsChanged(nameof(PlayerState.Pos))" />
-                            </MudText>
+                            <MudStack Row
+                                      AlignItems="AlignItems.Center"
+                                      Spacing="1">
+                                <MudText Typo="Typo.body2"
+                                         Class="mud-text-secondary selectable-text">
+                                    @($"{AppText.Get("Position")}: {State.Pos.PrintableShort} · {AppText.Get("Area")}: {State.Pos.Area.Name}")
+                                    <ChangedDot When="@PlayerPage.IsChanged(nameof(PlayerState.Pos))" />
+                                </MudText>
+                                @* Copy Coordinates *@
+                                <Tooltip Text="@AppText.Get("CopyCoordinates")"
+                                         RootClass="d-flex">
+                                    <MudIconButton Icon="@Icons.Material.Rounded.ContentCopy"
+                                                   aria-label="@AppText.Get("CopyCoordinates")"
+                                                   Size="Size.Small"
+                                                   OnClick="CopyCoordinatesAsync" />
+                                </Tooltip>
+                            </MudStack>
 
                             @* Strength *@
                             <StatSlider Label="@AppText.Get("StrengthLevel")"

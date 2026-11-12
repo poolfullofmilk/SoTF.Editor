@@ -12,7 +12,7 @@
 - Change the game settings, the weather and the season
 - Finish or remove structures
 - Teleport yourself or anyone else on the map, and search or filter every point on it
-- Teleport yourself in a friend's game too, from the save of a game you joined
+- Teleport yourself in a friend's game too, from the save of a game you joined, by pasting the coordinates they copied
 - Tools such as regrowing trees, calming cannibals, ripening gardens and filling 3D printers
 - Set the roles of players who joined your hosted game
 - Duplicate and export your savegames

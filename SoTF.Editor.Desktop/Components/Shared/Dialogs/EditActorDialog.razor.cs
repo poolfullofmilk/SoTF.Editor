@@ -57,6 +57,8 @@ public partial class EditActorDialog
 
     private EditActorViewModel _viewModel = null!;
 
+    private List<Area> _caveChoices = [];
+
     private int MatchCount => CountFor(_viewModel.ActorSelection);
 
     // A Filter Shows Only Where It Changes Who Is Reached
@@ -112,7 +114,17 @@ public partial class EditActorDialog
             Actor,
             [.. GameData.ActorTypes.OrderBy(type => type.Name)]
         );
+        _caveChoices = Actor.Position is { } position
+            ? GameData.AreaManager.CavesSharingGraphMask(position.Area)
+            : [];
     }
+
+    // The Actor's Graph Mask Names Two Caves
+    private bool NeedsCave =>
+        _viewModel.ModifyOptions.TeleportMode == ActorTeleport.PlayerToNpc
+        && _caveChoices.Count > 0;
+
+    private bool MissesCave => NeedsCave && _viewModel.ModifyOptions.PlayerArea is null;
 
     private int CountFor(short selection)
     {

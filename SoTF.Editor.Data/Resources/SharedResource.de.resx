@@ -739,10 +739,31 @@
     <value>Ziel</value>
   </data>
   <data name="TeleportHint" xml:space="preserve">
-    <value>X und Z legen den Ort fest, Y die Höhe, wähle das richtige Gebiet</value>
+    <value>Landet genau auf diesem Punkt, im angezeigten Gebiet. Speichere und lade dann das Spiel, um dort zu sein</value>
   </data>
-  <data name="Offset" xml:space="preserve">
-    <value>Versatz</value>
+  <data name="TeleportToCoordinates" xml:space="preserve">
+    <value>Zu Koordinaten Teleportieren</value>
+  </data>
+  <data name="TeleportToCoordinatesHint" xml:space="preserve">
+    <value>Füge eine in diesem Editor kopierte Position ein oder tippe sie. In einer Höhle oder einem Bunker müssen Höhe und Gebiet beide stimmen, sonst fällt der Spieler unter die Karte</value>
+  </data>
+  <data name="PasteCoordinates" xml:space="preserve">
+    <value>Koordinaten Einfügen</value>
+  </data>
+  <data name="CoordinatesNotRead" xml:space="preserve">
+    <value>In diesem Text steht keine Position</value>
+  </data>
+  <data name="TeleportPlayer" xml:space="preserve">
+    <value>Spieler Teleportieren</value>
+  </data>
+  <data name="HeightFromFar" xml:space="preserve">
+    <value>Die Höhe hier stammt von einem Punkt in {0} Entfernung, eine Landung kann also in der Luft oder unter dem Boden enden. Für eine Höhle oder einen Bunker wähle einen Punkt darin oder nutze Zu Koordinaten Teleportieren</value>
+  </data>
+  <data name="PickCave" xml:space="preserve">
+    <value>Welche Höhle</value>
+  </data>
+  <data name="PickCaveText" xml:space="preserve">
+    <value>Der Spielstand unterscheidet diese Höhlen für diesen NPC nicht. Wähle die, in der er steht, sonst fällt der Spieler unter die Karte</value>
   </data>
   <data name="ToTeleport" xml:space="preserve">
     <value>Zu Teleportieren</value>
@@ -1939,9 +1960,6 @@ Nein lässt den Editor offen, damit du zuerst speichern kannst</value>
   <data name="SpawnWhere" xml:space="preserve">
     <value>Wo</value>
   </data>
-  <data name="SpawnOffsetInfo" xml:space="preserve">
-    <value>Wird zum Ziel addiert, in Metern. Etwas nach oben hält sie aus dem Boden</value>
-  </data>
   <data name="SpawnCount" xml:space="preserve">
     <value>{0} {1} Spawnen</value>
   </data>
@@ -2400,6 +2418,9 @@ Nein lässt den Editor offen, damit du zuerst speichern kannst</value>
   </data>
   <data name="GuestRoleBanned" xml:space="preserve">
     <value>Gesperrt</value>
+  </data>
+  <data name="GuestRoleUnknown" xml:space="preserve">
+    <value>Unbekannt: {0}</value>
   </data>
   <data name="ShowIn" xml:space="preserve">
     <value>Seite Öffnen: {0}</value>

@@ -1,4 +1,3 @@
-using System.Globalization;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using SoTF.Editor.Data.Enums;
@@ -224,18 +223,13 @@ public partial class PoiDetails
 
     private async Task CopyCoordinatesAsync()
     {
-        // Plain Numbers With A Dot, As The Console Takes Them
+        // The Line Teleport To Coordinates Reads, Area Included
         if (Poi.Position is not { } position)
         {
             return;
         }
 
-        await JsApiService.CopyToClipboardAsync(
-            string.Create(
-                CultureInfo.InvariantCulture,
-                $"{position.X:0.##} {position.Y:0.##} {position.Z:0.##}"
-            )
-        );
+        await JsApiService.CopyToClipboardAsync(PositionText.Format(position));
         Snackbar.Add(AppText.Get("CoordinatesCopied"), Severity.Info);
     }
 
@@ -335,6 +329,13 @@ public partial class PoiDetails
             new DialogOptions { MaxWidth = MaxWidth.Small, FullWidth = true }
         );
         await dialog.Result;
+    }
+
+    private async Task TeleportToCoordinatesAsync()
+    {
+        // The Player Point Follows, The Map Draws It Again
+        await TeleportToCoordinatesDialog.ShowAsync(DialogService);
+        await OnMapChanged.InvokeAsync();
     }
 
     private async Task SpawnActorsAsync()
